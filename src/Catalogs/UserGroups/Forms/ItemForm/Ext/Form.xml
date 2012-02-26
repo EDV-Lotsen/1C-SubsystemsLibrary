@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>Top</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWrite">AfterWrite</Event>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="BeforeWrite">BeforeWrite</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Description" id="4">
+			<DataPath>Object.Description</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Width>40</Width>
+			<Wrap>false</Wrap>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="DescriptionContextMenu" id="5"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="51"/>
+		</InputField>
+		<InputField name="Parent" id="40">
+			<DataPath>Object.Parent</DataPath>
+			<ContextMenu name="ParentContextMenu" id="41"/>
+			<ExtendedTooltip name="ParentExtendedTooltip" id="52"/>
+			<Events>
+				<Event name="StartChoice">ParentStartChoice</Event>
+			</Events>
+		</InputField>
+		<UsualGroup name="GroupUsers" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Group users</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Horizontal</Group>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupUsersExtendedTooltip" id="53"/>
+			<ChildItems>
+				<Table name="Content" id="10">
+					<Representation>List</Representation>
+					<TitleLocation>Top</TitleLocation>
+					<SkipOnInput>false</SkipOnInput>
+					<Width>30</Width>
+					<HeightInTableRows>12</HeightInTableRows>
+					<Header>false</Header>
+					<HorizontalLines>false</HorizontalLines>
+					<VerticalLines>false</VerticalLines>
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<EnableStartDrag>true</EnableStartDrag>
+					<EnableDrag>true</EnableDrag>
+					<DataPath>Object.Content</DataPath>
+					<BorderColor>style:BorderColor</BorderColor>
+					<TitleFont ref="sys:DefaultGUIFont" kind="WindowsFont"/>
+					<CommandSet>
+						<ExcludedCommand>Copy</ExcludedCommand>
+					</CommandSet>
+					<SearchStringLocation>None</SearchStringLocation>
+					<ViewStatusLocation>None</ViewStatusLocation>
+					<SearchControlLocation>None</SearchControlLocation>
+					<RowFilter xsi:nil="true"/>
+					<ContextMenu name="ContentContextMenu" id="11">
+						<Autofill>false</Autofill>
+						<ChildItems>
+							<Button name="ContextMenuContentFillUsers" id="42">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.FillUsers</CommandName>
+								<ExtendedTooltip name="ContextMenuContentFillUsersExtendedTooltip" id="54"/>
+							</Button>
+							<Button name="ContextMenuContentAdd" id="45">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.Add</CommandName>
+								<ExtendedTooltip name="ContextMenuContentAddExtendedTooltip" id="55"/>
+							</Button>
+							<Button name="ContextMenuContentCopy" id="50">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>10:0ae4bea5-23be-42a7-b69e-97b11b29c453</CommandName>
+								<ExtendedTooltip name="ContextMenuContentCopyExtendedTooltip" id="56"/>
+							</Button>
+							<Button name="ContextMenuContentDelete" id="46">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.Delete</CommandName>
+								<ExtendedTooltip name="ContextMenuContentDeleteExtendedTooltip" id="57"/>
+							</Button>
+						</ChildItems>
+					</ContextMenu>
+					<AutoCommandBar name="ContentCommandBar" id="12">
+						<Autofill>false</Autofill>
+						<ChildItems>
+							<Button name="ContentPick" id="31">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.FillUsers</CommandName>
+								<ExtendedTooltip name="ContentPickExtendedTooltip" id="58"/>
+							</Button>
+							<Button name="ContentAdd" id="32">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.Add</CommandName>
+								<ExtendedTooltip name="ContentAddExtendedTooltip" id="59"/>
+							</Button>
+							<Button name="ContentCopy" id="49">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>10:0ae4bea5-23be-42a7-b69e-97b11b29c453</CommandName>
+								<ExtendedTooltip name="ContentCopyExtendedTooltip" id="60"/>
+							</Button>
+							<Button name="ContentDelete" id="33">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.Delete</CommandName>
+								<ExtendedTooltip name="ContentDeleteExtendedTooltip" id="61"/>
+							</Button>
+							<Button name="ContentMoveUp" id="43">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.MoveUp</CommandName>
+								<ExtendedTooltip name="ContentMoveUpExtendedTooltip" id="62"/>
+							</Button>
+							<Button name="ContentMoveDown" id="44">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Item.Content.StandardCommand.MoveDown</CommandName>
+								<ExtendedTooltip name="ContentMoveDownExtendedTooltip" id="63"/>
+							</Button>
+							<Button name="ContentSortAscending" id="34">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<OnlyInAllActions>true</OnlyInAllActions>
+								<CommandName>Form.Item.Content.StandardCommand.SortListAsc</CommandName>
+								<ExtendedTooltip name="ContentSortAscendingExtendedTooltip" id="64"/>
+							</Button>
+							<Button name="ContentSortDescending" id="35">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<OnlyInAllActions>true</OnlyInAllActions>
+								<CommandName>Form.Item.Content.StandardCommand.SortListDesc</CommandName>
+								<ExtendedTooltip name="ContentSortDescendingExtendedTooltip" id="65"/>
+							</Button>
+						</ChildItems>
+					</AutoCommandBar>
+					<ExtendedTooltip name="ContentExtendedTooltip" id="66"/>
+					<SearchStringAddition name="ContentSearchString" id="67">
+						<AdditionSource>
+							<Item>Content</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ContentSearchStringContextMenu" id="68"/>
+						<ExtendedTooltip name="ContentSearchStringExtendedTooltip" id="69"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="ContentViewStatus" id="70">
+						<AdditionSource>
+							<Item>Content</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ContentViewStatusContextMenu" id="71"/>
+						<ExtendedTooltip name="ContentViewStatusExtendedTooltip" id="72"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="ContentSearchControl" id="73">
+						<AdditionSource>
+							<Item>Content</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="ContentSearchControlContextMenu" id="74"/>
+						<ExtendedTooltip name="ContentSearchControlExtendedTooltip" id="75"/>
+					</SearchControlAddition>
+					<Events>
+						<Event name="ChoiceProcessing">ContentChoiceProcessing</Event>
+					</Events>
+					<ChildItems>
+						<InputField name="User" id="15">
+							<DataPath>Object.Content.User</DataPath>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="UserContextMenu" id="16"/>
+							<ExtendedTooltip name="UserExtendedTooltip" id="76"/>
+						</InputField>
+					</ChildItems>
+				</Table>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="Comment" id="38">
+			<DataPath>Object.Comment</DataPath>
+			<ContextMenu name="CommentContextMenu" id="39"/>
+			<ExtendedTooltip name="CommentExtendedTooltip" id="77"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.UserGroups</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="FillUsers" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select users</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>FillUsers</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+	</Commands>
+</Form>

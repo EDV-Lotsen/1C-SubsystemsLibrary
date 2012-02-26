@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="Post" id="19">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Post</CommandName>
+				<ExtendedTooltip name="PostExtendedTooltip" id="22"/>
+			</Button>
+			<Button name="UndoPosting" id="20">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.UndoPosting</CommandName>
+				<ExtendedTooltip name="UndoPostingExtendedTooltip" id="23"/>
+			</Button>
+			<Button name="SetDeletionMark" id="21">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.SetDeletionMark</CommandName>
+				<ExtendedTooltip name="SetDeletionMarkExtendedTooltip" id="24"/>
+			</Button>
+			<Button name="OpenDocument" id="8">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.OpenDocument</CommandName>
+				<ExtendedTooltip name="OpenDocumentExtendedTooltip" id="25"/>
+			</Button>
+			<Button name="Refresh" id="12">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Refresh</CommandName>
+				<ExtendedTooltip name="RefreshExtendedTooltip" id="26"/>
+			</Button>
+			<Button name="OutputForCurrent" id="14">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.OutputForCurrent</CommandName>
+				<ExtendedTooltip name="OutputForCurrentExtendedTooltip" id="27"/>
+			</Button>
+			<Button name="FindInList" id="13">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.FindInList</CommandName>
+				<ExtendedTooltip name="FindInListExtendedTooltip" id="28"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="DocumentTree" id="1">
+			<Representation>Tree</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<ReadOnly>true</ReadOnly>
+			<SkipOnInput>false</SkipOnInput>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<InitialTreeView>ExpandAllLevels</InitialTreeView>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>DocumentTree</DataPath>
+			<RowPictureDataPath>DocumentTree.Picture</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.DocumentStatuses</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</RowsPicture>
+			<CommandSet>
+				<ExcludedCommand>HierarchicalList</ExcludedCommand>
+				<ExcludedCommand>Tree</ExcludedCommand>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>List</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>OutputList</ExcludedCommand>
+				<ExcludedCommand>SelectAll</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="DocumentTreeContextMenu" id="2"/>
+			<AutoCommandBar name="DocumentTreeCommandBar" id="3"/>
+			<ExtendedTooltip name="DocumentTreeExtendedTooltip" id="29"/>
+			<SearchStringAddition name="DocumentTreeSearchString" id="30">
+				<AdditionSource>
+					<Item>DocumentTree</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="DocumentTreeSearchStringContextMenu" id="31"/>
+				<ExtendedTooltip name="DocumentTreeSearchStringExtendedTooltip" id="32"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="DocumentTreeViewStatus" id="33">
+				<AdditionSource>
+					<Item>DocumentTree</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="DocumentTreeViewStatusContextMenu" id="34"/>
+				<ExtendedTooltip name="DocumentTreeViewStatusExtendedTooltip" id="35"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="DocumentTreeSearchControl" id="36">
+				<AdditionSource>
+					<Item>DocumentTree</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="DocumentTreeSearchControlContextMenu" id="37"/>
+				<ExtendedTooltip name="DocumentTreeSearchControlExtendedTooltip" id="38"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">DocumentTreeSelection</Event>
+				<Event name="OnActivateRow">DocumentTreeOnActivateRow</Event>
+				<Event name="BeforeRowChange">DocumentTreeBeforeRowChange</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="DocumentTreeDocumentPresentation" id="4">
+					<DataPath>DocumentTree.DocumentPresentation</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DocumentTreeDocumentPresentationContextMenu" id="5"/>
+					<ExtendedTooltip name="DocumentTreeDocumentPresentationExtendedTooltip" id="39"/>
+				</InputField>
+				<InputField name="DocumentTreeDocumentAmount" id="15">
+					<DataPath>DocumentTree.DocumentAmount</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="DocumentTreeDocumentAmountContextMenu" id="16"/>
+					<ExtendedTooltip name="DocumentTreeDocumentAmountExtendedTooltip" id="40"/>
+				</InputField>
+				<InputField name="DocumentTreeDocumentCurrency" id="17">
+					<DataPath>DocumentTree.DocumentCurrency</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="DocumentTreeDocumentCurrencyContextMenu" id="18"/>
+					<ExtendedTooltip name="DocumentTreeDocumentCurrencyExtendedTooltip" id="41"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="DocumentTree" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document tree</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="DocumentPresentation" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Document</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Ref" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Ref</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:DocumentRef</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="DocumentKind" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Document kind</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="RestrictionByParents" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Restriction by parents</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="DocumentAmount" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Amount</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="DocumentCurrency" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Currency</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Currencies</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Picture" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Posted" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Posted</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="DeletionMark" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Deletion mark</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="PostingAllowed" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Posting allowed</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="DocumentRef" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document ref</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:TypeSet>cfg:DocumentRef</v8:TypeSet>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="OpenDocument" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.ChangeListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenDocument</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Refresh" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Refresh</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="FindInList" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show in List</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show the selected document in the list of documents</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.FindInList</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>FindInList</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="OutputForCurrent" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set Hierarchy Root</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show hierarchy structure for the selected document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.HierarchyStructure</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>OutputForCurrent</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Post" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Post</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Post document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Post</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Post</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="UndoPosting" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Undo Posting</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Undo posting document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UndoPosting</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>UndoPosting</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="SetDeletionMark" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Mark/Unmark for Deletion</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Mark/unmark document for deletion</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.MarkToDelete</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetDeletionMark</Action>
+			<Representation>Picture</Representation>
+		</Command>
+	</Commands>
+</Form>

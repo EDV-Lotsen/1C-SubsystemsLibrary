@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="NameAndSurnameCode" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Name and surname, Code</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="NameAndSurnameCodeExtendedTooltip" id="19"/>
+			<ChildItems>
+				<InputField name="Description" id="1">
+					<DataPath>Object.Description</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Full name</v8:content>
+						</v8:item>
+					</Title>
+					<EditMode>EnterOnInput</EditMode>
+					<Width>30</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="2"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="20"/>
+				</InputField>
+				<InputField name="Code" id="15">
+					<DataPath>Object.Code</DataPath>
+					<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+					<ContextMenu name="CodeContextMenu" id="16"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="21"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="Parent" id="3">
+			<DataPath>Object.Parent</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<Wrap>false</Wrap>
+			<ContextMenu name="ParentContextMenu" id="4"/>
+			<ExtendedTooltip name="ParentExtendedTooltip" id="22"/>
+		</InputField>
+		<UsualGroup name="DateSex" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Birth date, gender</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="DateSexExtendedTooltip" id="23"/>
+			<ChildItems>
+				<InputField name="BirthDate" id="5">
+					<DataPath>Object.BirthDate</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<Wrap>false</Wrap>
+					<ContextMenu name="BirthDateContextMenu" id="6"/>
+					<ExtendedTooltip name="BirthDateExtendedTooltip" id="24"/>
+				</InputField>
+				<InputField name="Gender" id="7">
+					<DataPath>Object.Gender</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<Wrap>false</Wrap>
+					<ContextMenu name="GenderContextMenu" id="8"/>
+					<ExtendedTooltip name="GenderExtendedTooltip" id="25"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<Pages name="Pages" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pages</v8:content>
+				</v8:item>
+			</Title>
+			<ExtendedTooltip name="PagesExtendedTooltip" id="26"/>
+			<ChildItems>
+				<Page name="GroupContactInformation" id="13">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Addresses and Phones</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="GroupContactInformationExtendedTooltip" id="27"/>
+				</Page>
+				<Page name="PageAdditionalAttributes" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Additional Attributes</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="PageAdditionalAttributesExtendedTooltip" id="28"/>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.Individuals</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+</Form>

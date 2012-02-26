@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+	</Events>
+	<ChildItems>
+		<CommandBar name="MainCommandBar" id="1">
+			<ExtendedTooltip name="MainCommandBarExtendedTooltip" id="55"/>
+			<ChildItems>
+				<Button name="OpenVersion" id="36">
+					<Type>CommandBarButton</Type>
+					<Representation>PictureAndText</Representation>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.List.StandardCommand.Change</CommandName>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Open Version Card</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="OpenVersionExtendedTooltip" id="56"/>
+				</Button>
+				<Button name="MarkForDelete_Uncheck" id="42">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.List.StandardCommand.SetDeletionMark</CommandName>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Set/Clear Deletion Mark</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="MarkForDelete_UncheckExtendedTooltip" id="57"/>
+				</Button>
+				<Button name="Help" id="33">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.Help</CommandName>
+					<ExtendedTooltip name="HelpExtendedTooltip" id="58"/>
+				</Button>
+				<Button name="SetupOfDataDisplay" id="39">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.List.StandardCommand.ListSettings</CommandName>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Configure List...</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="SetupOfDataDisplayExtendedTooltip" id="59"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="List" id="2">
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<DefaultItem>true</DefaultItem>
+			<Width>40</Width>
+			<HeightInTableRows>10</HeightInTableRows>
+			<InitialListView>End</InitialListView>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>1/13</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.FileIcons</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:TransparentPixel x="10" y="10"/>
+			</RowsPicture>
+			<BorderColor>style:BorderColor</BorderColor>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>false</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="ListContextMenu" id="13">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="ContextMenuListOpenVersion" id="43">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Item.List.StandardCommand.Change</CommandName>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Open Version Card</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ContextMenuListOpenVersionExtendedTooltip" id="60"/>
+					</Button>
+					<Button name="ContextMenuListMarkForDeletion_RemoveMark" id="45">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Item.List.StandardCommand.SetDeletionMark</CommandName>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Set/Clear Deletion Mark</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ContextMenuListMarkForDeletion_RemoveMarkExtendedTooltip" id="61"/>
+					</Button>
+					<Button name="ContextMenuListCopy" id="46">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Item.List.StandardCommand.CopyToClipboard</CommandName>
+						<ExtendedTooltip name="ContextMenuListCopyExtendedTooltip" id="62"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ListCommandBar" id="22"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="63"/>
+			<SearchStringAddition name="ListSearchString" id="64">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="65"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="66"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="67">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="68"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="69"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="70">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="71"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="72"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">ListSelection</Event>
+				<Event name="BeforeAddRow">ListBeforeAddRow</Event>
+				<Event name="BeforeDeleteRow">ListBeforeDelete</Event>
+			</Events>
+			<ChildItems>
+				<LabelField name="Details" id="49">
+					<DataPath>1/40</DataPath>
+					<ContextMenu name="DetailsContextMenu" id="50"/>
+					<ExtendedTooltip name="DetailsExtendedTooltip" id="73"/>
+				</LabelField>
+				<InputField name="Owner" id="40">
+					<DataPath>List.Owner</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Wrap>false</Wrap>
+					<ContextMenu name="OwnerContextMenu" id="41"/>
+					<ExtendedTooltip name="OwnerExtendedTooltip" id="74"/>
+				</InputField>
+				<InputField name="Author" id="9">
+					<DataPath>List.Author</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created by</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="AuthorContextMenu" id="20"/>
+					<ExtendedTooltip name="AuthorExtendedTooltip" id="75"/>
+				</InputField>
+				<InputField name="Comment" id="8">
+					<DataPath>List.Comment</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Comment</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Height>1</Height>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="CommentContextMenu" id="19"/>
+					<ExtendedTooltip name="CommentExtendedTooltip" id="76"/>
+				</InputField>
+				<InputField name="CreationDate" id="10">
+					<DataPath>1/43</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created on</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="CreationDateContextMenu" id="21"/>
+					<ExtendedTooltip name="CreationDateExtendedTooltip" id="77"/>
+				</InputField>
+				<InputField name="Size" id="7">
+					<DataPath>List.Size</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>File size</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="SizeContextMenu" id="18"/>
+					<ExtendedTooltip name="SizeExtendedTooltip" id="78"/>
+				</InputField>
+				<InputField name="VersionNo" id="37">
+					<DataPath>List.VersionNo</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Version number</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="VersionNoContextMenu" id="38"/>
+					<ExtendedTooltip name="VersionNoExtendedTooltip" id="79"/>
+				</InputField>
+				<CheckBoxField name="DeletionMark" id="47">
+					<DataPath>List.DeletionMark</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="DeletionMarkContextMenu" id="48"/>
+					<ExtendedTooltip name="DeletionMarkExtendedTooltip" id="80"/>
+				</CheckBoxField>
+				<LabelField name="Extension" id="53">
+					<DataPath>List.Extension</DataPath>
+					<ContextMenu name="ExtensionContextMenu" id="54"/>
+					<ExtendedTooltip name="ExtensionExtendedTooltip" id="81"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>1/30</Field>
+				<Field>1/13</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	FileVersions.VersionNo AS VersionNo,
+	FileVersions.FileStorage,
+	FileVersions.Size,
+	FileVersions.Comment,
+	FileVersions.Author,
+	FileVersions.CreationDate,
+	FileVersions.FileName,
+	FileVersions.PictureIndex,
+	FileVersions.DeletionMark,
+	FileVersions.Extension,
+	FileVersions.Owner
+FROM
+	Catalog.FileVersions AS FileVersions</QueryText>
+				<MainTable>Catalog.FileVersions</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:use>false</dcsset:use>
+							<dcsset:left xsi:type="dcscor:Field">DeletionMark</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:use>false</dcsset:use>
+							<dcsset:field>DateCreated</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">DeletionMark</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">web:Gray</dcscor:value>
+								</dcscor:item>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Font</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Font" ref="sys:DefaultGUIFont" kind="WindowsFont"/>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+	<CommandInterface>
+		<CommandBar>
+			<Item>
+				<Command>1:409b9a53-7f7e-4178-86c1-33176c7c7a7a</Command>
+				<Type>Added</Type>
+				<CommandGroup>FormCommandBarImportant</CommandGroup>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>2:409b9a53-7f7e-4178-86c1-33176c7c7a7a</Command>
+				<Type>Added</Type>
+				<CommandGroup>FormCommandBarImportant</CommandGroup>
+				<Index>1</Index>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>3:409b9a53-7f7e-4178-86c1-33176c7c7a7a</Command>
+				<Type>Added</Type>
+				<CommandGroup>FormCommandBarImportant</CommandGroup>
+				<Index>2</Index>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+		</CommandBar>
+	</CommandInterface>
+</Form>

@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>All Files</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>Copy</ExcludedCommand>
+		<ExcludedCommand>Create</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<ButtonGroup name="FileCommandGroup" id="67">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>File commands group</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="FileCommandGroupExtendedTooltip" id="86"/>
+				<ChildItems>
+					<Button name="View1" id="69">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.View1</CommandName>
+						<ExtendedTooltip name="View1ExtendedTooltip" id="87"/>
+					</Button>
+					<Button name="Release" id="82">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Release</CommandName>
+						<ExtendedTooltip name="ReleaseExtendedTooltip" id="88"/>
+					</Button>
+					<Button name="SaveAs" id="59">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<OnlyInAllActions>false</OnlyInAllActions>
+						<CommandName>Form.Command.SaveAs</CommandName>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Save As</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="SaveAsExtendedTooltip" id="89"/>
+					</Button>
+				</ChildItems>
+			</ButtonGroup>
+			<ButtonGroup name="FormCommandGroup" id="68">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Form commands group</v8:content>
+					</v8:item>
+				</Title>
+				<CommandSource>Form</CommandSource>
+				<ExtendedTooltip name="FormCommandGroupExtendedTooltip" id="90"/>
+			</ButtonGroup>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="List" id="10">
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>Create</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>false</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="ListContextMenu" id="11">
+				<ChildItems>
+					<Button name="ContextMenuListView" id="80">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.View1</CommandName>
+						<ExtendedTooltip name="ContextMenuListViewExtendedTooltip" id="91"/>
+					</Button>
+					<Button name="ContextMenuListRelease" id="83">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Release</CommandName>
+						<ExtendedTooltip name="ContextMenuListReleaseExtendedTooltip" id="92"/>
+					</Button>
+					<Button name="ContextMenuListSaveAs" id="81">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SaveAs</CommandName>
+						<ExtendedTooltip name="ContextMenuListSaveAsExtendedTooltip" id="93"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ListCommandBar" id="12"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="94"/>
+			<SearchStringAddition name="ListSearchString" id="95">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="96"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="97"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="98">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="99"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="100"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="101">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="102"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="103"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">ListSelection</Event>
+				<Event name="BeforeAddRow">ListBeforeAddRow</Event>
+				<Event name="OnActivateRow">ListOnActivateRow</Event>
+			</Events>
+			<ChildItems>
+				<ColumnGroup name="PictureAndDescription" id="45">
+					<Group>InCell</Group>
+					<ExtendedTooltip name="PictureAndDescriptionExtendedTooltip" id="104"/>
+					<ChildItems>
+						<PictureField name="Picture" id="25">
+							<DataPath>List.PictureIndex</DataPath>
+							<ShowInHeader>false</ShowInHeader>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Width>2</Width>
+							<Height>1</Height>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.FileIcons</xr:Ref>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
+							</ValuesPicture>
+							<Border width="1">
+								<v8ui:style xsi:type="v8ui:ControlBorderType">WithoutBorder</v8ui:style>
+							</Border>
+							<ContextMenu name="PictureContextMenu" id="26"/>
+							<ExtendedTooltip name="PictureExtendedTooltip" id="105"/>
+						</PictureField>
+						<InputField name="Description" id="17">
+							<DataPath>List.Description</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>File name</v8:content>
+								</v8:item>
+							</Title>
+							<Wrap>false</Wrap>
+							<ContextMenu name="DescriptionContextMenu" id="18"/>
+							<ExtendedTooltip name="DescriptionExtendedTooltip" id="106"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<LabelField name="FileOwner" id="70">
+					<DataPath>List.FileOwner</DataPath>
+					<ContextMenu name="FileOwnerContextMenu" id="71"/>
+					<ExtendedTooltip name="FileOwnerExtendedTooltip" id="107"/>
+				</LabelField>
+				<InputField name="Author" id="21">
+					<DataPath>List.Author</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="AuthorContextMenu" id="22"/>
+					<ExtendedTooltip name="AuthorExtendedTooltip" id="108"/>
+				</InputField>
+				<InputField name="CreationDate" id="23">
+					<DataPath>1/108</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created on</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CreationDateContextMenu" id="24"/>
+					<ExtendedTooltip name="CreationDateExtendedTooltip" id="109"/>
+				</InputField>
+				<LabelField name="CurrentVersionExtension" id="72">
+					<DataPath>List.CurrentVersionExtension</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Extension</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="CurrentVersionExtensionContextMenu" id="73"/>
+					<ExtendedTooltip name="CurrentVersionExtensionExtendedTooltip" id="110"/>
+				</LabelField>
+				<InputField name="CurrentVersionSize" id="39">
+					<DataPath>List.CurrentVersionSize</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Size (KB)</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CurrentVersionSizeContextMenu" id="40"/>
+					<ExtendedTooltip name="CurrentVersionSizeExtendedTooltip" id="111"/>
+				</InputField>
+				<InputField name="LockedBy" id="29">
+					<DataPath>1/65</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="LockedByContextMenu" id="30"/>
+					<ExtendedTooltip name="LockedByExtendedTooltip" id="112"/>
+				</InputField>
+				<InputField name="Details" id="27">
+					<DataPath>List.Details</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Height>1</Height>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DetailsContextMenu" id="28"/>
+					<ExtendedTooltip name="DetailsExtendedTooltip" id="113"/>
+				</InputField>
+				<LabelField name="CurrentVersionVersionNumber" id="78">
+					<DataPath>List.CurrentVersionVersionNumber</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Version number</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="CurrentVersionVersionNumberContextMenu" id="79"/>
+					<ExtendedTooltip name="CurrentVersionVersionNumberExtendedTooltip" id="114"/>
+				</LabelField>
+				<InputField name="CurrentVersionAuthor" id="35">
+					<DataPath>List.CurrentVersionAuthor</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Version created by</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CurrentVersionAuthorContextMenu" id="36"/>
+					<ExtendedTooltip name="CurrentVersionAuthorExtendedTooltip" id="115"/>
+				</InputField>
+				<LabelField name="CurrentVersionVolume" id="74">
+					<DataPath>List.CurrentVersionVolume</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Volume</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="CurrentVersionVolumeContextMenu" id="75"/>
+					<ExtendedTooltip name="CurrentVersionVolumeExtendedTooltip" id="116"/>
+				</LabelField>
+				<LabelField name="CurrentVersionPathToFile" id="76">
+					<DataPath>1/125</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Path to file on volume</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="CurrentVersionPathToFileContextMenu" id="77"/>
+					<ExtendedTooltip name="CurrentVersionPathToFileExtendedTooltip" id="117"/>
+				</LabelField>
+				<LabelField name="Ref" id="84">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="85"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="118"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.StoreVersions</Field>
+				<Field>List.Ref</Field>
+				<Field>List.LockedByCurrentUser</Field>
+				<Field>List.LockedBy</Field>
+				<Field>1/65</Field>
+				<Field>1/46</Field>
+				<Field>1/41</Field>
+				<Field>1/40</Field>
+				<Field>1/127</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	Files.Code,
+	Files.LockedBy,
+	Files.CreationDate,
+	Files.CurrentVersionSize,
+	Files.Author,
+	Files.CurrentVersionDateCreated,
+	CASE
+		WHEN Files.DeletionMark = TRUE
+			THEN Files.PictureIndex + 1
+		ELSE Files.PictureIndex
+	END AS PictureIndex,
+	Files.Description,
+	Files.Details,
+	Files.Ref,
+	Files.CurrentVersionAuthor,
+	Files.DeletionMark,
+	Files.StoreVersions,
+	CASE
+		WHEN Files.LockedBy = &amp;CurrentUser
+			THEN TRUE
+		ELSE FALSE
+	END AS LockedByCurrentUser,
+	Files.FileOwner,
+	Files.CurrentVersionExtension,
+	Files.CurrentVersionVersionNumber,
+	Files.CurrentVersionVolume,
+	Files.CurrentVersionFilePath
+FROM
+	Catalog.Files AS Files</QueryText>
+				<MainTable>Catalog.Files</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:use>false</dcsset:use>
+							<dcsset:left xsi:type="dcscor:Field">DeletionMark</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="View1" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>View</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open file for viewing</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureOpen</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>View1</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SaveAs" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save As</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save a local file copy</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureSaveAs</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>SaveAs</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Release" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unlock</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unlock the file without saving it</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureUnlock</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Release</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+</Form>

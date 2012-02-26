@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>Bottom</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="Continue" id="1">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.SaveAuthenticationDataAndContinue</CommandName>
+				<ExtendedTooltip name="ContinueExtendedTooltip" id="14"/>
+			</Button>
+			<Button name="Cancel" id="3">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Cancel</CommandName>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="15"/>
+			</Button>
+			<Button name="Help" id="2">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="HelpExtendedTooltip" id="16"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Login" id="10">
+			<DataPath>Login</DataPath>
+			<Wrap>false</Wrap>
+			<ContextMenu name="LoginContextMenu" id="11"/>
+			<ExtendedTooltip name="LoginExtendedTooltip" id="17"/>
+		</InputField>
+		<InputField name="Password" id="8">
+			<DataPath>Password</DataPath>
+			<Wrap>false</Wrap>
+			<PasswordMode>true</PasswordMode>
+			<ContextMenu name="PasswordContextMenu" id="9"/>
+			<ExtendedTooltip name="PasswordExtendedTooltip" id="18"/>
+		</InputField>
+		<CheckBoxField name="DoPasswordSave" id="4">
+			<DataPath>DoPasswordSave</DataPath>
+			<TitleLocation>Right</TitleLocation>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="DoPasswordSaveContextMenu" id="5"/>
+			<ExtendedTooltip name="DoPasswordSaveExtendedTooltip" id="19"/>
+		</CheckBoxField>
+		<LabelField name="LinkToUserWebsite" id="12">
+			<DataPath>LinkToUserWebsite</DataPath>
+			<TitleLocation>None</TitleLocation>
+			<Hiperlink>true</Hiperlink>
+			<ContextMenu name="LinkToUserWebsiteContextMenu" id="13"/>
+			<ExtendedTooltip name="LinkToUserWebsiteExtendedTooltip" id="20"/>
+			<Events>
+				<Event name="Click">LinkToUserWebsiteClick</Event>
+			</Events>
+		</LabelField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Password" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Password</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DoPasswordSave" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save password</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Login" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LinkToUserWebsite" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Link to user website</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="SaveAuthenticationDataAndContinue" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>OK</v8:content>
+				</v8:item>
+			</Title>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">true</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+			</Use>
+			<Action>SaveAuthenticationDataAndContinueExecute</Action>
+		</Command>
+	</Commands>
+</Form>

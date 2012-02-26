@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<ChildItems>
+		<Table name="List" id="1">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<ReadOnly>true</ReadOnly>
+			<SkipOnInput>false</SkipOnInput>
+			<DefaultItem>true</DefaultItem>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="22"/>
+			<SearchStringAddition name="ListSearchString" id="23">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="24"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="25"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="26">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="27"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="28"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="29">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="30"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="31"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="Owner" id="18">
+					<DataPath>List.Version.Owner</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="OwnerContextMenu" id="19"/>
+					<ExtendedTooltip name="OwnerExtendedTooltip" id="32"/>
+				</InputField>
+				<InputField name="Version" id="4">
+					<DataPath>List.Version</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Version</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="VersionContextMenu" id="5"/>
+					<ExtendedTooltip name="VersionExtendedTooltip" id="33"/>
+				</InputField>
+				<InputField name="User" id="6">
+					<DataPath>List.User</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created by</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="UserContextMenu" id="7"/>
+					<ExtendedTooltip name="UserExtendedTooltip" id="34"/>
+				</InputField>
+				<InputField name="Path" id="8">
+					<DataPath>List.Path</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Path</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="PathContextMenu" id="9"/>
+					<ExtendedTooltip name="PathExtendedTooltip" id="35"/>
+				</InputField>
+				<InputField name="Size" id="10">
+					<DataPath>List.Size</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Size</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="SizeContextMenu" id="11"/>
+					<ExtendedTooltip name="SizeExtendedTooltip" id="36"/>
+				</InputField>
+				<InputField name="DateOfPlacementIntoWorkingDirectory" id="12">
+					<DataPath>1/34</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created on</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DateOfPlacementIntoWorkingDirectoryContextMenu" id="13"/>
+					<ExtendedTooltip name="DateOfPlacementIntoWorkingDirectoryExtendedTooltip" id="37"/>
+				</InputField>
+				<CheckBoxField name="ForRead" id="14">
+					<DataPath>List.ForRead</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Read only</v8:content>
+						</v8:item>
+					</Title>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ForReadContextMenu" id="15"/>
+					<ExtendedTooltip name="ForReadExtendedTooltip" id="38"/>
+				</CheckBoxField>
+				<CheckBoxField name="InOwnerWorkingDirectory" id="20">
+					<DataPath>List.InOwnerWorkingDirectory</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="InOwnerWorkingDirectoryContextMenu" id="21"/>
+					<ExtendedTooltip name="InOwnerWorkingDirectoryExtendedTooltip" id="39"/>
+				</CheckBoxField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>false</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<MainTable>InformationRegister.FilesInWorkingDirectory</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+</Form>

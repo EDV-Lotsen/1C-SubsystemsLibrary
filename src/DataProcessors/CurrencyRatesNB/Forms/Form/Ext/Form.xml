@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<CommandBar name="CommandBarCurrencyList" id="6">
+			<CommandSource>Item.CurrencyList</CommandSource>
+			<ExtendedTooltip name="CommandBarCurrencyListExtendedTooltip" id="27"/>
+			<ChildItems>
+				<Button name="ButtonFillCurrencies" id="17">
+					<Type>CommandBarButton</Type>
+					<Representation>PictureAndText</Representation>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.CommandFillCurrencies</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ExtendedTooltip name="ButtonFillCurrenciesExtendedTooltip" id="28"/>
+				</Button>
+				<Button name="ButtonFill" id="8">
+					<Type>CommandBarButton</Type>
+					<Representation>PictureAndText</Representation>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.CommandFill</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ExtendedTooltip name="ButtonFillExtendedTooltip" id="29"/>
+				</Button>
+				<Button name="ButtonClear" id="14">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.CommandClear</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ExtendedTooltip name="ButtonClearExtendedTooltip" id="30"/>
+				</Button>
+				<Button name="ButtonLoad" id="15">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.CommandLoad</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ExtendedTooltip name="ButtonLoadExtendedTooltip" id="31"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="CurrencyList" id="7">
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<Width>40</Width>
+			<HeightInTableRows>10</HeightInTableRows>
+			<SelectionMode>SingleRow</SelectionMode>
+			<RowSelectionMode>Row</RowSelectionMode>
+			<DataPath>Object.CurrencyList</DataPath>
+			<BorderColor>style:BorderColor</BorderColor>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="CurrencyListContextMenu" id="20"/>
+			<AutoCommandBar name="CurrencyListCommandBar" id="26"/>
+			<ExtendedTooltip name="CurrencyListExtendedTooltip" id="32"/>
+			<SearchStringAddition name="CurrencyListSearchString" id="33">
+				<AdditionSource>
+					<Item>CurrencyList</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrencyListSearchStringContextMenu" id="34"/>
+				<ExtendedTooltip name="CurrencyListSearchStringExtendedTooltip" id="35"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="CurrencyListViewStatus" id="36">
+				<AdditionSource>
+					<Item>CurrencyList</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrencyListViewStatusContextMenu" id="37"/>
+				<ExtendedTooltip name="CurrencyListViewStatusExtendedTooltip" id="38"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="CurrencyListSearchControl" id="39">
+				<AdditionSource>
+					<Item>CurrencyList</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrencyListSearchControlContextMenu" id="40"/>
+				<ExtendedTooltip name="CurrencyListSearchControlExtendedTooltip" id="41"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">CurrencyListSelection</Event>
+				<Event name="BeforeAddRow">CurrencyListBeforeAddRow</Event>
+			</Events>
+			<ChildItems>
+				<LabelField name="Currency" id="10">
+					<DataPath>Object.CurrencyList.Currency</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<ContextMenu name="CurrencyContextMenu" id="21"/>
+					<ExtendedTooltip name="CurrencyExtendedTooltip" id="42"/>
+				</LabelField>
+				<LabelField name="CurrencyCode" id="9">
+					<DataPath>Object.CurrencyList.CurrencyCode</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<ContextMenu name="CurrencyCodeContextMenu" id="22"/>
+					<ExtendedTooltip name="CurrencyCodeExtendedTooltip" id="43"/>
+				</LabelField>
+				<LabelField name="RateDate" id="11">
+					<DataPath>Object.CurrencyList.RateDate</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<ContextMenu name="RateDateContextMenu" id="23"/>
+					<ExtendedTooltip name="RateDateExtendedTooltip" id="44"/>
+				</LabelField>
+				<LabelField name="ExchangeRate" id="12">
+					<DataPath>Object.CurrencyList.ExchangeRate</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<ContextMenu name="ExchangeRateContextMenu" id="24"/>
+					<ExtendedTooltip name="ExchangeRateExtendedTooltip" id="45"/>
+				</LabelField>
+				<LabelField name="Multiplicity" id="13">
+					<DataPath>Object.CurrencyList.Multiplicity</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<ContextMenu name="MultiplicityContextMenu" id="25"/>
+					<ExtendedTooltip name="MultiplicityExtendedTooltip" id="46"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+		<UsualGroup name="PeriodChoiceGroup" id="16">
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="PeriodChoiceGroupExtendedTooltip" id="47"/>
+			<ChildItems>
+				<InputField name="BegDate" id="2">
+					<DataPath>Object.LoadPeriodBegin</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>View rates from</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="BegDateContextMenu" id="18"/>
+					<ExtendedTooltip name="BegDateExtendedTooltip" id="48"/>
+				</InputField>
+				<InputField name="End_Date" id="3">
+					<DataPath>Object.LoadPeriodEnding</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>View rates to</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="End_DateContextMenu" id="19"/>
+					<ExtendedTooltip name="End_DateExtendedTooltip" id="49"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.CurrencyRatesNB</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="CommandFill" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Auto Fill</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add all currencies registered in the application</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>CommandFillCurrencyListExecute</Action>
+		</Command>
+		<Command name="CommandClear" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear lthe list of currencies</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>CommandClearExecute</Action>
+		</Command>
+		<Command name="CommandLoad" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load exchange rates from the web site</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>CommandLoadExecute</Action>
+		</Command>
+		<Command name="CommandFillCurrencies" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill Manually</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add currencies by selecting them from the list of currencies registered in the application</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>CommandCurrenciesFillExecute</Action>
+		</Command>
+	</Commands>
+</Form>

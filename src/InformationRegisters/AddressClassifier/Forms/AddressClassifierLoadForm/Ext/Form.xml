@@ -1,0 +1,680 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>52</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<CommandBarLocation>Bottom</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="Back" id="41">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.CommandBack</CommandName>
+				<ExtendedTooltip name="BackExtendedTooltip" id="60"/>
+			</Button>
+			<Button name="NextStep" id="18">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.CommandNext</CommandName>
+				<TextColor>style:ButtonTextColor</TextColor>
+				<BackColor>style:ButtonBackColor</BackColor>
+				<BorderColor>style:BorderColor</BorderColor>
+				<ExtendedTooltip name="NextStepExtendedTooltip" id="61"/>
+			</Button>
+			<Button name="Cancel" id="17">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Cancel</CommandName>
+				<TextColor>style:ButtonTextColor</TextColor>
+				<BackColor>style:ButtonBackColor</BackColor>
+				<BorderColor>style:BorderColor</BorderColor>
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Cancel</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="62"/>
+			</Button>
+			<Button name="Help" id="19">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="HelpExtendedTooltip" id="63"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="FormPages" id="42">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form pages</v8:content>
+				</v8:item>
+			</Title>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="FormPagesExtendedTooltip" id="64"/>
+			<ChildItems>
+				<Page name="PageAddressClassifierUnitsChoice" id="43">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Select address units</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="PageAddressClassifierUnitsChoiceExtendedTooltip" id="65"/>
+					<ChildItems>
+						<UsualGroup name="GroupAddressClassifierUnitsForLoadChoice" id="16">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group address units for load choice</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="GroupAddressClassifierUnitsForLoadChoiceExtendedTooltip" id="66"/>
+							<ChildItems>
+								<Table name="AddressClassifierUnitsTable" id="4">
+									<Representation>List</Representation>
+									<CommandBarLocation>Top</CommandBarLocation>
+									<SkipOnInput>false</SkipOnInput>
+									<ChangeRowSet>false</ChangeRowSet>
+									<RowSelectionMode>Row</RowSelectionMode>
+									<Header>false</Header>
+									<AutoInsertNewRow>true</AutoInsertNewRow>
+									<DataPath>AddressClassifierUnitsForLoad</DataPath>
+									<BorderColor>style:BorderColor</BorderColor>
+									<CommandSet>
+										<ExcludedCommand>Copy</ExcludedCommand>
+										<ExcludedCommand>SortListAsc</ExcludedCommand>
+										<ExcludedCommand>MoveUp</ExcludedCommand>
+										<ExcludedCommand>OutputList</ExcludedCommand>
+										<ExcludedCommand>SelectAll</ExcludedCommand>
+										<ExcludedCommand>SortListDesc</ExcludedCommand>
+										<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+										<ExcludedCommand>Delete</ExcludedCommand>
+										<ExcludedCommand>EndEdit</ExcludedCommand>
+										<ExcludedCommand>Add</ExcludedCommand>
+										<ExcludedCommand>Change</ExcludedCommand>
+										<ExcludedCommand>MoveDown</ExcludedCommand>
+									</CommandSet>
+									<SearchStringLocation>None</SearchStringLocation>
+									<ViewStatusLocation>None</ViewStatusLocation>
+									<SearchControlLocation>None</SearchControlLocation>
+									<RowFilter xsi:nil="true"/>
+									<ContextMenu name="AddressClassifierUnitsTableContextMenu" id="5"/>
+									<AutoCommandBar name="AddressClassifierUnitsTableCommandBar" id="6">
+										<Autofill>false</Autofill>
+										<ChildItems>
+											<Button name="SelectAll" id="37">
+												<Type>CommandBarButton</Type>
+												<Representation>Picture</Representation>
+												<SkipOnInput>false</SkipOnInput>
+												<OnlyInAllActions>true</OnlyInAllActions>
+												<CommandName>Form.Command.SelectAll</CommandName>
+												<ExtendedTooltip name="SelectAllExtendedTooltip" id="67"/>
+											</Button>
+											<Button name="CancelSelectAll" id="38">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.CancelSelectAll</CommandName>
+												<ExtendedTooltip name="CancelSelectAllExtendedTooltip" id="68"/>
+											</Button>
+											<Button name="Find" id="39">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Item.AddressClassifierUnitsTable.StandardCommand.Find</CommandName>
+												<ExtendedTooltip name="FindExtendedTooltip" id="69"/>
+											</Button>
+											<Button name="CancelSearch" id="40">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Item.AddressClassifierUnitsTable.StandardCommand.CancelSearch</CommandName>
+												<ExtendedTooltip name="CancelSearchExtendedTooltip" id="70"/>
+											</Button>
+										</ChildItems>
+									</AutoCommandBar>
+									<ExtendedTooltip name="AddressClassifierUnitsTableExtendedTooltip" id="71"/>
+									<SearchStringAddition name="AddressClassifierUnitsTableSearchString" id="72">
+										<AdditionSource>
+											<Item>AddressClassifierUnitsTable</Item>
+											<Type>SearchStringRepresentation</Type>
+										</AdditionSource>
+										<ContextMenu name="AddressClassifierUnitsTableSearchStringContextMenu" id="73"/>
+										<ExtendedTooltip name="AddressClassifierUnitsTableSearchStringExtendedTooltip" id="74"/>
+									</SearchStringAddition>
+									<ViewStatusAddition name="AddressClassifierUnitsTableViewStatus" id="75">
+										<AdditionSource>
+											<Item>AddressClassifierUnitsTable</Item>
+											<Type>ViewStatusRepresentation</Type>
+										</AdditionSource>
+										<ContextMenu name="AddressClassifierUnitsTableViewStatusContextMenu" id="76"/>
+										<ExtendedTooltip name="AddressClassifierUnitsTableViewStatusExtendedTooltip" id="77"/>
+									</ViewStatusAddition>
+									<SearchControlAddition name="AddressClassifierUnitsTableSearchControl" id="78">
+										<AdditionSource>
+											<Item>AddressClassifierUnitsTable</Item>
+											<Type>SearchControl</Type>
+										</AdditionSource>
+										<ContextMenu name="AddressClassifierUnitsTableSearchControlContextMenu" id="79"/>
+										<ExtendedTooltip name="AddressClassifierUnitsTableSearchControlExtendedTooltip" id="80"/>
+									</SearchControlAddition>
+									<Events>
+										<Event name="Selection">AddressClassifierUnitsTableSelection</Event>
+									</Events>
+									<ChildItems>
+										<CheckBoxField name="Check" id="34">
+											<DataPath>AddressClassifierUnitsForLoad.Check</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Mark</v8:content>
+												</v8:item>
+											</Title>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="CheckContextMenu" id="35"/>
+											<ExtendedTooltip name="CheckExtendedTooltip" id="81"/>
+										</CheckBoxField>
+										<InputField name="Description" id="12">
+											<DataPath>AddressClassifierUnitsForLoad.Description</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>All address units</v8:content>
+												</v8:item>
+											</Title>
+											<Wrap>false</Wrap>
+											<TextEdit>false</TextEdit>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="DescriptionContextMenu" id="13"/>
+											<ExtendedTooltip name="DescriptionExtendedTooltip" id="82"/>
+										</InputField>
+									</ChildItems>
+								</Table>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="PageSourceChoice" id="44">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Select source</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="PageSourceChoiceExtendedTooltip" id="83"/>
+					<ChildItems>
+						<UsualGroup name="LoadMethodChoice" id="20">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Load method choice</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="LoadMethodChoiceExtendedTooltip" id="84"/>
+							<ChildItems>
+								<RadioButtonField name="LoadMethod" id="21">
+									<DataPath>DataSourceForLoad</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<RadioButtonType>Auto</RadioButtonType>
+									<ColumnsCount>1</ColumnsCount>
+									<ChoiceList>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>From 1C web site (requires Internet connection and web site registration)</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:decimal">1</Value>
+											</xr:Value>
+										</xr:Item>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>From Information and Technological Support disc</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:decimal">2</Value>
+											</xr:Value>
+										</xr:Item>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>From address classifier files</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:decimal">3</Value>
+											</xr:Value>
+										</xr:Item>
+									</ChoiceList>
+									<ContextMenu name="LoadMethodContextMenu" id="22"/>
+									<ExtendedTooltip name="LoadMethodExtendedTooltip" id="85"/>
+									<Events>
+										<Event name="OnChange">LoadMethodOnChange</Event>
+									</Events>
+								</RadioButtonField>
+							</ChildItems>
+						</UsualGroup>
+						<Pages name="LoadMethodPages" id="23">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Load method pages</v8:content>
+								</v8:item>
+							</Title>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="LoadMethodPagesExtendedTooltip" id="86"/>
+							<ChildItems>
+								<Page name="EmptyPage" id="31">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Empty page</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="EmptyPageExtendedTooltip" id="87"/>
+									<ChildItems>
+										<LabelField name="NotFilled" id="32">
+											<DataPath>EmptyAttribute</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<ContextMenu name="NotFilledContextMenu" id="33"/>
+											<ExtendedTooltip name="NotFilledExtendedTooltip" id="88"/>
+										</LabelField>
+									</ChildItems>
+								</Page>
+								<Page name="PageLoadFromDiskITS" id="25">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Page upload from diskITS</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="PageLoadFromDiskITSExtendedTooltip" id="89"/>
+									<ChildItems>
+										<InputField name="ITSDisc" id="27">
+											<DataPath>ITSDisc</DataPath>
+											<Width>39</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Wrap>false</Wrap>
+											<ChoiceButton>true</ChoiceButton>
+											<ContextMenu name="ITSDiscContextMenu" id="28"/>
+											<ExtendedTooltip name="ITSDiscExtendedTooltip" id="90"/>
+											<Events>
+												<Event name="StartChoice">ITSDiscStartChoice</Event>
+											</Events>
+										</InputField>
+									</ChildItems>
+								</Page>
+								<Page name="PageLoadFiles" id="26">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Page upload files</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>P</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="PageLoadFilesExtendedTooltip" id="91"/>
+									<ChildItems>
+										<InputField name="PathToDataFilesOnDrive" id="29">
+											<DataPath>PathToDataFilesOnDrive</DataPath>
+											<Width>30</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Wrap>false</Wrap>
+											<ChoiceButton>true</ChoiceButton>
+											<ContextMenu name="PathToDataFilesOnDriveContextMenu" id="30"/>
+											<ExtendedTooltip name="PathToDataFilesOnDriveExtendedTooltip" id="92"/>
+											<Events>
+												<Event name="StartChoice">PathToFilesDataOnDriveStartChoice</Event>
+											</Events>
+										</InputField>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</Page>
+				<Page name="PageLoad" id="45">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page upload</v8:content>
+						</v8:item>
+					</Title>
+					<Width>50</Width>
+					<ExtendedTooltip name="PageLoadExtendedTooltip" id="93"/>
+					<ChildItems>
+						<LabelDecoration name="LoadMessageText" id="46">
+							<Height>3</Height>
+							<SkipOnInput>false</SkipOnInput>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Attention! Downloading the address classifier might take a long time.</v8:content>
+								</v8:item>
+							</Title>
+							<VerticalAlign>Top</VerticalAlign>
+							<ContextMenu name="LoadMessageTextContextMenu" id="47"/>
+							<ExtendedTooltip name="LoadMessageTextExtendedTooltip" id="94"/>
+						</LabelDecoration>
+						<Button name="Load" id="57">
+							<Type>UsualButton</Type>
+							<DefaultButton>true</DefaultButton>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.Load</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Import Address Classifier</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="LoadExtendedTooltip" id="95"/>
+						</Button>
+						<Pages name="LoadPages" id="50">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Load pages</v8:content>
+								</v8:item>
+							</Title>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="LoadPagesExtendedTooltip" id="96"/>
+							<ChildItems>
+								<Page name="GroupEmptyGroup" id="51">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group empty group</v8:content>
+										</v8:item>
+									</Title>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="GroupEmptyGroupExtendedTooltip" id="97"/>
+									<ChildItems>
+										<LabelField name="EmptyAttribute" id="58">
+											<DataPath>EmptyAttribute</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<ContextMenu name="EmptyAttributeContextMenu" id="59"/>
+											<ExtendedTooltip name="EmptyAttributeExtendedTooltip" id="98"/>
+										</LabelField>
+									</ChildItems>
+								</Page>
+								<Page name="PageLoadStatus" id="52">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Page upload status</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="PageLoadStatusExtendedTooltip" id="99"/>
+									<ChildItems>
+										<ProgressBarField name="LoadIndicator" id="48">
+											<DataPath>LoadIndicator</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<Representation>Broken</Representation>
+											<ContextMenu name="LoadIndicatorContextMenu" id="49"/>
+											<ExtendedTooltip name="LoadIndicatorExtendedTooltip" id="100"/>
+										</ProgressBarField>
+										<LabelField name="LoadStatus" id="55">
+											<DataPath>LoadStatus</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<ContextMenu name="LoadStatusContextMenu" id="56"/>
+											<ExtendedTooltip name="LoadStatusExtendedTooltip" id="101"/>
+										</LabelField>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="AddressClassifierUnitsForLoad" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Address units for upload</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Check" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Mark</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Description" id="2">
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="DataSourceForLoad" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data source for upload</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="PathToDataFilesOnDrive" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Path to data files on the hard disk</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ITSDisc" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Path to ITS disc</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="EmptyAttribute" id="7">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LoadIndicator" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load indicator</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>3</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LoadStatus" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load status</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="CommandNext" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Next &gt;&gt;</v8:content>
+				</v8:item>
+			</Title>
+			<Action>CommandNext</Action>
+		</Command>
+		<Command name="SelectAll" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select All</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select all address classifier units</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SelectAllRun</Action>
+		</Command>
+		<Command name="CancelSelectAll" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear All</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Remove selection from all address classifier units</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.GrayedAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>CancelSelectAllRun</Action>
+		</Command>
+		<Command name="CommandBack" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>&lt;&lt; Back</v8:content>
+				</v8:item>
+			</Title>
+			<Action>CommandBack</Action>
+		</Command>
+		<Command name="Load" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import address classifier</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="">false</xr:Value>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.MinimalUserRights">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">true</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.ChangeAdditionalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividualsPersonalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividuals">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.ChangePrintFormTemplates">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.ReadAdditionalData">false</xr:Value>
+				<xr:Value name="Role.ReadIndividualsPersonalData">false</xr:Value>
+			</Use>
+			<Action>LoadExecute</Action>
+		</Command>
+	</Commands>
+</Form>

@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Version History</v8:content>
+		</v8:item>
+	</Title>
+	<Width>50</Width>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>CustomizeForm</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
+		<ExcludedCommand>Help</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>Cancel</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="MainPage" id="21">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main page</v8:content>
+				</v8:item>
+			</Title>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="MainPageExtendedTooltip" id="31"/>
+			<ChildItems>
+				<Page name="VersionChoiceForComparison" id="22">
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="VersionChoiceForComparisonExtendedTooltip" id="32"/>
+					<ChildItems>
+						<Table name="VersionsList" id="10">
+							<Representation>List</Representation>
+							<CommandBarLocation>Top</CommandBarLocation>
+							<SkipOnInput>false</SkipOnInput>
+							<ChangeRowSet>false</ChangeRowSet>
+							<Width>50</Width>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<DataPath>VersionsList</DataPath>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>SortListAsc</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>OutputList</ExcludedCommand>
+								<ExcludedCommand>SelectAll</ExcludedCommand>
+								<ExcludedCommand>SortListDesc</ExcludedCommand>
+								<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+								<ExcludedCommand>Delete</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="VersionsListContextMenu" id="11">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="CM_OpenObjectVersion" id="27">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.GenerateChangesReport</CommandName>
+										<ExtendedTooltip name="CM_OpenObjectVersionExtendedTooltip" id="33"/>
+									</Button>
+									<Button name="CM_ReportByChanges" id="26">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.OpenObjectVersion</CommandName>
+										<ExtendedTooltip name="CM_ReportByChangesExtendedTooltip" id="34"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="VersionsListCommandBar" id="12">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="OpenObjectVersion" id="19">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.OpenObjectVersion</CommandName>
+										<ExtendedTooltip name="OpenObjectVersionExtendedTooltip" id="35"/>
+									</Button>
+									<Button name="ReportByChanges" id="9">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.GenerateChangesReport</CommandName>
+										<ExtendedTooltip name="ReportByChangesExtendedTooltip" id="36"/>
+									</Button>
+									<Button name="Find" id="29">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Item.VersionsList.StandardCommand.Find</CommandName>
+										<ExtendedTooltip name="FindExtendedTooltip" id="37"/>
+									</Button>
+									<Button name="CancelSearch" id="30">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Item.VersionsList.StandardCommand.CancelSearch</CommandName>
+										<ExtendedTooltip name="CancelSearchExtendedTooltip" id="38"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="VersionsListExtendedTooltip" id="39"/>
+							<SearchStringAddition name="VersionsListSearchString" id="40">
+								<AdditionSource>
+									<Item>VersionsList</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="VersionsListSearchStringContextMenu" id="41"/>
+								<ExtendedTooltip name="VersionsListSearchStringExtendedTooltip" id="42"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="VersionsListViewStatus" id="43">
+								<AdditionSource>
+									<Item>VersionsList</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="VersionsListViewStatusContextMenu" id="44"/>
+								<ExtendedTooltip name="VersionsListViewStatusExtendedTooltip" id="45"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="VersionsListSearchControl" id="46">
+								<AdditionSource>
+									<Item>VersionsList</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="VersionsListSearchControlContextMenu" id="47"/>
+								<ExtendedTooltip name="VersionsListSearchControlExtendedTooltip" id="48"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">VersionsListSelection</Event>
+							</Events>
+							<ChildItems>
+								<ColumnGroup name="STRING" id="20">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Row</v8:content>
+										</v8:item>
+									</Title>
+									<Group>Horizontal</Group>
+									<ExtendedTooltip name="STRINGExtendedTooltip" id="49"/>
+									<ChildItems>
+										<InputField name="VersionNo" id="13">
+											<DataPath>VersionsList.VersionNo</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Width>3</Width>
+											<Wrap>false</Wrap>
+											<ContextMenu name="VersionNoContextMenu" id="14"/>
+											<ExtendedTooltip name="VersionNoExtendedTooltip" id="50"/>
+										</InputField>
+										<InputField name="VersionAuthor" id="15">
+											<DataPath>VersionsList.VersionAuthor</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Wrap>false</Wrap>
+											<ContextMenu name="VersionAuthorContextMenu" id="16"/>
+											<ExtendedTooltip name="VersionAuthorExtendedTooltip" id="51"/>
+										</InputField>
+										<InputField name="Date" id="17">
+											<DataPath>VersionsList.VersionDate</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Width>10</Width>
+											<Wrap>false</Wrap>
+											<ContextMenu name="DateContextMenu" id="18"/>
+											<ExtendedTooltip name="DateExtendedTooltip" id="52"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+							</ChildItems>
+						</Table>
+						<CommandBar name="CommandBar" id="8">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Command bar</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Command bar</v8:content>
+								</v8:item>
+							</ToolTip>
+							<HorizontalLocation>Right</HorizontalLocation>
+							<ExtendedTooltip name="CommandBarExtendedTooltip" id="53"/>
+						</CommandBar>
+					</ChildItems>
+				</Page>
+				<Page name="NoVersionsForCompare" id="23">
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="NoVersionsForCompareExtendedTooltip" id="54"/>
+					<ChildItems>
+						<LabelField name="Text_MissingVersions" id="24">
+							<DataPath>Text_MissingVersions</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<ContextMenu name="Text_MissingVersionsContextMenu" id="25"/>
+							<ExtendedTooltip name="Text_MissingVersionsExtendedTooltip" id="55"/>
+						</LabelField>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<CommandBar name="Group" id="28">
+			<ExtendedTooltip name="GroupExtendedTooltip" id="56"/>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="VersionsList" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Versions list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="VersionNo" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>#</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="VersionAuthor" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created by</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="VersionDate" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Created on</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="Ref" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ref</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:TypeSet>cfg:DocumentRef</v8:TypeSet>
+				<v8:TypeSet>cfg:CatalogRef</v8:TypeSet>
+			</Type>
+		</Attribute>
+		<Attribute name="Text_MissingVersions" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Version text missing.</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="GenerateChangesReport" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change History</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>View the report on changes between the selected versions</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+			</Use>
+			<Action>GenerateChangesReportExecute</Action>
+		</Command>
+		<Command name="OpenObjectVersion" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open Version</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the selected object version</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+			</Use>
+			<Action>OpenObjectVersionExecute</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="Ref">
+			<Type>
+				<v8:TypeSet>cfg:DocumentRef</v8:TypeSet>
+				<v8:TypeSet>cfg:CatalogRef</v8:TypeSet>
+			</Type>
+		</Parameter>
+		<Parameter name="VersionsNumber">
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

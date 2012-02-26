@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Locked Files</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<GroupList>ListContextMenu</GroupList>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<CommandBar name="MainCommandBar" id="1">
+			<ExtendedTooltip name="MainCommandBarExtendedTooltip" id="66"/>
+			<ChildItems>
+				<Button name="OpenFile" id="53">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.OpenFile</CommandName>
+					<ExtendedTooltip name="OpenFileExtendedTooltip" id="67"/>
+				</Button>
+				<Button name="EndEdit" id="52">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.EndEdit</CommandName>
+					<ExtendedTooltip name="EndEditExtendedTooltip" id="68"/>
+				</Button>
+				<Button name="Change" id="20">
+					<Type>CommandBarButton</Type>
+					<Representation>PictureAndText</Representation>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.List.StandardCommand.Change</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Open File Card</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="ChangeExtendedTooltip" id="69"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="List" id="6">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<DefaultItem>true</DefaultItem>
+			<Width>40</Width>
+			<HeightInTableRows>10</HeightInTableRows>
+			<DataPath>FileList</DataPath>
+			<TextColor>auto</TextColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>true</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>true</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>false</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="ListContextMenu" id="2">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="ContextMenuListOpenFile" id="54">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.OpenFile</CommandName>
+						<ExtendedTooltip name="ContextMenuListOpenFileExtendedTooltip" id="70"/>
+					</Button>
+					<Button name="ContextMenuListEndEdit" id="55">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.EndEdit</CommandName>
+						<ExtendedTooltip name="ContextMenuListEndEditExtendedTooltip" id="71"/>
+					</Button>
+					<Button name="ContextMenuListSaveChanges" id="57">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SaveChanges</CommandName>
+						<ExtendedTooltip name="ContextMenuListSaveChangesExtendedTooltip" id="72"/>
+					</Button>
+					<Button name="ContextMenuListOpenFileDirectory" id="58">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.OpenFileDirectory</CommandName>
+						<ExtendedTooltip name="ContextMenuListOpenFileDirectoryExtendedTooltip" id="73"/>
+					</Button>
+					<Button name="ContextMenuListSaveAs" id="59">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SaveAs</CommandName>
+						<ExtendedTooltip name="ContextMenuListSaveAsExtendedTooltip" id="74"/>
+					</Button>
+					<Button name="ContextMenuListRelease" id="56">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Release</CommandName>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Cancel edit</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ContextMenuListReleaseExtendedTooltip" id="75"/>
+					</Button>
+					<Button name="ContextMenuListRefreshFromFileAtDrive" id="63">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.UpdateFromFileOnDisk</CommandName>
+						<ExtendedTooltip name="ContextMenuListRefreshFromFileAtDriveExtendedTooltip" id="76"/>
+					</Button>
+					<ButtonGroup name="CommonCommands" id="60">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Common commands</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="CommonCommandsExtendedTooltip" id="77"/>
+						<ChildItems>
+							<Button name="OutputList" id="24">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<OnlyInAllActions>false</OnlyInAllActions>
+								<CommandName>Form.Item.List.StandardCommand.OutputList</CommandName>
+								<TextColor>style:ButtonTextColor</TextColor>
+								<BackColor>style:ButtonBackColor</BackColor>
+								<BorderColor>style:BorderColor</BorderColor>
+								<ExtendedTooltip name="OutputListExtendedTooltip" id="78"/>
+							</Button>
+							<Button name="CommonCommand_AdditionalData" id="41">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>CommonCommand.AdditionalData</CommandName>
+								<DataPath>Items.List.CurrentData.Ref</DataPath>
+								<ExtendedTooltip name="CommonCommand_AdditionalDataExtendedTooltip" id="79"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ListCommandBar" id="15"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="80"/>
+			<SearchStringAddition name="ListSearchString" id="81">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="82"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="83"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="84">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="85"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="86"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="87">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="88"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="89"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">ListSelection</Event>
+				<Event name="BeforeAddRow">ListBeforeAddRow</Event>
+				<Event name="OnActivateRow">ListOnActivateRow</Event>
+			</Events>
+			<ChildItems>
+				<ColumnGroup name="Group" id="26">
+					<Group>InCell</Group>
+					<ExtendedTooltip name="GroupExtendedTooltip" id="90"/>
+					<ChildItems>
+						<PictureField name="Picture" id="7">
+							<DataPath>FileList.PictureIndex</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Width>2</Width>
+							<Height>1</Height>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.FileIcons</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+								<xr:TransparentPixel x="10" y="10"/>
+							</ValuesPicture>
+							<Border width="1">
+								<v8ui:style xsi:type="v8ui:ControlBorderType">WithoutBorder</v8ui:style>
+							</Border>
+							<ContextMenu name="PictureContextMenu" id="3"/>
+							<ExtendedTooltip name="PictureExtendedTooltip" id="91"/>
+						</PictureField>
+						<InputField name="Description" id="9">
+							<DataPath>FileList.Description</DataPath>
+							<DefaultItem>true</DefaultItem>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>File name</v8:content>
+								</v8:item>
+							</Title>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="DescriptionContextMenu" id="4"/>
+							<ExtendedTooltip name="DescriptionExtendedTooltip" id="92"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<LabelField name="Details" id="64">
+					<DataPath>FileList.Details</DataPath>
+					<Height>1</Height>
+					<ContextMenu name="DetailsContextMenu" id="65"/>
+					<ExtendedTooltip name="DetailsExtendedTooltip" id="93"/>
+				</LabelField>
+				<LabelField name="CurrentVersionSize" id="61">
+					<DataPath>FileList.Size</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Size (KB)</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Current version size</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Format>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>ND=10; NZ=0</v8:content>
+						</v8:item>
+					</Format>
+					<ContextMenu name="CurrentVersionSizeContextMenu" id="62"/>
+					<ExtendedTooltip name="CurrentVersionSizeExtendedTooltip" id="94"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="FileList" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>File list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>FileList.StoreVersions</Field>
+				<Field>FileList.Author</Field>
+				<Field>1/47</Field>
+				<Field>1/25</Field>
+				<Field>1/24</Field>
+				<Field>1/18</Field>
+				<Field>1/15</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT ALLOWED
+	Files.Code,
+	Files.LockedBy,
+	Files.PictureIndex,
+	Files.Description,
+	Files.Details,
+	Files.Ref,
+	Files.StoreVersions,
+	Files.FileOwner,
+	Files.CurrentVersionSize / 1024 AS Size,
+	Files.CurrentVersionAuthor AS Author
+FROM
+	Catalog.Files AS Files
+WHERE
+	Files.LockedBy = &amp;LockedBy</QueryText>
+				<MainTable>Catalog.Files</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="OpenFile" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open File</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open file for viewing</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F4</Shortcut>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureOpen</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenFile</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="EndEdit" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and Unlock</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save the file in the application file storage and unlock the file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureFinishEditing</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>EndEdit</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Release" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unlock</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unlock the file without saving it</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureUnlock</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Release</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SaveChanges" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save the file in the application file storage</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PicturePublish</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>SaveChanges</Action>
+		</Command>
+		<Command name="OpenFileDirectory" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open Local Folder</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the folder with the local file copy</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.Folder</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenFileDirectory</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SaveAs" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save As</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save a local file copy</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.PictureSaveAs</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>SaveAs</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="UpdateFromFileOnDisk" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Overwrite with Local File</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Overwrite with a file from your hard disk</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>UpdateFromFileOnDisk</Action>
+		</Command>
+	</Commands>
+</Form>

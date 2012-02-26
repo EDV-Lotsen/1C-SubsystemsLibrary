@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PredefinedData xmlns="http://v8.1c.ru/8.3/xcf/predef" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PlanOfCharacteristicKindPredefinedItems" version="2.3">
+	<Item id="a5ed43a6-38e3-44a7-b9f3-2ec8c5720a51">
+		<Name>DefaultValuesToBeFilled</Name>
+		<Code>00001</Code>
+		<Description>Default values for documents that you create</Description>
+		<Type/>
+		<IsFolder>true</IsFolder>
+		<ChildItems>
+			<Item id="5f173406-6062-4875-997e-ba0e9f72afcb">
+				<Name>MainCompany</Name>
+				<Code>00002</Code>
+				<Description>Default company</Description>
+				<Type>
+					<v8:Type xmlns:d6p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d6p1:CatalogRef.Companies</v8:Type>
+				</Type>
+				<IsFolder>false</IsFolder>
+			</Item>
+		</ChildItems>
+	</Item>
+</PredefinedData>

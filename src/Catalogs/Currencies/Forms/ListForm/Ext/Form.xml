@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FormCommandLoadCourses" id="43">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.CommandLoadCourses</CommandName>
+				<ExtendedTooltip name="FormCommandLoadCoursesExtendedTooltip" id="45"/>
+			</Button>
+			<Button name="FormCommandFillFromACC" id="44">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.CommandFillFromACC</CommandName>
+				<ExtendedTooltip name="FormCommandFillFromACCExtendedTooltip" id="46"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="Currencies" id="25">
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="CurrenciesContextMenu" id="26"/>
+			<AutoCommandBar name="CurrenciesCommandBar" id="27"/>
+			<ExtendedTooltip name="CurrenciesExtendedTooltip" id="47"/>
+			<SearchStringAddition name="CurrenciesSearchString" id="48">
+				<AdditionSource>
+					<Item>Currencies</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrenciesSearchStringContextMenu" id="49"/>
+				<ExtendedTooltip name="CurrenciesSearchStringExtendedTooltip" id="50"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="CurrenciesViewStatus" id="51">
+				<AdditionSource>
+					<Item>Currencies</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrenciesViewStatusContextMenu" id="52"/>
+				<ExtendedTooltip name="CurrenciesViewStatusExtendedTooltip" id="53"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="CurrenciesSearchControl" id="54">
+				<AdditionSource>
+					<Item>Currencies</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="CurrenciesSearchControlContextMenu" id="55"/>
+				<ExtendedTooltip name="CurrenciesSearchControlExtendedTooltip" id="56"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="Code" id="28">
+					<DataPath>List.Code</DataPath>
+					<Width>3</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CodeContextMenu" id="29"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="57"/>
+				</InputField>
+				<InputField name="Description" id="32">
+					<DataPath>List.Description</DataPath>
+					<Width>5</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="33"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="58"/>
+				</InputField>
+				<InputField name="Details" id="40">
+					<DataPath>1/10</DataPath>
+					<Width>20</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DetailsContextMenu" id="41"/>
+					<ExtendedTooltip name="DetailsExtendedTooltip" id="59"/>
+				</InputField>
+				<ColumnGroup name="RateMultiplicity" id="42">
+					<HorizontalStretch>true</HorizontalStretch>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="RateMultiplicityExtendedTooltip" id="60"/>
+					<ChildItems>
+						<InputField name="ExchangeRate" id="38">
+							<DataPath>List.ExchangeRate</DataPath>
+							<Width>8</Width>
+							<Wrap>false</Wrap>
+							<ContextMenu name="ExchangeRateContextMenu" id="39"/>
+							<ExtendedTooltip name="ExchangeRateExtendedTooltip" id="61"/>
+						</InputField>
+						<InputField name="Multiplicity" id="36">
+							<DataPath>1/12</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Multiplier</v8:content>
+								</v8:item>
+							</Title>
+							<Width>5</Width>
+							<Wrap>false</Wrap>
+							<ContextMenu name="MultiplicityContextMenu" id="37"/>
+							<ExtendedTooltip name="MultiplicityExtendedTooltip" id="62"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	Currencies.DeletionMark,
+	Currencies.Code,
+	Currencies.Description,
+	Currencies.Details,
+	CurrencyRates.ExchangeRate,
+	CASE
+		WHEN CurrencyRates.Multiplicity = 1
+			THEN " "
+		ELSE CurrencyRates.Multiplicity
+	END AS Multiplicity
+FROM
+	Catalog.Currencies AS Currencies
+		LEFT JOIN InformationRegister.CurrencyRates.SliceLast(&amp;ENDOFPERIOD, ) AS CurrencyRates
+		ON Currencies.Ref = CurrencyRates.Currency</QueryText>
+				<MainTable>Catalog.Currencies</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="CommandLoadCourses" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Download Exchange Rates</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Download currency exchange rates from a web site</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.MinimalUserRights">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">true</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.ChangeAdditionalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividualsPersonalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividuals">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.ChangePrintFormTemplates">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.ReadAdditionalData">false</xr:Value>
+				<xr:Value name="Role.ReadIndividualsPersonalData">false</xr:Value>
+			</Use>
+			<Action>CommandLoadRatesExecute</Action>
+		</Command>
+		<Command name="CommandFillFromACC" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill Currency List</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill the list of currencies from the currency classifier</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Administration">false</xr:Value>
+				<xr:Value name="Role.MinimalUserRights">false</xr:Value>
+				<xr:Value name="Role.PrintWriteFilesUseClipboard">false</xr:Value>
+				<xr:Value name="Role.AddChangeBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.AddChangeExternalUsers">false</xr:Value>
+				<xr:Value name="Role.ChangeAdditionalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividualsPersonalData">false</xr:Value>
+				<xr:Value name="Role.AddChangeIndividuals">false</xr:Value>
+				<xr:Value name="Role.RunAutomation">false</xr:Value>
+				<xr:Value name="Role.RunWebClient">false</xr:Value>
+				<xr:Value name="Role.RunExternalConnection">false</xr:Value>
+				<xr:Value name="Role.RunThickClient">false</xr:Value>
+				<xr:Value name="Role.RunThinClient">false</xr:Value>
+				<xr:Value name="Role.ChangePrintFormTemplates">false</xr:Value>
+				<xr:Value name="Role.RunAdditionalReportsAndDataProcessorsFromFiles">false</xr:Value>
+				<xr:Value name="Role.RunUpdates">false</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.ViewEventLog">false</xr:Value>
+				<xr:Value name="Role.EditObjectDetails">false</xr:Value>
+				<xr:Value name="Role.ReadBasicReferenceInformation">false</xr:Value>
+				<xr:Value name="Role.ReadAdditionalData">false</xr:Value>
+				<xr:Value name="Role.ReadIndividualsPersonalData">false</xr:Value>
+			</Use>
+			<Action>CommandFillFromOKVExecute</Action>
+		</Command>
+	</Commands>
+</Form>

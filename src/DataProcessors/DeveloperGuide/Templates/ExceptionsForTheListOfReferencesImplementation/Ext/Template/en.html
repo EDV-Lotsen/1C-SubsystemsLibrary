@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="__STYLE__"></link><meta name="GENERATOR" content="MSHTML 8.00.6001.19154"></meta></head><body>
+<h2 style="MARGIN: 12pt 0cm 3pt"><font size="5" face="Arial">Exceptions for the List of References</font></h2>
+<p>You can define the list of references that are not taken into account during reference-dependent operations (such as object deletion) in the <span style="mso-bidi-font-weight: bold">CommonUseOverrided module.</span></p>
+<h3>CommonUseOverrided Module</h3>
+<p>The module includes the following function:</p>
+<ul><li>GetRefSearchExclusions – returns the list of metadata object names that can refer to different metadata objects without affecting the business logic of the application.</li></ul><h4>Syntax</h4>
+<ul><li>Function GetRefSearchExclusions() Export</li></ul><h4>Return value</h4>
+<p>A list of metadata object names that can refer to other metadata objects without affecting the business logic of the application.<o:p></o:p></p>
+<h4>Example</h4>
+<table style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; MARGIN: auto auto auto 5.4pt; BORDER-COLLAPSE: collapse; BORDER-TOP: medium none; BORDER-RIGHT: medium none; mso-border-alt: solid windowtext .5pt; mso-yfti-tbllook: 480; mso-padding-alt: 0cm 5.4pt 0cm 5.4pt; mso-border-insideh: .5pt solid windowtext; mso-border-insidev: .5pt solid windowtext" class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0"><tbody><tr><td style="BORDER-BOTTOM: windowtext 1pt solid; BORDER-LEFT: windowtext 1pt solid; PADDING-BOTTOM: 0cm; BACKGROUND-COLOR: transparent; PADDING-LEFT: 5.4pt; WIDTH: 473.15pt; PADDING-RIGHT: 5.4pt; BORDER-TOP: windowtext 1pt solid; BORDER-RIGHT: windowtext 1pt solid; PADDING-TOP: 0cm; mso-border-alt: solid windowtext .5pt" valign="top" width="631"><pre>Function GetRefSearchExclusions() Export
+
+      Array = New Array;
+      
+      Array.Add(Metadata.InformationRegisters.CurrencyRates.FullName());
+      Array.Add(Metadata.InformationRegisters.ObjectVersions.FullName());
+      Array.Add(Metadata.InformationRegisters.AdditionalProperties.FullName());
+            
+      Return Array;
+      
+EndFunction 
+</pre></td></tr></tbody></table></body></html>

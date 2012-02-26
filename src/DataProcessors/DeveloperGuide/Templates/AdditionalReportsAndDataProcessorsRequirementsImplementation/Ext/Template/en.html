@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:st1="urn:schemas-microsoft-com:office:smarttags"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="__STYLE__"></link><meta name="GENERATOR" content="MSHTML 8.00.6001.19154"></meta></head><body>
+<h2 style="MARGIN: 12pt 0cm 3pt"><font size="5" face="Arial">Additional Reports and Data Processors Requirements Implementation</font></h2>
+<p>You can create reports and data processors, and then add them to the application. For each report or data processor, you have to write the following:</p>
+<ul><li>AdditionalDataProcessorInfo function (described in the following text) 
+</li><li><a id="AdditionalReportsAndDataProcessorsListsImplementation" href="#">AdditionalReportsAndDataProcessorsOverrided</a> module </li></ul><h3>AdditionalDataProcessorInfo Function</h3>
+<p>Defines basic report or data processor properties.</p>
+<h4>Syntax</h4>
+<ul><li>Function AdditionalDataProcessorInfo() Export</li></ul><h4>Return value</h4>
+<p>A structure that contains the following data:</p>
+<ul><li><b>Type.</b> The report or data processor type. The following values are available: 
+<blockquote>
+<li><b>AdditionalDataProcessor. </b>A data processor that is added to the application as an item in the <b>Additional Data Processors</b> list, in the <b>Tools</b> box. 
+</li><li><b>AdditionalReport.</b> A report that is added to the application as an item in the <b>Additional Reports </b>list, in the <b>Reports</b> box. 
+</li><li><b>CreateLinkedObjects.</b> A data processor mainly used for creating documents based on a specific document. It is added to the application as an item in the <b>Create based on </b>menu. 
+</li><li><b>ObjectFilling.</b> A data processor mainly used for filling form fields. It is added to the application as the <b>Fill</b> button. 
+</li><li><b>PrintForm.</b> A data processor mainly used for generating printed form layouts. It is added to the application as an item in the <b>Print</b> menu. 
+</li><li><b>Report.</b> A report that is added to the application as an item in the <b>Reports</b> box. </li></blockquote>
+</li><li><b>Description. </b>The default report or data processor name. You can change it in the application. 
+</li><li><b>Version. </b>The report or data processor version. 
+</li><li><b>SafeMode. </b>Shows whether the report or data processor runs in safe mode. This is only applicable when the application runs in the file mode; it has no effect in other modes.<br>The safe mode has the following limitations: 
+<blockquote>
+<li>The report of data processor cannot enable the privileged mode (full access to the infobase). 
+</li><li>The report of data processor cannot perform actions that are external to the 1C:<st1:place w:st="on"><st1:city w:st="on">Enterprise</st1:city></st1:place> platform. This includes using COM objects, loading external components, executing operating system commands and external applications, accessing the file system except for temporary files, and accessing the Internet. </li></blockquote>
+</li><li><b>Information. </b>The report or data processor description, as it appears in the application. 
+</li><li><b>Commands.</b> The table of report or data processor commands. 
+</li><li><b>ID. </b>The hidden command ID. The IDs must be unique within a single report or data processor. 
+</li><li><b>Presentation. </b>The command name, as it appears in the list of commands. 
+</li><li><b>Modifier. </b>Shows whether the report or data processor uses the Print subsystem. 
+<blockquote>
+<li><b>"PrintMXL".</b> The report or data processor outputs its result to a SpreadsheetDocument object that is displayed in the <b>Printing documents</b> form of the Print subsystem. 
+</li><li><b>"" (empty string).</b> The report or data processor does not use the Print subsystem. You have to write a custom procedure for printing the document. </li></blockquote>
+</li><li><b>ShowAlert. </b>Shows whether the following alerts are displayed: 
+<blockquote>
+<li>"Executing data processor…" after the report or data processor is started. 
+</li><li>"Data processor completed…" after the report or data processor is executed. </li></blockquote>
+</li><li><b>UsageVariant. </b>The action type that the command performs, one of the following: 
+<blockquote>
+<li><b>OpenForm. </b>Opens a form. 
+</li><li><b>CallClientMethod. </b>Calls a client method. This action type is only available for data processors. 
+</li><li><b>CallServerMethod. </b>Calls a server method. This action type is only available for data processors. </li></blockquote>
+</li><li><b>Assignments. </b>The list of documents where the report or data processor is added by default. You can edit this list in the <b><span style="mso-field-code: ' REF _Ref311023947 h  * MERGEFORMAT '">Additional Reports and Data Processors </span></b>form. </li></ul><p></p>
+<h4>Example</h4>
+<table style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; MARGIN: auto 6.75pt; WIDTH: 473.4pt; BORDER-COLLAPSE: collapse; BORDER-TOP: medium none; BORDER-RIGHT: medium none; mso-border-alt: solid windowtext .5pt; mso-table-lspace: 9.0pt; mso-table-rspace: 9.0pt; mso-table-anchor-vertical: paragraph; mso-table-anchor-horizontal: column; mso-table-left: 5.4pt; mso-table-top: .05pt; mso-padding-alt: 0cm 5.4pt 0cm 5.4pt; mso-border-insideh: .5pt solid windowtext; mso-border-insidev: .5pt solid windowtext" class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" width="631" align="left"><tbody><tr><td style="BORDER-BOTTOM: windowtext 1pt solid; BORDER-LEFT: windowtext 1pt solid; PADDING-BOTTOM: 0cm; BACKGROUND-COLOR: transparent; PADDING-LEFT: 5.4pt; WIDTH: 473.4pt; PADDING-RIGHT: 5.4pt; HEIGHT: 17.8pt; BORDER-TOP: windowtext 1pt solid; BORDER-RIGHT: windowtext 1pt solid; PADDING-TOP: 0cm; mso-border-alt: solid windowtext .5pt" valign="top" width="631"><pre>Function AdditionalDataProcessorInfo() Export
+ 
+    Structure = New Structure;
+    //Enums.AdditionalReportAndDataProcessorTypes
+    Structure.Insert("Type", "AdditionalDataProcessor"); 
+    Structure.Insert("Description", "External Data Processor Template");
+    Structure.Insert("Version", "1.01");
+    Structure.Insert("SafeMode", True);
+    Structure.Insert("Information", "Template");
+ 
+    Commands = New ValueTable;
+    Commands.Columns.Add("ID");
+    Commands.Columns.Add("Presentation");
+    Commands.Columns.Add("Modifier");
+    Commands.Columns.Add("ShowAlert");
+    Commands.Columns.Add("UsageVariant");
+ 
+    NewRow = Commands.Add();
+    NewRow.ID = "Form";
+    NewRow.Presentation = "Open Form";
+    NewRow.Modifier   = "";     
+    NewRow.ShowAlert = False;
+    NewRow.UsageVariant = "FormOpening";
+ 
+    NewRow = Commands.Add();
+    NewRow.ID = "ClientMethod";
+    NewRow.Presentation = "Call Client Method";
+    NewRow.Modifier   = "";
+    NewRow.ShowAlert = False;
+    NewRow.UsageVariant = "CallClientMethod";
+ 
+    NewRow = Commands.Add();
+    NewRow.ID = "ServerMethod";
+    NewRow.Presentation = "Call Server Method";
+    NewRow.Modifier   = "";
+    NewRow.ShowAlert = True;
+    NewRow.UsageVariant = "CallServerMethod";
+ 
+    Structure.Insert("Commands", Commands);
+ 
+    Assignments = New Array;
+    Assignments.Add("Document.CustomerOrder");
+ 
+    Structure.Insert("Assignments", Assignments);
+ 
+    Return Structure;
+ 
+EndFunction
+</pre></td></tr></tbody></table></body></html>

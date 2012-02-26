@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Do message box when importing files</v8:content>
+		</v8:item>
+	</Title>
+	<Width>70</Width>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<LabelField name="Message" id="14">
+			<DataPath>Message</DataPath>
+			<TitleLocation>None</TitleLocation>
+			<Height>3</Height>
+			<VerticalStretch>false</VerticalStretch>
+			<ContextMenu name="MessageContextMenu" id="15"/>
+			<ExtendedTooltip name="MessageExtendedTooltip" id="18"/>
+		</LabelField>
+		<Table name="FilesBig" id="4">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<Autofill>true</Autofill>
+			<ReadOnly>true</ReadOnly>
+			<SkipOnInput>false</SkipOnInput>
+			<Width>40</Width>
+			<HeightInTableRows>4</HeightInTableRows>
+			<SelectionMode>SingleRow</SelectionMode>
+			<Header>false</Header>
+			<DataPath>FilesBig</DataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="FilesBigContextMenu" id="7"/>
+			<AutoCommandBar name="FilesBigCommandBar" id="8"/>
+			<ExtendedTooltip name="FilesBigExtendedTooltip" id="19"/>
+			<SearchStringAddition name="FilesBigSearchString" id="20">
+				<AdditionSource>
+					<Item>FilesBig</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesBigSearchStringContextMenu" id="21"/>
+				<ExtendedTooltip name="FilesBigSearchStringExtendedTooltip" id="22"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="FilesBigViewStatus" id="23">
+				<AdditionSource>
+					<Item>FilesBig</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesBigViewStatusContextMenu" id="24"/>
+				<ExtendedTooltip name="FilesBigViewStatusExtendedTooltip" id="25"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="FilesBigSearchControl" id="26">
+				<AdditionSource>
+					<Item>FilesBig</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesBigSearchControlContextMenu" id="27"/>
+				<ExtendedTooltip name="FilesBigSearchControlExtendedTooltip" id="28"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="Value" id="16">
+					<DataPath>FilesBig.Value</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="ValueContextMenu" id="17"/>
+					<ExtendedTooltip name="ValueExtendedTooltip" id="29"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<CommandBar name="MainCommandBar" id="1">
+			<HorizontalLocation>Right</HorizontalLocation>
+			<ExtendedTooltip name="MainCommandBarExtendedTooltip" id="30"/>
+			<ChildItems>
+				<Button name="OK" id="11">
+					<Type>CommandBarButton</Type>
+					<DefaultButton>true</DefaultButton>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.OK</CommandName>
+					<ExtendedTooltip name="OKExtendedTooltip" id="31"/>
+				</Button>
+				<Button name="Cancel" id="12">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.Cancel</CommandName>
+					<ExtendedTooltip name="CancelExtendedTooltip" id="32"/>
+				</Button>
+				<Button name="Help" id="13">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.Help</CommandName>
+					<ExtendedTooltip name="HelpExtendedTooltip" id="33"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="FilesBig" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Large files</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Message" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Message</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Parameters>
+		<Parameter name="FilesBig">
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

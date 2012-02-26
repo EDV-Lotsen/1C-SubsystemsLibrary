@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FillCalendar" id="72">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.FillCalendar</CommandName>
+				<ExtendedTooltip name="FillCalendarExtendedTooltip" id="153"/>
+			</Button>
+			<Button name="FillByCalendar" id="150">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.FillByCalendar</CommandName>
+				<ExtendedTooltip name="FillByCalendarExtendedTooltip" id="154"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnWriteAtServer">OnWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="Group" id="75">
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupExtendedTooltip" id="155"/>
+			<ChildItems>
+				<InputField name="Description" id="1">
+					<DataPath>Object.Description</DataPath>
+					<Width>42</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="2"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="156"/>
+				</InputField>
+				<InputField name="CurrentYearNumber" id="73">
+					<DataPath>CurrentYearNumber</DataPath>
+					<Wrap>false</Wrap>
+					<SpinButton>true</SpinButton>
+					<EditFormat>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>NG=0</v8:content>
+						</v8:item>
+					</EditFormat>
+					<ContextMenu name="CurrentYearNumberContextMenu" id="74"/>
+					<ExtendedTooltip name="CurrentYearNumberExtendedTooltip" id="157"/>
+					<Events>
+						<Event name="OnChange">CurrentYearNumberOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<CalendarField name="Calendar" id="148">
+			<DataPath>Calendar</DataPath>
+			<TitleLocation>None</TitleLocation>
+			<Width>70</Width>
+			<Height>21</Height>
+			<ShowCurrentDate>false</ShowCurrentDate>
+			<WidthInMonths>4</WidthInMonths>
+			<HeightInMonths>3</HeightInMonths>
+			<ContextMenu name="CalendarContextMenu" id="149"/>
+			<ExtendedTooltip name="CalendarExtendedTooltip" id="158"/>
+			<Events>
+				<Event name="OnPeriodOutput">CalendarOnPeriodOutput</Event>
+				<Event name="Selection">CalendarSelection</Event>
+			</Events>
+		</CalendarField>
+		<LabelDecoration name="Decoration" id="151">
+			<SkipOnInput>false</SkipOnInput>
+			<TextColor>#2F5AAF</TextColor>
+			<Title formatted="false">
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>To toggle between work and non-work days, double-click them.</v8:content>
+				</v8:item>
+			</Title>
+			<ContextMenu name="DecorationContextMenu" id="152"/>
+			<ExtendedTooltip name="DecorationExtendedTooltip" id="159"/>
+		</LabelDecoration>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.Calendars</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="CurrentYearNumber" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Year</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>4</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<FillCheck>ShowError</FillCheck>
+		</Attribute>
+		<Attribute name="Calendar" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Calendar</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="RegisterTable" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register table</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="PreviousYearNumber" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Previous year number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>4</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="FillCalendar" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Reset</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Mark weekdays as work days, and weekends and holidays as non-work days</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>FillCalendar</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+		<Command name="FillByCalendar" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Copy Calendar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Copy all of the work days and holidays from another calendar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>FillByCalendar</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+	</Commands>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>2:17aadd5f-cda2-4785-a07f-3ab4b04434a6</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+				<Visible>
+					<xr:Common>false</xr:Common>
+				</Visible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
+</Form>

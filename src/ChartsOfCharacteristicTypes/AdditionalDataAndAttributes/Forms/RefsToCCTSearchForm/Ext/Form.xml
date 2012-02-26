@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="GroupPages" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Group pages</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Group pages</v8:content>
+				</v8:item>
+			</ToolTip>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="GroupPagesExtendedTooltip" id="17"/>
+			<ChildItems>
+				<Page name="PageRefsNotFound" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page refs not found</v8:content>
+						</v8:item>
+					</Title>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="PageRefsNotFoundExtendedTooltip" id="18"/>
+					<ChildItems>
+						<UsualGroup name="GroupNoteText" id="12">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group note text</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group note text</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="GroupNoteTextExtendedTooltip" id="19"/>
+							<ChildItems>
+								<LabelDecoration name="ClarificationText" id="14">
+									<Height>3</Height>
+									<SkipOnInput>false</SkipOnInput>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>References to the data item are not found. Setting deletion mark is allowed.</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="ClarificationTextContextMenu" id="15"/>
+									<ExtendedTooltip name="ClarificationTextExtendedTooltip" id="20"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<CommandBar name="ButtonGroupExplanation" id="13">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>explanation buttons group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>explanation buttons group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<HorizontalLocation>Right</HorizontalLocation>
+							<ExtendedTooltip name="ButtonGroupExplanationExtendedTooltip" id="21"/>
+							<ChildItems>
+								<Button name="OK" id="16">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.AllowEdit</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>OK</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="OKExtendedTooltip" id="22"/>
+								</Button>
+							</ChildItems>
+						</CommandBar>
+					</ChildItems>
+				</Page>
+				<Page name="PageRefsFound" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page refs found</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page refs found</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="PageRefsFoundExtendedTooltip" id="23"/>
+					<ChildItems>
+						<UsualGroup name="GroupWarningText" id="10">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group warning text</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group warning text</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="GroupWarningTextExtendedTooltip" id="24"/>
+							<ChildItems>
+								<LabelDecoration name="WarningText" id="6">
+									<Height>3</Height>
+									<SkipOnInput>false</SkipOnInput>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Attention! The infobase contains references to the data item. Editing or deleting the data item might result in data loss. Do you really want to allow editing?</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Top</VerticalAlign>
+									<ContextMenu name="WarningTextContextMenu" id="7"/>
+									<ExtendedTooltip name="WarningTextExtendedTooltip" id="25"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<CommandBar name="ButtonGroup" id="8">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Buttons group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<HorizontalLocation>Right</HorizontalLocation>
+							<ExtendedTooltip name="ButtonGroupExtendedTooltip" id="26"/>
+							<ChildItems>
+								<Button name="AllowEdit" id="9">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.AllowEdit</CommandName>
+									<ExtendedTooltip name="AllowEditExtendedTooltip" id="27"/>
+								</Button>
+								<Button name="Cancel" id="11">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.StandardCommand.Cancel</CommandName>
+									<ExtendedTooltip name="CancelExtendedTooltip" id="28"/>
+								</Button>
+							</ChildItems>
+						</CommandBar>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes/>
+	<Commands>
+		<Command name="AllowEdit" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Allow</v8:content>
+				</v8:item>
+			</Title>
+			<Action>AllowEdit</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="Ref">
+			<Type>
+				<v8:Type>cfg:ChartOfCharacteristicTypesRef.AdditionalDataAndAttributes</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>
