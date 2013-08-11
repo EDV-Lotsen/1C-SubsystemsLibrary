@@ -1,59 +1,101 @@
 ﻿
+// The group parent value to use it in the OnWrite event handler
+Var OldParent; 
 
-Var FormerParent;
+////////////////////////////////////////////////////////////////////////////////
+// EVENT HANDLERS
 
-// Handler BeforeWrite locks invalid actions with the predefined
-// group "All users".
+// Prevents invalid actions with the All users predefined group.
 //
-Procedure BeforeWrite(Cancellation)
+Procedure BeforeWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
 	If Ref = Catalogs.UserGroups.AllUsers Then
-		If NOT Parent.IsEmpty() Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All users"" can be only at the root!'"), , , , Cancellation);
+		If Not Parent.IsEmpty() Then
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'The All users predefined group can be placed in the root only.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 		If Content.Count() > 0 Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Adding users to the folder ""everyone"" is not supported.'"), , , , Cancellation);
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'Users cannot be added to the All users predefined group.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 	Else
 		If Parent = Catalogs.UserGroups.AllUsers Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All users"" cannot be parent!'"), , , , Cancellation);
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'The All users predefined group cannot have subgroups.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 		
-		FormerParent = ?(Ref.IsEmpty(), Undefined, CommonUse.GetAttributeValue(Ref, "Parent"));
+		OldParent = ?(Ref.IsEmpty(), Undefined, CommonUse.GetAttributeValue(Ref, "Parent"));
 	EndIf;
 	
 EndProcedure
 
-// Handler OnWrite calls update of user group content.
-//
-Procedure OnWrite(Cancellation)
+Procedure OnWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
-	Users.RefreshUserGroupsContent(Ref);
+	Users.UpdateUserGroupContent(Ref);
 		
-	If ValueIsFilled(FormerParent) And FormerParent <> Parent Then
-		Users.RefreshUserGroupsContent(FormerParent);
+	If ValueIsFilled(OldParent) And OldParent <> Parent Then
+		Users.UpdateUserGroupContent(OldParent);
 	EndIf;
 	
 EndProcedure
 
-// Handler FillCheckProcessing locks interactive choice of group "All users" as a parent.
-//
-Procedure FillCheckProcessing(Cancellation, CheckedAttributes)
+Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 	
+	CheckedObjectAttributes = New Array;
+	Errors = Undefined;
+	
+	// Checking whether AllUsers has subgroups
 	If Parent = Catalogs.UserGroups.AllUsers Then
-		CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All users"" cannot be parent!'"), , "Object.Parent", , Cancellation);
+		CommonUseClientServer.AddUserError(Errors,
+			"Object.Parent",
+			NStr("en = 'The All users predefined group cannot have subgroups.'"));
 	EndIf;
 	
+	// Checking whether there are empty or repeated users
+	CheckedObjectAttributes.Add("Content.User");
+	
+	For Each CurrentRow In Content Do;
+		LineNumber = Content.IndexOf(CurrentRow);
+		
+		// Checking whether the value is filled
+		If Not ValueIsFilled(CurrentRow.User) Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].User",
+				NStr("en = 'User is not selected.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'A user in the row #%1 is not selected.'"));
+			Continue;
+		EndIf;
+		
+		// Checking whether there are repeated values
+		FoundValues = Content.FindRows(New Structure("User", CurrentRow.User));
+		If FoundValues.Count() > 1 Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].User",
+				NStr("en = 'Repeated user.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'There is a repeated user in the row #%1.'"));
+		EndIf;
+	EndDo;
+	
+	CommonUseClientServer.ShowErrorsToUser(Errors, Cancel);
+	
+	CommonUse.DeleteNoncheckableAttributesFromArray(AttributesToCheck, CheckedObjectAttributes);
+	
 EndProcedure
-

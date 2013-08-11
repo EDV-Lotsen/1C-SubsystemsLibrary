@@ -1,133 +1,143 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Item order setup subsystem.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// EXPORT PROCEDURES AND FUNCTIONS
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-// Move object up or down
+// Moves the object up or down in list.
 //
 // Parameters:
-//   Ref      		- Ref                		  - Ref to the item being moved
-//   Direction   	- Number                 	  - Direction where the item is moved: -1 - up, +1 - down
-//   Filter       	- DataCompositionFilter		  - Filter applied in dynamic list
-//   Representation - TableRepresentation 		  - Assigned list of dynamic list representation
-//   StrError   	- String                  	  - On error description is returned
+//  Ref - Ref - reference to the item to be moved;
+//  AdjustedFilters - Structure with the following fields:
+//  HasFilterByParent - Boolean - flag that shows whether the filter by parent is set in the list;
+//  HasFilterByOwner - Boolean - flag that shows whether the filter by owner is set in the list;
+//  RepresentedAsList - Boolean - flag that shows whether the Representation property of the form item is set to TableRepresentation.List;
+//  Up - Boolean - flag that shows whether the item must be moved up. If it is set
+//   to False, the item must be moved down.
 //
+// Returns:
+//  String - errors details.
 //
-Function ChangeItemsOrder(Ref, AppliedFilters, RepresentationListView, Up) Export
+Function ChangeItemOrder(Ref, AdjustedFilters, RepresentedAsList, MoveUp) Export
 	
-	Information = GetMetadataSummaryForOrdering(Ref);
-	
-	// Filter by parent may be applied for hierarchical catalogs, if not,
-	// then representation mode should be equal to hierarchical or tree view
-	If Information.HaveParent And RepresentationListView And Not AppliedFilters.IsFilterByParent Then
-		Return NStr("en = 'Prior to change the order it is necessary to set the presentation to tree view or hierarchical list!'");
+	AccessParameters = AccessParameters("Editing", Ref.Metadata(), "Ref");
+	If Not AccessParameters.Accessibility Or AccessParameters.RestrictionByCondition Then
+		Return NStr("en = 'Insufficient rights to change the item order.'");
 	EndIf;
 	
-	// Filter by owner should be applied for subordinate catalogs
-	If Information.HaveOwner And Not AppliedFilters.IsFilterByOwner Then
-		Return NStr("en = 'Prior to change the order it is necessary to set the filter by owner.'");
+	Information = GetMetadataToMoveInfo(Ref);
+	
+	// Changing the item order is possible for hierarchical catalogs if the filter by
+	// patent is set or the view mode is set to Tree or to Hierarchical list.
+	If Information.HasParent And RepresentedAsList And Not AdjustedFilters.HasFilterByParent Then
+		Return NStr("en = 'Changing the item order require the list view mode to be set to Tree or Hierarchical list.'");
 	EndIf;
 	
-	// Check, if selected object has addit. ordering attribute
-	If Information.ContainsGroups Then
+	// For child catalogs, the filter by owner must be set. 
+	If Information.HasOwner And Not AdjustedFilters.HasFilterByOwner Then
+		Return NStr("en = 'Changing the item order require a filter by owner'");
+	EndIf;
+	
+	// Checking whether the selected item has the additional ordering attribute
+	If Information.HasFolders Then
 		IsFolder = CommonUse.GetAttributeValue(Ref, "IsFolder");
-		If IsFolder And Not Information.ForGroups Then
-			// This is a group, but for group ordering is not set
+		If IsFolder And Not Information.ForFolders Then
+			// Order cannot be set for a folder
 			Return "";
 		ElsIf Not IsFolder And Not Information.ForItems Then
-			// This is an item, but for items ordering is not set
+			// Order cannot be set for an item
 			Return "";
 		EndIf;
 	EndIf;
 	
 	Query = New Query;
-	ConditionsArray = New Array;
+	QueryConditions = New Array;
 	
-	// Add filter by parent
-	If Information.HaveParent Then
-		ConditionsArray.Add("Table.Parent = &Parent");
+	// Adding a query condition by parent
+	If Information.HasParent Then
+		QueryConditions.Add("Table.Parent = &Parent");
 		Query.SetParameter("Parent", CommonUse.GetAttributeValue(Ref, "Parent"));
 	EndIf;
 	
-	// Add filter by owner
-	If Information.HaveOwner Then
-		ConditionsArray.Add("Table.Owner = &Owner");
+	// Adding a query condition by owner
+	If Information.HasOwner Then
+		QueryConditions.Add("Table.Owner = &Owner");
 		Query.SetParameter("Owner", CommonUse.GetAttributeValue(Ref, "Owner"));
 	EndIf;
 	
-	// Add filter by group
-	If Information.ContainsGroups Then
-		If Information.ForGroups And Not Information.ForItems Then
-			ConditionsArray.Add("Table.IsFolder");
-		ElsIf Not Information.ForGroups And Information.ForItems Then
-			ConditionsArray.Add("NOT Table.IsFolder");
+	// Adding a query condition by folder
+	If Information.HasFolders Then
+		If Information.ForFolders And Not Information.ForItems Then
+			QueryConditions.Add("Table.IsFolder");
+		ElsIf Not Information.ForFolders And Information.ForItems Then
+			QueryConditions.Add("NOT Table.IsFolder");
 		EndIf;
 	EndIf;
 	
-	// Compose string with all the filters
-	StrConditions = "";
-	StrAddition = "
-	|WHERE
-	|	";
-	For Each Condition In ConditionsArray Do
-		StrConditions = StrConditions + StrAddition + Condition;
-		StrAddition   = "
-		|	And ";
+	// Preparing the condition string
+	AdditionalConditions = "TRUE";
+	For Each Condition In QueryConditions Do
+		AdditionalConditions = AdditionalConditions + " AND " + Condition;
 	EndDo;
 	
-	// Compose query text
 	QueryText = 
 	"SELECT
 	|	Table.Ref,
 	|	Table.AdditionalOrderingAttribute AS OrderOld,
-	|	Table.AdditionalOrderingAttribute AS SequenceNew
+	|	Table.AdditionalOrderingAttribute AS OrderNew
 	|FROM
-	|	" + Ref.Metadata().FullName() + " AS Table
-	|" + StrConditions + "
+	|	&Table AS Table
+	|WHERE
+	|	&AdditionalConditions
 	|
 	|ORDER BY
-	|	AdditionalOrderingAttribute";
+	|	Table.AdditionalOrderingAttribute";
 	
+	QueryText = StrReplace(QueryText, "&Table", Ref.Metadata().FullName());
+	QueryText = StrReplace(QueryText, "&AdditionalConditions", AdditionalConditions);
 	
 	Query.Text = QueryText;
-	TabItems = Query.Execute().Unload();
+	OrderingTable = Query.Execute().Unload();
 	
-	Row1 = TabItems.Find(Ref, "Ref");
-	If Row1 = Undefined Then
+	RowToMove = OrderingTable.Find(Ref, "Ref");
+	If RowToMove = Undefined Then
 		Return "";
 	EndIf;
 	
-	BeforeAfter = ?(Up, -1, 1);
-	Index1 		= TabItems.IndexOf(Row1);
-	Index2 		= Index1 + BeforeAfter;
-	If (Index2 < 0) OR (Index2 >= TabItems.Count()) Then
+	Offset = ?(MoveUp, -1, 1);
+	
+	NeighborRowIndex = OrderingTable.IndexOf(RowToMove) + Offset;
+	If Not((0 <= NeighborRowIndex) And (NeighborRowIndex < OrderingTable.Count())) Then
 		Return "";
 	EndIf;
-	Row2 = TabItems[Index2];
 	
-	Row1.SequenceNew = Row2.OrderOld;
-	Row2.SequenceNew = Row1.OrderOld;
+	NeighborRow = OrderingTable[NeighborRowIndex];
 	
-	TabItems.Move(Row1, BeforeAfter);
+	RowToMove.OrderNew = NeighborRow.OrderOld;
+	NeighborRow.OrderNew = RowToMove.OrderOld;
 	
-	PrevOrder = 0;
+	OrderingTable.Move(RowToMove, Offset);
+	
+	PreviousOrder = 0;
 	
 	BeginTransaction();
 	
 	Try
 		
-		For Each Row In TabItems Do
+		For Each CurrentRow In OrderingTable Do
 			
-			If PrevOrder >= Row.SequenceNew Then
-				Row.SequenceNew = PrevOrder + 1;
+			If PreviousOrder >= CurrentRow.OrderNew Then
+				CurrentRow.OrderNew = PreviousOrder + 1;
 			EndIf;
 			
-			PrevOrder = Row.SequenceNew;
+			PreviousOrder = CurrentRow.OrderNew;
 			
-			If Row.SequenceNew <> Row.OrderOld Then
-				Object = Row.Ref.GetObject();
+			If CurrentRow.OrderNew <> CurrentRow.OrderOld Then
+				Object = CurrentRow.Ref.GetObject();
 				LockDataForEdit(Object.Ref);
-				Object.AdditionalOrderingAttribute = Row.SequenceNew;
+				Object.AdditionalOrderingAttribute = CurrentRow.OrderNew;
 				Object.Write();
 			EndIf;
 			
@@ -144,38 +154,46 @@ Function ChangeItemsOrder(Ref, AppliedFilters, RepresentationListView, Up) Expor
 	
 EndFunction
 
-// Get structure with information about object metadata
-Function GetMetadataSummaryForOrdering(Ref) Export
+// Returns structure that contains metadata object details.
+//
+// Parameters:
+//  Ref - object reference.
+//
+// Returns:
+//  Structure - metadata object details.
+//
+Function GetMetadataToMoveInfo(Ref) Export
 	
 	Information = New Structure;
 	
-	ObjectMetadata 	  = Ref.Metadata();
+	ObjectMetadata = Ref.Metadata();
 	AttributeMetadata = ObjectMetadata.Attributes.AdditionalOrderingAttribute;
 	
 	Information.Insert("FullName", ObjectMetadata.FullName());
 	
-	MetadataObjectIsCatalog = Metadata.Catalogs.Contains(ObjectMetadata);
-	ThisIsCCT = Metadata.ChartsOfCharacteristicTypes.Contains(ObjectMetadata);
+	IsCatalog = Metadata.Catalogs.Contains(ObjectMetadata);
+	IsCCT = Metadata.ChartsOfCharacteristicTypes.Contains(ObjectMetadata);
 	
-	If MetadataObjectIsCatalog Or ThisIsCCT Then
+	If IsCatalog Or IsCCT Then
 		
-		Information.Insert("ContainsGroups",
-			ObjectMetadata.Hierarchical
-			And ?(ThisIsCCT, True, ObjectMetadata.HierarchyType = Metadata.ObjectProperties.HierarchyType.HierarchyFoldersAndItems));
-		Information.Insert("ForGroups",     (AttributeMetadata.Use <> Metadata.ObjectProperties.AttributeUse.ForItem));
-		Information.Insert("ForItems", 		(AttributeMetadata.Use <> Metadata.ObjectProperties.AttributeUse.ForFolder));
-		Information.Insert("HaveParent",  	ObjectMetadata.Hierarchical);
-		Information.Insert("FoldersOnTop",  ?(Not Information.HaveParent, False, ObjectMetadata.FoldersOnTop));
-		Information.Insert("HaveOwner", 	?(ThisIsCCT, False, (ObjectMetadata.Owners.Count() <> 0)));
+		Information.Insert("HasFolders",
+					ObjectMetadata.Hierarchical And 
+							?(IsCCT, True, ObjectMetadata.HierarchyType = Metadata.ObjectProperties.HierarchyType.HierarchyFoldersAndItems));
+		
+		Information.Insert("ForFolders", (AttributeMetadata.Use <> Metadata.ObjectProperties.AttributeUse.ForItem));
+		Information.Insert("ForItems", (AttributeMetadata.Use <> Metadata.ObjectProperties.AttributeUse.ForFolder));
+		Information.Insert("HasParent", ObjectMetadata.Hierarchical);
+		Information.Insert("FoldersOnTop", ?(Not Information.HasParent, False, ObjectMetadata.FoldersOnTop));
+		Information.Insert("HasOwner", ?(IsCCT, False, (ObjectMetadata.Owners.Count() <> 0)));
 		
 	Else
 		
-		Information.Insert("ContainsGroups", False);
-		Information.Insert("ForGroups",      False);
-		Information.Insert("ForItems", 	 	 True);
-		Information.Insert("HaveParent", 	 False);
-		Information.Insert("HaveOwner", 	 False);
-		Information.Insert("FoldersOnTop",   False);
+		Information.Insert("HasFolders", False);
+		Information.Insert("ForFolders", False);
+		Information.Insert("ForItems", True);
+		Information.Insert("HasParent", False);
+		Information.Insert("HasOwner", False);
+		Information.Insert("FoldersOnTop", False);
 		
 	EndIf;
 	
@@ -183,3 +201,58 @@ Function GetMetadataSummaryForOrdering(Ref) Export
 	
 EndFunction
 
+// Retrieves additional ordering attribute for a new object.
+//
+// Parameters:
+//  Information - Structure - metadata object details;
+//  Parent - Ref - parent object reference;
+//  Owner - Ref - owner object reference.
+//
+// Returns:
+// Number - additional ordering attribute.
+//
+Function GetNewAdditionalOrderingAttributeValue(Information, Parent, Owner) Export
+	
+	SetPrivilegedMode(True);
+	
+	Query = New Query();
+	
+	QueryConditions = New Array;
+	
+	If Information.HasParent Then
+		QueryConditions.Add("Table.Parent = &Parent");
+		Query.SetParameter("Parent", Parent);
+	EndIf;
+	
+	If Information.HasOwner Then
+		QueryConditions.Add("Table.Owner = &Owner");
+		Query.SetParameter("Owner", Owner);
+	EndIf;
+	
+	AdditionalConditions = "TRUE";
+	For Each Condition In QueryConditions Do
+		AdditionalConditions = AdditionalConditions + " AND " + Condition;
+	EndDo;
+	
+	QueryText =
+	"SELECT TOP 1
+	|	Table.AdditionalOrderingAttribute AS AdditionalOrderingAttribute
+	|FROM
+	|	&Table AS Table
+	|WHERE
+	|	&AdditionalConditions
+	|
+	|ORDER BY
+	|	AdditionalOrderingAttribute DESC";
+	
+	QueryText = StrReplace(QueryText, "&Table", Information.FullName);
+	QueryText = StrReplace(QueryText, "&AdditionalConditions", AdditionalConditions);
+	
+	Query.Text = QueryText;
+	
+	Selection = Query.Execute().Choose();
+	Selection.Next();
+	
+	Return ?(Not ValueIsFilled(Selection.AdditionalOrderingAttribute), 1, Selection.AdditionalOrderingAttribute + 1);
+	
+EndFunction

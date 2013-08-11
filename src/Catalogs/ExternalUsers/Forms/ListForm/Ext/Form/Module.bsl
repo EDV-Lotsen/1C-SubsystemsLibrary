@@ -1,98 +1,123 @@
-﻿
-
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // FORM EVENT HANDLERS
-//
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	
+	ShowNotValidUsers = False;
+	
+	If Not Parameters.ChoiceMode Then
+		
+		// Filtering only if ChoiceMode is False
+		If ShowNotValidUsers Then
+			CommonUseClientServer.DeleteFilterItems(ExternalUserList.Filter, "NotValid");
+		Else	
+			CommonUseClientServer.SetFilterItem(
+				ExternalUserList.Filter,
+				"NotValid",
+				False);
+		EndIf;
+			
+	EndIf;
+	
+	UseGroups = GetFunctionalOption("UseUserGroups");
 	
 	If TypeOf(Parameters.CurrentRow) = Type("CatalogRef.ExternalUserGroups") Then
-		Items.ExternalUserGroups.CurrentRow = Parameters.CurrentRow;
+		If UseGroups Then
+			Items.ExternalUserGroups.CurrentRow = Parameters.CurrentRow;
+		Else
+			Parameters.CurrentRow = Undefined;
+		EndIf;
 	Else
-		CurrentItem = Items.ExternalUsersList;
+		CurrentItem = Items.ExternalUserList;
 		Items.ExternalUserGroups.CurrentRow = Catalogs.ExternalUserGroups.AllExternalUsers;
-		RefreshDataCompositionParameterValue(ExternalUsersList, "GroupExternalUsers", Catalogs.ExternalUserGroups.AllExternalUsers);
-		RefreshDataCompositionParameterValue(ExternalUsersList, "SelectHierarchically", True);
+		UpdateDataCompositionParameterValue(ExternalUserList, "ExternalUserGroup", Catalogs.ExternalUserGroups.AllExternalUsers);
+		UpdateDataCompositionParameterValue(ExternalUserList, "SelectHierarchy", True);
+	EndIf;
+	
+	If Not UseGroups Then
+		Parameters.ExternalUserGroupChoice = False;
+		Items.ShowChildGroupExternalUsersGroup.Visible = False;
+		Items.CreateExternalUserGroup.Visible = False;
 	EndIf;
 	
 	If Parameters.Property("Filter") And Parameters.Filter.Property("AuthorizationObject") Then
-		FilterAuthorizationObject = Parameters.Filter.AuthorizationObject;
+		AuthorizationObjectFilter = Parameters.Filter.AuthorizationObject;
 	EndIf;
 	
-	// Configure constant data for user list
-	RefreshDataCompositionParameterValue(ExternalUsersList, "EmptyUUID", New Uuid("00000000-0000-0000-0000-000000000000"));
-	GroupExternalUsersAllUsers = Catalogs.ExternalUserGroups.AllExternalUsers;
+	// Setting up permanent data of the user list
+	UpdateDataCompositionParameterValue(ExternalUserList, "EmptyUUID", New UUID("00000000-0000-0000-0000-000000000000"));
+	ExternalUserGroupAllUsers = Catalogs.ExternalUserGroups.AllExternalUsers;
 	
-	// Prepare presentations of the authorization object types.
-	For each CurrentAuthorizationObjectType In Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObject.Type.Types() Do
-		ArrayOfTypes = New Array;
-		ArrayOfTypes.Add(CurrentAuthorizationObjectType);
-		TypeDetails = New TypeDescription(ArrayOfTypes);
-		PresentationOfTypesOfAuthorizationObjects.Add(TypeDetails.AdjustValue(Undefined), Metadata.FindByType(CurrentAuthorizationObjectType).Synonym);
+	// Preparing presentations of authorization object types
+	For Each CurrentAuthorizationObjectType In Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObject.Type.Types() Do
+		TypeArray = New Array;
+		TypeArray.Add(CurrentAuthorizationObjectType);
+		TypeDescription = New TypeDescription(TypeArray);
+		AuthorizationObjectTypePresentation.Add(TypeDescription.AdjustValue(Undefined), Metadata.FindByType(CurrentAuthorizationObjectType).Synonym);
 	EndDo;
 	
-	If NOT AccessRight("Insert", Metadata.Catalogs.ExternalUserGroups) Then
-		Items.CreateGroupOfExternalUsers.Visible = False;
+	If Not AccessRight("Insert", Metadata.Catalogs.ExternalUserGroups) Then
+		Items.CreateExternalUserGroup.Visible = False;
 	EndIf;
-	If NOT AccessRight("Insert", Metadata.Catalogs.ExternalUsers) Then
+	If Not AccessRight("Insert", Metadata.Catalogs.ExternalUsers) Then
 		Items.CreateExternalUser.Visible = False;
 	EndIf;
 	
 	If Parameters.ChoiceMode Then
 		
-		If Items.Find("IBUsers") <> Undefined Then
-			Items.IBUsers.Visible = False;
+		If Items.Find("InfoBaseUsers") <> Undefined Then
+			Items.InfoBaseUsers.Visible = False;
 		EndIf;
 		
 		Parameters.Property("AuthorizationObjectType", AuthorizationObjectType);
 		
-		// Filter of items not marked for deletion
-		ExternalUsersList.Filter.Items[0].Use = True;
+		// Selecting items that are not marked for deletion
+		ExternalUserList.Filter.Items[0].Use = True;
 		
-		Items.ExternalUsersList.ChoiceMode     = True;
-		Items.SelectExternalUsersGroup.Visible = Parameters.ChoiceOfExternalUserGroups;
-		Items.ExternalUserGroups.ChoiceMode    = Parameters.ChoiceOfExternalUserGroups;
-		Items.SelectExternalUser.DefaultButton = NOT Parameters.ChoiceOfExternalUserGroups;
+		Items.ExternalUserList.ChoiceMode = True;
+		Items.ChooseExternalUserGroup.Visible = Parameters.ExternalUserGroupChoice;
+		Items.ExternalUserGroups.ChoiceMode = Parameters.ExternalUserGroupChoice;
+		Items.ChooseExternalUser.DefaultButton = Not Parameters.ExternalUserGroupChoice;
 		
 		If Parameters.CloseOnChoice = False Then
-			// Selection mode
-			Items.ExternalUsersList.MultipleChoice = True;
-			Items.ExternalUsersList.SelectionMode = TableSelectionMode.MultiRow;
+			// Multiple choice mode
+			Items.ExternalUserList.MultipleChoice = True;
 			
-			If Parameters.ChoiceOfExternalUserGroups Then
-				Title                                  	= NStr("en = 'Fill up of the external users and groups'");
-				Items.SelectExternalUser.Title         	= NStr("en = 'Select external users'");
-				Items.SelectExternalUsersGroup.Title   	= NStr("en = 'Select groups'");
+			If Parameters.ExternalUserGroupChoice Then
+				Title = NStr("en = 'Choose external users and groups'");
+				Items.ChooseExternalUser.Title = NStr("en = 'Choose external users'");
+				Items.ChooseExternalUserGroup.Title = NStr("en = 'Choose external groups'");
 				
-				Items.ExternalUserGroups.Multiselect 	= True;
-				Items.ExternalUserGroups.SelectionMode  = TableSelectionMode.MultiRow;
+				Items.ExternalUserGroups.MultipleChoice = True;
+				Items.ExternalUserGroups.SelectionMode = TableSelectionMode.MultiRow;
 			Else
-				Title                                   = NStr("en = 'Selection of external users'");
+				Title = NStr("en = 'Choose external users'");
 			EndIf;
 		Else
-			If Parameters.ChoiceOfExternalUserGroups Then
-				Title                                  = NStr("en = 'Select external user or group'");
-				Items.SelectExternalUser.Title         = NStr("en = 'Select the external user'");
+			// Single choice mode
+			If Parameters.ExternalUserGroupChoice Then
+				Title = NStr("en = 'Choose external users and groups'");
+				Items.ChooseExternalUser.Title = NStr("en = 'Choose external users'");
 			Else
-				Title                                  = NStr("en = 'Select external user'");
+				Title = NStr("en = 'Choose external users'");
 			EndIf;
 		EndIf;
 	Else
-		Items.SelectExternalUser.Visible       = False;
-		Items.SelectExternalUsersGroup.Visible = False;
+		Items.ChooseExternalUser.Visible = False;
+		Items.ChooseExternalUserGroup.Visible = False;
 	EndIf;
 	
-	RefreshDataCompositionParameterValue(ExternalUserGroups, "AnyAuthorizationObjectType", AuthorizationObjectType = Undefined);
-	RefreshDataCompositionParameterValue(ExternalUserGroups, "AuthorizationObjectType",    TypeOf(AuthorizationObjectType));
+	UpdateDataCompositionParameterValue(ExternalUserGroups, "AnyAuthorizationObjectType", AuthorizationObjectType = Undefined);
+	UpdateDataCompositionParameterValue(ExternalUserGroups, "AuthorizationObjectType", TypeOf(AuthorizationObjectType));
 	
-	RefreshDataCompositionParameterValue(ExternalUsersList, "AnyAuthorizationObjectType", AuthorizationObjectType = Undefined);
-	RefreshDataCompositionParameterValue(ExternalUsersList, "AuthorizationObjectType",    TypeOf(AuthorizationObjectType));
+	UpdateDataCompositionParameterValue(ExternalUserList, "AnyAuthorizationObjectType", AuthorizationObjectType = Undefined);
+	UpdateDataCompositionParameterValue(ExternalUserList, "AuthorizationObjectType", TypeOf(AuthorizationObjectType));
 	
 EndProcedure
 
 &AtClient
-Procedure OnOpen(Cancellation)
+Procedure OnOpen(Cancel)
 	
 	RefreshFormContentOnGroupChange(Items.ExternalUserGroups.CurrentData);
 	
@@ -101,13 +126,12 @@ EndProcedure
 &AtClient
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
-	If EventName = "ChangedGroupOfExternalUsers" Then
+	If Upper(EventName) = Upper("Write_ExternalUserGroups")
+	 And Source = Items.ExternalUserGroups.CurrentRow Then
 		
-		If Parameter = Items.ExternalUserGroups.CurrentRow Then
-			Items.ExternalUserGroups.Refresh();
-			Items.ExternalUsersList.Refresh();
-			RefreshFormContentOnGroupChange(Items.ExternalUserGroups.CurrentData);
-		EndIf;
+		Items.ExternalUserGroups.Refresh();
+		Items.ExternalUserList.Refresh();
+		RefreshFormContentOnGroupChange(Items.ExternalUserGroups.CurrentData);
 	EndIf;
 	
 EndProcedure
@@ -115,23 +139,24 @@ EndProcedure
 &AtServer
 Procedure OnLoadDataFromSettingsAtServer(Settings)
 	
-	If Settings[SelectHierarchically] = Undefined Then
-		SelectHierarchically = True;
+	If Settings[SelectHierarchy] = Undefined Then
+		SelectHierarchy = True;
 	EndIf;
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Event handlers of commands and form items
-//
+// FORM HEADER ITEM EVENT HANDLERS
 
 &AtClient
-Procedure CreateGroupOfExternalUsers(Command)
+Procedure SelectHierarchicallyOnChange(Item)
 	
-	Items.ExternalUserGroups.AddRow();
+	RefreshFormContentOnGroupChange();
 	
 EndProcedure
 
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF ExternalUserGroups TABLE
 
 &AtClient
 Procedure ExternalUserGroupsOnActivateRow(Item)
@@ -150,10 +175,10 @@ Procedure ExternalUserGroupsValueChoice(Item, Value, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure ExternalUserGroupsBeforeAddRow(Item, Cancellation, Clone, Parent, Folder)
+Procedure ExternalUserGroupsBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
-	If NOT Clone Then
-		Cancellation = True;
+	If Not Copy Then
+		Cancel = True;
 		FormParameters = New Structure;
 		
 		If ValueIsFilled(Items.ExternalUserGroups.CurrentRow) Then
@@ -166,9 +191,11 @@ Procedure ExternalUserGroupsBeforeAddRow(Item, Cancellation, Clone, Parent, Fold
 	
 EndProcedure
 
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF ExternalUsers TABLE 
 
 &AtClient
-Procedure ExternalUsersListValueChoice(Item, Value, StandardProcessing)
+Procedure ExternalUserListValueChoice(Item, Value, StandardProcessing)
 	
 	StandardProcessing = False;
 	
@@ -177,79 +204,100 @@ Procedure ExternalUsersListValueChoice(Item, Value, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure ExternalUsersListBeforeAddRow(Item, Cancellation, Clone, Parent, Folder)
+Procedure ExternalUserListBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
-	Cancellation = True;
+	Cancel = True;
 	
-	FormParameters = New Structure("GroupNewExternalUser", Items.ExternalUserGroups.CurrentRow);
+	FormParameters = New Structure("NewExternalUserGroup", Items.ExternalUserGroups.CurrentRow);
 	
-	If FilterAuthorizationObject <> Undefined Then
-		FormParameters.Insert("AuthorizationObjectOfNewExternalUser", FilterAuthorizationObject);
+	If AuthorizationObjectFilter <> Undefined Then
+		FormParameters.Insert("NewExternalUserAuthorizationObject", AuthorizationObjectFilter);
 	EndIf;
 	
-	If Clone And Item.CurrentData <> Undefined Then
+	If Copy And Item.CurrentData <> Undefined Then
 		FormParameters.Insert("CopyingValue", Item.CurrentRow);
 	EndIf;
 	
-	OpenForm("Catalog.ExternalUsers.ObjectForm", FormParameters, Items.ExternalUsersList);
-	
-EndProcedure
-
-
-&AtClient
-Procedure SelectHierarchicallyOnChange(Item)
-	
-	RefreshFormContentOnGroupChange();
+	OpenForm("Catalog.ExternalUsers.ObjectForm", FormParameters, Items.ExternalUserList);
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Auxiliary form procedures and functions
-//
+// FORM COMMAND HANDLERS
+
+&AtClient
+Procedure CreateExternalUserGroup(Command)
+	
+	Items.ExternalUserGroups.AddRow();
+	
+EndProcedure
+
+&AtClient
+Procedure ShowNotValidUsers(Command)
+	
+	ShowNotValidUsers = Not ShowNotValidUsers;
+	
+	Items.ShowNotValidUsers.Check = ShowNotValidUsers;
+	
+	If ShowNotValidUsers Then
+		CommonUseClientServer.DeleteFilterItems(ExternalUserList.Filter, "NotValid");
+	Else	
+		CommonUseClientServer.SetFilterItem(
+			ExternalUserList.Filter,
+			"NotValid",
+			False);
+	EndIf;
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
 
 &AtClient
 Procedure RefreshFormContentOnGroupChange(Val CurrentData = Undefined)
 	
-	If Items.ExternalUserGroups.CurrentRow = GroupExternalUsersAllUsers Then
+	If Not UseGroups
+	 Or Items.ExternalUserGroups.CurrentRow = ExternalUserGroupAllUsers Then
 		
-		DescriptionOfDisplayedExternalUsers = NStr("en = 'All external users'");
+		ExternalUserSummary = NStr("en = 'All external users'");
 		
-		Items.GroupShowExternalUsersOfChildGroups.CurrentPage = Items.GroupUnableToSetProperty;
-		RefreshDataCompositionParameterValue(ExternalUsersList, "SelectHierarchically", True);
+		Items.ShowChildGroupExternalUsersGroup.CurrentPage = Items.CannotSetPropertyGroup;
+		UpdateDataCompositionParameterValue(ExternalUserList, "SelectHierarchy", True);
 		
-	ElsIf Items.ExternalUserGroups.CurrentRow <> Undefined And
-	          CurrentData <> Undefined And
-	          CurrentData.AllAuthorizationObjects Then
-		
-		ItemPresentationOfTypeOfAuthorizationObject = PresentationOfTypesOfAuthorizationObjects.FindByValue(CurrentData.AuthorizationObjectType);
-		DescriptionOfDisplayedExternalUsers = StringFunctionsClientServer.SubstitureParametersInString(
-						NStr("en = 'All %1'"),
-						Lower(?(ItemPresentationOfTypeOfAuthorizationObject = Undefined, NStr("en = '<Invalid type>'"), ItemPresentationOfTypeOfAuthorizationObject.Presentation)) );
-		
-		Items.GroupShowExternalUsersOfChildGroups.CurrentPage = Items.GroupUnableToSetProperty;
-		RefreshDataCompositionParameterValue(ExternalUsersList, "SelectHierarchically", True);
+		UpdateDataCompositionParameterValue(ExternalUserList, "ExternalUserGroup", ExternalUserGroupAllUsers);
 	Else
-		Items.GroupShowExternalUsersOfChildGroups.CurrentPage = Items.GroupSetProperty;
-		RefreshDataCompositionParameterValue(ExternalUsersList, "SelectHierarchically", SelectHierarchically);
+		If Items.ExternalUserGroups.CurrentRow <> Undefined And
+		 CurrentData <> Undefined And
+		 CurrentData.AllAuthorizationObjects Then
+			//
+			AuthorizationObjectTypePresentationItem = AuthorizationObjectTypePresentation.FindByValue(CurrentData.AuthorizationObjectType);
+			ExternalUserSummary = StringFunctionsClientServer.SubstituteParametersInString(
+							NStr("en = 'All %1'"),
+							Lower(?(AuthorizationObjectTypePresentationItem = Undefined, NStr("en = '<Invalid type>'"), AuthorizationObjectTypePresentationItem.Presentation)) );
+			//
+			Items.ShowChildGroupExternalUsersGroup.CurrentPage = Items.CannotSetPropertyGroup;
+			UpdateDataCompositionParameterValue(ExternalUserList, "SelectHierarchy", True);
+		Else
+			Items.ShowChildGroupExternalUsersGroup.CurrentPage = Items.SetPropertyGroup;
+			UpdateDataCompositionParameterValue(ExternalUserList, "SelectHierarchy", SelectHierarchy);
+		EndIf;
+		UpdateDataCompositionParameterValue(ExternalUserList, "ExternalUserGroup", Items.ExternalUserGroups.CurrentRow);
 	EndIf;
-	
-	RefreshDataCompositionParameterValue(ExternalUsersList, "GroupExternalUsers", Items.ExternalUserGroups.CurrentRow);
 	
 EndProcedure
 
 &AtClientAtServerNoContext
-Procedure RefreshDataCompositionParameterValue(Val OwnerOfParameters, Val ParameterName, Val ValueOfParameter)
+Procedure UpdateDataCompositionParameterValue(Val ParameterOwner, Val ParameterName, Val ParameterValue)
 	
-	For each Parameter In OwnerOfParameters.Parameters.Items Do
+	For Each Parameter In ParameterOwner.Parameters.Items Do
 		If String(Parameter.Parameter) = ParameterName Then
-			If Parameter.Use And Parameter.Value = ValueOfParameter Then
+			If Parameter.Use And Parameter.Value = ParameterValue Then
 				Return;
 			EndIf;
 			Break;
 		EndIf;
 	EndDo;
 	
-	OwnerOfParameters.Parameters.SetParameterValue(ParameterName, ValueOfParameter);
+	ParameterOwner.Parameters.SetParameterValue(ParameterName, ParameterValue);
 	
 EndProcedure
-

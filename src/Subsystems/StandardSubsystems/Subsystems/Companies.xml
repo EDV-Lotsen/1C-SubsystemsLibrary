@@ -10,11 +10,13 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
 			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.CompanyPrefixes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOptionsParameter.Company</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Companies</xr:Item>
 			</Content>
 		</Properties>

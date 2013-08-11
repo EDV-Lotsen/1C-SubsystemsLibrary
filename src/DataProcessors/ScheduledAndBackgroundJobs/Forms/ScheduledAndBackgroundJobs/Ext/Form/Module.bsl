@@ -1,267 +1,97 @@
-﻿
-
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // FORM EVENT HANDLERS
-//
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	If NOT AccessRight("Administration", Metadata) Then
-		Raise(NStr("en = 'User does not have administrative rights!'"));
+	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
+	If Parameters.Property("SelfTest")  Then
+		Return;
 	EndIf;
-	Items.TableScheduledJobsProcessingSetup.Visible             = StandardSubsystemsOverrided.ClientParameters().FileInformationBase;
-	Items.TableScheduledJobsOpenSeparateProcessingSession.Visible = StandardSubsystemsOverrided.ClientParameters().FileInformationBase;
-	EmptyID = String(New Uuid("00000000-0000-0000-0000-000000000000"));
+	
+	If Not Users.InfoBaseUserWithFullAccess(, True) Then
+Raise NStr("en = 'Insufficient access rights.
+                 |
+                 |Only administrators can manage scheduled jobs.'");
+	EndIf;
+	
+	FileInfoBase = CommonUse.FileInfoBase();
+	EmptyID = String(New UUID("00000000-0000-0000-0000-000000000000"));
 	TextUndefined = ScheduledJobsServer.TextUndefined();
 	
-	If CommonUse.FileInformationBase() Then
+	If FileInfoBase Then
 		Items.UserName.Visible = False;
+		Items.ScheduledJobTableExecutionSettings.Visible = True;
+		Items.ScheduledJobTableStartSeparateSession.Visible = True;
+		Items.BackgroundJobTableCancel.Enabled = False;
 	EndIf;
 	
 EndProcedure
 
 &AtClient
-Procedure OnOpen(Cancellation)
+Procedure OnOpen(Cancel)
 	
-	If NOT SettingsLoaded Then
-		OnLoadDataFromSettingsAtServer(New Map);
+	If Not SettingsLoaded Then
+		FillFormSettings(New Map);
 	EndIf;
-	RefreshScheduledJobChoiceList();
+	
+	UpdateScheduledJobChoiceList();
 	
 EndProcedure
 
 &AtClient
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
-	If EventName = "ScheduledJobModified" Then
-		RefreshScheduledJobsTable();
-		RefreshScheduledJobChoiceList();
+	If EventName = "Write_ScheduledAndBackgroundJobs" Then
+		
+		If ValueIsFilled(Parameter) Then
+			UpdateScheduledJobTable(Parameter);
+		Else
+			AttachIdleHandler("DeferredUpdate", 0.1, True);
+		EndIf;
 	EndIf;
 	
 EndProcedure
 
 &AtServer
 Procedure OnLoadDataFromSettingsAtServer(Settings)
-		
-	RefreshScheduledJobsTable();
 	
-	// Configure filter of background jobs
-	If Settings.Get("FilterByActivityStatus") = Undefined Then
-		Settings.Insert("FilterByActivityStatus", True);
-	EndIf;
-	
-	If Settings.Get("FilterByCompletedStatus") = Undefined Then
-		Settings.Insert("FilterByCompletedStatus", True);
-	EndIf;
-	
-	If Settings.Get("FilterByCompletedStatusAborted") = Undefined Then
-		Settings.Insert("FilterByCompletedStatusAborted", True);
-	EndIf;
-
-	If Settings.Get("FilterByCancelledStatus") = Undefined Then
-		Settings.Insert("FilterByCancelledStatus", True);
-	EndIf;
-	
-	If Settings.Get("FilterByScheduledJob") = Undefined
-	 OR Settings.Get("ScheduledJobToBeFilteredID")   = Undefined Then
-		Settings.Insert("FilterByScheduledJob", False);
-		Settings.Insert("ScheduledJobToBeFilteredID", EmptyID);
-	EndIf;
-	
-	// Configure filter by period "No filter"
-	// (see. handler of event FilterKindByPeriodOnChange of radio button)
-	If Settings.Get("FilterKindByPeriod") = Undefined
-	 OR Settings.Get("FilterPeriodFrom")       = Undefined
-	 OR Settings.Get("FilterPeriodTo")      = Undefined Then
-		Settings.Insert("FilterKindByPeriod", 0);
-		Settings.Insert("FilterPeriodFrom",  BegOfDay(CurrentDate()) - 3*360);
-		Settings.Insert("FilterPeriodTo", BegOfDay(CurrentDate()) + 9*360);
-	EndIf;
-	
-	For each KeyAndValue In Settings Do
-		Try
-			ThisForm[KeyAndValue.Key] = KeyAndValue.Value;
-		Except
-		EndTry;
-	EndDo;
-	// Configure visibility and accessibility.
-	Items.FilterPeriodFrom.ReadOnly  = NOT (FilterKindByPeriod = 4);
-	Items.FilterPeriodTo.ReadOnly = NOT (FilterKindByPeriod = 4);
-	Items.ScheduledJobToBeFiltered.Enabled = FilterByScheduledJob;
-	
-	RefreshBackgroundJobsTable();
-	
+	FillFormSettings(Settings);
 	
 	SettingsLoaded = True;
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Event handlers of commands and form items
-//
-
-&AtClient
-Procedure ChangeScheduledJobExecute()
-	
-	AddCopyChangeScheduledJob("Change");
-	
-EndProcedure
-
-&AtClient
-Procedure RefreshDataExecute()
-	
-	RefreshData();
-	
-EndProcedure
-
-&AtClient
-Procedure OpenBackgroundJobExecute()
-	
-	If Items.TableBackgroundJobs.CurrentData = Undefined Then
-		DoMessageBox (NStr("en = 'Select a background job'"));
-	Else
-		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.BackgroundJob",
-		                     New Structure("Id", Items.TableBackgroundJobs.CurrentData.Id));
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure CancelBackgroundJobExecute()
-	
-	If Items.TableBackgroundJobs.CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select a background job'") );
-		
-	Else
-		CancelBackgroundJobAtServer(Items.TableBackgroundJobs.CurrentData.Id);
-		DoMessageBox( NStr("en = 'The job cancelled, but cancellation status
-                            |will be set in a few seconds,
-                            |you might need to perform manual update.'") );
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure OpenScheduledJobSheduleExecute()
-	
-	CurrentData = Items.TableScheduledJobs.CurrentData;
-	
-	If CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select a scheduled job'") );
-	Else
-		Dialog = New ScheduledJobDialog(ScheduledJobsServer.GetScheduledJobSchedule(CurrentData.Id));
-		If Dialog.DoModal() Then
-			ScheduledJobsServer.SetScheduledJobSchedule(CurrentData.Id, Dialog.Schedule);
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure OpenSeparateSessionOfScheduledJobsProcessingExecute()
-	
-	AttachIdleHandler("OpenSeparateSessionOfScheduledJobsProcessingViaIdleHandler", 1, True);
-	
-EndProcedure
-
-&AtClient
-Procedure ScheduledJobsProcessingSettingsExecute()
-	
-	FormParameters = New Structure("HideCommandOfSeparateSessionOpening", True);
-	
-	OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobsProcessingSettings", FormParameters);
-	
-EndProcedure
-
-&AtClient
-Procedure ProcessScheduledJobManuallyExecute()
-
-	If Items.TableScheduledJobs.CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select a scheduled job'") );
-	Else
-		For each SelectedRow In Items.TableScheduledJobs.SelectedRows Do
-			CurrentData = TableScheduledJobs.FindByID(SelectedRow);
-			BackgroundTaskID = "";
-			If StandardSubsystemsClientSecondUse.ClientParameters().FileInformationBase Then
-				StartMoment = CurrentDate();
-				ShowUserNotification(NStr("en = 'Scheduled job is running'"), ,
-					StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1.
-                                                                                   |The procedure has been started in this session %2'"),
-						CurrentData.Description,
-						String(StartMoment)),
-					PictureLib.RunScheduledJobManually);
-				ProcessScheduledJobManuallyAtServer(CurrentData.Id, StartMoment, BackgroundTaskID);
-			Else
-				StartMoment = Undefined;
-				ProcessScheduledJobManuallyAtServer(CurrentData.Id, StartMoment, BackgroundTaskID);
-				ShowUserNotification(NStr("en = 'Scheduled job is running'"), ,
-					StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1.
-                                                                                   |The procedure has been started in background job %2'"),
-						CurrentData.Description,
-						String(StartMoment)),
-					PictureLib.RunScheduledJobManually);
-			EndIf;
-			JobIDsOnManualProcessing.Add(BackgroundTaskID, CurrentData.Description);
-			AttachIdleHandler("MessageAboutEndingOfManualProcessingOfScheduledJob", 1, True);
-		EndDo;
-		
-		
-		For i=0 to 100 do
-		For each SelectedRow In Items.TableScheduledJobs.SelectedRows Do
-			CurrentData = TableScheduledJobs.FindByID(SelectedRow);
-			BackgroundTaskID = "";
-			If StandardSubsystemsClientSecondUse.ClientParameters().FileInformationBase Then
-				StartMoment = CurrentDate();
-				ShowUserNotification(NStr("en = 'Scheduled job is running'"), ,
-					StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1.
-                                                                                   |The procedure has been started in this session %2'"),
-						CurrentData.Description,
-						String(StartMoment)),
-					PictureLib.RunScheduledJobManually);
-				ProcessScheduledJobManuallyAtServer(CurrentData.Id, StartMoment, BackgroundTaskID);
-			Else
-				StartMoment = Undefined;
-				ProcessScheduledJobManuallyAtServer(CurrentData.Id, StartMoment, BackgroundTaskID);
-				ShowUserNotification(NStr("en = 'Scheduled job started'"), ,
-					StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1.
-                                                                                   |The procedure is started in background job %2'"),
-						CurrentData.Description,
-						String(StartMoment)),
-					PictureLib.RunScheduledJobManually);
-			EndIf;
-			JobIDsOnManualProcessing.Add(BackgroundTaskID, CurrentData.Description);
-			AttachIdleHandler("MessageAboutEndingOfManualProcessingOfScheduledJob", 1, True);
-		EndDo;
-		Enddo;
-			
-		
-		
-	EndIf;
-	
-EndProcedure
-
+// FORM HEADER ITEM EVENT HANDLERS
 
 &AtClient
 Procedure FilterKindByPeriodOnChange(Item)
-
-	Items.FilterPeriodFrom.ReadOnly  = NOT (FilterKindByPeriod = 4);
-	Items.FilterPeriodTo.ReadOnly = NOT (FilterKindByPeriod = 4);
+	
+	CurrentSessionDate = CurrentSessionDateAtServer();
+	
+	Items.FilterPeriodFrom.ReadOnly  = Not (FilterKindByPeriod = 4);
+	Items.FilterPeriodTill.ReadOnly = Not (FilterKindByPeriod = 4);
+	
 	If FilterKindByPeriod = 0 Then
-		FilterPeriodFrom = '00010101';
-		FilterPeriodTo   = '00010101';
+		FilterPeriodFrom  = '00010101';
+		FilterPeriodTill = '00010101';
+		
 	ElsIf FilterKindByPeriod = 1 Then
-		FilterPeriodFrom = BegOfDay(CurrentDate()) - 3*3600;
-		FilterPeriodTo   = BegOfDay(CurrentDate()) + 9*3600;
+		FilterPeriodFrom  = BegOfDay(CurrentSessionDate) - 3*3600;
+		FilterPeriodTill = BegOfDay(CurrentSessionDate) + 9*3600;
+		
 	ElsIf FilterKindByPeriod = 2 Then
-		FilterPeriodFrom = BegOfDay(CurrentDate()) - 24*3600;
-		FilterPeriodTo   = EndOfDay(FilterPeriodFrom);
+		FilterPeriodFrom  = BegOfDay(CurrentSessionDate) - 24*3600;
+		FilterPeriodTill = EndOfDay(FilterPeriodFrom);
+		
 	ElsIf FilterKindByPeriod = 3 Then
-		FilterPeriodFrom = BegOfDay(CurrentDate());
-		FilterPeriodTo   = EndOfDay(FilterPeriodFrom);
+		FilterPeriodFrom  = BegOfDay(CurrentSessionDate);
+		FilterPeriodTill = EndOfDay(FilterPeriodFrom);
+		
 	ElsIf FilterKindByPeriod = 4 Then
-		FilterPeriodFrom = BegOfDay(CurrentDate());
-		FilterPeriodTo   = FilterPeriodFrom;
+		FilterPeriodFrom  = BegOfDay(CurrentSessionDate);
+		FilterPeriodTill = FilterPeriodFrom;
 	EndIf;
 	
 EndProcedure
@@ -269,334 +99,746 @@ EndProcedure
 &AtClient
 Procedure FilterByScheduledJobOnChange(Item)
 
-	Items.ScheduledJobToBeFiltered.Enabled = FilterByScheduledJob;
+	Items.ScheduledJobForFilter.Enabled = FilterByScheduledJob;
 	
 EndProcedure
 
 &AtClient
-Procedure ScheduledJobToBeFilteredClear(Item, StandardProcessing)
+Procedure ScheduledJobForFilterClear(Item, StandardProcessing)
 
 	StandardProcessing = False;
-	ScheduledJobToBeFilteredID = EmptyID;
-	ScheduledJobToBeFilteredPresentation = TextUndefined;
+	ScheduledJobForFilterID = EmptyID;
+	ScheduledJobForFilterPresentation = TextUndefined;
 	
 EndProcedure
 
 &AtClient
-Procedure ScheduledJobToBeFilteredChoiceProcessing(Item, ValueSelected, StandardProcessing)
+Procedure ScheduledJobForFilterChoiceProcessing(Item, SelectedValue, StandardProcessing)
 	
-	ItemOfList = Items.ScheduledJobToBeFiltered.ChoiceList.FindByValue(ValueSelected);
-	ScheduledJobToBeFilteredID = ItemOfList.Value;
-	ScheduledJobToBeFilteredPresentation = ItemOfList.Presentation;
+	ListItem = Items.ScheduledJobForFilter.ChoiceList.FindByValue(SelectedValue);
+	ScheduledJobForFilterID = ListItem.Value;
+	ScheduledJobForFilterPresentation = ListItem.Presentation;
 	StandardProcessing = False;
 	
 EndProcedure
-
-&AtClient
-Procedure ClearBackgroundJobsHistory(Command)
-	
-	ClearBackgroundJobsHistoryAtServer();
-	
-EndProcedure
-
-&AtServer
-Procedure ClearBackgroundJobsHistoryAtServer()
-	
-	ScheduledJobsServer.ClearBackgroundJobsHistory();
-	RefreshData();
-	
-EndProcedure
-
-
-&AtClient
-Procedure TableBackgroundJobsSelection(Item, RowSelected, Field, StandardProcessing)
-	
-	OpenBackgroundJobExecute();
-	
-EndProcedure
-
-&AtClient
-Procedure TableScheduledJobsSelection(Item, RowSelected, Field, StandardProcessing)
-	
-	ChangeScheduledJobExecute();
-	
-EndProcedure
-
-&AtClient
-Procedure TableScheduledJobsBeforeAddRow(Item, Cancellation, Clone, Parent, Folder)
-	
-	Cancellation = True;
-	
-	AddCopyChangeScheduledJob(?(Clone, "Copy", "Add"));
-	
-EndProcedure
-
-&AtClient
-Procedure TableScheduledJobsBeforeDelete(Item, Cancellation)
-	
-	Cancellation = True;
-	
-	If Items.TableScheduledJobs.SelectedRows.Count() > 1 Then
-		DoMessageBox(NStr("en = 'Select one scheduled job.'"));
-	ElsIf Item.CurrentData.Predefined Then
-		DoMessageBox( NStr("en = 'It is impossible to delete predefined scheduled job.'") );
-	ElsIf DoQueryBox(NStr("en = 'Delete scheduled job?'"), QuestionDialogMode.YesNo) = DialogReturnCode.Yes Then
-		DeleteScheduledJobExecuteAtServer(Items.TableScheduledJobs.CurrentData.Id);
-	EndIf;
-	
-EndProcedure
-
 
 ////////////////////////////////////////////////////////////////////////////////
-// Auxiliary form procedures and functions
-//
+// FORM TABLE EVENT HANDLERS OF BackgroundJobTable TABLE 
 
-&AtServer
-Procedure RefreshScheduledJobChoiceList()
+&AtClient
+Procedure BackgroundJobTableChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	Table = TableScheduledJobs;
-	List = Items.ScheduledJobToBeFiltered.ChoiceList;
-	// Add predefined item.
-	If List.Count() = 0 Then
-		List.Add(EmptyID, TextUndefined);
-	EndIf;
-	IndexOf = 1;
-	For each SchTask IN Table Do
-		If IndexOf >= List.Count() OR List[IndexOf].Value <> SchTask.Id Then
-			// Insert new job
-			List.Insert(IndexOf, SchTask.Id, SchTask.Description);
-		Else
-			List[IndexOf].Presentation = SchTask.Description;
-		EndIf;
-		IndexOf = IndexOf + 1;
-	EndDo;
-	// Delete needless rows
-	While IndexOf < List.Count() Do
-		List.Delete(IndexOf);
-	EndDo;
-	
-	ItemOfList = List.FindByValue(ScheduledJobToBeFilteredID);
-	If ItemOfList = Undefined Then
-		ScheduledJobToBeFilteredID = EmptyID;
-		ScheduledJobToBeFilteredPresentation = TextUndefined;
-	Else
-		ScheduledJobToBeFilteredPresentation = ItemOfList.Presentation;
-	EndIf;
+	OpenBackgroundJob();
 	
 EndProcedure
 
-&AtServer
-Procedure ProcessScheduledJobManuallyAtServer(Val ScheduledJobID, StartMoment, BackgroundTaskID)
-	
-	ScheduledJobsServer.ProcessScheduledJobManually(ScheduledJobID, StartMoment, BackgroundTaskID);
-	
-	RefreshData();
-	
-EndProcedure
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF ScheduledJobTable TABLE 
 
-&AtServer
-Procedure CancelBackgroundJobAtServer(Id)
+&AtClient
+Procedure ScheduledJobTableChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	ScheduledJobsServer.CancelBackgroundJob(Id);
-	
-	RefreshData();
-	
-EndProcedure
-
-
-&AtServer
-Procedure DeleteScheduledJobExecuteAtServer(Id)
-	
-	SchTask = ScheduledJobsServer.GetScheduledJob(Id);
-	String = TableScheduledJobs.FindRows(New Structure("Id", Id))[0];
-	SchTask.Delete();
-	TableScheduledJobs.Delete(TableScheduledJobs.IndexOf(String));
+	EditScheduledJob("Change");
 	
 EndProcedure
 
 &AtClient
-Procedure AddCopyChangeScheduledJob(Action)
+Procedure ScheduledJobTableBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
-	If Items.TableScheduledJobs.CurrentData = Undefined Then
-		DoMessageBox ( NStr("en = 'Select a scheduled job.'") );
+	Cancel = True;
+	
+	EditScheduledJob(?(Copy, "Copy", "Add"));
+	
+EndProcedure
+
+&AtClient
+Procedure ScheduledJobTableBeforeDelete(Item, Cancel)
+	
+	Cancel = True;
+	
+	If Items.ScheduledJobTable.SelectedRows.Count() > 1 Then
+		DoMessageBox(NStr("en = 'Select one scheduled job.'"));
 		
-	ElsIf Action = "Change" And Items.TableScheduledJobs.SelectedRows.Count() > 1 Then
-		DoMessageBox(NStr("en = 'Select a scheduled job.'"));
+	ElsIf Item.CurrentData.Predefined Then
+		DoMessageBox(NStr("en = 'Predefined scheduled job cannot be deleted.'") );
 	Else
-		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJob",
-		                     New Structure("Id, Action",
-		                                      Items.TableScheduledJobs.CurrentData.Id,
-		                                      Action));
+		Response = DoQueryBox(NStr("en = 'Do you want to delete the scheduled job?'"), QuestionDialogMode.YesNo);
+		If Response = DialogReturnCode.Yes Then
+			
+			DeleteScheduledJobExecuteAtServer(
+				Items.ScheduledJobTable.CurrentData.ID);
+		EndIf;
 	EndIf;
 	
 EndProcedure
 
+////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
 
 &AtClient
-Procedure MessageAboutEndingOfManualProcessingOfScheduledJob()
-	
-	AlertsAboutProcessingEnding = AlertsAboutScheduledJobsProcessingEnding();
-	For each Alert In AlertsAboutProcessingEnding Do
-			ShowUserNotification(NStr("en = 'Scheduled job completed'"), ,
-				StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1.
-                                                                               |The procedure completed %2'"),
-					Alert.ScheduledJobPresentation,
-					String(Alert.EndMoment)),
-				PictureLib.RunScheduledJobManually);
-	EndDo;
-	
-	If JobIDsOnManualProcessing.Count() > 0 Then
-		AttachIdleHandler("MessageAboutEndingOfManualProcessingOfScheduledJob", 1, True);
-	EndIf;
+Procedure ExecuteScheduledJobManually(Command)
 
-EndProcedure
-
-&AtServer
-Function AlertsAboutScheduledJobsProcessingEnding()
-	
-	AlertsAboutProcessingEnding = New Array;
-	If JobIDsOnManualProcessing.Count() > 0 Then
-		IndexOf = JobIDsOnManualProcessing.Count() - 1;
-		While IndexOf >= 0 Do
-			EndMoment = ScheduledJobsServer.GetBackgroundJobProperties(JobIDsOnManualProcessing[IndexOf].Value, "End").End;
-			If ValueIsFilled(EndMoment) Then
-				AlertsAboutProcessingEnding.Add(New Structure("ScheduledJobPresentation, EndMoment", JobIDsOnManualProcessing[IndexOf].Presentation, EndMoment));
-				JobIDsOnManualProcessing.Delete(IndexOf);
+	If Items.ScheduledJobTable.CurrentData = Undefined Then
+		DoMessageBox( NStr("en = 'Select the scheduled job.'") );
+	Else
+		SelectedRows = Items.ScheduledJobTable.SelectedRows;
+		SelectedRows = New Array;
+		For Each SelectedRow In Items.ScheduledJobTable.SelectedRows Do
+			SelectedRows.Add(SelectedRow);
+		EndDo;
+		Index = 0;
+		
+		For Each SelectedRow In SelectedRows Do
+			UpdateAll = Index = SelectedRows.Count()-1;
+			ProcedureAlreadyExecuting = Undefined;
+			CurrentData = ScheduledJobTable.FindByID(SelectedRow);
+			
+			If FileInfoBase Then
+				
+				StartedAt      = Undefined;
+				FinishedAt     = Undefined;
+				SessionNumber  = Undefined;
+				SessionStarted = Undefined;
+				If ExecuteScheduledJobManuallyAtServer(
+						CurrentData.ID,
+						StartedAt,
+						,
+						FinishedAt,
+						SessionNumber,
+						SessionStarted,
+						,
+						UpdateAll,
+						ProcedureAlreadyExecuting) Then
+					
+					ShowUserNotification(
+						NStr("en = 'Scheduled job procedure is complete'"),
+						,
+						StringFunctionsClientServer.SubstituteParametersInString(NStr("en = '%1.
+							|The procedure was executed from %2 till %3'"),
+							CurrentData.Description,
+							String(StartedAt),
+							String(FinishedAt)),
+						PictureLib.ExecuteScheduledJobManually);
+				Else
+					If ProcedureAlreadyExecuting Then
+						
+						CommonUseClientServer.MessageToUser(
+							StringFunctionsClientServer.SubstituteParametersInString(
+								NStr("en = 'Cannot start the %1 scheduled job procedure because it is being executed in the %2 session started at %3.'"),
+								CurrentData.Description,
+								String(SessionNumber),
+								String(SessionStarted)));
+					Else
+						Items.ScheduledJobTable.SelectedRows.Delete(
+							Items.ScheduledJobTable.SelectedRows.Find(SelectedRow));
+					EndIf;
+				EndIf;
+			Else
+				StartedAt                 = Undefined;
+				BackgroundJobID           = "";
+				BackgroundJobPresentation = "";
+				
+				If ExecuteScheduledJobManuallyAtServer(
+						CurrentData.ID,
+						StartedAt,
+						BackgroundJobID,
+						,
+						,
+						,
+						BackgroundJobPresentation,
+						UpdateAll,
+						ProcedureAlreadyExecuting) Then
+					
+					ShowUserNotification(
+						NStr("en = 'Scheduled job procedure has been started'"),
+						,
+						StringFunctionsClientServer.SubstituteParametersInString(NStr("en = '%1.
+							|The procedure is being executed in the %2 background job.'"),
+							CurrentData.Description,
+							String(StartedAt)),
+						PictureLib.ExecuteScheduledJobManually);
+					
+					BackgroundJobIDsOnManualChange.Add(
+						BackgroundJobID,
+						CurrentData.Description);
+					
+					AttachIdleHandler(
+						"NotifyAboutScheduledJobCompletion", 0.1, True);
+				Else
+					If ProcedureAlreadyExecuting Then
+						
+						CommonUseClientServer.MessageToUser(
+							StringFunctionsClientServer.SubstituteParametersInString(
+								NStr("en = 'Cannot start the %1 scheduled job procedure because it is being executed in the %2 session started at %3.'"),
+								CurrentData.Description,
+								BackgroundJobPresentation,
+								String(StartedAt)));
+					Else
+						Items.ScheduledJobTable.SelectedRows.Delete(
+							Items.ScheduledJobTable.SelectedRows.Find(SelectedRow));
+					EndIf;
+				EndIf;
 			EndIf;
-			IndexOf = IndexOf - 1;
+			Index = Index + 1;
 		EndDo;
 	EndIf;
 	
-	RefreshData();
+EndProcedure
+
+&AtClient
+Procedure StartSeparateSession(Command)
 	
-	Return AlertsAboutProcessingEnding;
+	Status(NStr("en = 'Starting a separate session to perform scheduled jobs.'"),
+	          ,
+	          NStr("en = 'Please wait...'"));
+	
+	AttachIdleHandler(
+		"StartSeparateSessionToExecuteScheduledJobsViaIdleHandler", 1, True);
+	
+EndProcedure
+
+&AtClient
+Procedure EditScheduledJobExecute(Command)
+	
+	EditScheduledJob("Change");
+	
+EndProcedure
+
+&AtClient
+Procedure ScheduledJobExecutionSetup(Command)
+	
+	FormParameters = New Structure("HideSeparateSessionStartCommand", True);
+	
+	OpenFormModal(
+		"DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecutionSetup",
+		FormParameters);
+	
+EndProcedure
+
+&AtClient
+Procedure UpdateDataExecute(Command)
+	
+	UpdateData();
+	
+EndProcedure
+
+&AtClient
+Procedure OpenJobScheduleExecute(Command)
+	
+	CurrentData = Items.ScheduledJobTable.CurrentData;
+	
+	If CurrentData = Undefined Then
+		DoMessageBox( NStr("en = 'Select the scheduled job.'") );
+	Else
+		Dialog = New ScheduledJobDialog(
+			ScheduledJobsClient.GetJobSchedule(CurrentData.ID));
+		
+		If Dialog.DoModal() Then
+			
+			ScheduledJobsClient.SetJobSchedule(
+				CurrentData.ID,
+				Dialog.Schedule);
+			
+			UpdateScheduledJobTable(CurrentData.ID);
+		EndIf;
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure OpenBackgroundJobExecute(Command)
+	
+	OpenBackgroundJob();
+	
+EndProcedure
+
+&AtClient
+Procedure CancelBackgroundJobExecute(Command)
+	
+	If Items.BackgroundJobTable.CurrentData = Undefined Then
+		DoMessageBox( NStr("en = 'Select the background job.'") );
+		
+	Else
+		CancelBackgroundJobAtServer(Items.BackgroundJobTable.CurrentData.ID);
+		
+		DoMessageBox(NStr("en = 'The job is canceled but the state will be updated in 
+		                        |a few seconds, perhaps you will need to update data manually.'"));
+	EndIf;
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+&AtServer
+Procedure FillFormSettings(Val Settings)
+	
+	UpdateScheduledJobTable();
+	
+	// Setting the background job filter.
+	If Settings.Get("FilterByActiveState") = Undefined Then
+		Settings.Insert("FilterByActiveState", True);
+	EndIf;
+	
+	If Settings.Get("FilterByCompletedState") = Undefined Then
+		Settings.Insert("FilterByCompletedState", True);
+	EndIf;
+	
+	If Settings.Get("FilterByFailedState") = Undefined Then
+		Settings.Insert("FilterByFailedState", True);
+	EndIf;
+
+	If Settings.Get("FilterByCanceledState") = Undefined Then
+		Settings.Insert("FilterByCanceledState", True);
+	EndIf;
+	
+	If Settings.Get("FilterByScheduledJob") = Undefined
+	 Or Settings.Get("ScheduledJobForFilterID") = Undefined Then
+		Settings.Insert("FilterByScheduledJob", False);
+		Settings.Insert("ScheduledJobForFilterID", EmptyID);
+	EndIf;
+	
+	// Setting filter by the "No filter" period.
+	// See also the FilterKindByPeriodOnChange switch event handler.
+	If Settings.Get("FilterKindByPeriod") = Undefined
+	Or Settings.Get("FilterPeriodFrom")   = Undefined
+	Or Settings.Get("FilterPeriodTill")   = Undefined Then
+		
+		Settings.Insert("FilterKindByPeriod", 0);
+		CurrentSessionDate = CurrentSessionDate();
+		Settings.Insert("FilterPeriodFrom",  BegOfDay(CurrentSessionDate) - 3*3600);
+		Settings.Insert("FilterPeriodTill", BegOfDay(CurrentSessionDate) + 9*3600);
+	EndIf;
+	
+	For Each KeyAndValue In Settings Do
+		Try
+			ThisForm[KeyAndValue.Key] = KeyAndValue.Value;
+		Except
+		EndTry;
+	EndDo;
+	
+	// Setting visibility and availability.
+	Items.FilterPeriodFrom.ReadOnly  = Not (FilterKindByPeriod = 4);
+	Items.FilterPeriodTill.ReadOnly = Not (FilterKindByPeriod = 4);
+	Items.ScheduledJobForFilter.Enabled = FilterByScheduledJob;
+	
+	UpdateBackgroundJobTable();
+	
+EndProcedure
+
+&AtClient
+Procedure OpenBackgroundJob()
+	
+	If Items.BackgroundJobTable.CurrentData = Undefined Then
+		DoMessageBox (NStr("en = 'Select the background job.'"));
+	Else
+		PassedPropertyList =
+		"ID,
+		|Key,
+		|Description,
+		|MethodName,
+		|State,
+		|Start,
+		|End,
+		|Location,
+		|UserMessagesAndErrorDetails,
+		|ScheduledJobID,
+		|ScheduledJobDescription";
+		CurrentDataValues = New Structure(PassedPropertyList);
+		FillPropertyValues(CurrentDataValues, Items.BackgroundJobTable.CurrentData);
+		
+		FormParameters = New Structure;
+		FormParameters.Insert("ID", Items.BackgroundJobTable.CurrentData.ID);
+		FormParameters.Insert("BackgroundJobProperties", CurrentDataValues);
+		
+		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.BackgroundJob", FormParameters);
+	EndIf;
+	
+EndProcedure
+
+&AtServerNoContext
+Function CurrentSessionDateAtServer()
+	
+	Return CurrentSessionDate();
 	
 EndFunction
 
 &AtServer
-Procedure RefreshData()
+Function ScheduledJobsFinishedNotification()
 	
-	RefreshScheduledJobsTable();
-	RefreshBackgroundJobsTable();
-	RefreshScheduledJobChoiceList();
+	CompletionNotifications = New Array;
+	
+	If BackgroundJobIDsOnManualChange.Count() > 0 Then
+		Index = BackgroundJobIDsOnManualChange.Count() - 1;
+		
+		SetPrivilegedMode(True);
+		While Index >= 0 Do
+			
+			Filter = New Structure("UUID", New UUID(
+				BackgroundJobIDsOnManualChange[Index].Value));
+			
+			BackgroundJobArray = BackgroundJobs.GetBackgroundJobs(Filter);
+			
+			If BackgroundJobArray.Count() = 1 Then
+				FinishedAt = BackgroundJobArray[0].End;
+				
+				If ValueIsFilled(FinishedAt) Then
+					
+					CompletionNotifications.Add(
+						New Structure(
+							"ScheduledJobPresentation,
+							|FinishedAt",
+							BackgroundJobIDsOnManualChange[Index].Presentation,
+							FinishedAt));
+					
+					BackgroundJobIDsOnManualChange.Delete(Index);
+				EndIf;
+			Else
+				BackgroundJobIDsOnManualChange.Delete(Index);
+			EndIf;
+			Index = Index - 1;
+		EndDo;
+		SetPrivilegedMode(False);
+	EndIf;
+	
+	UpdateData();
+	
+	Return CompletionNotifications;
+	
+EndFunction
+
+&AtClient
+Procedure NotifyAboutScheduledJobCompletion()
+	
+	CompletionNotifications = ScheduledJobsFinishedNotification();
+	
+	For Each Notification In CompletionNotifications Do
+		
+		ShowUserNotification(
+			NStr("en = 'Schedule job procedure is complete'"),
+			,
+			StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = '%1.
+				           |The procedure is been completed in the %2 background job.'"),
+				Notification.ScheduledJobPresentation,
+				String(Notification.FinishedAt)),
+			PictureLib.ExecuteScheduledJobManually);
+	EndDo;
+	
+	If BackgroundJobIDsOnManualChange.Count() > 0 Then
+		
+		AttachIdleHandler(
+			"NotifyAboutScheduledJobCompletion", 2, True);
+	EndIf;
+
+EndProcedure
+
+&AtServer
+Procedure UpdateScheduledJobChoiceList()
+	
+	Table = ScheduledJobTable;
+	List  = Items.ScheduledJobForFilter.ChoiceList;
+	
+	// Adding the predefined item
+	If List.Count() = 0 Then
+		List.Add(EmptyID, TextUndefined);
+	EndIf;
+	
+	Index = 1;
+	For Each Job In Table Do
+		If Index >= List.Count()
+		 Or List[Index].Value <> Job.ID Then
+			// Inserting a new job
+			List.Insert(Index, Job.ID, Job.Description);
+		Else
+			List[Index].Presentation = Job.Description;
+		EndIf;
+		Index = Index + 1;
+	EndDo;
+	
+	// Deleting excess rows.
+	While Index < List.Count() Do
+		List.Delete(Index);
+	EndDo;
+	
+	ListItem = List.FindByValue(ScheduledJobForFilterID);
+	If ListItem = Undefined Then
+		
+		ScheduledJobForFilterID = EmptyID;
+		ScheduledJobForFilterPresentation = TextUndefined;
+	Else
+		ScheduledJobForFilterPresentation = ListItem.Presentation;
+	EndIf;
 	
 EndProcedure
 
 &AtServer
-Procedure RefreshScheduledJobsTable()
+Function ExecuteScheduledJobManuallyAtServer(Val ScheduledJobID,
+                                                 StartedAt,
+                                                 BackgroundJobID,
+                                                 FinishedAt = Undefined,
+                                                 SessionNumber = Undefined,
+                                                 SessionStarted = Undefined,
+                                                 BackgroundJobPresentation = Undefined,
+                                                 UpdateAll = False,
+                                                 ProcedureAlreadyExecuting = Undefined)
+	
+	If FileInfoBase Then
+		StartedAt = CurrentSessionDate();
+	EndIf;
+	
+	Started = ScheduledJobsServer.ExecuteScheduledJobManually(
+		ScheduledJobID,
+		StartedAt,
+		BackgroundJobID,
+		FinishedAt,
+		SessionNumber,
+		SessionStarted,
+		BackgroundJobPresentation,
+		ProcedureAlreadyExecuting);
+	
+	If UpdateAll Then
+		UpdateData();
+	Else
+		UpdateScheduledJobTable(ScheduledJobID);
+	EndIf;
+	
+	Return Started;
+	
+EndFunction
 
-	// Update TableScheduledJobs and ChoiceList of scheduled job for filter.
-	CurrentTasks = ScheduledJobs.GetScheduledJobs();
-	Table = TableScheduledJobs;
-	IndexOf = 0;
-	For each SchTask IN CurrentTasks Do
-		Id = String(SchTask.Uuid);
-		If IndexOf >= Table.Count() OR Table[IndexOf].Id <> Id Then
-			// Insert new job
-			Updated = Table.Insert(IndexOf);
-			// Assign unique ID
-			Updated.Id = Id;
-		Else
-			Updated = Table[IndexOf];
-		EndIf;
-		FillPropertyValues(Updated, SchTask);
-		// Clarify Description
-		Updated.Description = ScheduledJobsServer.ScheduledJobPresentation(SchTask);
-		// Assign CompletionDate and CompletionStatus by last background procedure
-		LastBackgroundJobProperties = ScheduledJobsServer.GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor(SchTask);
-		If LastBackgroundJobProperties = Undefined Then
-			Updated.EndDate       = TextUndefined;
-			Updated.RunStatus = TextUndefined;
-		Else
-			Updated.EndDate       = ?(ValueIsFilled(LastBackgroundJobProperties.End),
-			                                    LastBackgroundJobProperties.End,
-			                                    "<>");
-			Updated.RunStatus = LastBackgroundJobProperties.State;
-		EndIf;
-		IndexOf = IndexOf + 1;
-	EndDo;
-	// Delete needless rows
-	While IndexOf < Table.Count() Do
-		Table.Delete(IndexOf);
-	EndDo;
+&AtServer
+Procedure CancelBackgroundJobAtServer(Val ID)
+	
+	ScheduledJobsServer.CancelBackgroundJob(ID);
+	
+	UpdateData();
 	
 EndProcedure
 
 &AtServer
-Procedure RefreshBackgroundJobsTable()
+Procedure DeleteScheduledJobExecuteAtServer(Val ID)
 	
-	// 1. Create filter
+	Job = ScheduledJobsServer.GetScheduledJob(ID);
+	String = ScheduledJobTable.FindRows(New Structure("ID", ID))[0];
+	Job.Delete();
+	ScheduledJobTable.Delete(ScheduledJobTable.IndexOf(String));
+	
+EndProcedure
+
+&AtClient
+Procedure EditScheduledJob(Val Action)
+	
+	If Items.ScheduledJobTable.CurrentData = Undefined Then
+		DoMessageBox ( NStr("en = 'Select the scheduled job.'") );
+		
+	ElsIf Action = "Change"
+	        And Items.ScheduledJobTable.SelectedRows.Count() > 1 Then
+		
+		DoMessageBox(NStr("en = 'Select one scheduled job.'"));
+	Else
+		FormParameters = New Structure;
+		FormParameters.Insert("ID", Items.ScheduledJobTable.CurrentData.ID);
+		FormParameters.Insert("Action",      Action);
+		
+		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJob", FormParameters);
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure DeferredUpdate()
+	
+	UpdateData();
+	
+EndProcedure
+
+&AtServer
+Procedure UpdateData()
+	
+	UpdateScheduledJobTable();
+	UpdateBackgroundJobTable();
+	UpdateScheduledJobChoiceList();
+	
+EndProcedure
+
+&AtServer
+Procedure UpdateScheduledJobTable(ScheduledJobID = Undefined)
+
+	// Updating the ScheduledJobs table and the ChoiceList scheduled job list for a filter
+	CurrentJobs = ScheduledJobs.GetScheduledJobs();
+	Table = ScheduledJobTable;
+	
+	If ScheduledJobID = Undefined Then
+		
+		Index = 0;
+		For Each Job In CurrentJobs Do
+			ID = String(Job.UUID);
+			
+			If Index >= Table.Count()
+			 Or Table[Index].ID <> ID Then
+				
+				// Inserting a new job
+				Update = Table.Insert(Index);
+				
+				// Setting UUID
+				Update.ID = ID;
+			Else
+				Update = Table[Index];
+			EndIf;
+			UpdateScheduledJobTableRow(Update, Job);
+			Index = Index + 1;
+		EndDo;
+	
+		// Deleting excess rows
+		While Index < Table.Count() Do
+			Table.Delete(Index);
+		EndDo;
+	Else
+		Job = ScheduledJobs.FindByUUID(
+			New UUID(ScheduledJobID));
+		
+		Rows = Table.FindRows(
+			New Structure("ID", ScheduledJobID));
+		
+		If Job <> Undefined
+		   And Rows.Count() > 0 Then
+			
+			UpdateScheduledJobTableRow(Rows[0], Job);
+		EndIf;
+	EndIf;
+	
+	Items.ScheduledJobTable.Refresh();
+	
+EndProcedure
+
+&AtServer
+Procedure UpdateScheduledJobTableRow(String, Job);
+	
+	FillPropertyValues(String, Job);
+	
+	// Giving a more precise description
+	String.Description = ScheduledJobsServer.ScheduledJobPresentation(Job);
+	
+	// Setting EndDate and ExecutionState by last background procedure
+	LastBackgroundJobProperties = ScheduledJobsServer
+		.GetLastBackgroundJobForScheduledJobExecutionProperties(Job);
+	
+	If LastBackgroundJobProperties = Undefined Then
+		
+		String.EndDate       = TextUndefined;
+		String.ExecutionState = TextUndefined;
+	Else
+		String.EndDate       = ?(ValueIsFilled(LastBackgroundJobProperties.End),
+		                               LastBackgroundJobProperties.End,
+		                               "<>");
+		String.ExecutionState = LastBackgroundJobProperties.State;
+	EndIf;
+		
+EndProcedure
+
+&AtServer
+Procedure UpdateBackgroundJobTable()
+	
+	// 1. Preparing a filter
 	Filter = New Structure;
-	// 1.1. Add filter by statuses
-	StatesArray = New Array;
-	If FilterByActivityStatus Then 
-		StatesArray.Add(BackgroundJobState.Active);
+	
+	// 1.1. Adding a filter by states
+	StateArray = New Array;
+	
+	If FilterByActiveState Then 
+		StateArray.Add(BackgroundJobState.Active);
 	EndIf;
-	If FilterByCompletedStatus Then 
-		StatesArray.Add(BackgroundJobState.Completed);
+	
+	If FilterByCompletedState Then 
+		StateArray.Add(BackgroundJobState.Completed);
 	EndIf;
-	If FilterByCompletedStatusAborted Then 
-		StatesArray.Add(BackgroundJobState.Failed);
+	
+	If FilterByFailedState Then 
+		StateArray.Add(BackgroundJobState.Failed);
 	EndIf;
-	If FilterByCancelledStatus Then 
-		StatesArray.Add(BackgroundJobState.Canceled);
+	
+	If FilterByCanceledState Then 
+		StateArray.Add(BackgroundJobState.Canceled);
 	EndIf;
-	If StatesArray.Count() <> 4 Then
-		If StatesArray.Count() = 1 Then
-			Filter.Insert("State", StatesArray[0]);
+	
+	If StateArray.Count() <> 4 Then
+		If StateArray.Count() = 1 Then
+			Filter.Insert("State", StateArray[0]);
 		Else
-			Filter.Insert("State", StatesArray);
+			Filter.Insert("State", StateArray);
 		EndIf;
 	EndIf;
-	// 1.2. Add filter by scheduled job
+	
+	// 1.2. Adding a filter by scheduled job
 	If FilterByScheduledJob Then
 		Filter.Insert(
 				"ScheduledJobID",
-				?(ScheduledJobToBeFilteredID = EmptyID,
+				?(ScheduledJobForFilterID = EmptyID,
 				"",
-				ScheduledJobToBeFilteredID));
-	EndIf;
-	// 1.3. Add filter by period
-	If FilterKindByPeriod <> 0 Then
-		Filter.Insert("Begin", FilterPeriodFrom);
-		Filter.Insert("End",  FilterPeriodTo);
+				ScheduledJobForFilterID));
 	EndIf;
 	
-	// 2. Update list of background jobs
-	Table = TableBackgroundJobs;
-	BackgroundJobsQuantityTotal = 0;
-	CurrentTable = ScheduledJobsServer.GetBackgroundJobsPropertiesTable(Filter, BackgroundJobsQuantityTotal);
-	IndexOf = 0;
-	For each SchTask IN CurrentTable Do
-		If IndexOf >= Table.Count() OR Table[IndexOf].Id <> SchTask.Id Then
-			// Insert new job
-			Updated = Table.Insert(IndexOf);
-			// Assign unique ID
-			Updated.Id = SchTask.Id;
+	// 1.3. Adding a filter by period
+	If FilterKindByPeriod <> 0 Then
+		Filter.Insert("Start", FilterPeriodFrom);
+		Filter.Insert("End",  FilterPeriodTill);
+	EndIf;
+	
+	// 2. Updating background job list
+	Table = BackgroundJobTable;
+	BackgroundJobTotalCount = 0;
+	
+	CurrentTable = ScheduledJobsServer.GetBackgroundJobPropertyTable(
+		Filter, BackgroundJobTotalCount);
+	
+	Index = 0;
+	For Each Job In CurrentTable Do
+		
+		If Index >= Table.Count()
+		 Or Table[Index].ID <> Job.ID Then
+			// Inserting a new job
+			Update = Table.Insert(Index);
+			// Setting UUID
+			Update.ID = Job.ID;
 		Else
-			Updated = Table[IndexOf];
+			Update = Table[Index];
 		EndIf;
-		FillPropertyValues(Updated, SchTask);
-		// Set description of scheduled job from collection TableScheduledJobs
-		Rows = TableScheduledJobs.FindRows(New Structure("Id", SchTask.ScheduledJobID));
-		If Rows.Count() = 0 Then
-			Updated.ScheduledJobDescription = ?(IsBlankString(SchTask.ScheduledJobID),
-			                                                 TextUndefined,
-			                                                 NStr("en = '<not found>'"));
+		
+		FillPropertyValues(Update, Job);
+		
+		// Setting the scheduled job description from the ScheduledJobTable collection
+		If ValueIsFilled(Update.ScheduledJobID) Then
+			
+			Update.ScheduledJobID
+				= Update.ScheduledJobID;
+			
+			Rows = ScheduledJobTable.FindRows(
+				New Structure("ID", Update.ScheduledJobID));
+			
+			Update.ScheduledJobDescription
+				= ?(Rows.Count() = 0, NStr("en = '<not found>'"), Rows[0].Description);
 		Else
-			Updated.ScheduledJobDescription = Rows[0].Description;
+			Update.ScheduledJobDescription  = TextUndefined;
+			Update.ScheduledJobID = TextUndefined;
 		EndIf;
-		// Set end date of selected background job
-		Updated.End = ?(ValueIsFilled(SchTask.End), Updated.End, "<>");
-		// Increment index
-		IndexOf = IndexOf + 1;
+		
+		// Getting error details
+		Update.UserMessagesAndErrorDetails 
+			= ScheduledJobsServer.BackgroundJobMessagesAndErrorDescriptions(
+				Update.ID, Job);
+		
+		// Increasing index
+		Index = Index + 1;
 	EndDo;
-	// Delete needless rows
-	While IndexOf < Table.Count() Do
+	
+	// Deleting excess rows
+	While Index < Table.Count() Do
 		Table.Delete(Table.Count()-1);
 	EndDo;
-	BackgroundJobsQuantityInTable = Table.Count();
+	BackgroundJobCountInTable = Table.Count();
 
+	Items.BackgroundJobTable.Refresh();
+	
 EndProcedure
-
 

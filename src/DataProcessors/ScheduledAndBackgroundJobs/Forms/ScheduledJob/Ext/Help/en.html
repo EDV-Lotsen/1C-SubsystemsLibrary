@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
+<p>In this form you can view and change various settings of scheduled job.</p>
+<p>It usually is rare when the scheduled job settings should be changed. In most cases <strong>Use</strong> check box state is changed to enable or disable scheduled job. </p>
+<h3>1. Main property group</h3>
+<p>It contains most often used properties of scheduled job. But as other properties they are set during application design and should be changed only in special cases.</p>
+<p></p>
+<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<td><strong>Property purpose</strong></td></tr><tr><td>Description</td>
+<td>Scheduled job description. Usually this property is blank and instead of it the value of synonym is used, that is set in scheduled job template in Designer.<br>If synonym of template is not set then its name is used.</td></tr><tr><td>Use</td>
+<td>
+<p>This check box allows to enable or disable execution of scheduled job.<br>It is useful when the scheduled job should be disabled for a certain period of time without of changing its schedule.</p></td></tr><tr><td>Repeat if error occured, times</td>
+<td>Number of attempts of scheduled job execution if an error occurs.</td></tr><tr><td>Repeat if error occured after, sec</td>
+<td>Timeout (in seconds) between attempts to execute the scheduled job if an error occurs.</td></tr></tbody></table><h3>2. Advanced property group</h3>
+<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<td><strong>Property</strong> <strong>purpose</strong></td></tr><tr><td>ID</td>
+<td>
+<p>It can be used only by experienced administrator who knows 1C:Script. It is required to investigate problems in scheduled job execution, if any.</p></td></tr><tr><td>Key</td>
+<td>
+<p>It can be used only by experienced administrator. It is required for fine tuning of scheduled job execution and to investigate problems in scheduled job execution, if any. If Key value is set then before a background job is started, the application checks if there is no other active background job with the same scheduled job template as the current one.</p></td></tr><tr><td>User name</td>
+<td>Only for client/server mode. The infobase user name which is used for scheduled job execution. For file mode a single user is used for execution of all scheduled jobs, moreover, jobs are executed in privileged mode.</td></tr></tbody></table><h3> </h3>
+<h3>3. Metadata property group</h3>
+<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<td><strong>Property purpose</strong></td></tr><tr><td>Name</td>
+<td>Name of scheduled job template that is set in Designer.</td></tr><tr><td>Synonym</td>
+<td>Synonym of scheduled job template that is set in Designer.</td></tr><tr><td>Method name</td>
+<td>Name of procedure in configuration that will be executed in background job that will be created for the scheduled job.</td></tr></tbody></table><h3> </h3>
+<h3>4. Warnings and error details</h3>
+<p>This field contains warning texts and error details if warnings and/or errors occured during the last background job execution. The same content is available, if you open the latest background job this scheduled job.</p>
+<p> </p></body></html>

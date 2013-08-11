@@ -1,279 +1,67 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<AutoCommandBar name="FormCommandBar" id="1"/>
 	<Events>
-		<Event name="NotificationProcessing">NotificationProcessing</Event>
-		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="StandardAttributes" id="36">
+		<InputField name="Code" id="2">
+			<DataPath>Object.Code</DataPath>
+			<Wrap>false</Wrap>
+			<ContextMenu name="CodeContextMenu" id="3"/>
+			<ExtendedTooltip name="CodeExtendedTooltip" id="4"/>
+		</InputField>
+		<UsualGroup name="MainGroup" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Standard attributes</v8:content>
+					<v8:content>Main group</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main group</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="StandardAttributesExtendedTooltip" id="70"/>
+			<ExtendedTooltip name="MainGroupExtendedTooltip" id="6"/>
 			<ChildItems>
-				<InputField name="Description" id="3">
+				<InputField name="Description" id="7">
 					<DataPath>Object.Description</DataPath>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>The company name as it appears in the list</v8:content>
-						</v8:item>
-					</ToolTip>
-					<EditMode>EnterOnInput</EditMode>
-					<Width>30</Width>
 					<Wrap>false</Wrap>
-					<ContextMenu name="DescriptionContextMenu" id="4"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="71"/>
-					<Events>
-						<Event name="OnChange">DescriptionOnChange</Event>
-					</Events>
+					<ContextMenu name="DescriptionContextMenu" id="8"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="9"/>
 				</InputField>
-				<InputField name="Prefix" id="9">
+				<InputField name="Prefix" id="10">
 					<DataPath>Object.Prefix</DataPath>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>The prefix to document number and catalog codes for this company. It is required to ensure that all of the document numbers and catalog codes are unique.</v8:content>
-						</v8:item>
-					</ToolTip>
-					<EditMode>EnterOnInput</EditMode>
 					<Wrap>false</Wrap>
-					<ContextMenu name="PrefixContextMenu" id="10"/>
-					<ExtendedTooltip name="PrefixExtendedTooltip" id="72"/>
-				</InputField>
-				<InputField name="Code" id="1">
-					<DataPath>Object.Code</DataPath>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>The company code that is assigned automatically</v8:content>
-						</v8:item>
-					</ToolTip>
-					<EditMode>EnterOnInput</EditMode>
-					<Wrap>false</Wrap>
-					<ContextMenu name="CodeContextMenu" id="2"/>
-					<ExtendedTooltip name="CodeExtendedTooltip" id="73"/>
+					<ContextMenu name="PrefixContextMenu" id="11"/>
+					<ExtendedTooltip name="PrefixExtendedTooltip" id="12"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<Pages name="Pages" id="67">
+		<UsualGroup name="GroupContactInformation" id="13">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Pages</v8:content>
+					<v8:content>Addresses, phones</v8:content>
 				</v8:item>
 			</Title>
-			<ExtendedTooltip name="PagesExtendedTooltip" id="74"/>
-			<ChildItems>
-				<Page name="Common" id="68">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Common</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="CommonExtendedTooltip" id="75"/>
-					<ChildItems>
-						<InputField name="PrintedName" id="38">
-							<DataPath>Object.PrintedName</DataPath>
-							<TitleLocation>Left</TitleLocation>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>The full company name, which is used in printed documents</v8:content>
-								</v8:item>
-							</ToolTip>
-							<Height>2</Height>
-							<VerticalStretch>false</VerticalStretch>
-							<Wrap>false</Wrap>
-							<ContextMenu name="PrintedNameContextMenu" id="39"/>
-							<ExtendedTooltip name="PrintedNameExtendedTooltip" id="76"/>
-						</InputField>
-						<InputField name="Individual" id="25">
-							<DataPath>Object.Individual</DataPath>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>The individual name (if the company is an individual)</v8:content>
-								</v8:item>
-							</ToolTip>
-							<EditMode>EnterOnInput</EditMode>
-							<Wrap>false</Wrap>
-							<ContextMenu name="IndividualContextMenu" id="26"/>
-							<ExtendedTooltip name="IndividualExtendedTooltip" id="77"/>
-						</InputField>
-						<InputField name="RegularCalendar" id="57">
-							<DataPath>1/0:62f3893b-d2de-485d-ba42-34e34f5d61a0</DataPath>
-							<Wrap>false</Wrap>
-							<ContextMenu name="RegularCalendarContextMenu" id="58"/>
-							<ExtendedTooltip name="RegularCalendarExtendedTooltip" id="78"/>
-						</InputField>
-						<RadioButtonField name="BusinessIndividual" id="11">
-							<DataPath>Object.BusinessIndividual</DataPath>
-							<TitleLocation>None</TitleLocation>
-							<EditMode>EnterOnInput</EditMode>
-							<RadioButtonType>Auto</RadioButtonType>
-							<ChoiceList>
-								<xr:Item>
-									<xr:Presentation/>
-									<xr:CheckState>0</xr:CheckState>
-									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation/>
-										<Value xsi:type="xr:DesignTimeRef">Enum.BusinessIndividual.EnumValue.Business</Value>
-									</xr:Value>
-								</xr:Item>
-								<xr:Item>
-									<xr:Presentation/>
-									<xr:CheckState>0</xr:CheckState>
-									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation/>
-										<Value xsi:type="xr:DesignTimeRef">Enum.BusinessIndividual.EnumValue.Individual</Value>
-									</xr:Value>
-								</xr:Item>
-							</ChoiceList>
-							<ContextMenu name="BusinessIndividualContextMenu" id="12"/>
-							<ExtendedTooltip name="BusinessIndividualExtendedTooltip" id="79"/>
-							<Events>
-								<Event name="OnChange">BusinessIndividualOnChange</Event>
-							</Events>
-						</RadioButtonField>
-						<InputField name="TIN" id="43">
-							<DataPath>1/0:83146806-497e-4f36-bd28-610dc40ecae9</DataPath>
-							<HorizontalStretch>true</HorizontalStretch>
-							<Wrap>false</Wrap>
-							<ContextMenu name="TINContextMenu" id="44"/>
-							<ExtendedTooltip name="TINExtendedTooltip" id="80"/>
-						</InputField>
-						<UsualGroup name="DefaultValues" id="46">
-							<TitleFont ref="sys:DefaultGUIFont" bold="false" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
-							<Group>Vertical</Group>
-							<ExtendedTooltip name="DefaultValuesExtendedTooltip" id="81"/>
-							<ChildItems>
-								<UsualGroup name="BankDefaultPettyCash" id="41">
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>Bank, petty cash by default</v8:content>
-										</v8:item>
-									</Title>
-									<Group>Vertical</Group>
-									<Representation>None</Representation>
-									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="BankDefaultPettyCashExtendedTooltip" id="82"/>
-									<ChildItems>
-										<InputField name="DefaultBankAccount" id="19">
-											<DataPath>1/0:902b41c8-9a79-42c4-b5ee-7d32e7d46ae0</DataPath>
-											<Title>
-												<v8:item>
-													<v8:lang>en</v8:lang>
-													<v8:content>Default bank account</v8:content>
-												</v8:item>
-											</Title>
-											<EditMode>EnterOnInput</EditMode>
-											<Wrap>false</Wrap>
-											<ContextMenu name="DefaultBankAccountContextMenu" id="20"/>
-											<ExtendedTooltip name="DefaultBankAccountExtendedTooltip" id="83"/>
-											<Events>
-												<Event name="StartChoice">DefaultBankAccountStartChoice</Event>
-											</Events>
-										</InputField>
-										<InputField name="DefaultPettyCash" id="5">
-											<DataPath>1/0:ccfe9a5c-f255-46ce-af0d-e0c873974857</DataPath>
-											<Title>
-												<v8:item>
-													<v8:lang>en</v8:lang>
-													<v8:content>Default petty cash</v8:content>
-												</v8:item>
-											</Title>
-											<EditMode>EnterOnInput</EditMode>
-											<Wrap>false</Wrap>
-											<ContextMenu name="DefaultPettyCashContextMenu" id="6"/>
-											<ExtendedTooltip name="DefaultPettyCashExtendedTooltip" id="84"/>
-										</InputField>
-									</ChildItems>
-								</UsualGroup>
-							</ChildItems>
-						</UsualGroup>
-						<UsualGroup name="GroupCertificate" id="61">
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Business tax registration certificate</v8:content>
-								</v8:item>
-							</Title>
-							<Group>Horizontal</Group>
-							<ExtendedTooltip name="GroupCertificateExtendedTooltip" id="85"/>
-							<ChildItems>
-								<InputField name="CertificateSeriesNumber" id="64">
-									<DataPath>1/0:f11a7d3f-6239-4002-b3fa-dff137060ff8</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>BTRC #</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>The business tax registration certificate number.</v8:content>
-										</v8:item>
-									</ToolTip>
-									<ContextMenu name="CertificateSeriesNumberContextMenu" id="65"/>
-									<ExtendedTooltip name="CertificateSeriesNumberExtendedTooltip" id="86"/>
-								</InputField>
-								<InputField name="CertificateIssueDate" id="62">
-									<DataPath>1/0:2a4d8b90-99a1-4e74-90b9-629916bbb144</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>Issue date</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>The issue date of the business tax registration certificate.</v8:content>
-										</v8:item>
-									</ToolTip>
-									<ContextMenu name="CertificateIssueDateContextMenu" id="63"/>
-									<ExtendedTooltip name="CertificateIssueDateExtendedTooltip" id="87"/>
-								</InputField>
-							</ChildItems>
-						</UsualGroup>
-					</ChildItems>
-				</Page>
-				<Page name="GroupContactInformation" id="66">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Addresses and Phones</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="GroupContactInformationExtendedTooltip" id="88"/>
-				</Page>
-				<Page name="PageAdditionalAttributes" id="69">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Additional Attributes</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="PageAdditionalAttributesExtendedTooltip" id="89"/>
-				</Page>
-			</ChildItems>
-		</Pages>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Contact information group.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="ContactInformationGroupExtendedTooltip" id="14"/>
+		</UsualGroup>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Object" id="1">
@@ -283,90 +71,5 @@
 			<MainAttribute>true</MainAttribute>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="Business" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Legal person</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:EnumRef.BusinessIndividual</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="FunctionalOptionMultipleCompanies" id="3">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Functional option accounting by multiple Companies</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
 	</Attributes>
-	<CommandInterface>
-		<NavigationPanel>
-			<Item>
-				<Command>3:3d82f877-41cb-4975-8d75-ddcf4843a4d4</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-			<Item>
-				<Command>3:9a16b349-3f4a-4e67-894d-de4e3818c946</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<Index>1</Index>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-			<Item>
-				<Command>3:1144cf45-fb30-4fc6-aa2c-bc14ae0e9d6e</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<Index>2</Index>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-			<Item>
-				<Command>3:2aa7ea6b-311b-4577-ae16-a6b4c8170d26</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<Index>3</Index>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-			<Item>
-				<Command>3:d695a925-0339-4fb0-940b-cd82959411bb</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<Index>4</Index>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-			<Item>
-				<Command>4:2dd69f18-777d-4dca-89dc-707359ec3078</Command>
-				<Type>Auto</Type>
-				<CommandGroup>FormNavigationPanelGoTo</CommandGroup>
-				<Index>5</Index>
-				<DefaultVisible>false</DefaultVisible>
-				<Visible>
-					<xr:Common>false</xr:Common>
-				</Visible>
-			</Item>
-		</NavigationPanel>
-	</CommandInterface>
 </Form>

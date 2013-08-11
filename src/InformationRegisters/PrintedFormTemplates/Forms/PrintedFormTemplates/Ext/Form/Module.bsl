@@ -218,7 +218,7 @@ Function GetTemplatesBinaryData(PathsToTemplates)
 	CorrBinaryData = New Map;
 	
 	For Each PathToTemplate In PathsToTemplates Do
-		Data = PrintManagement.GetTemplate(PathToTemplate.Value + "." + PathToTemplate.Key);
+		Data = _DemoPrintManagement.GetTemplate(PathToTemplate.Value + "." + PathToTemplate.Key);
 		If TypeOf(Data) = Type("SpreadsheetDocument") Then
 			TemporaryFileName = GetTempFileName();
 			Data.Write(TemporaryFileName);
@@ -305,7 +305,7 @@ EndProcedure
 &AtServerNoContext
 Function GetPrintFormTemplate(Val MODescription, Val DesignName)
 	
-	Return PrintManagement.GetTemplate(MODescription+"."+DesignName);
+	Return _DemoPrintManagement.GetTemplate(MODescription+"."+DesignName);
 	
 EndFunction
 
@@ -401,7 +401,7 @@ Procedure OpenPrintedFormTemplates(Val Edit = False)
 		GivenBinaryDataSet.Insert(TemplateType.Key+"."+TemplateType.Value, SetOfBinaryData[TemplateType.Key]);
 	EndDo;
 	
-	Result = PrintManagementClient.GetFilesToFilesPrintDirectory(PathToFilePrintDirectory, GivenBinaryDataSet);
+	Result = _DemoPrintManagementClient.GetFilesToFilesPrintDirectory(PathToFilePrintDirectory, GivenBinaryDataSet);
 	If Result = Undefined Then
 		Return;
 	EndIf;
@@ -424,7 +424,7 @@ Procedure OpenPrintedFormTemplates(Val Edit = False)
 			
 			WarningText = WarningText
 					+ Chars.LF
-					+ StringFunctionsClientServer.SubstitureParametersInString(
+					+ StringFunctionsClientServer.SubstituteParametersInString(
 						NStr("en = 'Template %1 has been saved with name %2.'"),
 						TreeItem.DesignName,
 						PathToTemplateFile);
@@ -542,7 +542,7 @@ Function GetPictureCode(TemplateTypeMOName)
 	ElsIf	Upper(TemplateTypeMOName) = "MXL" Then
 		Picture = 2;
 	Else
-		OwnerName = StringFunctionsClientServer.DecomposeStringIntoSubstringsArray(TemplateTypeMOName, ".")[0];
+		OwnerName = StringFunctionsClientServer.SplitStringIntoSubstringArray(TemplateTypeMOName, ".")[0];
 		If		Upper(OwnerName) = "DOCUMENT" Then
 			Picture = 4;
 		ElsIf	Upper(OwnerName) = "DATAPROCESSOR" Then
@@ -569,7 +569,7 @@ Procedure OpenFile(OpenedFileName)
 	Try
 		RunApp(OpenedFileName);
 	Except
-		DoMessageBox(StringFunctionsClientServer.SubstitureParametersInString(
+		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
 						NStr("en = 'Description=""%1""'"),
 						ErrorInfo().Description));
 	EndTry;
@@ -627,7 +627,7 @@ Procedure FinishEdit(Command)
 			Except
 				MessageAboutError = BriefErrorDescription(ErrorInfo());
 				MessageAboutError = MessageAboutError + Chars.LF + 
-						StringFunctionsClientServer.SubstitureParametersInString(
+						StringFunctionsClientServer.SubstituteParametersInString(
 							NStr("en = 'Make sure that application of working with %1 file is closed'"),
 							TreeItem.Presentation);
 				CommonUseClientServer.MessageToUser(MessageAboutError);
@@ -662,7 +662,7 @@ Procedure FinishEdit(Command)
 	Except
 		MessageAboutError = BriefErrorDescription(ErrorInfo());
 		CommonUseClientServer.MessageToUser(
-			StringFunctionsClientServer.SubstitureParametersInString(
+			StringFunctionsClientServer.SubstituteParametersInString(
 				NStr("en = 'Error sending file to storage: %1. Make sure application is closed.'"), MessageAboutError));
 		Return;
 	EndTry;
@@ -799,10 +799,15 @@ Procedure SetActionOnPrintFormTemplateSelect(Command)
 EndProcedure
 
 &AtClient
+Procedure WorkingDirectorySettingForPrinting(Command)
+	OpenForm("InformationRegister.PrintedFormTemplates.Form.PrintFilesFolderSettings");
+EndProcedure
+
+&AtClient
 Function SuggestWorkWithFilesExtensionInstallationNow()
 	
-	TextOfMessage = NStr("en = 'Extension to work in  Web client has not been set up'");
-	CommonUseClient.SuggestWorkWithFilesExtensionInstallationNow(TextOfMessage);
+	TextOfMessage = NStr("en = 'Extension to work in Web client has not been set up'");
+	_DemoCommonUseClient.SuggestWorkWithFilesExtensionInstallationNow(TextOfMessage);
 	
 	If AttachFileSystemExtension() Then
 		Return True;
@@ -829,7 +834,7 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	
 	FillMetadataList(Filter);
 	
-	PathToFilePrintDirectory = PrintManagement.GetPrintFilesLocalDirectory();
+	PathToFilePrintDirectory = _DemoPrintManagement.GetPrintFilesLocalDirectory();
 	
 	Value = CommonSettingsStorage.Load("SetupOfTemplatesOpening", "AskTemplateOpeningMode");
 	

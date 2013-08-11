@@ -1,8 +1,7 @@
 ﻿
-
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
-	
-	InstallFileSystemExtension();
-	
+ 
+ InstallFileSystemExtension();
+ 
 EndProcedure

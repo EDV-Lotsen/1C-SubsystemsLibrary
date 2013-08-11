@@ -1,32 +1,36 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
 
 &AtClient
-Procedure ListBeforeAddRow(Item, Cancellation, Clone, Parent, Folder)
+Procedure MoveItemUp()
 	
-	// Check, if folder copy is performed
-	If Clone And Folder Then
-		DoMessageBox(NStr("en = 'Adding new groups in the catalog is prohibited!'"));
-		Cancellation = True;
-	EndIf;
+	ItemOrderSetupClient.MoveItemUpExecute(List, Items.List);
+	
+EndProcedure
+
+&AtClient
+Procedure MoveItemDown()
+	
+	ItemOrderSetupClient.MoveItemDownExecute(List, Items.List);
 	
 EndProcedure
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// PROCEDURES OF SUBSYSTEM 'SETTING ITEM ORDER'
+// FORM HEADER ITEM EVENT HANDLERS
 
 &AtClient
-Procedure ShiftItemUp()
+Procedure ListBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
-	ItemOrderSetupClient.ShiftItemUp(List, Items.List);
+	// Checking whether copying a folder is allowed
+	If Copy And Group Then
+		DoMessageBox(NStr("en = 'Adding new groups is not allowed.'"));
+		Cancel = True;
+	EndIf;
 	
 EndProcedure
 
-&AtClient
-Procedure ShiftItemDown()
-	
-	ItemOrderSetupClient.ShiftItemDown(List, Items.List);
-	
-EndProcedure
+
+
 
 

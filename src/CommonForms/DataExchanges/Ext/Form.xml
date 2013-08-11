@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Data exchanges</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1">
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Popup name="SubmenuCreate" id="2">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Create</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Setup new data exchange.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<ExtendedTooltip name="SubmenuCreateExtendedTooltip" id="3"/>
+			</Popup>
+			<Button name="ExecuteDataExchange" id="4">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<OnlyInAllActions>true</OnlyInAllActions>
+				<CommandName>Form.Command.ExecuteDataExchange</CommandName>
+				<ExtendedTooltip name="ExecuteDataExchangeExtendedTooltip" id="5"/>
+			</Button>
+			<Popup name="Setup" id="6">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Setup</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Data exchange setup.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<ExtendedTooltip name="SettingsExtendedTooltip" id="7"/>
+				<ChildItems>
+					<Button name="ExecuteDataExchangeInteractively" id="8">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
+						<ExtendedTooltip name="ExecuteDataExchangeInteractivelyExtendedTooltip" id="9"/>
+					</Button>
+					<ButtonGroup name="ScheduleGroup" id="10">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Schedule group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Schedule group.</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ScheduleGroupExtendedTooltip" id="11"/>
+						<ChildItems>
+							<Button name="SetupExchangeExecutionSchedule" id="12">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
+								<ExtendedTooltip name="SetupExchangeExecutionScheduleExtendedTooltip" id="13"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<ButtonGroup name="ChangeGroup" id="14">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Change group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Change group</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ChangeGroupExtendedTooltip" id="15"/>
+						<ChildItems>
+							<Button name="NodeStateListChangeInfoBaseNode" id="16">
+								<Type>CommandBarButton</Type>
+								<UserVisible>
+									<xr:Common>true</xr:Common>
+									<xr:Value name="Role.AddEditDataExchanges">true</xr:Value>
+								</UserVisible>
+								<Representation>PictureAndText</Representation>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.ChangeInfoBaseNode</CommandName>
+								<ExtendedTooltip name="NodeStateListChangeInfoBaseNodeExtendedTooltip" id="17"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<ButtonGroup name="DiagnosticsGroup" id="18">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Diagnostics group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Diagnostics group.</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="DiagnosticsGroupExtendedTooltip" id="19"/>
+						<ChildItems>
+							<Button name="NodeStateListGoToDataImportEventLog" id="20">
+								<Type>CommandBarButton</Type>
+								<OnlyInAllActions>false</OnlyInAllActions>
+								<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+								<ExtendedTooltip name="NodeStateListGoToDataImportEventLogExtendedTooltip" id="21"/>
+							</Button>
+							<Button name="NodeStateListGoToDataExportEventLog" id="22">
+								<Type>CommandBarButton</Type>
+								<OnlyInAllActions>false</OnlyInAllActions>
+								<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+								<ExtendedTooltip name="NodeStateListGoToDataExportEventLogExtendedTooltip" id="23"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+				</ChildItems>
+			</Popup>
+			<Button name="RefreshMonitor" id="24">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.Command.RefreshMonitor</CommandName>
+				<ExtendedTooltip name="RefreshMonitorExtendedTooltip" id="25"/>
+			</Button>
+			<Button name="FormOutputList" id="26">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Item.NodeStateList.StandardCommand.OutputList</CommandName>
+				<ExtendedTooltip name="FormPutListExtendedTooltip" id="27"/>
+			</Button>
+			<Button name="FormChangeForm" id="28">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+				<ExtendedTooltip name="FormChangeFormExtendedTooltip" id="29"/>
+			</Button>
+			<Button name="FormHelp" id="30">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="FormHelpExtendedTooltip" id="31"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="NodeStateList" id="32">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<ReadOnly>true</ReadOnly>
+			<SkipOnInput>false</SkipOnInput>
+			<SelectionMode>SingleRow</SelectionMode>
+			<RowSelectionMode>Row</RowSelectionMode>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>NodeStateList</DataPath>
+			<CommandSet>
+				<ExcludedCommand>Add</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="NodeStateListContextMenu" id="33">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<ButtonGroup name="DataExchangeExecutionButtonGroup" id="34">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Data exchange execution button group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Data exchange execution button group.</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="DataExchangeExecutionButtonGroupExtendedTooltip" id="35"/>
+						<ChildItems>
+							<Button name="ExecuteDataExchange1" id="36">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.ExecuteDataExchange</CommandName>
+								<ExtendedTooltip name="ExecuteDataExchange1ExtendedTooltip" id="37"/>
+							</Button>
+							<Button name="ExecuteDataExchangeInteractively1" id="38">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
+								<ExtendedTooltip name="ExecuteDataExchangeInteractively1ExtendedTooltip" id="39"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<ButtonGroup name="ContextMenuStateListDiagnostics" id="40">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Diagnostics</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ContextMenuStateListDiagnosticsExtendedTooltip" id="41"/>
+						<ChildItems>
+							<Button name="ContextMenuNodeStateListGoToDataImportEventLog" id="42">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+								<ExtendedTooltip name="ContextMenuNodeStateListGoToDataImportEventLogExtendedTooltip" id="43"/>
+							</Button>
+							<Button name="ContextMenuNodeStateListGoToDataExportEventLog" id="44">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+								<ExtendedTooltip name="ContextMenuNodeStateListGoToDataExportEventLogExtendedTooltip" id="45"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<ButtonGroup name="ScheduleSettingsButtonGroup" id="46">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Schedule settings button group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Schedule settings button group.</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ScheduleSettingsButtonGroupExtendedTooltip" id="47"/>
+						<ChildItems>
+							<Button name="SetupExchangeExecutionSchedule1" id="48">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
+								<ExtendedTooltip name="SetupExchangeExecutionSchedule1ExtendedTooltip" id="49"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Button name="NodeStateListContextMenuCopyToClipboard" id="50">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.NodeStateList.StandardCommand.CopyToClipboard</CommandName>
+						<ExtendedTooltip name="NodeStateListContextMenuCopyToClipboardExtendedTooltip" id="51"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="NodeStateListCommandBar" id="52"/>
+			<ExtendedTooltip name="NodeStateListExtendedTooltip" id="53"/>
+			<SearchStringAddition name="NodeStateListSearchString" id="82">
+				<AdditionSource>
+					<Item>NodeStateList</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="NodeStateListSearchStringContextMenu" id="83"/>
+				<ExtendedTooltip name="NodeStateListSearchStringExtendedTooltip" id="84"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="NodeStateListViewStatus" id="85">
+				<AdditionSource>
+					<Item>NodeStateList</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="NodeStateListViewStatusContextMenu" id="86"/>
+				<ExtendedTooltip name="NodeStateListViewStatusExtendedTooltip" id="87"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="NodeStateListSearchControl" id="88">
+				<AdditionSource>
+					<Item>NodeStateList</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="NodeStateListSearchControlContextMenu" id="89"/>
+				<ExtendedTooltip name="NodeStateListSearchControlExtendedTooltip" id="90"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">NodeStateListChoice</Event>
+				<Event name="OnActivateRow">NodeStateListOnActivateRow</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="NodeStateListExchangePlanName" id="54">
+					<DataPath>NodeStateList.ExchangePlanName</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="NodeStateListExchangePlanNameContextMenu" id="55"/>
+					<ExtendedTooltip name="NodeStateListExchangePlanNameExtendedTooltip" id="56"/>
+				</InputField>
+				<InputField name="NodeStateListInfoBaseNode" id="57">
+					<DataPath>NodeStateList.InfoBaseNode</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="NodeStateListInfoBaseNodeContextMenu" id="58"/>
+					<ExtendedTooltip name="NodeStateListInfoBaseNodeExtendedTooltip" id="59"/>
+				</InputField>
+				<ColumnGroup name="ImportStateGroup" id="60">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Import state group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Import state group.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="ImportStateGroupExtendedTooltip" id="61"/>
+					<ChildItems>
+						<PictureField name="NodeStateListLastDataImportResult" id="62">
+							<DataPath>NodeStateList.LastDataImportResult</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<EditMode>EnterOnInput</EditMode>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="NodeStateListLastDataImportResultContextMenu" id="63"/>
+							<ExtendedTooltip name="NodeStateListLastDataImportResultExtendedTooltip" id="64"/>
+						</PictureField>
+						<InputField name="NodeStateListLastImportDate" id="65">
+							<DataPath>NodeStateList.LastImportDate</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="NodeStateListLastImportDateContextMenu" id="66"/>
+							<ExtendedTooltip name="NodeStateListLastImportDateExtendedTooltip" id="67"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="NodeStateListLastSuccessfulImportDate" id="68">
+					<DataPath>NodeStateList.LastSuccessfulImportDate</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="NodeStateListLastSuccessfulImportDateContextMenu" id="69"/>
+					<ExtendedTooltip name="NodeStateListLastSuccessfulImportDateExtendedTooltip" id="70"/>
+				</InputField>
+				<ColumnGroup name="ExportStateGroup" id="71">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export state group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export state group.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="ExportStateGroupExtendedTooltip" id="72"/>
+					<ChildItems>
+						<PictureField name="NodeStateListLastDataExportResult" id="73">
+							<DataPath>NodeStateList.LastDataExportResult</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<EditMode>EnterOnInput</EditMode>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="NodeStateListLastDataExportResultContextMenu" id="74"/>
+							<ExtendedTooltip name="NodeStateListLastDataExportResultExtendedTooltip" id="75"/>
+						</PictureField>
+						<InputField name="NodeStateListLastExportDate" id="76">
+							<DataPath>NodeStateList.LastExportDate</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="NodeStateListLastExportDateContextMenu" id="77"/>
+							<ExtendedTooltip name="NodeStateListLastExportDateExtendedTooltip" id="78"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="NodeStateListLastSuccessfulExportDate" id="79">
+					<DataPath>NodeStateList.LastSuccessfulExportDate</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="NodeStateListLastSuccessfulExportDateContextMenu" id="80"/>
+					<ExtendedTooltip name="NodeStateListLastSuccessfulExportDateExtendedTooltip" id="81"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="NodeStateList" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Node state list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="LastSuccessfulExportDate" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Successful export date</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:dateTime</v8:Type>
+						<v8:DateQualifiers>
+							<v8:DateFractions>DateTime</v8:DateFractions>
+						</v8:DateQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastDataExportResult" id="2">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastDataImportResult" id="3">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="InfoBaseNode" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>InfoBase</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="LastSuccessfulImportDate" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Successful import date</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:dateTime</v8:Type>
+						<v8:DateQualifiers>
+							<v8:DateFractions>DateTime</v8:DateFractions>
+						</v8:DateQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastImportDate" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Import date</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:dateTime</v8:Type>
+						<v8:DateQualifiers>
+							<v8:DateFractions>DateTime</v8:DateFractions>
+						</v8:DateQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastExportDate" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export date</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:dateTime</v8:Type>
+						<v8:DateQualifiers>
+							<v8:DateFractions>DateTime</v8:DateFractions>
+						</v8:DateQualifiers>
+					</Type>
+				</Column>
+				<Column name="ExchangePlanName" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Exchange plan</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="RefreshMonitor" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh monitor</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F5</Shortcut>
+			<Action>RefreshMonitor</Action>
+		</Command>
+		<Command name="ExecuteDataExchange" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute now</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute data exchange with infobase.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExecuteDataExchange</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ChangeInfoBaseNode" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeInfoBaseNode</Action>
+		</Command>
+		<Command name="GoToDataImportEventLog" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data import events...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to data import event log.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GoToDataImportEventLog</Action>
+		</Command>
+		<Command name="GoToDataExportEventLog" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data export events...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to data export event log.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GoToDataExportEventLog</Action>
+		</Command>
+		<Command name="ExecuteDataExchangeInteractively" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute with setting...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute data exchange interactively.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExecuteDataExchangeInteractively</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SetUpDataExchangeScenarios" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data exchange scenarios</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Setup data exchange scenarios.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetUpDataExchangeScenarios</Action>
+		</Command>
+	</Commands>
+</Form>

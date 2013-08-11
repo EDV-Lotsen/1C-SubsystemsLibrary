@@ -26,7 +26,7 @@ Procedure FillTree()
 	|WHERE
 	|	Settings.DeletionMark = FALSE
 	|	And CASE
-	|			WHEN Settings.Ref = VALUE(ChartOfCharacteristicTypes.UsersSettings.DefaultCompany)
+	|			WHEN Settings.Ref = VALUE(ChartOfCharacteristicTypes.UsersSettings.MainCompany)
 	|					And (NOT Constants.FunctionalOptionMultipleCompanies)
 	|				THEN FALSE
 	|			ELSE TRUE

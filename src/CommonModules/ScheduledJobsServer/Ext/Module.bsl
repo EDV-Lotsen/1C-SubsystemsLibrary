@@ -1,186 +1,179 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Scheduled jobs subsystem.
+// 
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// COMMON USE PROCEDURES
+// INTERFACE
 
-// Procedure CallExceptionIfNoAdminPrivileges calls exception,
-// if does not have administration rights.
-//
-Procedure CallExceptionIfNoAdminPrivileges()
-
-	RunningProcedureHandleScheduledJobs = CommonSettingsStorage.Load("RunningProcedureHandleScheduledJobs");
-	If TypeOf(RunningProcedureHandleScheduledJobs) <> Type("Boolean") Then
-		RunningProcedureHandleScheduledJobs = False;
-	EndIf;
+// Adds update handlers required by this subsystem to the Handlers list. 
+// 
+// Parameters:
+// Handlers - ValueTable - see the description of the 
+// InfoBaseUpdate.NewUpdateHandlerTable function for details.
+// 
+Procedure RegisterUpdateHandlers(Handlers) Export
 	
-	If NOT RunningProcedureHandleScheduledJobs And
-	     NOT AccessRight("Administration", Metadata) Then
-		
-		Raise(NStr("en = 'User does not have administrative rights!'"));
-	EndIf;
+	Handler = Handlers.Add();
+	Handler.Version = "1.2.2.2";
+	Handler.Procedure = "ScheduledJobsServer.ConvertScheduledJobExecutionSettings_1_2_2_2";
 	
-EndProcedure // CallExceptionIfNoAdminPrivileges()
+EndProcedure
 
-// Procedure AddUsernamesToValueList adds
-// user names to the List, as they are specified in designer.
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions for controlling job execution. 
+
+// Determines whether scheduled jobs are executed in the current session.
+// If they are not executed in this session and the session number is equal to
+// GetScheduledJobExecutionStates().SessionNumber, the function attempts to assign the
+// session to perform scheduled jobs (sets CurrentSessionPerformsScheduledJobs to True).
 //
 // Parameters:
-//  List       - ValueList - usually ChoiceList of InputField.
+//  JobsExecutedCorrectly                               - Boolean - True if jobs are 
+//                                                        executed correctly.
+//  SetCurrentSessionAsSessionThatPerformsScheduledJobs - Boolean - True if scheduled
+//                                                        jobs must be executed in the
+//                                                        current session.
+//                                                        If the function fails to 
+//                                                        assign the session to perform 
+//                                                        scheduled jobs, this
+//                                                        parameter is set to False. 
+//  ErrorDescription                                    - String - contains the error 
+//                                                        description if
+//                                                        JobsExecutedCorrectly is
+//                                                        False. It can describe two 
+//                                                        basic situations: the  
+//                                                        execution has not  
+//                                                        started for a long time or 
+//                                                        the execution is taking too
+//                                                        much time.
 //
-Procedure AddUsernamesToValueList(List) Export
-	
-	CallExceptionIfNoAdminPrivileges();
-	
-	// Fill the list of infobase users for choice
-	UsersArray = InfobaseUsers.GetUsers();
-	For each User In UsersArray Do
-		List.Add(User.Name);
-	EndDo;
-
-EndProcedure // AddUsernamesToValueList()
-
-// Function CurrentSessionHandlesTasks determines, that current session handles jobs,
-// if this is wrong and it's specified to make current session handle jobs, then the attempt
-// to assign current session to handle the jobs is performed.
-//
-// Parameters:
-//  TasksAreProcessingOK - Boolean - True, if there are no problems in jobs processing.
-//  SetCurrentSessionAsScheduledJobsRunSession - Boolean - True, if it's required to make
-//               current session, processing jobs, if attempt to make ot handling jobs failed,
-//               then function will return False.
-//  ErrorDescription 	 - String - If NOT TasksAreProcessingOK, then problem description:
-//               either processing is not starting for a long time, or is running too long.
-//
-// Value returned:
+// Returns:
 //  Boolean.
 //
-Function CurrentSessionHandlesTasks(TasksAreProcessingOK = Undefined,
-                                        Val SetCurrentSessionAsScheduledJobsRunSession = False,
-                                        ErrorDescription = "") Export
+Function CurrentSessionPerformsScheduledJobs(JobsExecutedCorrectly = Undefined,
+                                                 Val SetCurrentSessionAsSessionThatPerformsScheduledJobs = False,
+                                                 ErrorDescription = "") Export
 	
-	If NOT CommonUse.FileInformationBase() Then
-		TasksAreProcessingOK = True;
-		ErrorDescription = NStr("en = 'The tasks are being processed at the server!'");
+	If Not CommonUse.FileInfoBase() Then
+		JobsExecutedCorrectly = True;
+		ErrorDescription = NStr("en = 'Jobs are executed on the server.'");
 		Return False;
 	EndIf;
 	
 	SetPrivilegedMode(True);
 	
-	BeginTransaction();
-	Try
-		State 	 					= GetScheduledJobsProcessingStatus(True);
-		Sessions 					= GetInfobaseSessions();
-		SessionRunningTasksFound 	= False;
-		CurrentSessionHandlesTasks  = False;
-		TasksAreProcessingOK  		= True;
-		
-		// Find jobs handling session, assigned in constant ScheduledJobsProcessingStatus,
-		// among the active sessions, and the current session (current session start may be needed
-		// for Structure initialization).
-		For each SessionNumber In Sessions Do
-			If SessionNumber.SessionNumber = InfobaseSessionNumber() Then
-				CurrentSession = SessionNumber;
-			EndIf;
-			If SessionNumber.SessionNumber 	= State.SessionNumber
-			   And SessionNumber.SessionStarted 	= State.SessionStarted Then
-			   	SessionFound 				= SessionNumber;
-				SessionRunningTasksFound 	= True;
-				CurrentSessionHandlesTasks  = (SessionNumber.SessionNumber = InfobaseSessionNumber());
-			EndIf;
-		EndDo;
-		If NOT SessionRunningTasksFound And SetCurrentSessionAsScheduledJobsRunSession Then
-			CurrentTimeMoment                           = CurrentDate();
-			State.SessionNumber                         = CurrentSession.SessionNumber;
-			State.SessionStarted                        = CurrentSession.SessionStarted;
-			State.ComputerName                          = ComputerName();
-			State.ApplicationName                       = CurrentSession.ApplicationName;
-			State.UserName                      		= UserName();
-			State.IDNextTasks        					= Undefined;
-			State.NextTaskProcessingBegin      			= CurrentTimeMoment;
-			State.OneMoreTaskProcessingEnding   		= CurrentTimeMoment;
-			RefreshScheduledJobsProcessingStatus(State);
-			SessionRunningTasksFound 					= True;
-			CurrentSessionHandlesTasks  				= True;
-			CommitTransaction();
-		Else
-			RollbackTransaction();
-		EndIf;
-	Except
-		RollbackTransaction();
-		Raise;
-	EndTry;
+	State = GetScheduledJobExecutionStates();
 	
-	If NOT SessionRunningTasksFound Then
-		ErrorDescription = NStr("en = 'No session processing scheduled jobs!'");
-		TasksAreProcessingOK = False;
-	ElsIf State.Settings.ScheduledJobsProcessingLock Then
-		ErrorDescription = NStr("en = 'Completion of the scheduled jobs has been locked!'");
-		TasksAreProcessingOK = False;
-	ElsIf NOT ValueIsFilled(State.OneMoreTaskProcessingEnding) Then
-		// If after the end of the next job more than 1 hour has passed, then this is a start delay.
-		If CurrentDate() - 360 > State.OneMoreTaskProcessingEnding Then
-			ErrorDescription = StringFunctionsClientServer.SubstitureParametersInString(
-					NStr("en = 'Scheduled job processing run delayed more than 1 hour!
-                          |Error checking and session restart might be required.
-                          |Run is expected at the computer: %1,
-                          |At the application: %2,
-                          |By user name: %3,
-                          |At session No: %4.'"),
+	Sessions = GetInfoBaseSessions();
+	FoundSessionForPerformingJobs       = False;
+	CurrentSessionPerformsScheduledJobs = False;
+	JobsExecutedCorrectly               = True;
+	
+	// Searching the list of active sessions for the session that performs scheduled  
+	// jobs (this session is specified in the ScheduledJobExecutionStates structure).
+	// Searching for the current session (its SessionStarted parameter value might be 
+	// required for the structure initialization).
+	For Each Session In Sessions Do
+		If Session.SessionNumber = InfoBaseSessionNumber() Then
+			CurrentSession = Session;
+		EndIf;
+		If Session.SessionNumber  = State.SessionNumber
+		   And Session.SessionStarted = State.SessionStarted Then
+			//
+			FoundSession = Session;
+			FoundSessionForPerformingJobs = True;
+			CurrentSessionPerformsScheduledJobs = (Session.SessionNumber = InfoBaseSessionNumber());
+		EndIf;
+	EndDo;
+	
+	If Not FoundSessionForPerformingJobs And SetCurrentSessionAsSessionThatPerformsScheduledJobs Then
+		CurrentSessionTime                  = CurrentSessionDate();
+		State.SessionNumber                 = CurrentSession.SessionNumber;
+		State.SessionStarted                = CurrentSession.SessionStarted;
+		State.ComputerName                  = ComputerName();
+		State.ApplicationName               = CurrentSession.ApplicationName;
+		State.UserName                      = UserName();
+		State.NextJobID                     = Undefined;
+		State.NextJobExecutionStartTime     = CurrentSessionTime;
+		State.NextJobExecutionEndTime       = CurrentSessionTime;
+		SaveScheduledJobExecutionStates(State);
+		FoundSessionForPerformingJobs       = True;
+		CurrentSessionPerformsScheduledJobs = True;
+	EndIf;
+	
+	If Not FoundSessionForPerformingJobs Then
+		ErrorDescription = NStr("en = 'No session is assigned to perform scheduled jobs.'");
+		JobsExecutedCorrectly = False;
+		//
+	ElsIf Not ValueIsFilled(State.NextJobExecutionEndTime) Then
+		// If the last job started more than an hour ago, notifying the user about the start delay.
+		If CurrentSessionDate() - 3600 > State.NextJobExecutionEndTime Then
+			ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'The scheduled job execution does not start for more than one hour.
+					           |Perhaps you have to restart the session. Expected execution details:
+					           |    Computer:       %1,
+					           |    Application:    %2,
+					           |    User name:      %3,
+					           |    Session number: %4.'"),
 					String(State.ComputerName),
 					String(State.ApplicationName),
 					String(State.UserName),
 					String(State.SessionNumber) );
-			TasksAreProcessingOK = False;
+			JobsExecutedCorrectly = False;
 		EndIf;
-	
 	Else
-		// If processing is running more than 1 hour, then it working too long.
-		If CurrentDate() - 360 > State.NextTaskProcessingBegin Then
-			ErrorDescription = StringFunctionsClientServer.SubstitureParametersInString(
-					NStr("en = 'Scheduled job processing run delayed more than 1 hour!
-                          |Error checking and session restart might be required.
-                          |Run is expected at the computer : %1,
-                          |at the application: %2,
-                          |by user name: %3,
-                          |at session No: %4.'"),
+				// If the job is being executed uninterruptedly for more than one hour, notifying the user. 
+If CurrentSessionDate() - 3600 > State.NextJobExecutionStartTime Then
+			ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'The scheduled job is being executed uninterruptedly for more than one hour.
+					           |Perhaps you have to restart the session. Execution details:
+					           | Computer:       %1,
+					           | Application:    %2,
+					           | User name:      %3,
+					           | Session number: %4.'"),
 					String(State.ComputerName),
 					String(State.ApplicationName),
 					String(State.UserName),
 					String(State.SessionNumber));
-			TasksAreProcessingOK = False;
+			JobsExecutedCorrectly = False;
 		EndIf;
 	EndIf;
-	Return CurrentSessionHandlesTasks;
 	
-EndFunction // CurrentSessionHandlesTasks()
+	Return CurrentSessionPerformsScheduledJobs;
+	
+EndFunction
 
-// Function ParentSessionSetAndCompleted checks,
-// that session that opened this additional session
-// for scheduled jobs processing is completed, if specified.
+// Checks whether the session that opened this additional session for performing
+// scheduled jobs was closed, provided that the parent session is specified.
 //
 // Parameters:
-//  LaunchParameter  - String  - value of the global property LaunchParameter,
-//                 has to be specified, because property is not available at server.
-//  ParentSessionSet - Boolean - returns True, if parent session is specified,
-//                 else returns False.
+//  LaunchParameter    - String - the value of the LaunchParameter global property;
+//                       passing this parameter is requred, because it is not available
+//                       on the server. 
+//  IsParentSessionSet - Boolean - returns True if the parent session is set, otherwise
+//                       returns False.
 //
-// Value returned:
+// Returns:
 //  Boolean.
 //
-Function ParentSessionSetAndCompleted(Val LaunchParameter) Export
+Function IsParentSessionSetAndClosed(Val LaunchParameter) Export
 
-	ParentSessionSet = False;
-	If Find(LaunchParameter, "DoScheduledJobs") <> 0 Then
-		SessionNoIndex = Find(LaunchParameter, "SessionNumber=");
-		SessionBeginIndex = Find(LaunchParameter, "SessionStarted=");
-		If SessionNoIndex <> 0 And
-		     SessionBeginIndex <> 0 And
-		     SessionNoIndex < SessionBeginIndex Then
-			ParentSessionSet = True;
-		    Sessions = GetInfobaseSessions();
-			For each SessionNumber In Sessions Do
-				If Find(LaunchParameter, "SessionNumber="  + SessionNumber.SessionNumber)  <> 0 And
-				     Find(LaunchParameter, "SessionStarted=" + SessionNumber.SessionStarted) <> 0 Then
+	IsParentSessionSet = False;
+	If Find(LaunchParameter, "ExecuteScheduledJobs") <> 0 Then
+		SessionNumberIndex = Find(LaunchParameter, "SessionNumber=");
+		SessionStartIndex = Find(LaunchParameter, "SessionStarted=");
+		If SessionNumberIndex <> 0 And
+		     SessionStartIndex <> 0 And
+		     SessionNumberIndex < SessionStartIndex Then
+			IsParentSessionSet = True;
+		    Sessions = GetInfoBaseSessions();
+			For Each Session In Sessions Do
+				If Find(LaunchParameter, "SessionNumber="  + Session.SessionNumber)  <> 0 And
+				     Find(LaunchParameter, "SessionStarted=" + Session.SessionStarted) <> 0 Then
 					Return False;
 				EndIf;
 			EndDo;
@@ -189,220 +182,327 @@ Function ParentSessionSetAndCompleted(Val LaunchParameter) Export
 	EndIf;
 	Return False;
 
-EndFunction // ParentSessionSetAndCompleted()
+EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// EXPORT METHODS OF THE SCHEDULED JOBS MANAGER EXTENSION
-//
+// Procedures and functions for working with scheduled jobs.
 
-// Procedure ProcessScheduledJobs() emulates in thin client
-// system procedure ProcessJobs(), but can be used
-// aslo in thick client.
-//
-//  Storage of the instances of the background jobs - TemporaryStorage.
-// Storage time of instances - until the closing of client session, running the processing.
-// Maximum number of simultaneously stored background jobs: 1000.
-//
-//  SessionNumber id, that handles the processing is stored in the constant
-// ScheduledJobsProcessingStatus (ValueStorage), containing the structure
-// with properties:
-// SessionNumber, SessionStarted, IDNextTasks,
-// NextTaskProcessingBegin, OneMoreTaskProcessingEnding and other.
-//  Logics of verification for the executing of scheduled jobs in current session:
-// If <SessionNumber> and  <SessionStarted> match current session,
-// Then execute, if none, then check if session exists in the list of all sessions,
-// if it does not exist, then execute, if exists then doesn't execute, but check
-// period of execution/idle. If "running"/"idles" longer
-// than 1 hour notify user (error with the description).
-//  Jobs execution order. Jobs run sequentially,
-// last started job is registered. During next check, job that we check
-// will be the job following the running job.
-//  Schedule check logics. If error has occured then use emergency
-// schedule, else - main.
-//
-// Parameters:
-//  ProcessingTime - Number(10.0) - Time in seconds of the processing of next
-//                 portion of the jobs. If time is not specified, just one processing
-//                 cycle will be done (till the completion of one background job
-//                 or processing of all scheduled jobs).
-//
-// Value returned:
-//  Boolean       - NOT Cancellation.
-//
-Procedure ProcessScheduledJobs(ProcessingTime = 0, NotifyUser = False) Export
+Procedure SetScheduledJobUse(Val ID, Val Use) Export
 	
-	If NOT CommonUse.FileInformationBase() Then
+	SetPrivilegedMode(True);
+	
+	Job = GetScheduledJob(ID);
+	Job.Use = Use;
+	Job.Write();
+	
+EndProcedure
+
+Function GetJobScheduleInStructure(Val ID) Export
+	
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
+	
+	Return CommonUseClientServer.ScheduleToStructure(GetScheduledJob(ID).Schedule);
+	
+EndFunction
+
+Procedure SetJobScheduleFromStructure(Val ID, Val ScheduleInStructure) Export
+	
+	SetPrivilegedMode(True);
+	
+	Job = GetScheduledJob(ID);
+	Job.Schedule = CommonUseClientServer.StructureToSchedule(ScheduleInStructure);
+	Job.Write();
+	
+EndProcedure
+
+// Returns scheduled job execution settings for the file mode.
+// 
+// Returns:
+//  Structure.
+//
+Function GetScheduledJobExecutionSettings() Export
+	
+	SetPrivilegedMode(True);
+	
+	Settings = Constants.ScheduledJobExecutionSettings.Get();
+	Settings = ?(TypeOf(Settings) = Type("ValueStorage"), Settings.Get(), Undefined);
+	
+	Return CheckSettings(Settings);
+	
+EndFunction
+
+// Sets scheduled job execution settings for the file mode.
+// 
+// Parameters:
+//  Settings - Structure.
+//
+Procedure SetScheduledJobExecutionSettings(Settings) Export
+	
+	SetPrivilegedMode(True);
+	
+	Settings = CheckSettings(Settings);
+	
+	Constants.ScheduledJobExecutionSettings.Set(New ValueStorage(Settings));
+	
+EndProcedure
+
+// Emulates the execution of the ProcessJobs internal procedure in the thin client mode.
+// Can be executed in the thick client mode.
+// 
+// Background job instances are stored in TempStorage.
+// Instances are stored while the session that performs scheduled jobs is running.
+// The maximum number of simultaneously stored scheduled jobs is 1000.
+// 
+// The ID of the session that performs scheduled jobs is stored in the
+// ScheduledJobExecutionStates structure (ValueStorage). This structure contains the 
+// following properties: 
+//   SessionNumber,
+//   SessionStarted,
+//   NextJobID,
+//   NextJobExecutionStartTime,
+//   NextJobExecutionEndTime,
+//   and others.
+//
+// The procedure checks whether scheduled jobs must be executed in the current session as follows:
+// If SessionNumber and SessionStarted match the current session number and start
+// time, the job is executed in the current session, otherwise the 
+// procedure checks whether the session is present in the session list.
+//   If the session is not present in the list, the job is executed in the
+//   current session,
+//   otherwise the job is not executed in the curent session bu the execution/idle time
+//   must be checked. 
+//     If the execution/idle time is more than one hour, the procedure notifies the  
+//     user (a detailed error message is displayed).
+//
+// The procedure defines the job execution order as follows:
+// Jobs are executed consecutively. The last started job is registered. During the next
+// check, the job that follows the last started job is checked to get parallel 
+// executione effect.
+//
+// The procedure checks the schedule as follows:
+// The emergency schedule is used if an error occurs, otherwise the main schedule is used.
+// 
+// Parameters:
+//  ExecutionTime - Number(10.0) - execution time (in seconds) of the next set of
+//                  scheduled jobs. If it is not specified, a single execution 
+//                  iteration is performed. The iteration ends when one background job 
+//                  is completed or when all scheduled jobs are completed without
+//                  running background jobs (schedule checking).
+//
+Procedure ExecuteScheduledJobs(ExecutionTime = 0) Export
+	
+	If Not CommonUse.FileInfoBase() Then
 		Return;
 	EndIf;
 	
 	SetPrivilegedMode(True);
 	
-	If NOT CurrentSessionHandlesTasks() Then
+	If Not CurrentSessionPerformsScheduledJobs() Then
 		Return;
 	EndIf;
 	
-	State = GetScheduledJobsProcessingStatus();
-	If State.Settings.ScheduledJobsProcessingLock Then
-		Return;
-	EndIf;
-
-	// Allow calls of privileged functions for the time of execution of this procedure.
-	CommonSettingsStorage.Save("RunningProcedureHandleScheduledJobs", , True);
+	State = GetScheduledJobExecutionStates();
 	
-	ProcessingTime 				= ?(TypeOf(ProcessingTime) = Type("Number"), ProcessingTime, 0);
+	ExecutionTime = ?(TypeOf(ExecutionTime) = Type("Number"), ExecutionTime, 0);
 
-	Tasks1                       	 	= ScheduledJobs.GetScheduledJobs();
-	ProcessingCompleted             	= False; // Determines, that ProcessingTime has elapsed, or
-	// all possible jobs have been processed.
-	ProcessingBegin                		= CurrentDate();
-	NumberOfProcessedJobs  				= 0;
-	BackgroundJobWasRunning      		= False;
-	LastTaskID = State.IDNextTasks;
+	Jobs                   = ScheduledJobs.GetScheduledJobs();
+	ExecutionCompleted     = False; // Determines whether ExecutionTime is up, or
+	                                // whether all enabled scheduled jobs are completed.
+	ExecutionStarted       = CurrentSessionDate();
+	ExecutedJobCount      = 0;
+	BackgroundJobExecuted  = False;
+	LastJobID              = State.NextJobID;
 
-	// Number of jobs will be checked every time on data processor start,
-	// because they could be deleted in other session, and in this case looping will happen.
-	While NOT ProcessingCompleted And Tasks1.Count() > 0 Do
-		FirstJobFound           = (LastTaskID = Undefined);
-		NextJobFound        = False;
-		For each SchJob IN Tasks1 Do
-			// Finish processing, if:
-			// a) time is specified and it has elapsed;
-			// b) time is not specified and at least one background job has completed;
-			// in) time is not specified and all scheduled jobs have been processed by quantity.
-			If ( ProcessingTime = 0 And
-			       ( BackgroundJobWasRunning OR
-			         NumberOfProcessedJobs >= Tasks1.Count() ) ) OR
-			     ( ProcessingTime <> 0 And
-			       ProcessingBegin + ProcessingTime <= CurrentDate() ) Then
-				ProcessingCompleted = True;
+	// The jobs are counted every time the execution is started in order to prevent the 
+	// infinite loop error, which might be caused by deleting a job in another session.
+	While Not ExecutionCompleted And Jobs.Count() > 0 Do
+		FirstJobFound = (LastJobID = Undefined);
+		NextJobFound  = False;
+		For Each Job In Jobs Do
+			// Finishing the execution if:
+			// a) the specified execution time is up;
+			// b) the execution time is not specified and one background job is completed;
+			// c) the execution time is not specified and all background jobs are completed 
+     //   (this check is performed by counting the jobs).
+			If ( ExecutionTime = 0 And
+			       ( BackgroundJobExecuted Or
+			         ExecutedJobCount >= Jobs.Count() ) ) Or
+			     ( ExecutionTime <> 0 And
+			       ExecutionStarted + ExecutionTime <= CurrentSessionDate() ) Then
+				ExecutionCompleted = True;
 				Break;
 			EndIf;
-			If NOT FirstJobFound Then
-				If String(SchJob.UUID) = LastTaskID Then
-				   // Last processed job is found, thus next one
-				   // should be checked for the necessity of processing.
+			If Not FirstJobFound Then
+				If String(Job.UUID) = LastJobID Then
+				   // The last completed scheduled job is found, the next scheduled job 
+				   // therefore requires a check whether background job execution is required. 
 				   FirstJobFound = True;
 				EndIf;
-				// If first job, that needs to be checked for the necessity of start
-				// has not been found so far, then skip current job.
+				// If the first scheduled job to be checked is not yet found, the current job is skipped.
 				Continue;
 			EndIf;
-			NextJobFound 						= True;
-			NumberOfProcessedJobs 				= NumberOfProcessedJobs + 1;
-			State.IDNextTasks      				= String(SchJob.UUID);
-			State.NextTaskProcessingBegin   	= CurrentDate();
-			State.OneMoreTaskProcessingEnding 	= '00010101';
-			RefreshScheduledJobsProcessingStatus(State,
-			                                              "IDNextTasks,
-			                                              |NextTaskProcessingBegin,
-			                                              |OneMoreTaskProcessingEnding");
-			If SchJob.Use Then
-				ProcessScheduledJob = False;
-				LastBackgroundJobProperties = GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor(SchJob);
+			NextJobFound                    = True;
+			ExecutedJobCount                = ExecutedJobCount + 1;
+			State.NextJobID                 = String(Job.UUID);
+			State.NextJobExecutionStartTime = CurrentSessionDate();
+			State.NextJobExecutionEndTime   = '00010101';
+			SaveScheduledJobExecutionStates(State,
+			                               "NextJobID, 
+			                               |NextJobExecutionStartTime, 
+			                               |NextJobExecutionEndTime");
+			If Job.Use Then
+				ExecuteScheduledJob = False;
+				LastBackgroundJobProperties = GetLastBackgroundJobForScheduledJobExecutionProperties(Job);
 				
 				If LastBackgroundJobProperties <> Undefined And
 				     LastBackgroundJobProperties.State = BackgroundJobState.Failed Then
-					// Check emergency schedule.
-					If LastBackgroundJobProperties.LaunchTry <= SchJob.RestartCountOnFailure Then
-						If LastBackgroundJobProperties.End + SchJob.RestartIntervalOnFailure <= CurrentDate() Then
-						    // Restart background job by scheduled job.
-						    ProcessScheduledJob = True;
+					// Checking the emergency schedule.
+					If LastBackgroundJobProperties.StartAttempt <= Job.RestartCountOnFailure Then
+						If LastBackgroundJobProperties.End + Job.RestartIntervalOnFailure <= CurrentSessionDate() Then
+						    // Restarting the background job by the scheduled job.
+						    ExecuteScheduledJob = True;
 						EndIf;
 					EndIf;
 				Else
-					// Check standard schedule.
-					ProcessScheduledJob = SchJob.Schedule.ExecutionRequired(
-						CurrentDate(),
-						?(LastBackgroundJobProperties = Undefined, '00010101', LastBackgroundJobProperties.Begin),
-						?(LastBackgroundJobProperties = Undefined, '00010101', LastBackgroundJobProperties.End ));
+					// Checking the standard schedule.
+					ExecuteScheduledJob = Job.Schedule.ExecutionRequired(
+						CurrentSessionDate(),
+						?(LastBackgroundJobProperties = Undefined, '00010101', LastBackgroundJobProperties.Start),
+						?(LastBackgroundJobProperties = Undefined, '00010101', LastBackgroundJobProperties.End) );
 				EndIf;
-				If ProcessScheduledJob Then
-					ProcessScheduledJob(SchJob);
-					BackgroundJobWasRunning = True;
+				If ExecuteScheduledJob Then
+					BackgroundJobExecuted = ExecuteScheduledJob(Job);
 				EndIf;
 			EndIf;
-			State.OneMoreTaskProcessingEnding = CurrentDate();
-			RefreshScheduledJobsProcessingStatus(State, "OneMoreTaskProcessingEnding");
+			State.NextJobExecutionEndTime = CurrentSessionDate();
+			SaveScheduledJobExecutionStates(State, "NextJobExecutionEndTime");
 		EndDo;
-		// If last executed job has not been found, then
-		// reset its Id, to start verification of scheduled jobs startting the first one.
-		LastTaskID = Undefined;
+		// Clearing LastJobID if the last completed job is not found,
+		// to start checking scheduled jobs from the beginning.
+		LastJobID = Undefined;
 	EndDo;
 	
-	// Prohibit calls of privileged functions after completion of the current procedure.
-	CommonSettingsStorage.Save("RunningProcedureHandleScheduledJobs", , False);
-	
-EndProcedure // ProcessScheduledJobs()
+EndProcedure
 
-// Procedure SetScheduledJobsProcessingSettings defines
-// settings for the file mode of scheduled jobs processing.
-//
+// Retrieves ScheduledJob from the infobase by UUID.
+// 
 // Parameters:
-//  Settings - Structure.
+//  ID - ScheduledJob UUID.
+// 
+// Returns:
+//  ScheduledJob.
 //
-Procedure SetScheduledJobsProcessingSettings(Settings) Export
-	
+Function GetScheduledJob(Val ID) Export
+
+	RaiseIfNoAdministrativeRights();
 	SetPrivilegedMode(True);
 	
-	Settings = UpdateSettings(Settings);
+	ScheduledJob = ScheduledJobs.FindByUUID(New UUID(ID));
 	
-	BeginTransaction();
-	Try
-		State = GetScheduledJobsProcessingStatus(True);
-		If State.Settings.ScheduledJobsProcessingLock <> Settings.ScheduledJobsProcessingLock Then
-			CallExceptionIfNoAdminPrivileges();
+	If ScheduledJob = Undefined Then
+		Raise( NStr("en = 'The job is not found in the list.
+		                              |Perhaps another user deletes it.'") );
+	EndIf;
+	
+	Return ScheduledJob;
+	
+EndFunction
+
+// This function is intended for immediate execution of a scheduled job manually in a 
+// client session (if 1C:Enterprise is running in the file mode) or in a background  
+// job on the server (if 1C:Enterprise is running in the client/server mode).
+// This function can be used in any connection mode.
+// The manual execution has no effect on the scheduled execution of jobs because the 
+// scheduled job reference of the background job is not specified during this
+// operation.
+// Specifying such references is not allowed for the BackgroundJob type, therefore 
+// this rule also applies in the file mode.
+// 
+// Parameters:
+//  Job             - ScheduledJob, String - scheduled job or its UUID. 
+//  StartedAt       - Undefined, Date - in the file mode, it specifies the point in 
+//                    time of the scheduled job start.
+//                    in the client/server mode, returns start date and time of the
+//                    background job.
+//  BackgroundJobID - String - in the client/server mode, it returns ID of the started
+//                    background job. 
+//  FinishedAt      - Undefined, Date - in the file mode, returns the end date and
+//                    time of the scheduled.
+//
+Function ExecuteScheduledJobManually(Val Job,
+                                     StartedAt = Undefined,
+                                     BackgroundJobID = "",
+                                     FinishedAt = Undefined,
+                                     SessionNumber = Undefined,
+                                     SessionStarted = Undefined,
+                                     BackgroundJobPresentation = "",
+                                     ProcedureAlreadyExecuting = Undefined) Export
+	
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
+	
+	ProcedureAlreadyExecuting = False;
+	Job = ?(TypeOf(Job) = Type("ScheduledJob"), Job, GetScheduledJob(Job));
+	
+	Start = False;
+	If CommonUse.FileInfoBase() Then
+		Start = ExecuteScheduledJob(Job, True, StartedAt, FinishedAt, SessionNumber, SessionStarted);
+	Else
+		LastBackgroundJobProperties = GetLastBackgroundJobForScheduledJobExecutionProperties(Job);
+		If LastBackgroundJobProperties <> Undefined
+		   And LastBackgroundJobProperties.State = BackgroundJobState.Active Then
+			//
+			StartedAt  = LastBackgroundJobProperties.Start;
+			If ValueIsFilled(LastBackgroundJobProperties.Description) Then
+				BackgroundJobPresentation = LastBackgroundJobProperties.Description;
+			Else
+				BackgroundJobPresentation = ScheduledJobPresentation(Job);
+			EndIf;
+		Else
+			BackgroundJobDescription = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Started manually: "), ScheduledJobPresentation(Job));
+			BackgroundJob = BackgroundJobs.Execute(Job.Metadata.MethodName, Job.Parameters, String(Job.UUID), BackgroundJobDescription);
+			BackgroundJobID = String(BackgroundJob.UUID);
+			StartedAt = BackgroundJobs.FindByUUID(BackgroundJob.UUID).Start;
+			Start = True;
 		EndIf;
-		State.Settings = Settings;
-		RefreshScheduledJobsProcessingStatus(State);
-		CommitTransaction();
-	Except
-		RollbackTransaction();
-		Raise;
-	EndTry;
+	EndIf;
 	
-EndProcedure // SetScheduledJobsProcessingSettings()
+	ProcedureAlreadyExecuting = Not Start;
+	
+	Return Start;
+	
+EndFunction
 
-// Procedure GetScheduledJobsProcessingSettings gets settings
-// for the file mode of scheduled jobs processing.
-//
-// Value returned:
-//  Settings - Structure.
-//
-Function GetScheduledJobsProcessingSettings() Export
-	
-	SetPrivilegedMode(True);
-	
-	Return GetScheduledJobsProcessingStatus().Settings;
-	
-EndFunction // GetScheduledJobsProcessingSettings()
-
-// Function returns presentation of the scheduled job,
-// this is in order of exception of unfilled attributes:
+// Returns the scheduled job presentation.
+// The scheduled job presentation is the first filled value of the following sequence:
 // Description, Metadata.Synonym, Metadata.Name.
+// If none of these values are filled, the function returns "<not defined>". 
 //
 // Parameters:
-//  SchJob      - ScheduledJob, String - if string, then UUID as string.
+//  Job - ScheduledJob, String - scheduled job or its UUID string.
 //
-// Value returned:
+// Returns:
 //  String.
 //
-Function ScheduledJobPresentation(Val SchJob) Export
+Function ScheduledJobPresentation(Val Job) Export
 	
-	CallExceptionIfNoAdminPrivileges();
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
 	
-	If TypeOf(SchJob) = Type("ScheduledJob") Then
-		ScheduledJob = SchJob;
+	If TypeOf(Job) = Type("ScheduledJob") Then
+		ScheduledJob = Job;
 	Else
-		ScheduledJob = ScheduledJobs.FindByUUID(New UUID(SchJob));
+		ScheduledJob = ScheduledJobs.FindByUUID(New UUID(Job));
 	EndIf;
 	
 	If ScheduledJob <> Undefined Then
 		Presentation = ScheduledJob.Description;
+		
 		If IsBlankString(ScheduledJob.Description) Then
-			// Apply synonym instead of description
 			Presentation = ScheduledJob.Metadata.Synonym;
+			
 			If IsBlankString(Presentation) Then
-				// Apply name instead of synonym
 				Presentation = ScheduledJob.Metadata.Name;
 			EndIf
 		EndIf;
@@ -412,390 +512,310 @@ Function ScheduledJobPresentation(Val SchJob) Export
 	
 	Return Presentation;
 	
-EndFunction // ScheduledJobPresentation()
+EndFunction
 
-// Service function, returning text "<undefined>" with localization.
-// Used for localization purposes
-//
+// Returns the "<not defined>" text.
 Function TextUndefined() Export
 	
 	Return NStr("en = '<not defined>'");
 	
 EndFunction
 
-// Function GetScheduledJob gets ScheduledJob from the infobase
-// using string of unique id.
+// Returns the value of the flag that shows whether the user is notified about
+// job execution errors.
 //
-// Parameters:
-//  Id - String of the unique id of the ScheduledJob.
-//
-// Value returned:
-//  ScheduledJob.
-//
-Function GetScheduledJob(Val Id) Export
-
-	CallExceptionIfNoAdminPrivileges();
-	
-	ScheduledJob = ScheduledJobs.FindByUUID(New UUID(Id));
-	
-	If ScheduledJob = Undefined Then
-		Raise( NStr("en = 'The task is not found in the list! It might be deleted by another user!'") );
-	EndIf;
-	
-	Return ScheduledJob;
-	
-EndFunction // GetScheduledJob()
-
-// Procedure ProcessScheduledJobManually is used for
-// "manual" immediate execution of the scheduled job
-// either in client session (in file IB), or in background job at server (in server IB).
-// Can be used in any connection mode.
-// "Manual" running mode doesn not affect execution of scheduled job in emergency
-// and main schedules, because ref to the scheduled job is not specified for the background job.
-// Type BackgroundJob does not allow to assign such reference, therefor for the file mode the same rule
-// is applied.
-//
-// Parameters:
-//  SchJob      	 - ScheduledJob, String of the unique id of the ScheduledJob.
-//  StartMoment 	 - Undefined, Date(date and time). For the file IB defines passed
-//                 moment, as start moment. For the server IB - returns actual start moment
-//                 of the background job.
-//  BackgroundTaskID - String - id of the started background job.
-//
-//
-Procedure ProcessScheduledJobManually(Val SchJob,
-                                               StartMoment = Undefined,
-                                               BackgroundTaskID = "") Export
-
-	CallExceptionIfNoAdminPrivileges();
-	
-	SchJob = ?(TypeOf(SchJob) = Type("ScheduledJob"), SchJob, GetScheduledJob(SchJob));
-	
-	If CommonUse.FileInformationBase() Then
-		ProcessScheduledJob(SchJob, True, StartMoment, BackgroundTaskID);
-	// Status update has already been done in the called procedure.
-	Else
-		BeginTransaction();
-		Try
-			State 						= GetScheduledJobsProcessingStatus(True);
-			BackgroundTaskDescription 	= StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Run manually: %1'"), ScheduledJobPresentation(SchJob));
-			BackgroundJob 				= BackgroundJobs.Execute(SchJob.Metadata.MethodName, SchJob.Parameters, SchJob.Key, BackgroundTaskDescription);
-			BackgroundTaskID 			= String(BackgroundJob.UUID);
-			State.Map_BJID_SJID_StartedAtServerManually.Insert( BackgroundTaskID, String(SchJob.UUID) );
-			StartMoment 				= BackgroundJobs.FindByUUID(BackgroundJob.UUID).Begin;
-			RefreshScheduledJobsProcessingStatus(State);
-			CommitTransaction();
-		Except
-			RollbackTransaction();
-			Raise;
-		EndTry;
-	EndIf;
-	
-EndProcedure // ProcessScheduledJobManually()
-
-// Function NeedToNotifyAboutIncorrectStatusDataOfScheduledJobsProcessing returns
-// value of the flag of setting of scheduled jobs processing.
-//
-// Value returned:
+// Returns:
 //  Boolean.
 //
-Function NeedToNotifyAboutIncorrectStatusDataOfScheduledJobsProcessing(PeriodNotifications) Export
+Function NotifyAboutScheduledJobExecutionErrors(NotificationPeriod) Export
 	
 	SetPrivilegedMode(True);
 	
-	NotifyAboutIncorrectStatus = False;
+	NotifyAboutIncorrectState = False;
 	
-	If CommonUse.FileInformationBase() Then
-		State 				= GetScheduledJobsProcessingStatus();
-		PeriodNotifications = State.Settings.NotificationPeriodAboutStatusProcessingRegulatoryJobs;
-		PeriodNotifications = ?(PeriodNotifications <= 0, 1, PeriodNotifications);
-		NotifyAboutIncorrectStatus = State.Settings.NotifyAboutFailureInScheduledJobsProcessingStatus;
+	If CommonUse.FileInfoBase() Then
+		Settings = GetScheduledJobExecutionSettings();
+		NotificationPeriod = Settings.ScheduledJobErrorNotificationPeriod;
+		NotificationPeriod = ?(NotificationPeriod <= 0, 1, NotificationPeriod);
+		NotifyAboutIncorrectState = Settings.NotifyAboutIncorrectScheduledJobExecution;
 	Else
-		PeriodNotifications = 1;
+		NotificationPeriod = 1;
 	EndIf;
 	
-	Return NotifyAboutIncorrectStatus;
-	
-EndFunction // NeedToNotifyAboutIncorrectStatusDataOfScheduledJobsProcessing()
-
-// Function MessagesAndDescriptionsOfScheduledJobErrors returns
-// multiline String containing Messages and DetailsOfInformationAboutError,
-// last background job has found by scheduled job id
-// and there are some messages/errors.
-//
-// Parameters:
-//  SchJob      - ScheduledJob, String - UUID
-//                 of ScheduledJob as string.
-//
-// Value returned:
-//  String.
-//
-Function MessagesAndDescriptionsOfScheduledJobErrors(Val SchJob) Export
-	
-	CallExceptionIfNoAdminPrivileges();
-
-	ScheduledJobID = ?(TypeOf(SchJob) = Type("ScheduledJob"), String(SchJob.UUID), SchJob);
-	LastBackgroundJobProperties = GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor(ScheduledJobID);
-	Return ?(LastBackgroundJobProperties = Undefined,
-	          "",
-	          MessagesAndDescriptionsOfBackgroundJobErrors(LastBackgroundJobProperties.Id) );
-	
-EndFunction // MessagesAndDescriptionsOfScheduledJobErrors()
-
-// Returns opening parameters of the session processing scheduled jobs.
-//
-// Parameters:
-//  ByAutoOpenSettings - Boolean - open session, if it's configured to execute
-//                 automatic opening and it's not server IB and not Web-client and
-//                 session has not been already opened. In other cases Cancellation being assigned.
-//
-// Value returned:
-//  Structure -    RequiredToOpenSeparateSession             	- Boolean - True.
-//                 AdditionalParametersOfCommandLine     		- String - additional parameters of command line for
-//                                                              		opening the session processing scheduled jobs.
-//                 ExecutedOpenAttempt                   		- Boolean - False, for use in calling procedure.
-//                 NotifyAboutProcessingIncorrectStatus  		- Boolean.
-//                 PeriodNotifications                          - Number.
-//                 Cancellation                                 - Boolean.
-//                 ErrorDescription                             - String.
-//
-Function OpenParametersOfScheduledJobsProcessingSession(Val ByAutoOpenSettings = False) Export
-	
-	SetPrivilegedMode(True);
-	
-	Result = New Structure;
-	Result.Insert("RequiredToOpenSeparateSession", 			False);
-	Result.Insert("ExecutedOpenAttempt", 					False);
-	Result.Insert("AdditionalParametersOfCommandLine", 		"");
-	Result.Insert("NotifyAboutProcessingIncorrectStatus", 	False);
-	Result.Insert("PeriodNotifications", 					Undefined);
-	Result.Insert("Cancellation", 							False);
-	Result.Insert("ErrorDescription", 						"");
-	
-	If ByAutoOpenSettings Then
-		Result.Insert("CurrentUserAdministrator", AccessRight("Administration", Metadata, InfobaseUsers.CurrentUser()));
-	EndIf;
-	
-	Result.NotifyAboutProcessingIncorrectStatus = NeedToNotifyAboutIncorrectStatusDataOfScheduledJobsProcessing(Result.PeriodNotifications);
-	
-	State = GetScheduledJobsProcessingStatus();
-	
-	If ByAutoOpenSettings And NOT State.Settings.AutomaticallyOpenSeparateSessionOfScheduledJobsProcessing Then
-		Return Result;
-	EndIf;
-	
-	If NOT CommonUse.FileInformationBase() Then
-		If ByAutoOpenSettings Then
-			Return Result;
-		Else
-			Result.Cancellation = True;
-			Result.ErrorDescription = NStr("en = 'Scheduled jobs are processed on the server! '");
-			Return Result;
-		EndIf;
-	EndIf;
-
-	TasksAreProcessingOK = Undefined;
-	CurrentSessionHandlesTasks(TasksAreProcessingOK);
-	If TasksAreProcessingOK Then
-		If ByAutoOpenSettings Then
-			Return Result;
-		Else
-			Result.Cancellation = True;
-			Result.ErrorDescription = NStr("en = 'Scheduled jobs executing session is already open!'");
-			Return Result;
-		EndIf;
-	EndIf;
-	
-	CurrentSessionNumber = InfobaseSessionNumber();
-	// Determine current session start date.
-	CurrentSessionBegin = '00010101';
-	Sessions = GetInfobaseSessions();
-	For each SessionNumber In Sessions Do
-		If SessionNumber.SessionNumber = CurrentSessionNumber Then
-			CurrentSessionBegin = SessionNumber.SessionStarted;
-			Break;
-		EndIf;
-	EndDo;
-	Result.AdditionalParametersOfCommandLine = """"
-		+ " /C""DoScheduledJobs SkipMessageBox AloneIBSession "
-		+ "SessionNumber=" + CurrentSessionNumber + " SessionStarted=" + CurrentSessionBegin + """";
-	
-	Result.RequiredToOpenSeparateSession = True;
-	
-	Return Result;
-	
-EndFunction // OpenParametersOfScheduledJobsProcessingSession()
-
-Function GetScheduledJobSchedule(Val Id) Export
-	
-	CallExceptionIfNoAdminPrivileges();
-	
-	Return GetScheduledJob(Id).Schedule;
+	Return NotifyAboutIncorrectState;
 	
 EndFunction
 
-Procedure SetScheduledJobSchedule(Val Id, Val Schedule) Export
+// Returns multiline String that contains Messages and ErrorDetails of the last
+// scheduled job found by scheduled job ID.
+//
+// Parameters:
+// Job - ScheduledJob, String - scheduled job or its UUID string.
+//
+// Returns:
+//  String.
+//
+Function ScheduledJobMessagesAndErrorDescriptions(Val Job) Export
+	
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
+
+	ScheduledJobID = ?(TypeOf(Job) = Type("ScheduledJob"), String(Job.UUID), Job);
+	LastBackgroundJobProperties = GetLastBackgroundJobForScheduledJobExecutionProperties(ScheduledJobID);
+	Return ?(LastBackgroundJobProperties = Undefined,
+	          "",
+	          BackgroundJobMessagesAndErrorDescriptions(LastBackgroundJobProperties.ID) );
+	
+EndFunction
+
+// Returns the start parameters of the separate session that performs scheduled jobs.
+//
+// Parameters:
+//  ByAutoStart - Boolean - flag that shows whether the session will be started if
+//                the following three conditions is true: 
+//                 the automatic session start is enabled,
+//                 the infobase runs in the file mode,
+//                 the session has not been started.
+//
+// Returns:
+//  Structure with the following fields:
+//                RequiredSeparateSessionStart    - Boolean - True.
+//                AdditionalCommandLineOptions    - String - additional command-line
+//                                                  options for starting the session 
+//                                                  that will perform jobs.
+//                TriedToOpen                    - Boolean - False, to be used in 
+//                                                  the calling procedure.
+//                NotifyAboutIncorrectExecution   - Boolean.
+//                NotificationPeriod              - Number.
+//                Cancel                          - Boolean.
+//                ErrorDescription                - String.
+//
+Function ScheduledJobExecutionSeparateSessionLaunchParameters(Val ByAutoStart = False) Export
+	
+	Result = New Structure;
+	Result.Insert("RequiredSeparateSessionStart", False);
+	Result.Insert("TriedToOpen", False);
+	Result.Insert("AdditionalCommandLineOptions", "");
+	Result.Insert("NotifyAboutIncorrectExecution", False);
+	Result.Insert("NotificationPeriod", Undefined);
+	Result.Insert("Cancel", False);
+	Result.Insert("ErrorDescription", "");
+	
+	If ByAutoStart Then
+		Result.Insert("CurrentUserAdministrator", Users.InfoBaseUserWithFullAccess(, True));
+	EndIf;
 	
 	SetPrivilegedMode(True);
+	Result.NotifyAboutIncorrectExecution = NotifyAboutScheduledJobExecutionErrors(Result.NotificationPeriod);
 	
-	SchJob = GetScheduledJob(Id);
-	SchJob.Schedule = Schedule;
-	SchJob.Write();
+	Settings = GetScheduledJobExecutionSettings();
+	If ByAutoStart And Not Settings.AutomaticallyStartSeparateSessionForExecutingSchedledJobs Then
+		Return Result;
+	EndIf;
+	
+	If Not CommonUse.FileInfoBase() Then
+		If ByAutoStart Then
+			Return Result;
+		Else
+			Result.Cancel = True;
+			Result.ErrorDescription = NStr("en = 'Scheduled jobs are executed on the server.'");
+			Return Result;
+		EndIf;
+	EndIf;
+
+	JobsExecutedCorrectly = Undefined;
+	CurrentSessionPerformsScheduledJobs(JobsExecutedCorrectly);
+	If JobsExecutedCorrectly Then
+		If ByAutoStart Then
+			Return Result;
+		Else
+			Result.Cancel = True;
+			Result.ErrorDescription = NStr("en = 'The session that performs scheduled jobs is already started.'");
+			Return Result;
+		EndIf;
+	EndIf;
+	
+	CurrentSessionNumber = InfoBaseSessionNumber();
+	// Determining the start time of the current session.
+	CurrentSessionStarted = '00010101';
+	Sessions = GetInfoBaseSessions();
+	For Each Session In Sessions Do
+		If Session.SessionNumber = CurrentSessionNumber Then
+			CurrentSessionStarted = Session.SessionStarted;
+			Break;
+		EndIf;
+	EndDo;
+	Result.AdditionalCommandLineOptions = """"
+		+ " /C""ExecuteScheduledJobs IgnoreWarnings SeparateSession FromApplication"
+		+ "SessionNumber=" + CurrentSessionNumber + " SessionStarted=" + CurrentSessionStarted + """";
+	
+	Result.RequiredSeparateSessionStart = True;
+	
+	Return Result;
+	
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions for working with background jobs.
+
+// Cancels the background job if it is possible (that is, the background job is executed on the server and is active).
+//
+// Parameters:
+//  ID  - BackgroundJob UUID.
+// 
+Procedure CancelBackgroundJob(ID) Export
+	
+	If CommonUse.FileInfoBase() Then
+		Raise( NStr("en = 'Background jobs are not used
+		                             |in the file mode.'"));
+	EndIf;
+	
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
+	
+	Filter = New Structure("UUID", New UUID(ID));
+	BackgroundJobArray = BackgroundJobs.GetBackgroundJobs(Filter);
+	If BackgroundJobArray.Count() = 1 Then
+		BackgroundJob = BackgroundJobArray[0];
+	Else
+		Raise( NStr("en = 'The background job is not found on the server.'") );
+	EndIf;
+	
+	If BackgroundJob.State <> BackgroundJobState.Active Then
+		Raise( NStr("en = 'The job is not being executed, therefore it cannot be canceled.'") );
+	EndIf;
+	
+	BackgroundJob.Cancel();
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// EXPORT METHODS OF THE GENERALIZED BACKGROUND JOBS MANAGER
-//
-// Generalized manager of the background jobs works both in file, and in server mode
-// of the infobase.
-
-// Function GetBackgroundJobsPropertiesTable() "emulates" function
-// BackgroundJobs.GetBackgroundJobs() for any connection mode.
-//  Table structure see in function CheckBackgroundJobsTable().
-//
+// Emulates the BackgroundJobs.GetBackgroundJobs() function in the file mode.
+//  For details on the table structure, see the description of the 
+//  EmptyBackgroundJobPropertyTable function.
+// 
 // Parameters:
-//  Filter    - Structure - available fields:
-//                 UUID, Key, State, Begin, End,
-//                 Description, MethodName, ScheduledJob.
-//  TotalJobs - Number 	  - returns total number of jobs without the filter.
-//  ReadState - Undefined, only for internal use.
+//  Filter        - Structure that can contain the following fields:
+//                  ID, Key, State, Start, End, Description, MethodName, ScheduledJob. 
+//  TotalJobCount - Number - returns the number of jobs without taking the filter into
+//                  account.
+//  ReadState     - Undefined - for internal use only.
 //
-// Value returned:
-//  ValueTable  - table after filtation is returned.
+// Returns:
+//  ValueTable  - filtered table.
 //
-Function GetBackgroundJobsPropertiesTable(Filter = Undefined, TotalJobs = 0, Val ReadState = Undefined) Export
-
-	CallExceptionIfNoAdminPrivileges();
-
-	If ReadState = Undefined Then
-		BeginTransaction();
-	EndIf;
-	Try
-		If ReadState = Undefined Then
-			State = GetScheduledJobsProcessingStatus(True);
-		Else
-			State = ReadState;
-		EndIf;
-		TableUpdated = NOT CheckBackgroundJobsTable(State.BackgroundJobsTable);
-		Table = State.BackgroundJobsTable;
-		If NOT CommonUse.FileInformationBase() Then
-			// Complement table of the background jobs.
-			// 1. Define start moment to complement.
-			//    Find first active job, running at server.
-			//    If there is no such job, then find last job running at server.
-			//    Period start will be equal to the job execution start date.
-			RowsOfActive = Table.FindRows(New Structure("AtServer, State", True, BackgroundJobState.Active));
-			Begin = Undefined;
-			If RowsOfActive.Count() <> 0 Then
-				// Fill earliest start date.
-				Begin = RowsOfActive[0].Begin;
-				For each String In RowsOfActive Do
-					Begin = ?(String.Begin < Begin, String.Begin, Begin);
-				EndDo;
-			Else
-				LastString = Table.Find(True, "AtServer");
-				If LastString <> Undefined Then
-					Begin = LastString.Begin;
-				EndIf;
-			EndIf;
-			If Begin = Undefined Then
-				CurrentBackgroundJobs = BackgroundJobs.GetBackgroundJobs();
-			Else
-				CurrentBackgroundJobs = BackgroundJobs.GetBackgroundJobs(New Structure("Begin", Begin));
-			EndIf;
-			
-			// 2. Refresh identical jobs and insert new background jobs.
-			//    Consider, that jobs list is sorted descending by columns Begin.
-			// 2.1. Check in cycle that, that all jobs in table with status Active have been obtained from server.
-			//      If they are missing at server for some reason, then assign status: Completed.
-			ActiveTasks = Table.FindRows(New Structure("State", BackgroundJobState.Active));
-			TaskNumber = CurrentBackgroundJobs.Count() - 1;
-			While TaskNumber >= 0 Do
-				SchJob = CurrentBackgroundJobs[TaskNumber];
-				RowsFound = Table.FindRows(New Structure("Id, Begin", String(SchJob.UUID), SchJob.Begin));
-				If RowsFound.Count() = 0 Then
-					String = Table.Insert(0);
-					TableUpdated = True;
-				Else
-					String = RowsFound[0];
-					If String.State <> BackgroundJobState.Active Then
-						// There is no sense to update those inactive jobs, that are
-						// already present in the table. They are in list iteratively.
-						TaskNumber = TaskNumber - 1;
-						Continue;
-					EndIf;
-					TableUpdated = True;
-					// Check active tasks in table of tasks, deleted at server, by deleting the found ones from the list.
-					ActiveTasks.Delete(ActiveTasks.Find(String));
-				EndIf;
-				FillPropertyValues(String, SchJob);
-				String.AtServer = True;
-				String.Id = SchJob.UUID;
-				String.ScheduledJobID = ?(SchJob.ScheduledJob = Undefined,
-															 // May already be assigned, if manual processing has been performed.
-															 String.ScheduledJobID,
-															 SchJob.ScheduledJob.UUID);
-				String.DetailsOfInformationAboutError = ?(SchJob.ErrorInfo = Undefined, "", DetailErrorDescription(SchJob.ErrorInfo));
-				TaskNumber = TaskNumber - 1;
-			EndDo;
-			// 2.3. Reset status Active for the active jobs in table, but not found at server.
-			TableUpdated = TableUpdated OR ActiveTasks.Count() > 0;
-			For each LostActiveJob In ActiveTasks Do
-				LostActiveJob.State = BackgroundJobState.Completed;
-			EndDo;
-			
-			// 3. Assign ids of scheduled jobs to those background jobs, which were executed manually.
-			//    And delete dead (expired) mappings.
-			RunningManually = State.Map_BJID_SJID_StartedAtServerManually;
-			TableUpdated = TableUpdated OR RunningManually.Count() > 0;
-			
-			KeysArrayDelete = New Array;
-			For each KeyAndValue in RunningManually Do
-				String = Table.Find(KeyAndValue.Key, "Id");
-				If String = Undefined Then
-					KeysArrayDelete.Add(KeyAndValue.Key);
-				Else
-					String.ScheduledJobID = KeyAndValue.Value;
-				EndIf;
-			EndDo;
-			For each Key In KeysArrayDelete Do
-				RunningManually.Delete(Key);
-			EndDo;
-
-		EndIf;
-		// Clear extra jobs (greater than 1000).
-		TaskNumber = Table.Count()-1;
-		While TaskNumber >= 1000 Do
-			Table.Delete(TaskNumber);
-			TaskNumber = TaskNumber - 1;
-		EndDo;
-		If ReadState = Undefined Then
-			If TableUpdated Then
-				RefreshScheduledJobsProcessingStatus(State);
-				CommitTransaction();
-			Else
-				RollbackTransaction();
-			EndIf;
-		Else
-			Table = Table.Copy();
-		EndIf;
-		TotalJobs = Table.Count();
-	Except
-		If ReadState = Undefined Then
-			RollbackTransaction();
-		EndIf;
-		Raise;
-	EndTry;
+Function GetBackgroundJobPropertyTable(Filter = Undefined, TotalJobCount = 0) Export
 	
-	// Filter background jobs.
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
+	
+	Table = EmptyBackgroundJobPropertyTable();
+	
+	If Filter <> Undefined And Filter.Property("GetLastBackgroundJobOfScheduledJob") Then
+		Filter.Delete("GetLastBackgroundJobOfScheduledJob");
+		GetLast = True;
+	Else
+		GetLast = False;
+	EndIf;
+	
+	ScheduledJob = Undefined;
+	
+	// Adding a history of background jobs that were received from the server
+	If Not CommonUse.FileInfoBase() Then
+		If Filter <> Undefined And Filter.Property("ScheduledJobID") Then
+			ScheduledJob = ScheduledJobs.FindByUUID(New UUID(Filter.ScheduledJobID));
+			BackgroundJobArray = New Array;
+			If ScheduledJob <> Undefined Then
+				LastBackgroundJob = ScheduledJob.LastJob;
+				If GetLast And LastBackgroundJob <> Undefined Then
+					BackgroundJobArray.Add(LastBackgroundJob);
+					AddBackgroundJobProperties(BackgroundJobArray, Table);
+				Else
+					FirstFilter = New Structure("ScheduledJob", ScheduledJob);
+					BackgroundJobArray = BackgroundJobs.GetBackgroundJobs(FirstFilter);
+					AddBackgroundJobProperties(BackgroundJobArray, Table);
+				EndIf;
+			EndIf;
+			If Not GetLast Or BackgroundJobArray.Count() = 0 Then
+				SecondFilter = New Structure("Key", Filter.ScheduledJobID);
+				AddBackgroundJobProperties(BackgroundJobs.GetBackgroundJobs(SecondFilter), Table);
+			EndIf;
+			If GetLast Then
+				Return Table;
+			EndIf;
+		Else
+			If Filter = Undefined Then
+				BackgroundJobArray = BackgroundJobs.GetBackgroundJobs();
+			Else
+				If Filter.Property("ID") Then
+					Filter.Insert("UUID", New UUID(Filter.ID));
+					Filter.Delete("ID");
+				EndIf;
+				BackgroundJobArray = BackgroundJobs.GetBackgroundJobs(Filter);
+				If Filter.Property("UUID") Then
+					Filter.Insert("ID", String(Filter.UUID));
+					Filter.Delete("UUID");
+				EndIf;
+			EndIf;
+			AddBackgroundJobProperties(BackgroundJobArray, Table);
+		EndIf;
+	EndIf;
+	
+	If Filter <> Undefined And Filter.Property("ScheduledJobID") Then
+		ScheduledJobsToProcess = New Array;
+		If ScheduledJob = Undefined Then
+			ScheduledJob = ScheduledJobs.FindByUUID(New UUID(Filter.ScheduledJobID));
+		EndIf;
+		If ScheduledJob <> Undefined Then
+			ScheduledJobsToProcess.Add(ScheduledJob);
+		EndIf;
+	Else
+		ScheduledJobsToProcess = ScheduledJobs.GetScheduledJobs();
+	EndIf;
+	
+	// Adding and saving scheduled job states
+	For Each ScheduledJob In ScheduledJobsToProcess Do
+		ScheduledJobID = String(ScheduledJob.UUID);
+		Properties = CommonSettingsStorage.Load("ScheduledJobState_" + ScheduledJobID, , , "");
+		Properties = ?(TypeOf(Properties) = Type("ValueStorage"), Properties.Get(), Undefined);
+		
+		If TypeOf(Properties) = Type("Structure")
+		   And Properties.ScheduledJobID = ScheduledJobID
+		   And Table.FindRows(New Structure("ID, AtServer", Properties.ID, Properties.AtServer)).Count() = 0 Then
+			
+			If Properties.AtServer Then
+				CommonSettingsStorage.Save("ScheduledJobState_" + ScheduledJobID, , Undefined, , "");
+			Else
+				If Properties.State = BackgroundJobState.Active Then
+					FoundSessionForPerformingJobs = False;
+					For Each Session In GetInfoBaseSessions() Do
+						If Session.SessionNumber = Properties.SessionNumber
+						   And Session.SessionStarted = Properties.SessionStarted Then
+							FoundSessionForPerformingJobs = InfoBaseSessionNumber() <> Session.SessionNumber;
+							Break;
+						EndIf;
+					EndDo;
+					If Not FoundSessionForPerformingJobs Then
+						Properties.End = CurrentSessionDate();
+						Properties.State = BackgroundJobState.Failed;
+						Properties.ErrorDetails = NStr("en = 'The session that executes the scheduled job procedure is not found.'");
+					EndIf;
+				EndIf;
+				FillPropertyValues(Table.Add(), Properties);
+			EndIf;
+		EndIf;
+	EndDo;
+	Table.Sort("Start Desc, End Desc");
+	
+	TotalJobCount = Table.Count();
+	
+	// Filtering background jobs
 	If Filter <> Undefined Then
-		Begin 	  	= Undefined;
-		End 	  	= Undefined;
-		State 		= Undefined;
-		If Filter.Property("Begin") Then
-			Begin = ?(ValueIsFilled(Filter.Begin), Filter.Begin, Undefined);
-			Filter.Delete("Begin");
+		Start = Undefined;
+		End   = Undefined;
+		State = Undefined;
+		If Filter.Property("Start") Then
+			Start = ?(ValueIsFilled(Filter.Start), Filter.Start, Undefined);
+			Filter.Delete("Start");
 		EndIf;
 		If Filter.Property("End") Then
 			End = ?(ValueIsFilled(Filter.End), Filter.End, Undefined);
@@ -807,24 +827,25 @@ Function GetBackgroundJobsPropertiesTable(Filter = Undefined, TotalJobs = 0, Val
 				Filter.Delete("State");
 			EndIf;
 		EndIf;
+		
 		If Filter.Count() <> 0 Then
 			Rows = Table.FindRows(Filter);
 		Else
 			Rows = Table;
 		EndIf;
-		// Apply additional filter by period and state (if filter is defined).
+		// Applying an additional filter by period and state (if the filter is specified)
 		ItemNumber = Rows.Count() - 1;
 		While ItemNumber >= 0 Do
-			If Begin     <> Undefined And Begin > Rows[ItemNumber].Begin OR
-				 End     <> Undefined And End  < ?(ValueIsFilled(Rows[ItemNumber].End), Rows[ItemNumber].End, CurrentDate()) OR
-				 State 	 <> Undefined And State.Find(Rows[ItemNumber].State) = Undefined Then
+			If Start <> Undefined And Start > Rows[ItemNumber].Start Or
+				 End   <> Undefined And End  < ?(ValueIsFilled(Rows[ItemNumber].End), Rows[ItemNumber].End, CurrentSessionDate()) Or
+				 State <> Undefined And State.Find(Rows[ItemNumber].State) = Undefined Then
 				Rows.Delete(ItemNumber);
 			EndIf;
 			ItemNumber = ItemNumber - 1;
 		EndDo;
-		// Delete extra rows from the table.
+		// Deleting excess rows from the table
 		If TypeOf(Rows) = Type("Array") Then
-			LineNumber = TotalJobs - 1;
+			LineNumber = TotalJobCount - 1;
 			While LineNumber >= 0 Do
 				If Rows.Find(Table[LineNumber]) = Undefined Then
 					Table.Delete(Table[LineNumber]);
@@ -836,245 +857,183 @@ Function GetBackgroundJobsPropertiesTable(Filter = Undefined, TotalJobs = 0, Val
 	
 	Return Table;
 	
-EndFunction // GetBackgroundJobsPropertiesTable()
+EndFunction
 
-// Function returns properties of the BackgroundJob using unique id string.
-//
+// Returns BackgroundJob properties by UUID.
+// 
 // Parameters:
-//  Id 				- String - of the unique BackgroundJob id.
-//  PropertyNames  	- String, if filled, structure with specified properties is returned.
-//  ReadState 		- Undefined, only for internal use.
-//            	
-// Value returned:
-//  ValueTableRow, Structure - properties of the BackgroundJob.
+//  ID                       - String - BackgroundJob UUID.
+//  PropertyNames            - String, Optional - names of properties to be included in
+//                             the result structure.
+// 
+// Returns:
+//  ValueTableRow, Structure - BackgroundJob properties.
 //
-Function GetBackgroundJobProperties(Id, PropertyNames = "", ReadState = Undefined) Export
+Function GetBackgroundJobProperties(ID, PropertyNames = "") Export
 	
-	CallExceptionIfNoAdminPrivileges();
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
 	
-	Filter = New Structure("Id", Id);
-	BackgroundJobsPropertiesTable = GetBackgroundJobsPropertiesTable(Filter,, ReadState);
+	Filter = New Structure("ID", ID);
+	BackgroundJobPropertyTable = GetBackgroundJobPropertyTable(Filter);
 	
-	If BackgroundJobsPropertiesTable.Count() = 0 Then
-		Raise( NStr("en = 'Background job was not found!'") );
-	EndIf;
-	
-	If ValueIsFilled(PropertyNames) Then
-		Result = New Structure(PropertyNames);
-		FillPropertyValues(Result, BackgroundJobsPropertiesTable[0]);
+	If BackgroundJobPropertyTable.Count() > 0 Then
+		If ValueIsFilled(PropertyNames) Then
+			Result = New Structure(PropertyNames);
+			FillPropertyValues(Result, BackgroundJobPropertyTable[0]);
+		Else
+			Result = BackgroundJobPropertyTable[0];
+		EndIf;
 	Else
-		Result = BackgroundJobsPropertiesTable[0];
+		Result = Undefined;
 	EndIf;
 	
 	Return Result;
 	
-EndFunction // GetBackgroundJobProperties()
+EndFunction
 
-// Function GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor returns
-// properties of the last background job executed by scheduled job, if it is present.
-// Procedure works, both in file-server, and in client-server modes.
+// Returns properties of the last background job completed for a scheduled job
+// execution. If there is no such job, Undefined is returned.
+// Can be called in the file and client/server modes.
 //
 // Parameters:
-//  ScheduledJob - ScheduledJob, String - ScheduledJob unique id string.
-//  ReadState 	 - Undefined, only for internal use.
+//  ScheduledJob - ScheduledJob, String - ScheduledJob UUID.
 //
-// Value returned:
+// Returns:
 //  ValueTableRow, Undefined.
 //
-Function GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor(ScheduledJob, ReadState = Undefined) Export
+Function GetLastBackgroundJobForScheduledJobExecutionProperties(ScheduledJob) Export
 	
-	CallExceptionIfNoAdminPrivileges();
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
 	
 	ScheduledJobID = ?(TypeOf(ScheduledJob) = Type("ScheduledJob"), String(ScheduledJob.UUID), ScheduledJob);
-	BackgroundJobsPropertiesTable = GetBackgroundJobsPropertiesTable(New Structure("ScheduledJobID", ScheduledJobID),, ReadState);
-	BackgroundJobsPropertiesTable.Sort("End Asc");
+	Filter = New Structure;
+	Filter.Insert("ScheduledJobID", ScheduledJobID);
+	Filter.Insert("GetLastBackgroundJobOfScheduledJob");
+	BackgroundJobPropertyTable = GetBackgroundJobPropertyTable(Filter);
+	BackgroundJobPropertyTable.Sort("End Asc");
 	
-	If BackgroundJobsPropertiesTable.Count() = 0 Then
+	If BackgroundJobPropertyTable.Count() = 0 Then
 		BackgroundJobProperties = Undefined;
-	ElsIf NOT ValueIsFilled(BackgroundJobsPropertiesTable[0].End) Then
-		BackgroundJobProperties = BackgroundJobsPropertiesTable[0];
+	ElsIf Not ValueIsFilled(BackgroundJobPropertyTable[0].End) Then
+		BackgroundJobProperties = BackgroundJobPropertyTable[0];
 	Else
-		BackgroundJobProperties = BackgroundJobsPropertiesTable[BackgroundJobsPropertiesTable.Count()-1];
+		BackgroundJobProperties = BackgroundJobPropertyTable[BackgroundJobPropertyTable.Count()-1];
 	EndIf;
+	
+	ValueToStore = New ValueStorage(?(BackgroundJobProperties = Undefined, Undefined, CommonUse.ValueTableRowToStructure(BackgroundJobProperties)));
+	CommonSettingsStorage.Save("ScheduledJobState_" + ScheduledJobID, , ValueToStore, , "");
 	
 	Return BackgroundJobProperties;
 	
-EndFunction // GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor()
+EndFunction
 
-// Procedure CancelBackgroundJob cancels background job, if
-// it is possible, i.e, if it is running at server, and is active.
+// Returns multiline String that contains Messages and ErrorDetails of the last
+// background job found by scheduled job ID.
 //
 // Parameters:
-//  Id  - BackgroundJob unique id String.
+//  Job - String - BackgroundJob UUID string.
 //
-// Value returned:
-//  Boolean       - NOT Cancellation.
-//
-Procedure CancelBackgroundJob(Id) Export
-	
-	CallExceptionIfNoAdminPrivileges();
-	
-	If GetBackgroundJobProperties(Id, "State").State  <> BackgroundJobState.Active Then
-		Raise( NStr("en = 'The task is not being performed, it cant be cancelled!'") );
-		
-	ElsIf CommonUse.FileInformationBase() Then
-		Raise( NStr("en = 'The action is only possible for a server database!""You cannot cancel a background task running in the file database session!""""If the background task takes too long and it must be stopped, close  session which processes routine tasks""""If you can not close session and the application does not respond, you can end it forcibly, but there is a risk of losing changes made in the background task!'") );
-	EndIf;
-	
-	Filter = New Structure("UUID", New UUID(Id));
-	BackgroundJobsArray = BackgroundJobs.GetBackgroundJobs(Filter);
-	If BackgroundJobsArray.Count() = 1 Then
-		BackgroundJobsArray[0].Cancel();
-	Else
-		Raise( NStr("en = 'Background job was not found on server!'") );
-	EndIf;
-	
-EndProcedure // CancelBackgroundJob()
-
-// Function MessagesAndDescriptionsOfBackgroundJobErrors returns
-// multiline String containing Messages and DetailsOfInformationAboutError,
-// if background job was found by id and there are some messages/errors.
-//
-// Parameters:
-//  SchJob      - String - BackgroundJob UUID as string.
-//
-// Value returned:
+// Returns:
 //  String.
 //
-Function MessagesAndDescriptionsOfBackgroundJobErrors(Id) Export
+Function BackgroundJobMessagesAndErrorDescriptions(ID, BackgroundJobProperties = Undefined) Export
 	
-	CallExceptionIfNoAdminPrivileges();
+	RaiseIfNoAdministrativeRights();
+	SetPrivilegedMode(True);
 	
-	BackgroundJobProperties = GetBackgroundJobProperties(Id);
+	If BackgroundJobProperties = Undefined Then
+		BackgroundJobProperties = GetBackgroundJobProperties(ID);
+	EndIf;
+	
 	String = "";
-	For each Message In BackgroundJobProperties.MessagesToUser Do
-		String = String + ?(String = "",
-		                    Message,
-		                    "
-		                    |
-		                    |" + Message);
-	EndDo;
-	If ValueIsFilled(BackgroundJobProperties.DetailsOfInformationAboutError) Then
-		String = String + ?(String = "",
-		                    BackgroundJobProperties.DetailsOfInformationAboutError,
-		                    "
-		                    |
-		                    |" + BackgroundJobProperties.DetailsOfInformationAboutError);
+	If BackgroundJobProperties <> Undefined Then
+		For Each Message In BackgroundJobProperties.UserMessages Do
+			String = String + ?(String = "",
+			                    "",
+			                    "
+			                    |
+			                    |") + Message.Text;
+		EndDo;
+		If ValueIsFilled(BackgroundJobProperties.ErrorDetails) Then
+			String = String + ?(String = "",
+			                    BackgroundJobProperties.ErrorDetails,
+			                    "
+			                    |
+			                    |" + BackgroundJobProperties.ErrorDetails);
+		EndIf;
 	EndIf;
 	
 	Return String;
 	
-EndFunction // MessagesAndDescriptionsOfBackgroundJobErrors()
+EndFunction
 
-// Procedure ClearBackgroundJobsHistory clears table
-// of completed and running (for server mode) background jobs.
-//
-Procedure ClearBackgroundJobsHistory() Export
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-	CallExceptionIfNoAdminPrivileges();
-
-	BeginTransaction();
-	Try
-		State = GetScheduledJobsProcessingStatus(True);
-		If CommonUse.FileInformationBase() Then
-			State.BackgroundJobsTable = Undefined;
-		Else
-			CurrentBackgroundJobs = BackgroundJobs.GetBackgroundJobs();
-			IDs = New Map;
-			For each BackgroundJob In CurrentBackgroundJobs Do
-				IDs.Insert(String(BackgroundJob.UUID), 1);
-			EndDo;
-			IndexOf = State.BackgroundJobsTable.Count()-1;
-			While IndexOf >=0 Do
-				If IDs.Get(State.BackgroundJobsTable[IndexOf].Id) <> 1 Then
-					State.BackgroundJobsTable.Delete(IndexOf);
-				EndIf;
-				IndexOf = IndexOf - 1;
-			EndDo;
-		EndIf;
-		CheckBackgroundJobsTable(State.BackgroundJobsTable);
-		RefreshScheduledJobsProcessingStatus(State);
-		CommitTransaction();
-	Except
-		RollbackTransaction();
-		Raise;
-	EndTry;
+// Raises an exception if the user has no administrative rights.
+Procedure RaiseIfNoAdministrativeRights()
+	
+	If Not PrivilegedMode() Then
+		VerifyAccessRights("Administration", Metadata);
+	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// SERVICE METHODS OF THE GENERALIZED MANAGER OF BACKGROUND JOBS
-
-// Function CheckBackgroundJobsTable checks structure of the ValueTable
-// for storage of the completed/running background jobs,
-// and creates empty table, if there are any differences.
+// Returns a new background job property table.
 //
-// Parameters:
-//  Table       - ValueTable - table whose structure will be verified.
+// Returns:
+//  ValueTable.
 //
-// Value returned:
-//  Boolean 	- when True structure is correct.
-//
-Function CheckBackgroundJobsTable(Table)
+Function EmptyBackgroundJobPropertyTable()
 	
 	NewTable = New ValueTable;
-	NewTable.Columns.Add("AtServer", 								New TypeDescription("Boolean"));
-	NewTable.Columns.Add("Id", 										New TypeDescription("String"));
-	NewTable.Columns.Add("Description", 							New TypeDescription("String"));
-	NewTable.Columns.Add("Key",	 									New TypeDescription("String"));
-	NewTable.Columns.Add("Begin", 									New TypeDescription("Date"));
-	NewTable.Columns.Add("End", 									New TypeDescription("Date"));
-	NewTable.Columns.Add("ScheduledJobID", 							New TypeDescription("String"));
-	NewTable.Columns.Add("State", 									New TypeDescription("BackgroundJobState"));
-	NewTable.Columns.Add("MethodName", 								New TypeDescription("String"));
-	NewTable.Columns.Add("Location", 								New TypeDescription("String"));
-	NewTable.Columns.Add("DetailsOfInformationAboutError", 	New TypeDescription("String"));
-	NewTable.Columns.Add("LaunchTry", 								New TypeDescription("Number"));
-	NewTable.Columns.Add("MessagesToUser", 							New TypeDescription("Array"));
-	NewTable.Indexes.Add("Id, Begin");
-	CorrectStructure = True;
-	If TypeOf(Table) = Type("ValueTable") Then
-		For each Column In NewTable.Columns Do
-			// Only column names will be checked (without types).
-			If Table.Columns.Find(Column.Name) = Undefined Then
-				CorrectStructure = False;
-			EndIf;
-		EndDo;
-	Else
-		CorrectStructure = False;
-	EndIf;
+	NewTable.Columns.Add("AtServer",       New TypeDescription("Boolean"));
+	NewTable.Columns.Add("ID",             New TypeDescription("String"));
+	NewTable.Columns.Add("Description",    New TypeDescription("String"));
+	NewTable.Columns.Add("Key",            New TypeDescription("String"));
+	NewTable.Columns.Add("Start",          New TypeDescription("Date"));
+	NewTable.Columns.Add("End",            New TypeDescription("Date"));
+	NewTable.Columns.Add("ScheduledJobID", New TypeDescription("String"));
+	NewTable.Columns.Add("State",          New TypeDescription("BackgroundJobState"));
+	NewTable.Columns.Add("MethodName",     New TypeDescription("String"));
+	NewTable.Columns.Add("Placement",      New TypeDescription("String"));
+	NewTable.Columns.Add("ErrorDetails",   New TypeDescription("String"));
+	NewTable.Columns.Add("StartAttempt",   New TypeDescription("Number"));
+	NewTable.Columns.Add("UserMessages",   New TypeDescription("Array"));
+	NewTable.Columns.Add("SessionNumber",  New TypeDescription("Number"));
+	NewTable.Columns.Add("SessionStarted", New TypeDescription("Date"));
+	NewTable.Indexes.Add("ID, Start");
 	
-	If NOT CorrectStructure Then
-		Table = NewTable;
-	EndIf;
+	Return NewTable;
 	
-	Return CorrectStructure;
-	
-EndFunction // CheckBackgroundJobsTable()
+EndFunction
 
-// Function UpdateSettings is used for filling/restore of structure of settings
-// properties, stored in structure "State" of the property Settings.
+// Is intended for filling or updating the property structure of the settings that are 
+// stored in the State structure of the Settings property.
 //
 // Parameters:
-//  Settings  - Undefined, Structure.
+//  Settings - Undefined, Structure.
 //
-// Value returned:
-//  Structure - Updated settings.
+// Returns:
+//  Structure - updated settings.
 //
-Function UpdateSettings(Val Settings = Undefined)
+Function CheckSettings(Val Settings = Undefined)
 	
 	NewSettingsStructure = New Structure();
-	NewSettingsStructure.Insert("ScheduledJobsProcessingLock",                           	 False);
-	// If it's needed and possible, then on start of the client application, scheduled jobs processing session should be automatically started.
-	NewSettingsStructure.Insert("AutomaticallyOpenSeparateSessionOfScheduledJobsProcessing", False);
-	// Notify user, if tasks are not being processed or data processor is "stuck".
-	NewSettingsStructure.Insert("NotifyAboutFailureInScheduledJobsProcessingStatus",     	 False);
-	//  Period, minutes.
-	NewSettingsStructure.Insert("NotificationPeriodAboutStatusProcessingRegulatoryJobs",          15);
+	// A flag that shows whether the session that runs scheduled jobs must be started
+	// during the start of the client application, if it is allowed.
+	NewSettingsStructure.Insert("AutomaticallyStartSeparateSessionForExecutingSchedledJobs",        False);
+	// A flag that shows whether the user is notified when jobs are not executed or when
+	// the job execution is not responding.
+	NewSettingsStructure.Insert("NotifyAboutIncorrectScheduledJobExecution",                        False);
+	// The notification period in minutes
+	NewSettingsStructure.Insert("ScheduledJobErrorNotificationPeriod", 15);
 	
-	// Copy existing properties.
+	// Coping properties that are already filled
 	If TypeOf(Settings) = Type("Structure") Then
-		For each KeyAndValue In NewSettingsStructure Do
+		For Each KeyAndValue In NewSettingsStructure Do
 			If Settings.Property(KeyAndValue.Key) Then
 				If TypeOf(NewSettingsStructure[KeyAndValue.Key]) = TypeOf(Settings[KeyAndValue.Key]) Then
 					NewSettingsStructure[KeyAndValue.Key] = Settings[KeyAndValue.Key];
@@ -1083,50 +1042,38 @@ Function UpdateSettings(Val Settings = Undefined)
 		EndDo;
 	EndIf;
 	
-	If NOT (NewSettingsStructure.NotificationPeriodAboutStatusProcessingRegulatoryJobs >= 1 And
-	         NewSettingsStructure.NotificationPeriodAboutStatusProcessingRegulatoryJobs <= 99 ) Then
+	If Not (NewSettingsStructure.ScheduledJobErrorNotificationPeriod >= 1 And
+	         NewSettingsStructure.ScheduledJobErrorNotificationPeriod <= 99 ) Then
 	
-		NewSettingsStructure.NotificationPeriodAboutStatusProcessingRegulatoryJobs = 15;
+		NewSettingsStructure.ScheduledJobErrorNotificationPeriod = 15;
 	EndIf;
 	
 	Return NewSettingsStructure;
 	
 EndFunction
 
-// Function GetScheduledJobsProcessingStatus returns
-// structure, describing status of scheduled jobs processing.
+// Returns the structure that describes scheduled job execution states.
 //
-Function GetScheduledJobsProcessingStatus(Lock = False)
+Function GetScheduledJobExecutionStates(Lock = False)
 	
-	// Prepare data for the verification or initialization of the properties of initial state.
+	// Preparing data for checking properties of the retrieved state or for their initial filling.
 	NewStructure = New Structure();
-	NewStructure.Insert("Settings", New Structure);
-	//  Map of the background job ids to the scheduled job ids,
-	//  of those background jobs, that were started manually at server.
-	NewStructure.Insert("Map_BJID_SJID_StartedAtServerManually", New Map());
-	// Store history of the background jobs execution.
-	NewStructure.Insert("BackgroundJobsTable",          New ValueTable);
-	NewStructure.Insert("SessionNumber",                0);
-	NewStructure.Insert("SessionStarted",               '00010101');
-	NewStructure.Insert("ComputerName",                 "");
-	NewStructure.Insert("ApplicationName",              "");
-	NewStructure.Insert("UserName",                     "");
-	NewStructure.Insert("IDNextTasks",      			"");
-	NewStructure.Insert("NextTaskProcessingBegin",     '00010101');
-	NewStructure.Insert("OneMoreTaskProcessingEnding", '00010101');
+	// Storing the background job execution history
+	NewStructure.Insert("SessionNumber",             0);
+	NewStructure.Insert("SessionStarted",            '00010101');
+	NewStructure.Insert("ComputerName",              "");
+	NewStructure.Insert("ApplicationName",           "");
+	NewStructure.Insert("UserName",                  "");
+	NewStructure.Insert("NextJobID",                 "");
+	NewStructure.Insert("NextJobExecutionStartTime", '00010101');
+	NewStructure.Insert("NextJobExecutionEndTime",   '00010101');
 	
-	If Lock Then
-		Block 	  = New DataLock;
-		Item      = Block.Add("Constant.ScheduledJobsProcessingStatus");
-		Item.Mode = DataLockMode.Exclusive;
-		Block.Lock();
-	EndIf;
+	State = CommonSettingsStorage.Load("ScheduledJobExecutionStates", , , "");
+	State = ?(TypeOf(State) = Type("ValueStorage"), State.Get(), Undefined);
 	
-	State = Constants.ScheduledJobsProcessingStatus.Get().Get();
-	
-	// Copy existing properties.
+	// Coping properties that already filled
 	If TypeOf(State) = Type(NewStructure) Then
-		For each KeyAndValue In NewStructure Do
+		For Each KeyAndValue In NewStructure Do
 			If State.Property(KeyAndValue.Key) Then
 				If TypeOf(NewStructure[KeyAndValue.Key]) = TypeOf(State[KeyAndValue.Key]) Then
 					NewStructure[KeyAndValue.Key] = State[KeyAndValue.Key];
@@ -1135,143 +1082,203 @@ Function GetScheduledJobsProcessingStatus(Lock = False)
 		EndDo;
 	EndIf;
 	
-	NewStructure.Settings = UpdateSettings(NewStructure.Settings);
-	
-	CheckBackgroundJobsTable(NewStructure.BackgroundJobsTable);
-	
 	Return NewStructure;
 	
 EndFunction
 
-// Procedure RefreshScheduledJobsProcessingStatus() saves
-// passed state in the constant ScheduledJobsProcessingStatus.
+// Stores the passed state into the ScheduledJobExecutionStates structure.
 //
 // Parameters:
-//  State 				- Structure - modified function value
-//                				 GetScheduledJobsProcessingStatus().
-//  ModifiedProperties 	- Undefined, String;
-//                       Undefined 		- need to write the state (there is an outer transaction);
-//                       String       	- the list of property names, separated by commas,
-//                                      which have to be updated in separate transaction.
+//  State             - Structure - changed value of the GetScheduledJobExecutionStates
+//                      function.
+//  ChangedProperties - Undefined - state must be saved.
+//                    - String    - comma-separated list of properties to be stored.<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
+
 //
-Procedure RefreshScheduledJobsProcessingStatus(State, Val ModifiedProperties = Undefined)
+Procedure SaveScheduledJobExecutionStates(State, Val ChangedProperties = Undefined)
 	
-	If ModifiedProperties = Undefined Then
-		Constants.ScheduledJobsProcessingStatus.Set(New ValueStorage(State));
-	Else
-		BeginTransaction();
-		Try
-			CurrentStatus = GetScheduledJobsProcessingStatus(True);
-			FillPropertyValues(CurrentStatus, State, ModifiedProperties);
-			State = CurrentStatus;
-			Constants.ScheduledJobsProcessingStatus.Set(New ValueStorage(State));
-			CommitTransaction();
-		Except
-			RollbackTransaction();
-			Raise;
-		EndTry;
+	If ChangedProperties <> Undefined Then
+		CurrentState = GetScheduledJobExecutionStates();
+		FillPropertyValues(CurrentState, State, ChangedProperties);
+		State = CurrentState;
 	EndIf;
 	
-EndProcedure // RefreshScheduledJobsProcessingStatus()
+	CommonSettingsStorage.Save("ScheduledJobExecutionStates", , New ValueStorage(State), , "");
+	
+EndProcedure
 
-// Procedure ProcessScheduledJob is used
-// only in "file-server" mode, is used in procedure
-// ProcessScheduledJobs()
-//
+// Executes the scheduled job in the file mode.
+// Is used in the ExecuteScheduledJobs procedure.
+// 
 // Parameters:
-//  State    		 - Structure.
-//  SchJob     	 - ScheduledJob.
-//  RunManually 	 - Boolean.
-//  StartMoment 	 - Undefined, Date(date and time). Assignes value, on start moment.
-//  BackgroundTaskID - String - id of the started background job.
+//  State       - Structure.
+//  Job         - ScheduledJob.
+//  RunManually - Boolean.
+//  StartedAt   - Undefined, Date - sets or returns the job start date and time.
+//  FinishedAt  - Undefined, Date - returns the job end date and time.
 //
-Procedure ProcessScheduledJob(Val SchJob,
-                                        Val RunManually = False,
-                                        Val StartMoment = Undefined,
-                                        BackgroundTaskID = "")
-
-	BeginTransaction();
-	Try
-		State = GetScheduledJobsProcessingStatus(True);
-		LastBackgroundJobProperties = GetLastBackgroundJobPropertiesOfScheduledJobDataProcessor(SchJob, State);
-
-		MethodName = SchJob.Metadata.MethodName;
-		BackgroundTaskDescription = ?(RunManually,
-		                                StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Run manually: %1'"),
-		                                                                                        ScheduledJobPresentation(SchJob)),
-		                                "");
-
-		StartMoment = ?(TypeOf(StartMoment) <> Type("Date") OR NOT ValueIsFilled(StartMoment),
-		                  CurrentDate(),
-		                  StartMoment);
-		Table = State.BackgroundJobsTable;
-		// Create new background job in table.
-		BackgroundJobProperties = Table.Insert(0);
-		BackgroundJobProperties.Id  = String(New UUID());
-		BackgroundTaskID = BackgroundJobProperties.Id;
-		BackgroundJobProperties.LaunchTry = ?(LastBackgroundJobProperties <> Undefined And
-		                                           LastBackgroundJobProperties.State = BackgroundJobState.Failed,
-		                                           LastBackgroundJobProperties.LaunchTry + 1,
-		                                  1);
-		BackgroundJobProperties.Description   = BackgroundTaskDescription;
-		BackgroundJobProperties.ScheduledJobID
-		                                       = String(SchJob.UUID);
-		BackgroundJobProperties.Location = "\\" + ComputerName();
-		BackgroundJobProperties.MethodName    = MethodName;
-		BackgroundJobProperties.State    = BackgroundJobState.Active;
-		BackgroundJobProperties.Begin       = StartMoment;
-		// Prepare command to execute method instead of the background job.
-		StringOfParameters = "";
-		IndexOf = SchJob.Parameters.Count()-1;
-		While IndexOf >= 0 Do
-			If NOT IsBlankString(StringOfParameters) Then
-				StringOfParameters = StringOfParameters + ", ";
-			EndIf;
-			StringOfParameters = StringOfParameters + "SchJob.Parameters[" + IndexOf + "]";
-			IndexOf = IndexOf - 1;
-		EndDo;
-		//
-		RefreshScheduledJobsProcessingStatus(State);
-		CommitTransaction();
-	Except
-		RollbackTransaction();
-		Raise;
-	EndTry;
+// Returns: 
+//  Boolean      - False means that the scheduled job procedure is being already 
+//                 executed.
+//
+Function ExecuteScheduledJob(Val Job,
+                             Val RunManually = False,
+                             StartedAt = Undefined,
+                             FinishedAt = Undefined,
+                             SessionNumber = Undefined,
+                             SessionStarted = Undefined)
+	
+	LastBackgroundJobProperties = GetLastBackgroundJobForScheduledJobExecutionProperties(Job);
+	
+	If LastBackgroundJobProperties <> Undefined
+	   And LastBackgroundJobProperties.State = BackgroundJobState.Active Then
+		
+		SessionNumber  = LastBackgroundJobProperties.SessionNumber;
+		SessionStarted = LastBackgroundJobProperties.SessionStarted;
+		Return False;
+	EndIf;
+	
+	MethodName = Job.Metadata.MethodName;
+	BackgroundJobDescription = StringFunctionsClientServer.SubstituteParametersInString(
+		?(RunManually,
+		  NStr("en = 'Started manually: %1'"),
+		  NStr("en = 'Autorun: %1'")),
+		ScheduledJobPresentation(Job));
+	
+	StartedAt = ?(TypeOf(StartedAt) <> Type("Date") Or Not ValueIsFilled(StartedAt), CurrentSessionDate(), StartedAt);
+	
+	// Filling properties of a new background job
+	BackgroundJobProperties = EmptyBackgroundJobPropertyTable().Add();
+	BackgroundJobProperties.ID  = String(New UUID());
+	BackgroundJobProperties.StartAttempt = ?(
+		LastBackgroundJobProperties <> Undefined
+		And LastBackgroundJobProperties.State = BackgroundJobState.Failed,
+		LastBackgroundJobProperties.StartAttempt + 1,
+		1);
+	BackgroundJobProperties.Description    = BackgroundJobDescription;
+	BackgroundJobProperties.ScheduledJobID = String(Job.UUID);
+	BackgroundJobProperties.Placement      = "\\" + ComputerName();
+	BackgroundJobProperties.MethodName     = MethodName;
+	BackgroundJobProperties.State          = BackgroundJobState.Active;
+	BackgroundJobProperties.Start          = StartedAt;
+	BackgroundJobProperties.SessionNumber  = InfoBaseSessionNumber();
+	
+	For Each Session In GetInfoBaseSessions() Do
+		If Session.SessionNumber = BackgroundJobProperties.SessionNumber Then
+			BackgroundJobProperties.SessionStarted = Session.SessionStarted;
+			Break;
+		EndIf;
+	EndDo;
+	
+	// Preparing a script to be executed instead of the background job
+	ParameterString = "";
+	Index = 0;
+	While Index < Job.Parameters.Count() Do
+		ParameterString = ParameterString + "Job.Parameters[" + Index + "]";
+		If Index < (Job.Parameters.Count()-1) Then
+			ParameterString = ParameterString + ",";
+		EndIf;
+		Index = Index + 1;
+	EndDo;
+	
+	// Saving start time details
+	ValueToStore = New ValueStorage(CommonUse.ValueTableRowToStructure(BackgroundJobProperties));
+	CommonSettingsStorage.Save("ScheduledJobState_" + String(Job.UUID), , ValueToStore, , "");
 	
 	GetUserMessages(True);
 	Try
-		Execute("" + MethodName + "(" + StringOfParameters + ");");
+		Execute("" + MethodName + "(" + ParameterString + ");");
 		BackgroundJobProperties.State = BackgroundJobState.Completed;
 	Except
 		BackgroundJobProperties.State = BackgroundJobState.Failed;
-		BackgroundJobProperties.DetailsOfInformationAboutError = DetailErrorDescription(ErrorInfo());
+		BackgroundJobProperties.ErrorDetails = DetailErrorDescription(ErrorInfo());
 	EndTry;
-	// Reflect method execution ending.
-	BackgroundJobProperties.End = CurrentDate();
-	BackgroundJobProperties.MessagesToUser = GetUserMessages(True);
 	
-	// Update state properties.
-	BeginTransaction();
-	Try
-		State = GetScheduledJobsProcessingStatus(True);
-		BackgroundJobCurrentProperties = State.BackgroundJobsTable.Find(BackgroundJobProperties.Id, "Id");
-		If BackgroundJobCurrentProperties <> Undefined Then
-			FillPropertyValues(BackgroundJobCurrentProperties,
-			                         BackgroundJobProperties,
-			                         "State,
-			                         |DetailsOfInformationAboutError,
-			                         |End,
-			                         |MessagesToUser");
-			RefreshScheduledJobsProcessingStatus(State);
-			CommitTransaction();
-		Else
-			// State update is not required, if background jobs table has been cleared in the execution process.
-			RollbackTransaction();
+	// Saving end time details
+	FinishedAt = CurrentSessionDate();
+	BackgroundJobProperties.End = FinishedAt;
+	BackgroundJobProperties.UserMessages = New Array;
+	For Each Message In GetUserMessages() Do
+		BackgroundJobProperties.UserMessages.Add(Message);
+	EndDo;
+	GetUserMessages(True);
+	
+	Properties = CommonSettingsStorage.Load("ScheduledJobState_" + String(Job.UUID), , , "");
+	Properties = ?(TypeOf(Properties) = Type("ValueStorage"), Properties.Get(), Undefined);
+	
+	If Properties.SessionNumber = BackgroundJobProperties.SessionNumber
+	   And Properties.SessionStarted = BackgroundJobProperties.SessionStarted Then
+		// SessionNumber and SessionStarted parameters are not overwritten, properties can be stored.
+		ValueToStore = New ValueStorage(CommonUse.ValueTableRowToStructure(BackgroundJobProperties));
+		CommonSettingsStorage.Save("ScheduledJobState_" + String(Job.UUID), , ValueToStore, , "");
+	EndIf;
+	
+	Return True;
+	
+EndFunction
+
+Procedure AddBackgroundJobProperties(Val BackgroundJobArray, Val BackgroundJobPropertyTable)
+	
+	Index = BackgroundJobArray.Count() - 1;
+	While Index >= 0 Do
+		BackgroundJob = BackgroundJobArray[Index];
+		String = BackgroundJobPropertyTable.Add();
+		FillPropertyValues(String, BackgroundJob);
+		String.AtServer = True;
+		String.ID = BackgroundJob.UUID;
+		ScheduledJob = BackgroundJob.ScheduledJob;
+		
+		If ScheduledJob = Undefined
+		   And StringFunctionsClientServer.IsUUID(BackgroundJob.Key) Then
+			
+			ScheduledJob = ScheduledJobs.FindByUUID(New UUID(BackgroundJob.Key));
 		EndIf;
-	Except
-		RollbackTransaction();
-		Raise;
-	EndTry;
+		String.ScheduledJobID = ?(
+			ScheduledJob = Undefined,
+			"",
+			ScheduledJob.UUID);
+		
+		String.ErrorDetails = ?(
+			BackgroundJob.ErrorInfo = Undefined,
+			"",
+			DetailErrorDescription(BackgroundJob.ErrorInfo));
+		
+		Index = Index - 1;
+	EndDo;
 	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// Infobase update.
+
+// The scheduled job execution settings update handler.
+Procedure ConvertScheduledJobExecutionSettings_1_2_2_2() Export
 	
-EndProcedure // ProcessScheduledJob()
+	SetPrivilegedMode(True);
+	
+	Settings = CommonSettingsStorage.Load("ScheduledJobExecutionSettings", , , "");
+	Settings = ?(TypeOf(Settings) = Type("ValueStorage"), Settings.Get(), Undefined);
+	
+	If Settings <> Undefined Then
+		Settings = CheckSettings(Settings);
+		Constants.ScheduledJobExecutionSettings.Set(Settings);
+	EndIf;
+	
+	CommonSettingsStorage.Delete("ScheduledJobExecutionSettings", Undefined, "");
+	
+EndProcedure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

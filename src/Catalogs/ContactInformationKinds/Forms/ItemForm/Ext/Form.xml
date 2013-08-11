@@ -1,29 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<AutoCommandBar name="FormCommandBar" id="1"/>
 	<Events>
 		<Event name="AfterWrite">AfterWrite</Event>
-		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="Parent" id="11">
+		<InputField name="Parent" id="2">
 			<DataPath>Object.Parent</DataPath>
 			<Wrap>false</Wrap>
-			<ContextMenu name="ParentContextMenu" id="12"/>
-			<ExtendedTooltip name="ParentExtendedTooltip" id="15"/>
+			<ContextMenu name="ParentContextMenu" id="3"/>
+			<ExtendedTooltip name="ParentExtendedTooltip" id="16"/>
 		</InputField>
-		<InputField name="Description" id="1">
+		<InputField name="Description" id="5">
 			<DataPath>Object.Description</DataPath>
 			<DefaultItem>true</DefaultItem>
 			<Wrap>false</Wrap>
-			<ContextMenu name="DescriptionContextMenu" id="2"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="16"/>
+			<ContextMenu name="DescriptionContextMenu" id="6"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="17"/>
 		</InputField>
-		<InputField name="Type" id="3">
+		<InputField name="Type" id="8">
 			<DataPath>Object.Type</DataPath>
 			<Title>
 				<v8:item>
@@ -32,28 +30,28 @@
 				</v8:item>
 			</Title>
 			<Wrap>false</Wrap>
-			<ContextMenu name="TypeContextMenu" id="4"/>
-			<ExtendedTooltip name="TypeExtendedTooltip" id="17"/>
+			<ContextMenu name="TypeContextMenu" id="9"/>
+			<ExtendedTooltip name="TypeExtendedTooltip" id="18"/>
 			<Events>
 				<Event name="OnChange">TypeOnChange</Event>
 			</Events>
 		</InputField>
-		<CheckBoxField name="EditInDialogOnly" id="9">
+		<CheckBoxField name="EditInDialogOnly" id="11">
 			<DataPath>Object.EditInDialogOnly</DataPath>
 			<TitleLocation>Right</TitleLocation>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="EditInDialogOnlyContextMenu" id="10"/>
-			<ExtendedTooltip name="EditInDialogOnlyExtendedTooltip" id="18"/>
+			<ContextMenu name="EditInDialogOnlyContextMenu" id="12"/>
+			<ExtendedTooltip name="EditInDialogOnlyExtendedTooltip" id="19"/>
 			<Events>
 				<Event name="OnChange">EditInDialogOnlyOnChange</Event>
 			</Events>
 		</CheckBoxField>
-		<CheckBoxField name="AlwaysUseAddressClassifier" id="13">
-			<DataPath>Object.AlwaysUseAddressClassifier</DataPath>
+		<CheckBoxField name="HomeCountryAddressOnly" id="14">
+			<DataPath>Object.HomeCountryAddressOnly</DataPath>
 			<TitleLocation>Right</TitleLocation>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="AlwaysUseAddressClassifierContextMenu" id="14"/>
-			<ExtendedTooltip name="AlwaysUseAddressClassifierExtendedTooltip" id="19"/>
+			<ContextMenu name="HomeCountryAddressOnlyContextMenu" id="15"/>
+			<ExtendedTooltip name="HomeCountryAddressOnlyExtendedTooltip" id="20"/>
 		</CheckBoxField>
 	</ChildItems>
 	<Attributes>
@@ -68,7 +66,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Address type of contact information</v8:content>
+					<v8:content>Contact information type address</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -79,7 +77,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Telephone type of contact information</v8:content>
+					<v8:content>Contact information type phone</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -90,7 +88,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fax type of contact information</v8:content>
+					<v8:content>Contact information type fax</v8:content>
 				</v8:item>
 			</Title>
 			<Type>

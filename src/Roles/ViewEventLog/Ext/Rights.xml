@@ -2,9 +2,9 @@
 <Rights xmlns="http://v8.1c.ru/8.2/roles" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Rights" version="2.3">
 	<setForNewObjects>false</setForNewObjects>
 	<setForAttributesByDefault>false</setForAttributesByDefault>
-	<independentRightsOfChildObjects>true</independentRightsOfChildObjects>
+	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
-		<name>DataProcessor.EventLog.Command.EventLog</name>
+		<name>DataProcessor.EventLogMonitor.Command.EventLog</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
@@ -16,17 +16,9 @@
 			<name>EventLog</name>
 			<value>true</value>
 		</right>
-		<right>
-			<name>AllFunctionsMode</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>SaveUserData</name>
-			<value>true</value>
-		</right>
 	</object>
 	<object>
-		<name>DataProcessor.EventLog</name>
+		<name>DataProcessor.EventLogMonitor</name>
 		<right>
 			<name>Use</name>
 			<value>true</value>

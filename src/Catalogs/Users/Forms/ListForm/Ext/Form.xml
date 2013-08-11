@@ -6,10 +6,10 @@
 	<CommandSet>
 		<ExcludedCommand>Create</ExcludedCommand>
 	</CommandSet>
-	<AutoCommandBar name="FormCommandBar" id="-1">
+	<AutoCommandBar name="FormCommandBar" id="1">
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="SelectUsersGroup" id="68">
+			<Button name="ChooseGroupUsers" id="2">
 				<Type>CommandBarButton</Type>
 				<Representation>PictureAndText</Representation>
 				<SkipOnInput>false</SkipOnInput>
@@ -21,93 +21,99 @@
 				<Title>
 					<v8:item>
 						<v8:lang>en</v8:lang>
-						<v8:content>Select Group</v8:content>
+						<v8:content>Select group</v8:content>
 					</v8:item>
 				</Title>
-				<ExtendedTooltip name="SelectUsersGroupExtendedTooltip" id="71"/>
+				<ExtendedTooltip name="ChooseUserGroupExtendedTooltip" id="3"/>
 			</Button>
-			<Button name="SelectUser" id="69">
+			<Button name="ChooseUser" id="4">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Item.UsersList.StandardCommand.Choose</CommandName>
+				<CommandName>Form.Item.UserList.StandardCommand.Choose</CommandName>
 				<Title>
 					<v8:item>
 						<v8:lang>en</v8:lang>
-						<v8:content>Select</v8:content>
+						<v8:content>Choose</v8:content>
 					</v8:item>
 				</Title>
-				<ExtendedTooltip name="SelectUserExtendedTooltip" id="72"/>
+				<ExtendedTooltip name="ChooseUserExtendedTooltip" id="5"/>
 			</Button>
-			<Button name="CreateUser" id="54">
+			<Button name="CreateUser" id="6">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Item.UsersList.StandardCommand.Create</CommandName>
-				<ExtendedTooltip name="CreateUserExtendedTooltip" id="73"/>
+				<CommandName>Form.Item.UserList.StandardCommand.Create</CommandName>
+				<ExtendedTooltip name="CreateUserExtendedTooltip" id="7"/>
 			</Button>
-			<Button name="CreateGroupOfUsers" id="55">
+			<Button name="CreateUserGroup" id="8">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.CreateGroupOfUsers</CommandName>
-				<ExtendedTooltip name="CreateGroupOfUsersExtendedTooltip" id="74"/>
+				<CommandName>Form.Command.CreateUserGroup</CommandName>
+				<ExtendedTooltip name="CreateUserGroupExtendedTooltip" id="9"/>
 			</Button>
-			<ButtonGroup name="CommandBarUsers" id="53">
+			<ButtonGroup name="UsersCommandBar" id="10">
 				<Title>
 					<v8:item>
 						<v8:lang>en</v8:lang>
-						<v8:content>Command bar users</v8:content>
+						<v8:content>Users command bar</v8:content>
 					</v8:item>
 				</Title>
 				<ToolTip>
 					<v8:item>
 						<v8:lang>en</v8:lang>
-						<v8:content>Command bar users</v8:content>
+						<v8:content>Users command bar</v8:content>
 					</v8:item>
 				</ToolTip>
 				<CommandSource>Form</CommandSource>
-				<ExtendedTooltip name="CommandBarUsersExtendedTooltip" id="75"/>
+				<ExtendedTooltip name="UsersCommandBarExtendedTooltip" id="11"/>
 				<ChildItems>
-					<Button name="IBUsers" id="6">
+					<Button name="ShowNotValidUsers" id="12">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>false</OnlyInAllActions>
+						<CommandName>Form.Command.ShowNotValidUsers</CommandName>
+						<ExtendedTooltip name="ShowNotValidUsersExtendedTooltip" id="13"/>
+					</Button>
+					<Button name="InfoBaseUsers" id="14">
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Catalog.Users.Command.IBUsers</CommandName>
-						<ExtendedTooltip name="IBUsersExtendedTooltip" id="76"/>
+						<OnlyInAllActions>false</OnlyInAllActions>
+						<CommandName>Catalog.Users.Command.InfoBaseUsers</CommandName>
+						<ExtendedTooltip name="InfoBaseUsersExtendedTooltip" id="15"/>
 					</Button>
 				</ChildItems>
 			</ButtonGroup>
-			<Button name="FormHelp" id="70">
+			<Button name="FormHelp" id="16">
 				<Type>CommandBarButton</Type>
 				<CommandName>Form.StandardCommand.Help</CommandName>
-				<ExtendedTooltip name="FormHelpExtendedTooltip" id="77"/>
+				<ExtendedTooltip name="FormHelpExtendedTooltip" id="17"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
 	<Events>
 		<Event name="NotificationProcessing">NotificationProcessing</Event>
-		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 		<Event name="BeforeLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="Group" id="24">
+		<UsualGroup name="Folder" id="18">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group</v8:content>
+					<v8:content>Folder</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group</v8:content>
+					<v8:content>Folder</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ChildItemsWidth>LeftNarrowest</ChildItemsWidth>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupExtendedTooltip" id="78"/>
+			<ExtendedTooltip name="GroupExtendedTooltip" id="19"/>
 			<ChildItems>
-				<Table name="UserGroups" id="25">
+				<Table name="UserGroups" id="20">
 					<Representation>Tree</Representation>
 					<CommandBarLocation>None</CommandBarLocation>
 					<SkipOnInput>false</SkipOnInput>
@@ -115,20 +121,14 @@
 					<RowSelectionMode>Row</RowSelectionMode>
 					<Header>false</Header>
 					<UseAlternationRowColor>true</UseAlternationRowColor>
-					<InitialTreeView>ExpandTopLevel</InitialTreeView>
 					<EnableStartDrag>true</EnableStartDrag>
 					<EnableDrag>true</EnableDrag>
 					<DataPath>UserGroups</DataPath>
-					<RowPictureDataPath>2/7</RowPictureDataPath>
+					<RowPictureDataPath>UserGroups.PictureNumber</RowPictureDataPath>
 					<RowsPicture>
-						<xr:Ref>CommonPicture.UserIcons</xr:Ref>
-						<xr:LoadTransparent>false</xr:LoadTransparent>
+						<xr:Ref>CommonPicture.UserStates</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
 					</RowsPicture>
-					<CommandSet>
-						<ExcludedCommand>OutputList</ExcludedCommand>
-						<ExcludedCommand>CopyToClipboard</ExcludedCommand>
-						<ExcludedCommand>Delete</ExcludedCommand>
-					</CommandSet>
 					<SearchStringLocation>None</SearchStringLocation>
 					<ViewStatusLocation>None</ViewStatusLocation>
 					<SearchControlLocation>None</SearchControlLocation>
@@ -145,32 +145,32 @@
 					<ShowRoot>false</ShowRoot>
 					<AllowRootChoice>false</AllowRootChoice>
 					<UpdateOnDataChange>Auto</UpdateOnDataChange>
-					<ContextMenu name="UserGroupsContextMenu" id="26"/>
-					<AutoCommandBar name="UserGroupsCommandBar" id="27"/>
-					<ExtendedTooltip name="UserGroupsExtendedTooltip" id="79"/>
-					<SearchStringAddition name="UserGroupsSearchString" id="80">
+					<ContextMenu name="UserGroupsContextMenu" id="21"/>
+					<AutoCommandBar name="UserGroupsCommandBar" id="22"/>
+					<ExtendedTooltip name="UserGroupsExtendedTooltip" id="23"/>
+					<SearchStringAddition name="UserGroupsSearchString" id="46">
 						<AdditionSource>
 							<Item>UserGroups</Item>
 							<Type>SearchStringRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="UserGroupsSearchStringContextMenu" id="81"/>
-						<ExtendedTooltip name="UserGroupsSearchStringExtendedTooltip" id="82"/>
+						<ContextMenu name="UserGroupsSearchStringContextMenu" id="47"/>
+						<ExtendedTooltip name="UserGroupsSearchStringExtendedTooltip" id="48"/>
 					</SearchStringAddition>
-					<ViewStatusAddition name="UserGroupsViewStatus" id="83">
+					<ViewStatusAddition name="UserGroupsViewStatus" id="49">
 						<AdditionSource>
 							<Item>UserGroups</Item>
 							<Type>ViewStatusRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="UserGroupsViewStatusContextMenu" id="84"/>
-						<ExtendedTooltip name="UserGroupsViewStatusExtendedTooltip" id="85"/>
+						<ContextMenu name="UserGroupsViewStatusContextMenu" id="50"/>
+						<ExtendedTooltip name="UserGroupsViewStatusExtendedTooltip" id="51"/>
 					</ViewStatusAddition>
-					<SearchControlAddition name="UserGroupsSearchControl" id="86">
+					<SearchControlAddition name="UserGroupsSearchControl" id="52">
 						<AdditionSource>
 							<Item>UserGroups</Item>
 							<Type>SearchControl</Type>
 						</AdditionSource>
-						<ContextMenu name="UserGroupsSearchControlContextMenu" id="87"/>
-						<ExtendedTooltip name="UserGroupsSearchControlExtendedTooltip" id="88"/>
+						<ContextMenu name="UserGroupsSearchControlContextMenu" id="53"/>
+						<ExtendedTooltip name="UserGroupsSearchControlExtendedTooltip" id="54"/>
 					</SearchControlAddition>
 					<Events>
 						<Event name="ValueChoice">UserGroupsValueChoice</Event>
@@ -178,30 +178,25 @@
 						<Event name="OnActivateRow">UserGroupsOnActivateRow</Event>
 					</Events>
 					<ChildItems>
-						<LabelField name="GroupDescription" id="30">
+						<LabelField name="GroupDescription" id="24">
 							<DataPath>UserGroups.Description</DataPath>
-							<ContextMenu name="GroupDescriptionContextMenu" id="31"/>
-							<ExtendedTooltip name="GroupDescriptionExtendedTooltip" id="89"/>
+							<ContextMenu name="GroupDescriptionContextMenu" id="25"/>
+							<ExtendedTooltip name="GroupDescriptionExtendedTooltip" id="26"/>
 						</LabelField>
 					</ChildItems>
 				</Table>
-				<Table name="UsersList" id="48">
+				<Table name="UserList" id="27">
 					<Representation>List</Representation>
 					<CommandBarLocation>None</CommandBarLocation>
 					<SkipOnInput>false</SkipOnInput>
 					<Header>false</Header>
 					<UseAlternationRowColor>true</UseAlternationRowColor>
-					<DataPath>UsersList</DataPath>
-					<RowPictureDataPath>1/4</RowPictureDataPath>
+					<DataPath>UserList</DataPath>
+					<RowPictureDataPath>UserList.PictureNumber</RowPictureDataPath>
 					<RowsPicture>
-						<xr:Ref>CommonPicture.UserIcons</xr:Ref>
-						<xr:LoadTransparent>false</xr:LoadTransparent>
+						<xr:Ref>CommonPicture.UserStates</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
 					</RowsPicture>
-					<CommandSet>
-						<ExcludedCommand>OutputList</ExcludedCommand>
-						<ExcludedCommand>CopyToClipboard</ExcludedCommand>
-						<ExcludedCommand>Delete</ExcludedCommand>
-					</CommandSet>
 					<SearchStringLocation>None</SearchStringLocation>
 					<ViewStatusLocation>None</ViewStatusLocation>
 					<SearchControlLocation>None</SearchControlLocation>
@@ -218,79 +213,85 @@
 					<ShowRoot>true</ShowRoot>
 					<AllowRootChoice>false</AllowRootChoice>
 					<UpdateOnDataChange>Auto</UpdateOnDataChange>
-					<ContextMenu name="UsersListContextMenu" id="49"/>
-					<AutoCommandBar name="UsersListCommandBar" id="50"/>
-					<ExtendedTooltip name="UsersListExtendedTooltip" id="90"/>
-					<SearchStringAddition name="UsersListSearchString" id="91">
+					<ContextMenu name="UserListContextMenu" id="28"/>
+					<AutoCommandBar name="UserListCommandBar" id="29"/>
+					<ExtendedTooltip name="UserListExtendedTooltip" id="30"/>
+					<SearchStringAddition name="UserListSearchString" id="55">
 						<AdditionSource>
-							<Item>UsersList</Item>
+							<Item>UserList</Item>
 							<Type>SearchStringRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="UsersListSearchStringContextMenu" id="92"/>
-						<ExtendedTooltip name="UsersListSearchStringExtendedTooltip" id="93"/>
+						<ContextMenu name="UserListSearchStringContextMenu" id="56"/>
+						<ExtendedTooltip name="UserListSearchStringExtendedTooltip" id="57"/>
 					</SearchStringAddition>
-					<ViewStatusAddition name="UsersListViewStatus" id="94">
+					<ViewStatusAddition name="UserListViewStatus" id="58">
 						<AdditionSource>
-							<Item>UsersList</Item>
+							<Item>UserList</Item>
 							<Type>ViewStatusRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="UsersListViewStatusContextMenu" id="95"/>
-						<ExtendedTooltip name="UsersListViewStatusExtendedTooltip" id="96"/>
+						<ContextMenu name="UserListViewStatusContextMenu" id="59"/>
+						<ExtendedTooltip name="UserListViewStatusExtendedTooltip" id="60"/>
 					</ViewStatusAddition>
-					<SearchControlAddition name="UsersListSearchControl" id="97">
+					<SearchControlAddition name="UserListSearchControl" id="61">
 						<AdditionSource>
-							<Item>UsersList</Item>
+							<Item>UserList</Item>
 							<Type>SearchControl</Type>
 						</AdditionSource>
-						<ContextMenu name="UsersListSearchControlContextMenu" id="98"/>
-						<ExtendedTooltip name="UsersListSearchControlExtendedTooltip" id="99"/>
+						<ContextMenu name="UserListSearchControlContextMenu" id="62"/>
+						<ExtendedTooltip name="UserListSearchControlExtendedTooltip" id="63"/>
 					</SearchControlAddition>
 					<Events>
-						<Event name="ValueChoice">UsersListValueChoice</Event>
-						<Event name="BeforeAddRow">UsersListBeforeAddRow</Event>
+						<Event name="ValueChoice">UserListValueChoice</Event>
+						<Event name="BeforeAddRow">UserListBeforeAddRow</Event>
 					</Events>
 					<ChildItems>
-						<LabelField name="Description" id="51">
-							<DataPath>UsersList.Description</DataPath>
+						<LabelField name="Description" id="31">
+							<DataPath>UserList.Description</DataPath>
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
 									<v8:content>User</v8:content>
 								</v8:item>
 							</Title>
-							<ContextMenu name="DescriptionContextMenu" id="52"/>
-							<ExtendedTooltip name="DescriptionExtendedTooltip" id="100"/>
+							<ContextMenu name="DescriptionContextMenu" id="32"/>
+							<ExtendedTooltip name="DescriptionExtendedTooltip" id="33"/>
 						</LabelField>
 					</ChildItems>
 				</Table>
 			</ChildItems>
 		</UsualGroup>
-		<Pages name="GroupShowChildGroupUsers" id="58">
+		<Pages name="ShowNestedGroupUsersGroup" id="34">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group show child group users</v8:content>
+					<v8:content>Show nested group users group</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group show child group users</v8:content>
+					<v8:content>Show nested group users group</v8:content>
 				</v8:item>
 			</ToolTip>
 			<PagesRepresentation>None</PagesRepresentation>
-			<ExtendedTooltip name="GroupShowChildGroupUsersExtendedTooltip" id="101"/>
+			<ExtendedTooltip name="ShowNestedGroupUsersGroupExtendedTooltip" id="35"/>
 			<ChildItems>
-				<Page name="GroupUnableToSetProperty" id="60">
+				<Page name="CannotSetPropertyGroup" id="36">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group unable to set property</v8:content>
+							<v8:content>Cannot set property group</v8:content>
 						</v8:item>
 					</Title>
-					<ExtendedTooltip name="GroupUnableToSetPropertyExtendedTooltip" id="102"/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Cannot set property group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="CannotSetPropertyGroupExtendedTooltip" id="37"/>
 					<ChildItems>
-						<LabelDecoration name="ShowAllUsers" id="61">
+						<LabelDecoration name="ShowAllUsers" id="38">
 							<SkipOnInput>false</SkipOnInput>
 							<Title formatted="false">
 								<v8:item>
@@ -298,26 +299,32 @@
 									<v8:content>All users</v8:content>
 								</v8:item>
 							</Title>
-							<ContextMenu name="ShowAllUsersContextMenu" id="62"/>
-							<ExtendedTooltip name="ShowAllUsersExtendedTooltip" id="103"/>
+							<ContextMenu name="ShowAllUsersContextMenu" id="39"/>
+							<ExtendedTooltip name="ShowAllUsersExtendedTooltip" id="40"/>
 						</LabelDecoration>
 					</ChildItems>
 				</Page>
-				<Page name="GroupSetProperty" id="59">
+				<Page name="SetPropertyGroup" id="41">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group set property</v8:content>
+							<v8:content>Set property group</v8:content>
 						</v8:item>
 					</Title>
-					<ExtendedTooltip name="GroupSetPropertyExtendedTooltip" id="104"/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Set property group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="SetPropertyGroupExtendedTooltip" id="42"/>
 					<ChildItems>
-						<CheckBoxField name="SelectHierarchically" id="56">
-							<DataPath>SelectHierarchically</DataPath>
+						<CheckBoxField name="SelectHierarchy" id="43">
+							<DataPath>SelectHierarchy</DataPath>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="SelectHierarchicallyContextMenu" id="57"/>
-							<ExtendedTooltip name="SelectHierarchicallyExtendedTooltip" id="105"/>
+							<ContextMenu name="SelectHierarchyContextMenu" id="44"/>
+							<ExtendedTooltip name="SelectHierarchyExtendedTooltip" id="45"/>
 							<Events>
 								<Event name="OnChange">SelectHierarchicallyOnChange</Event>
 							</Events>
@@ -328,11 +335,11 @@
 		</Pages>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="UsersList" id="1">
+		<Attribute name="UserList" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Users list</v8:content>
+					<v8:content>User list</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -350,31 +357,40 @@
 	CASE
 		WHEN Users.DeletionMark
 			THEN 0
-		WHEN Users.IBUserID = &amp;EmptyUUID
+		WHEN Users.InfoBaseUserID = &amp;EmptyUUID
 			THEN 4
 		ELSE 1
-	END AS PictureNo
+	END AS PictureNumber
 FROM
 	Catalog.Users AS Users
 WHERE
-	(&amp;SelectHierarchically
+	Users.Ref &lt;&gt; &amp;UnspecifiedUser
+	AND (&amp;SelectHierarchy
 				AND TRUE IN
 					(SELECT
 						TRUE
 					FROM
-						InformationRegister.UserGroupMembers AS UserGroupMembers
+						InformationRegister.UserGroupContent AS UserGroupContent
 					WHERE
-						UserGroupMembers.User = Users.Ref
-						AND UserGroupMembers.UsersGroup = &amp;UsersGroup)
-			OR (NOT &amp;SelectHierarchically)
+						UserGroupContent.User = Users.Ref
+						AND UserGroupContent.UserGroup = &amp;UserGroup)
+			OR NOT &amp;SelectHierarchy
 				AND TRUE IN
 					(SELECT
 						TRUE
 					FROM
-						Catalog.UserGroups.Content AS UserGroupsContent
+						Catalog.UserGroups.Content AS UserGroupContent
 					WHERE
-						UserGroupsContent.User = Users.Ref
-						AND UserGroupsContent.Ref = &amp;UsersGroup))</QueryText>
+						UserGroupContent.User = Users.Ref
+						AND UserGroupContent.Ref = &amp;UserGroup))
+	AND (&amp;SeparationDisabled 
+		OR (NOT TRUE IN
+				(SELECT
+					TRUE
+				FROM
+					InformationRegister.SharedUsers AS SharedUsers
+				WHERE
+						SharedUsers.InfoBaseUserID = Users.InfoBaseUserID)))</QueryText>
 				<MainTable>Catalog.Users</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -396,9 +412,27 @@ WHERE
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
 					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">Ref.NotValid</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:InaccessibleCellTextColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
 				</ListSettings>
 			</Settings>
 		</Attribute>
@@ -415,22 +449,25 @@ WHERE
 			<UseAlways>
 				<Field>UserGroups.Parent</Field>
 			</UseAlways>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseUserGroups</Item>
+			</FunctionalOptions>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
 				<QueryText>SELECT
-	CatalogUserGroups.Ref,
-	CatalogUserGroups.DeletionMark,
-	CatalogUserGroups.Predefined,
-	CatalogUserGroups.Parent,
-	CatalogUserGroups.Description,
+	UserGroupsCatalog.Ref,
+	UserGroupsCatalog.DeletionMark,
+	UserGroupsCatalog.Predefined,
+	UserGroupsCatalog.Parent,
+	UserGroupsCatalog.Description,
 	CASE
-		WHEN CatalogUserGroups.DeletionMark
+		WHEN UserGroupsCatalog.DeletionMark
 			THEN 2
 		ELSE 3
-	END AS PictureNo
+	END AS PictureNumber
 FROM
-	Catalog.UserGroups AS CatalogUserGroups</QueryText>
+		Catalog.UserGroups AS UserGroupsCatalog</QueryText>
 				<MainTable>Catalog.UserGroups</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -453,41 +490,62 @@ FROM
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
 				</ListSettings>
 			</Settings>
 		</Attribute>
-		<Attribute name="SelectHierarchically" id="3">
+		<Attribute name="SelectHierarchy" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Display users included in subgroups</v8:content>
+					<v8:content>Show nested group users</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
-			<Save>
-				<Field>SelectHierarchically</Field>
-			</Save>
 		</Attribute>
-		<Attribute name="UsersGroupAllUsers" id="4">
+		<Attribute name="AllUsersUserGroup" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Users group all users</v8:content>
+					<v8:content>All users group</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>cfg:CatalogRef.UserGroups</v8:Type>
 			</Type>
 		</Attribute>
-	</Attributes>
-	<Commands>
-		<Command name="CreateGroupOfUsers" id="3">
+		<Attribute name="UseGroups" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Create Group</v8:content>
+					<v8:content>Use groups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ShowNotValidUsers" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show inactive users</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="CreateUserGroup" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create user group</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -496,15 +554,27 @@ FROM
 					<v8:content>Create user group</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>StdPicture.CreateFolder</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>CreateGroupOfUsers</Action>
+			<Action>CreateUserGroup</Action>
+		</Command>
+		<Command name="ShowNotValidUsers" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show invalid users</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show invalid users</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowNotValidUsers</Action>
+			<Representation>TextPicture</Representation>
 		</Command>
 	</Commands>
 	<Parameters>
-		<Parameter name="ChoiceOfUserGroups">
+		<Parameter name="UserGroupChoice">
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>

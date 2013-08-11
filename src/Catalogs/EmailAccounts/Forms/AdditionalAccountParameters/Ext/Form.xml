@@ -1,60 +1,72 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>Bottom</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="-1">
+	<AutoCommandBar name="FormCommandBar" id="1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="OK" id="8">
+			<Button name="OK" id="2">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.FillAddParametersAndReturn</CommandName>
-				<ExtendedTooltip name="OKExtendedTooltip" id="61"/>
+				<CommandName>Form.Command.FillExtendedParametersAndReturn</CommandName>
+				<ExtendedTooltip name="OKExtendedTooltip" id="3"/>
 			</Button>
-			<Button name="Cancel" id="10">
+			<Button name="Cancel" id="4">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="CancelExtendedTooltip" id="62"/>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="5"/>
 			</Button>
-			<Button name="Help" id="9">
+			<Button name="Help" id="6">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.StandardCommand.Help</CommandName>
-				<ExtendedTooltip name="HelpExtendedTooltip" id="63"/>
+				<ExtendedTooltip name="HelpExtendedTooltip" id="7"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
 	<Events>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="ServerPortsSetting" id="24">
+		<UsualGroup name="ServerPortSettings" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>E-mail server ports</v8:content>
+					<v8:content>Server ports</v8:content>
 				</v8:item>
 			</Title>
 			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Server port settings.</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
-			<ExtendedTooltip name="ServerPortsSettingExtendedTooltip" id="64"/>
+			<ExtendedTooltip name="ServerPortSettingsExtendedTooltip" id="9"/>
 			<ChildItems>
-				<UsualGroup name="Ports" id="26">
+				<UsualGroup name="Ports" id="10">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Ports</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Ports.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="PortsExtendedTooltip" id="65"/>
+					<ExtendedTooltip name="PortsExtendedTooltip" id="11"/>
 					<ChildItems>
 						<InputField name="POP3Port" id="12">
 							<DataPath>POP3Port</DataPath>
@@ -62,63 +74,81 @@
 							<HorizontalStretch>false</HorizontalStretch>
 							<Wrap>false</Wrap>
 							<ContextMenu name="POP3PortContextMenu" id="13"/>
-							<ExtendedTooltip name="POP3PortExtendedTooltip" id="66"/>
+							<ExtendedTooltip name="POP3PortExtendedTooltip" id="14"/>
 						</InputField>
-						<InputField name="SMTPPort" id="14">
+						<InputField name="SMTPPort" id="15">
 							<DataPath>SMTPPort</DataPath>
 							<TitleLocation>Left</TitleLocation>
 							<Width>6</Width>
 							<HorizontalStretch>false</HorizontalStretch>
 							<Wrap>false</Wrap>
-							<ContextMenu name="SMTPPortContextMenu" id="15"/>
-							<ExtendedTooltip name="SMTPPortExtendedTooltip" id="67"/>
+							<ContextMenu name="SMTPPortContextMenu" id="16"/>
+							<ExtendedTooltip name="SMTPPortExtendedTooltip" id="17"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<CommandBar name="GroupSetByDefault" id="60">
+				<CommandBar name="SetDefaultGroup" id="18">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group set by default</v8:content>
+							<v8:content>Set default group</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Set default group.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<HorizontalLocation>Right</HorizontalLocation>
-					<ExtendedTooltip name="GroupSetByDefaultExtendedTooltip" id="68"/>
+					<ExtendedTooltip name="FolderSetDefaultExtendedTooltip" id="19"/>
 					<ChildItems>
-						<Button name="SetDefaultPorts" id="25">
+						<Button name="SetDefaultPorts" id="20">
 							<Type>CommandBarButton</Type>
 							<SkipOnInput>false</SkipOnInput>
 							<CommandName>Form.Command.SetDefaultPorts</CommandName>
-							<ExtendedTooltip name="SetDefaultPortsExtendedTooltip" id="69"/>
+							<ExtendedTooltip name="SetDefaultPortsExtendedTooltip" id="21"/>
 						</Button>
 					</ChildItems>
 				</CommandBar>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="Extra" id="55">
+		<UsualGroup name="Advanced" id="22">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Additionally</v8:content>
+					<v8:content>Advanced</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Advanced.</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ExtraExtendedTooltip" id="70"/>
+			<ExtendedTooltip name="AdvancedExtendedTooltip" id="23"/>
 			<ChildItems>
-				<UsualGroup name="GroupPOP3Authentication" id="56">
+				<UsualGroup name="POP3AuthenticationGroup" id="24">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>POP3 group authentication</v8:content>
+							<v8:content>POP3 authentication group</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>POP3 authentication group.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Vertical</Group>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupPOP3AuthenticationExtendedTooltip" id="71"/>
+					<ExtendedTooltip name="POP3AuthenticationGroupExtendedTooltip" id="25"/>
 					<ChildItems>
-						<InputField name="POP3AuthenticationMode" id="48">
+						<InputField name="POP3AuthenticationMode" id="26">
 							<DataPath>POP3AuthenticationMode</DataPath>
 							<Width>16</Width>
 							<Wrap>false</Wrap>
@@ -130,126 +160,171 @@
 									<xr:Presentation/>
 									<xr:CheckState>0</xr:CheckState>
 									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation>
-											<v8:item>
-												<v8:lang>en</v8:lang>
-												<v8:content>APOP</v8:content>
-											</v8:item>
-										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationMethods.EnumValue.APOP</Value>
+										<Presentation/>
+										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationModes.EnumValue.APOP</Value>
 									</xr:Value>
 								</xr:Item>
 								<xr:Item>
 									<xr:Presentation/>
 									<xr:CheckState>0</xr:CheckState>
 									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation>
-											<v8:item>
-												<v8:lang>en</v8:lang>
-												<v8:content>Cram MD5</v8:content>
-											</v8:item>
-										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationMethods.EnumValue.CramMD5</Value>
+										<Presentation/>
+										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationModes.EnumValue.CramMD5</Value>
 									</xr:Value>
 								</xr:Item>
 								<xr:Item>
 									<xr:Presentation/>
 									<xr:CheckState>0</xr:CheckState>
 									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation>
-											<v8:item>
-												<v8:lang>en</v8:lang>
-												<v8:content>Ordinary</v8:content>
-											</v8:item>
-										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationMethods.EnumValue.General</Value>
+										<Presentation/>
+										<Value xsi:type="xr:DesignTimeRef">Enum.POP3AuthenticationModes.EnumValue.Ordinary</Value>
 									</xr:Value>
 								</xr:Item>
 							</ChoiceList>
 							<ChoiceListButton>true</ChoiceListButton>
-							<ContextMenu name="POP3AuthenticationModeContextMenu" id="49"/>
-							<ExtendedTooltip name="POP3AuthenticationModeExtendedTooltip" id="72"/>
+							<ContextMenu name="POP3AuthenticationModeContextMenu" id="27"/>
+							<ExtendedTooltip name="POP3AuthenticationModeExtendedTooltip" id="28"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="GroupLeaveMessageCopiesAtServer" id="54">
+				<UsualGroup name="KeepMessageCopiesAtServerGroup" id="29">
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupLeaveMessageCopiesAtServerExtendedTooltip" id="73"/>
+					<ExtendedTooltip name="KeepMessageCopiesAtServerGroupExtendedTooltip" id="30"/>
 					<ChildItems>
-						<CheckBoxField name="LeaveMessageCopiesAtServer" id="52">
-							<DataPath>LeaveMessageCopiesAtServer</DataPath>
+						<CheckBoxField name="KeepMessageCopiesAtServer" id="31">
+							<DataPath>KeepMessageCopiesAtServer</DataPath>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="LeaveMessageCopiesAtServerContextMenu" id="53"/>
-							<ExtendedTooltip name="LeaveMessageCopiesAtServerExtendedTooltip" id="74"/>
+							<ContextMenu name="KeepMessageCopiesAtServerContextMenu" id="32"/>
+							<ExtendedTooltip name="KeepMessageCopiesAtServerExtendedTooltip" id="33"/>
 							<Events>
-								<Event name="OnChange">LeaveCcMessageAtServerOnChange</Event>
+								<Event name="OnChange">KeepMessageCopiesAtServerOnChange</Event>
 							</Events>
 						</CheckBoxField>
-						<InputField name="LeaveMessageCopiesNumberOfDays" id="50">
-							<DataPath>LeaveMessageCopiesNumberOfDays</DataPath>
+						<UsualGroup name="KeepMessageAtServerPeriodGroup" id="34">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Remove messages from server after (days)</v8:content>
+									<v8:content>Keep message at server period group</v8:content>
 								</v8:item>
 							</Title>
-							<HorizontalStretch>true</HorizontalStretch>
-							<Wrap>false</Wrap>
-							<SpinButton>true</SpinButton>
-							<MinValue xsi:type="xs:decimal">1</MinValue>
-							<MaxValue xsi:type="xs:decimal">600</MaxValue>
-							<ContextMenu name="LeaveMessageCopiesNumberOfDaysContextMenu" id="51"/>
-							<ExtendedTooltip name="LeaveMessageCopiesNumberOfDaysExtendedTooltip" id="75"/>
-						</InputField>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Keep message at server period group.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="KeepMessageAtServerPeriodGroupExtendedTooltip" id="35"/>
+							<ChildItems>
+								<LabelDecoration name="EmptyLabel" id="36">
+									<ContextMenu name="EmptyLabelContextMenu" id="37"/>
+									<ExtendedTooltip name="EmptyLabelExtendedTooltip" id="38"/>
+								</LabelDecoration>
+								<CheckBoxField name="DeleteMessagesFromServer" id="39">
+									<DataPath>DeleteMessagesFromServer</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Delete from server after n days</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="DeleteMessagesFromServerContextMenu" id="40"/>
+									<ExtendedTooltip name="DeleteMessagesFromServerExtendedTooltip" id="41"/>
+									<Events>
+										<Event name="OnChange">DeleteMessagesFromServerOnChange</Event>
+									</Events>
+								</CheckBoxField>
+								<InputField name="KeepMessageCopiesDayCount" id="42">
+									<DataPath>KeepMessageCopiesDayCount</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Delete from server after n days</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>None</TitleLocation>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Keep message copies at server.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>6</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<Wrap>false</Wrap>
+									<SpinButton>true</SpinButton>
+									<MinValue xsi:type="xs:decimal">1</MinValue>
+									<MaxValue xsi:type="xs:decimal">600</MaxValue>
+									<ContextMenu name="KeepMessageCopiesDayCountContextMenu" id="43"/>
+									<ExtendedTooltip name="KeepMessageCopiesDayCountExtendedTooltip" id="44"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="GroupExpectationDuration" id="57">
+				<UsualGroup name="WaitTimeoutGroup" id="45">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group expectation duration</v8:content>
+							<v8:content>Wait timeout group</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Wait timeout group.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupExpectationDurationExtendedTooltip" id="76"/>
+					<ExtendedTooltip name="WaitTimeoutGroupExtendedTooltip" id="46"/>
 					<ChildItems>
-						<InputField name="ServerWaitDuration" id="28">
-							<DataPath>ServerWaitDuration</DataPath>
-							<HorizontalStretch>true</HorizontalStretch>
+						<InputField name="ServerTimeout" id="47">
+							<DataPath>ServerTimeout</DataPath>
+							<Width>7</Width>
 							<Wrap>false</Wrap>
-							<ContextMenu name="ServerWaitDurationContextMenu" id="29"/>
-							<ExtendedTooltip name="ServerWaitDurationExtendedTooltip" id="77"/>
+							<ContextMenu name="ServerTimeoutContextMenu" id="48"/>
+							<ExtendedTooltip name="ServerTimeoutExtendedTooltip" id="49"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="OutgoingE-mailServer" id="16">
+				<UsualGroup name="OutgoingMailServer" id="50">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Outgoing e-mail server</v8:content>
+							<v8:content>Outgoing mail server</v8:content>
 						</v8:item>
 					</Title>
 					<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Outgoing mail server.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>NormalSeparation</Representation>
-					<ExtendedTooltip name="OutgoingE-mailServerExtendedTooltip" id="78"/>
+					<ExtendedTooltip name="OutgoingMailServerExtendedTooltip" id="51"/>
 					<ChildItems>
-						<CheckBoxField name="SMTPAuthenticationPassed" id="22">
-							<DataPath>SMTPAuthenticationPassed</DataPath>
+						<CheckBoxField name="SMTPAuthenticationSet" id="52">
+							<DataPath>SMTPAuthenticationSet</DataPath>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="SMTPAuthenticationPassedContextMenu" id="23"/>
-							<ExtendedTooltip name="SMTPAuthenticationPassedExtendedTooltip" id="79"/>
+							<ContextMenu name="SMTPAuthenticationSetContextMenu" id="53"/>
+							<ExtendedTooltip name="SMTPAuthenticationSetExtendedTooltip" id="54"/>
 							<Events>
 								<Event name="OnChange">SMTPAuthenticationPassedOnChange</Event>
 							</Events>
 						</CheckBoxField>
-						<RadioButtonField name="SMTPAuthentication" id="38">
+						<RadioButtonField name="SMTPAuthentication" id="55">
 							<DataPath>SMTPAuthentication</DataPath>
 							<TitleLocation>None</TitleLocation>
 							<HorizontalAlign>Left</HorizontalAlign>
@@ -263,10 +338,10 @@
 										<Presentation>
 											<v8:item>
 												<v8:lang>en</v8:lang>
-												<v8:content>Use same settings as incoming mail server</v8:content>
+												<v8:content>Same as incoming mail server</v8:content>
 											</v8:item>
 										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationSettings.EnumValue.SimilarlyPOP3</Value>
+										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationVariants.EnumValue.SimilarlyPOP3</Value>
 									</xr:Value>
 								</xr:Item>
 								<xr:Item>
@@ -276,10 +351,10 @@
 										<Presentation>
 											<v8:item>
 												<v8:lang>en</v8:lang>
-												<v8:content>Specify authentication parameters</v8:content>
+												<v8:content>Set authentication parameters</v8:content>
 											</v8:item>
 										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationSettings.EnumValue.SpecifiedAsParameters</Value>
+										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationVariants.EnumValue.SetWithParameters</Value>
 									</xr:Value>
 								</xr:Item>
 								<xr:Item>
@@ -289,79 +364,98 @@
 										<Presentation>
 											<v8:item>
 												<v8:lang>en</v8:lang>
-												<v8:content>Access incoming e-mail server before sending</v8:content>
+												<v8:content>Log on to incoming mail server before sending</v8:content>
 											</v8:item>
 										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationSettings.EnumValue.POP3BeforeSMTP</Value>
+										<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationVariants.EnumValue.POP3BeforeSMTP</Value>
 									</xr:Value>
 								</xr:Item>
 							</ChoiceList>
-							<ContextMenu name="SMTPAuthenticationContextMenu" id="39"/>
-							<ExtendedTooltip name="SMTPAuthenticationExtendedTooltip" id="80"/>
+							<ContextMenu name="SMTPAuthenticationContextMenu" id="56"/>
+							<ExtendedTooltip name="SMTPAuthenticationExtendedTooltip" id="57"/>
 							<Events>
 								<Event name="OnChange">SMTPAuthenticationOnChange</Event>
 							</Events>
 						</RadioButtonField>
-						<Pages name="GroupSMTPAuthentication" id="40">
+						<Pages name="SMTPAuthenticationGroup" id="58">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Group SMTP authentication</v8:content>
+									<v8:content>SMTP authentication group</v8:content>
 								</v8:item>
 							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SMTP authentication group.</v8:content>
+								</v8:item>
+							</ToolTip>
 							<PagesRepresentation>None</PagesRepresentation>
-							<ExtendedTooltip name="GroupSMTPAuthenticationExtendedTooltip" id="81"/>
+							<ExtendedTooltip name="SMTPAuthenticationGroupExtendedTooltip" id="59"/>
 							<ChildItems>
-								<Page name="GroupEmptyPage" id="44">
+								<Page name="EmptyPageGroup" id="60">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Group empty page</v8:content>
+											<v8:content>Empty page group</v8:content>
 										</v8:item>
 									</Title>
-									<ExtendedTooltip name="GroupEmptyPageExtendedTooltip" id="82"/>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Empty page group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="EmptyPageGroupExtendedTooltip" id="61"/>
 									<ChildItems>
-										<LabelField name="BlankField" id="45">
+										<LabelField name="BlankField" id="62">
 											<DataPath>EmptyAttribute</DataPath>
 											<TitleLocation>None</TitleLocation>
 											<Width>20</Width>
 											<HorizontalStretch>false</HorizontalStretch>
-											<ContextMenu name="BlankFieldContextMenu" id="46"/>
-											<ExtendedTooltip name="BlankFieldExtendedTooltip" id="83"/>
+											<ContextMenu name="BlankFieldContextMenu" id="63"/>
+											<ExtendedTooltip name="BlankFieldExtendedTooltip" id="64"/>
 										</LabelField>
 									</ChildItems>
 								</Page>
-								<Page name="GroupOptions" id="1">
+								<Page name="ParametersGroup" id="65">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
 											<v8:content>SMTP authentication</v8:content>
 										</v8:item>
 									</Title>
-									<ExtendedTooltip name="GroupOptionsExtendedTooltip" id="84"/>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>SMTP authentication required.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ParametersGroupExtendedTooltip" id="66"/>
 									<ChildItems>
-										<InputField name="SMTPUser" id="4">
+										<InputField name="SMTPUser" id="67">
 											<DataPath>SMTPUser</DataPath>
 											<Width>15</Width>
 											<HorizontalStretch>true</HorizontalStretch>
 											<Wrap>false</Wrap>
-											<ContextMenu name="SMTPUserContextMenu" id="5"/>
-											<ExtendedTooltip name="SMTPUserExtendedTooltip" id="85"/>
+											<ContextMenu name="SMTPUserContextMenu" id="68"/>
+											<ExtendedTooltip name="SMTPUserExtendedTooltip" id="69"/>
 										</InputField>
-										<InputField name="SMTPPassword" id="2">
+										<InputField name="SMTPPassword" id="70">
 											<DataPath>SMTPPassword</DataPath>
 											<Width>15</Width>
 											<HorizontalStretch>true</HorizontalStretch>
 											<Wrap>false</Wrap>
 											<PasswordMode>true</PasswordMode>
-											<ContextMenu name="SMTPPasswordContextMenu" id="3"/>
-											<ExtendedTooltip name="SMTPPasswordExtendedTooltip" id="86"/>
+											<ContextMenu name="SMTPPasswordContextMenu" id="71"/>
+											<ExtendedTooltip name="SMTPPasswordExtendedTooltip" id="72"/>
 										</InputField>
-										<InputField name="SMTPAuthenticationMode" id="6">
+										<InputField name="SMTPAuthenticationMode" id="73">
 											<DataPath>SMTPAuthenticationMode</DataPath>
 											<Width>15</Width>
 											<HorizontalStretch>true</HorizontalStretch>
 											<Wrap>false</Wrap>
+											<ChoiceButton>false</ChoiceButton>
 											<ListChoiceMode>true</ListChoiceMode>
 											<TextEdit>false</TextEdit>
 											<ChoiceList>
@@ -369,58 +463,38 @@
 													<xr:Presentation/>
 													<xr:CheckState>0</xr:CheckState>
 													<xr:Value xsi:type="FormChoiceListDesTimeValue">
-														<Presentation>
-															<v8:item>
-																<v8:lang>en</v8:lang>
-																<v8:content>Cram MD5</v8:content>
-															</v8:item>
-														</Presentation>
-														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationMethods.EnumValue.CramMD5</Value>
+														<Presentation/>
+														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationModes.EnumValue.CramMD5</Value>
 													</xr:Value>
 												</xr:Item>
 												<xr:Item>
 													<xr:Presentation/>
 													<xr:CheckState>0</xr:CheckState>
 													<xr:Value xsi:type="FormChoiceListDesTimeValue">
-														<Presentation>
-															<v8:item>
-																<v8:lang>en</v8:lang>
-																<v8:content>LOGIN</v8:content>
-															</v8:item>
-														</Presentation>
-														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationMethods.EnumValue.Login</Value>
+														<Presentation/>
+														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationModes.EnumValue.Login</Value>
 													</xr:Value>
 												</xr:Item>
 												<xr:Item>
 													<xr:Presentation/>
 													<xr:CheckState>0</xr:CheckState>
 													<xr:Value xsi:type="FormChoiceListDesTimeValue">
-														<Presentation>
-															<v8:item>
-																<v8:lang>en</v8:lang>
-																<v8:content>PLAIN</v8:content>
-															</v8:item>
-														</Presentation>
-														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationMethods.EnumValue.Plain</Value>
+														<Presentation/>
+														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationModes.EnumValue.Plain</Value>
 													</xr:Value>
 												</xr:Item>
 												<xr:Item>
 													<xr:Presentation/>
 													<xr:CheckState>0</xr:CheckState>
 													<xr:Value xsi:type="FormChoiceListDesTimeValue">
-														<Presentation>
-															<v8:item>
-																<v8:lang>en</v8:lang>
-																<v8:content>Default</v8:content>
-															</v8:item>
-														</Presentation>
-														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationMethods.EnumValue.Default</Value>
+														<Presentation/>
+														<Value xsi:type="xr:DesignTimeRef">Enum.SMTPAuthenticationModes.EnumValue.Default</Value>
 													</xr:Value>
 												</xr:Item>
 											</ChoiceList>
 											<ChoiceListButton>true</ChoiceListButton>
-											<ContextMenu name="SMTPAuthenticationModeContextMenu" id="7"/>
-											<ExtendedTooltip name="SMTPAuthenticationModeExtendedTooltip" id="87"/>
+											<ContextMenu name="SMTPAuthenticationModeContextMenu" id="74"/>
+											<ExtendedTooltip name="SMTPAuthenticationModeExtendedTooltip" id="75"/>
 										</InputField>
 									</ChildItems>
 								</Page>
@@ -436,18 +510,19 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>SMTP authentication method</v8:content>
+					<v8:content>SMTP authentication mode</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>cfg:EnumRef.SMTPAuthenticationMethods</v8:Type>
+				<v8:Type>cfg:EnumRef.SMTPAuthenticationModes</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="SMTPUser" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>User name</v8:content>
+					<v8:content>SMTP User</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -457,12 +532,13 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="SMTPPassword" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Password</v8:content>
+					<v8:content>SMTP password</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -472,12 +548,13 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="SMTPPort" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>SMTP server port</v8:content>
+					<v8:content>SMTP server</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -487,12 +564,13 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="POP3Port" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>POP3 server port</v8:content>
+					<v8:content>POP3 server</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -502,19 +580,21 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="POP3AuthenticationMode" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>POP3 authentication method</v8:content>
+					<v8:content>POP3 authentication</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>cfg:EnumRef.POP3AuthenticationMethods</v8:Type>
+				<v8:Type>cfg:EnumRef.POP3AuthenticationModes</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="SMTPAuthenticationPassed" id="7">
+		<Attribute name="SMTPAuthenticationSet" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -524,12 +604,13 @@
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="ServerWaitDuration" id="8">
+		<Attribute name="ServerTimeout" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Server timeout</v8:content>
+					<v8:content>Server wait timeout (sec)</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -540,13 +621,14 @@
 					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
 				</v8:NumberQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 			<FillCheck>ShowError</FillCheck>
 		</Attribute>
-		<Attribute name="LeaveMessageCopiesNumberOfDays" id="9">
+		<Attribute name="KeepMessageCopiesDayCount" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Leave message copies</v8:content>
+					<v8:content>Keep message copies</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -557,8 +639,9 @@
 					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
 				</v8:NumberQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="Signature" id="11">
+		<Attribute name="Signature" id="10">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -572,23 +655,25 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="SMTPAuthentication" id="13">
+		<Attribute name="SMTPAuthentication" id="11">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Smtpauthentication</v8:content>
+					<v8:content>SMTPAuthentication</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>cfg:EnumRef.SMTPAuthenticationSettings</v8:Type>
+				<v8:Type>cfg:EnumRef.SMTPAuthenticationVariants</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="SignatureDurationExpectations" id="14">
+		<Attribute name="SignatureWaitTimeout" id="12">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Signature timeouts</v8:content>
+					<v8:content>Signature wait timeout</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -598,8 +683,9 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="EmptyAttribute" id="15">
+		<Attribute name="EmptyAttribute" id="13">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -613,39 +699,43 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="LeaveMessageCopiesAtServer" id="10">
+		<Attribute name="KeepMessageCopiesAtServer" id="14">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Leave a copy of messages on the server</v8:content>
+					<v8:content>Keep message copies at server</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="ListSMTPAuthentication_MT" id="12">
+		<Attribute name="SMTPAuthenticationList" id="15">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>List of transfer values SMTPAuthentication. Use to optimize access to SMTPA authentication transfer</v8:content>
+					<v8:content>SMTPAuthentication enumeration value list. It is used for optimization of access to SMTPAuthentication enumeration.</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>v8:ValueListType</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="ListSMTPAuthenticationMode_MT" id="16">
+		<Attribute name="ListSMTPAuthenticationMode" id="16">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>List of SMTPA authentication methods  SP</v8:content>
+					<v8:content>SMTP authentication mode list</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>v8:ValueListType</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="Ref" id="17">
 			<Title>
@@ -657,29 +747,48 @@
 			<Type>
 				<v8:Type>cfg:CatalogRef.EmailAccounts</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="DeleteMessagesFromServer" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete messages from server</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="FillAddParametersAndReturn" id="1">
+		<Command name="FillExtendedParametersAndReturn" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>OK</v8:content>
 				</v8:item>
 			</Title>
-			<Action>FillAddParametersAndReturnExecute</Action>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save parameters and return to the main form.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>FillExtendedParametersAndReturnExecute</Action>
 		</Command>
 		<Command name="SetDefaultPorts" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set Default Ports</v8:content>
+					<v8:content>Set default</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set default POP3 and SMTP ports</v8:content>
+					<v8:content>Set default ports.</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>SetPortsByDefaultExecute</Action>

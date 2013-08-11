@@ -1,91 +1,99 @@
-﻿
-&AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
-	
-	CITypeAddress   = Enums.ContactInformationTypes.Address;
-	CITypePhone 	= Enums.ContactInformationTypes.Phone;
-	CITypeFax    	= Enums.ContactInformationTypes.Fax;
-	
-EndProcedure
+﻿////////////////////////////////////////////////////////////////////////////////
+// FORM EVENT HANDLERS
 
-&AtClient
-Procedure OnOpen(Cancellation)
+&AtServer
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	CheckFormItems();
+	If Parameters.Property("SelfTest") Then
+		Return;
+	EndIf;
+	
+	CITypeAddress = Enums.ContactInformationTypes.Address;
+	CITypePhone = Enums.ContactInformationTypes.Phone;
+	CITypeFax = Enums.ContactInformationTypes.Fax;
+	CheckFormItems(ThisForm);
 	
 EndProcedure
 
 &AtClient
 Procedure AfterWrite()
 	
-	CheckFormItems();
+	CheckFormItems(ThisForm);
 	
 EndProcedure
+
+
+////////////////////////////////////////////////////////////////////////////////
+// FORM HEADER ITEM EVENT HANDLERS
 
 &AtClient
 Procedure TypeOnChange(Item)
 	
-	CheckFormItems();
+	CheckFormItems(ThisForm);
 	
 EndProcedure
 
 &AtClient
 Procedure EditInDialogOnlyOnChange(Item)
 	
-	CheckFormItems();
+	CheckFormItems(ThisForm);
 	
 EndProcedure
 
-&AtClient
-Procedure CheckFormItems()
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+&AtClientAtServerNoContext
+Procedure CheckFormItems(Form)
 	
-	IsNew = Not ValueIsFilled(Object.Ref);
+	IsNew = Not ValueIsFilled(Form.Object.Ref);
 	
 	If IsNew Then
-		// for new CI kinds raise flag "Can change edit mode"
-		Object.EditMethodEditable = True;
+		// Setting the flag of Can change the edit mode to True for new kinds of contact information
+		Form.Object.CanChangeEditMode = True;
 		
 	Else
-		// for already recorded items prohibit to edit group and type
-		Items.Parent.ReadOnly = True;
-		Items.Type.ReadOnly      = True;
+		// Prohibiting folder and type change for previously recorded objects
+		Form.Items.Parent.ReadOnly = True;
+		Form.Items.Type.ReadOnly = True;
 		
-		// prohibit to edit description for predefined items too
-		If Object.Predefined Then
-			Items.Description.ReadOnly = True;
+		// Prohibiting description change for predefined objects
+		If Form.Object.Predefined Then
+			Form.Items.Description.ReadOnly = True;
 		EndIf;
 		
 	EndIf;
 	
-	If Not Object.EditMethodEditable Then
-		// If one cannot change object edit method, then disable access to the remaining items
-		Items.EditInDialogOnly.Enabled = False;
-		Items.AlwaysUseAddressClassifier.Enabled = False;
+	If Not Form.Object.CanChangeEditMode Then
+		// If the edit mode cannot be changed, preventing access to the other items
+		Form.Items.EditInDialogOnly.Enabled = False;
+		Form.Items.HomeCountryAddressOnly.Enabled = False;
 		Return;
 	
 	EndIf;
 	
-	ThisIsAddress   = (Object.Type = CITypeAddress);
-	ThisIsPhone 	= (Object.Type = CITypePhone);
-	ThisIsFax   	= (Object.Type = CITypeFax);
+	IsAddress = (Form.Object.Type = Form.CITypeAddress);
+	IsPhone = (Form.Object.Type = Form.CITypePhone);
+	IsFax = (Form.Object.Type = Form.CITypeFax);
 	
-	// Define accessibility and check value of the field EditInDialogOnly
-	If ThisIsAddress OR ThisIsPhone OR ThisIsFax Then
-		Items.EditInDialogOnly.Enabled = True;
+	// Setting availability and checking the value of the EditInDialogOnly field
+	If IsAddress Or IsPhone Or IsFax Then
+		Form.Items.EditInDialogOnly.Enabled = True;
 	Else
-		Items.EditInDialogOnly.Enabled = False;
-		If Object.EditInDialogOnly Then
-			Object.EditInDialogOnly = False;
+		Form.Items.EditInDialogOnly.Enabled = False;
+		If Form.Object.EditInDialogOnly Then
+			Form.Object.EditInDialogOnly = False;
 		EndIf;
 	EndIf;
 		
-	// Define accessibility and check value of the field EditInDialogOnly
-	If ThisIsAddress And Object.EditInDialogOnly Then
-		Items.AlwaysUseAddressClassifier.Enabled = True;
+	// Setting availability and checking the value of the HomeCountryAddressOnly field
+	If IsAddress And Form.Object.EditInDialogOnly Then
+		Form.Items.HomeCountryAddressOnly.Enabled = True;
 	Else
-		Items.AlwaysUseAddressClassifier.Enabled = False;
-		If Object.AlwaysUseAddressClassifier Then
-			Object.AlwaysUseAddressClassifier = False;
+		Form.Items.HomeCountryAddressOnly.Enabled = False;
+		If Form.Object.HomeCountryAddressOnly Then
+			Form.Object.HomeCountryAddressOnly = False;
 		EndIf;
 	EndIf;
 	

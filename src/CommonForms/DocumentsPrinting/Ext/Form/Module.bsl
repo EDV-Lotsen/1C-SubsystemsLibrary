@@ -1,5 +1,4 @@
 ﻿
-
 ////////////////////////////////////////////////////////////////////////////////
 // PROCEDURES - FORM EVENTS HANDLERS
 
@@ -10,7 +9,7 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	
 	If Parameters.Property("DataSource") Then
 		
-		If NOT PrintManagementOverrided.PrintFromExternalDataSource(
+		If NOT _DemoPrintManagementOverridable.PrintFromExternalDataSource(
 					Parameters.DataSource,
 					Parameters.SourceParameters,
 					PrintFormsCollection,
@@ -27,7 +26,7 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 		CommandParameter    = Parameters.CommandParameter;
 		PrintParameters    	= Parameters.PrintParameters;
 		
-		PrintManagement.GeneratePrintForms(PrintManagerName, TemplateNames, CommandParameter, PrintParameters,
+		_DemoPrintManagement.GeneratePrintForms(PrintManagerName, TemplateNames, CommandParameter, PrintParameters,
 			PrintFormsCollection, PrintObjects, OutputParameters);
 		
 	EndIf;
@@ -73,13 +72,13 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 		Items.Pages.PagesRepresentation = FormPagesRepresentation.None;
 	EndIf;
 	
-	If Users.CurrentUserHaveFullAccess()
-	OR ( IsInRole("PrintWriteFilesUseClipboard")
-		And EmailOperations.SystemAccountAvailable() )Then
-		SystemAccountOfEmail = EmailOperations.GetSystemAccount();
-	Else
-		Items.SendViaEmail.Visible = False;
-	EndIf;
+	//If Users.CurrentUserHaveFullAccess()
+	//OR ( IsInRole("PrintWriteFilesUseClipboard")
+	//	And EmailOperations.SystemAccountAvailable() )Then
+	//	SystemAccountOfEmail = EmailOperations.GetSystemAccount();
+	//Else
+		 Items.SendViaEmail.Visible = False;
+	//EndIf;
 	
 EndProcedure
 
@@ -87,7 +86,7 @@ EndProcedure
 // PROCEDURES - FORM ITEMS EVENT HANDLERS
 
 &AtClient
-Procedure PrintExecute()
+Procedure PrintExecute(Command)
 	
 	SpreadsheetDocuments = New ValueList;
 	
@@ -95,7 +94,7 @@ Procedure PrintExecute()
 		SpreadsheetDocuments.Add(ThisForm["Tab" + TabDocument.Value], TabDocument.Presentation);
 	EndDo;
 	
-	PrintManagementClient.PrintSpreadsheetDocuments(SpreadsheetDocuments, PrintObjects,
+	_DemoPrintManagementClient.PrintSpreadsheetDocuments(SpreadsheetDocuments, PrintObjects,
 								AvailablePrintingByKits);
 	
 EndProcedure
@@ -111,7 +110,51 @@ Procedure CopiesOnChange(Item)
 EndProcedure
 
 &AtClient
-Procedure SendViaEmailExecute()
+Procedure GoToExecute(Command)
+
+	choiceLst = New ValueList;
+	For Each Item In PrintObjects Do
+		choiceLst.Add(Item.Value);
+	EndDo;
+	
+	Item = choiceLst.ChooseItem(NStr("en = 'Go to print form'"));
+	If Item = Undefined Then
+		Return;
+	EndIf;
+	
+	Item = PrintObjects.FindByValue(Item.Value);
+	If Item = Undefined Then
+		Return;
+	EndIf;
+	
+	AreaName = Item.Presentation;
+	For Each TabDocument In TabDocumentNames Do
+		
+		TagName = "Tab" + TabDocument.Value;
+		Tab = ThisForm[TagName];
+		Area = Tab.Areas.Find(AreaName);
+		If Area = Undefined Then
+			Continue;
+		EndIf;
+		
+		CurrentArea = Tab.Area(Area.Top, , Area.Top);
+		Items[TagName].CurrentArea = CurrentArea;
+		
+	EndDo;
+	
+EndProcedure
+
+&AtClient
+Procedure GoToLayoutsManagement(Command)
+	
+	OpenParameters = ?(PrintedFormTemplates.Count() > 0, New Structure("Filter", PrintObjects[0].Value), Undefined);
+	
+	OpenForm("InformationRegister.PrintedFormTemplates.Form.PrintedFormTemplates", OpenParameters);
+	
+EndProcedure
+
+&AtClient
+Procedure SendViaEmailExecute(Command)
 	
 	Result = OpenFormModal("CommonForm.PrintingFormsSettingsBeforeSending");
 	
@@ -162,44 +205,9 @@ EndIf;
 	
 	NormalizeFileNames(FileList);
 	
-	WorkWithEmailsClient.OpenEmailMessageSendForm(
-			SystemAccountOfEmail, "", "", "", FileList, True);
-	
-EndProcedure
-
-&AtClient
-Procedure GoToExecute()
-
-	choiceLst = New ValueList;
-	For Each Item In PrintObjects Do
-		choiceLst.Add(Item.Value);
-	EndDo;
-	
-	Item = choiceLst.ChooseItem(NStr("en = 'Go to print form'"));
-	If Item = Undefined Then
-		Return;
-	EndIf;
-	
-	Item = PrintObjects.FindByValue(Item.Value);
-	If Item = Undefined Then
-		Return;
-	EndIf;
-	
-	AreaName = Item.Presentation;
-	For Each TabDocument In TabDocumentNames Do
-		
-		TagName = "Tab" + TabDocument.Value;
-		Tab = ThisForm[TagName];
-		Area = Tab.Areas.Find(AreaName);
-		If Area = Undefined Then
-			Continue;
-		EndIf;
-		
-		CurrentArea = Tab.Area(Area.Top, , Area.Top);
-		Items[TagName].CurrentArea = CurrentArea;
-		
-	EndDo;
-	
+	EmailOperationsClient.OpenEmailMessageSendForm(
+		// From,              Recipient, Subject, Text, Attach,   Clear_on_complete
+		SystemAccountOfEmail, "",        "",       "",  FileList, True);
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,27 +250,6 @@ Function PlaceSpreadsheetDocumentsIntoZIPAtServer()
 
 EndFunction
 
-&AtClient
-Function GetTableDocumentsFileTypesList(Result)
-	
-	ListOfTypes = New ValueList;
-	
-	If Result.FormatMXL Then
-		ListOfTypes.Add(SpreadsheetDocumentFileType.MXL, "mxl");
-	EndIf;
-	
-	If Result.FormatHTML Then
-		ListOfTypes.Add(SpreadsheetDocumentFileType.HTML, "html");
-	EndIf;
-	
-	If Result.FormatXLS Then
-		ListOfTypes.Add(SpreadsheetDocumentFileType.XLS, "xls");
-	EndIf;
-	
-	Return ListOfTypes;	
-	
-EndFunction
-
 &AtServer
 Procedure PlaceSpreadsheetDocumentsToTemporaryStorage(FileList)
 	
@@ -292,7 +279,7 @@ Procedure PlaceSpreadsheetDocumentsToTemporaryStorage(FileList)
 	
 EndProcedure
 
-#If NOT WebClient Then
+#If Not WebClient Then
 &AtClient
 Procedure PlaceSpreadsheetDocumentsToFiles(FileList, Result)
 	
@@ -364,13 +351,25 @@ EndFunction
 #EndIf
 
 &AtClient
-Procedure GoToLayoutsManagement(Command)
+Function GetTableDocumentsFileTypesList(Result)
 	
-	OpenParameters = ?(PrintedFormTemplates.Count() > 0, New Structure("Filter", PrintObjects[0].Value), Undefined);
+	ListOfTypes = New ValueList;
 	
-	OpenForm("InformationRegister.PrintedFormTemplates.Form.PrintedFormTemplates", OpenParameters);
+	If Result.FormatMXL Then
+		ListOfTypes.Add(SpreadsheetDocumentFileType.MXL, "mxl");
+	EndIf;
 	
-EndProcedure
+	If Result.FormatHTML Then
+		ListOfTypes.Add(SpreadsheetDocumentFileType.HTML, "html");
+	EndIf;
+	
+	If Result.FormatXLS Then
+		ListOfTypes.Add(SpreadsheetDocumentFileType.XLS, "xls");
+	EndIf;
+	
+	Return ListOfTypes;	
+	
+EndFunction
 
 &AtClient
 Procedure NormalizeFileNames(FileList)

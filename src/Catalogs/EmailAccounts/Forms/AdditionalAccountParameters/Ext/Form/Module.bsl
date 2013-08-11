@@ -1,85 +1,110 @@
-﻿
-////////////////////////////////////////////////////////////////////////////////
-//     FORM MODULE OF ITEM OF THE CATALOG E-MAIL ACCOUNTS     //
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
+// FORM EVENT HANDLERS
 
-////////////////////////////////////////////////////////////////////////////////
-// SECTION OF FORM AND FORM ITEMS EVENT HANDLERS
-//
-
-// Handler of event "OnCreateAtServer" of form
-//
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	
+	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
+	If Parameters.Property("SelfTest") Then
+		Return;
+	EndIf;
 	
 	Ref = Parameters.Ref;
 	
-	Fill_ListSMTPAuthentication_MT();
-	Fill_ListSMTPAuthenticationMode_SP();
+	Fill_ListSMTPAuthentication();
+	Fill_ListSMTPAuthenticationMode();
 	
 	AccountStructure = Parameters.AccountStructure;
 	
-	ServerWaitDuration = AccountStructure.Timeout;
+	ServerTimeout = AccountStructure.Timeout;
 	
-	LeaveMessageCopiesAtServer = AccountStructure.LeaveMessageCopiesAtServer;
-	LeaveMessageCopiesNumberOfDays = AccountStructure.RemoveFromServerAfter;
+	KeepMessageCopiesAtServer = AccountStructure.KeepMessageCopiesAtServer;
+	KeepMessageCopiesDayCount = AccountStructure.KeepMessageAtServerPeriod;
+	DeleteMessagesFromServer		 = ?(KeepMessageCopiesDayCount = 0, False, True);
 	
 	SMTPPort = AccountStructure.SMTPPort;
 	POP3Port = AccountStructure.POP3Port;
 	
 	POP3AuthenticationMode = AccountStructure.POP3AuthenticationMode;
 	
-	SMTPAuthenticationMode 		= AccountStructure.SMTPAuthenticationMode;
-	SMTPUser        		 	= AccountStructure.SMTPUser;
-	SMTPPassword              	= AccountStructure.SMTPPassword;
+	SMTPAuthenticationMode = AccountStructure.SMTPAuthenticationMode;
+	SMTPUser               = AccountStructure.SMTPUser;
+	SMTPPassword           = AccountStructure.SMTPPassword;
 	
 	SMTPAuthentication = AccountStructure.SMTPAuthentication;
 	
-	SMTPAuthenticationPassed = ?(SMTPAuthentication = Enums.SMTPAuthenticationSettings.NotDefined, False, True);
+	SMTPAuthenticationSet = ?(SMTPAuthentication = Enums.SMTPAuthenticationVariants.NotDefined, False, True);
 	
-	PrepareForm();
+	Items.SMTPAuthenticationGroup.CurrentPage = ?(SMTPAuthentication = Enums.SMTPAuthenticationVariants.SetWithParameters,
+															Items.ParametersGroup,
+															Items.EmptyPageGroup);
 	
 EndProcedure
 
-// Handler of event "on change" of form item "SMTPAuthentication".
-// Calls procedure updating group of additional authentication
-// paramaters.
+&AtClient
+Procedure OnOpen(Cancel)
+	
+	SetFormItemEnabled();
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// FORM HEADER ITEM EVENT HANDLERS
+
+// The SMTPAuthentication form item On change event handler.
+// Calls the additional authentication parameter group update handler. 
 //
 &AtClient
 Procedure SMTPAuthenticationOnChange(Item)
 	
-	SetAdditionalParametersBySMTPAuthentication();
+	SetExtendedParametersForSMTPAuthentication();
 	
 EndProcedure
 
-// Handler of event "on change" of form item "AdditionalSMTPAuthenticationIsRequired".
-// Assignes parameters of the authentication "by default", and also
-// clears them if the flag of necessity of additional SMTP authentication being cleared.
+// The RequiresAdditionalSMTPAuthentication form item On change event handler.
+// Sets default authentication parameters or removes them if SMTPAuthenticationSet
+// is disabled.
 //
 &AtClient
 Procedure SMTPAuthenticationPassedOnChange(Item)
 	
-	If SMTPAuthenticationPassed Then
+	If SMTPAuthenticationSet Then
 		Items.SMTPAuthentication.Enabled = True;
 		SMTPAuthenticationMode = ?(SMTPAuthenticationMode = SMTPAuthenticationMode_None(),
-		                             SMTPAuthenticationMode_ByDefault(),
+		                             SMTPAuthenticationMode_Default(),
 		                             SMTPAuthenticationMode);
 		SMTPAuthentication = SMTPAuthentication_SimilarlyPOP3();
-		SetAdditionalParametersBySMTPAuthentication();
 	Else
 		Items.SMTPAuthentication.Enabled = False;
 		SMTPAuthentication = SMTPAuthentication_NotDefined();
 		SMTPAuthenticationMode = SMTPAuthenticationMode_None();
-		SetAdditionalParametersBySMTPAuthentication();
+	EndIf;
+	
+	SetExtendedParametersForSMTPAuthentication();
+	
+EndProcedure
+
+&AtClient
+Procedure KeepMessageCopiesAtServerOnChange(Item)
+	
+	SetFormItemEnabled();
+	
+EndProcedure
+
+&AtClient
+Procedure DeleteMessagesFromServerOnChange(Item)
+	
+	SetFormItemEnabled();
+	
+	If DeleteMessagesFromServer Then
+		KeepMessageCopiesDayCount = 1;
 	EndIf;
 	
 EndProcedure
 
+////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
 
-// Handler of event of click on button "SetDefaultPorts".
-// Initializes POP3 and SMTP ports of servers by default:
-// for SMTP - 25, for POP3 - 110.
-//
 &AtClient
 Procedure SetPortsByDefaultExecute()
 	
@@ -88,67 +113,81 @@ Procedure SetPortsByDefaultExecute()
 	
 EndProcedure
 
-// Handler of event "on change" of form item "LeaveMessageCopiesAtServer".
-//
-&AtClient
-Procedure LeaveCcMessageAtServerOnChange(Item)
-	
-	If LeaveMessageCopiesAtServer Then
-		Items.LeaveMessageCopiesNumberOfDays.Enabled = True;
-	Else
-		Items.LeaveMessageCopiesNumberOfDays.Enabled = False;
-	EndIf;
-	
-EndProcedure
 
-// Handler of click event of button "FillAddParametersAndReturn".
-// Checks correctness of the form attribute values and returns
-// control to the calling code with filled additional parameters
-// of the e-mail account.
-//
+// Verifying form attribute value correctness.
+// Returns control and extended account parameter values to the calling environment.
+
+// 
 &AtClient
-Procedure FillAddParametersAndReturnExecute()
+Procedure FillExtendedParametersAndReturnExecute()
 	
-	If SMTPAuthenticationPassed
+	If SMTPAuthenticationSet
 	   And SMTPAuthentication <> SMTPAuthentication_SimilarlyPOP3()
-	   And SMTPAuthentication <> SMTPAuthentication_SpecifiedAsParameters()
+	   And SMTPAuthentication <> SMTPAuthentication_SetWithParameters()
 	   And SMTPAuthentication <> SMTPAuthentication_POP3BeforeSMTP() Then
 		CommonUseClientServer.MessageToUser(
-		              NStr("en = 'It is required to choose the methods of SMTP authentication'"));
+		              NStr("en = 'Select SMTP authentication mode'"), ,
+		              "SMTPAuthentication");
 		Return;
 	EndIf;
 	
-	Notify("SetAdditionalOptionsOfEMailAccount", FillExtendedParameters(), Ref);
+	Notify("SetAdditionalAccountParameters", FillExtendedParameters(), Ref);
 	
 	Close();
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// SECTION OF SERVICE FUNCTIONS
-//
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-// Function, generating settings parameters before passing them to the calling code.
+// Unified procedure for setting form item enable states by conditions
 //
-// Value returned:
-// Structure
-// key "SMTPPort", value - number, port SMTP
-// key "POP3Port", value - number, port POP3
-// key "LeaveMessageCopiesAtServer" - boolean - flag indicating, that messages should be kept at server
-// key "RemoveFromServerAfter" 		- number - number of days, to store message at server
-// key "ServerWaitDuration", value 	- number of second to wait for operation success at server
-// key "SMTPAuthentication", Enum.SMTPAuthentication
-// key "SMTPUser", value 			- string, SMTP authentication username
-// key "SMTPPassword", value 		- string, SMTP authentication password
-// key "SMTPAuthenticationMode"*, Enum.SMTPAuthenticationMode
+&AtClient
+Procedure SetFormItemEnabled()
+	
+	If KeepMessageCopiesAtServer Then
+		Items.DeleteMessagesFromServer.Enabled = True;
+		If DeleteMessagesFromServer Then
+			Items.KeepMessageCopiesDayCount.Enabled = True;
+		Else
+			Items.KeepMessageCopiesDayCount.Enabled = False;
+		EndIf;
+	Else
+		Items.DeleteMessagesFromServer.Enabled = False;
+		Items.KeepMessageCopiesDayCount.Enabled = False;
+	EndIf;
+	
+	If SMTPAuthenticationSet Then
+		Items.SMTPAuthentication.Enabled = True;
+	Else
+		Items.SMTPAuthentication.Enabled = False;
+	EndIf;
+	
+EndProcedure
+
+// Generates settings parameters before they will be passed to the calling environment.
 //
-// key "POP3AuthenticationMode" - Enum.POP3AuthenticationMode
+// Returns:
+// Structure with the following keys:
+//  SMTPPort                  - Number - SMTP port.
+//  POP3Port                  - Number - POP3 port.
+//  KeepMessageCopiesAtServer - Boolean - flag that shows that message copies will be
+//                              saved on the server.
+//  KeepMessageAtServerPeriod - Number - number of days during which the message will
+//                              be stored on the server.
+//  ServerTimeout             - Number - number of seconds during which the function 
+//                              will wait for operation execution on the server.
+//  SMTPAuthentication        - Enumeration.SMTPAuthentication
+//  SMTPUser                  - String - SMTP authentication user name.
+//  SMTPPassword              - String - SMTP authentication password.
+//  SMTPAuthenticationMode*   - Enumeration.SMTPAuthenticationMode
+//  POP3AuthenticationMode    - Enumeration.POP3AuthenticationMode
 //
-// *- on authentication "SimilarlyPOP3" authentication type is not being assined,
-//    meanwhile it is being copied
+// *- If SMTP authentication mode is SimilarlyPOP3, the authentication parameter values
+// are copied from POP3.
 //
-// All fields are filled, despite the authentication parameters. Thus we just need to get these paramaters
-// 'as is' without additional data processors from calling code.
+// All fields are always filled, that is why you can use them in the calling
+// environment without any extra processing.
 //
 &AtClient
 Function FillExtendedParameters()
@@ -158,19 +197,23 @@ Function FillExtendedParameters()
 	Result.Insert("SMTPPort", SMTPPort);
 	Result.Insert("POP3Port", POP3Port);
 	
-	Result.Insert("LeaveMessageCopiesAtServer", LeaveMessageCopiesAtServer);
-	LeaveMessageCopiesNumberOfDays = ?(	 LeaveMessageCopiesAtServer,
-	                                     LeaveMessageCopiesNumberOfDays,
-	                                     0);
-	Result.Insert("RemoveFromServerAfter", LeaveMessageCopiesNumberOfDays);
+	Result.Insert("KeepMessageCopiesAtServer", KeepMessageCopiesAtServer);
 	
-	Result.Insert("ServerWaitDuration", ServerWaitDuration);
+	If DeleteMessagesFromServer Then
+		KeepMessageCopiesDayCount = KeepMessageCopiesDayCount;
+	Else
+		KeepMessageCopiesDayCount = 0;
+	EndIf;
 	
-	If SMTPAuthenticationPassed Then
+	Result.Insert("KeepMessageAtServerPeriod", KeepMessageCopiesDayCount);
+	
+	Result.Insert("ServerTimeout", ServerTimeout);
+	
+	If SMTPAuthenticationSet Then
 		Result.Insert("SMTPAuthentication", SMTPAuthentication);
-		If SMTPAuthentication = (SMTPAuthentication_SpecifiedAsParameters()) Then
-			Result.Insert("SMTPUser", 				SMTPUser);
-			Result.Insert("SMTPPassword", 			SMTPPassword);
+		If SMTPAuthentication = (SMTPAuthentication_SetWithParameters()) Then
+			Result.Insert("SMTPUser", SMTPUser);
+			Result.Insert("SMTPPassword", SMTPPassword);
 			Result.Insert("SMTPAuthenticationMode", SMTPAuthenticationMode);
 		Else
 			Result.Insert("SMTPUser", "");
@@ -190,62 +233,29 @@ Function FillExtendedParameters()
 	
 EndFunction
 
-// Prepares form for use - fills different
-// choice lists, adjusts items accessibility, values
-// by default. Does not fill form attributes by passed parameters.
-//
-&AtServer
-Procedure PrepareForm()
-	
-	If SMTPAuthenticationPassed Then
-		Items.SMTPAuthentication.Enabled = True;
-	Else
-		Items.SMTPAuthentication.Enabled = False;
-	EndIf;
-	
-	If LeaveMessageCopiesAtServer Then
-		Items.LeaveMessageCopiesNumberOfDays.Enabled = True;
-	Else
-		Items.LeaveMessageCopiesNumberOfDays.Enabled = False;
-	EndIf;
-	
-	Items.GroupSMTPAuthentication.CurrentPage = ?(SMTPAuthentication = Enums.SMTPAuthenticationSettings.SpecifiedAsParameters,
-	                                                      Items.GroupOptions,
-	                                                      Items.GroupEmptyPage);
-	
-EndProcedure
-
-// Procedure updates visibility of the authentication parameters
-// for choice of the authentication method "ParametersAreSpecified".
+// Sets extended authentication parameter visibility
+// if the SMTP authentication mode is SMTPAuthentication_SetWithParameters.
 //
 &AtClient
-Procedure SetAdditionalParametersBySMTPAuthentication()
+Procedure SetExtendedParametersForSMTPAuthentication()
 	
-	Items.GroupSMTPAuthentication.CurrentPage =
-	                  ?(SMTPAuthentication = SMTPAuthentication_SpecifiedAsParameters(),
-	                   Items.GroupOptions,
-	                   Items.GroupEmptyPage);
+	Items.SMTPAuthenticationGroup.CurrentPage =
+	                  ?(SMTPAuthentication = SMTPAuthentication_SetWithParameters(),
+	                   Items.ParametersGroup,
+	                   Items.EmptyPageGroup);
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// BLOCK OF SERVICE FUNCTIONS FOR OPTIMIZATION OF THE ENUMERATION CALLS
-// - SMTPAuthentication
-// - POP3AuthenticationMode
-// - SMTPAuthenticationMode
-// FROM CLIENT PROCEDURES
-//
-
 &AtServer
-Function Fill_ListSMTPAuthentication_MT()
+Function Fill_ListSMTPAuthentication()
 	
-	ListSMTPAuthentication_MT.Add(Enums.SMTPAuthenticationSettings.POP3BeforeSMTP,
+	SMTPAuthenticationList.Add(Enums.SMTPAuthenticationVariants.POP3BeforeSMTP,
 	                                     "POP3BeforeSMTP");
-	ListSMTPAuthentication_MT.Add(Enums.SMTPAuthenticationSettings.SimilarlyPOP3,
+	SMTPAuthenticationList.Add(Enums.SMTPAuthenticationVariants.SimilarlyPOP3,
 	                                     "SimilarlyPOP3");
-	ListSMTPAuthentication_MT.Add(Enums.SMTPAuthenticationSettings.SpecifiedAsParameters,
-	                                     "SpecifiedAsParameters");
-	ListSMTPAuthentication_MT.Add(Enums.SMTPAuthenticationSettings.NotDefined,
+	SMTPAuthenticationList.Add(Enums.SMTPAuthenticationVariants.SetWithParameters,
+	                                     "SetWithParameters");
+	SMTPAuthenticationList.Add(Enums.SMTPAuthenticationVariants.NotDefined,
 	                                     "NotDefined");
 	
 EndFunction
@@ -253,43 +263,43 @@ EndFunction
 &AtClient
 Function SMTPAuthentication_POP3BeforeSMTP()
 	
-	Return ListSMTPAuthentication_MT[0].Value;
+	Return SMTPAuthenticationList[0].Value;
 	
 EndFunction
 
 &AtClient
 Function SMTPAuthentication_SimilarlyPOP3()
 	
-	Return ListSMTPAuthentication_MT[1].Value;
+	Return SMTPAuthenticationList[1].Value;
 	
 EndFunction
 
 &AtClient
-Function SMTPAuthentication_SpecifiedAsParameters()
+Function SMTPAuthentication_SetWithParameters()
 	
-	Return ListSMTPAuthentication_MT[2].Value;
+	Return SMTPAuthenticationList[2].Value;
 	
 EndFunction
 
 &AtClient
 Function SMTPAuthentication_NotDefined()
 	
-	Return ListSMTPAuthentication_MT[3].Value;
+	Return SMTPAuthenticationList[3].Value;
 	
 EndFunction
 
 &AtServer
-Function Fill_ListSMTPAuthenticationMode_SP()
+Function Fill_ListSMTPAuthenticationMode()
 	
-	ListSMTPAuthenticationMode_MT.Add(Enums.SMTPAuthenticationMethods.CramMD5,
+	ListSMTPAuthenticationMode.Add(Enums.SMTPAuthenticationModes.CramMD5,
 	                                     "CramMD5");
-	ListSMTPAuthenticationMode_MT.Add(Enums.SMTPAuthenticationMethods.Login,
+	ListSMTPAuthenticationMode.Add(Enums.SMTPAuthenticationModes.Login,
 	                                     "Login");
-	ListSMTPAuthenticationMode_MT.Add(Enums.SMTPAuthenticationMethods.Plain,
+	ListSMTPAuthenticationMode.Add(Enums.SMTPAuthenticationModes.Plain,
 	                                     "Plain");
-	ListSMTPAuthenticationMode_MT.Add(Enums.SMTPAuthenticationMethods.None,
+	ListSMTPAuthenticationMode.Add(Enums.SMTPAuthenticationModes.None,
 	                                     "None");
-	ListSMTPAuthenticationMode_MT.Add(Enums.SMTPAuthenticationMethods.Default,
+	ListSMTPAuthenticationMode.Add(Enums.SMTPAuthenticationModes.Default,
 	                                     "Default");
 	
 EndFunction
@@ -297,13 +307,13 @@ EndFunction
 &AtClient
 Function SMTPAuthenticationMode_None()
 	
-	Return ListSMTPAuthenticationMode_MT[3].Value;
+	Return ListSMTPAuthenticationMode[3].Value;
 	
 EndFunction
 
 &AtClient
-Function SMTPAuthenticationMode_ByDefault()
+Function SMTPAuthenticationMode_Default()
 	
-	Return ListSMTPAuthenticationMode_MT[4].Value;
+	Return ListSMTPAuthenticationMode[4].Value;
 	
 EndFunction

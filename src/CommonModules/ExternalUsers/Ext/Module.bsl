@@ -1,26 +1,30 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Users subsystem.
+//
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions of the applied developer
-//
 
-// Function UseExternalUsers() returns
-// Value of the functional option UseExternalUsers.
+////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
+
+// Returns a flag that shows whether external users are used in the application 
+// (an UseExternalUsers functional option value).
 //
-// Value returned:
+// Returns:
 //  Boolean.
 //
 Function UseExternalUsers() Export
 	
-	SetPrivilegedMode(True);
-	
-	Return Constants.UseExternalUsers.Get();
+	Return GetFunctionalOption("UseExternalUsers");
 	
 EndFunction
 
-// Gets session parameter value "Current external user"
+// Returns the current external user that corresponds to the authorized infobase user.
 //
-// Value returned:
-// CatalogRef.ExternalUsers.
+// If an ordinary user corresponds to the authorized infobase user, an empty reference
+// is returned.
+//
+// Returns:
+//  CatalogRef.ExternalUsers
 //
 Function CurrentExternalUser() Export
 	
@@ -30,271 +34,263 @@ Function CurrentExternalUser() Export
 	
 EndFunction
 
-////////////////////////////////////////////////////////////////////////////////
-// Internal procedures and functions
-//
-
-//Gets attribute value for the external user
+// Retrieves a reference to the external user authorization object from the infobase.
+// Authorization object is a reference to an infobase object that is used
+// for connecting with an external user, like counterparty, individual and so on.
 //
 // Parameters:
-//  Ref		 		- CatalogRef - ref to the catalog item for which attribute value should be obtained
-//  AttributeName  - String - name of the attribute, whose value needs to be obtained
+//  ExternalUser - CatalogRef.ExternalUsers
 //
-// Value returned:
-//   Arbitrary   	- obtained attribute value
+// Returns:
+//  Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObjects.Type
 //
-Function GetExternalUserAttributeValues(ExternalUser, AttributeNames, SearchInAuthorizationObject = True) Export
+Function GetExternalUserAuthorizationObject(ExternalUser) Export
 	
-	If ExternalUser = Catalogs.ExternalUsers.EmptyRef() And SearchInAuthorizationObject Then
-		Return Undefined;
+	AuthorizationObject = CommonUse.GetAttributeValues(ExternalUser, "AuthorizationObject").AuthorizationObject;
+	
+	If ValueIsFilled(AuthorizationObject) Then
+		If AuthorizationObjectUsed(AuthorizationObject, ExternalUser) Then
+			Raise StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'Database error:
+				 |The %1 authorization object (%2)
+				 |is set for several external users.'"),
+				AuthorizationObject,
+				TypeOf(AuthorizationObject));
+		EndIf;
+	Else
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'Database error:
+			 |An authorization object is not set for the %1 external user .'"),
+			ExternalUser);
 	EndIf;
 	
-	If SearchInAuthorizationObject Then
-		Return CommonUse.GetAttributeValues(ExternalUser.AuthorizationObject, AttributeNames);
-	Else	
-		Return CommonUse.GetAttributeValues(ExternalUser, AttributeNames);
-	EndIf;
+	Return AuthorizationObject;
 	
 EndFunction
 
-// Sets form attribute value
-//
-// Parameters
-//  Form			- Managed form - action is executed for this form
-//  AttributeName	- String - value is assigned for this attribute
-//  ValueToBeSet  	- Arbitrary - assigned value
-//
-Procedure SetFormAttributeValue(Form, AttributeName, ValueToBeSet) Export
-	
-	AttributeNamesArray = StringFunctionsClientServer.DecomposeStringIntoSubstringsArray(AttributeName,".");
-	
-	Try
-		If AttributeNamesArray.Count() > 0 Then
-			StringAttributePath = "";
-			For Each ArrayItem In AttributeNamesArray Do
-				StringAttributePath = StringAttributePath + "[""" + ArrayItem + """]";
-			EndDo;
-			Execute("Form" + StringAttributePath + " = ValueToBeSet");
-		Else
-			Form[AttributeName] = ValueToBeSet;
-		EndIf;
-	
-	Except
-	EndTry;
-	
-EndProcedure
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-// Procedure RefreshExternalUserGroupsContent updates in information register
-// "Content groups users" map of groups of external users and external users
-// with hierarchy groups of external users (parent includes external users of child groups).
-//  This data is required for the list form and for the choice form of external users.
-//  Register data can be used for other purposes to improve efficiency,
-// because it is not required to work with hierarchy in query language.
+// Updates a map of external user groups to external users
+// according to the external user group hierarchy (parent groups includes
+// subgroup users).
+// This data is used in the list form and in the external user choice form.
+// This data can be used for improving performance,
+// as there is no need for using queries to process the group hierarchy.
 //
 // Parameters:
-//  ExternalUserGroups - CatalogRef.ExternalUserGroups
+// ExternalUserGroup - CatalogRef.ExternalUserGroups
 //
-Procedure RefreshExternalUserGroupsContent(Val ExternalUserGroups, ModifiedExternalUsers = Undefined) Export
+Procedure UpdateExternalUserGroupContent(Val ExternalUserGroup, ModifiedExternalUsers = Undefined) Export
 	
-	If Not ValueIsFilled(ExternalUserGroups) Then
+	If Not ValueIsFilled(ExternalUserGroup) Then
 		Return;
 	EndIf;
 	
 	SetPrivilegedMode(True);
 	
-	// Prepare parent groups.
+	// Preparing parent groups.
 	Query = New Query(
 	"SELECT
-	|	ParentGroupsTable.Parent,
-	|	ParentGroupsTable.Ref
-	|INTO ParentGroupsTable
+	|	ParentGroupTable.Parent,
+	|	ParentGroupTable.Ref
+	|INTO ParentGroupTable
 	|FROM
-	|	&ParentGroupsTable AS ParentGroupsTable");
-	Query.SetParameter("ParentGroupsTable", Users.ParentGroupsTable("Catalog.ExternalUserGroups"));
+	|	&ParentGroupTable AS ParentGroupTable");
+	Query.SetParameter("ParentGroupTable", Users.ParentGroupTable("Catalog.ExternalUserGroups"));
 	Query.TempTablesManager = New TempTablesManager;
 	Query.Execute();
 	
 	ModifiedExternalUsers = New ValueTable;
 	ModifiedExternalUsers.Columns.Add("ExternalUser", New TypeDescription("CatalogRef.ExternalUsers"));
-	ModifiedExternalUserGroups = New ValueTable;
-	ModifiedExternalUserGroups.Columns.Add("ExternalUserGroups", New TypeDescription("CatalogRef.ExternalUserGroups"));
-	ModifiedExternalUserGroups.Indexes.Add("ExternalUserGroups");
 	
-	// Execute for current group and every parent-group.
-	While Not ExternalUserGroups.IsEmpty() Do
+	// Processing the current group and each parent group.
+	While Not ExternalUserGroup.IsEmpty() Do
 		
-		Query.SetParameter("ExternalUserGroups", ExternalUserGroups);
-		GroupProperties = CommonUse.GetAttributeValues(ExternalUserGroups, "AuthorizationObjectType, AllAuthorizationObjects");
+		Query.SetParameter("ExternalUserGroup", ExternalUserGroup);
+		GroupProperties = CommonUse.GetAttributeValues(ExternalUserGroup, "AuthorizationObjectType, AllAuthorizationObjects");
 		AuthorizationObjectType = ?(GroupProperties.AllAuthorizationObjects, GroupProperties.AuthorizationObjectType, Undefined);
 		
-		If ExternalUserGroups <> Catalogs.ExternalUserGroups.AllExternalUsers And
-		     AuthorizationObjectType = Undefined Then
+		If ExternalUserGroup <> Catalogs.ExternalUserGroups.AllExternalUsers And
+		 AuthorizationObjectType = Undefined Then
 			
-			// Delete links for deleted users.
+			// Deleting relations of deleted users.
 			Query.Text =
-				"SELECT DISTINCT
-				|	UserGroupMembers.User AS ExternalUser
-				|FROM
-				|	InformationRegister.UserGroupMembers AS UserGroupMembers
-				|		LEFT JOIN Catalog.ExternalUserGroups.Content AS ExternalUserGroupsContent
-				|			INNER JOIN ParentGroupsTable AS ParentGroupsTable
-				|			ON (ParentGroupsTable.Ref = ExternalUserGroupsContent.Ref)
-				|				AND (ParentGroupsTable.Parent = &ExternalUserGroups)
-				|		ON (UserGroupMembers.UsersGroup = &ExternalUserGroups)
-				|			AND UserGroupMembers.User = ExternalUserGroupsContent.ExternalUser
-				|WHERE
-				|	UserGroupMembers.UsersGroup = &ExternalUserGroups
-				|	AND ExternalUserGroupsContent.Ref IS NULL ";
-			ExternalUsersDeletedFromGroup = Query.Execute().Choose();
-			RecordManager = InformationRegisters.UserGroupMembers.CreateRecordManager();
-			While ExternalUsersDeletedFromGroup.Next() Do
-				RecordManager.UsersGroup = ExternalUserGroups;
-				RecordManager.User       = ExternalUsersDeletedFromGroup.ExternalUser;
+			"SELECT DISTINCT
+			|	UserGroupContent.User AS ExternalUser
+			|FROM
+			|	InformationRegister.UserGroupContent AS UserGroupContent
+			|		LEFT JOIN Catalog.ExternalUserGroups.Content AS ExternalUserGroupContent
+			|			INNER JOIN ParentGroupTable AS ParentGroupTable
+			|				ON (ParentGroupTable.Ref = ExternalUserGroupContent.Ref)
+			|				AND (ParentGroupTable.Parent = &ExternalUserGroup)
+			|			ON (UserGroupContent.UserGroup = &ExternalUserGroup)
+			|			AND UserGroupContent.User = ExternalUserGroupContent.ExternalUser
+			|WHERE
+			|	UserGroupContent.UserGroup = &ExternalUserGroup
+			|	AND ExternalUserGroupContent.Ref IS NULL ";
+			DeletedFromGroupExternalUsers = Query.Execute().Choose();
+			RecordManager = InformationRegisters.UserGroupContent.CreateRecordManager();
+			While DeletedFromGroupExternalUsers.Next() Do
+				RecordManager.UserGroup = ExternalUserGroup;
+				RecordManager.User = DeletedFromGroupExternalUsers.ExternalUser;
 				RecordManager.Delete();
-				If ModifiedExternalUserGroups.Find(ExternalUserGroups, "ExternalUserGroups") = Undefined Then
-					ModifiedExternalUserGroups.Add().ExternalUserGroups = ExternalUserGroups;
-				EndIf;
-				ModifiedExternalUsers.Add().ExternalUser = ExternalUsersDeletedFromGroup.ExternalUser;
+				ModifiedExternalUsers.Add().ExternalUser = DeletedFromGroupExternalUsers.ExternalUser;
 			EndDo;
 		EndIf;
 		
-		// Insert links for added external users.
-		If ExternalUserGroups = Catalogs.ExternalUserGroups.AllExternalUsers Then
+		// Adding relations of added external users.
+		If ExternalUserGroup = Catalogs.ExternalUserGroups.AllExternalUsers Then
 			Query.Text =
-				"SELECT
-				|	VALUE(Catalog.ExternalUserGroups.AllExternalUsers) AS UsersGroup,
-				|	ExternalUsers.Ref AS User
-				|FROM
-				|	Catalog.ExternalUsers AS ExternalUsers
-				|		LEFT JOIN InformationRegister.UserGroupMembers AS UserGroupMembers
-				|		ON (UserGroupMembers.UsersGroup = VALUE(Catalog.ExternalUserGroups.AllExternalUsers))
-				|			AND (UserGroupMembers.User = ExternalUsers.Ref)
-				|WHERE
-				|	UserGroupMembers.User IS NULL ";
+			"SELECT
+			|	VALUE(Catalog.ExternalUserGroups.AllExternalUsers) AS UserGroup,
+			|	ExternalUsers.Ref AS User
+			|FROM
+			|	Catalog.ExternalUsers AS ExternalUsers
+			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
+			|			ON (UserGroupContent.UserGroup = VALUE(Catalog.ExternalUserGroups.AllExternalUsers))
+			|			AND (UserGroupContent.User = ExternalUsers.Ref)
+			|WHERE
+			|	UserGroupContent.User IS NULL 
+			|
+			|UNION
+			|
+			|SELECT
+			|	ExternalUsers.Ref,
+			|	ExternalUsers.Ref
+			|FROM
+			|	Catalog.ExternalUsers AS ExternalUsers
+			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
+			|			ON (UserGroupContent.UserGroup = ExternalUsers.Ref)
+			|			AND (UserGroupContent.User = ExternalUsers.Ref)
+			|WHERE
+			|	UserGroupContent.User IS NULL ";
 			
 		ElsIf AuthorizationObjectType <> Undefined Then
 			Query.SetParameter("AuthorizationObjectType", TypeOf(AuthorizationObjectType));
 			Query.Text =
-				"SELECT
-				|	&ExternalUserGroups AS UsersGroup,
-				|	ExternalUsers.Ref AS User
-				|FROM
-				|	Catalog.ExternalUsers AS ExternalUsers
-				|		LEFT JOIN InformationRegister.UserGroupMembers AS UserGroupMembers
-				|		ON (UserGroupMembers.UsersGroup = &ExternalUserGroups)
-				|			AND (UserGroupMembers.User = ExternalUsers.Ref)
-				|WHERE
-				|	UserGroupMembers.User IS NULL 
-				|	AND VALUETYPE(ExternalUsers.AuthorizationObject) = &AuthorizationObjectType";
+			"SELECT
+			|	&ExternalUserGroup AS UserGroup,
+			|	ExternalUsers.Ref AS User
+			|FROM
+			|	Catalog.ExternalUsers AS ExternalUsers
+			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
+			|			ON (UserGroupContent.UserGroup = &ExternalUserGroup)
+			|			AND (UserGroupContent.User = ExternalUsers.Ref)
+			|WHERE
+			|	UserGroupContent.User IS NULL 
+			|	AND VALUETYPE(ExternalUsers.AuthorizationObject) = &AuthorizationObjectType";
 		Else
 			Query.Text =
-				"SELECT DISTINCT
-				|	&ExternalUserGroups AS UsersGroup,
-				|	ExternalUserGroupsContent.ExternalUser AS User
-				|FROM
-				|	Catalog.ExternalUserGroups.Content AS ExternalUserGroupsContent
-				|		INNER JOIN ParentGroupsTable AS ParentGroupsTable
-				|		ON (ParentGroupsTable.Ref = ExternalUserGroupsContent.Ref)
-				|			AND (ParentGroupsTable.Parent = &ExternalUserGroups)
-				|		LEFT JOIN InformationRegister.UserGroupMembers AS UserGroupMembers
-				|		ON (UserGroupMembers.UsersGroup = &ExternalUserGroups)
-				|			AND (UserGroupMembers.User = ExternalUserGroupsContent.ExternalUser)
-				|WHERE
-				|	UserGroupMembers.User IS NULL ";
+			"SELECT DISTINCT
+			|	&ExternalUserGroup AS UserGroup,
+			|	ExternalUserGroupContent.ExternalUser AS User
+			|FROM
+			|	Catalog.ExternalUserGroups.Content AS ExternalUserGroupContent
+			|		INNER JOIN ParentGroupTable AS ParentGroupTable
+			|			ON (ParentGroupTable.Ref = ExternalUserGroupContent.Ref)
+			|			AND (ParentGroupTable.Parent = &ExternalUserGroup)
+			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
+			|			ON (UserGroupContent.UserGroup = &ExternalUserGroup)
+			|			AND (UserGroupContent.User = ExternalUserGroupContent.ExternalUser)
+			|WHERE
+			|	UserGroupContent.User IS NULL ";
 		EndIf;
 		
 		ExternalUsersAddedToGroup = Query.Execute().Unload();
 		
 		If ExternalUsersAddedToGroup.Count() > 0 Then
 		
-			RecordSet = InformationRegisters.UserGroupMembers.CreateRecordSet();
+			RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
 			RecordSet.Load(ExternalUsersAddedToGroup);
-			RecordSet.Write(False); // Insert missing link records.
+			RecordSet.Write(False); // Adding missed relationship records.
 			
-			For Each ExternalUserDescription In ExternalUsersAddedToGroup Do
-			
-				If ModifiedExternalUserGroups.Find(ExternalUserGroups, "ExternalUserGroups") = Undefined Then
-					ModifiedExternalUserGroups.Add().ExternalUserGroups = ExternalUserGroups;
-				EndIf;
-				ModifiedExternalUsers.Add().ExternalUser = ExternalUserDescription.User;
+			For Each ExternalUserInfo In ExternalUsersAddedToGroup Do
+				ModifiedExternalUsers.Add().ExternalUser = ExternalUserInfo.User;
 			EndDo;
 		EndIf;
 		
-		ExternalUserGroups = CommonUse.GetAttributeValue(ExternalUserGroups, "Parent");
+		ExternalUserGroup = CommonUse.GetAttributeValue(ExternalUserGroup, "Parent");
 	EndDo;
+	
+	ModifiedExternalUsers.GroupBy("ExternalUser");
+	ModifiedExternalUsers = ModifiedExternalUsers.UnloadColumn("ExternalUser");
 	
 EndProcedure
 
-// Procedure RefreshExternalUserRoles updates the list of user roles
-// based on their current belongings to the external user groups.
+// Updates the role list of infobase users that correspond to external users.
+// Role content is determined based on the external user list, except users whose roles 
+// are specified directly.
+// Is required only if editing roles is allowed, for example, if the AccessManagement 
+// subsystem has been embedded, execution of this procedure is not required.
 // 
 // Parameters:
-//  ExternalUsers - Array of items CatalogRef.ExternalUsers.
-//  ErrorOccurred - Boolean. Returns true, when there occured some errors, logged into eventlog.
+// ExternalUserArray - Array of CatalogRef.ExternalUsers
 //
-Procedure RefreshExternalUserRoles(Val ExternalUsers, ErrorOccurred = False) Export
+Procedure UpdateExternalUserRoles(Val ExternalUserArray) Export
 	
-	If UsersOverrided.RolesEditingProhibited() Then
-		// Roles are assigned by another mechanism, for example, by mechanism of the subsystem AccessManagement.
+	If UsersOverridable.RoleEditProhibition() Then
+		// Roles are set with another mechanism, for example, with the AccessManagement subsystem mechanism.
 		Return;
 	EndIf;
 	
-	If ExternalUsers.Count() = 0 Then
+	If ExternalUserArray.Count() = 0 Then
 		Return;
 	EndIf;
 	
 	SetPrivilegedMode(True);
 	
-	IBUserIDs = New Map;
+	Users.FindAmbiguousInfoBaseUsers();
+	
+	InfoBaseUserIDs = New Map;
 	Query = New Query(
-	"SELECT
-	|	ExternalUsers.Ref AS ExternalUser,
-	|	ExternalUsers.IBUserID
-	|FROM
-	|	Catalog.ExternalUsers AS ExternalUsers
-	|WHERE
-	|	ExternalUsers.Ref IN(&ExternalUsers)
-	|	AND (NOT ExternalUsers.SetRolesDirectly)");
-	Query.SetParameter("ExternalUsers", ExternalUsers);
+		"SELECT
+		|	ExternalUsers.Ref AS ExternalUser,
+		|	ExternalUsers.InfoBaseUserID
+		|FROM
+		|	Catalog.ExternalUsers AS ExternalUsers
+		|WHERE
+		|	ExternalUsers.Ref IN(&ExternalUsers)
+		|	AND (NOT ExternalUsers.SetRolesDirectly)");
+	Query.SetParameter("ExternalUsers", ExternalUserArray);
 	Selection = Query.Execute().Choose();
 	While Selection.Next() Do
-		IBUserIDs.Insert(Selection.ExternalUser, Selection.IBUserID);
+		InfoBaseUserIDs.Insert(Selection.ExternalUser, Selection.InfoBaseUserID);
 	EndDo;
 	
-	// Prepare table of old roles of external users.
+	// Preparing a table of old external user roles.
 	OldExternalUserRoles = New ValueTable;
 	OldExternalUserRoles.Columns.Add("ExternalUser", New TypeDescription("CatalogRef.ExternalUsers"));
 	OldExternalUserRoles.Columns.Add("Role", New TypeDescription("String", , New StringQualifiers(200)));
 	
-	CurrentNumber = ExternalUsers.Count()-1;
+	CurrentNumber = ExternalUserArray.Count() - 1;
 	While CurrentNumber >= 0 Do
-	// Check necessity of user processing.
-		If IBUserIDs[ExternalUsers[CurrentNumber]] = Undefined Then
-			IBUser = Undefined;
-		Else
-			IBUser = InfobaseUsers.FindByUUID(IBUserIDs[ExternalUsers[CurrentNumber]]);
+		// Checking whether the user must be processed.
+		InfoBaseUser = Undefined;
+		InfoBaseUserID = InfoBaseUserIDs[ExternalUserArray[CurrentNumber]];
+		If InfoBaseUserID <> Undefined Then
+			InfoBaseUser = InfoBaseUsers.FindByUUID(InfoBaseUserID);
 		EndIf;
-		If IBUser = Undefined 
-		   Or IsBlankString(IBUser.Name) Then
-			ExternalUsers.Delete(CurrentNumber);
+		If InfoBaseUser = Undefined Or IsBlankString(InfoBaseUser.Name) Then
+			ExternalUserArray.Delete(CurrentNumber);
 		Else
-			For each Role In IBUser.Roles Do
-				OldRoleOfExternalUser = OldExternalUserRoles.Add();
-				OldRoleOfExternalUser.ExternalUser = ExternalUsers[CurrentNumber];
-				OldRoleOfExternalUser.Role = Role.Name;
+			For Each Role In InfoBaseUser.Roles Do
+				OldExternalUserRole = OldExternalUserRoles.Add();
+				OldExternalUserRole.ExternalUser = ExternalUserArray[CurrentNumber];
+				OldExternalUserRole.Role = Role.Name;
 			EndDo;
 		EndIf;
 		CurrentNumber = CurrentNumber - 1;
 	EndDo;
 	
-	// Prepare list of roles missing in metadata and which have to be reinstalled.
+	// Preparing a list of roles that are missed in metadata and must be set again.
 	Query.Text =
 		"SELECT
 		|	OldExternalUserRoles.ExternalUser,
 		|	OldExternalUserRoles.Role
 		|INTO OldExternalUserRoles
 		|FROM
-		|	&OldExternalUserRoles AS OldExternalUserRoles
+		|	&OldExternalUserRoles AS  OldExternalUserRoles
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -302,29 +298,29 @@ Procedure RefreshExternalUserRoles(Val ExternalUsers, ErrorOccurred = False) Exp
 		|	AllAvailableRoles.Name
 		|INTO AllAvailableRoles
 		|FROM
-		|	&AllAvailableRoles AS AllAvailableRoles
+		|	&AllAvailableRoles AS  AllAvailableRoles
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
-		|	UserGroupMembers.UsersGroup AS ExternalUserGroups,
-		|	UserGroupMembers.User AS ExternalUser,
+		|	UserGroupContent.UserGroup AS ExternalUserGroup,
+		|	UserGroupContent.User AS ExternalUser,
 		|	Roles.Role
-		|INTO AllNewRolesOfExternalUsers
+		|INTO AllNewExternalUserRoles
 		|FROM
-		|	Catalog.ExternalUserGroups.Roles AS Roles
-		|		INNER JOIN InformationRegister.UserGroupMembers AS UserGroupMembers
-		|		ON (UserGroupMembers.User IN (&ExternalUsers))
-		|			AND (UserGroupMembers.UsersGroup = Roles.Ref)
+		|	Catalog.ExternalUserGroups.Roles AS  Roles
+		|		INNER JOIN InformationRegister.UserGroupContent AS  UserGroupContent
+		|			ON (UserGroupContent.User IN (&ExternalUsers))
+		|			AND (UserGroupContent.UserGroup = Roles.Ref)
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
-		|	AllNewRolesOfExternalUsers.ExternalUser,
-		|	AllNewRolesOfExternalUsers.Role
-		|INTO NewRolesOfExternalUsers
+		|	AllNewExternalUserRoles.ExternalUser,
+		|	AllNewExternalUserRoles.Role
+		|INTO NewExternalUserRoles
 		|FROM
-		|	AllNewRolesOfExternalUsers AS AllNewRolesOfExternalUsers
+		|	AllNewExternalUserRoles AS  AllNewExternalUserRoles
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
@@ -332,74 +328,70 @@ Procedure RefreshExternalUserRoles(Val ExternalUsers, ErrorOccurred = False) Exp
 		|	OldExternalUserRoles.ExternalUser
 		|INTO ModifiedExternalUsers
 		|FROM
-		|	OldExternalUserRoles AS OldExternalUserRoles
-		|		LEFT JOIN NewRolesOfExternalUsers AS NewRolesOfExternalUsers
-		|		ON (NewRolesOfExternalUsers.ExternalUser = OldExternalUserRoles.ExternalUser)
-		|			AND (NewRolesOfExternalUsers.Role = OldExternalUserRoles.Role)
+		|	OldExternalUserRoles AS  OldExternalUserRoles
+		|		LEFT JOIN NewExternalUserRoles AS  NewExternalUserRoles
+		|			ON (NewExternalUserRoles.ExternalUser =  OldExternalUserRoles.ExternalUser)
+		|			AND (NewExternalUserRoles.Role  = OldExternalUserRoles.Role)
 		|WHERE
-		|	NewRolesOfExternalUsers.Role IS NULL 
+		|	NewExternalUserRoles.Role IS NULL 
 		|
 		|UNION
 		|
 		|SELECT
-		|	NewRolesOfExternalUsers.ExternalUser
+		|	NewExternalUserRoles.ExternalUser
 		|FROM
-		|	NewRolesOfExternalUsers AS NewRolesOfExternalUsers
-		|		LEFT JOIN OldExternalUserRoles AS OldExternalUserRoles
-		|		ON NewRolesOfExternalUsers.ExternalUser = OldExternalUserRoles.ExternalUser
-		|			AND NewRolesOfExternalUsers.Role = OldExternalUserRoles.Role
+		|	NewExternalUserRoles AS  NewExternalUserRoles
+		|		LEFT JOIN OldExternalUserRoles AS  OldExternalUserRoles
+		|			ON  NewExternalUserRoles.ExternalUser = OldExternalUserRoles.ExternalUser
+		|			AND  NewExternalUserRoles.Role = OldExternalUserRoles.Role
 		|WHERE
 		|	OldExternalUserRoles.Role IS NULL 
 		|;
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT
-		|	AllNewRolesOfExternalUsers.ExternalUserGroups,
-		|	AllNewRolesOfExternalUsers.ExternalUser,
-		|	AllNewRolesOfExternalUsers.Role
+		|	AllNewExternalUserRoles.ExternalUserGroup,
+		|	AllNewExternalUserRoles.ExternalUser,
+		|	AllNewExternalUserRoles.Role
 		|FROM
-		|	AllNewRolesOfExternalUsers AS AllNewRolesOfExternalUsers
+		|	AllNewExternalUserRoles AS  AllNewExternalUserRoles
 		|WHERE
-		|	NOT TRUE IN
+		|	(NOT TRUE IN
 		|				(SELECT TOP 1
-		|					TRUE AS ValueTrue
+		|					TRUE AS  TrueValue
 		|				FROM
 		|					AllAvailableRoles AS AllAvailableRoles
 		|				WHERE
-		|					AllAvailableRoles.Name = AllNewRolesOfExternalUsers.Role)";
+		|					AllAvailableRoles.Name = AllNewExternalUserRoles.Role))";	
 	Query.TempTablesManager = New TempTablesManager;
-	Query.SetParameter("AllAvailableRoles", UsersServerSecondUse.AllRoles(True));
+	Query.SetParameter("AllAvailableRoles", UsersServerCached.AllRoles());
 	Query.SetParameter("OldExternalUserRoles", OldExternalUserRoles);
 	
-	// Registration of errors of role names in access group profiles.
+	// Logging role names errors in access group profiles.
 	Selection = Query.Execute().Choose();
 	While Selection.Next() Do
-		WriteLogEvent(NStr("en = 'External users. The role is not found in the metadata'"),
-             EventLogLevel.Error,
-             ,
-             ,
-             StringFunctionsClientServer.SubstitureParametersInString(
-                  NStr("en = 'The <%2> role of <%3> external user group was not found in the metadata while updating roles of <%1> external user!'"),
-                  TrimAll(Selection.ExternalUser.Description),
-                  Selection.Role,
-                  String(Selection.ExternalUserGroups)),
-             EventLogEntryTransactionMode.Transactional);
-		ErrorOccurred = True;
+		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en= 'Error updating roles of the external user <%1>. The role <%2> of the external user group <%3> is not found in metadata.'"),
+			TrimAll(Selection.ExternalUser.Description),
+			Selection.Role,
+			String(Selection.ExternalUserGroup));
+		WriteLogEvent(NStr("en = 'External users. Role not found in metadata'"),
+			EventLogLevel.Error,,, MessageText, EventLogEntryTransactionMode.Transactional);
 	EndDo;
 	
-	// Update roles of IB users.
+	// Updating infobase user roles.
 	Query.Text =
 		"SELECT
-		|	ModifiedExternalUsersAndRoles.ExternalUser,
-		|	ModifiedExternalUsersAndRoles.Role
+		|	ChangedExternalUsersAndRoles.ExternalUser,
+		|	ChangedExternalUsersAndRoles.Role
 		|FROM
 		|	(SELECT
-		|		NewRolesOfExternalUsers.ExternalUser AS ExternalUser,
-		|		NewRolesOfExternalUsers.Role AS Role
+		|		NewExternalUserRoles.ExternalUser AS ExternalUser,
+		|		NewExternalUserRoles.Role AS Role
 		|	FROM
-		|		NewRolesOfExternalUsers AS NewRolesOfExternalUsers
+		|		NewExternalUserRoles AS NewExternalUserRoles
 		|	WHERE
-		|		NewRolesOfExternalUsers.ExternalUser IN
+		|		NewExternalUserRoles.ExternalUser IN
 		|				(SELECT
 		|					ModifiedExternalUsers.ExternalUser
 		|				FROM
@@ -417,51 +409,51 @@ Procedure RefreshExternalUserRoles(Val ExternalUsers, ErrorOccurred = False) Exp
 		|				(SELECT
 		|					ModifiedExternalUsers.ExternalUser
 		|				FROM
-		|					ModifiedExternalUsers AS ModifiedExternalUsers)) AS ModifiedExternalUsersAndRoles
+		|					ModifiedExternalUsers AS ModifiedExternalUsers)) AS ChangedExternalUsersAndRoles
 		|
 		|ORDER BY
-		|	ModifiedExternalUsersAndRoles.ExternalUser,
-		|	ModifiedExternalUsersAndRoles.Role";
+		|	ChangedExternalUsersAndRoles.ExternalUser,
+		|	ChangedExternalUsersAndRoles.Role";
 	Selection = Query.Execute().Choose();
 	
-	IBUser = Undefined;
+	InfoBaseUser = Undefined;
 	While Selection.Next() Do
-		If NOT ValueIsFilled(Selection.Role) Then
-			If IBUser <> Undefined Then
-				IBUser.Write();
-			EndIf;
-			IBUser = InfobaseUsers.FindByUUID(IBUserIDs[Selection.ExternalUser]);
-			IBUser.Roles.Clear();
-		Else
-			IBUser.Roles.Add(Metadata.Roles[Selection.Role]);
+		If ValueIsFilled(Selection.Role) Then
+			InfoBaseUser.Roles.Add(Metadata.Roles[Selection.Role]);
+			Continue;
 		EndIf;
+		If InfoBaseUser <> Undefined Then
+			InfoBaseUser.Write();
+		EndIf;
+		InfoBaseUser = InfoBaseUsers.FindByUUID(InfoBaseUserIDs[Selection.ExternalUser]);
+		InfoBaseUser.Roles.Clear();
 	EndDo;
-	If IBUser <> Undefined Then
-		IBUser.Write();
+	If InfoBaseUser <> Undefined Then
+		InfoBaseUser.Write();
 	EndIf;
 	
 EndProcedure
 
-// Function AuthorizationObjectLinkedToExternalUser checks, that infobase object,
-// is used as an authorization object of external user, except current user (if specified).
+// Checks whether the infobase object is used as an authorization object of
+// any external user, except the specified one (if it is set).
 //
-Function AuthorizationObjectLinkedToExternalUser(Val AuthorizationObjectRef,
-			                                     Val CurrentExternalUserRef  = Undefined,
-			                                     FoundExternalUser 		     = Undefined,
-			                                     ExternalUserCreationAllowed = False) Export
+Function AuthorizationObjectUsed(Val AuthorizationObjectRef,
+Val CurrentExternalUserRef = Undefined,
+FoundExternalUser = Undefined,
+CanAddExternalUser = False) Export
 	
-	ExternalUserCreationAllowed = AccessRight("Insert", Metadata.Catalogs.ExternalUsers);
+	CanAddExternalUser = AccessRight("Insert", Metadata.Catalogs.ExternalUsers);
 	
 	SetPrivilegedMode(True);
 	
 	Query = New Query;
-	Query.Text = "SELECT TOP 1
-	             |	ExternalUsers.Ref
-	             |FROM
-	             |	Catalog.ExternalUsers AS ExternalUsers
-	             |WHERE
-	             |	ExternalUsers.AuthorizationObject = &AuthorizationObjectRef
-	             |	AND ExternalUsers.Ref <> &CurrentExternalUserRef";
+	Query.Text = "SELECT Top 1
+	 |	ExternalUsers.Ref
+	 |FROM
+	 |	Catalog.ExternalUsers AS ExternalUsers
+	 |WHERE
+	 |	ExternalUsers.AuthorizationObject = &AuthorizationObjectRef
+	 |	AND ExternalUsers.Ref <> &CurrentExternalUserRef";
 	Query.SetParameter("CurrentExternalUserRef", CurrentExternalUserRef);
 	Query.SetParameter("AuthorizationObjectRef", AuthorizationObjectRef);
 	
@@ -474,49 +466,49 @@ Function AuthorizationObjectLinkedToExternalUser(Val AuthorizationObjectRef,
 	
 EndFunction
 
-// Handler of the subscription for the event UpdateExternalUserPresentation
+// Updates an external user presentation when changing a presentation of its authorization object.
+//
 Procedure UpdateExternalUserPresentation(AuthorizationObjectRef) Export
 	
 	SetPrivilegedMode(True);
 	
 	Query = New Query(
-		"SELECT TOP 1
-		|	ExternalUsers.Ref
-		|FROM
-		|	Catalog.ExternalUsers AS ExternalUsers
-		|WHERE
-		|	ExternalUsers.AuthorizationObject = &AuthorizationObjectRef
-		|	AND ExternalUsers.Description <> &NewPresentationOfAuthorizationObject");
+	"SELECT TOP 1
+	|	ExternalUsers.Ref
+	|FROM
+	|	Catalog.ExternalUsers AS ExternalUsers
+	|WHERE
+	|	ExternalUsers.AuthorizationObject = &AuthorizationObjectRef
+	|	AND ExternalUsers.Description <> &NewAuthorizationObjectPresentation");
 	Query.SetParameter("AuthorizationObjectRef", AuthorizationObjectRef);
-	Query.SetParameter("NewPresentationOfAuthorizationObject", String(AuthorizationObjectRef));
+	Query.SetParameter("NewAuthorizationObjectPresentation", String(AuthorizationObjectRef));
 	Selection = Query.Execute().Choose();
 	
 	If Selection.Next() Then
+		
 		ExternalUserObject = Selection.Ref.GetObject();
-		// Description will be reassigned in handler OnWrite.
+		ExternalUserObject.Description = String(AuthorizationObjectRef);
 		ExternalUserObject.Write();
 	EndIf;
 	
 EndProcedure
 
-
 ////////////////////////////////////////////////////////////////////////////////
-// Update handlers on transition to the new version of the SSL configuration
-//
+// Procedures and function for updating the infobase.
 
-// Update handler on transition to the configuration version 1.0.6.5
-// for updating the information register UserGroupMembers records.
+// The update handler that is used when the configuration version is changed to 1.0.6.5,
+// to update UserGroupContent information register records.
 //
-Procedure FillContentOfGroupsOfExternalUsers() Export
+Procedure FillExternalUserGroupContent() Export
 	
-	ExternalUsers.RefreshExternalUserGroupsContent(Catalogs.ExternalUserGroups.AllExternalUsers);
+	UpdateExternalUserGroupContent(Catalogs.ExternalUserGroups.AllExternalUsers);
 	
 EndProcedure
 
-// Update handler on transition to the configuration version 1.0.6.5
-// creates IB users from the data of Catalog.ExternalUsers
+// The update handler that is used when the configuration version is changed to 1.0.6.5;
+// Creates infobase users by data from Catalog.ExternalUsers
 //
-Procedure CreateInfobaseUsersForExternalUsers() Export
+Procedure ForExternalUsersCreateInfoBaseUsers() Export
 	
 	SetPrivilegedMode(True);
 	
@@ -524,34 +516,33 @@ Procedure CreateInfobaseUsersForExternalUsers() Export
 	
 	While Selection.Next() Do
 		
-		If Not ValueIsFilled(Selection.IBUserID)
-		   And ValueIsFilled(Selection.AuthorizationObject)
-		   And ValueIsFilled(Selection.Code) Then
+		If Not ValueIsFilled(Selection.InfoBaseUserID) And
+		 ValueIsFilled(Selection.AuthorizationObject) And
+		 ValueIsFilled(Selection.Code) Then
 			
 			ExternalUserObject = Selection.Ref.GetObject();
 			Try
-				IBUser				 		 = InfobaseUsers.CreateUser();
-				IBUser.Name       	 		 = Selection.Code;
-				IBUser.Password    	 		 = Selection.DeletePassword;
-				IBUser.FullName				 = String(Selection.AuthorizationObject);
-				IBUser.Write();
-				ExternalUserObject.IBUserID  = IBUser.UUID;
+				InfoBaseUser = InfoBaseUsers.CreateUser();
+				InfoBaseUser.Name = Selection.Code;
+				InfoBaseUser.Password = Selection.DeletePassword;
+				InfoBaseUser.FullName = String(Selection.AuthorizationObject);
+				InfoBaseUser.Write();
+				ExternalUserObject.InfoBaseUserID = InfoBaseUser.UUID;
 				ExternalUserObject.Write();
 			Except
-				WriteLogEvent(NStr("en = 'External users. Error occurred during the infobase update.'"),
-                     EventLogLevel.Error,
-                     ,
-                     ,
-                     StringFunctionsClientServer.SubstitureParametersInString(
-                          NStr("en = 'An error occurred while creating %1 infobase user for %2 external user:
-                                |%3'"),
-                          Selection.Code,
-                          Selection.Description,
-                          ErrorDescription()),
-                     EventLogEntryTransactionMode.Independent);
+				WriteLogEvent(NStr("en = 'External users. Error updating infobase'"),
+				 EventLogLevel.Error,
+				 ,
+				 ,
+				 StringFunctionsClientServer.SubstituteParametersInString(
+				 NStr("en= 'The following error occurred when creating the infobase user named %1 for the %2 external user :
+				 |%3'"),
+				 Selection.Code,
+				 Selection.Description,
+				 ErrorDescription()),
+				 EventLogEntryTransactionMode.Independent);
 			EndTry;
 		EndIf;
 	EndDo;
 	
 EndProcedure
-

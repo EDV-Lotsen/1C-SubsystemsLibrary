@@ -1,95 +1,93 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Email operations subsystem.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-//   Module "WorkWithEmailsInterfaces", contains functions-interfaces,
-// for work with emails. Must be included in every
-// configuration, that contains e-mails susbsystem.
+//   The EmailOperations module contains functions for working with email messages.
+// This module must be embedded in all configurations that contain the email subsystem.
 //
-//   Functions do not contain specifications of parameters - they can be found
-// in module, directly implementing this or that mechanism of operations with
-// emails (with servers).
+//   Functions contain no parameters, all parameters are at modules that provide
+// function implementation.
 //
 
 ////////////////////////////////////////////////////////////////////////////////
-//
-// Block of overrided functions-interfaces (for calls from outside)
-//
+// INTERFACE
 
-// Gets ref to account using account purpose kind
-// Parameters:
-// AccountPurposeKind - Enums.AccountPurposeKinds -
-//                 account purpose kind
-// Value returned:
-// UserAccount 		  - CatalogRef.EmailAccounts - ref
-//                 to account description
+// Retrieves the system account reference.
+//
+// Returns:
+//  Account - CatalogRef.EmailAccounts - account reference.
 //
 Function GetSystemAccount() Export
 	
-	Return Emails.GetSystemAccount();
+	Return Email.GetSystemAccount();
 	
 EndFunction
 
-// Checks, that system account is available
-// (can be used)
+// Checks whether the system account is available and can be used.
 //
-Function SystemAccountAvailable() Export
+Function CheckSystemAccountAvailable() Export
 	
-	Return Emails.SystemAccountAvailable();
-	
-EndFunction
-
-// Get available e-mail accounts
-// Parameters:
-// ForSending 		  - Boolean - If True, then only accounts allowing to send emails will be selected
-// ForReceiving   - Boolean - If True, then only accounts aloowing to receive emails will be selected
-// Value returned:
-// AvailableAccounts - ValueTable 	- With columns:
-//    Ref         	 - CatalogRef.EmailAccounts - Ref to account
-//    Description 	 - String 		- Account description
-//    Address        - String 		- Email address
-//
-Function GetAvailableEmailAccounts(Val ForSending = False, Val ForReceiving = False, Val IncludeSystemAccount = False) Export
-	
-	Return Emails.GetAvailableEmailAccounts(ForSending, ForReceiving, IncludeSystemAccount);
+	Return Email.CheckSystemAccountAvailable();
 	
 EndFunction
 
-// Function implementing mechanics of email message sending
+// Returns available email accounts.
 //
 // Parameters:
-// UserAccount 		- CatalogRef.EmailAccounts - ref to
-//                 			e-mail account
-// MessageParameters - Structure 		- contains all information about the message:
-//                   	contains following keys:
-//    Recipient*       - Array of structures, string - internet address of message recipient
-//                 		Address         - string - email address
-//                 		Presentation 	- string - recipient name
+// ForSending                  - Boolean - flag that shows whether only accounts that 
+//                               can be used as a sender will be chosen.
+// ForReceiving                - Boolean - flag that shows whether only accounts that 
+//                               can be used as arecipient will be chosen.
+// IncludingSystemEmailAccount - flag that shows whether the system email account will
+//                               be included in the selection (if it is available).
 //
-//    Subject*      - String 			- subject of email message
-//    Body*      	- Email message body (plain text in encoding wiin-1251)
+// Returns:
+// ValueTable that contains the following columns:
+//    Ref         - CatalogRef.EmailAccounts - account reference.
+//    Description - String - account description.
+//    Address     - String - email address.
+//
+Function GetAvailableAccounts(Val ForSending = Undefined, Val ForReceiving = Undefined, Val IncludingSystemEmailAccount = True) Export
+	
+	Return Email.GetAvailableAccounts(ForSending, ForReceiving, IncludingSystemEmailAccount);
+	
+EndFunction
+
+// Sends the email message.
+//
+// Parameters:
+//  Account         - CatalogRef.EmailAccounts - email account reference.
+//  EmailParameters - Structure - Contains all required message details:
+//    Recipient*    - Array of Structure, String - message recipient address.
+//                    Address - String - email address.
+//                    Presentation - String - recipient name.
+//    Subject*      - String - message subject.
+//    Body*         - String - message body (win-1251 text).
 //    Attachments   - Map
-//                 key     				- attachmentDescription - string - attachment description
-//                 value 				- BinaryData - attachment data
+//                    Key - AttachmentDescription - String - attachment description.
+//                    Value - BinaryData - attachment data.
 //
-// additional structure keys, that may be used:
-//    ResponseAddress 	- map 	 - see fields similar to field Recipient
-//    Password      	- string - password for account access
-//    TextType   		- String / Enum.EmailTypes defines type of passed text
-//                  available values:
-//                  HTML/EmailTextTypes.HTML - email message text in HTML format
-//                  PlainText/EmailMessageTextType.PlainText - plain text of email message. Displayed "as is" (default value)
-//                  RichText/EmailMessageTextType.RichText - email message text in Rich Text format
+//  Additional structure key that can be used:
+//    ReplyTo       - Map - see Recipient for details.
+//    Password      - String - account password.
+//    TextType      - String, Enumeration.EmailTextTypes - determines the passed text
+//                    type. It can take the following values:
+//                    HTML - EmailTextTypes.HTML - HTML formatted text.
+//                    PlainText - EmailTextTypes.PlainText - plain text. It is 
+//                    displayed "as is" (the default value).
+//                    RichText - EmailTextTypes.RichText - rich text.
 //
-//    note.: message parameters marked with sign '*' are mandatory
-//           i.e. consider that when function runs they are already initialized
+//    Note: Parameters marked with * are mandatory.
 //
-// Value returned:
-// String - id of sent email message at smtp server
+// Returns:
+// String - ID of the sent email message on the SMTP server.
 //
-// COMMENT: function can call an exception, that has to be processed
+// NOTE: the function can raise an exception, which must be processed.
 //
-Function SendEmail(Val UserAccount, Val MessageParameters) Export
+Function SendMessage(Val Account, Val EmailParameters) Export
 	
-	Return Emails.SendEmail(UserAccount, MessageParameters);
+	Return Email.SendEmailMessage(Account, EmailParameters);
 	
 EndFunction

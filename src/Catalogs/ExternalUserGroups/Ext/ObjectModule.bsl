@@ -1,12 +1,18 @@
-﻿
+﻿// The group parent value to use it in the OnWrite event handler
+Var OldParent; 
 
-Var FormerParent;
-Var ChangedContentOfRolesOfExternalUserGroups;
 
-// Handler BeforeWrite locks invalid actions with the predefined
-// group "All external users".
+// A flag that shows whether a role composition is changed.
+// IsExternalUserGroupRoleContentChanged is used in the OnWrite
+// event handler.
+Var IsExternalUserGroupRoleContentChanged; 
+
+////////////////////////////////////////////////////////////////////////////////
+// EVENT HANDLERS
+
+// Prevents invalid actions with the AllExternalUsers predefined group.
 //
-Procedure BeforeWrite(Cancellation)
+Procedure BeforeWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
@@ -15,87 +21,109 @@ Procedure BeforeWrite(Cancellation)
 	If Ref = Catalogs.ExternalUserGroups.AllExternalUsers Then
 		
 		AuthorizationObjectType = Undefined;
-		AllAuthorizationObjects  = False;
+		AllAuthorizationObjects = False;
 		
-		If NOT Parent.IsEmpty() Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All external users"" can be only at the root!'"), , , , Cancellation);
+		If Not Parent.IsEmpty() Then
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'The All external users predefined group can be placed only in the root.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 		If Content.Count() > 0 Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Adding external users to the folder ""All external users"" is not supported.'"), , , , Cancellation);
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'Users cannot be added to the All external users predefined group.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 	Else
 		If Parent = Catalogs.ExternalUserGroups.AllExternalUsers Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All external users"" cannot be parent!'"), , , , Cancellation);
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'The All external users predefined group cannot have subgroups.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
-		FormerParent = ?(Ref.IsEmpty(), Undefined, CommonUse.GetAttributeValue(Ref, "Parent"));
+		OldParent = ?(Ref.IsEmpty(), Undefined, CommonUse.GetAttributeValue(Ref, "Parent"));
 		
 		If AuthorizationObjectType = Undefined Then
 			AllAuthorizationObjects = False;
 		ElsIf AllAuthorizationObjects And ValueIsFilled(Parent) Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Invalid parent for the specified folder of all objects of the information base!'"), , , , Cancellation);
+			CommonUseClientServer.MessageToUser(
+				NStr("en = 'A group of all infobase authorization objects of the specified type cannot have parent groups.'"),
+				, , , Cancel);
 			Return;
 		EndIf;
 		
-		// Check uniqueness of the group of all authorization objects of the specified type
+		// Checking whether the group of all authorization objects of the specified type is unique
 		If AllAuthorizationObjects Then
 			Query = New Query(
 			"SELECT
-			|	PRESENTATION(ExternalUserGroups.Ref) AS Ref_Presentation
+			|	PRESENTATION(ExternalUserGroups.Ref) AS RefPresentation
 			|FROM
 			|	Catalog.ExternalUserGroups AS ExternalUserGroups
 			|WHERE
 			|	ExternalUserGroups.Ref <> &Ref
-			|	And ExternalUserGroups.AuthorizationObjectType = &AuthorizationObjectType
-			|	And ExternalUserGroups.AllAuthorizationObjects");
+			|	AND ExternalUserGroups.AuthorizationObjectType = &AuthorizationObjectType
+			|	AND ExternalUserGroups.AllAuthorizationObjects");
 			Query.SetParameter("Ref", Ref);
 			Query.SetParameter("AuthorizationObjectType", AuthorizationObjectType);
 			Selection = Query.Execute().Choose();
 			If Selection.Next() Then
-				CommonUseClientServer.MessageToUser(StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'There is already a folder ""%1"" for all objects of the information base type ""%2""'"), Selection.Ref_Presentation, Metadata.FindByType(TypeOf(AuthorizationObjectType)).Synonym), , , , Cancellation);
+				CommonUseClientServer.MessageToUser(
+					StringFunctionsClientServer.SubstituteParametersInString(
+						NStr("en = 'There is existed group %1 for all infobase object of the %2 type.'"),
+						Selection.RefPresentation,
+						AuthorizationObjectType.Metadata().Synonym),
+					, , , Cancel);
 				Return;
 			EndIf;
 		EndIf;
 		
-		// Check match of the authorization objects type with the parent (valid if parent type is not specified)
+		// Checking whether the authorization object type match a parent type (parent type can be not defined)
 		If ValueIsFilled(Parent) Then
-			TypeOfParentAuthorizationObjects = CommonUse.GetAttributeValue(Parent, "AuthorizationObjectType");
-			If TypeOfParentAuthorizationObjects <> Undefined And
-			     TypeOfParentAuthorizationObjects <> AuthorizationObjectType Then
+			ParentAuthorizationObjectType = CommonUse.GetAttributeValue(Parent, "AuthorizationObjectType");
+			If ParentAuthorizationObjectType <> Undefined And
+			 ParentAuthorizationObjectType <> AuthorizationObjectType Then
 				
-				CommonUseClientServer.MessageToUser(StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Type of objects of the information base should be ""%1"" like the parent has ""%2""!'"), Metadata.FindByType(TypeOf(TypeOfParentAuthorizationObjects)).Synonym, Parent), , , , Cancellation);
+				CommonUseClientServer.MessageToUser(
+					StringFunctionsClientServer.SubstituteParametersInString(
+						NStr("en = 'The infobase object type must be equal to the parent type (%1). The parent is %2. '"),
+						ParentAuthorizationObjectType.Metadata().Synonym, Parent),
+					, , , Cancel);
 				Return;
 			EndIf;
 		EndIf;
 		
-		// Check, that on change of type of the authorization objects there are no subordinate items of another type (type clearing is not allowed)
+		// Checking that the authorization object with a changed type does not have child items with a different type (type can be cleared).
 		If AuthorizationObjectType <> Undefined And ValueIsFilled(Ref) Then
 			Query = New Query(
 			"SELECT
-			|	PRESENTATION(ExternalUserGroups.Ref) AS Ref_Presentation,
+			|	PRESENTATION(ExternalUserGroups.Ref) AS RefPresentation,
 			|	ExternalUserGroups.AuthorizationObjectType
 			|FROM
 			|	Catalog.ExternalUserGroups AS ExternalUserGroups
 			|WHERE
 			|	ExternalUserGroups.Parent = &Ref
-			|	And ExternalUserGroups.AuthorizationObjectType <> &AuthorizationObjectType");
+			|	AND ExternalUserGroups.AuthorizationObjectType <> &AuthorizationObjectType");
 			Query.SetParameter("Ref", Ref);
 			Query.SetParameter("AuthorizationObjectType", AuthorizationObjectType);
 			Selection = Query.Execute().Choose();
 			If Selection.Next() Then
 				If Selection.AuthorizationObjectType = Undefined Then
-					PresentationOfAnotherTypeOfAuthorizationObject = NStr("en = '<Any type>'");
+					OtherAuthorizationObjectTypePresentation = NStr("en = '<Any type>'");
 				Else
-					PresentationOfAnotherTypeOfAuthorizationObject = Metadata.FindByType(TypeOf(Selection.AuthorizationObjectType)).Synonym;
+					OtherAuthorizationObjectTypePresentation = Selection.AuthorizationObjectType.Metadata().Synonym;
 				EndIf;
-				CommonUseClientServer.MessageToUser(StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'There is a child folder ""%1"" with another object types of the information base ""%2""'"), Selection.Ref_Presentation, PresentationOfAnotherTypeOfAuthorizationObject), , , , Cancellation);
+				CommonUseClientServer.MessageToUser(
+					StringFunctionsClientServer.SubstituteParametersInString(
+						NStr("en = 'There is subgroup %1 with a different type of infobase objects (%2).'"),
+						Selection.RefPresentation,
+						OtherAuthorizationObjectTypePresentation),
+					, , , Cancel);
 				Return;
 			EndIf;
 		EndIf;
 		
-		//Check if set of roles has been changed.
+		// Checking whether the role composition has been changed
 		If ValueIsFilled(Ref) Then
 			Query = New Query(
 			"SELECT
@@ -111,8 +139,8 @@ Procedure BeforeWrite(Cancellation)
 			|FROM
 			|	NewRoles AS NewRoles
 			|		LEFT JOIN Catalog.ExternalUserGroups.Roles AS OldRoles
-			|		ON (OldRoles.Ref = &GroupExternalUsers)
-			|			And (OldRoles.Role = NewRoles.Role)
+			|			ON (OldRoles.Ref = &ExternalUserGroup)
+			|			AND (OldRoles.Role = NewRoles.Role)
 			|WHERE
 			|	OldRoles.Role IS NULL 
 			|
@@ -122,92 +150,128 @@ Procedure BeforeWrite(Cancellation)
 			|	TRUE
 			|FROM
 			|	(SELECT
-			|		TRUE AS ValueTrue) AS ValueTrue
+			|		TRUE AS TrueValue) AS TrueValue
 			|		INNER JOIN Catalog.ExternalUserGroups.Roles AS OldRoles
-			|		ON (OldRoles.Ref = &GroupExternalUsers)
+			|			ON (OldRoles.Ref = &ExternalUserGroup)
 			|		LEFT JOIN NewRoles AS NewRoles
-			|		ON (OldRoles.Role = NewRoles.Role)
+			|			ON (OldRoles.Role = NewRoles.Role)
 			|WHERE
 			|	NewRoles.Role IS NULL ");
-			Query.SetParameter("GroupExternalUsers", Ref);
+			Query.SetParameter("ExternalUserGroup", Ref);
 			Query.SetParameter("NewRoles", Roles.Unload());
-			ChangedContentOfRolesOfExternalUserGroups = NOT Query.Execute().IsEmpty();
+			IsExternalUserGroupRoleContentChanged = Not Query.Execute().IsEmpty();
 		Else
-			ChangedContentOfRolesOfExternalUserGroups = True;
+			IsExternalUserGroupRoleContentChanged = True;
 		EndIf;
 		
 	EndIf;
 	
 EndProcedure
 
-// Handler OnWrite calls update of the group set of the external users.
-//
-Procedure OnWrite(Cancellation)
+Procedure OnWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
 	ModifiedExternalUsers = Undefined;
-	ExternalUsers.RefreshExternalUserGroupsContent(Ref, ModifiedExternalUsers);
+	ExternalUsers.UpdateExternalUserGroupContent(Ref, ModifiedExternalUsers);
 	
 	If Ref = Catalogs.ExternalUserGroups.AllExternalUsers Then
 		
 		Query = New Query(
 		"SELECT
-		|	UserGroupMembers.User
+		|	UserGroupContent.User
 		|FROM
-		|	InformationRegister.UserGroupMembers AS UserGroupMembers
+		|	InformationRegister.UserGroupContent AS UserGroupContent
 		|WHERE
-		|	UserGroupMembers.UsersGroup = VALUE(Catalog.ExternalUserGroups.AllExternalUsers)");
+		|	UserGroupContent.UserGroup = VALUE(Catalog.ExternalUserGroups.AllExternalUsers)");
 		ModifiedExternalUsers = Query.Execute().Unload().UnloadColumn("User");
 		
-	ElsIf ChangedContentOfRolesOfExternalUserGroups Then
+	ElsIf IsExternalUserGroupRoleContentChanged Then
 		
 		Query = New Query(
 		"SELECT
-		|	UserGroupMembers.User
+		|	UserGroupContent.User
 		|FROM
-		|	InformationRegister.UserGroupMembers AS UserGroupMembers
+		|	InformationRegister.UserGroupContent AS UserGroupContent
 		|WHERE
-		|	UserGroupMembers.User In(&ModifiedExternalUsers)
+		|	UserGroupContent.User IN(&ModifiedExternalUsers)
 		|
 		|UNION
 		|
 		|SELECT
-		|	ExternalUserGroupsContent.ExternalUser
+		|	ExternalUserGroupContent.ExternalUser
 		|FROM
-		|	Catalog.ExternalUserGroups.Content AS ExternalUserGroupsContent
+		|	Catalog.ExternalUserGroups.Content AS ExternalUserGroupContent
 		|WHERE
-		|	ExternalUserGroupsContent.Ref = &GroupExternalUsers
-		|	And (NOT ExternalUserGroupsContent.ExternalUser.SetRolesDirectly)");
-		Query.SetParameter("GroupExternalUsers",    Ref);
+		|	ExternalUserGroupContent.Ref = &ExternalUserGroup
+		|	AND (NOT ExternalUserGroupContent.ExternalUser.SetRolesDirectly)");
+		Query.SetParameter("ExternalUserGroup", Ref);
 		Query.SetParameter("ModifiedExternalUsers", ModifiedExternalUsers);
 		ModifiedExternalUsers = Query.Execute().Unload().UnloadColumn("User");
 	EndIf;
 		
-	AreErrors = False;
-	ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
+	ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
 	
-	If ValueIsFilled(FormerParent) And FormerParent <> Parent Then
+	If ValueIsFilled(OldParent) And OldParent <> Parent Then
 		
-		ExternalUsers.RefreshExternalUserGroupsContent(FormerParent, ModifiedExternalUsers);
-		ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
-	EndIf;
-	
-	If AreErrors And NOT AdditionalProperties.Property("AreErrors") Then
-		AdditionalProperties.Insert("AreErrors");
+		ExternalUsers.UpdateExternalUserGroupContent(OldParent, ModifiedExternalUsers);
+		ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
 	EndIf;
 	
 EndProcedure
 
-// Handler FillCheckProcessing locks interactive choice of the group "All external users" as a parent group.
-//
-Procedure FillCheckProcessing(Cancellation, CheckedAttributes)
+Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 	
+	CheckedObjectAttributes = New Array;
+	Errors = Undefined;
+	
+	// Checking whether AllUsers has subgroups
 	If Parent = Catalogs.ExternalUserGroups.AllExternalUsers Then
-		CommonUseClientServer.MessageToUser(NStr("en = 'Predefined folder ""All external users"" cannot be parent!'"), , "Object.Parent", , Cancellation);
+		CommonUseClientServer.AddUserError(Errors,
+			"Object.Parent",
+			NStr("en = 'The All users predefined group cannot have subgroups.'"));
 	EndIf;
 	
+	// Checking whether there are empty or repeated external users
+	CheckedObjectAttributes.Add("Content.ExternalUser");
+	
+	For Each CurrentRow In Content Do
+		LineNumber = Content.IndexOf(CurrentRow);
+		
+		// Checking whether the value is filled
+		If Not ValueIsFilled(CurrentRow.ExternalUser) Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].ExternalUser",
+				NStr("en = 'External user is not selected.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'External user in the row #%1 is not selected.'"));
+			Continue;
+		EndIf;
+		
+		// Checking whether there are repeated values
+		FoundValues = Content.FindRows(New Structure("ExternalUser", CurrentRow.ExternalUser));
+		If FoundValues.Count() > 1 Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].ExternalUser",
+				NStr("en = 'Repeated external user.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'There is a repeated external user in the row #%1.'"));
+		EndIf;
+	EndDo;
+	
+	CommonUseClientServer.ShowErrorsToUser(Errors, Cancel);
+	
+	CommonUse.DeleteNoncheckableAttributesFromArray(AttributesToCheck, CheckedObjectAttributes);
+	
 EndProcedure
+
+
+
+
+
+
 

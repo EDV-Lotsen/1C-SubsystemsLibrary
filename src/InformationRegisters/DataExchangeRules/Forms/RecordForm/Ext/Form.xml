@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1">
+		<ChildItems>
+			<ButtonGroup name="ButtonGroup" id="2">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Button group</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Button group.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<ExtendedTooltip name="ButtonGroupExtendedTooltip" id="3"/>
+				<ChildItems>
+					<Button name="GetRuleInformationFromFile" id="4">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.RuleFileInfo</CommandName>
+						<ExtendedTooltip name="GetRuleInformationFromFileExtendedTooltip" id="5"/>
+					</Button>
+				</ChildItems>
+			</ButtonGroup>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnWriteAtServer">OnWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="ExchangePlanGroup" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange plan group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange plan group.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ExchangePlanGroupExtendedTooltip" id="7"/>
+			<ChildItems>
+				<InputField name="ExchangePlanName" id="8">
+					<DataPath>Record.ExchangePlanName</DataPath>
+					<ChoiceButton>false</ChoiceButton>
+					<ListChoiceMode>true</ListChoiceMode>
+					<ChoiceListButton>true</ChoiceListButton>
+					<ContextMenu name="ExchangePlanNameContextMenu" id="9"/>
+					<ExtendedTooltip name="ExchangePlanNameExtendedTooltip" id="10"/>
+					<Events>
+						<Event name="OnChange">ExchangePlanNameOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="MainGroup" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rule source</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main group.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>StrongSeparation</Representation>
+			<ExtendedTooltip name="MainGroupExtendedTooltip" id="12"/>
+			<ChildItems>
+				<RadioButtonField name="RuleSource" id="13">
+					<DataPath>RuleSource</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<RadioButtonType>Auto</RadioButtonType>
+					<ColumnsCount>1</ColumnsCount>
+					<ChoiceList>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Built-in application rules</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:decimal">0</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Rules from file (for debug purpose only)</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:decimal">1</Value>
+							</xr:Value>
+						</xr:Item>
+					</ChoiceList>
+					<ContextMenu name="RuleSourceContextMenu" id="14"/>
+					<ExtendedTooltip name="RuleSourceExtendedTooltip" id="15"/>
+					<Events>
+						<Event name="OnChange">RuleSourceOnChange</Event>
+					</Events>
+				</RadioButtonField>
+				<Pages name="RuleSourcesGroup" id="16">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Rule sources group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Rule sources group.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<PagesRepresentation>None</PagesRepresentation>
+					<ExtendedTooltip name="RuleSourcesGroupExtendedTooltip" id="17"/>
+					<ChildItems>
+						<Page name="SourceConfigurationTemplate" id="18">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Source configuration template</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Source configuration template.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="SourceConfigurationTemplateExtendedTooltip" id="19"/>
+							<ChildItems>
+								<InputField name="RuleTemplateName" id="20">
+									<DataPath>Record.RuleTemplateName</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<ChoiceButton>true</ChoiceButton>
+									<ListChoiceMode>true</ListChoiceMode>
+									<TextEdit>false</TextEdit>
+									<ChoiceListButton>false</ChoiceListButton>
+									<ContextMenu name="RuleTemplateNameContextMenu" id="21"/>
+									<ExtendedTooltip name="RuleTemplateNameExtendedTooltip" id="22"/>
+								</InputField>
+								<UsualGroup name="ActionsWithStandardRulesGroup" id="23">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Actions with built-in rules group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Actions with built-in rules group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="ActionsWithStandardRulesGroupExtendedTooltip" id="24"/>
+									<ChildItems>
+										<Button name="ImportStandardRules" id="25">
+											<Type>UsualButton</Type>
+											<SkipOnInput>true</SkipOnInput>
+											<CommandName>Form.Command.ImportRules</CommandName>
+											<ExtendedTooltip name="ImportStandardRulesExtendedTooltip" id="26"/>
+										</Button>
+										<Button name="ExportStandardRules" id="27">
+											<Type>UsualButton</Type>
+											<SkipOnInput>true</SkipOnInput>
+											<CommandName>Form.Command.ExportRules</CommandName>
+											<ExtendedTooltip name="ExportStandardRulesExtendedTooltip" id="28"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</Page>
+						<Page name="SourceFile" id="29">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Source file</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Source file.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="SourceFileExtendedTooltip" id="30"/>
+							<ChildItems>
+								<InputField name="RuleFileName" id="31">
+									<DataPath>Record.RuleFileName</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<TitleLocation>None</TitleLocation>
+									<ChoiceButton>false</ChoiceButton>
+									<OpenButton>false</OpenButton>
+									<ContextMenu name="RuleFileNameContextMenu" id="32"/>
+									<ExtendedTooltip name="RuleFileNameExtendedTooltip" id="33"/>
+								</InputField>
+								<UsualGroup name="ActionsWithRulesFromFileGroup" id="34">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Actions with rules from file group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Actions with rules from file group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="ActionsWithRulesFromFileGroupExtendedTooltip" id="35"/>
+									<ChildItems>
+										<Button name="ImportRulesFromFile" id="36">
+											<Type>UsualButton</Type>
+											<SkipOnInput>true</SkipOnInput>
+											<CommandName>Form.Command.ImportRules</CommandName>
+											<ExtendedTooltip name="ImportRulesFromFileExtendedTooltip" id="37"/>
+										</Button>
+										<Button name="ExportRulesToFile" id="38">
+											<Type>UsualButton</Type>
+											<SkipOnInput>true</SkipOnInput>
+											<CommandName>Form.Command.ExportRules</CommandName>
+											<ExtendedTooltip name="ExportRulesToFileExtendedTooltip" id="39"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</Page>
+					</ChildItems>
+				</Pages>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="RuleInfo" id="40">
+			<DataPath>RuleInfo</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<MultiLine>true</MultiLine>
+			<ContextMenu name="RuleInfoContextMenu" id="41"/>
+			<ExtendedTooltip name="RuleInfoExtendedTooltip" id="42"/>
+		</InputField>
+		<UsualGroup name="GroupAdditional" id="43">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Advanced</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Advanced group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<ChildItemsWidth>LeftWidest</ChildItemsWidth>
+			<ExtendedTooltip name="GroupAdditionalExtendedTooltip" id="44"/>
+			<ChildItems>
+				<CheckBoxField name="UseSelectiveObjectChangeRecordFilter" id="45">
+					<DataPath>Record.UseSelectiveObjectChangeRecordFilter</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="UseSelectiveObjectChangeRecordFilterContextMenu" id="46"/>
+					<ExtendedTooltip name="UseSelectiveObjectChangeRecordFilterExtendedTooltip" id="47"/>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Record" id="1">
+			<Type>
+				<v8:Type>cfg:InformationRegisterRecordManager.DataExchangeRules</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="RuleInfo" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rules information</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="RuleSource" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data source rules</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DataExchangeRuleLoadingEventLogMessageText" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Event log message text regarding data exchange rule loading</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ImportRules" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import rules</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import rules.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ImportRules</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExportRules" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export rules</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export rules.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExportRules</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="RuleFileInfo" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Get information regarding rules from file...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Information about rules file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>RuleFileInfo</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+</Form>

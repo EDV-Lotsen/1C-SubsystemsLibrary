@@ -19,7 +19,7 @@ EndProcedure
 &AtServer
 Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	
-	DirrectoryForPrintDataSave = PrintManagement.GetPrintFilesLocalDirectory();
+	DirrectoryForPrintDataSave = _DemoPrintManagement.GetPrintFilesLocalDirectory();
 	Items.Message.Title = Items.Message.Title + Chars.LF + Parameters.MessageAboutError;
 	
 EndProcedure

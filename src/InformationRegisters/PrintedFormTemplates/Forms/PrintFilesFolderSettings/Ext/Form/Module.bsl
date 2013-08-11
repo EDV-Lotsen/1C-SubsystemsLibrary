@@ -2,7 +2,7 @@
 &AtServer
 Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	
-	DirrectoryForPrintDataSave = PrintManagement.GetPrintFilesLocalDirectory();
+	DirrectoryForPrintDataSave = _DemoPrintManagement.GetPrintFilesLocalDirectory();
 	
 EndProcedure
 
@@ -27,7 +27,7 @@ EndProcedure
 &AtClient
 Procedure OK(Command)
 	
-	PrintManagement.SaveLocalDirectoryOfPrintFiles(DirrectoryForPrintDataSave);
+	_DemoPrintManagement.SaveLocalDirectoryOfPrintFiles(DirrectoryForPrintDataSave);
 	Close(DirrectoryForPrintDataSave);
 	
 EndProcedure

@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Scheduled job execution setup</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1">
+		<ChildItems>
+			<Button name="WriteAndClose" id="2">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.WriteAndClose</CommandName>
+				<ExtendedTooltip name="WriteAndCloseExtendedTooltip" id="3"/>
+			</Button>
+			<Button name="Write" id="4">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Write</CommandName>
+				<ExtendedTooltip name="WriteExtendedTooltip" id="5"/>
+			</Button>
+			<Button name="StartSeparateSessionToExecuteScheduledJobs" id="6">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.StartSeparateSessionToExecuteScheduledJobs</CommandName>
+				<ExtendedTooltip name="StartSeparateSessionForBackgroundJobExecutionExtendedTooltip" id="7"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="ScheduledJobExecutionSession" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Scheduled job execution session</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ScheduledJobExecutionSessionExtendedTooltip" id="9"/>
+			<ChildItems>
+				<CheckBoxField name="AutomaticallyStartSeparateSessionForExecutingSchedledJobs" id="10">
+					<DataPath>AutomaticallyStartSeparateSessionForExecutingSchedledJobs</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="AutomaticallyStartSeparateSessionForExecutingSchedledJobsContextMenu" id="11"/>
+					<ExtendedTooltip name="AutomaticallyStartSeparateSessionForExecutingSchedledJobsExtendedTooltip" id="12"/>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ScheduledJobErrorNotification" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Notification about scheduled job execution errors</v8:content>
+				</v8:item>
+			</Title>
+			<TitleTextColor>style:ButtonTextColor</TitleTextColor>
+			<TitleFont ref="sys:DefaultGUIFont" bold="false" italic="false" underline="true" strikeout="false" kind="WindowsFont"/>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ScheduledJobErrorNotificationExtendedTooltip" id="14"/>
+			<ChildItems>
+				<CheckBoxField name="NotifyAboutIncorrectScheduledJobExecution" id="15">
+					<DataPath>NotifyAboutIncorrectScheduledJobExecution</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Notify users if jobs are not executed more than one hour or the last job is executed more than one hour.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="NotifyAboutIncorrectScheduledJobExecutionContextMenu" id="16"/>
+					<ExtendedTooltip name="NotifyAboutIncorrectScheduledJobExecutionExtendedTooltip" id="17"/>
+				</CheckBoxField>
+				<InputField name="ScheduledJobErrorNotificationPeriod" id="18">
+					<DataPath>ScheduledJobErrorNotificationPeriod</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<Wrap>false</Wrap>
+					<ContextMenu name="ScheduledJobErrorNotificationPeriodContextMenu" id="19"/>
+					<ExtendedTooltip name="ScheduledJobErrorNotificationPeriodExtendedTooltip" id="20"/>
+					<Events>
+						<Event name="OnChange">ScheduledJobErrorNotificationPeriodOnChange</Event>
+					</Events>
+				</InputField>
+				<LabelDecoration name="MinutesLabel" id="21">
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>(min.)</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="MinutesLabelContextMenu" id="22"/>
+					<ExtendedTooltip name="MinutesLabelExtendedTooltip" id="23"/>
+				</LabelDecoration>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="AutomaticallyStartSeparateSessionForExecutingSchedledJobs" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Automatically start separate session for perform scheduled jobs</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="NotifyAboutIncorrectScheduledJobExecution" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Notify about scheduled job execution errors every:</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="ScheduledJobErrorNotificationPeriod" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Period of notification about scheduled job execution errors</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="WriteAndClose" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Write and close</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Write and close.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>WriteAndCloseExecute</Action>
+			<Representation>Text</Representation>
+		</Command>
+		<Command name="StartSeparateSessionToExecuteScheduledJobs" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Start separate session</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Start separate client session to execute scheduled jobs.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>StartSeparateSessionToExecuteScheduledJobs</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Write" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Write</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Write</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Write</Action>
+			<Representation>Picture</Representation>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="HideSeparateSessionStartCommand">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

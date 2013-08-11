@@ -1,114 +1,90 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// EVENT HANDLERS
 
-Procedure BeforeWrite(Cancellation)
-	
-	If IBUserID <> New UUID("00000000-0000-0000-0000-000000000000") And
-	     Users.UserByIDExists(IBUserID, Ref) Then
-	     
-		CommonUseClientServer.MessageToUser(NStr("en = 'One Information base user can be connected only with one user of external user!'"), , , , Cancellation);
-		Return;
-	EndIf;
-	
-	If NOT ValueIsFilled(AuthorizationObject) Then
-		CommonUseClientServer.MessageToUser(NStr("en = 'The authorization object is not to set for external user!'"), , , , Cancellation);
-		Return;
-	Else
-		If ExternalUsers.AuthorizationObjectLinkedToExternalUser(AuthorizationObject, Ref) Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'The authorization object is already in use already by another external user.'"), , , , Cancellation);
-			Return;
-		EndIf;
-	EndIf;
-	
-	// Check that authorization object has not been modified
-	If NOT IsNew() Then
-		OldAuthorizationObject = CommonUse.GetAttributeValue(Ref, "AuthorizationObject");
-		If ValueIsFilled(OldAuthorizationObject) And OldAuthorizationObject <> AuthorizationObject Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'Object of the Information base cannot be changed!'"), , , , Cancellation);
-			Return;
-		EndIf;
-	EndIf;
-	
-	// Autoupdate description based on the authorization object presentation.
-	SetPrivilegedMode(True);
-	Description = String(AuthorizationObject);
-	SetPrivilegedMode(False);
-	
-	//If DataExchange.Load Then
-	//	Return;
-	//EndIf;
-	
-EndProcedure
-
-Procedure OnWrite(Cancellation)
+Procedure BeforeWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
-	SetPrivilegedMode(True);
+	If InfoBaseUserID <> New UUID("00000000-0000-0000-0000-000000000000") And
+	 Users.UserByIDExists(InfoBaseUserID, Ref) Then
+		Raise NStr("en = 'Every infobase user can correspond to single user or single external user only.'");
+	EndIf;
 	
-	AreErrors = False;
-	
-	RecordManager 			 = InformationRegisters.UserGroupMembers.CreateRecordManager();
-	RecordManager.UsersGroup = Ref;
-	RecordManager.User       = Ref;
-	RecordManager.Read();
-	If NOT RecordManager.Selected() Then
-		RecordManager.UsersGroup  = Ref;
-		RecordManager.User        = Ref;
-		RecordManager.Write();
-		// Update content of the automatic group "All external users".
-		ModifiedExternalUsers = Undefined;
-		ExternalUsers.RefreshExternalUserGroupsContent(Catalogs.ExternalUserGroups.AllExternalUsers, ModifiedExternalUsers);
-		ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
-		
-		// Update content of the automatic group <all authorization objects of the same type> (if exist).
-		If ValueIsFilled(AuthorizationObject) Then
-			Query = New Query(
-			"SELECT
-			|	ExternalUserGroups.Ref
-			|FROM
-			|	Catalog.ExternalUserGroups AS ExternalUserGroups
-			|WHERE
-			|	ExternalUserGroups.AllAuthorizationObjects
-			|	And VALUETYPE(ExternalUserGroups.AuthorizationObjectType) = &AuthorizationObjectType");
-			Query.SetParameter("AuthorizationObjectType", TypeOf(AuthorizationObject));
-			Selection = Query.Execute().Choose();
-			
-			If Selection.Next() Then
-				ExternalUsers.RefreshExternalUserGroupsContent(Selection.Ref, ModifiedExternalUsers);
-				ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
-			EndIf;
-		EndIf;
-		
-		// Update group content of the new external user (if specified).
-		If AdditionalProperties.Property("GroupNewExternalUser") And
-		     ValueIsFilled(AdditionalProperties.GroupNewExternalUser) Then
-			
-			GroupObject = AdditionalProperties.GroupNewExternalUser.GetObject();
-			GroupObject.Content.Add().ExternalUser = Ref;
-			GroupObject.Write();
-			ExternalUsers.RefreshExternalUserGroupsContent(GroupObject.Ref, ModifiedExternalUsers);
-			ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
-		EndIf;
+	If Not ValueIsFilled(AuthorizationObject) Then
+		Raise NStr("en = 'The authorization object for the external user is not specified.'");
 	Else
-		ModifiedExternalUsers = New Array;
-		ModifiedExternalUsers.Add(Ref);
-		ExternalUsers.RefreshExternalUserRoles(ModifiedExternalUsers, AreErrors);
+		If ExternalUsers.AuthorizationObjectUsed(AuthorizationObject, Ref) Then
+			Raise NStr("en = 'The authorization object is used for another external user.'");
+		EndIf;
 	EndIf;
 	
-	If AreErrors And NOT AdditionalProperties.Property("AreErrors") Then
-		AdditionalProperties.Insert("AreErrors");
+	// Checking whether the authorization object is not changed
+	If Not IsNew() Then
+		OldAuthorizationObject = CommonUse.GetAttributeValue(Ref, "AuthorizationObject");
+		If ValueIsFilled(OldAuthorizationObject) And OldAuthorizationObject <> AuthorizationObject Then
+			Raise NStr("en = 'The infobase object cannot be changed.'");
+		EndIf;
 	EndIf;
 	
 EndProcedure
 
-Procedure BeforeDelete(Cancellation)
+Procedure OnWrite(Cancel)
 	
-	If Users.IBUserExists(IBUserID) Then
+	If DataExchange.Load Then
+		Return;
+	EndIf;
+	
+	// Updating the All external users group composition. This group is generated automatically
+	ModifiedExternalUsers = Undefined;
+	ExternalUsers.UpdateExternalUserGroupContent(Catalogs.ExternalUserGroups.AllExternalUsers, ModifiedExternalUsers);
+	ModifiedExternalUsers.Add(Ref);
+	ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
+	
+	// Updating the <All authorization objects of the same type> group composition. 
+	// This group is generated automatically.
+	If ValueIsFilled(AuthorizationObject) Then
+		Query = New Query(
+		"SELECT
+		|	ExternalUserGroups.Ref
+		|FROM
+		|	Catalog.ExternalUserGroups AS ExternalUserGroups
+		|WHERE
+		|	ExternalUserGroups.AllAuthorizationObjects
+		|	AND VALUETYPE(ExternalUserGroups.AuthorizationObjectType) = &AuthorizationObjectType");
+		Query.SetParameter("AuthorizationObjectType", TypeOf(AuthorizationObject));
+		Selection = Query.Execute().Choose();
 		
-		Cancellation = NOT Users.DeleteIBUsers(IBUserID);
+		If Selection.Next() Then
+			ExternalUsers.UpdateExternalUserGroupContent(Selection.Ref, ModifiedExternalUsers);
+			ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
+		EndIf;
+	EndIf;
+	
+	// Updating the new external user group composition if the group is specified
+	If AdditionalProperties.Property("NewExternalUserGroup") And
+	 ValueIsFilled(AdditionalProperties.NewExternalUserGroup) Then
+		
+		GroupObject = AdditionalProperties.NewExternalUserGroup.GetObject();
+		GroupObject.Content.Add().ExternalUser = Ref;
+		GroupObject.Write();
+		ExternalUsers.UpdateExternalUserGroupContent(GroupObject.Ref, ModifiedExternalUsers);
+		ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
 	EndIf;
 	
 EndProcedure
 
+Procedure BeforeDelete(Cancel)
+	
+	// The infobase user must be deleted because otherwise this user will be included into
+	// the error list of the InfoBaseUsers form, in addition, starting the infobase on 
+	// behalf of this user will raise an error.
+	If Users.InfoBaseUserExists(InfoBaseUserID) Then
+		
+		Cancel = Not Users.DeleteInfoBaseUser(InfoBaseUserID);
+	EndIf;
+	
+	// The DataExchange.Load check must be placed here.
+	
+EndProcedure

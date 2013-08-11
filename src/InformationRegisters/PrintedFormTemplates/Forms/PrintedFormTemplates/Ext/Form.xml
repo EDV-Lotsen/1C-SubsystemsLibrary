@@ -17,10 +17,6 @@
 			<EnableDrag>true</EnableDrag>
 			<DataPath>TemplatesList</DataPath>
 			<RowPictureDataPath>TemplatesList.Picture</RowPictureDataPath>
-			<RowsPicture>
-				<xr:Ref>CommonPicture.TemplateTypes</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</RowsPicture>
 			<CommandSet>
 				<ExcludedCommand>Copy</ExcludedCommand>
 				<ExcludedCommand>SortListAsc</ExcludedCommand>
@@ -43,13 +39,13 @@
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.UseUserTemplate</CommandName>
-						<ExtendedTooltip name="ContextMenuTemplatesListUseUserTemplateExtendedTooltip" id="45"/>
+						<ExtendedTooltip name="ContextMenuTemplatesListUseUserTemplateExtendedTooltip" id="46"/>
 					</Button>
 					<Button name="ContextMenuTemplatesListUseStandardTemplate" id="42">
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.UseStandardTemplate</CommandName>
-						<ExtendedTooltip name="ContextMenuTemplatesListUseStandardTemplateExtendedTooltip" id="46"/>
+						<ExtendedTooltip name="ContextMenuTemplatesListUseStandardTemplateExtendedTooltip" id="47"/>
 					</Button>
 				</ChildItems>
 			</ContextMenu>
@@ -60,28 +56,28 @@
 						<Representation>PictureAndText</Representation>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.OpenForViewing</CommandName>
-						<ExtendedTooltip name="TemplatesListOpenForViewingExtendedTooltip" id="47"/>
+						<ExtendedTooltip name="TemplatesListOpenForViewingExtendedTooltip" id="48"/>
 					</Button>
 					<ButtonGroup name="Group" id="33">
-						<ExtendedTooltip name="GroupExtendedTooltip" id="48"/>
+						<ExtendedTooltip name="GroupExtendedTooltip" id="49"/>
 						<ChildItems>
 							<Button name="TemplatesListEdit" id="29">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.Edit</CommandName>
-								<ExtendedTooltip name="TemplatesListEditExtendedTooltip" id="49"/>
+								<ExtendedTooltip name="TemplatesListEditExtendedTooltip" id="50"/>
 							</Button>
 							<Button name="TemplatesListFinishEdit" id="28">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.FinishEdit</CommandName>
-								<ExtendedTooltip name="TemplatesListFinishEditExtendedTooltip" id="50"/>
+								<ExtendedTooltip name="TemplatesListFinishEditExtendedTooltip" id="51"/>
 							</Button>
 							<Button name="TemplatesListCancelEdit" id="27">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.CancelEdit</CommandName>
-								<ExtendedTooltip name="TemplatesListCancelEditExtendedTooltip" id="51"/>
+								<ExtendedTooltip name="TemplatesListCancelEditExtendedTooltip" id="52"/>
 							</Button>
 						</ChildItems>
 					</ButtonGroup>
@@ -89,13 +85,13 @@
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.UseUserTemplate</CommandName>
-						<ExtendedTooltip name="TemplatesListUseUserTemplateExtendedTooltip" id="52"/>
+						<ExtendedTooltip name="TemplatesListUseUserTemplateExtendedTooltip" id="53"/>
 					</Button>
 					<Button name="TemplatesListUseStandardTemplate" id="25">
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.UseStandardTemplate</CommandName>
-						<ExtendedTooltip name="TemplatesListUseStandardTemplateExtendedTooltip" id="53"/>
+						<ExtendedTooltip name="TemplatesListUseStandardTemplateExtendedTooltip" id="54"/>
 					</Button>
 					<ButtonGroup name="GroupExtra" id="34">
 						<Title>
@@ -104,13 +100,13 @@
 								<v8:content>Group extra</v8:content>
 							</v8:item>
 						</Title>
-						<ExtendedTooltip name="GroupExtraExtendedTooltip" id="54"/>
+						<ExtendedTooltip name="GroupExtraExtendedTooltip" id="55"/>
 						<ChildItems>
 							<Button name="TemplatesListDeleteFromIB" id="30">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.DeleteFromIB</CommandName>
-								<ExtendedTooltip name="TemplatesListDeleteFromIBExtendedTooltip" id="55"/>
+								<ExtendedTooltip name="TemplatesListDeleteFromIBExtendedTooltip" id="56"/>
 							</Button>
 						</ChildItems>
 					</ButtonGroup>
@@ -118,34 +114,39 @@
 						<Type>CommandBarButton</Type>
 						<SkipOnInput>false</SkipOnInput>
 						<CommandName>Form.Command.SetActionOnPrintFormTemplateSelect</CommandName>
-						<ExtendedTooltip name="SettingsOfTemplateOpenModeExtendedTooltip" id="56"/>
+						<ExtendedTooltip name="SettingsOfTemplateOpenModeExtendedTooltip" id="57"/>
+					</Button>
+					<Button name="TemplatesListButton1" id="45">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.PrintWorkingDirectorySetting</CommandName>
+						<ExtendedTooltip name="TemplatesListButton1ExtendedTooltip" id="58"/>
 					</Button>
 				</ChildItems>
 			</AutoCommandBar>
-			<ExtendedTooltip name="TemplatesListExtendedTooltip" id="57"/>
-			<SearchStringAddition name="TemplatesListSearchString" id="58">
+			<ExtendedTooltip name="TemplatesListExtendedTooltip" id="59"/>
+			<SearchStringAddition name="TemplatesListSearchString" id="64">
 				<AdditionSource>
 					<Item>TemplatesList</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="TemplatesListSearchStringContextMenu" id="59"/>
-				<ExtendedTooltip name="TemplatesListSearchStringExtendedTooltip" id="60"/>
+				<ContextMenu name="TemplatesListSearchStringContextMenu" id="65"/>
+				<ExtendedTooltip name="TemplatesListSearchStringExtendedTooltip" id="66"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="TemplatesListViewStatus" id="61">
+			<ViewStatusAddition name="TemplatesListViewStatus" id="67">
 				<AdditionSource>
 					<Item>TemplatesList</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="TemplatesListViewStatusContextMenu" id="62"/>
-				<ExtendedTooltip name="TemplatesListViewStatusExtendedTooltip" id="63"/>
+				<ContextMenu name="TemplatesListViewStatusContextMenu" id="68"/>
+				<ExtendedTooltip name="TemplatesListViewStatusExtendedTooltip" id="69"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="TemplatesListSearchControl" id="64">
+			<SearchControlAddition name="TemplatesListSearchControl" id="70">
 				<AdditionSource>
 					<Item>TemplatesList</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="TemplatesListSearchControlContextMenu" id="65"/>
-				<ExtendedTooltip name="TemplatesListSearchControlExtendedTooltip" id="66"/>
+				<ContextMenu name="TemplatesListSearchControlContextMenu" id="71"/>
+				<ExtendedTooltip name="TemplatesListSearchControlExtendedTooltip" id="72"/>
 			</SearchControlAddition>
 			<Events>
 				<Event name="Selection">TemplatesListSelection</Event>
@@ -164,7 +165,7 @@
 					<EditMode>EnterOnInput</EditMode>
 					<TextEdit>false</TextEdit>
 					<ContextMenu name="TemplatesListPresentationContextMenu" id="23"/>
-					<ExtendedTooltip name="TemplatesListPresentationExtendedTooltip" id="67"/>
+					<ExtendedTooltip name="TemplatesListPresentationExtendedTooltip" id="60"/>
 				</InputField>
 				<ColumnGroup name="GroupTemplateUsage" id="37">
 					<Title>
@@ -174,7 +175,7 @@
 						</v8:item>
 					</Title>
 					<Group>Horizontal</Group>
-					<ExtendedTooltip name="GroupTemplateUsageExtendedTooltip" id="68"/>
+					<ExtendedTooltip name="GroupTemplateUsageExtendedTooltip" id="61"/>
 					<ChildItems>
 						<CheckBoxField name="TemplatesListThereIsUserTemplate" id="31">
 							<DataPath>TemplatesList.IsUserTemplate</DataPath>
@@ -189,13 +190,13 @@
 							<EditMode>EnterOnInput</EditMode>
 							<CheckBoxType>Auto</CheckBoxType>
 							<ContextMenu name="TemplatesListThereIsUserTemplateContextMenu" id="32"/>
-							<ExtendedTooltip name="TemplatesListThereIsUserTemplateExtendedTooltip" id="69"/>
+							<ExtendedTooltip name="TemplatesListThereIsUserTemplateExtendedTooltip" id="62"/>
 						</CheckBoxField>
 						<InputField name="TemplatesListUsageString" id="43">
 							<DataPath>TemplatesList.UseString</DataPath>
 							<EditMode>EnterOnInput</EditMode>
 							<ContextMenu name="TemplatesListUsageStringContextMenu" id="44"/>
-							<ExtendedTooltip name="TemplatesListUsageStringExtendedTooltip" id="70"/>
+							<ExtendedTooltip name="TemplatesListUsageStringExtendedTooltip" id="63"/>
 						</InputField>
 					</ChildItems>
 				</ColumnGroup>
@@ -456,10 +457,6 @@
 				</v8:item>
 			</ToolTip>
 			<Shortcut>F4</Shortcut>
-			<Picture>
-				<xr:Ref>CommonPicture.EditTemplate</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>Edit</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
@@ -476,10 +473,6 @@
 					<v8:content>Save the template and unlock it</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.FinishTemplateEditing</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>FinishEdit</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
@@ -496,10 +489,6 @@
 					<v8:content>Unlock the template without saving it</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.CancelTemplateEditing</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>CancelEdit</Action>
 		</Command>
 		<Command name="OpenForViewing" id="6">
@@ -515,17 +504,13 @@
 					<v8:content>Open the template for viewing</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.OpenTemplate</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>OpenForViewing</Action>
 		</Command>
 		<Command name="DeleteFromIB" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Delete Custom Template</v8:content>
+					<v8:content>Delete custom template</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -534,10 +519,6 @@
 					<v8:content>Delete a custom template from the infobase</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.DeleteUserTemplate</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>DeleteFromIB</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
@@ -554,10 +535,6 @@
 					<v8:content>Use a custom template</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.UseUserTemplate</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>UseUserTemplate</Action>
 		</Command>
 		<Command name="UseStandardTemplate" id="9">
@@ -573,17 +550,13 @@
 					<v8:content>Use the standard template</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>CommonPicture.UseStandardTemplate</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
-			</Picture>
 			<Action>UseStandardTemplate</Action>
 		</Command>
 		<Command name="SetActionOnPrintFormTemplateSelect" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Template Opening Mode</v8:content>
+					<v8:content>Template opening mode</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -593,6 +566,21 @@
 				</v8:item>
 			</ToolTip>
 			<Action>SetActionOnPrintFormTemplateSelect</Action>
+		</Command>
+		<Command name="PrintWorkingDirectorySetting" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set temporary file folder</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Specify the folder for storing temporary files, which is required for printing documents</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>WorkingDirectorySettingForPrinting</Action>
 		</Command>
 	</Commands>
 </Form>

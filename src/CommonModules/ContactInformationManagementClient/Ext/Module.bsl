@@ -1,136 +1,168 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Contact information subsystem.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS RELATED TO CONTACT INFORMATION TABLE ON FORMS
+// INTERFACE
 
-// Event OnChange in column Presentation of contact information table
+// The handler of the OnChange event of the contact information table Presentation column.
 Procedure PresentationOnChange(Form, Item) Export
 	
-	StrData = GetAdditionalValuesString(Form, Item);
-	If (StrData <> Undefined) And (StrData.TypeNumber = 2) Then
+	RowData = GetAdditionalValueString(Form, Item);
+	If (RowData <> Undefined) And (RowData.TypeNumber = 2) Then
 		Value = Item.EditText;
-		FillRecordFieldsByPhonePresentation(Value, StrData.FieldValues);
+		FillPhoneRecordFieldsByPresentation(Value, RowData.FieldValues);
 	EndIf;
+	If (RowData <> Undefined) And (RowData.TypeNumber = 1) And Item.EditText = "" Then
+		RowData.FieldValues.Clear()
+	EndIf;	
 	
 EndProcedure
 
-// Event StartChoice in column Presentation of contact information table
+// The handler of the StartChoice event of the contact information table Presentation column.
 Procedure PresentationStartChoice(Form, Item, Modified, StandardProcessing) Export
 	
 	StandardProcessing = False;
 	
-	StrData = GetAdditionalValuesString(Form, Item);
-	If (StrData = Undefined) And (StrData.TypeNumber = 0) Then
+	RowData = GetAdditionalValueString(Form, Item);
+	If (RowData = Undefined) And (RowData.TypeNumber = 0) Then
 		Return;
 	EndIf;
 	
-	If StrData.TypeNumber = 1 Then
-		EditFormName =  "CommonForm.InputAddress";
+	If RowData.TypeNumber = 1 Then
+		EditFormName = "CommonForm.AddressInput";
 	Else
-		EditFormName =  "CommonForm.InputPhone";
+		EditFormName = "CommonForm.PhoneInput";
 	EndIf;
 	
-	Parameters = New Structure;
-	Parameters.Insert("FieldValues",                StrData.FieldValues);
-	Parameters.Insert("Kind",                       StrData.Kind);
-	Parameters.Insert("Modified",        	 	    False);
-	Parameters.Insert("Presentation",               Item.EditText);
-	Parameters.Insert("EditInDialogOnly", 			Not Item.TextEdit);
-	Parameters.Insert("AlwaysUseAddressClassifier", StrData.HomeCountryOnly);
+	FormParameters = New Structure;
+	FormParameters.Insert("FieldValues", RowData.FieldValues);
+	FormParameters.Insert("Kind", RowData.Kind);
+	FormParameters.Insert("MadeChanges", False);
+	FormParameters.Insert("Presentation", Item.EditText);
+	FormParameters.Insert("EditInDialogOnly", Not Item.TextEdit);
+	FormParameters.Insert("HomeCountryAddressOnly", RowData.HomeCountryOnly);
 	
-	Result = OpenFormModal(EditFormName, Parameters);
+	Result = OpenFormModal(EditFormName, FormParameters);
 	
 	If TypeOf(Result) = Type("Structure") Then
-		Form[Item.Name]   	= Result.Presentation;
-		StrData.FieldValues = Result.FieldValues;
-		Modified      		= True;
+		Form[Item.Name] = Result.Presentation;
+		RowData.FieldValues = Result.FieldValues;
+		Modified = True;
 	EndIf;
 	
 EndProcedure
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// SERVICE
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-Function GetAdditionalValuesString(Form, Item)
+// Returns a string of additional values by attribute name.
+//
+// Parameters:
+// Form - Form - passed form;
+// Item - FormDataStructureAndCollection - form data.
+//
+// Returns:
+// Undefined or CollectionRow - collection row.
+//
+Function GetAdditionalValueString(Form, Item)
 	
 	Filter = New Structure("AttributeName", Item.Name);
-	Rows   = Form.__CI_AdditionalDataAndAttributesDescription.FindRows(Filter);
+	Rows = Form.ContactInformationAdditionalAttributeInfo.FindRows(Filter);
 	
 	Return ?(Rows.Count() = 0, Undefined, Rows[0]);
 	
 EndFunction
 
-// Fill other fields in phone record using Presentation field
-Procedure FillRecordFieldsByPhonePresentation(Presentation, FieldList)
+// Fills phone record fields by Presentation field.
+//
+// Parameters:
+// Presentation - String - phone presentation;
+// FieldList - FormDataCollection - list of fields to be filled.
+//
+Procedure FillPhoneRecordFieldsByPresentation(Presentation, FieldList)
 	
-	CurStr 		= TrimAll(Presentation);
+	PhoneString = TrimAll(Presentation);
 	FieldList.Clear();
 	CountryCode = "";
-	CityCode    = "";
+	CityCode = "";
 	PhoneNumber = "";
-	Extension   = "";
-	Comment   	= "";
+	Extension = "";
+	Comment = "";
 	
-	// cut extension number with comment
-	PosAdd = Find(Upper(CurStr), "EXT.");
-	If PosAdd <> 0 Then
-		ExtensionWithComment = TrimAll(Mid(CurStr, PosAdd+4));
+	// Filling an extension number and a comment
+	PositionExtension = Find(Upper(PhoneString), "EXT.");
+	If PositionExtension <> 0 Then
+		ExtensionWithComment = TrimAll(Mid(PhoneString, PositionExtension + 4));
 		
-		CurStr = TrimAll(Left(CurStr, PosAdd-1));
+		PhoneString = TrimAll(Left(PhoneString, PositionExtension - 1));
 		
-		If Right(CurStr, 1) = "," Then
-			CurStr = Left(CurStr, StrLen(CurStr)-1);
+		If Right(PhoneString, 1) = "," Then
+			PhoneString = Left(PhoneString, StrLen(PhoneString)-1);
 		EndIf;
 		
-		PosAdd = Find(Upper(ExtensionWithComment), ", ");
+		PositionExtension = Find(Upper(ExtensionWithComment), ", ");
 		
-		If PosAdd <> 0 Then
-			Extension = TrimAll(Left(ExtensionWithComment, PosAdd-1));
-			Comment = TrimAll(Mid(ExtensionWithComment, PosAdd+2));
+		If PositionExtension <> 0 Then
+			Extension = TrimAll(Left(ExtensionWithComment, PositionExtension - 1));
+			Comment = TrimAll(Mid(ExtensionWithComment, PositionExtension + 2));
 		Else
 			Extension = ExtensionWithComment;
 		EndIf;
 		
 	EndIf;
 	
-	// cut city code
-	Pos = Find(CurStr, "(");
-	If Pos <> 0 Then
-		CountryCode = TrimAll(Left(CurStr, Pos-1));
+	// Filling a city code
+	PositionOpeningBracket = Find(PhoneString, "(");
+	If PositionOpeningBracket <> 0 Then
+		CountryCode = TrimAll(Left(PhoneString, PositionOpeningBracket - 1));
 		
-		CurStr = TrimAll(Mid(CurStr, Pos+1));
-		Pos = Find(CurStr, ")");
+		PhoneString = TrimAll(Mid(PhoneString, PositionOpeningBracket + 1));
+		PositionClosingBracket = Find(PhoneString, ")");
 		
-		If Pos <> 0 Then
-			CityCode = TrimAll(Left(CurStr, Pos-1));
-			CurStr = TrimAll(Mid(CurStr, Pos+1));
+		If PositionClosingBracket <> 0 Then
+			CityCode = TrimAll(Left(PhoneString, PositionClosingBracket - 1));
+			PhoneString = TrimAll(Mid(PhoneString, PositionClosingBracket + 1));
 		EndIf;
 	EndIf;
 	
-	Pos = Find(CurStr, ", ");
-	// If there is no ext number - then use phone number and comments
-	If PosAdd = 0 And Pos <> 0 Then
-		// cut comment
-		PhoneNumber = TrimAll(Left(CurStr, Pos-1));
-		Comment = TrimAll(Mid(CurStr, Pos+2));
+	CommaPosition = Find(PhoneString, ", ");
+	// If there is no extension number, finding a phone number and a comment by comma position.
+	If PositionExtension = 0 And CommaPosition <> 0 Then
+		// Filling a comment
+		PhoneNumber = TrimAll(Left(PhoneString, CommaPosition - 1));
+		Comment = TrimAll(Mid(PhoneString, CommaPosition + 2));
 	Else
-		// the rest is number
-		PhoneNumber = CurStr;
+		// All remained characters are the phone number
+		PhoneNumber = PhoneString;
 	EndIf;
 	
-	// Adjust presentation
+	// Correcting the presentation
 	Presentation = GeneratePhonePresentation(CountryCode, CityCode, PhoneNumber, Extension, Comment);
 	FieldList.Add(CountryCode, "CountryCode");
-	FieldList.Add(CityCode,    "CityCode");
+	FieldList.Add(CityCode, "CityCode");
 	FieldList.Add(PhoneNumber, "PhoneNumber");
-	FieldList.Add(Extension,   "Extension");
-	FieldList.Add(Comment,     "Comment");
+	FieldList.Add(Extension, "Extension");
+	FieldList.Add(Comment, "Comment");
 	
 EndProcedure
 
-// Procedure generates phone string presentation
+// Generating phone string presentation.
+//
+// Parameters:
+// CountryCode - String - country code;
+// CityCode - String - city code;
+// PhoneNumber - String - phone number;
+// Extension - String - extension number;
+// Comment - String - comment.
+//
+// Returns:
+// String - phone presentation.
+//
 Function GeneratePhonePresentation(CountryCode, CityCode, PhoneNumber, Extension, Comment) Export
+
 	
 	Presentation = TrimAll(CountryCode);
 	
@@ -142,11 +174,11 @@ Function GeneratePhonePresentation(CountryCode, CityCode, PhoneNumber, Extension
 		Presentation = Presentation + ?(IsBlankString(Presentation), "", " ") + TrimAll(PhoneNumber);
 	EndIf;
 	
-	If NOT IsBlankString(Extension) Then
-		Presentation = Presentation + ?(IsBlankString(Presentation), "", ", ") + "ext. " + TrimAll(Extension);
+	If Not IsBlankString(Extension) Then
+		Presentation = Presentation + ?(IsBlankString(Presentation), "", ", ") + "EXT. " + TrimAll(Extension);
 	EndIf;
 	
-	If NOT IsBlankString(Comment) Then
+	If Not IsBlankString(Comment) Then
 		Presentation = Presentation + ?(IsBlankString(Presentation), "", ", ") + TrimAll(Comment);
 	EndIf;
 	

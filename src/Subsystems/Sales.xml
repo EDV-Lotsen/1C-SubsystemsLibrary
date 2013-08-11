@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="ce186b19-425f-4f46-acf4-8cbb746140ee">
+		<Properties>
+			<Name>Sales</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sales</v8:content>
+				</v8:item>
+				<v8:item>
+					<v8:lang>de</v8:lang>
+					<v8:content>Verkauf</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeInCommandInterface>true</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture>
+				<xr:Ref>CommonPicture.Sales</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.SalesInvoice</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.PriceList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.SalesTaxTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.SalesTaxCodes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.SalesOrder</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.CashSale</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.SalesReturn</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Report.ARAging</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.ReturnTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">AccumulationRegister.OrdersRegistered</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.OrderStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.OrdersStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.ARAging</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Report.SalesTransactionDetail</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.SalesTransactionDetail</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoDocumentPosting</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintTemplates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoGeneralFunctionsCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.CustomerName</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.StringFunctionsClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ItemLastCost</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Currencies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.DocumentsPrinting</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoDocumentFilling</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoGeneralFunctions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementMSWordClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementOOWriterClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementOverridable</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoUS_FL</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoVAT_FL</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Addresses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Countries</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Locations</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Items</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.States</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Units</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.USTaxCategories1099</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.VATCodes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.CashFlowSections</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.GeneralJournalEntryTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.InventoryCostingMethods</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.InventoryTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ChartOfCharacteristicTypes.Dimensions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ChartOfAccounts.ChartOfAccounts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.PrintedFormTemplates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">AccumulationRegister.Inventory</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">AccountingRegister.GeneralJournal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommandGroup.Reports</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommandGroup.Print</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.Sales</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.DocumentStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.CatalogHierarchy</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ControlBalancesDuringPosting</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DefaultCurrency</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DisplayCodes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.FunctionalOptionMultipleCompanies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.MultiCurrency</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.PriceIncludesVAT</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.USFiscalLocalization</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.VendorName</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUse</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.InventoryAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ExpenseAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUseClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUseClientCashed</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.TaxPayableAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DisableLIFO</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.PrintingFormsSettingsBeforeSending</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.COGSAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DefaultPurchaseVAT</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DefaultSalesVAT</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.Operator</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Counterparties</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

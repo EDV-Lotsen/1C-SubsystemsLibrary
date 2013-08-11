@@ -1,69 +1,79 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Get files from internet subsystem.
+// 
+////////////////////////////////////////////////////////////////////////////////
 
-// Common interface function for getting file from the Internet via http(s) protocol
-// or ftp protocol and saving it to a temporary storage.
+////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
+
+// Receives a file from the internet with HTTP(S) or FTP protocol and saves it to 
+// a temporary file.
 //
 // Parameters:
-// DownloadFolderPath 	 		- String 	 - path at server (including file name), for saving downloaded file
-// URL           		- String 	 - of url file in format:
-//                 [Protocol://]<Server>/<Path to the file at server>
-// User 		 		- String 	 - user, under whose name connection is established
-// Password       		- String 	 - user password under whose name connection is established
-// Port          		- Number  	 - connection is established on this server port
-// SecureConnection 	- Boolean 	 - for the case of http load flag indicates,
-//                 					that connection should be established via https
-// PassiveConnection 	- Boolean 	 - for the case of ftp load flag indicates,
-//                 						that connection should be passive (or active)
-//                 	
-// Value returned:
-// Structure
-// Status 			 - Boolean 		  - keyis alway present in the structure, values
-//                   True	 		  - function call has successfully been completed
-//                   False   		  - function call has failed
-// Path 			 - String 		  - path to the file at server, key is used only
-//                 if status is True
-// ErrorMessage - String 		  - error message, if status is False
+//  URL - String        - file URL in the following format:
+//                        [Protocol://]<Server>/<Path to the file on server>
+//  ReceivingParameters - structure with the following keys:
+//  PathForSaving       - String - path at the server (including the file name) where
+//                        the downloaded file will be saved.
+//  User                - String - user on behalf of which the connection is
+//                        established.
+//  Password            - String - password of the user on behalf of which the
+//                        connection is established.
+//  Port - Number       - port that is used for establishing the connection.
+//  SecureConnection    - Boolean - in case of HTTP this flag shows
+//                        whether a secure HTTPS connection is used.
+//  PassiveConnection   - Boolean - in case of FTP this flag shows 
+//                        whether the connection mode is passive or active;
 //
-Function DownloadFileAtServer(Val URL, Val DownloadParameters = Undefined) Export
+// Returns:
+//  Structure with the following keys:
+//   State        - Boolean - this key always exists in the structure. It can take 
+//                  on the following values:
+//                   True if function execution completed successfully, 
+//                   False if function execution failed.
+//   Path         - String - path to the file at the server. This key is used only if
+//                  State is True.
+//   ErrorMessage - String - error message if State is False.
+//
+Function DownloadFileAtServer(Val URL, ReceivingParameters = Undefined) Export
 	
-	// Declaration of variables before first use
-	// of method Property parameter, on analysis of file get parameters
-	// from DownloadParameters. Contain values of the passed file get parameters
-	Var DownloadFolderPath, User, Password, Port, SecureConnection, PassiveConnection;
+	// Declaring variables before their first use as the Property 
+	// method parameter.
+	Var PathForSaving, User, Password, Port,
+	 SecureConnection, PassiveConnection;
 	
-	// Get file get parameters
-	
-	If DownloadParameters = Undefined Then
-		DownloadParameters = New Structure;
+	// Retrieving parameters to receive the file 
+	If ReceivingParameters = Undefined Then
+		ReceivingParameters = New Structure;
 	EndIf;
 	
-	If Not DownloadParameters.Property("DownloadFolderPath", DownloadFolderPath) Then
-		DownloadFolderPath = Undefined;
+	If Not ReceivingParameters.Property("PathForSaving", PathForSaving) Then
+		PathForSaving = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("User", User) Then
+	If Not ReceivingParameters.Property("User", User) Then
 		User = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("Password", Password) Then
+	If Not ReceivingParameters.Property("Password", Password) Then
 		Password = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("Port", Port) Then
+	If Not ReceivingParameters.Property("Port", Port) Then
 		Port = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("SecureConnection", SecureConnection) Then
-		SecurePassiveConnection = Undefined;
+	If Not ReceivingParameters.Property("SecureConnection", SecureConnection) Then
+		SecureConnection = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("PassiveConnection", PassiveConnection) Then
-		SecurePassiveConnection = Undefined;
+	If Not ReceivingParameters.Property("PassiveConnection", PassiveConnection) Then
+		PassiveConnection = Undefined;
 	EndIf;
 	
-	SaveSetting = New Map;
-	SaveSetting.Insert("StoragePlace", "Server");
-	SaveSetting.Insert("Path", DownloadFolderPath);
+	SavingSettings = New Map;
+	SavingSettings.Insert("Storage", "Server");
+	SavingSettings.Insert("Path", PathForSaving);
 	
 	Result = GetFilesFromInternetClientServer.PrepareFileReceiving(
 		URL,
@@ -72,73 +82,78 @@ Function DownloadFileAtServer(Val URL, Val DownloadParameters = Undefined) Expor
 		Port,
 		SecureConnection,
 		PassiveConnection,
-		SaveSetting);
+		SavingSettings);
 	
 	Return Result;
 	
 EndFunction
 
-// Common interface function for getting file from the Internet via http(s) protocol
-// or ftp protocol and saving it to a temporary storage.
+// Receives a file from the internet with HTTP(S) or FTP protocol and saves it to 
+// a temporary storage.
 //
 // Parameters:
-// URL           	 - String - of url file in format:
-//                 		[Protocol://]<Server>/<Path to the file at server>
-// User  - string 	 - User, under whose name connection is established
-// Password       	 - String  - user password under whose name connection is established
-// Port          	 - Number  - connection is established on this server port
-// SecureConnection  - Boolean - for the case of http load flag indicates,
-//                          	 that connection should be established via https
-// PassiveConnection - Boolean - for the case of ftp load flag indicates,
-//                          that connection should be passive (or active)
+//  URL                 - String - file URL in the following format:
+//                        [Protocol://]<Server>/<Path to the file on server>
+//  ReceivingParameters - structure with the following keys:
+//  User                - String - user on behalf of which the connection is
+//                        established.
+//  Password            - String - password of the user on behalf of which the
+//                        connection is established.
+//  Port                - Number - port that is used for establishing the connection.
+//  SecureConnection    - Boolean - in case of HTTP this flag shows
+//                        whether a secure HTTPS connection is used.
+//  PassiveConnection   - Boolean - in case of FTP this flag shows 
+//                        whether the connection mode is passive or active;
 //
-// Value returned:
-// Structure
-// Status 			 - Boolean 	 - keyis alway present in the structure, values
-//                   	 True 	 - function call has successfully been completed
-//                  	 False   - function call has failed
-// Path 			 - String  	 - path to the file in temporary storage,
-//                				 key in used only if status is True
-// ErrorMessage - String    - error message, if status is False
+// Returns:
+//  Structure with the following keys:
+//   State        - Boolean - this key always exists in the structure. It can take 
+//                  on the following values:
+//                   True if function execution completed successfully,
+//                   False if function execution failed.
+//   Path         - String - path to the temporary storage with binary data of the
+//                  downloaded file.
+//                  This key is used only if State is True.
+//   ErrorMessage - String - error message if State is False.
 //
-Function DownloadFileToTemporaryStorage(Val URL, Val DownloadParameters = Undefined) Export
+Function DownloadFileToTempStorage(Val URL, ReceivingParameters = Undefined) Export
 	
-	// Declaration of variables before first use
-	// of method Property parameter, on analysis of file get parameters
-	// from DownloadParameters. Contain values of the passed file get parameters
-	Var DownloadFolderPath, User, Password, Port, SecureConnection, PassiveConnection;
-	// Get file get parameters
-	
-	If DownloadParameters = Undefined Then
-		DownloadParameters = New Structure;
+	// Declaring variables before their first use as the Property 
+	// method parameter.
+	Var PathForSaving, User, Password, Port,
+	 SecureConnection, PassiveConnection;
+		 
+	// Retrieving parameters to receive the file 
+	If ReceivingParameters = Undefined Then
+		ReceivingParameters = New Structure;
 	EndIf;
 	
-	If Not DownloadParameters.Property("DownloadFolderPath", DownloadFolderPath) Then
-		DownloadFolderPath = Undefined;
+	If Not ReceivingParameters.Property("PathForSaving", PathForSaving) Then
+		PathForSaving = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("User", User) Then
+	If Not ReceivingParameters.Property("User", User) Then
 		User = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("Password", Password) Then
+	If Not ReceivingParameters.Property("Password", Password) Then
 		Password = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("Port", Port) Then
+	If Not ReceivingParameters.Property("Port", Port) Then
 		Port = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("SecureConnection", SecureConnection) Then
-		SecurePassiveConnection = Undefined;
+	If Not ReceivingParameters.Property("SecureConnection", SecureConnection) Then
+		SecureConnection = Undefined;
 	EndIf;
 	
-	If Not DownloadParameters.Property("PassiveConnection", PassiveConnection) Then
-		SecurePassiveConnection = Undefined;
+	If Not ReceivingParameters.Property("PassiveConnection", PassiveConnection) Then
+		PassiveConnection = Undefined;
 	EndIf;
 	
-	SaveSetting = New Map;
-	SaveSetting.Insert("StoragePlace", "TemporaryStorage");
+	SavingSettings = New Map;
+	SavingSettings.Insert("Storage", "TempStorage");
 	
 	Result = GetFilesFromInternetClientServer.PrepareFileReceiving(
 		URL,
@@ -147,28 +162,29 @@ Function DownloadFileToTemporaryStorage(Val URL, Val DownloadParameters = Undefi
 		Port,
 		SecureConnection,
 		PassiveConnection,
-		SaveSetting);
+		SavingSettings);
 	
 	Return Result;
 	
 EndFunction
 
-// Writes binary data to file, stored in temporary storage
+// Writes binary data that is stored in the temporary storage to the file.
 //
 // Parameters:
-// AddressInTemporaryStorage - String - file binary data address in temporary storage
-// FileName      			 - String - path at server where file should be saved
+//  AddressInTempStorage - String - address of binary file data in the temporary
+//                        storage. 
+//  FileName             - String - path to the file that will be saved at the server.
 //
-Function SaveFileFromTemporaryStorageAtServer(AddressInTemporaryStorage, FileName) Export
+Function SaveFileFromTempStorageAtServer(AddressInTempStorage, FileName) Export
 	
-	FileData = GetFromTempStorage(AddressInTemporaryStorage);
+	FileData = GetFromTempStorage(AddressInTempStorage);
 	FileData.Write(FileName);
 	
 	Return True;
 	
 EndFunction
 
-// Gets temporary file name by calling system function with the same name at server
+// Retrieves a temporary file name by calling the same name internal function at the server.
 //
 Function GetTempFileNameAtServer() Export
 
@@ -176,67 +192,117 @@ Function GetTempFileNameAtServer() Export
 
 EndFunction
 
-// Returns proxy server setup parameters at 1C:Enterprise server side
+// Returns proxy server parameter settings at the application server side.
 //
-Function GetProxySettingsAt1CEnterpriseServer() Export
+Function GetServerProxySettings() Export
 	
 	SetPrivilegedMode(True);
 	
-	Return Constants.ProxyServerConfiguration.Get().Get();
+	Return Constants.ProxyServerSettings.Get().Get();
 	
 EndFunction
 
-// Returns proxy server setup parameters at 1C:Enterprise server side
+// Saves proxy server parameter settings at the application server side.
 //
-Procedure SaveProxySettingsAt1CEnterpriseServer(Val Settings) Export
+Procedure SaveServerProxySettings(Val Settings) Export
 	
 	SetPrivilegedMode(True);
 	
-	Constants.ProxyServerConfiguration.Set(New ValueStorage(Settings));
+	Constants.ProxyServerSettings.Set(New ValueStorage(Settings));
 	
 EndProcedure
 
-// Returns proxy server setup for access to the internet from client
-// side by specific user
+// Returns proxy server parameter settings at the client side for the current user.
+//
 Function GetProxyServerSetting() Export
 	
-	Return CommonSettingsStorage.Load("ProxyServerConfiguration");
+	Return CommonUse.CommonSettingsStorageLoad("ProxyServerSettings");
 	
 EndFunction
 
-Procedure WriteErrorInEventLog(Val ErrorMessage) Export
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+// Writes the error event to the event log. Event name is "Get files from internet".
+//
+// Parameters:
+//  ErrorMessage - error message string.
+// 
+Procedure WriteErrorToEventLog(Val ErrorMessage) Export
 	
-	WriteLogEvent(NStr("en = 'Get files from Internet'"), 
-		EventLogLevel.Error, , , ErrorMessage);
+	WriteLogEvent(
+		NStr("en = 'Get files from internet'"),
+		EventLogLevel.Error, , ,
+		ErrorMessage
+	);
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// INFOBASE UPDATE
+// Procedures and functions for updating the infobase.
 
-// Update proxy settings - new property "UseProxy" has been added to the settings
+// Adds update handlers required by this subsystem to the Handlers list. 
+// 
+// Parameters:
+//  Handlers - ValueTable - see the InfoBaseUpdate.NewUpdateHandlerTable function for details. 
+// 
+Procedure RegisterUpdateHandlers(Handlers) Export
+	
+	Handler = Handlers.Add();
+	Handler.Version = "1.2.1.4";
+	Handler.Procedure = "GetFilesFromInternet.RefreshStoredProxySettings";
+	
+EndProcedure	
+
+// Initializes new values of UseProxy and UseSystemSettings proxy settings.
 //
-Procedure StoredProxySettingsUpdate() Export
+Procedure RefreshStoredProxySettings() Export
 	
-	IBUsersArray = InfobaseUsers.GetUsers();
+	InfoBaseUserArray = InfoBaseUsers.GetUsers();
 	
-	For Each IBUser In IBUsersArray Do
-		ProxyServerConfiguration = CommonSettingsStorage.Load("ProxyServerConfiguration",,, IBUser.Name);
-		If TypeOf(ProxyServerConfiguration) = Type("Map") Then
-			If ProxyServerConfiguration.Get("UseProxy") = Undefined Then
-				ProxyServerConfiguration.Insert("UseProxy", True);
-				CommonSettingsStorage.Save("ProxyServerConfiguration", , ProxyServerConfiguration, , IBUser.Name);
+	For Each InfoBaseUser In InfoBaseUserArray Do
+		
+		ProxyServerSettings = CommonUse.CommonSettingsStorageLoad(
+			"ProxyServerSettings", ,	, ,	InfoBaseUser.Name);
+		
+		If TypeOf(ProxyServerSettings) = Type("Map") Then
+			
+			SaveUserSettings = False;
+			If ProxyServerSettings.Get("UseProxy") = Undefined Then
+				ProxyServerSettings.Insert("UseProxy", False);
+				SaveUserSettings = True;
 			EndIf;
+			If ProxyServerSettings.Get("UseSystemSettings") = Undefined Then
+				ProxyServerSettings.Insert("UseSystemSettings", False);
+				SaveUserSettings = True;
+			EndIf;
+			If SaveUserSettings Then
+				CommonUse.CommonSettingsStorageSave(
+					"ProxyServerSettings", , ProxyServerSettings, , InfoBaseUser.Name);
+			EndIf;
+			
 		EndIf;
+		
 	EndDo;
 	
-	ProxyServerConfiguration = GetFilesFromInternet.GetProxySettingsAt1CEnterpriseServer();
+	ProxyServerSettings = GetServerProxySettings();
 	
-	If TypeOf(ProxyServerConfiguration) = Type("Map") Then
-		If ProxyServerConfiguration.Get("UseProxy") = Undefined Then
-			ProxyServerConfiguration.Insert("UseProxy", True);
-			GetFilesFromInternet.SaveProxySettingsAt1CEnterpriseServer(ProxyServerConfiguration);
+	If TypeOf(ProxyServerSettings) = Type("Map") Then
+		
+		SaveServerSettings = False;
+		If ProxyServerSettings.Get("UseProxy") = Undefined Then
+			ProxyServerSettings.Insert("UseProxy", False);
+			SaveServerSettings = True;
 		EndIf;
+		If ProxyServerSettings.Get("UseSystemSettings") = Undefined Then
+			ProxyServerSettings.Insert("UseSystemSettings", False);
+			SaveServerSettings = True;
+		EndIf;
+		If SaveServerSettings Then
+			SaveServerProxySettings(ProxyServerSettings);
+		EndIf;
+		
 	EndIf;
 	
 EndProcedure
+

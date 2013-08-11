@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Code" id="93">
+			<DataPath>Object.Code</DataPath>
+			<ContextMenu name="CodeContextMenu" id="94"/>
+			<ExtendedTooltip name="CodeExtendedTooltip" id="132"/>
+		</InputField>
+		<InputField name="Description" id="3">
+			<DataPath>Object.Description</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<Width>20</Width>
+			<HorizontalStretch>false</HorizontalStretch>
+			<ContextMenu name="DescriptionContextMenu" id="4"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="133"/>
+		</InputField>
+		<UsualGroup name="Group2" id="42">
+			<Group>Horizontal</Group>
+			<Representation>StrongSeparation</Representation>
+			<ExtendedTooltip name="Group2ExtendedTooltip" id="134"/>
+			<ChildItems>
+				<CheckBoxField name="Customer" id="43">
+					<DataPath>Object.Customer</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="CustomerContextMenu" id="44"/>
+					<ExtendedTooltip name="CustomerExtendedTooltip" id="135"/>
+					<Events>
+						<Event name="OnChange">CustomerOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<CheckBoxField name="Vendor" id="45">
+					<DataPath>Object.Vendor</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="VendorContextMenu" id="46"/>
+					<ExtendedTooltip name="VendorExtendedTooltip" id="136"/>
+					<Events>
+						<Event name="OnChange">VendorOnChange</Event>
+					</Events>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+		<Pages name="Group1" id="15">
+			<Width>50</Width>
+			<ExtendedTooltip name="Group1ExtendedTooltip" id="137"/>
+			<ChildItems>
+				<Page name="Financial" id="16">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Financial</v8:content>
+						</v8:item>
+						<v8:item>
+							<v8:lang>de</v8:lang>
+							<v8:content>Finanziell</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Financial</v8:content>
+						</v8:item>
+						<v8:item>
+							<v8:lang>de</v8:lang>
+							<v8:content>Finanziell</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="FinancialExtendedTooltip" id="138"/>
+					<ChildItems>
+						<CheckBoxField name="Vendor1099" id="17">
+							<DataPath>Object.Vendor1099</DataPath>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="Vendor1099ContextMenu" id="18"/>
+							<ExtendedTooltip name="Vendor1099ExtendedTooltip" id="139"/>
+						</CheckBoxField>
+						<InputField name="USTaxID" id="25">
+							<DataPath>Object.USTaxID</DataPath>
+							<ContextMenu name="USTaxIDContextMenu" id="26"/>
+							<ExtendedTooltip name="USTaxIDExtendedTooltip" id="140"/>
+						</InputField>
+						<InputField name="DefaultCurrency" id="19">
+							<DataPath>Object.DefaultCurrency</DataPath>
+							<ContextMenu name="DefaultCurrencyContextMenu" id="20"/>
+							<ExtendedTooltip name="DefaultCurrencyExtendedTooltip" id="141"/>
+						</InputField>
+						<InputField name="SalesTaxCode" id="21">
+							<DataPath>Object.SalesTaxCode</DataPath>
+							<ContextMenu name="SalesTaxCodeContextMenu" id="22"/>
+							<ExtendedTooltip name="SalesTaxCodeExtendedTooltip" id="142"/>
+						</InputField>
+						<InputField name="VATNumber" id="81">
+							<DataPath>Object.VATNumber</DataPath>
+							<ContextMenu name="VATNumberContextMenu" id="82"/>
+							<ExtendedTooltip name="VATNumberExtendedTooltip" id="143"/>
+						</InputField>
+						<InputField name="Terms" id="130">
+							<DataPath>Object.Terms</DataPath>
+							<ContextMenu name="TermsContextMenu" id="131"/>
+							<ExtendedTooltip name="TermsExtendedTooltip" id="144"/>
+						</InputField>
+						<UsualGroup name="Group3" id="75">
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group3ExtendedTooltip" id="145"/>
+							<ChildItems>
+								<InputField name="ExpenseAccount" id="73">
+									<DataPath>Object.ExpenseAccount</DataPath>
+									<HorizontalStretch>false</HorizontalStretch>
+									<ContextMenu name="ExpenseAccountContextMenu" id="74"/>
+									<ExtendedTooltip name="ExpenseAccountExtendedTooltip" id="146"/>
+									<Events>
+										<Event name="OnChange">ExpenseAccountOnChange</Event>
+									</Events>
+								</InputField>
+								<LabelDecoration name="ExpenseAcctLabel" id="77">
+									<ContextMenu name="ExpenseAcctLabelContextMenu" id="78"/>
+									<ExtendedTooltip name="ExpenseAcctLabelExtendedTooltip" id="147"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="Group4" id="76">
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group4ExtendedTooltip" id="148"/>
+							<ChildItems>
+								<InputField name="IncomeAccount" id="71">
+									<DataPath>Object.IncomeAccount</DataPath>
+									<HorizontalStretch>false</HorizontalStretch>
+									<ContextMenu name="IncomeAccountContextMenu" id="72"/>
+									<ExtendedTooltip name="IncomeAccountExtendedTooltip" id="149"/>
+									<Events>
+										<Event name="OnChange">IncomeAccountOnChange</Event>
+									</Events>
+								</InputField>
+								<LabelDecoration name="IncomeAcctLabel" id="89">
+									<ContextMenu name="IncomeAcctLabelContextMenu" id="90"/>
+									<ExtendedTooltip name="IncomeAcctLabelExtendedTooltip" id="150"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<InputField name="Website" id="126">
+			<DataPath>Object.Website</DataPath>
+			<ContextMenu name="WebsiteContextMenu" id="127"/>
+			<ExtendedTooltip name="WebsiteExtendedTooltip" id="151"/>
+		</InputField>
+		<InputField name="Notes" id="128">
+			<DataPath>Object.Notes</DataPath>
+			<MultiLine>true</MultiLine>
+			<ContextMenu name="NotesContextMenu" id="129"/>
+			<ExtendedTooltip name="NotesExtendedTooltip" id="152"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.Counterparties</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>0:506d8c22-a600-4b9e-86c0-ccc86d222df2</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
+</Form>

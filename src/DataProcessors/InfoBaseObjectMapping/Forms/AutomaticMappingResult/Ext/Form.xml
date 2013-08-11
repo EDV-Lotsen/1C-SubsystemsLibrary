@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<CommandBar name="TableCommandBar" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Table command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Table command bar.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="TableCommandBarExtendedTooltip" id="3"/>
+			<ChildItems>
+				<Button name="SetAllMarks" id="4">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.SetAllMarks</CommandName>
+					<ExtendedTooltip name="SetAllMarksExtendedTooltip" id="5"/>
+				</Button>
+				<Button name="ClearAllMarks" id="6">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.ClearAllMarks</CommandName>
+					<ExtendedTooltip name="ClearAllMarksExtendedTooltip" id="7"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="AutomaticallyMappedObjectTable" id="8">
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<ChangeRowSet>false</ChangeRowSet>
+			<ChangeRowOrder>false</ChangeRowOrder>
+			<RowSelectionMode>Row</RowSelectionMode>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>Object.AutomaticallyMappedObjectTable</DataPath>
+			<CommandSet>
+				<ExcludedCommand>Add</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="AutomaticallyMappedObjectTableContextMenu" id="9"/>
+			<AutoCommandBar name="AutomaticallyMappedObjectTableCommandBar" id="10">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="AutomaticallyMappedObjectTableExtendedTooltip" id="11"/>
+			<SearchStringAddition name="AutomaticallyMappedObjectTableSearchString" id="60">
+				<AdditionSource>
+					<Item>AutomaticallyMappedObjectTable</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="AutomaticallyMappedObjectTableSearchStringContextMenu" id="61"/>
+				<ExtendedTooltip name="AutomaticallyMappedObjectTableSearchStringExtendedTooltip" id="62"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="AutomaticallyMappedObjectTableViewStatus" id="63">
+				<AdditionSource>
+					<Item>AutomaticallyMappedObjectTable</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="AutomaticallyMappedObjectTableViewStatusContextMenu" id="64"/>
+				<ExtendedTooltip name="AutomaticallyMappedObjectTableViewStatusExtendedTooltip" id="65"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="AutomaticallyMappedObjectTableSearchControl" id="66">
+				<AdditionSource>
+					<Item>AutomaticallyMappedObjectTable</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="AutomaticallyMappedObjectTableSearchControlContextMenu" id="67"/>
+				<ExtendedTooltip name="AutomaticallyMappedObjectTableSearchControlExtendedTooltip" id="68"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<CheckBoxField name="AutomaticallyMappedObjectTableCheck" id="12">
+					<DataPath>Object.AutomaticallyMappedObjectTable.Check</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="AutomaticallyMappedObjectTableCheckContextMenu" id="13"/>
+					<ExtendedTooltip name="AutomaticallyMappedObjectTableCheckExtendedTooltip" id="14"/>
+				</CheckBoxField>
+				<ColumnGroup name="TargetFields" id="15">
+					<ReadOnly>true</ReadOnly>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Target fields</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Target fields.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="TargetFieldsExtendedTooltip" id="16"/>
+					<ChildItems>
+						<PictureField name="AutomaticallyMappedObjectTableTargetPictureIndex" id="17">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetPictureIndex</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<SkipOnInput>true</SkipOnInput>
+							<EditMode>EnterOnInput</EditMode>
+							<ShowInHeader>false</ShowInHeader>
+							<ShowInFooter>false</ShowInFooter>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.ObjectMappingClipArt</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetPictureIndexContextMenu" id="18"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetPictureIndexExtendedTooltip" id="19"/>
+						</PictureField>
+						<InputField name="AutomaticallyMappedObjectTableTargetField1" id="20">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetField1</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetField1ContextMenu" id="21"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetField1ExtendedTooltip" id="22"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableTargetField2" id="23">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetField2</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetField2ContextMenu" id="24"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetField2ExtendedTooltip" id="25"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableTargetField3" id="26">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetField3</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetField3ContextMenu" id="27"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetField3ExtendedTooltip" id="28"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableTargetField4" id="29">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetField4</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetField4ContextMenu" id="30"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetField4ExtendedTooltip" id="31"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableTargetField5" id="32">
+							<DataPath>Object.AutomaticallyMappedObjectTable.TargetField5</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableTargetField5ContextMenu" id="33"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableTargetField5ExtendedTooltip" id="34"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<ColumnGroup name="SourceFields" id="35">
+					<ReadOnly>true</ReadOnly>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Source fields</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Source fields.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="SourceFieldsExtendedTooltip" id="36"/>
+					<ChildItems>
+						<PictureField name="AutomaticallyMappedObjectTableSourcePictureIndex" id="37">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourcePictureIndex</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<TitleLocation>None</TitleLocation>
+							<EditMode>EnterOnInput</EditMode>
+							<ShowInHeader>false</ShowInHeader>
+							<ShowInFooter>false</ShowInFooter>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.ObjectMappingClipArt</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourcePictureIndexContextMenu" id="38"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourcePictureIndexExtendedTooltip" id="39"/>
+						</PictureField>
+						<InputField name="AutomaticallyMappedObjectTableSourceField1" id="40">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourceField1</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourceField1ContextMenu" id="41"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourceField1ExtendedTooltip" id="42"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableSourceField2" id="43">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourceField2</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourceField2ContextMenu" id="44"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourceField2ExtendedTooltip" id="45"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableSourceField3" id="46">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourceField3</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourceField3ContextMenu" id="47"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourceField3ExtendedTooltip" id="48"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableSourceField4" id="49">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourceField4</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourceField4ContextMenu" id="50"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourceField4ExtendedTooltip" id="51"/>
+						</InputField>
+						<InputField name="AutomaticallyMappedObjectTableSourceField5" id="52">
+							<DataPath>Object.AutomaticallyMappedObjectTable.SourceField5</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AutomaticallyMappedObjectTableSourceField5ContextMenu" id="53"/>
+							<ExtendedTooltip name="AutomaticallyMappedObjectTableSourceField5ExtendedTooltip" id="54"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+			</ChildItems>
+		</Table>
+		<CommandBar name="FormCommandBar" id="1">
+			<EnableContentChange>true</EnableContentChange>
+			<HorizontalLocation>Right</HorizontalLocation>
+			<ExtendedTooltip name="FormCommandBarExtendedTooltip" id="55"/>
+			<ChildItems>
+				<Button name="Apply" id="56">
+					<Type>CommandBarButton</Type>
+					<DefaultButton>true</DefaultButton>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.Apply</CommandName>
+					<ExtendedTooltip name="ApplyExtendedTooltip" id="57"/>
+				</Button>
+				<Button name="Cancel" id="58">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.Cancel</CommandName>
+					<ExtendedTooltip name="CancelExtendedTooltip" id="59"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.InfoBaseObjectMapping</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Apply" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Apply</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Apply</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Apply</Action>
+		</Command>
+		<Command name="Cancel" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Cancel</Action>
+		</Command>
+		<Command name="SetAllMarks" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set all check boxes</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set all check boxes.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetAllMarks</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="ClearAllMarks" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear all check boxes</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear all check boxes.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ClearAllMarks</Action>
+			<Representation>Picture</Representation>
+		</Command>
+	</Commands>
+</Form>

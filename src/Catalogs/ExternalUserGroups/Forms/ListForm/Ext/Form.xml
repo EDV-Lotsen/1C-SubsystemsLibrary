@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<AutoCommandBar name="FormCommandBar" id="1"/>
 	<Events>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<Table name="List" id="1">
+		<Table name="List" id="2">
 			<Representation>Tree</Representation>
 			<CommandBarLocation>None</CommandBarLocation>
 			<SkipOnInput>false</SkipOnInput>
@@ -14,10 +14,10 @@
 			<UseAlternationRowColor>true</UseAlternationRowColor>
 			<InitialTreeView>ExpandTopLevel</InitialTreeView>
 			<DataPath>List</DataPath>
-			<RowPictureDataPath>1/9</RowPictureDataPath>
+			<RowPictureDataPath>List.PictureNumber</RowPictureDataPath>
 			<RowsPicture>
-				<xr:Ref>CommonPicture.UserIcons</xr:Ref>
-				<xr:LoadTransparent>false</xr:LoadTransparent>
+				<xr:Ref>CommonPicture.UserStates</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
 			</RowsPicture>
 			<SearchStringLocation>None</SearchStringLocation>
 			<ViewStatusLocation>None</ViewStatusLocation>
@@ -35,35 +35,35 @@
 			<ShowRoot>false</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="2"/>
-			<AutoCommandBar name="ListCommandBar" id="3"/>
-			<ExtendedTooltip name="ListExtendedTooltip" id="8"/>
-			<SearchStringAddition name="ListSearchString" id="9">
+			<ContextMenu name="ListContextMenu" id="3"/>
+			<AutoCommandBar name="ListCommandBar" id="4"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="5"/>
+			<SearchStringAddition name="ListSearchString" id="12">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="10"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="11"/>
+				<ContextMenu name="ListSearchStringContextMenu" id="13"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="14"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="12">
+			<ViewStatusAddition name="ListViewStatus" id="15">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="13"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="14"/>
+				<ContextMenu name="ListViewStatusContextMenu" id="16"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="17"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="15">
+			<SearchControlAddition name="ListSearchControl" id="18">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="16"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="17"/>
+				<ContextMenu name="ListSearchControlContextMenu" id="19"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="20"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<InputField name="Description" id="4">
+				<InputField name="Description" id="6">
 					<DataPath>List.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<Title>
@@ -73,16 +73,16 @@
 						</v8:item>
 					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="DescriptionContextMenu" id="5"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="18"/>
+					<ContextMenu name="DescriptionContextMenu" id="7"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="8"/>
 				</InputField>
-				<InputField name="Comment" id="6">
+				<InputField name="Comment" id="9">
 					<DataPath>List.Comment</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
-					<ContextMenu name="CommentContextMenu" id="7"/>
-					<ExtendedTooltip name="CommentExtendedTooltip" id="19"/>
+					<ContextMenu name="CommentContextMenu" id="10"/>
+					<ExtendedTooltip name="CommentExtendedTooltip" id="11"/>
 				</InputField>
 			</ChildItems>
 		</Table>
@@ -107,9 +107,9 @@
 		WHEN ExternalUserGroups.DeletionMark
 			THEN 8
 		ELSE 9
-	END AS PictureNo
+	END AS PictureNumber
 FROM
-	Catalog.ExternalUserGroups AS ExternalUserGroups</QueryText>
+		Catalog.ExternalUserGroups AS ExternalUserGroups</QueryText>
 				<MainTable>Catalog.ExternalUserGroups</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -120,6 +120,7 @@ FROM
 							<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
 						</dcsset:item>
 						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:use>false</dcsset:use>
 							<dcsset:left xsi:type="dcscor:Field">Ref</dcsset:left>
 							<dcsset:comparisonType>NotInList</dcsset:comparisonType>
 							<dcsset:right xsi:type="dcscor:DesignTimeValue">Catalog.ExternalUserGroups.AllExternalUsers</dcsset:right>
@@ -143,6 +144,8 @@ FROM
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
 				</ListSettings>
 			</Settings>
 		</Attribute>

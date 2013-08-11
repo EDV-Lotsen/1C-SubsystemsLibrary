@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="4fbcacd4-6953-4d8a-92d9-fcce026cbd71">
+		<Properties>
+			<Name>Banking</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Bank</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeInCommandInterface>true</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture>
+				<xr:Ref>CommonPicture.Banking</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.Deposit</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.BankReconciliation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.CashReceipt</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.InvoicePayment</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.Check</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Report.BankBalances</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.BankBalances</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Document.BankTransfer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.TransactionReconciliation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ExchangeLoss</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ExchangeGain</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.UndepositedFundsAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoDocumentFilling</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoDocumentPosting</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoGeneralFunctions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoGeneralFunctionsCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementMSWordClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoPrintManagementOOWriterClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Addresses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.AccountTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.CashFlowSections</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.GeneralJournalEntryTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.InventoryCostingMethods</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.InventoryTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ChartOfCharacteristicTypes.Dimensions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ChartOfAccounts.ChartOfAccounts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.CurrencyRates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ExchangeRates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.PrintedFormTemplates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">AccountingRegister.GeneralJournal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommandGroup.Reports</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommandGroup.Print</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.Banking</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.CatalogHierarchy</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.DocumentStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.BankAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.BankInterestEarnedAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.BankServiceChargeAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUse</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.InventoryAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ExpenseAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUseClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule._DemoCommonUseClientCashed</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.TaxPayableAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.IncomeAccount</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.Operator</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Counterparties</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

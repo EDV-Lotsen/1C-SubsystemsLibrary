@@ -28,7 +28,7 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Contact Information Kinds</v8:content>
+					<v8:content>Contact information kinds</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
@@ -206,7 +206,12 @@
 					<xr:FillFromFillingValue>true</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
 					<xr:MaxValue xsi:nil="true"/>
-					<xr:ToolTip/>
+					<xr:ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Contact information kind group.</v8:content>
+						</v8:item>
+					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
 					<xr:Format/>
 					<xr:ChoiceForm/>
@@ -219,7 +224,7 @@
 					<xr:Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Form</v8:content>
+							<v8:content>Group</v8:content>
 						</v8:item>
 					</xr:Synonym>
 					<xr:Comment/>
@@ -236,7 +241,12 @@
 					<xr:FillFromFillingValue>false</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
 					<xr:MaxValue xsi:nil="true"/>
-					<xr:ToolTip/>
+					<xr:ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Contact information kind description.</v8:content>
+						</v8:item>
+					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
 					<xr:Format/>
 					<xr:ChoiceForm/>
@@ -246,12 +256,7 @@
 					<xr:PasswordMode>false</xr:PasswordMode>
 					<xr:MarkNegatives>false</xr:MarkNegatives>
 					<xr:MinValue xsi:nil="true"/>
-					<xr:Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Description</v8:content>
-						</v8:item>
-					</xr:Synonym>
+					<xr:Synonym/>
 					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
@@ -297,10 +302,10 @@
 			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
 			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
 			<DefaultObjectForm>Catalog.ContactInformationKinds.Form.ItemForm</DefaultObjectForm>
-			<DefaultFolderForm>Catalog.ContactInformationKinds.Form.GroupForm</DefaultFolderForm>
+			<DefaultFolderForm>Catalog.ContactInformationKinds.Form.FolderForm</DefaultFolderForm>
 			<DefaultListForm>Catalog.ContactInformationKinds.Form.ListForm</DefaultListForm>
 			<DefaultChoiceForm/>
-			<DefaultFolderChoiceForm>Catalog.ContactInformationKinds.Form.GroupChoiceForm</DefaultFolderChoiceForm>
+			<DefaultFolderChoiceForm>Catalog.ContactInformationKinds.Form.FolderChoiceForm</DefaultFolderChoiceForm>
 			<AuxiliaryObjectForm/>
 			<AuxiliaryFolderForm/>
 			<AuxiliaryListForm/>
@@ -314,7 +319,7 @@
 			<ObjectPresentation>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Contact Information Kind</v8:content>
+					<v8:content>Contact information kind</v8:content>
 				</v8:item>
 			</ObjectPresentation>
 			<ExtendedObjectPresentation/>
@@ -341,7 +346,12 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Contact information type (address, phone, etc.)</v8:content>
+						</v8:item>
+					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -370,7 +380,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Order</v8:content>
+							<v8:content>order</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -385,7 +395,12 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Used for ordering (system)</v8:content>
+						</v8:item>
+					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -414,7 +429,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Always edit in dialog box</v8:content>
+							<v8:content>Edit in dialog only</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -424,7 +439,12 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Edit contact information in dialog only (manual data entry is impossible).</v8:content>
+						</v8:item>
+					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -449,11 +469,11 @@
 			</Attribute>
 			<Attribute uuid="ced01234-9417-49ce-adf0-8cdd15e6dd7d">
 				<Properties>
-					<Name>EditMethodEditable</Name>
+					<Name>CanChangeEditMode</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Edit method editable</v8:content>
+							<v8:content>Can change edit mode</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -463,7 +483,12 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Edit mode change is allowed.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -488,11 +513,11 @@
 			</Attribute>
 			<Attribute uuid="0eea37cc-47f8-4819-85da-d4991f4e58ed">
 				<Properties>
-					<Name>AlwaysUseAddressClassifier</Name>
+					<Name>HomeCountryAddressOnly</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Always use address classifier</v8:content>
+							<v8:content>Home country address only</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -502,7 +527,12 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Only home country addresses are allowed.</v8:content>
+						</v8:item>
+					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -527,8 +557,8 @@
 			</Attribute>
 			<Form>ListForm</Form>
 			<Form>ItemForm</Form>
-			<Form>GroupForm</Form>
-			<Form>GroupChoiceForm</Form>
+			<Form>FolderForm</Form>
+			<Form>FolderChoiceForm</Form>
 		</ChildObjects>
 	</Catalog>
 </MetaDataObject>

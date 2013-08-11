@@ -2,31 +2,28 @@
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<CommandBarLocation>Top</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<CommandSet>
-		<ExcludedCommand>CreateFolder</ExcludedCommand>
-	</CommandSet>
-	<AutoCommandBar name="FormCommandBar" id="-1">
+	<AutoCommandBar name="FormCommandBar" id="1">
 		<ChildItems>
-			<Button name="MoveUp" id="17">
+			<Button name="MoveUp" id="2">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.MoveItemUp</CommandName>
 				<TextColor>style:ButtonTextColor</TextColor>
 				<BackColor>style:ButtonBackColor</BackColor>
-				<ExtendedTooltip name="MoveUpExtendedTooltip" id="32"/>
+				<ExtendedTooltip name="MoveUpExtendedTooltip" id="3"/>
 			</Button>
-			<Button name="MoveDown" id="18">
+			<Button name="MoveDown" id="4">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.MoveItemDown</CommandName>
 				<TextColor>style:ButtonTextColor</TextColor>
 				<BackColor>style:ButtonBackColor</BackColor>
-				<ExtendedTooltip name="MoveDownExtendedTooltip" id="33"/>
+				<ExtendedTooltip name="MoveDownExtendedTooltip" id="5"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
 	<ChildItems>
-		<Table name="List" id="1">
+		<Table name="List" id="6">
 			<Representation>Tree</Representation>
 			<CommandBarLocation>None</CommandBarLocation>
 			<SkipOnInput>false</SkipOnInput>
@@ -36,10 +33,6 @@
 			<DataPath>List</DataPath>
 			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
 			<BorderColor>style:BorderColor</BorderColor>
-			<CommandSet>
-				<ExcludedCommand>MoveItem</ExcludedCommand>
-				<ExcludedCommand>CreateFolder</ExcludedCommand>
-			</CommandSet>
 			<SearchStringLocation>None</SearchStringLocation>
 			<ViewStatusLocation>None</ViewStatusLocation>
 			<SearchControlLocation>None</SearchControlLocation>
@@ -56,39 +49,39 @@
 			<ShowRoot>false</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="2"/>
-			<AutoCommandBar name="ListCommandBar" id="3"/>
-			<ExtendedTooltip name="ListExtendedTooltip" id="34"/>
-			<SearchStringAddition name="ListSearchString" id="35">
+			<ContextMenu name="ListContextMenu" id="7"/>
+			<AutoCommandBar name="ListCommandBar" id="8"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="9"/>
+			<SearchStringAddition name="ListSearchString" id="16">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="36"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="37"/>
+				<ContextMenu name="ListSearchStringContextMenu" id="17"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="18"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="38">
+			<ViewStatusAddition name="ListViewStatus" id="19">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="39"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="40"/>
+				<ContextMenu name="ListViewStatusContextMenu" id="20"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="21"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="41">
+			<SearchControlAddition name="ListSearchControl" id="22">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="42"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="43"/>
+				<ContextMenu name="ListSearchControlContextMenu" id="23"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="24"/>
 			</SearchControlAddition>
 			<Events>
 				<Event name="BeforeAddRow">ListBeforeAddRow</Event>
 			</Events>
 			<ChildItems>
-				<PictureField name="PictureNo" id="28">
-					<DataPath>List.PictureNo</DataPath>
+				<PictureField name="PictureNumber" id="10">
+					<DataPath>List.PictureNumber</DataPath>
 					<TitleLocation>None</TitleLocation>
 					<Width>2</Width>
 					<Height>1</Height>
@@ -100,10 +93,10 @@
 					<Border width="1">
 						<v8ui:style xsi:type="v8ui:ControlBorderType">WithoutBorder</v8ui:style>
 					</Border>
-					<ContextMenu name="PictureNoContextMenu" id="29"/>
-					<ExtendedTooltip name="PictureNoExtendedTooltip" id="44"/>
+					<ContextMenu name="PictureNumberContextMenu" id="11"/>
+					<ExtendedTooltip name="PictureNumberExtendedTooltip" id="12"/>
 				</PictureField>
-				<InputField name="Ref" id="30">
+				<InputField name="Ref" id="13">
 					<DataPath>List.Ref</DataPath>
 					<Title>
 						<v8:item>
@@ -112,8 +105,8 @@
 						</v8:item>
 					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="RefContextMenu" id="31"/>
-					<ExtendedTooltip name="RefExtendedTooltip" id="45"/>
+					<ContextMenu name="RefContextMenu" id="14"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="15"/>
 				</InputField>
 			</ChildItems>
 		</Table>
@@ -125,30 +118,31 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>1/26</Field>
+				<Field>List.Ref</Field>
+				<Field>List.AdditionalOrderingAttribute</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
 				<QueryText>SELECT
 	CASE
-		WHEN CatalogContactInformationKinds.IsFolder
+		WHEN ContactInformationKindsCatalog.IsFolder
 			THEN 0
-		ELSE CatalogContactInformationKinds.TYPE.Order + 2
-	END AS PictureNo,
-	CatalogContactInformationKinds.Ref,
-	CatalogContactInformationKinds.DeletionMark,
-	CatalogContactInformationKinds.Predefined,
-	CatalogContactInformationKinds.Parent,
-	CatalogContactInformationKinds.IsFolder,
-	CatalogContactInformationKinds.Description,
-	CatalogContactInformationKinds.TYPE,
-	CatalogContactInformationKinds.AdditionalOrderingAttribute,
-	CatalogContactInformationKinds.EditInDialogOnly,
-	CatalogContactInformationKinds.EditMethodEditable,
-	CatalogContactInformationKinds.AlwaysUseAddressClassifier
+		ELSE ContactInformationKindsCatalog.Type.order + 2
+	END AS PictureNumber,
+	ContactInformationKindsCatalog.Ref,
+	ContactInformationKindsCatalog.DeletionMark,
+	ContactInformationKindsCatalog.Predefined,
+	ContactInformationKindsCatalog.Parent,
+	ContactInformationKindsCatalog.IsFolder,
+	ContactInformationKindsCatalog.Description,
+	ContactInformationKindsCatalog.Type,
+	ContactInformationKindsCatalog.AdditionalOrderingAttribute,
+	ContactInformationKindsCatalog.EditInDialogOnly,
+	ContactInformationKindsCatalog.CanChangeEditMode,
+	ContactInformationKindsCatalog.HomeCountryAddressOnly
 FROM
-	Catalog.ContactInformationKinds AS CatalogContactInformationKinds</QueryText>
+		Catalog.ContactInformationKinds AS ContactInformationKindsCatalog</QueryText>
 				<MainTable>Catalog.ContactInformationKinds</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -167,16 +161,18 @@ FROM
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
 				</ListSettings>
 			</Settings>
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="MoveItemUp" id="2">
+		<Command name="MoveItemUp" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Move Up</v8:content>
+					<v8:content>Move item up</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -185,17 +181,13 @@ FROM
 					<v8:content>Move item up</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>StdPicture.MoveUp</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>ShiftItemUp</Action>
+			<Action>MoveItemUp</Action>
 		</Command>
-		<Command name="MoveItemDown" id="3">
+		<Command name="MoveItemDown" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Move Down</v8:content>
+					<v8:content>Move item down</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -204,11 +196,7 @@ FROM
 					<v8:content>Move item down</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Picture>
-				<xr:Ref>StdPicture.MoveDown</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
-			</Picture>
-			<Action>ShiftItemDown</Action>
+			<Action>MoveItemDown</Action>
 		</Command>
 	</Commands>
 </Form>

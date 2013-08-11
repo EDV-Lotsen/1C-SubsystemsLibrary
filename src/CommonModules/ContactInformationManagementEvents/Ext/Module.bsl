@@ -1,26 +1,33 @@
-﻿
-Procedure FillContactInformation(Source, FillingData, StandardProcessing) Export
+﻿////////////////////////////////////////////////////////////////////////////////
+// Contact information subsystem.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
+
+Procedure CIFilling(Source, FillingData, StandardProcessing) Export
 	
 	If TypeOf(FillingData) <> Type("Structure") Then
 		Return;
 	EndIf;
 	
-	// Fill description
+	// Filling the description
 	Description = "";
 	If FillingData.Property("Description", Description) Then
 		Source.Description = Description;
 	EndIf;
 	
-	// Fill contact information
+	// Filling contact information
 	ContactInformation = Undefined;
 	If FillingData.Property("ContactInformation", ContactInformation) Then
-		For Each Row In ContactInformation Do
+		For Each CIRow In ContactInformation Do
 			
-			NewRow = Source.ContactInformation.Add();
-			FillPropertyValues(NewRow, Row);
+			NewCIRow = Source.ContactInformation.Add();
+			FillPropertyValues(NewCIRow, CIRow);
 			
-			If TypeOf(Row.FieldValues) = Type("ValueList") Then
-				NewRow.FieldValues = New ValueStorage(Row.FieldValues);
+			If TypeOf(CIRow.FieldValues) = Type("ValueList") Then
+				NewCIRow.FieldValues = New ValueStorage(CIRow.FieldValues);
 			EndIf;
 			
 		EndDo;

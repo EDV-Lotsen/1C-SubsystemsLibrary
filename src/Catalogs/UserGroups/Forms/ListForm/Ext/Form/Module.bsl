@@ -1,22 +1,23 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// FORM EVENT HANDLERS
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If Parameters.ChoiceMode Then
 		
 		Items.List.ChoiceMode = True;
-		// Filter of items not marked for deletion
+		// Selecting items that are not marked for deletion
 		List.Filter.Items[0].Use = True;
-		List.Filter.Items[1].Use = Parameters.Property("ParentChoice");
+		List.Filter.Items[1].Use = Parameters.Property("ChooseParent");
 		
 		If Parameters.CloseOnChoice = False Then
-			// Selection mode
-			Title = NStr("en = 'Selection of users group'");
+			// Multiple selection mode
+			Title = NStr("en = 'Select user groups'");
 			Items.List.MultipleChoice = True;
 			Items.List.SelectionMode = TableSelectionMode.MultiRow;
 		Else
-			Title = NStr("en = 'Select users group'");
+			Title = NStr("en = 'Select user group'");
 		EndIf;
 	EndIf;
 	

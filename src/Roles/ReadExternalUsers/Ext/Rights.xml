@@ -1,26 +1,19 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Rights xmlns="http://v8.1c.ru/8.2/roles" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="Rights" version="2.3">
 	<setForNewObjects>false</setForNewObjects>
-	<setForAttributesByDefault>false</setForAttributesByDefault>
-	<independentRightsOfChildObjects>true</independentRightsOfChildObjects>
+	<setForAttributesByDefault>true</setForAttributesByDefault>
+	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
-		<name>Catalog.ExternalUsers.Attribute.IBUserID</name>
+		<name>Catalog.ExternalUsers.Command.ExternalAccess</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.UserGroupMembers</name>
+		<name>InformationRegister.UserGroupContent</name>
 		<right>
 			<name>Read</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>CommonCommand.FormCommonCommandExternalUserObjectAuthorization</name>
-		<right>
-			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -38,60 +31,20 @@
 			<name>InputByString</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.StandardAttribute.Predefined</name>
 		<right>
-			<name>View</name>
+			<name>InteractiveDeletePredefinedData</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.StandardAttribute.Ref</name>
 		<right>
-			<name>View</name>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.StandardAttribute.DeletionMark</name>
 		<right>
-			<name>View</name>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.StandardAttribute.Description</name>
 		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.Attribute.AuthorizationObjectType</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.Attribute.Comment</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.TabularSection.Content</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.Attribute.DeletePassword</name>
-		<right>
-			<name>View</name>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -109,92 +62,20 @@
 			<name>InputByString</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.StandardAttribute.Predefined</name>
 		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.StandardAttribute.Ref</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.StandardAttribute.DeletionMark</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.StandardAttribute.Parent</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.StandardAttribute.Description</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.TabularSection.Content.Attribute.ExternalUser</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.Attribute.AllAuthorizationObjects</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.Attribute.SetRolesDirectly</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUsers.Attribute.AuthorizationObject</name>
-		<right>
-			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Configuration.SubsystemsLibrary</name>
-		<right>
-			<name>AllFunctionsMode</name>
+			<name>InteractiveDeletePredefinedData</name>
 			<value>true</value>
 		</right>
 		<right>
-			<name>SaveUserData</name>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.TabularSection.Roles</name>
 		<right>
-			<name>View</name>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
 			<value>true</value>
 		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.TabularSection.Roles.Attribute.Role</name>
 		<right>
-			<name>View</name>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
 			<value>true</value>
 		</right>
 	</object>

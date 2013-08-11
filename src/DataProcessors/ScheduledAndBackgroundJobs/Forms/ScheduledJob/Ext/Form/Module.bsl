@@ -1,91 +1,146 @@
-﻿
-
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // FORM EVENT HANDLERS
-//
+
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 
-	Action = Parameters.Action;
-	
-	If Find(", Add, Copy, Change,", ", " + Action + ",") = 0 Then
-		Raise(NStr("en = 'Incorrect parameters in Scheduled Job form'"));
-	EndIf;
-	Items.UserName.Enabled = NOT CommonUse.FileInformationBase();
+// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
+If Parameters.Property("SelfTest") Then
+  Return;
+EndIf;
+
+
+If Not Users.InfoBaseUserWithFullAccess(, True) Then
+  Raise NStr("en = 'Insufficient access rights.
+                   |
+                   |Only administrators can change scheduled job properties.'");
+EndIf;
+
+
+Action = Parameters.Action;
+
+
+If Find(", Add, Copy, Change,", ", " + Action + ",") = 0 Then
+  
+  Raise NStr("en = 'Scheduled job form open parameters are incorrect.'");
+EndIf;
+
+
+Items.UserName.Enabled = Not CommonUse.FileInfoBase();
 	
 	If Action = "Add" Then
+		
 		Schedule = New JobSchedule;
-		For each ScheduledJobMetadata IN Metadata.ScheduledJobs Do
-			ScheduledJobsMetadataDetailss.Add
-			(ScheduledJobMetadata.Name + "
-			 |" + ScheduledJobMetadata.Synonym + "
-			 |" + ScheduledJobMetadata.MethodName,
-			 ?(IsBlankString(ScheduledJobMetadata.Synonym),
-			   ScheduledJobMetadata.Name,
-			   ScheduledJobMetadata.Synonym) );
+		
+		For Each ScheduledJobMetadata In Metadata.ScheduledJobs Do
+			ScheduledJobMetadataDetails.Add(
+				ScheduledJobMetadata.Name
+					+ Chars.LF
+					+ ScheduledJobMetadata.Synonym
+					+ Chars.LF
+					+ ScheduledJobMetadata.MethodName,
+				?(IsBlankString(ScheduledJobMetadata.Synonym),
+				  ScheduledJobMetadata.Name,
+				  ScheduledJobMetadata.Synonym) );
 		EndDo;
 	Else
-		SchTask = ScheduledJobsServer.GetScheduledJob(Parameters.Id);
-		FillPropertyValues(ThisForm, SchTask, "Key, Description, Use, UserName, RestartIntervalOnFailure, RestartCountOnFailure");
-		Id        = String(SchTask.Uuid);
-		MetadataName        = ?(SchTask.Metadata <> Undefined, SchTask.Metadata.Name,       NStr("en = '<no metadata>'"));
-		MetadataSynonym    = ?(SchTask.Metadata <> Undefined, SchTask.Metadata.Synonym,   NStr("en = '<no metadata>'"));
-		MetadataMethodName  = ?(SchTask.Metadata <> Undefined, SchTask.Metadata.MethodName, NStr("en = '<no metadata>'"));
-		Schedule = SchTask.Schedule;
-		UserMessagesAndErrorInformationDetails = ScheduledJobsServer.MessagesAndDescriptionsOfScheduledJobErrors(SchTask);
+		Job = ScheduledJobsServer.GetScheduledJob(Parameters.ID);
+		FillPropertyValues(
+			ThisForm,
+			Job,
+			"Key, 
+			|Description, 
+			|Use, 
+			|UserName, 
+			|RestartIntervalOnFailure, 
+			|RestartCountOnFailure");
+		
+		ID                   = String(Job.UUID);
+		If Job.Metadata      = Undefined Then
+			MetadataName       = NStr("en = '<No metadata>'");
+			MetadataSynonym    = NStr("en = '<No metadata>'");
+			MetadataMethodName = NStr("en = '<No metadata>'");
+		Else
+			MetadataName       = Job.Metadata.Name;
+			MetadataSynonym    = Job.Metadata.Synonym;
+			MetadataMethodName = Job.Metadata.MethodName;
+		EndIf;
+		Schedule = Job.Schedule;
+		
+		UserMessagesAndErrorDetails = ScheduledJobsServer
+			.ScheduledJobMessagesAndErrorDescriptions(Job);
 	EndIf;
 	
 	If Action <> "Change" Then
-		Id = NStr("en = '<will be created during recording>'");
+		ID = NStr("en = '<Will be created when writing>'");
 		Use = False;
-		Description = ?(Action = "Add", "", ScheduledJobsServer.ScheduledJobPresentation(SchTask));
+		
+		Description = ?(
+			Action = "Add",
+			"",
+			ScheduledJobsServer.ScheduledJobPresentation(Job));
 	EndIf;
 	
-	// Fill choice list of user name
-	ScheduledJobsServer.AddUsernamesToValueList(Items.UserName.ChoiceList);
+	// Filling the user name choice list.
+	UserArray = InfoBaseUsers.GetUsers();
+	
+	For Each User In UserArray Do
+		Items.UserName.ChoiceList.Add(User.Name);
+	EndDo;
 	
 EndProcedure 
 
 &AtClient
-Procedure OnOpen(Cancellation)
+Procedure OnOpen(Cancel)
 	
 	If Action = "Add" Then
-		// Scheduled job (metadata) template choice
-		ItemOfList = ScheduledJobsMetadataDetailss.ChooseItem(NStr("en = 'Select predefined template for the scheduled job'"));
-		If ItemOfList = Undefined Then
-			Cancellation = True;
+		
+		// Choosing scheduled job template (metadata).
+		ListItem = ScheduledJobMetadataDetails.ChooseItem(
+			NStr("en = 'Select scheduled job template"));
+		
+		If ListItem = Undefined Then
+			Cancel = True;
 			Return;
 		Else
-			MetadataName       = StrGetLine(ItemOfList.Value, 1);
-			MetadataSynonym    = StrGetLine(ItemOfList.Value, 2);
-			MetadataMethodName = StrGetLine(ItemOfList.Value, 3);
-			Description        = ItemOfList.Presentation;
+			MetadataName       = StrGetLine(ListItem.Value, 1);
+			MetadataSynonym    = StrGetLine(ListItem.Value, 2);
+			MetadataMethodName = StrGetLine(ListItem.Value, 3);
+			Description        = ListItem.Presentation;
 		EndIf;
 	EndIf;
 	
-	mJobRecorded = False;
 	RefreshFormTitle();
 
 EndProcedure
 
 &AtClient
-Procedure BeforeClose(Cancellation, StandardProcessing)
+Procedure BeforeClose(Cancel, StandardProcessing)
 	
-	If Modified Then
-		ReturnCode = DoQueryBox(NStr("en = 'Write changes?'"), QuestionDialogMode.YesNoCancel);
-		If ReturnCode = DialogReturnCode.Yes Then
-			WriteScheduledJob();
-		ElsIf ReturnCode = DialogReturnCode.Cancel Then
-			Cancellation = True;
-		EndIf;
-	EndIf;
+	CommonUseClient.RequestCloseFormConfirmation(Cancel, Modified);
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Event handlers of commands and form items
-//
+// FORM HEADER ITEM EVENT HANDLERS
+
+&AtClient
+Procedure DescriptionOnChange(Item)
+	
+	RefreshFormTitle();
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
+
+&AtClient
+Procedure Write(Command)
+	
+	WriteScheduledJob();
+	
+EndProcedure
 
 &AtClient
 Procedure WriteAndCloseExecute()
@@ -96,16 +151,10 @@ Procedure WriteAndCloseExecute()
 EndProcedure
 
 &AtClient
-Procedure Write(Command)
-	
-	WriteScheduledJob();
-	
-EndProcedure
-
-&AtClient
 Procedure OpenScheduleExecute()
 
 	Dialog = New ScheduledJobDialog(Schedule);
+	
 	If Dialog.DoModal() Then
 		Schedule = Dialog.Schedule;
 		Modified = True;
@@ -113,23 +162,15 @@ Procedure OpenScheduleExecute()
 	
 EndProcedure
 
-&AtClient
-Procedure DescriptionOnChange(Item)
-	
-	RefreshFormTitle();
-	
-EndProcedure
-
 ////////////////////////////////////////////////////////////////////////////////
-// Auxiliary form procedures and functions
-//
+// INTERNAL PROCEDURES AND FUNCTIONS
 
 &AtClient
 Procedure WriteScheduledJob()
 	
 	WriteScheduledJobAtServer();
 	RefreshFormTitle();
-	Notify("ScheduledJobModified");
+	Notify("Write_ScheduledAndBackgroundJobs", Parameters.ID);
 	
 EndProcedure
 
@@ -137,16 +178,27 @@ EndProcedure
 Procedure WriteScheduledJobAtServer()
 	
 	If Action = "Change" Then
-		SchTask = ScheduledJobsServer.GetScheduledJob(Id);
+		Job = ScheduledJobsServer.GetScheduledJob(ID);
 	Else
-		SchTask = ScheduledJobs.CreateScheduledJob(Metadata.ScheduledJobs[MetadataName]);
-		Id = String(SchTask.Uuid);
+		Job = ScheduledJobs.CreateScheduledJob(
+			Metadata.ScheduledJobs[MetadataName]);
+		
+		ID = String(Job.UUID);
 		Action = "Change";
 	EndIf;
 	
-	FillPropertyValues(SchTask, ThisForm, "Key, Description, Use, UserName, RestartIntervalOnFailure, RestartCountOnFailure");
-	SchTask.Schedule = Schedule;
-	SchTask.Write();
+	FillPropertyValues(
+		Job,
+		ThisForm,
+		"Key, 
+		|Description, 
+		|Use, 
+		|UserName, 
+		|RestartIntervalOnFailure, 
+		|RestartCountOnFailure");
+	
+	Job.Schedule = Schedule;
+	Job.Write();
 	
 	Modified = False;
 	
@@ -155,18 +207,20 @@ EndProcedure
 &AtClient
 Procedure RefreshFormTitle()
 	
-	If NOT IsBlankString(Description) Then
+	If Not IsBlankString(Description) Then
 		Presentation = Description;
-	ElsIf NOT IsBlankString(MetadataSynonym) Then
+		
+	ElsIf Not IsBlankString(MetadataSynonym) Then
 		Presentation = MetadataSynonym;
 	Else
 		Presentation = MetadataName;
 	EndIf;
-	If Action <> "Change" Then
-		Title = StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Scheduled Job (Create)'"), Presentation);
+	
+	If Action = "Change" Then
+		Title = StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = '%1 (Scheduled job)'"), Presentation);
 	Else
-		Title = StringFunctionsClientServer.SubstitureParametersInString(NStr("en = '%1 (Scheduled Job)'"), Presentation);
+		Title = NStr("en = 'Scheduled job (creating)'");
 	EndIf;
 	
 EndProcedure
-

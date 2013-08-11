@@ -1,0 +1,2545 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Interactive data exchange wizard</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<Customizable>false</Customizable>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnClose">OnClose</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="MainPanel" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main panel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main panel.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="MainPanelExtendedTooltip" id="3"/>
+			<ChildItems>
+				<Page name="BeginningPage" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Beginnig page</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Beginnig page.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="BeginningPageExtendedTooltip" id="5"/>
+					<ChildItems>
+						<LabelDecoration name="PageTitle" id="6">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Welcome to the interactive data exchange wizard</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PageTitleContextMenu" id="7"/>
+							<ExtendedTooltip name="PageTitleExtendedTooltip" id="8"/>
+						</LabelDecoration>
+						<UsualGroup name="DataExchangeSetupGroup" id="9">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data exchange setup group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="DataExchangeSetupGroupExtendedTooltip" id="10"/>
+							<ChildItems>
+								<LabelField name="InfoBaseNode" id="11">
+									<DataPath>Object.InfoBaseNode</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data exchange with infobase</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Left</TitleLocation>
+									<Font ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+									<ContextMenu name="InfoBaseNodeContextMenu" id="12"/>
+									<ExtendedTooltip name="InfoBaseNodeExtendedTooltip" id="13"/>
+								</LabelField>
+							</ChildItems>
+						</UsualGroup>
+						<Pages name="TransportSettingsPages" id="14">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Transport settings pages</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Transport settings pages.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="TransportSettingsPagesExtendedTooltip" id="15"/>
+							<ChildItems>
+								<Page name="TransportTypeFromAvailableChoicePage" id="16">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Transport type from available choice page</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Transport type from available choice page.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<ExtendedTooltip name="TransportTypeFromAvailableChoicePageExtendedTooltip" id="17"/>
+									<ChildItems>
+										<InputField name="ExchangeMessageTransportKind" id="18">
+											<DataPath>Object.ExchangeMessageTransportKind</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<Width>45</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<ListChoiceMode>true</ListChoiceMode>
+											<TextEdit>false</TextEdit>
+											<ContextMenu name="ExchangeMessageTransportKindContextMenu" id="19"/>
+											<ExtendedTooltip name="ExchangeMessageTransportKindExtendedTooltip" id="20"/>
+											<Events>
+												<Event name="OnChange">ExchangeMessageTransportKindOnChange</Event>
+											</Events>
+										</InputField>
+										<Button name="OpenDataExchangeDirectory1" id="21">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.OpenDataExchangeDirectory</CommandName>
+											<ExtendedTooltip name="OpenDataExchangeDirectory1ExtendedTooltip" id="22"/>
+										</Button>
+										<Button name="SetupExchangeMessageTransportParameters1" id="23">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.SetupExchangeMessageTransportParameters</CommandName>
+											<ExtendedTooltip name="SetupExchangeMessageTransportParameters1ExtendedTooltip" id="24"/>
+										</Button>
+									</ChildItems>
+								</Page>
+								<Page name="OnlyOneTransportKindAvailablePage" id="25">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Only one transport kind is available page</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Only one transport kind is available page.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<ExtendedTooltip name="OnlyOneTransportKindAvailablePageExtendedTooltip" id="26"/>
+									<ChildItems>
+										<LabelDecoration name="ExchangeMessageTransportKindString" id="27">
+											<Font ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Exchange over the Internet</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="ExchangeMessageTransportKindStringContextMenu" id="28"/>
+											<ExtendedTooltip name="ExchangeMessageTransportKindStringExtendedTooltip" id="29"/>
+										</LabelDecoration>
+										<Button name="OpenDataExchangeDirectory" id="30">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.OpenDataExchangeDirectory</CommandName>
+											<ExtendedTooltip name="OpenDataExchangeDirectoryExtendedTooltip" id="31"/>
+										</Button>
+										<Button name="SetupExchangeMessageTransportParameters" id="32">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.SetupExchangeMessageTransportParameters</CommandName>
+											<ExtendedTooltip name="SetupExchangeMessageTransportParametersExtendedTooltip" id="33"/>
+										</Button>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+						<LabelDecoration name="Decoration2" id="34">
+							<VerticalStretch>true</VerticalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<ContextMenu name="Decoration2ContextMenu" id="35"/>
+							<ExtendedTooltip name="Decoration2ExtendedTooltip" id="36"/>
+						</LabelDecoration>
+						<LabelDecoration name="Decoration8" id="37">
+							<SkipOnInput>false</SkipOnInput>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Specify how to perform the data exchange with another infobase, if needed.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration8ContextMenu" id="38"/>
+							<ExtendedTooltip name="Decoration8ExtendedTooltip" id="39"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+				<Page name="StatisticsPage" id="40">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Statistics page</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Statistics page.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="StatisticsPageExtendedTooltip" id="41"/>
+					<ChildItems>
+						<LabelDecoration name="StatisticsPageTitle" id="42">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Object mapping</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="StatisticsPageTitleContextMenu" id="43"/>
+							<ExtendedTooltip name="StatisticsPageTitleExtendedTooltip" id="44"/>
+						</LabelDecoration>
+						<UsualGroup name="AdditionalInfoGroup" id="45">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Additional information group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Additional information group.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="AdditionalInfoGroupExtendedTooltip" id="46"/>
+							<ChildItems>
+								<PictureDecoration name="HasUnmappedObjectsInfoPicture" id="47">
+									<Width>2</Width>
+									<Height>1</Height>
+									<SkipOnInput>false</SkipOnInput>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Has unmapped objects info picture</v8:content>
+										</v8:item>
+									</Title>
+									<Picture>
+										<xr:Ref>CommonPicture.Information</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="HasUnmappedObjectsInfoPictureContextMenu" id="48"/>
+									<ExtendedTooltip name="HasUnmappedObjectsInfoPictureExtendedTooltip" id="49"/>
+								</PictureDecoration>
+								<LabelDecoration name="HasUnmappedObjectsComment" id="50">
+									<SkipOnInput>false</SkipOnInput>
+									<TextColor>style:InformationText</TextColor>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>there are not mapped objects</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="HasUnmappedObjectsCommentContextMenu" id="51"/>
+									<ExtendedTooltip name="HasUnmappedObjectsCommentExtendedTooltip" id="52"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<CommandBar name="StatisticsTableCommandBar" id="53">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Statistics table command bar</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Statistics table command bar.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ExtendedTooltip name="StatisticsTableCommandBarExtendedTooltip" id="54"/>
+							<ChildItems>
+								<Button name="OpenMappingForm" id="55">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.OpenMappingForm</CommandName>
+									<ExtendedTooltip name="OpenMappingFormExtendedTooltip" id="56"/>
+								</Button>
+								<Button name="UpdateMappingInfoFully" id="57">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.UpdateMappingInfoFully</CommandName>
+									<ExtendedTooltip name="UpdateMappingInfoFullyExtendedTooltip" id="58"/>
+								</Button>
+								<Button name="ExecuteDefaultAutomaticMapping" id="59">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.ExecuteDefaultAutomaticMapping</CommandName>
+									<ExtendedTooltip name="ExecuteDefaultAutomaticMappingExtendedTooltip" id="60"/>
+								</Button>
+								<Button name="ExecuteAllTableDataImport" id="61">
+									<Type>CommandBarButton</Type>
+									<SkipOnInput>false</SkipOnInput>
+									<CommandName>Form.Command.ExecuteAllTableDataImport</CommandName>
+									<ExtendedTooltip name="ExecuteAllTableDataImportExtendedTooltip" id="62"/>
+								</Button>
+							</ChildItems>
+						</CommandBar>
+						<Table name="StatisticsTree" id="63">
+							<Representation>Tree</Representation>
+							<CommandBarLocation>None</CommandBarLocation>
+							<ReadOnly>true</ReadOnly>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<InitialTreeView>ExpandAllLevels</InitialTreeView>
+							<DataPath>StatisticsTree</DataPath>
+							<CommandSet>
+								<ExcludedCommand>Add</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<ContextMenu name="StatisticsTreeContextMenu" id="64">
+								<ChildItems>
+									<Button name="ContextMenuStatisticsOpenMappingForm" id="65">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.OpenMappingForm</CommandName>
+										<ExtendedTooltip name="ContextMenuStatisticsOpenMappingFormExtendedTooltip" id="66"/>
+									</Button>
+									<Button name="ContextMenuStatisticsExecuteDataImportForRow" id="67">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.ExecuteDataImportForRow</CommandName>
+										<ExtendedTooltip name="ContextMenuStatisticsExecuteDataImportForRowExtendedTooltip" id="68"/>
+									</Button>
+									<Button name="ContextMenuStatisticsUpdateMappingInfoForRow" id="69">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.UpdateMappingInfoForRow</CommandName>
+										<ExtendedTooltip name="ContextMenuStatisticsUpdateMappingInfoForRowExtendedTooltip" id="70"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="StatisticsTreeCommandBar" id="71"/>
+							<ExtendedTooltip name="StatisticsTreeExtendedTooltip" id="72"/>
+							<SearchStringAddition name="StatisticsTreeSearchString" id="290">
+								<AdditionSource>
+									<Item>StatisticsTree</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="StatisticsTreeSearchStringContextMenu" id="291"/>
+								<ExtendedTooltip name="StatisticsTreeSearchStringExtendedTooltip" id="292"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="StatisticsTreeViewStatus" id="293">
+								<AdditionSource>
+									<Item>StatisticsTree</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="StatisticsTreeViewStatusContextMenu" id="294"/>
+								<ExtendedTooltip name="StatisticsTreeViewStatusExtendedTooltip" id="295"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="StatisticsTreeSearchControl" id="296">
+								<AdditionSource>
+									<Item>StatisticsTree</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="StatisticsTreeSearchControlContextMenu" id="297"/>
+								<ExtendedTooltip name="StatisticsTreeSearchControlExtendedTooltip" id="298"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">StatisticsTreeChoice</Event>
+							</Events>
+							<ChildItems>
+								<ColumnGroup name="StatisticsTreeGroup" id="73">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Statistics tree group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Statistics tree group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="StatisticsTreeGroupExtendedTooltip" id="74"/>
+									<ChildItems>
+										<PictureField name="StatisticsTreePicture" id="75">
+											<DataPath>StatisticsTree.Picture</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="StatisticsTreePictureContextMenu" id="76"/>
+											<ExtendedTooltip name="StatisticsTreePictureExtendedTooltip" id="77"/>
+										</PictureField>
+										<InputField name="StatisticsTreeSynonym" id="78">
+											<DataPath>StatisticsTree.Synonym</DataPath>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="StatisticsTreeSynonymContextMenu" id="79"/>
+											<ExtendedTooltip name="StatisticsTreeSynonymExtendedTooltip" id="80"/>
+										</InputField>
+										<InputField name="StatisticsTreeObjectCountInSource" id="81">
+											<DataPath>StatisticsTree.ObjectCountInSource</DataPath>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="ContextMenu" id="82"/>
+											<ExtendedTooltip name="StatisticsTreeObjectCountInSourceExtendedTooltip" id="83"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+								<PictureField name="StatisticsTreePictureIndex" id="84">
+									<DataPath>StatisticsTree.PictureIndex</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<EditMode>EnterOnInput</EditMode>
+									<ValuesPicture>
+										<xr:Ref>CommonPicture.ObjectMappingStates</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</ValuesPicture>
+									<ContextMenu name="StatisticsTreePictureIndexContextMenu" id="85"/>
+									<ExtendedTooltip name="StatisticsTreePictureIndexExtendedTooltip" id="86"/>
+								</PictureField>
+								<ColumnGroup name="StatisticsTreeGroup1" id="87">
+									<Group>Horizontal</Group>
+									<ExtendedTooltip name="StatisticsTreeGroup1ExtendedTooltip" id="88"/>
+									<ChildItems>
+										<InputField name="StatisticsTreeObjectCountInTarget" id="89">
+											<DataPath>StatisticsTree.ObjectCountInTarget</DataPath>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="ContextMenu" id="82"/>
+											<ExtendedTooltip name="StatisticsTreeObjectCountInTargetExtendedTooltip" id="90"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+								<InputField name="StatisticsTreeUnmappedObjectCount" id="91">
+									<DataPath>StatisticsTree.UnmappedObjectCount</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="ContextMenu" id="82"/>
+									<ExtendedTooltip name="StatisticsTreeUnmappedObjectCountExtendedTooltip" id="92"/>
+								</InputField>
+								<InputField name="StatisticsTreeMappedObjectPercent" id="93">
+									<DataPath>StatisticsTree.MappedObjectPercent</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="ContextMenu" id="82"/>
+									<ExtendedTooltip name="StatisticsTreeMappedObjectPercentExtendedTooltip" id="94"/>
+								</InputField>
+							</ChildItems>
+						</Table>
+						<LabelDecoration name="Decoration7" id="95">
+							<SkipOnInput>false</SkipOnInput>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Click "Next" button to finish object mapping and data export.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration7ContextMenu" id="96"/>
+							<ExtendedTooltip name="Decoration7ExtendedTooltip" id="97"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+				<Page name="MappingCompletePage" id="98">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Mapping end page</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Mapping end page.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="MappingCompletePageExtendedTooltip" id="99"/>
+					<ChildItems>
+						<LabelDecoration name="MappingEndPageTitle" id="100">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Interactive data exchange completed</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="MappingEndPageTitleContextMenu" id="101"/>
+							<ExtendedTooltip name="MappingEndPageTitleExtendedTooltip" id="102"/>
+						</LabelDecoration>
+						<UsualGroup name="DataExchangeExecutionResultGroup" id="103">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data exchange result group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data exchange result group.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="DataExchangeExecutionResultGroupExtendedTooltip" id="104"/>
+							<ChildItems>
+								<UsualGroup name="DataImportGroup" id="105">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data import group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data import group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="DataImportGroupExtendedTooltip" id="106"/>
+									<ChildItems>
+										<Pages name="DataImportStatusPages" id="107">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data import status pages</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data import status pages.</v8:content>
+												</v8:item>
+											</ToolTip>
+											<PagesRepresentation>None</PagesRepresentation>
+											<ExtendedTooltip name="DataImportStatusPagesExtendedTooltip" id="108"/>
+											<ChildItems>
+												<Page name="ImportStateUndefined" id="109">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state undefined</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state undefined.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ImportStateUndefinedExtendedTooltip" id="110"/>
+													<ChildItems>
+														<PictureDecoration name="UndefinedPicture" id="111">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Undefined picture</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="UndefinedPictureContextMenu" id="112"/>
+															<ExtendedTooltip name="UndefinedPictureExtendedTooltip" id="113"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ImportStateSuccess" id="114">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state success</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state success.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ImportStateSuccessExtendedTooltip" id="115"/>
+													<ChildItems>
+														<PictureDecoration name="SuccessPicture" id="116">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Success picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.DataExchangeStateSuccess</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="SuccessPictureContextMenu" id="117"/>
+															<ExtendedTooltip name="SuccessPictureExtendedTooltip" id="118"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ImportStateError" id="119">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state error</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state error.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ImportStateErrorExtendedTooltip" id="120"/>
+													<ChildItems>
+														<PictureDecoration name="ErrorPicture" id="121">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Error picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.DataExchangeStateError</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="ErrorPictureContextMenu" id="122"/>
+															<ExtendedTooltip name="ErrorPictureExtendedTooltip" id="123"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ImportStateWarning" id="124">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state warning</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import state warning.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ImportStateWarningExtendedTooltip" id="125"/>
+													<ChildItems>
+														<PictureDecoration name="WarningPicture1" id="126">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Warning picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>0</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="WarningPicture1ContextMenu" id="127"/>
+															<ExtendedTooltip name="WarningPicture1ExtendedTooltip" id="128"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+											</ChildItems>
+										</Pages>
+										<Button name="GoToDataImportEventLog" id="129">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data import events</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="GoToDataImportEventLogExtendedTooltip" id="130"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="DataExportGroup" id="131">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data export group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data export group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="DataExportGroupExtendedTooltip" id="132"/>
+									<ChildItems>
+										<Pages name="DataExportStatePages" id="133">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data export state pages</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data export state pages.</v8:content>
+												</v8:item>
+											</ToolTip>
+											<PagesRepresentation>None</PagesRepresentation>
+											<ExtendedTooltip name="DataExportStatePagesExtendedTooltip" id="134"/>
+											<ChildItems>
+												<Page name="ExportStateUndefined" id="135">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state undefined</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state undefined.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ExportStateUndefinedExtendedTooltip" id="136"/>
+													<ChildItems>
+														<PictureDecoration name="UndefinedPicture1" id="137">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Undefined picture</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="UndefinedPicture1ContextMenu" id="138"/>
+															<ExtendedTooltip name="UndefinedPicture1ExtendedTooltip" id="139"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ExportStateSuccess" id="140">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state success</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state success.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ExportStateSuccessExtendedTooltip" id="141"/>
+													<ChildItems>
+														<PictureDecoration name="SuccessPicture1" id="142">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Success picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.DataExchangeStateSuccess</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="SuccessPicture1ContextMenu" id="143"/>
+															<ExtendedTooltip name="SuccessPicture1ExtendedTooltip" id="144"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ExportStateError" id="145">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state error</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state error.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ExportStateErrorExtendedTooltip" id="146"/>
+													<ChildItems>
+														<PictureDecoration name="ErrorPicture1" id="147">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Error picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.DataExchangeStateError</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="ErrorPicture1ContextMenu" id="148"/>
+															<ExtendedTooltip name="ErrorPicture1ExtendedTooltip" id="149"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="ExportStateWarning" id="150">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state warning</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export state warning.</v8:content>
+														</v8:item>
+													</ToolTip>
+													<ExtendedTooltip name="ExportStateWarningExtendedTooltip" id="151"/>
+													<ChildItems>
+														<PictureDecoration name="WarningPicture" id="152">
+															<Width>2</Width>
+															<Height>1</Height>
+															<SkipOnInput>false</SkipOnInput>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Warning picture</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>0</xr:Ref>
+																<xr:LoadTransparent>true</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="WarningPictureContextMenu" id="153"/>
+															<ExtendedTooltip name="WarningPictureExtendedTooltip" id="154"/>
+														</PictureDecoration>
+													</ChildItems>
+												</Page>
+											</ChildItems>
+										</Pages>
+										<Button name="GoToDataExportEventLog" id="155">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data export events</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="GoToDataExportEventLogExtendedTooltip" id="156"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="ScheduleSettingsInfoLabel" id="157">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Schedule settings info label</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Schedule settings info label.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ScheduleSettingsInfoLabelExtendedTooltip" id="158"/>
+							<ChildItems>
+								<UsualGroup name="Group" id="159">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="GroupExtendedTooltip" id="160"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration14" id="161">
+											<Width>5</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Picture>
+												<xr:Ref>CommonPicture.Information32</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration14ContextMenu" id="162"/>
+											<ExtendedTooltip name="Decoration14ExtendedTooltip" id="163"/>
+										</PictureDecoration>
+										<UsualGroup name="Group1" id="164">
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="Group1ExtendedTooltip" id="165"/>
+											<ChildItems>
+												<LabelDecoration name="Decoration15" id="166">
+													<Height>2</Height>
+													<SkipOnInput>false</SkipOnInput>
+													<TextColor>style:InformationText</TextColor>
+													<Font ref="sys:DefaultGUIFont" kind="WindowsFont"/>
+													<Title formatted="false">
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>If the automatic data exchange is required,
+the schedule can be set up of that.</v8:content>
+														</v8:item>
+													</Title>
+													<VerticalAlign>Center</VerticalAlign>
+													<ContextMenu name="Decoration15ContextMenu" id="167"/>
+													<ExtendedTooltip name="Decoration15ExtendedTooltip" id="168"/>
+												</LabelDecoration>
+												<CheckBoxField name="OpenDataExchangeScenarioCreationWizard" id="169">
+													<DataPath>OpenDataExchangeScenarioCreationWizard</DataPath>
+													<TitleLocation>Right</TitleLocation>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="OpenDataExchangeScenarioCreationWizardContextMenu" id="170"/>
+													<ExtendedTooltip name="OpenDataExchangeScenarioCreationWizardExtendedTooltip" id="171"/>
+												</CheckBoxField>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<LabelDecoration name="Decoration12" id="172">
+							<VerticalStretch>true</VerticalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<ContextMenu name="Decoration12ContextMenu" id="173"/>
+							<ExtendedTooltip name="Decoration12ExtendedTooltip" id="174"/>
+						</LabelDecoration>
+						<LabelDecoration name="Decoration10" id="175">
+							<SkipOnInput>false</SkipOnInput>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Click "Finish" button to close the wizard or "Back" button to change settings and repeat the data exchange.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration10ContextMenu" id="176"/>
+							<ExtendedTooltip name="Decoration10ExtendedTooltip" id="177"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+				<Page name="DataImportIdlePage" id="178">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data import idle page</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Wait page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataImportIdlePageExtendedTooltip" id="179"/>
+					<ChildItems>
+						<LabelDecoration name="PageTitle7" id="180">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Analysis of data for import</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PageTitle7ContextMenu" id="181"/>
+							<ExtendedTooltip name="PageTitle7ExtendedTooltip" id="182"/>
+						</LabelDecoration>
+						<UsualGroup name="MessageGroup1" id="183">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ExtendedTooltip name="MessageGroup1ExtendedTooltip" id="184"/>
+							<ChildItems>
+								<UsualGroup name="PictureGroup1" id="185">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="PictureGroup1ExtendedTooltip" id="186"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration6" id="187">
+											<Width>8</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Picture>
+												<xr:Ref>CommonPicture.Information32</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration6ContextMenu" id="188"/>
+											<ExtendedTooltip name="Decoration6ExtendedTooltip" id="189"/>
+										</PictureDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MessageGroup1" id="183">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MessageGroup1ExtendedTooltip" id="184"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration9" id="190">
+											<Height>3</Height>
+											<HorizontalStretch>true</HorizontalStretch>
+											<SkipOnInput>false</SkipOnInput>
+											<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>
+Analyzing data.
+Please wait...</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration9ContextMenu" id="191"/>
+											<ExtendedTooltip name="Decoration9ExtendedTooltip" id="192"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="DataImportIdlePageLongAction" id="193">
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Wait page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataImportIdlePageLongActionExtendedTooltip" id="194"/>
+					<ChildItems>
+						<LabelDecoration name="PageTitle8" id="195">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Analyzing data for import</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PageTitle8ContextMenu" id="196"/>
+							<ExtendedTooltip name="PageTitle8ExtendedTooltip" id="197"/>
+						</LabelDecoration>
+						<UsualGroup name="MessageGroup2" id="198">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ExtendedTooltip name="MessageGroup2ExtendedTooltip" id="199"/>
+							<ChildItems>
+								<UsualGroup name="PictureGroup2" id="200">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Pictures group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Pictures group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="PictureGroup2ExtendedTooltip" id="201"/>
+									<ChildItems>
+										<PictureDecoration name="LongActionDecoration" id="202">
+											<Width>8</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Long action decoration</v8:content>
+												</v8:item>
+											</Title>
+											<Picture>
+												<xr:Ref>CommonPicture.LongAction48</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="LongActionDecorationContextMenu" id="203"/>
+											<ExtendedTooltip name="LongActionDecorationExtendedTooltip" id="204"/>
+										</PictureDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MessageGroup2" id="198">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MessageGroup2ExtendedTooltip" id="199"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration13" id="205">
+											<Height>3</Height>
+											<HorizontalStretch>true</HorizontalStretch>
+											<SkipOnInput>false</SkipOnInput>
+											<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>
+Analyzing data.
+Please wait...</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration13ContextMenu" id="206"/>
+											<ExtendedTooltip name="Decoration13ExtendedTooltip" id="207"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="DataExportIdlePage" id="208">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data export idle page</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data export idle page.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataExportIdlePageExtendedTooltip" id="209"/>
+					<ChildItems>
+						<LabelDecoration name="PageTitle6" id="210">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data export</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PageTitle6ContextMenu" id="211"/>
+							<ExtendedTooltip name="PageTitle6ExtendedTooltip" id="212"/>
+						</LabelDecoration>
+						<UsualGroup name="MessageGroup" id="213">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ExtendedTooltip name="MessageGroupExtendedTooltip" id="214"/>
+							<ChildItems>
+								<UsualGroup name="PictureGroup" id="215">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="PictureGroupExtendedTooltip" id="216"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration5" id="217">
+											<Width>8</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Picture>
+												<xr:Ref>CommonPicture.Information32</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration5ContextMenu" id="218"/>
+											<ExtendedTooltip name="Decoration5ExtendedTooltip" id="219"/>
+										</PictureDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MessageGroup" id="213">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MessageGroupExtendedTooltip" id="214"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration4" id="220">
+											<Height>3</Height>
+											<HorizontalStretch>true</HorizontalStretch>
+											<SkipOnInput>false</SkipOnInput>
+											<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>
+Exporting data Please wait data.
+You Are , Welcome...</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration4ContextMenu" id="221"/>
+											<ExtendedTooltip name="Decoration4ExtendedTooltip" id="222"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="DataExportIdlePageLongAction" id="223">
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data export idle page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataExportIdlePageLongActionExtendedTooltip" id="224"/>
+					<ChildItems>
+						<LabelDecoration name="PageTitle9" id="225">
+							<Height>2</Height>
+							<HorizontalStretch>true</HorizontalStretch>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data export</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="PageTitle9ContextMenu" id="226"/>
+							<ExtendedTooltip name="PageTitle9ExtendedTooltip" id="227"/>
+						</LabelDecoration>
+						<UsualGroup name="MessageGroup3" id="228">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ExtendedTooltip name="MessageGroup3ExtendedTooltip" id="229"/>
+							<ChildItems>
+								<UsualGroup name="PictureGroup3" id="230">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Picture group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="PictureGroup3ExtendedTooltip" id="231"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration11" id="232">
+											<Width>8</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Picture>
+												<xr:Ref>CommonPicture.LongAction48</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration11ContextMenu" id="233"/>
+											<ExtendedTooltip name="Decoration11ExtendedTooltip" id="234"/>
+										</PictureDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MessageGroup3" id="228">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group.</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MessageGroup3ExtendedTooltip" id="229"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration16" id="235">
+											<Height>3</Height>
+											<HorizontalStretch>true</HorizontalStretch>
+											<SkipOnInput>false</SkipOnInput>
+											<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>
+Exporting data.
+Please wait...</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration16ContextMenu" id="236"/>
+											<ExtendedTooltip name="Decoration16ExtendedTooltip" id="237"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<UsualGroup name="WizardButtonGroup" id="238">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Wizard button group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Wizard button group.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="WizardButtonGroupExtendedTooltip" id="239"/>
+			<ChildItems>
+				<Pages name="NavigationPanel" id="240">
+					<EnableContentChange>true</EnableContentChange>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation panel</v8:content>
+						</v8:item>
+					</Title>
+					<PagesRepresentation>None</PagesRepresentation>
+					<ExtendedTooltip name="NavigationPanelExtendedTooltip" id="241"/>
+					<ChildItems>
+						<Page name="NavigationPageStart" id="242">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page start</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page start.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageStartExtendedTooltip" id="243"/>
+							<ChildItems>
+								<CommandBar name="CommandBar1" id="244">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="CommandBar1ExtendedTooltip" id="245"/>
+									<ChildItems>
+										<Button name="BackCommand4" id="246">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand4ExtendedTooltip" id="247"/>
+										</Button>
+										<Button name="NextCommand" id="248">
+											<Type>CommandBarButton</Type>
+											<DefaultButton>true</DefaultButton>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommandExtendedTooltip" id="249"/>
+										</Button>
+										<Button name="CancelCommand1" id="250">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand1ExtendedTooltip" id="251"/>
+										</Button>
+										<Button name="Help" id="252">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="HelpExtendedTooltip" id="253"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageContinuation" id="254">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page continuation</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page continuation.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageContinuationExtendedTooltip" id="255"/>
+							<ChildItems>
+								<CommandBar name="CommandBar2" id="256">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="CommandBar2ExtendedTooltip" id="257"/>
+									<ChildItems>
+										<Button name="BackCommand5" id="258">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand5ExtendedTooltip" id="259"/>
+										</Button>
+										<Button name="NextCommand4" id="260">
+											<Type>CommandBarButton</Type>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommand4ExtendedTooltip" id="261"/>
+										</Button>
+										<Button name="CancelCommand5" id="262">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand5ExtendedTooltip" id="263"/>
+										</Button>
+										<Button name="Help1" id="264">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help1ExtendedTooltip" id="265"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageEnd" id="266">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page end</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page end.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageEndExtendedTooltip" id="267"/>
+							<ChildItems>
+								<CommandBar name="CommandBar3" id="268">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="CommandBar3ExtendedTooltip" id="269"/>
+									<ChildItems>
+										<Button name="BackCommand6" id="270">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand6ExtendedTooltip" id="271"/>
+										</Button>
+										<Button name="DoneCommand1" id="272">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DoneCommand</CommandName>
+											<ExtendedTooltip name="DoneCommand1ExtendedTooltip" id="273"/>
+										</Button>
+										<Button name="CancelCommand6" id="274">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand6ExtendedTooltip" id="275"/>
+										</Button>
+										<Button name="Help2" id="276">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help2ExtendedTooltip" id="277"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageWait" id="278">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page wait</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page wait.</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageWaitExtendedTooltip" id="279"/>
+							<ChildItems>
+								<CommandBar name="CommandBar4" id="280">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="CommandBar4ExtendedTooltip" id="281"/>
+									<ChildItems>
+										<Button name="BackCommand7" id="282">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand7ExtendedTooltip" id="283"/>
+										</Button>
+										<Button name="NextCommand5" id="284">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Next &gt;&gt;</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="NextCommand5ExtendedTooltip" id="285"/>
+										</Button>
+										<Button name="CancelCommand7" id="286">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand7ExtendedTooltip" id="287"/>
+										</Button>
+										<Button name="Help3" id="288">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help3ExtendedTooltip" id="289"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+					</ChildItems>
+				</Pages>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.InteractiveDataExchangeWizard</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="WizardRunMode" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Wizard run mode</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>50</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ExecuteMappingOnOpen" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Perform mapping during opening</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DataPackageFileID" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data package file ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>DateTime</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="OpenDataExchangeScenarioCreationWizard" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open schedule settings</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="NodeUsedInExchangeScenario" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Node is used in exchange script</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DataExportResult" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data export result</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DataImportResult" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data import result</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="StatisticsTree" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Statistics tree</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Synonym" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Object name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="MappedObjectPercent" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Mapped, %</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>3</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Picture" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>v8ui:Picture</v8:Type>
+					</Type>
+				</Column>
+				<Column name="ObjectCountInSource" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Objects in message, pcs</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ObjectCountInTarget" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Objects in this infobase, pcs</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="UnmappedObjectCount" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Unmapped, pcs</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="PictureIndex" id="7">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Key" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Key</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="UsePreview" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Use preview</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="RuleName" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Rule name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="TargetTableName" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Target table name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ObjectTypeString" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Object type as string</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="TableFields" id="13">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Table fields</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="SearchFields" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Search fields</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="SourceTypeString" id="15">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Source type as string</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="TargetTypeString" id="16">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Target type as string</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="DataImportedSuccessfully" id="17">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data imported successfully</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="IsObjectDeletion" id="18">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>It is the object deletion</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="GoToNumber" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>3</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="GoToTable" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to table</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="GoToNumber" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go to number</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>3</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="MainPageName" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Main page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="DecorationPageName" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Decoration page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="NavigationPageName" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="OnOpenHandlerName" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>On open handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoNextHandlerName" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go next handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoBackHandlerName" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go back handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LongAction" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="LongActionHandlerName" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ExternalConnectionParameterStructure" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>External connection parameter structure</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="IsStartedFromAnotherApplication" id="13">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="FileID" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>File ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LongAction" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ActionID" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Action ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="WSURL" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Web service URL</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="WSUserName" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Web service user name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="WSPassword" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Web service password</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="StatisticsTableCurrentRowKey" id="20">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Key of current row of the statistics table</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DataImportEventLogMessage" id="21">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Event log event: data import</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ActionStartDate" id="22">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Action start date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>DateTime</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ExchangeOverConnectionToCorrespondent" id="23">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange over connection to the correspondent infobase</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="UpdateMappingInfoForRow" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh mapping statistics for selected rows</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>UpdateMappingInfoForRow</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="UpdateMappingInfoFully" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh mapping statistics</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh mapping statistics</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>UpdateMappingInfoFully</Action>
+		</Command>
+		<Command name="ExecuteDefaultAutomaticMapping" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Automatic mapping (default)</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute automatic mapping by default.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExecuteDefaultAutomaticMapping</Action>
+		</Command>
+		<Command name="OpenMappingForm" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute mapping</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open object mapping form.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenMappingForm</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExecuteAllTableDataImport" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import data</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import data from all tables.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExecuteAllTableDataImport</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExecuteDataImportForRow" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import data</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import data.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExecuteDataImportForRow</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="OpenDataExchangeDirectory" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open directory</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the data exchange directory.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenDataExchangeDirectory</Action>
+		</Command>
+		<Command name="SetupExchangeMessageTransportParameters" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit data exchange settings.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetupExchangeMessageTransportParameters</Action>
+		</Command>
+		<Command name="GoToDataImportEventLog" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the data import event log</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the data import event log.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GoToDataImportEventLog</Action>
+		</Command>
+		<Command name="GoToDataExportEventLog" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the data export event log</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the data export event log.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GoToDataExportEventLog</Action>
+		</Command>
+		<Command name="DoneCommand" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Finish</v8:content>
+				</v8:item>
+			</Title>
+			<Action>DoneCommand</Action>
+		</Command>
+		<Command name="NextCommand" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Next &gt;&gt;</v8:content>
+				</v8:item>
+			</Title>
+			<Action>NextCommand</Action>
+		</Command>
+		<Command name="BackCommand" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>&lt;&lt; Back</v8:content>
+				</v8:item>
+			</Title>
+			<Action>BackCommand</Action>
+		</Command>
+		<Command name="CancelCommand" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</Title>
+			<Action>CancelCommand</Action>
+		</Command>
+	</Commands>
+</Form>

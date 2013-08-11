@@ -1,47 +1,70 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
 
-Procedure ItemOrderSetupBeforeWrite(Source, Cancellation) Export
+// Fills a value of the additional ordering attribute of the source object.
+//
+// Parameters:
+//  Source - Object - object whose ordering attribute will be filled;
+//  Cancel - Boolean - flag that shows whether writing the object must be canceled.
+//
+Procedure FillOrderingAttributeValue(Source, Cancel) Export
 	
-	// If Cancellation has been assigned in handler - do not change order
-	If Cancellation Then
+	If Source.DataExchange.Load Then 
+		Return; 
+	EndIf;		
+	
+	// If Cancel was set to True, the old order must be kept
+	If Cancel Then
 		Return;
 	EndIf;
 	
-	// Check, if object has additional ordering attribute
-	Information = ItemOrderSetup.GetMetadataSummaryForOrdering(Source.Ref);
+	// Checking whether the object has additional ordering attribute
+	Information = ItemOrderSetup.GetMetadataToMoveInfo(Source.Ref);
 	If Not ObjectHasAdditionalOrderingAttribute(Source, Information) Then
 		Return;
 	EndIf;
 	
-	// Calculate new value for the item order
+	// Counting a new item order value
 	If Source.AdditionalOrderingAttribute = 0 Then
-		Source.AdditionalOrderingAttribute = GetAddOrderingAttributeNewValue(Information, Source);
+		Source.AdditionalOrderingAttribute =
+			ItemOrderSetup.GetNewAdditionalOrderingAttributeValue(
+					Information,
+					?(Information.HasParent, Source.Parent, Undefined),
+					?(Information.HasOwner, Source.Owner, Undefined) );
 	EndIf;
 	
 EndProcedure
 
-Procedure ItemOrderSetupOnCopy(Source, CopiedObject) Export
+// Resets a value of the additional ordering attribute of the source object.
+//
+// Parameters:
+//  Source - Object - object that is generated with copying;
+//  CopiedObject - Ref - source object.
+//
+Procedure ResetOrderingAttributeValue(Source, CopiedObject) Export
 	
-	Information = ItemOrderSetup.GetMetadataSummaryForOrdering(Source.Ref);
+	Information = ItemOrderSetup.GetMetadataToMoveInfo(Source.Ref);
 	If ObjectHasAdditionalOrderingAttribute(Source, Information) Then
 		Source.AdditionalOrderingAttribute = 0;
 	EndIf;
 	
 EndProcedure
 
-// Check, if object has AdditionalOrderingAttribute
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
 Function ObjectHasAdditionalOrderingAttribute(Object, Information)
 	
-	If Not Information.HaveParent Then
-		// Catalog is not hierarchical, so attribute is there
+	If Not Information.HasParent Then
+		// All hierarchical catalogs have the additional ordering attribute
 		Return True;
 		
-	ElsIf Object.IsFolder And Not Information.ForGroups Then
-		// This is a group, but for group ordering is not assigned
+	ElsIf Object.IsFolder And Not Information.ForFolders Then
+		// Order cannot be set for a folder
 		Return False;
 		
 	ElsIf Not Object.IsFolder And Not Information.ForItems Then
-		// This is an item, but for items ordering is not assigned
+		// Order cannot be set for an item
 		Return False;
 		
 	Else
@@ -50,46 +73,3 @@ Function ObjectHasAdditionalOrderingAttribute(Object, Information)
 	EndIf;
 	
 EndFunction
-
-// Get new value of addit. ordering attribute for the object
-Function GetAddOrderingAttributeNewValue(Information, Object)
-	
-	Query = New Query;
-	Query.Text =
-		"SELECT TOP 1
-		|	Table.AdditionalOrderingAttribute AS AdditionalOrderingAttribute
-		|FROM
-		|	" + Information.FullName + " AS Table";
-	
-	StrConditions = "";
-	If Information.HaveParent Then
-		StrConditions = StrConditions + ?(StrConditions = "", "", " And ") + "(Table.Parent = &Parent)";
-		Query.SetParameter("Parent", Object.Parent);
-	EndIf;
-	If Information.HaveOwner Then
-		StrConditions = StrConditions + ?(StrConditions = "", "", " And ") + "(Table.Owner = &Owner)";
-		Query.SetParameter("Owner", Object.Owner);
-	EndIf;
-	
-	If StrConditions <> "" Then
-		Query.Text = Query.Text + "
-		|WHERE
-		|	" + StrConditions;
-	EndIf;
-
-
-	Query.Text = Query.Text + "
-	|
-	|ORDER BY
-	|	AdditionalOrderingAttribute DESC
-	|";
-	
-	
-	Selection = Query.Execute().Choose();
-	Selection.Next();
-	
-	Return ?(Not ValueIsFilled(Selection.AdditionalOrderingAttribute), 1, Selection.AdditionalOrderingAttribute + 1);
-	
-EndFunction
-
- 

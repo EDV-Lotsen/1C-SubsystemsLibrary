@@ -1,10 +1,8 @@
-﻿
-
-//////////////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // FORM EVENT HANDLERS
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If Object.Ref = Catalogs.UserGroups.EmptyRef() And
 		Object.Parent.Ref = Catalogs.UserGroups.AllUsers Then
@@ -14,27 +12,11 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	EndIf;
 	
 	If Object.Ref = Catalogs.UserGroups.AllUsers Then
-		Items.Description.Enabled 	= False;
-		Items.Parent.Enabled 		= False;
-		Items.ContentFill.Enabled 	= False;
-		Items.Content.Enabled 		= False;
-		Items.Comment.Enabled 		= False;
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure BeforeWrite(Cancellation, WriteParameters)
-	
-	FillCheckProcessing(Cancellation);
-	
-EndProcedure
-
-&AtServer
-Procedure AfterWriteAtServer(CurrentObject, WriteParameters)
-	
-	If CurrentObject.AdditionalProperties.Property("AreErrors") Then
-		WriteParameters.Insert("AreErrors");
+		Items.Description.Enabled = False;
+		Items.Parent.Enabled = False;
+		Items.ContentFill.Enabled = False;
+		Items.Content.Enabled = False;
+		Items.Comment.Enabled = False;
 	EndIf;
 	
 EndProcedure
@@ -42,17 +24,12 @@ EndProcedure
 &AtClient
 Procedure AfterWrite(WriteParameters)
 	
-	Notify("UserGroupContentChanged", Object.Ref, ThisForm);
-	
-	If WriteParameters.Property("AreErrors") Then
-		DoMessageBox(NStr("en = 'Some errors occurred while writing (see event log)'"));
-	EndIf;
+	Notify("Write_UserGroups", New Structure, Object.Ref);
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Event handlers of commands and form items
-//
+// FORM HEADER ITEM EVENT HANDLERS
 
 &AtClient
 Procedure ParentStartChoice(Item, ChoiceData, StandardProcessing)
@@ -60,11 +37,30 @@ Procedure ParentStartChoice(Item, ChoiceData, StandardProcessing)
 	StandardProcessing = False;
 	FormParameters = New Structure;
 	FormParameters.Insert("ChoiceMode", True);
-	FormParameters.Insert("ParentChoice");
+	FormParameters.Insert("ChooseParent");
 	
 	OpenForm("Catalog.UserGroups.ChoiceForm", FormParameters, Items.Parent);
 	
 EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF Content TABLE
+
+&AtClient
+Procedure ContentChoiceProcessing(Item, SelectedValue, StandardProcessing)
+	
+	If TypeOf(SelectedValue) = Type("Array") Then
+		For Each Value In SelectedValue Do
+			UserChoiceProcessing(Value);
+		EndDo;
+	Else
+		UserChoiceProcessing(SelectedValue);
+	EndIf;
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
 
 &AtClient
 Procedure FillUsers(Command)
@@ -77,65 +73,16 @@ Procedure FillUsers(Command)
 
 EndProcedure
 
-&AtClient
-Procedure ContentChoiceProcessing(Item, ValueSelected, StandardProcessing)
-	
-	If TypeOf(ValueSelected) = Type("Array") Then
-		For each Value In ValueSelected Do
-			UserChoiceProcessing(Value);
-		EndDo;
-	Else
-		UserChoiceProcessing(ValueSelected);
-	EndIf;
-	
-EndProcedure
-
 ////////////////////////////////////////////////////////////////////////////////
-// Auxiliary form procedures and functions
-//
+// INTERNAL PROCEDURES AND FUNCTIONS
 
 &AtClient
-Procedure UserChoiceProcessing(ValueSelected)
+Procedure UserChoiceProcessing(SelectedValue)
 	
-	If TypeOf(ValueSelected) = Type("CatalogRef.Users") Then
-		If Object.Content.FindRows(New Structure("User", ValueSelected)).Count() = 0 Then
-			Object.Content.Add().User = ValueSelected;
+	If TypeOf(SelectedValue) = Type("CatalogRef.Users") Then
+		If Object.Content.FindRows(New Structure("User", SelectedValue)).Count() = 0 Then
+			Object.Content.Add().User = SelectedValue;
 		EndIf;
 	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure FillCheckProcessing(Cancellation)
-	
-	// Check not filled and duplicated users.
-	LineNumber = Object.Content.Count()-1;
-	
-	While NOT Cancellation And LineNumber >= 0 Do
-		CurrentRow = Object.Content.Get(LineNumber);
-		
-		// Check that value is filled.
-		If NOT ValueIsFilled(CurrentRow.User) Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'User is not selected!'"),
-			                                                  ,
-			                                                  "Object.Content[" + Format(LineNumber, "NG=0") + "].User",
-			                                                  ,
-			                                                  Cancellation);
-			Return;
-		EndIf;
-		
-		// Check duplicated values.
-		ValuesFound = Object.Content.FindRows(New Structure("User", CurrentRow.User));
-		If ValuesFound.Count() > 1 Then
-			CommonUseClientServer.MessageToUser(NStr("en = 'User is not unique!'"),
-			                                                  ,
-			                                                  "Object.Content[" + Format(LineNumber, "NG=0") + "].User",
-			                                                  ,
-			                                                  Cancellation);
-			Return;
-		EndIf;
-			
-		LineNumber = LineNumber - 1;
-	EndDo;
 	
 EndProcedure

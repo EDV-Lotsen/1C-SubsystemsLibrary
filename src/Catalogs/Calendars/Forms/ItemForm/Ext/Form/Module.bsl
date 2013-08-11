@@ -124,7 +124,7 @@ Procedure CurrentYearNumberOnChange(Item)
 	EndIf;
 	
 	If Modified Then
-		TextOfMessage = StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Write modified data for %1 year?'"), Format(PreviousYearNumber, "NG=0"));
+		TextOfMessage = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Write modified data for %1 year?'"), Format(PreviousYearNumber, "NG=0"));
 		
 		If DoQueryBox(TextOfMessage, QuestionDialogMode.YesNo) = DialogReturnCode.Yes Then
 			If Object.Ref.IsEmpty() Then

@@ -6,21 +6,21 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Get Files Date Internet</v8:content>
+					<v8:content>Get files from the Internet</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
 			<Content>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.GetFilesFromInternetClientServer</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.GetFilesFromInternet</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">Constant.ProxyServerConfiguration</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ProxyServerSettings</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.ProxyServerParameters</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.GetFilesFromInternetClient</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.PersonalSettingsProxyServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.ProxyServerCustomParameters</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

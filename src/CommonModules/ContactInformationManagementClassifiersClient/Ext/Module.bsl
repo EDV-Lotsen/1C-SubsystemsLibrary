@@ -1,10 +1,13 @@
-﻿
-// Open address classifier load form.
+﻿////////////////////////////////////////////////////////////////////////////////
+// Contact information subsystem.
 //
-Procedure LoadAddressClassifier() Export
+////////////////////////////////////////////////////////////////////////////////
 
-	// AddressClassifier
-	AddressClassifierClient.LoadAddressClassifier();
-	// End AddressClassifier
+////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
 
-EndProcedure 
+// Opens the form for importing the address classifier.
+//
+Procedure ImportAddressClassifier() Export
+
+EndProcedure

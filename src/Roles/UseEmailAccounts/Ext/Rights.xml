@@ -6,20 +6,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.Password</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.SMTPAuthenticationMode</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -28,20 +20,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.SMTPPassword</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.UseForSending</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -50,38 +34,26 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.SMTPAuthentication</name>
 		<right>
-			<name>View</name>
+			<name>Edit</name>
 			<value>false</value>
 		</right>
+	</object>
+	<object>
+		<name>Catalog.EmailAccounts.Attribute.KeepMessageCopiesAtServer</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.LeaveMessageCopiesAtServer</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.EmailAccounts.Command.AccountCheckup</name>
+		<name>Catalog.EmailAccounts.Command.AccountCheck</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.ResponsibleForMessagesProcessing</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.EmailAccounts.Attribute.ResponsibleForEmailProcessing</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -89,10 +61,6 @@
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.SMTPPort</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -104,13 +72,33 @@
 			<name>Read</name>
 			<value>true</value>
 		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>true</value>
+		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Predefined</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -119,20 +107,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Ref</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.DeletionMark</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -141,20 +121,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.IsFolder</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Owner</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -163,20 +135,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Parent</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Description</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -185,20 +149,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.StandardAttribute.Code</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.POP3Server</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.EmailAccounts.Attribute.IncomingMailServerPOP3</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -207,20 +163,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.SMTPUser</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.UseForReceiving</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -229,20 +177,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.Timeout</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.EmaiAddress</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.EmailAccounts.Attribute.EmailAddress</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -251,10 +191,6 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.IncludeUserNameInPresentation</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
@@ -262,20 +198,12 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.POP3Port</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.RemoveFromServerAfter</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.EmailAccounts.Attribute.KeepMessageAtServerPeriod</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -284,56 +212,33 @@
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.UserName</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>CommonForm.UserAccountPasswordConfirmation</name>
+		<name>CommonForm.AccountPasswordConfirmation</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
-		<name>CommonForm.NewEmailEditing</name>
+		<name>CommonForm.EditNewEmailMessage</name>
 		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-	</object>
-	<object>
-		<name>Configuration.SubsystemsLibrary</name>
-		<right>
-			<name>AllFunctionsMode</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>SaveUserData</name>
 			<value>true</value>
 		</right>
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.User</name>
 		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
 			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.SMTPServer</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
+		<name>Catalog.EmailAccounts.Attribute.OutgoingMailServerSMTP</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -341,10 +246,6 @@
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.POP3AuthenticationMode</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

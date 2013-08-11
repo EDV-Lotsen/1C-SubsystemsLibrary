@@ -1,187 +1,232 @@
 ﻿
+////////////////////////////////////////////////////////////////////////////////
+// Scheduled jobs subsystem.
+// 
+/////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// PROCEDURES HANDLING SYSTEM EVENTS
-//
+// INTERFACE
 
-// Handler of event OnStart is called
-// for executing actions, required for the subsystem ScheduledJobs.
+// Starts a new session that will perform scheduled jobs.
+// Is used only for thin and ordinary clients (The web client is not supported).
+//
+// Returns:
+//  Structure with the following fields:
+//   Cancel           - Boolean.
+//   ErrorDescription - String.
+// 
+Function StartSeparateSessionToExecuteScheduledJobs() Export
+                                                          
+	Parameters = ScheduledJobsServer.ScheduledJobExecutionSeparateSessionLaunchParameters(False);
+	
+	If Not Parameters.Cancel And Parameters.RequiredSeparateSessionStart Then
+		TryStartSeparateSessionForScheduledJobsExecution(Parameters);
+	EndIf;
+	
+	Return Parameters;
+	
+EndFunction
+
+// Returns a job schedule by ID.
+// 
+// Parameters:
+//  ID - scheduled job UUID string.
+// 
+// Returns:
+//  JobSchedule.
+//
+Function GetJobSchedule(Val ID) Export
+	
+	Return CommonUseClientServer.StructureToSchedule(ScheduledJobsServer.GetJobScheduleInStructure(ID));
+	
+EndFunction
+
+// Sets the job scheduled by ID.
+//
+// Parameters:
+//  ID       - scheduled job UUID string.
+//  Schedule - JobSchedule.
+//
+Procedure SetJobSchedule(Val ID, Val Schedule) Export
+	
+	ScheduledJobsServer.SetJobScheduleFromStructure(ID, CommonUseClientServer.ScheduleToStructure(Schedule));
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+// The OnStart event handler.
+// Is called for performing actions required for the ScheduledJobs subsystem.
 //
 Procedure OnStart() Export
-
-	If Find(LaunchParameter, "DoScheduledJobs") <> 0 Then
-		Warn  = (Find(LaunchParameter, "SkipMessageBox") =  0);
-		SeparateSession = (Find(LaunchParameter, "AloneIBSession") <> 0);
+	
+	If Not CommonUseCached.CanUseSeparatedData()
+		Or CommonUseCached.DataSeparationEnabled() Then
+		
+		Return;
+	EndIf;
+	
+	If Find(LaunchParameter, "ExecuteScheduledJobs") <> 0 Then
+		Warn = (Find(LaunchParameter, "IgnoreWarnings") =  0);
+		SeparateSession = (Find(LaunchParameter, "SeparateSession") <> 0);
 		#If WebClient Then
+			SkipExitConfirmation = True;
 			Exit(False);
 		#EndIf
-		If StandardSubsystemsClientSecondUse.ClientParameters().FileInformationBase Then
-			TasksAreProcessingOK = Undefined;
+		If StandardSubsystemsClientCached.ClientParameters().FileInfoBase Then
+			JobsExecutedCorrectly = Undefined;
 			ErrorDescription = "";
-			If ScheduledJobsServer.CurrentSessionHandlesTasks(TasksAreProcessingOK, True, ErrorDescription) Then
-				SetApplicationCaption(StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Scheduled jobs processing: %1'"),
+			If ScheduledJobsServer.CurrentSessionPerformsScheduledJobs(JobsExecutedCorrectly, True, ErrorDescription) Then
+				SetApplicationCaption(StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Executing scheduled jobs: %1'"),
 				                                                                                      GetApplicationCaption() ));
 				If SeparateSession Then
-					// Process in separate session.
+					// Executing in a separate session
 					MainWindow = MainWindow();
+	
+					FromApplication = (Find(LaunchParameter, "FromApplication") <> 0); 
+					ParametersToForm = New Structure("LabelTitle", 
+						?(FromApplication, NStr("en = 'The session will be automatically terminated when you exit the base session.'"), ""));
+					
 					If MainWindow = Undefined Then
-						OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.DesktopOfSeparateSessionOfScheduledJobs" );
+						OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.SeparateScheduledJobExecutionSessionDesktop",ParametersToForm );
 					Else
-						OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.DesktopOfSeparateSessionOfScheduledJobs",,,, MainWindow);
+						OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.SeparateScheduledJobExecutionSessionDesktop",ParametersToForm,,, MainWindow);
 					EndIf;
-					If OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobsProcessing") = "Restart" Then
+
+					If OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecution") = "Restart" Then
+						SkipExitConfirmation = True;
 						Exit(False, True, " /C""" + LaunchParameter + """");
 					EndIf;
+					SkipExitConfirmation = True;
 					Exit(False);
 				Else
-					// Process in current session.
-					AttachIdleHandler("ScheduledJobsProcessingInMainSession", 1, True);
+					// Executing in this session
+					AttachIdleHandler("ScheduledJobExecutionInMainSession", 1, True);
 				EndIf;
 			Else
 				If Warn Then
-					If TasksAreProcessingOK Then
-						DoMessageBox(NStr("en = 'Scheduled jobs processing session is already open!'"));
+					
+					If JobsExecutedCorrectly Then
+						MessageText = NStr("en = 'The session that performs scheduled jobs is already started.'");
 					Else
-						DoMessageBox(StringFunctionsClientServer.SubstitureParametersInString(NStr("en = 'Scheduled jobs processing session is already open!"" ""%1'"), ErrorDescription ));
+						MessageText = StringFunctionsClientServer.SubstituteParametersInString(
+							NStr("en = 'The session that performs scheduled jobs is already started.'
+								| 
+								|%1'"), ErrorDescription);
+						DoMessageBox(MessageText);
 					EndIf;
 				EndIf;
 				If SeparateSession Then
+					SkipExitConfirmation = True;
 					Exit(False);
 				EndIf;
 			EndIf;
 		Else
 			If Warn Then
-				DoMessageBox(NStr("en = 'Scheduled jobs are processed on the server! '"));
+				DoMessageBox(NStr("en = 'Scheduled jobs are executed on the server.'"));
 			EndIf;
 			If SeparateSession Then
+				SkipExitConfirmation = True;
 				Exit(False);
 			EndIf;
 		EndIf;
 		
-	ElsIf StandardSubsystemsClientSecondUse.ClientParameters().FileInformationBase Then
+	ElsIf StandardSubsystemsClientCached.ClientParameters().FileInfoBase Then
 		
-		ParametersReadOnly = StandardSubsystemsClientSecondUse.ClientParameters().OpenParametersOfScheduledJobsProcessingSession;
+		ParametersReadOnly = StandardSubsystemsClientCached.ClientParameters().ScheduledJobExecutionSeparateSessionLaunchParameters;
 		
-		If ParametersReadOnly.Cancellation Then
-			OnScheduledJobsProcessingError(ParametersReadOnly.ErrorDescription);
-		ElsIf ParametersReadOnly.RequiredToOpenSeparateSession Then
-			AttachIdleHandler("OpenSeparateSessionOfScheduledJobsProcessingViaIdleHandler", 1, True);
+		If ParametersReadOnly.Cancel Then
+			OnScheduledJobExecutionError(ParametersReadOnly.ErrorDescription);
+		ElsIf ParametersReadOnly.RequiredSeparateSessionStart Then
+			AttachIdleHandler("StartSeparateSessionToExecuteScheduledJobsViaIdleHandler", 1, True);
 		EndIf;
 		
-		If ParametersReadOnly.NotifyAboutProcessingIncorrectStatus Then
-			AttachIdleHandler("NotifyAboutFailureInScheduledJobsProcessingStatus", ParametersReadOnly.PeriodNotifications * 60, True);
+		If ParametersReadOnly.NotifyAboutIncorrectExecution Then
+			AttachIdleHandler("NotifyAboutIncorrectScheduledJobExecution", ParametersReadOnly.NotificationPeriod * 60, True);
 		EndIf;
 	EndIf;
-	
-EndProcedure // OnStart()
-
-
-////////////////////////////////////////////////////////////////////////////////
-// METHODS OF SCHEDULED JOBS MANAGER EXTENSION
-//
-
-// Function OpenSeparateSessionOfScheduledJobsProcessing() starts new session,
-// handling scheduled jobs.
-//  Only for thin and thick clients (Web is not supported).
-//
-// Value returned:
-//  Structure
-//    Cancellation             	- Boolean.
-//    ErrorDescription    		- String.
-//
-Function OpenSeparateSessionOfScheduledJobsProcessing() Export
-                                                          
-	Parameters = ScheduledJobsServer.OpenParametersOfScheduledJobsProcessingSession(False);
-	
-	If NOT Parameters.Cancellation And Parameters.RequiredToOpenSeparateSession Then
-		TryOpenSeparateSessionOfScheduledJobsDataProcessor(Parameters);
-	EndIf;
-	
-	Return Parameters;
-	
-EndFunction // OpenSeparateSessionOfScheduledJobsProcessing()
-
-// Procedure TryOpenSeparateSessionOfScheduledJobsDataProcessor()
-// tries to open new session, handling scheduled jobs.
-//
-// Parameters:
-//  Parameters    - Structure, used properties:
-//                   AdditionalParametersOfCommandLine 				- String.
-//                   Cancellation                                   - Boolean, output parameter.
-//                   ErrorDescription                         		- String, output parameter.
-//
-Procedure TryOpenSeparateSessionOfScheduledJobsDataProcessor(Val Parameters) Export
-	
-	#If NOT WebClient Then
-		Try
-			Parameters.ExecutedOpenAttempt = True;
-			RunSystem(
-				?(Find(Upper(LaunchParameter), "/DEBUG") = Undefined, "", "/DEBUG ")
-				+ Parameters.AdditionalParametersOfCommandLine);
-		Except
-			Parameters.ErrorDescription = ErrorDescription();
-			Parameters.Cancellation = True;
-		EndTry;
-	#Else
-		Parameters.Cancellation = True;
-		Parameters.ErrorDescription = NStr( "en = 'Processing of scheduled jobs in a separate session of web client cannot be done!
-                                             |To process the scheduled jobs administrator should set up standard to thin client in the web-server!'");
-	#EndIf
-	Parameters.ErrorDescription = ?(IsBlankString(Parameters.ErrorDescription),
-	                             "",
-	                             StrReplace(NStr("en = 'SessionNumber handling of scheduled jobs opening error: %1'"), "%1", Parameters.ErrorDescription));
-	
-EndProcedure // TryOpenSeparateSessionOfScheduledJobsDataProcessor()
-
-
-////////////////////////////////////////////////////////////////////////////////
-// OTHER PROCEDURES
-//
-
-// Procedure OnScheduledJobsProcessingError is called
-// from the procedure ScheduledJobsGlobal.NotifyAboutFailureInScheduledJobsProcessingStatus()
-// and ScheduledJobsClient.OnStart().
-//  Call is done, if discovered, that something wrong in scheduled jobs processing:
-// none processing session, "frozen" session, session ``is not operating`` for long time.
-//
-// Parameters:
-//  ErrorDescription - String
-//
-Procedure OnScheduledJobsProcessingError(ErrorDescription) Export
-	
-	If StandardSubsystemsClientSecondUse.ClientParameters().OpenParametersOfScheduledJobsProcessingSession.CurrentUserAdministrator Then
-		ShowUserNotification(
-				NStr("en = 'Scheduled jobs are not processed. '"),
-				"e1cib/app/DataProcessor.ScheduledAndBackgroundJobs",
-				ErrorDescription,
-				PictureLib.ErrorScheduledJobProcessing);
-	Else
-		ShowUserNotification(
-				NStr("en = 'Scheduled jobs are not processed. '"),
-				,
-				ErrorDescription + Chars.LF + NStr("en = 'Contact to administrator.'"),
-				PictureLib.ErrorScheduledJobProcessing);
-	EndIf;
-	
 	
 EndProcedure
 
-// Procedure AttachGlobalIdleHandler() is used
-// from displayed forms, because in the form module method is overrided.
+// Attempts to start a new session that will handle scheduled jobs.
 //
-Procedure AttachGlobalIdleHandler(ProcedureName, Interval, Once = False) Export
+// Parameters:
+//  Parameters    - Structure with the following fields:
+//                  AdditionalCommandLineOptions - String.
+//                  Cancel                       - Boolean - output parameter.
+//                  ErrorDescription             - String - output parameter.
+// 
+Procedure TryStartSeparateSessionForScheduledJobsExecution(Val Parameters) Export
+	
+	#If Not WebClient Then
+		Try
+			Parameters.TriedToOpen = True;
+			RunSystem(
+				?(Find(Upper(LaunchParameter), "/DEBUG") = 0, "", "/DEBUG ")
+				+ Parameters.AdditionalCommandLineOptions);
+		Except
+			Parameters.ErrorDescription = ErrorDescription();
+			Parameters.Cancel = True;
+		EndTry;
+	#Else
+		Parameters.Cancel = True;
+		Parameters.ErrorDescription = NStr("en = 'Scheduled jobs cannot be executed in a separate web client session.
+			|
+			|If you want scheduled jobs to be executed, an administrator must set up thin or
+			|ordinary client run on the web server.'");
+	#EndIf
+	Parameters.ErrorDescription =
+		?(IsBlankString(Parameters.ErrorDescription),
+		  "",
+		  StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'Error starting the session for executing scheduled jobs:
+				           |
+				           |%1'"),
+				Parameters.ErrorDescription));
+	
+EndProcedure
 
+// Notifies the user about the scheduled job execution error.
+//
+// Is called from the ScheduledJobsGlobal.NotifyAboutIncorrectScheduledJobExecution and
+// ScheduledJobsClient.OnStart procedures.
+//
+// Is call if there is no scheduled job execution session or this session hangs.
+//
+// Parameters:
+//  ErrorDescription - String.
+//
+Procedure OnScheduledJobExecutionError(ErrorDescription) Export
+	
+	If StandardSubsystemsClientCached.ClientParameters().ScheduledJobExecutionSeparateSessionLaunchParameters.CurrentUserAdministrator Then
+		ShowUserNotification(
+				NStr("en = 'Scheduled jobs are not executed.'"),
+				"e1cib/app/DataProcessor.ScheduledAndBackgroundJobs",
+				ErrorDescription,
+				PictureLib.ErrorExecutingScheduledJobs);
+	Else
+		ShowUserNotification(
+				NStr("en = 'Scheduled jobs are not executed.'"),
+				,
+				ErrorDescription + Chars.LF + NStr("en = 'Please contact your infobase administrator.'"),
+				PictureLib.ErrorExecutingScheduledJobs);
+	EndIf;
+	
+EndProcedure
+
+// Attaches the global idle handler on the form.
+Procedure AttachGlobalIdleHandler(ProcedureName, Interval, Once = False) Export
+	
 	AttachIdleHandler(ProcedureName, Interval, Once);
 	
 EndProcedure
 
-// Procedure DisableGlobalIdleHandler() is used
-// from displayed forms, because in the form module method is overrided.
-//
+// Detaches the global idle handler on the form
 Procedure DisableGlobalIdleHandler(ProcedureName) Export
 	
 	DetachIdleHandler(ProcedureName);
-
+	
 EndProcedure
 
 Function MainWindow() Export
@@ -190,7 +235,7 @@ Function MainWindow() Export
 	
 	Windows = GetWindows();
 	If Windows <> Undefined Then
-		For each Window In Windows Do
+		For Each Window In Windows Do
 			If Window.IsMain Then
 				MainWindow = Window;
 				Break;

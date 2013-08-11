@@ -1,107 +1,184 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>Bottom</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="-1">
+	<AutoCommandBar name="FormCommandBar" id="1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="OK" id="8">
+			<Button name="OK" id="2">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.OK</CommandName>
-				<ExtendedTooltip name="OKExtendedTooltip" id="21"/>
+				<CommandName>Form.Command.OKButton</CommandName>
+				<ExtendedTooltip name="OKExtendedTooltip" id="3"/>
 			</Button>
-			<Button name="Cancel" id="13">
+			<Button name="Cancel" id="4">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="CancelExtendedTooltip" id="22"/>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="5"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
 	<Events>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<CheckBoxField name="UseProxy" id="16">
-			<DataPath>UseProxy</DataPath>
-			<DefaultItem>true</DefaultItem>
-			<TitleLocation>Right</TitleLocation>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="UseProxyContextMenu" id="17"/>
-			<ExtendedTooltip name="UseProxyExtendedTooltip" id="23"/>
+		<RadioButtonField name="ProxyServerUseVariants" id="6">
+			<DataPath>ProxyServerUseVariant</DataPath>
+			<TitleLocation>None</TitleLocation>
+			<RadioButtonType>Auto</RadioButtonType>
+			<ColumnsCount>1</ColumnsCount>
+			<ChoiceList>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Do not use proxy server</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:decimal">0</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Use system proxy settings</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:decimal">1</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Use other proxy settings:</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:decimal">2</Value>
+					</xr:Value>
+				</xr:Item>
+			</ChoiceList>
+			<ContextMenu name="ProxyServerUseVariantsContextMenu" id="7"/>
+			<ExtendedTooltip name="ProxyServerUseVariantsExtendedTooltip" id="8"/>
 			<Events>
-				<Event name="OnChange">UseProxyOnChange</Event>
+				<Event name="OnChange">UseSystemProxySettingsOnChange</Event>
 			</Events>
-		</CheckBoxField>
-		<UsualGroup name="ParametersProxy" id="18">
+		</RadioButtonField>
+		<UsualGroup name="ProxyParameters" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Proxy server configuration</v8:content>
+					<v8:content>Proxy server settings</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Proxy parameters.</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Group>Vertical</Group>
-			<ExtendedTooltip name="ParametersProxyExtendedTooltip" id="24"/>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ProxyParametersExtendedTooltip" id="10"/>
 			<ChildItems>
-				<InputField name="ProxyServer" id="9">
-					<DataPath>Server</DataPath>
-					<Wrap>false</Wrap>
-					<ContextMenu name="ProxyServerContextMenu" id="10"/>
-					<ExtendedTooltip name="ProxyServerExtendedTooltip" id="25"/>
-				</InputField>
-				<InputField name="User" id="5">
-					<DataPath>User</DataPath>
-					<Wrap>false</Wrap>
-					<ContextMenu name="UserContextMenu" id="6"/>
-					<ExtendedTooltip name="UserExtendedTooltip" id="26"/>
-				</InputField>
-				<InputField name="Password" id="3">
-					<DataPath>Password</DataPath>
-					<Wrap>false</Wrap>
-					<PasswordMode>true</PasswordMode>
-					<ContextMenu name="PasswordContextMenu" id="4"/>
-					<ExtendedTooltip name="PasswordExtendedTooltip" id="27"/>
-				</InputField>
-				<InputField name="Port" id="1">
-					<DataPath>Port</DataPath>
-					<Wrap>false</Wrap>
-					<MinValue xsi:type="xs:decimal">0</MinValue>
-					<MaxValue xsi:type="xs:decimal">65535</MaxValue>
-					<ContextMenu name="PortContextMenu" id="2"/>
-					<ExtendedTooltip name="PortExtendedTooltip" id="28"/>
-				</InputField>
-				<CheckBoxField name="BypassProxyOnLocal" id="11">
-					<DataPath>BypassProxyOnLocal</DataPath>
+				<UsualGroup name="ServerAddressGroup" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Server address group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Server address group.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="ServerAddressGroupExtendedTooltip" id="12"/>
+					<ChildItems>
+						<InputField name="ProxyServer" id="13">
+							<DataPath>Server</DataPath>
+							<Wrap>false</Wrap>
+							<ContextMenu name="ProxyServerContextMenu" id="14"/>
+							<ExtendedTooltip name="ProxyServerExtendedTooltip" id="15"/>
+						</InputField>
+						<InputField name="Port" id="16">
+							<DataPath>Port</DataPath>
+							<Wrap>false</Wrap>
+							<MinValue xsi:type="xs:decimal">0</MinValue>
+							<MaxValue xsi:type="xs:decimal">65535</MaxValue>
+							<ContextMenu name="PortContextMenu" id="17"/>
+							<ExtendedTooltip name="PortExtendedTooltip" id="18"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="UserPasswordGroup" id="19">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>User password group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>User password group.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="20"/>
+					<ChildItems>
+						<InputField name="User" id="21">
+							<DataPath>User</DataPath>
+							<Wrap>false</Wrap>
+							<ContextMenu name="UserContextMenu" id="22"/>
+							<ExtendedTooltip name="UserExtendedTooltip" id="23"/>
+						</InputField>
+						<InputField name="Password" id="24">
+							<DataPath>Password</DataPath>
+							<Wrap>false</Wrap>
+							<PasswordMode>true</PasswordMode>
+							<ContextMenu name="PasswordContextMenu" id="25"/>
+							<ExtendedTooltip name="PasswordExtendedTooltip" id="26"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<CheckBoxField name="BypassProxyForLocalURLs" id="27">
+					<DataPath>BypassProxyForLocalURLs</DataPath>
 					<TitleLocation>Right</TitleLocation>
 					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="BypassProxyOnLocalContextMenu" id="12"/>
-					<ExtendedTooltip name="BypassProxyOnLocalExtendedTooltip" id="29"/>
+					<ContextMenu name="BypassProxyForLocalURLsContextMenu" id="28"/>
+					<ExtendedTooltip name="BypassProxyForLocalURLsExtendedTooltip" id="29"/>
 				</CheckBoxField>
 			</ChildItems>
 		</UsualGroup>
-		<LabelDecoration name="ExplanationButtonOK" id="19">
-			<Visible>false</Visible>
-			<TextColor>0:ad87bd29-0ad1-4da4-ac62-38e714e0cb9f</TextColor>
-			<Title formatted="false">
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Press "OK" to save settings of proxy server</v8:content>
-				</v8:item>
-			</Title>
-			<ContextMenu name="ExplanationButtonOKContextMenu" id="20"/>
-			<ExtendedTooltip name="ExplanationButtonOKExtendedTooltip" id="30"/>
-		</LabelDecoration>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="User" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>User name</v8:content>
+					<v8:content>User</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -158,33 +235,60 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="BypassProxyOnLocal" id="5">
+		<Attribute name="BypassProxyForLocalURLs" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Bypass proxy server for local addresses</v8:content>
+					<v8:content>Bypass proxy for local URLs</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="SettingProxyAtClient" id="6">
+		<Attribute name="ProxySettingsAtClient" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Setting proxy at client</v8:content>
+					<v8:content>Proxy settings at client</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="UseProxy" id="7">
+		<Attribute name="ProxyServerUseVariant" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Use a proxy server for connecting to the Internet</v8:content>
+					<v8:content>Proxy server usage variant</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="UseSystemSettings" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Use system settings</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="UseProxy" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Use proxy</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -193,22 +297,23 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="OK" id="1">
+		<Command name="OKButton" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>OK</v8:content>
 				</v8:item>
 			</Title>
-			<Action>OKExecute</Action>
+			<Action>OKButton</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
 	</Commands>
 	<Parameters>
-		<Parameter name="SettingProxyAtClient">
+		<Parameter name="ProxySettingsAtClient">
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<KeyParameter>true</KeyParameter>
 		</Parameter>
 	</Parameters>
 </Form>

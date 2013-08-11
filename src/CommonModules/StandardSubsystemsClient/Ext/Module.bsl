@@ -1,435 +1,484 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Base functionality subsystem
+//
+//////////////////////////////////////////////////////////////////////////////// 
+
 ////////////////////////////////////////////////////////////////////////////////
-// EXPORT PROCEDURES AND FUNCTIONS
+// INTERFACE
 
-// Shows message about field filling error.
+// Sets an application main window caption, using the current user presentation,
+// value of the ApplicationCaption constant, and default application caption.
 //
-Procedure ShowErrorMessage(ThisObject, MessageText, TabularSectionName = Undefined, LineNumber = Undefined, Field = Undefined, Cancellation = False)Export
+Procedure SetAdvancedApplicationTitle() Export
+	
+	If CommonUseCached.CanUseSeparatedData() Then
+		ClientParameters = StandardSubsystemsClientCached.ClientParameters();
+		CaptionPresentation = ClientParameters.ApplicationCaption;
+		UserPresentation = ClientParameters.AuthorizedUser;
+		ConfigurationPresentation = ClientParameters.DetailedInformation;
 		
-	Message 	 = New UserMessage();
-	Message.Text = MessageText;
-
-	If TabularSectionName <> Undefined Then
-		Message.Field = TabularSectionName + "[" + (LineNumber - 1) + "]." + Field;
-	ElsIf ValueIsFilled(Field) Then
-		Message.Field = Field;
-	EndIf;
-
-	Message.SetData(ThisObject);
-	Message.Message();
-
-	Cancellation = True;
-	
-EndProcedure // ShowErrorMessage()
-
-// COMMON PROCEDURES AND FUNCTIONS
-
-// Function recalculates amount from one currency to another
-//
-// Parameters:
-//	Amount         - Number - amount to recalculate.
-// 	RateBeg        - Number - source rate.
-// 	RateEnd        - Number - destination rate.
-// 	MultiplicityBeg  - Number - source Multiplicity
-//                  (by default = 1).
-// 	MultiplicityEnd  - Number - destination Multiplicity
-//                  (by default = 1).
-//
-// Value returned:
-//  Number 		   - amount, recalculated to another currency.
-//
-Function RecalculateFromCurrencyToCurrency(Amount, RateBeg, RateEnd,	MultiplicityBeg = 1, MultiplicityEnd = 1) Export
-	
-	If (RateBeg = RateEnd) And (MultiplicityBeg = MultiplicityEnd) Then
-		Return Amount;
-	EndIf;
-	
-	If RateBeg = 0 OR RateEnd = 0 OR MultiplicityBeg = 0 OR MultiplicityEnd = 0 Then
-		Message = New UserMessage();
-		Message.Text = NStr("en = 'Found zero exchange rate. Recalculation failed.'");
-		Message.Message();
-		Return Amount;
-	EndIf;
-	
-	AmountRecalculated = Round((Amount * RateBeg * MultiplicityEnd) / (RateEnd * MultiplicityBeg), 2);
-	
-	Return AmountRecalculated;
-	
-EndFunction // RecalculateFromCurrencyToCurrency()
-
-// Procedure updates document status.
-//
-Procedure RefreshDocumentStatus(Object, DocumentStatus, PictureDocumentStatus, PostingIsAllowed) Export
-	
-	If Object.Posted Then
-		DocumentStatus = "Posted";
-		PictureDocumentStatus = 1;
-	ElsIf PostingIsAllowed Then
-		DocumentStatus = "Unposted";
-		PictureDocumentStatus = 0;
+		
+		If IsBlankString(TrimAll(CaptionPresentation )) Then
+			If ClientParameters.Property("DataAreaPresentation") Then
+				TitleTemplate = "%1 / %2 / %3 / ";
+				ApplicationCaption = StringFunctionsClientServer.SubstituteParametersInString(TitleTemplate, 
+					ClientParameters.DataAreaPresentation, ClientParameters.DetailedInformation, 
+					UserPresentation);
+			Else
+				TitleTemplate = "%1 / %2 / ";
+				ApplicationCaption = StringFunctionsClientServer.SubstituteParametersInString(TitleTemplate, 
+					ClientParameters.DetailedInformation, UserPresentation);
+			EndIf;
+		Else
+			TitleTemplate = "%1 / %2 / %3 / ";
+			ApplicationCaption = StringFunctionsClientServer.SubstituteParametersInString(TitleTemplate, 
+				TrimAll(CaptionPresentation ), UserPresentation, ConfigurationPresentation);
+		EndIf;
+		
+		SetApplicationCaption(ApplicationCaption);
 	Else
-		DocumentStatus = "Written";
-		PictureDocumentStatus = 3;
+		TitleTemplate = "%1 / %2 / ";
+		ApplicationCaption = StringFunctionsClientServer.SubstituteParametersInString(TitleTemplate, 
+			NStr("en = 'Separators are not set"), CommonUse.GetConfigurationDetails());
+		
+		SetApplicationCaption(ApplicationCaption);
 	EndIf;
 	
-EndProcedure // RefreshDocumentStatus()
+EndProcedure
 
-// PROCEDURES FOR WORK WITH SUBORDINATE TABULAR SECTIONS
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-// Procedure adds link key into tabular section.
+// Standard actions executed before appication start.
 //
 // Parameters:
-//  DocumentForm - ManagedForm, contains document form, whose attributes
-//                 are processed by the procedure
+// Cancel - Boolean - flag that shows whether execution is canceled. 
+// If it is set to True then application will not start.
 //
-Procedure AddConnectionKeyToTabularSectionRow(DocumentForm) Export
+Procedure ActionsBeforeStart(Cancel) Export
+	
+	If InfoBaseUpdate.FirstRun() Then
+		
+		If Find(LaunchParameter, "InitSeparatedInfoBase") <> 0 Then
 
-	TabularSectionRow = DocumentForm.Items[DocumentForm.TabularSectionName].CurrentData;
-    
-	TabularSectionRow.ConnectionKey = CreateNewLinkKey(DocumentForm);		
-        
-EndProcedure // AddConnectionKeyToTabularSectionRow()
 
-// Procedure adds link key into subordinate tabular section.
+			
+			CommonUse.SetInfoBaseSeparationParameters(True);
+			
+			Terminate(True, "/CNoParameters");
+		EndIf;
+		
+	EndIf;
+	
+	CanUseSeparatedData = CommonUseCached.CanUseSeparatedData();
+	
+	If Not CanUseSeparatedData Then
+		InfoBaseUpdate.ExecuteInfoBaseUpdate();
+	EndIf;
+	
+	If Not IsBlankString(LaunchParameter) Then
+		LaunchParameters = StringFunctionsClientServer.SplitStringIntoSubstringArray(LaunchParameter, ";");
+		LaunchParameterValue = Upper(LaunchParameters[0]);
+		
+		If LaunchParameterValue = Upper("LogOnDataArea") Then
+			If LaunchParameters.Count() < 2 Then
+				Raise(NStr("en = 'If the LogOnDataArea startup parameter is specified,
+						|the separator parameter must be specified too.''"));
+			EndIf;
+			
+			Try
+				SeparatorValue = Number(LaunchParameters[1]);
+			Except
+				Raise(NStr("en = 'The separator value must be a number.'"));
+			EndTry;
+			
+			CommonUse.SetSessionSeparation(True, SeparatorValue);
+			CanUseSeparatedData = True;
+		EndIf;
+	EndIf;
+	
+	If CanUseSeparatedData Then
+		
+		StandardSubsystemsClientOverridable.BeforeStart(Cancel);
+		
+		If Cancel Then
+			Return;
+		EndIf;
+		
+		CommonUseClientOverridable.BeforeStart(Cancel);
+		
+	EndIf;
+	
+EndProcedure
+
+// Standard actions executed on appication start.
+//
+// Parameters
+// ProcessLaunchParameters - Boolean - True if the handler is called on 
+// a direct application launch and it should processes launch parameters
+// (if its logic specifies such processing). False if the handler is called on 
+// a shared user interactive logon to a data area and it 
+// should not processes launch parameters.
+//
+Procedure ActionsOnStart(ProcessLaunchParameters = True) Export
+	
+	StandardSubsystemsClientOverridable.OnStart(ProcessLaunchParameters);
+	CommonUseClientOverridable.OnStart(ProcessLaunchParameters);
+	
+EndProcedure
+
+// Corresponds to the BeforeExit handler
 //
 // Parameters:
-//  DocumentForm 					- ManagedForm, contains document form, whose attributes
-//                 							are processed by the procedure
-//	SubordinateTabularSectionName 	- String, containing name of the subordinate tabular
-//                 							section.
+// Cancel - Boolean - flag that shows whether exit from the application is canceled. 
 //
-Procedure AddConnectionKeyToSubordinateTabularSectionRow(DocumentForm, SubordinateTabularSectionName) Export
+Procedure ActionsBeforeExit(Cancel) Export
 	
-	SubordinateTabularSection = DocumentForm.Items[SubordinateTabularSectionName];
+	StandardSubsystemsClientOverridable.BeforeExit(Cancel);
 	
-	SubordinateTabularSectionRow = SubordinateTabularSection.CurrentData;
-	SubordinateTabularSectionRow.ConnectionKey = SubordinateTabularSection.RowFilter["ConnectionKey"];
+	If Cancel = True Then
+		Return;
+	EndIf;
 	
-	FilterStr = New FixedStructure("ConnectionKey", SubordinateTabularSection.RowFilter["ConnectionKey"]);
-	DocumentForm.Items[SubordinateTabularSectionName].RowFilter = FilterStr;
+	CommonUseClientOverridable.BeforeExit(Cancel);
+	
+EndProcedure
 
-EndProcedure // AddConnectionKeyToSubordinateTabularSectionRow()
-
-// Procedure prohibits to insert new line, if main tabular section line is not selected.
+// Shows the exit confirmation dialog to the user.
 //
 // Parameters:
-//  DocumentForm 					- ManagedForm, contains document form, whose attributes
-//                							 	are processed by the procedure
-//	SubordinateTabularSectionName 	- String, containing name of the subordinate tabular
-//                 								section.
+// Cancel - Boolean - flag that shows whether exit from the application is canceled. 
 //
-Function BeforeAddToSubordinateTabularSection(DocumentForm, SubordinateTabularSectionName) Export
-
-	If DocumentForm.Items[DocumentForm.TabularSectionName].CurrentData = Undefined Then
-		Message = New UserMessage;
-		Message.Text = NStr("en = 'The row in the tabular section has not been selected'");
-		Message.Message();
-		Return True;
-	Else
+// Returns:
+// Boolean - True, if the user canceled exit from the application;
+// False, if the user confirmed exit from the application, or exit dialog was not called.
+//
+Function AskExitConfirmation(Cancel) Export
+	
+	// If exit confirmation is not disabled in configuration, checking if it is enabled in user settings
+	If SkipExitConfirmation <> True Then 
+		SkipExitConfirmation = Not StandardSubsystemsServerCall.LoadOnExitConfirmationSetting();
+	EndIf;
+	If SkipExitConfirmation Then
 		Return False;
 	EndIf;
-		
-EndFunction // BeforeAddToSubordinateTabularSection()
-
-// Procedure deletes lines from the subordinate tabular section.
-//
-// Parameters:
-//  DocumentForm 					- ManagedForm, contains document form, whose attributes
-//                 								are processed by the procedure
-//	SubordinateTabularSectionName 	- String, containing name of the subordinate tabular
-//              							    section.
-//
-Procedure DeleteRowsOfSubordinateTabularSection(DocumentForm, SubordinateTabularSectionName) Export
-
-	TabularSectionRow 		  = DocumentForm.Items[DocumentForm.TabularSectionName].CurrentData;
-	SubordinateTabularSection = DocumentForm.Object[SubordinateTabularSectionName];
-   	
-    SearchResult = SubordinateTabularSection.FindRows(New Structure("ConnectionKey", TabularSectionRow.ConnectionKey));
-	For each SearchString In  SearchResult Do
-		DeleteIndex = SubordinateTabularSection.IndexOf(SearchString);
-		SubordinateTabularSection.Delete(DeleteIndex);
-	EndDo;
 	
-EndProcedure // DeleteRowsOfSubordinateTabularSection()
-
-// Procedure creates new link key for the tables.
-//
-// Parameters:
-//  DocumentForm - ManagedForm, contains document form, whose attributes
-//                 are processed by the procedure.
-//
-Function CreateNewLinkKey(DocumentForm) Export
-
-	ValueList = New ValueList;
-	
-	TabularSection = DocumentForm.Object[DocumentForm.TabularSectionName];
-	For each TSLine In TabularSection Do
-        ValueList.Add(TSLine.ConnectionKey);
-	EndDo;
-
-    If ValueList.Count() = 0 Then
-		ConnectionKey = 1;
-	Else
-		ValueList.SortByValue();
-		ConnectionKey = ValueList.Get(ValueList.Count() - 1).Value + 1;
-	EndIf;
-
-	Return ConnectionKey;
-
-EndFunction //  CreateNewLinkKey()
-
-// Procedure applies filter to the subordinate tabular section.
-//
-Procedure SetFilterOnSubordinateTabularSection(DocumentForm, SubordinateTabularSectionName) Export
-	
-	TabularSectionRow = DocumentForm.Items[DocumentForm.TabularSectionName].CurrentData;
-	If TabularSectionRow = Undefined Then
-		Return;
-	EndIf; 
-	
-	FilterStr = New FixedStructure("ConnectionKey", DocumentForm.Items[DocumentForm.TabularSectionName].CurrentData.ConnectionKey);
-	DocumentForm.Items[SubordinateTabularSectionName].RowFilter = FilterStr;
-	
-EndProcedure //SetFilterOnSubordinateTabularSection()
-
-// PROCEDURES AND FUNCTIONS OF THE SALARY AND HR SUBSYSTEM
-
-// Procedure assignes registration period on the beginning of the month.
-//
-Procedure OnChangeAccountingPeriod(DocumentForm) Export
-    	
-	DocumentForm.Object.AccountingPeriod = BegOfMonth(DocumentForm.Object.AccountingPeriod);
-	
-EndProcedure // PutExpensesAccountByDefault()
-
-// PROCEDURES AND FUNCTIONS OF THE PRICING SUBSYSTEMS
-
-// Procedure calculates tabular section line amount on filling by "Prices and currency".
-//
-Procedure CalculateTabularSectionRowAmount(DocumentForm, TabSectionLine)
-	
-	If TabSectionLine.Property("Quantity") And TabSectionLine.Property("Price") Then
-		TabSectionLine.Amount = TabSectionLine.Quantity * TabSectionLine.Price;
+	DontAskAgain = Not StandardSubsystemsClientCached.ClientParameters().AskConfirmationOnExit;
+	If DontAskAgain Then
+		Return False;
 	EndIf;
 	
-	If TabSectionLine.Property("DiscountRate") Then
-		If TabSectionLine.DiscountRate = 100 Then
-			TabSectionLine.Amount = 0;
-		ElsIf TabSectionLine.DiscountRate <> 0 And TabSectionLine.Quantity <> 0 Then
-			TabSectionLine.Amount = TabSectionLine.Amount * (1 - TabSectionLine.DiscountRate / 100);
+	Buttons = New ValueList;
+	Buttons.Add("DialogReturnCode.Yes",	NStr("en = 'Exit'"));
+	Buttons.Add("DialogReturnCode.No",	NStr("en = 'Cancel'"));
+	
+	Result = QuestionToUser(NStr("en = 'Are you sure you want to exit application?'"), Buttons, , DialogReturnCode.Yes, NStr("en = 'Exit'"), 
+		DialogReturnCode.No, DontAskAgain);
+	If DontAskAgain Then
+		StandardSubsystemsServerCall.SaveExitConfirmationSettings(Not DontAskAgain);
+	EndIf;
+	
+	If Result <> DialogReturnCode.Yes Then
+		Cancel = True;
+		Return True;
+	EndIf;
+	
+	Return False
+	
+EndFunction
+
+// Disables confirmation on exit the application.
+//
+Procedure SkipExitConfirmation() Export
+	
+	SkipExitConfirmation = True;
+	
+EndProcedure
+
+// Checks the platform version. The function depends on a call position and returns True, 
+// if the platform fits to start the configuration.
+//
+// Parameters:
+//	CallPosition - String - place from which the procedure is called.
+//						 Variants: 	"BeforeStart" - If it is called from the BeforeStart() handler
+//										"OnStart" - If it is called from the OnStart() handler
+//
+// Return value - Boolean - if the version is actual then it is True, else it is False.
+//
+Function CheckPlatformVersionAtStart(CallPosition) Export
+	
+	If CommonUseCached.DataSeparationEnabled() Then
+		Return True;
+	EndIf;
+	
+	// For the ordinary mode checking is executed in the "OnStart" handler.
+	// For the managed mode checking is executing in the "BeforeStart" handler.
+	#If ThickClientOrdinaryApplication Then 
+		If CallPosition = "BeforeStart" Then 
+			Return True;
 		EndIf;
+	#Else
+		If CallPosition = "OnStart" Then 
+			Return True;
+		EndIf;
+	#EndIf	
+	
+	CheckParameters = New FixedStructure("PlatformVersion, MustExit", "8.2.15.310", False);
+	StandardSubsystemsClientOverridable.GetMinRequiredPlatformVersion(CheckParameters);
+	
+	Return CheckPlatformVersion(CheckParameters.PlatformVersion, CheckParameters.MustExit);
+	
+EndFunction	
+
+// Checks the least allowable to start platform version.
+// If the platform version is earlier than RecommendedPlatformVersion, a notification
+// will be shown to the user. If Exit is True the application will be closed.
+//
+// Parameters:
+// RecommendedPlatformVersion - String - platform version that is recommended for the application run;
+// MustExit - Boolean - if True and the current platform version is earlier then recommended, 
+// then continue of this session is impossible.
+//
+// Returns:
+// Boolean - True, if the platform version fits for the application run.
+//
+Function CheckPlatformVersion(Val RecommendedPlatformVersion, Val MustExit = False) Export
+	
+	SystemInfo = New SystemInfo;
+	If CommonUseClientServer.CompareVersions(SystemInfo.AppVersion, RecommendedPlatformVersion) >= 0 Then
+		Return True;
+	EndIf;
+	
+	If MustExit Then
+		MessageText = NStr("en='It is impossible to continue this session, the application will be closed.
+			|1C:Enterprise platform version must be updated.'");
+	Else
+		MessageText = 
+			NStr("en='It is recommended to exit application and update 1C:Enterprise platform version.
+		 |Otherwise some of application resources will not be available or results would be unreliable.
+				 |
+		 |Exit application?'");
+	EndIf;
+	Parameters = New Structure;
+	Parameters.Insert("MessageText", MessageText);
+	Parameters.Insert("Exit", MustExit);
+	Parameters.Insert("RecommendedPlatformVersion", RecommendedPlatformVersion);
+	Result = OpenFormModal("CommonForm.NotRecommendedPlatformVersion", Parameters);
+	If MustExit Then
+		Terminate();
+		Return False;
+	ElsIf Result = DialogReturnCode.OK Then
+		Terminate();
+		Return False;
+	EndIf;
+	
+	Return True;
+	
+EndFunction
+
+// Causes a question form.
+//
+// Parameters:
+// MessageText - String - question text for the user
+// Buttons - QuestionDialogMode; ValueList. 
+// Sets composition and a text of dialog buttons, and refered to button values.
+// Using ValueList:
+// Value – contains a refered to a button value. This value is a return value on buttion select.
+// DialogReturnCode enum value or other values can be used as the value;
+// Note: value must support XDTO serialization.
+// Presentation – sets a text of the button.
+// Timeout - timeout value in seconds. On the expiry of this time the function returns DialogReturnCode.Timeout
+//
+// Returns:
+// DialogReturnCode
+//
+Function QuestionToUser(MessageText, Buttons, Timeout = 0, DefaultButton = Undefined, Title = "", 
+	TimeoutButton = Undefined, DontAskAgain = False) Export
+	
+	DontAskAgain = False;
+	
+	Parameters = New Structure;
+	
+	If TypeOf(Buttons) = Type("QuestionDialogMode") Then
+		If Buttons = QuestionDialogMode.YesNo Then
+			ButtonsParameter = "QuestionDialogMode.YesNo";
+		ElsIf Buttons = QuestionDialogMode.YesNoCancel Then
+			ButtonsParameter = "QuestionDialogMode.YesNoCancel";
+		ElsIf Buttons = QuestionDialogMode.OK Then
+			ButtonsParameter = "QuestionDialogMode.OK";
+		ElsIf Buttons = QuestionDialogMode.OKCancel Then
+			ButtonsParameter = "QuestionDialogMode.OKCancel";
+		ElsIf Buttons = QuestionDialogMode.RetryCancel Then
+			ButtonsParameter = "QuestionDialogMode.RetryCancel";
+		ElsIf Buttons = QuestionDialogMode.AbortRetryIgnore Then
+			ButtonsParameter = "QuestionDialogMode.AbortRetryIgnore";
+		EndIf;
+	Else
+		ButtonsParameter = Buttons;
+	EndIf;
+	
+	If TypeOf(DefaultButton) = Type("DialogReturnCode") Then
+		DefaultButtonParameter = DialogReturnCodeInString(DefaultButton);
+	Else
+		DefaultButtonParameter = DefaultButton;
+	EndIf;
+	
+	If TypeOf(TimeoutButton) = Type("DialogReturnCode") Then
+		TimeoutButtonParameter = DialogReturnCodeInString(TimeoutButton);
+	Else
+		TimeoutButtonParameter = TimeoutButton;
+	EndIf;
+	
+	Parameters.Insert("Buttons", ButtonsParameter);
+	Parameters.Insert("Timeout", Timeout);
+	Parameters.Insert("DefaultButton", DefaultButtonParameter);
+	Parameters.Insert("Title", Title);
+	Parameters.Insert("TimeoutButton", TimeoutButtonParameter);
+	Parameters.Insert("MessageText", MessageText);
+	
+	Result = OpenFormModal("CommonForm.Question", Parameters);
+	If TypeOf(Result) = Type("Structure") Then
+		DontAskAgain = Result.DontAskAgain;
+		Return Result.Value;
+	Else
+		Return DialogReturnCode.Cancel;
+	EndIf;
+	
+EndFunction
+
+// Returns value presentation of DialogReturnCode type. 
+Function DialogReturnCodeInString(Value)
+	
+	Result = "DialogReturnCode." + String(Value);
+	
+	If Value = DialogReturnCode.Yes Then
+		Result = "DialogReturnCode.Yes";
+	ElsIf Value = DialogReturnCode.No Then
+		Result = "DialogReturnCode.No";
+	ElsIf Value = DialogReturnCode.OK Then
+		Result = "DialogReturnCode.OK";
+	ElsIf Value = DialogReturnCode.Cancel Then
+		Result = "DialogReturnCode.Cancel";
+	ElsIf Value = DialogReturnCode.Retry Then
+		Result = "DialogReturnCode.Retry";
+	ElsIf Value = DialogReturnCode.Abort Then
+		Result = "DialogReturnCode.Abort";
+	ElsIf Value = DialogReturnCode.Ignore Then
+		Result = "DialogReturnCode.Ignore";
+	EndIf;
+	
+	Return Result;
+	
+EndFunction
+
+// Displays to user a message form or a message on application exit.
+// 
+//
+// Parameters:
+// Cancel - Boolean - flag that shows whether exit is canceled.
+//
+Procedure OpenOnExitMessageForm(Cancel) Export
+	Warnings = New Array;
+	StandardSubsystemsClientOverridable.GetWarningList(Warnings);
+	
+	TransferParameters = New Structure;
+	TransferParameters.Insert("Warnings", Warnings);
+	
+	FormName = "CommonForm.ExitWarnings";
+	
+	If Warnings.Count() = 0 Then
+		If AskExitConfirmation(Cancel) Then
+			Return;
+		EndIf;
+	ElsIf Warnings.Count() = 1 Then
+		Cancel = OpenApplicationWarningForm(Warnings.Get(0), FormName, TransferParameters);
+	ElsIf Warnings.Count() > 1 Then	
+		Cancel = OpenFormModal(FormName, TransferParameters);
+	EndIf;	
+EndProcedure	
+
+// Generatess one question presentation.
+//
+//	If there is a HyperlinkText property in UserWarning then FormOfIndividualOpening opens 
+//	If there is a FlagText property in UserWarning then CommonForm.QuestionBeforeShuttingDownSystem opens.
+//
+// Parameters:
+//	UserWarning - Structure - passed warning structure.
+//	FormName - String - name of a common form with questions.
+//	TransferParameters - Structure - Parameters for a form with questuons.
+//
+// Returns:
+//	Boolean - True, if the form is opened, False in the other way.
+//
+Function OpenApplicationWarningForm(UserWarning, FormName, TransferParameters)
+	Cancel = False;
+	
+	FlagText = "";
+	If UserWarning.Property("FlagText", FlagText) Then 
+		If Not IsBlankString(FlagText) Then 
+			Cancel = OpenFormModal(FormName, TransferParameters);
+		EndIf;
+			
+		Return Cancel;
 	EndIf;	
 	
-EndProcedure // CalculateTabularSectionRowAmount()
-
-// Perform recalculation of price of tabular section based on currency  after changes done in from
-// "Prices and currency".
-//
-// Parameters:
-//  PreviousCurrency - CatalogRef.Currencies, contains link to previous
-//                 currency.
-//
-Procedure RecalculateTabularSectionPricesByCurrency(DocumentForm, PreviousCurrency, TabularSectionName) Export
-	
-	StructureRates = StandardSubsystemsServer.GetCurrencyRates(PreviousCurrency, DocumentForm.Object.DocumentCurrency, DocumentForm.Object.Date);
-																   
-	For each TabularSectionRow In DocumentForm.Object[TabularSectionName] Do
-		
-		// Price.
-		If TabularSectionRow.Property("Price") Then
-			
-			TabularSectionRow.Price = RecalculateFromCurrencyToCurrency(TabularSectionRow.Price, 
-																	StructureRates.RateBeg, 
-																	StructureRates.ExchangeRate, 
-																	StructureRates.MultiplicityBeg, 
-																	StructureRates.Multiplicity);
-																	
-			CalculateTabularSectionRowAmount(DocumentForm, TabularSectionRow);
-			
-		// Amount.
-		ElsIf TabularSectionRow.Property("Amount") Then
-			
-			TabularSectionRow.Amount = RecalculateFromCurrencyToCurrency(TabularSectionRow.Amount, 
-																	StructureRates.RateBeg, 
-																	StructureRates.ExchangeRate, 
-																	StructureRates.MultiplicityBeg, 
-																	StructureRates.Multiplicity);														
+	HyperlinkText = "";
+	If UserWarning.Property("HyperlinkText", HyperlinkText) Then 
+		If Not IsBlankString(HyperlinkText) Then 
+			ActionOnHyperlinkClick = Undefined;
+			If UserWarning.Property("ActionOnHyperlinkClick", ActionOnHyperlinkClick) Then 
+				ActionHyperlink = UserWarning.ActionOnHyperlinkClick;
+				Form = Undefined;
+				If ActionHyperlink.Property("ApplicationWarningForm", Form) Then 
+					FormParameters = Undefined;
+					If ActionHyperlink.Property("ApplicationWarningFormParameters", FormParameters) Then
+						If TypeOf(FormParameters) = Type("Structure") Then 
+							FormParameters.Insert("ExitApplication", True);
+						ElsIf FormParameters = Undefined Then 
+							FormParameters = New Structure;
+							FormParameters.Insert("ExitApplication", True);
+						EndIf;
+						
+						FormParameters.Insert("YesButtonTitle",	"Exit");
+						FormParameters.Insert("TitleNoButton",	"Cancel");
+						
+					EndIf;
+					Response = OpenFormModal(Form, FormParameters);
+					Cancel = GetFormResponse(Response);
 					
-			If TabularSectionRow.Property("DiscountRate") Then
-				
-				// Discounts.
-				If TabularSectionRow.DiscountRate = 100 Then
-					TabularSectionRow.Amount = 0;
-				ElsIf TabularSectionRow.DiscountRate <> 0 And TabularSectionRow.Quantity <> 0 Then
-					TabularSectionRow.Amount = TabularSectionRow.Amount * (1 - TabularSectionRow.DiscountRate / 100);
-				EndIf;
-								
-			EndIf;														
-			
-			TabularSectionRow.Amount = TabularSectionRow.Amount;
-			
+					Return Cancel;
+				ElsIf ActionHyperlink.Property("Form", Form) Then 
+					FormParameters = Undefined;
+					If ActionHyperlink.Property("FormParameters", FormParameters) Then
+						If TypeOf(FormParameters) = Type("Structure") Then 
+							FormParameters.Insert("ExitApplication", True);
+						ElsIf FormParameters = Undefined Then 
+							FormParameters = New Structure;
+							FormParameters.Insert("ExitApplication", True);
+						EndIf;
+					EndIf;
+					Response = OpenFormModal(Form, FormParameters);
+					Cancel = GetFormResponse(Response);
+					
+					Return Cancel;
+				EndIf;	
+			EndIf;	
 		EndIf;
-        		        
-	EndDo; 
-
-EndProcedure // RecalculateTabularSectionPricesByCurrency()
-
-// PROCEDURES AND FUNCTIONS FOR WORK WITH INVOICES
-
-// Apply hyperlink label on the Invoice
-//
-Procedure SetTextAboutInvoice(DocumentForm, Received1 = False) Export
-
-	InvoiceFound = StandardSubsystemsServer.GetSubordinateInvoice(DocumentForm.Object.Ref, Received1);
-	If ValueIsFilled(InvoiceFound) Then
-		DocumentForm.InvoiceText = InvoicePresentation(InvoiceFound.Number, InvoiceFound.Date);	
-	Else
-	    DocumentForm.InvoiceText = "Create invoice";
-	EndIf;
-
-EndProcedure // FillTextAboutInvoice()
-
-// Generates hyperlink label for the Invoice
-//
-Function InvoicePresentation(Date, Number) Export
-
-	TextAboutInvoice = NStr("en = '# %Number% from  %Date%'");
-	TextAboutInvoice = StrReplace(TextAboutInvoice, "%Number%", Number);
-	TextAboutInvoice = StrReplace(TextAboutInvoice, "%Date%", Format(Date, "DF=dd.MM.yyyy"));	
-	Return TextAboutInvoice;
-
-EndFunction // GetInvoicePresentation()
-
-// Apply hyperlink label on the Invoice
-//
-Procedure OpenInvoice(DocumentForm, Received1 = False) Export
-
-	If DocumentForm.Object.DeletionMark Then
-		Message = New UserMessage();
-		Message.Text = NStr("en = 'The invoice cannot be entered on the base of the document with deletion mark'");	
-		Message.Message();
-		Return;	
-	EndIf;
-	
-	If DocumentForm.Modified Then
-		Message = New UserMessage();
-		Message.Text = NStr("en = 'The document has been modified! First you need to record the document!'");	
-		Message.Message();
-		Return;	
-	EndIf;
-	
-	If NOT ValueIsFilled(DocumentForm.Object.Ref) Then
-		Message = New UserMessage();
-		Message.Text = NStr("en = 'The document has not been recorded. First you need to record the document!'");	
-		Message.Message();
-		Return;	
-	EndIf;
-	
-	If Received1 Then
-		FormName = "Document.PurchaseInvoiceReceived.ObjectForm";
-	Else
-		FormName = "Document.Invoice.ObjectForm";
+			
+		Return Cancel;
 	EndIf;	
 	
-	InvoiceFound = StandardSubsystemsServer.GetSubordinateInvoice(DocumentForm.Object.Ref, Received1);	
-	If ValueIsFilled(InvoiceFound) Then
-		OpenForm(FormName, New Structure("Key", InvoiceFound.Ref), DocumentForm);	
-	Else
-	    OpenForm(FormName, New Structure("Basis", DocumentForm.Object.Ref), DocumentForm);
-	EndIf;
-	
-EndProcedure // FillTextAboutInvoice()
+	Return Cancel;
+EndFunction
 
-// PROCEDURES AND FUNCTIONS OF THE SUBSYSTEM ADDITIONAL ATTRIBUTES
-
-// Procedure expands value tree on the form.
+// Defines cancel by the form response.
 //
-Procedure ExpandPropertiesValuesTree(FormItem, Tree) Export
+// Parameters:
+//	Response - Form response.
+Function GetFormResponse(Response)
+	Return Response = Undefined or Response = DialogReturnCode.No or Response = True;
+EndFunction	
 	
-	For each Item In Tree.GetItems() Do
-		Id = Item.GetID();
-		FormItem.Expand(Id, True);
-	EndDo;
+		
 	
-EndProcedure // ExpandPropertiesValuesTree()
-
-// Procedure handler of event BeforeDelete.
-//
-Procedure PropertyValueTreeBeforeDelete(Item, Cancellation, Modified) Export
 	
-	Cancellation 			= True;
-	Item.CurrentData.Value 	= Item.CurrentData.PropertyValueType.AdjustValue(Undefined);
-	Modified 	  			= True;
-	
-EndProcedure // PropertyValueTreeBeforeDelete()
-
-// Procedure handler of event OnStartEdit.
-//
-Procedure PropertyValueTreeOnStartEdit(Item) Export
-	
-	Item.ChildItems.Value.TypeRestriction = Item.CurrentData.PropertyValueType;
-	
-EndProcedure // PropertyValueTreeOnStartEdit()
-
-// PROCEDURES AND FUNCTIONS OF WORK WITH THE DYNAMIC LISTS
-
-// Deletes dynamic list filter item
-//
-//Parameters:
-//List  	- modified dynamic list,
-//FieldName - name of composition field, whose filter has to be deleted
-//
-Procedure DeleteListFilterItem(List, FieldName) Export
-	
-	CompositionField = New DataCompositionField(FieldName);
-	For Each FilterItem In List.Filter.Items Do
-		If TypeOf(FilterItem) = Type("DataCompositionFilterItem")
-			And FilterItem.LeftValue = CompositionField Then
-			List.Filter.Items.Delete(FilterItem);
-		EndIf;
-	EndDo;
-	
-EndProcedure // DeleteListFilterItem()
-
-// Applies dynamic list filter item
-//
-//Parameters:
-//List				- Modified dynamic list,
-//FieldName			- Name of composition field, whose filter needs to be set,
-//ComparisonKind	- Filter comparison type, by default - Equal to,
-//RightValue 		- Filter value
-//
-Procedure SetListFilterItem(List, FieldName, RightValue, ComparisonType = Undefined) Export
-	
-	FilterItem 					= List.Filter.Items.Add(Type("DataCompositionFilterItem"));
-	FilterItem.LeftValue    	= New DataCompositionField(FieldName);
-	FilterItem.ComparisonType   = ?(ComparisonType = Undefined, DataCompositionComparisonType.Equal, ComparisonType);
-	FilterItem.Use    			= True;
-	FilterItem.RightValue   	= RightValue;
-	FilterItem.ViewMode 		= DataCompositionSettingsItemViewMode.Inaccessible;
-	
-EndProcedure // SetListFilterItem()
-
-// Modifies dynamic list filter item
-//
-//Parameters:
-//List         		- Modified dynamic list,
-//FieldName        	- Name of composition field, whose filter needs to be set,
-//ComparisonKind   	- Filter comparison type, by default - Equal to,
-//RightValue		- Filter value,
-//Set     			- Flag indicating that filter has to be set up
-//
-Procedure ChangeListFilterElement(List, FieldName, RightValue = Undefined, Set = False, ComparisonType = Undefined, FilterByPeriod = False) Export
-	
-	DeleteListFilterItem(List, FieldName);
-	
-	If Set Then
-		If FilterByPeriod Then
-			SetListFilterItem(List, FieldName, RightValue.StartDate, 	DataCompositionComparisonType.GreaterOrEqual);
-			SetListFilterItem(List, FieldName, RightValue.EndDate, 		DataCompositionComparisonType.LessOrEqual);		
-		Else
-		    SetListFilterItem(List, FieldName, RightValue, ComparisonType);	
-		EndIf;		
-	EndIf;
-	
-EndProcedure // ChangeListFilterElement()

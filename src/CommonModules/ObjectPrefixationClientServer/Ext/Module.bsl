@@ -1,44 +1,66 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Object prefixation subsystem.
+// Creating an object number or code for print forms.
 ////////////////////////////////////////////////////////////////////////////////
-// FUNCTIONS GENERATING OBJECT NUMBER/CODE FOR OUTPUT IN PRINT FORMS
 
-// Removes prefix of the infobase and prefix of the Company from the passed string ObjectNumber
-// Variable ObjectNumber should match template: OOBB-XXX...XX, where
-// OO    	- Company prefix;
-// BB  		- infobase prefix;
-// "-" 		- separator;
-// XXX...XX - object number/code.
+////////////////////////////////////////////////////////////////////////////////
+// INTERFACE
+
+// Deletes infobase and company prefixes from the passed ObjectNumber string. 
+// The ObjectNumber string must match the following pattern: CCBB-XXX...XX or
+// BBXXX...XX, where:
+// CC  - company prefix;
+// BB  - infobase prefix;
+// "-" - separator;
+// XXX...XX - object number or code.
+// Prefix insignificant characters (zero character - "0") are deleted anyway.
 //
 // Parameters:
-//  ObjectNumber 			 - String 				- number or code of the object from which prefixes should be removed
-//  DeleteCompanyPrefix - Boolean (optional) 	- flag of Company prefix removal; by default is False;
-//  DeleteInfobasePrefix 	 - Boolean (optional) 	- flag of infobase prefix removal; by default is False;
+//  ObjectNumber         - String - object number or code whose prefix will be deleted.
+//  DeleteCompanyPrefix  - Boolean (Optional) - flag that shows whether the company
+//                         prefix will be deleted. The default value is False.
+//  DeleteInfoBasePrefix - Boolean (Optional) - flag that shows whether the infobase
+//                         prefix will be deleted. The default value is False.
 //
 // Examples:
-//  DeletePrefixesFromObjectNumber("NFGL-000001234", True,  True)	= "000001234"
-//  DeletePrefixesFromObjectNumber("NFGL-000001234", False, True)   = "NF-000001234"
-//  DeletePrefixesFromObjectNumber("NFGL-000001234", True,  False)  = "GL-000001234"
-//  DeletePrefixesFromObjectNumber("NFGL-000001234", False, False)  = "NFGL-000001234"
+//  DeletePrefixesFromObjectNumber("0CMN-000001234", True, True)   = "000001234"
+//  DeletePrefixesFromObjectNumber("0CMN-000001234", False, True)  = "C-000001234"
+//  DeletePrefixesFromObjectNumber("0CMN-000001234", True, False)  = "MN-000001234"
+//  DeletePrefixesFromObjectNumber("0CMN-000001234", False, False) = "CMN-000001234"
 //
-Function DeletePrefixesFromObjectNumber(Val ObjectNumber, DeleteCompanyPrefix = False, DeleteInfobasePrefix = False) Export
+Function DeletePrefixesFromObjectNumber(Val ObjectNumber, DeleteCompanyPrefix = False, DeleteInfoBasePrefix = False) Export
 	
-	// initially empty string of the object number prefix
+	If Not NumberContainsStandardPrefix(ObjectNumber) Then
+		Return ObjectNumber;
+	EndIf;
+	
+	// Creating the empty initial object number prefix string
 	ObjectPrefix = "";
 	
-	CompanyPrefix        = Left(ObjectNumber, 2);
-	InfobasePrefix = Mid(ObjectNumber, 3, 2);
+	NumberContainsFiveDigitPrefix = NumberContainsFiveDigitPrefix(ObjectNumber);
 	
-	// add Company prefix
+	If NumberContainsFiveDigitPrefix Then
+		CompanyPrefix  = Left(ObjectNumber, 2);
+		InfoBasePrefix = Mid(ObjectNumber, 3, 2);
+	Else
+		CompanyPrefix  = "";
+		InfoBasePrefix = Left(ObjectNumber, 2);
+	EndIf;
+	
+	CompanyPrefix  = StrReplace(CompanyPrefix, "0", "");
+	InfoBasePrefix = StrReplace(InfoBasePrefix, "0", "");
+	
+	// Adding the company prefix
 	If Not DeleteCompanyPrefix Then
 		
 		ObjectPrefix = ObjectPrefix + CompanyPrefix;
 		
 	EndIf;
 	
-	// add infobase prefix
-	If Not DeleteInfobasePrefix Then
+	// Adding the infobase prefix
+	If Not DeleteInfoBasePrefix Then
 		
-		ObjectPrefix = ObjectPrefix + InfobasePrefix;
+		ObjectPrefix = ObjectPrefix + InfoBasePrefix;
 		
 	EndIf;
 	
@@ -48,56 +70,87 @@ Function DeletePrefixesFromObjectNumber(Val ObjectNumber, DeleteCompanyPrefix = 
 		
 	EndIf;
 	
-	Return ObjectPrefix + Mid(ObjectNumber, 6);
+	Return ObjectPrefix + Mid(ObjectNumber, ?(NumberContainsFiveDigitPrefix, 6, 4));
 EndFunction
 
-// Removes leading zeros from the object number
-// Variable ObjectNumber should match template: OOBB-XXX...XX, where
-// OO  		- Company prefix;
-// BB  		- infobase prefix;
-// "-" 		- separator;
-// XXX...XX - object number/code.
+// Deletes leading zeros from the object number.
+// The ObjectNumber string must match the following pattern: CCBB-XXX...XX or
+// BBXXX...XX, where:
+// CC - company prefix;
+// BB - infobase prefix;
+// "-" - separator;
+// XXX...XX - object number or code.
 //
 // Parameters:
-//  ObjectNumber - String - object number or code from which leading zeros should be removed
-//
+//  ObjectNumber - String - object number or code where leading zeroes will be deleted.
+// 
 Function DeleteLeadingZerosFromObjectNumber(Val ObjectNumber) Export
 	
-	Prefix 		= Left(ObjectNumber, 5);
-	UserPrefix 	= GetUserPrefix(ObjectNumber);
+	CustomPrefix = GetCustomPrefix(ObjectNumber);
 	
-	Number = Mid(ObjectNumber, 6 + StrLen(UserPrefix));
+	If NumberContainsStandardPrefix(ObjectNumber) Then
+		
+		If NumberContainsFiveDigitPrefix(ObjectNumber) Then
+			Prefix = Left(ObjectNumber, 5);
+			Number = Mid(ObjectNumber, 6 + StrLen(CustomPrefix));
+		Else
+			Prefix = Left(ObjectNumber, 3);
+			Number = Mid(ObjectNumber, 4 + StrLen(CustomPrefix));
+		EndIf;
+		
+	Else
+		
+		Prefix = "";
+		Number = Mid(ObjectNumber, 1 + StrLen(CustomPrefix));
+		
+	EndIf;
 	
-	// delete leading zeros in number from the left
+	// Deleting leading zeros on the left of the number.
 	Number = StringFunctionsClientServer.DeleteDuplicatedChars(Number, "0");
 	
-	Return Prefix + UserPrefix + Number;
+	Return Prefix + CustomPrefix + Number;
 EndFunction
 
-// Removes all user prefixes from the object number (all non-digit chars)
-// Variable ObjectNumber should match template: OOBB-XXX...XX, where
-// OO 		- Company prefix;
-// BB  		- infobase prefix;
-// "-" 		- separator;
-// XXX...XX - object number/code.
+// Deletes all custom prefixes from the object number (all nonnumeric characters). 
+// The ObjectNumber string must match the following pattern: CCBB-XXX...XX or
+// BBXXX...XX, where:
+// CC - company prefix;
+// BB - infobase prefix;
+// "-" - separator;
+// XXX...XX - object number or code.
 //
 // Parameters:
-//  ObjectNumber - String - object number or code from which leading zeros should be removed
-//
-Function DeleteUserPrefixesFromObjectNumber(Val ObjectNumber) Export
+// ObjectNumber - String - object number or code where all nonnumeric characters will
+//                be deleted.
+// 
+Function DeleteCustomPrefixesFromObjectNumber(Val ObjectNumber) Export
 	
-	StringOfNumericChars = "0123456789";
+	DigitalCharacterString = "0123456789";
 	
-	Prefix     = Left(ObjectNumber, 5);
-	NumberFull = Mid(ObjectNumber, 6);
+	If NumberContainsStandardPrefix(ObjectNumber) Then
+		
+		If NumberContainsFiveDigitPrefix(ObjectNumber) Then
+			Prefix     = Left(ObjectNumber, 5);
+			FullNumber = Mid(ObjectNumber, 6);
+		Else
+			Prefix     = Left(ObjectNumber, 3);
+			FullNumber = Mid(ObjectNumber, 4);
+		EndIf;
+		
+	Else
+		
+		Prefix     = "";
+		FullNumber = ObjectNumber;
+		
+	EndIf;
 	
 	Number = "";
 	
-	For IndexOf = 1 To StrLen(NumberFull) Do
+	For Index = 1 to StrLen(FullNumber) Do
 		
-		Char = Mid(NumberFull, IndexOf, 1);
+		Char = Mid(FullNumber, Index, 1);
 		
-		If Find(StringOfNumericChars, Char) > 0 Then
+		If Find(DigitalCharacterString, Char) > 0 Then
 			
 			Number = Number + Char;
 			
@@ -108,31 +161,39 @@ Function DeleteUserPrefixesFromObjectNumber(Val ObjectNumber) Export
 	Return Prefix + Number;
 EndFunction
 
-// Gets user prefix of object number/code
-// Variable ObjectNumber should match template: OOBB-AAXX..XX, where
-// OO 		- Company prefix;
-// BB 		- infobase prefix;
-// "-" 		- separator;
-// AA 		- user prefix;
-// XX..XX 	- object number/code
+// Retrieves the custom prefix of the object number or code.
+// The ObjectNumber string must match the following pattern: CCBB-XXX...XX or
+// BBXXX...XX, where:
+// CC - company prefix;
+// BB - infobase prefix;
+// "-" - separator;
+// XXX...XX - object number or code.
 //
 // Parameters:
-//  ObjectNumber - String - object number or code from which user prefix should be extracted
-//
-Function GetUserPrefix(Val ObjectNumber) Export
+// ObjectNumber - String - object number or code whose custom prefix will be retrieved.
+// 
+Function GetCustomPrefix(Val ObjectNumber) Export
 	
-	// function returned value (user prefix)
+	// Return value (custom prefix)
 	Result = "";
 	
-	ObjectNumber = Mid(ObjectNumber, 6);
-	
-	StringOfNumericChars = "0123456789";
-	
-	For IndexOf = 1 To StrLen(ObjectNumber) Do
+	If NumberContainsStandardPrefix(ObjectNumber) Then
 		
-		Char = Mid(ObjectNumber, IndexOf, 1);
+		If NumberContainsFiveDigitPrefix(ObjectNumber) Then
+			ObjectNumber = Mid(ObjectNumber, 6);
+		Else
+			ObjectNumber = Mid(ObjectNumber, 4);
+		EndIf;
 		
-		If Find(StringOfNumericChars, Char) > 0 Then
+	EndIf;
+	
+	DigitalCharacterString = "0123456789";
+	
+	For Index = 1 to StrLen(ObjectNumber) Do
+		
+		Char = Mid(ObjectNumber, Index, 1);
+		
+		If Find(DigitalCharacterString, Char) > 0 Then
 			Break;
 		EndIf;
 		
@@ -143,27 +204,56 @@ Function GetUserPrefix(Val ObjectNumber) Export
 	Return Result;
 EndFunction
 
-// Gets document number for printing; prefixes and leading zeros are removed from the number
-// Function:
-// removes Company prefix,
-// removes infobase prefix (optional),
-// removes user prefixes (optional),
-// removes leading zeros in object number
+// Retrieves the document number for printing. All prefixes and leading zeroes are
+// deleted from the number.
 //
-Function GetNumberForPrinting(Val ObjectNumber, DeleteInfobasePrefix = False, DeleteUserPrefix = False) Export
+// Removes a company prefix.
+// Removes an infobase prefix (optional).
+// Removes a custom prefix (optional).
+// Removes leading zeroes.
+//
+Function GetNumberForPrinting(Val ObjectNumber, DeleteInfoBasePrefix = False, DeleteCustomPrefix = False) Export
 	
-	// delete user prefixes from object number
-	If DeleteUserPrefix Then
+	// {Handler: OnGetNumberForPrinting} Start
+	StandardProcessing = True;
+	
+	ObjectPrefixationClientServerOverridable.OnGetNumberForPrinting(ObjectNumber, StandardProcessing);
+	
+	If StandardProcessing = False Then
+		Return ObjectNumber;
+	EndIf;
+	// {Handler: OnGetNumberForPrinting} End
+	
+	// Deleting custom prefixes from the object number
+	If DeleteCustomPrefix Then
 		
-		ObjectNumber = DeleteUserPrefixesFromObjectNumber(ObjectNumber);
+		ObjectNumber = DeleteCustomPrefixesFromObjectNumber(ObjectNumber);
 		
 	EndIf;
 	
-	// delete leading zeros from object number
+	// Deleting leading zeroes from the object number
 	ObjectNumber = DeleteLeadingZerosFromObjectNumber(ObjectNumber);
 	
-	// delete Company prefix and infobase prefix from object number
-	ObjectNumber = DeletePrefixesFromObjectNumber(ObjectNumber, True, DeleteInfobasePrefix);
+	// Deleting company and infobase prefixes from the object number
+	ObjectNumber = DeletePrefixesFromObjectNumber(ObjectNumber, True, DeleteInfoBasePrefix);
 	
 	Return ObjectNumber;
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+Function NumberContainsStandardPrefix(Val ObjectNumber)
+	
+	SeparatorPosition = Find(ObjectNumber, "-");
+	
+	Return SeparatorPosition = 3
+		Or SeparatorPosition = 5
+	;
+EndFunction
+
+Function NumberContainsFiveDigitPrefix(Val ObjectNumber)
+	
+	Return Find(ObjectNumber, "-") = 5;
+	
 EndFunction

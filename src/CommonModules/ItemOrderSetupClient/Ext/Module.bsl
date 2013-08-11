@@ -1,72 +1,87 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Item order setup subsystem.
+//
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// EXPORT PROCEDURES AND FUNCTIONS
+// INTERFACE
 
-// Handler of command "Move up" of a list form
-Procedure ShiftItemUp(ListAttribute, ListItem) Export
+// The handler of the Move up command of the list form.
+//
+// Parameters:
+//  ListFormAttribute - DynamicList - form attribute that contains a list;
+//  ListFormItem - FormTable - form item that contains a list.
+//
+Procedure MoveItemUpExecute(ListFormAttribute, ListFormItem) Export
 	
-	ShiftItem(ListAttribute, ListItem, True);
+	MoveItemExecute(ListFormAttribute, ListFormItem, True);
 	
 EndProcedure
 
-// Handler of command "Move down" of a list form
-Procedure ShiftItemDown(ListAttribute, ListItem) Export
+// The handler of the Move down command of the list form.
+//
+// Parameters:
+//  ListFormAttribute - DynamicList - form attribute that contains a list;
+//  ListFormItem - FormTable - form item that contains a list.
+//
+Procedure MoveItemDownExecute(ListFormAttribute, ListFormItem) Export
 	
-	ShiftItem(ListAttribute, ListItem, False);
+	MoveItemExecute(ListFormAttribute, ListFormItem, False);
 	
 EndProcedure
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
-// AUXILIARY PROCEDURES AND FUNCTIONS
+// INTERNAL PROCEDURES AND FUNCTIONS
 
-// Execute move operation or order restore operation
-Procedure ShiftItem(ListAttribute, ListItem, Up)
+Procedure MoveItemExecute(ListAttribute, ListItem, Up)
 	
-	AppliedFilters = New Structure;
+	AdjustedFilters = New Structure;
 	
-	If Not CheckListBeforeOperation(ListAttribute, ListItem, AppliedFilters) Then
+	If Not CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters) Then
 		Return;
 	EndIf;
 	
-	Ref = ListItem.CurrentRow;
-	RepresentationListView = (ListItem.Representation = TableRepresentation.List);
+	ListView = (ListItem.Representation = TableRepresentation.List);
 	
-	StrError = ItemOrderSetup.ChangeItemsOrder(Ref, AppliedFilters, RepresentationListView, Up);
+	ErrorText = ItemOrderSetup.ChangeItemOrder(
+								ListItem.CurrentData.Ref,
+								AdjustedFilters,
+								ListView,
+								Up);
 		
-	If StrError = "" Then
+	If IsBlankString(ErrorText) Then
 		ListItem.Refresh();
 	Else
-		DoMessageBox(StrError);
+		DoMessageBox(ErrorText);
 	EndIf;
 	
 EndProcedure
 
-// Check list settings before executing the operation
-Function CheckListBeforeOperation(ListAttribute, ListItem, AppliedFilters)
+Function CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters)
 	
-	// Check if current data is assigned
+	// Checking whether the current data is defined
 	If ListItem.CurrentData = Undefined Then
 		Return False;
 	EndIf;
 	
-	// Check applied sort order
-	If Not ListSortingIsSetProperly(ListAttribute) Then
-		DoMessageBox(NStr("en = 'Prior to change items order it is necessary to set the additional ordering filter ascending'"));
+	// Checking whether an order is set
+	If Not IsListSortingCorrect(ListAttribute) Then
+		DoMessageBox(NStr("en = 'If you want to change the item order, you have to configure
+								 |the list order in the following way: the Order field with order kind   
+								 |set to Ascending must be the first row of the order table.'"));
 		Return False;
 	EndIf;
 	
-	// Check applied filters
-	If Not CheckFiltersSetInList(ListAttribute, AppliedFilters) Then
-		DoMessageBox(NStr("en = 'The filter in list is not set properly.'"));
+	// Checking whether filters are set
+	If Not CheckFiltersSetInList(ListAttribute, AdjustedFilters) Then
+		DoMessageBox(NStr("en = 'If you want to change the item order, you have to clear all 
+								 |filters, except filters by owner and by folder.'"));
 		Return False;
 	EndIf;
 	
-	For Each GroupingItem In ListAttribute.Group.Items Do
-		If GroupingItem.Use Then
-			DoMessageBox(NStr("en = 'The current grouping does not allow to change items order.'"));
+	For Each GroupItem In ListAttribute.Group.Items Do
+		If GroupItem.Use Then
+			DoMessageBox(NStr("en = 'If you want to change the item order, you have to clear using groups.'"));
 			Return False;
 		EndIf;
 	EndDo;
@@ -75,12 +90,11 @@ Function CheckListBeforeOperation(ListAttribute, ListItem, AppliedFilters)
 	
 EndFunction
 
-// Check, is sort order is applied correctly in the list
-Function ListSortingIsSetProperly(ListAttribute)
+Function IsListSortingCorrect(ListAttribute)
 	
 	OrderItems = ListAttribute.Order.Items;
 	
-	// Find first used order item
+	// Finding the first order item that is used
 	Item = Undefined;
 	For Each OrderingItem In OrderItems Do
 		If OrderingItem.Use Then
@@ -90,7 +104,7 @@ Function ListSortingIsSetProperly(ListAttribute)
 	EndDo;
 	
 	If Item = Undefined Then
-		// No ordering is applied
+		// The order is not set
 		Return False;
 	EndIf;
 	
@@ -107,38 +121,35 @@ Function ListSortingIsSetProperly(ListAttribute)
 	
 EndFunction
 
-// Get information about applied filters and partially check them
-Function CheckFiltersSetInList(ListAttribute, AppliedFilters)
+Function CheckFiltersSetInList(ListAttribute, AdjustedFilters)
 	
-	AppliedFilters.Insert("IsFilterByParent",  False);
-	AppliedFilters.Insert("IsFilterByOwner", False);
+	AdjustedFilters.Insert("HasFilterByParent", False);
+	AdjustedFilters.Insert("HasFilterByOwner", False);
 	
-	FieldParent1 = New DataCompositionField("Parent");
-	FieldParent2 = New DataCompositionField("Parent");
-	FieldOwner1  = New DataCompositionField("Owner");
-	FieldOwner2  = New DataCompositionField("Owner");
+	ParentField1 = New DataCompositionField("Parent");
+	OwnerField1 = New DataCompositionField("Owner");
 	
 	For Each Filter In ListAttribute.Filter.Items Do
 		
 		If Not Filter.Use Then
-			// Filter is not applied
+			// The filter is not set
 			Continue;
 		ElsIf TypeOf(Filter) <> Type("DataCompositionFilterItem") Then
-			// Item filter group is not valid
+			// Incorrect filter item type
 			Return False;
 		ElsIf Filter.ComparisonType <> DataCompositionComparisonType.Equal Then
-			// Just comparison for equation is valid
+			// Equal is the only one allowed comparison type
 			Return False;
 		EndIf;
 		
-		If (Filter.LeftValue = FieldParent1) Or (Filter.LeftValue = FieldParent2) Then
-			// Parent filter is applied
-			AppliedFilters.IsFilterByParent = True;
-		ElsIf (Filter.LeftValue = FieldOwner1) Or (Filter.LeftValue = FieldOwner2) Then
-			// Owner filter is applied
-			AppliedFilters.IsFilterByOwner = True;
+		If Filter.LeftValue = ParentField1 Then
+			// The filter by parent is set
+			AdjustedFilters.HasFilterByParent = True;
+		ElsIf Filter.LeftValue = OwnerField1 Then
+			// The filter by owner is set
+			AdjustedFilters.HasFilterByOwner = True;
 		Else
-			// Filter is applied by the attribute, for which it cannot be applied
+			// Filters by all other attributes are prohibited while the item order is being changed
 			Return False;
 		EndIf;
 		

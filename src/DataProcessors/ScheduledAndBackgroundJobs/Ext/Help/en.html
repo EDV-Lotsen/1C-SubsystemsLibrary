@@ -1,22 +1,48 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 8.00.6001.19154"></meta></head><body>The<b> Scheduled and Background Jobs </b>form allows you to view scheduled jobs and their history, as well as start, stop, and schedule them.<br><br>It is recommended that you schedule jobs instead of running them manually, and that you do not edit scheduled jobs because their default settings are perfect for most cases.<br><br>The <b>Scheduled Jobs</b> tab contains the list of jobs. For each job, the following information is available: 
-<ul><li><b>Description.</b> The job name as it appears in the list. 
-</li><li><b>In use.</b> The job only runs at the scheduled time if this check box is selected. It is useful when you need to temporarily disable a scheduled job, without changing its schedule. 
-</li><li><b>On error repeat, times. </b>The number of job run attempts if the previous run resulted in an error. The interval between attempts is specified in the <b>On error repeat in, sec </b>box. 
-</li><li><b>On error repeat in, sec. </b>The interval between job run attempts if the previous run resulted in an error. The number of attempts is specified in the <b>On error repeat, times </b>box. 
-</li><li><b>ID.</b> A unique job identifier for internal use. It is assigned automatically.<b></b> 
-</li><li><b>Key.</b> A job identifier that is used when you need to run multiple jobs that call the same method. Normally, while a job is running, another job calling the same method cannot start until the current one is finished. But if they have different keys, they are allowed to run simultaneously. 
-</li><li><b>User name.</b> The account for running the job when it is scheduled. Note that when you start jobs manually, they run under your account. <b></b>
-</li><li><b>Name.</b> The name of the scheduled job in the configuration. This information is for application administrators.<b></b> 
-</li><li><b>Synonym.</b> The synonym of the scheduled job in the configuration. This information is for application administrators.<b></b> 
-</li><li><b>Metadata method name. </b>The name of the method that it is executed when you run the job.<b> </b>This information is for application administrators.<b></b> 
-</li><li><b>Messages and error descriptions.</b> This area contains messages and error descriptions generated during the last job execution. <b></b></li></ul>The <b>Background Jobs</b> tab contains the log of job executions. It contains the following filters: 
-<ul><li><b>By status. </b>Select the job status. The following statuses are available: 
-<ul><li><strong>Executed </strong>
-</li><li><strong>Completed with errors </strong>
-</li><li><strong>Canceled </strong>
-</li><li><strong>Running </strong></li></ul></li><li><b>By period.</b> Select the period during which the job was started. The following periods are available: 
-<ul><li><strong>Custom. </strong>A custom period 
-</li><li><strong>No filter.</strong> No filter 
-</li><li><strong>Last night.</strong> Last night,12 hours from 9:00 PM to 9:00 AM 
-</li><li><strong>Yesterday.</strong> 24 hours from 12:00 AM to 11:59 PM of the previous day 
-</li><li><strong>Today.</strong> 24 hours from 12:00 AM to 11:59 PM of the current day</li></ul></li><li><b>By job name.</b> Select a job name from the list.</li></ul>After you have specified the filter options, click <b>Refresh</b>.<br><br>To schedule a job, on the <b>Scheduled Jobs</b> tab, click <b>Schedule</b>, specify a schedule, and then click <b>OK</b>. If the application runs in the file mode, in addition to scheduling it, you have to start a separate session for running the scheduled jobs by clicking the <img src="_files/schedule.png"></img><v:shapetype id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f"> button.</v:shapetype></body></html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
+<p>In order to administrate scheduled and background jobs the system provides following functionality:</p>
+<ol><li><a href="#SJMonitoring">Scheduled jobs execution monitor; </a>
+</li><li><a href="#Operations_with_SJ">Scheduled jobs; </a>
+</li><li><a href="#Operations_with_BJ">Background jobs. </a></li></ol><h3> </h3>
+<h3><a name="SJMonitoring">1. Scheduled job</a> execution monitor</h3>
+<p>Control can be <em>simple </em>or<em> detailed.</em></p>
+<p><em>Simple control </em>- includes analysis of State and End date columns on Scheduled jobs page; it also includes analysis of Messages to user and error details fields on scheduled job edit form.</p>
+<p><em>Detailed control </em>- includes analysis of background jobs on Background jobs tab, that background jobs were created and executed to execute scheduled job.</p>
+<blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p>Detailed control is made by filtering of the list of background jobs by a specific scheduled job and analysing background job attributes. Note, that scheduled job execution details are obtained by selection of a part of details of the last background job execution.</p></blockquote>
+<p>Note: the filter to background jobs is applied only by <img src="StdPicture.Refresh"></img>Refresh command, so after changing filter settings one should execute this command.</p>
+<h3>2. Scheduled jobs</h3>
+<table border="1" width="100%"><tbody><tr><td valign="top"><strong>Command</strong></td>
+<td><strong>Details</strong></td></tr><tr><td><img src="StdPicture.Refresh"></img>Refresh</td>
+<td>Refreshes the the list of scheduled and background jobs.</td></tr><tr><td valign="top"><img src="StdPicture.AddListItem"></img>Add</td>
+<td>Opens a form for creating a new scheduled job.</td></tr><tr><td valign="top"><img src="StdPicture.ChangeListItem" width="16" height="16"></img>Change</td>
+<td>Opens a form for editing a scheduled job.</td></tr><tr><td valign="top">
+<p><img src="StdPicture.CloneListItem"></img>Copy</p></td>
+<td>Opens a form for creating a new scheduled job filled with values from the copied scheduled job.</td></tr><tr><td>
+<p><img src="StdPicture.DeleteListItem"></img>Delete</p></td>
+<td>Deletes a selected scheduled job in list, except for predefined scheduled jobs.</td></tr><tr><td><img src="StdPicture.SetTime"></img>Schedule</td>
+<td>Opens a form for editing a schedule of a scheduled job.</td></tr><tr><td><img src="CommonPicture.ExecuteScheduledJobManually" width="16" height="16"></img>Execute now</td>
+<td>
+<p>Executes a procedure of a scheduled job in the current session (for file mode) or in a background job on server (for client/server mode). When a procedure is executed in a background job on server, the last execution date, that is used for execution by a schedule, for scheduled job is not changed.</p></td></tr><tr><td>
+<p><img src="CommonPicture.ScheduledJobExecutionSetup" width="16" height="16"></img>Scheduled job execution setup</p></td>
+<td>
+<p>For file mode only. Opens a form with scheduled job execution settings.</p></td></tr><tr><td><img src="CommonPicture.StartSeparateSessionToExecuteScheduledJobs" width="16" height="16"></img>Open separate session for scheduled job execution</td>
+<td>
+<p>For file mode only. Opens a separate session for execution of scheduled jobs. The session is opened with options that allow it to process background jobs and when the current session is closed, this separate session will be closed automatically too. </p></td></tr></tbody></table><h3> </h3>
+<h3>3. Background jobs</h3>
+<p></p>
+<table border="1" width="100%"><tbody><tr><td valign="top"><strong>Filter</strong></td>
+<td valign="top"><strong>Details</strong></td></tr><tr><td>By state</td>
+<td>
+<p>Allows to filter by a state:<br>1) Completed,<br>2) Completed with errors,<br>3) Canceled by user,<br>4) Executing.</p></td></tr><tr><td>By period</td>
+<td>
+<p>Allows to filter by a period:<br>1) Custom - allows to specify a custom period,<br>2) Without filter - no filter by period will be applied,<br>3) Night - standard period of 12 hours starting from 9:00 PM till 09:00 AM,<br>4) Yesterday - standard period of 24 hours starting from  00:00 AM till 11:59 PM of yesterday,<br>5) Today - standard period of 24 hours starting from 00:00 AM till 11:59 PM of today.</p></td></tr><tr><td>By scheduled job</td>
+<td>Allows to filter by a scheduled job:<br>1) The check box enables or disables this filter,<br>2) Scheduled job name, &lt;not defined&gt; is used to filter background jobs, started for execution of other (not scheduled) jobs.</td></tr></tbody></table><table border="1" width="100%"><tbody><tr><td valign="top"><strong>Command</strong></td>
+<td valign="top"><strong>Details</strong></td></tr><tr><td><img src="StdPicture.Refresh"></img>Refresh</td>
+<td>Updates the list of background jobs with applied filter and a scheduled jobs list.</td></tr><tr><td><img src="StdPicture.Magnifier"></img>Open</td>
+<td>Opens a form with background job details.</td></tr><tr><td><img src="StdPicture.Stop"></img>Cancel</td>
+<td>Cancels execution of a selected background job (if it is executed currently).</td></tr></tbody></table><p> </p>
+<h3><span class="1ctranslator_highlight1">See also</span></h3>
+<ul><li><a href="DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJob/Help">Setup scheduled job properties </a>
+</li><li><a href="DataProcessor.ScheduledAndBackgroundJobs.Form.BackgroundJob/Help">Setup background job properties </a>
+</li><li><a href="DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecutionSetup/Help">Setup execution of scheduled jobs in file mode</a></li></ul><p> </p>
+<p> </p></body></html>

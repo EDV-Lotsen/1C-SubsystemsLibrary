@@ -1,43 +1,61 @@
 ﻿
 // StandardSubsystems
 
-// ConfigurationUpdate
+// StandardSubsystems.BaseFunctionality
 
-// Information of available configuration update, found on Internet
-// on program start.
-Var AvailableConfigurationUpdate Export;
-// ValueList for accumulation of messages into eventlog,
-// generated in client business-logics of the subsystem.
+// ValueList for accumulating a message package generated in the client business logic 
+// for the event log.
 Var MessagesForEventLog Export; 
-// Structure with parameters of configuration update wizard.
-Var ConfigurationUpdateOptions Export; 
+// Flag that shows whether the file system installation must be suggested in the current session.
+Var SuggestFileSystemExtensionInstallation Export;
+// Flag that shows whether the standard exit confirmation required in the current session.
+Var SkipExitConfirmation Export;
 
-// End ConfigurationUpdate
+// End StandardSubsystems.BaseFunctionality
 
-// FileOperations
-Var TwainComponent Export;		// Twain component for work with scanner
-// End FileOperations
+// StandardSubsystems.UserSessions
+Var SessionTerminationInProgress Export;
+// End StandardSubsystems.UserSessions
+		
+// StandardSubsystems.ConfigurationUpdate
+
+// Flag that shows whether a configuration update is found on the Internet
+Var AvailableConfigurationUpdate Export;
+// Structure with configuration update wizard parameters
+Var ConfigurationUpdateSettings Export; 
+
+// End StandardSubsystems.ConfigurationUpdate
+
+// StandardSubsystems.FileOperations
+Var TwainAddIn Export; // Twain component for working with scanners
+// End StandardSubsystems.FileOperations
+
+// StandardSubsystems.FileFunctions
+// Flag that shows whether access to the working directory is checked
+Var AccessToWorkingDirectoryCheckExecuted Export;
+// End StandardSubsystems.FileFunctions
+
+// StandardSubsystems.InfoBaseBackup
+
+// Parameters for backups
+Var InfoBaseBackupParameters Export;
+// Flag that shows whether a backup is performed once the session is terminated
+Var NotifyAboutBackupOnExit Export;
+// Date of the deferred backup 
+Var DeferredBackupDate Export;
+
+// End StandardSubsystems.InfoBaseBackup
+
+// StandardSubsystems.PerformanceEstimation
+Var PerformanceEstimationTimeMeasurement Export;
+// End StandardSubsystems.PerformanceEstimation
 
 // End StandardSubsystems
 
-Procedure BeforeStart(Cancellation) 
+Procedure BeforeStart(Cancel)
 	
 	// StandardSubsystems
-	
-	// Users
-	If ValueIsFilled(StandardSubsystemsClientSecondUse.ClientParameters().AuthorizationError) Then
-		
-		DoMessageBox(StandardSubsystemsClientSecondUse.ClientParameters().AuthorizationError);
-		Cancellation = True;
-		Return;
-		
-	EndIf;
-	// End Users
-	
-	// InfobaseVersionUpdate
-	Cancellation = Cancellation OR NOT InfobaseUpdateClient.RunningInfobaseUpdatePermitted();
-	// End InfobaseVersionUpdate
-	
+	StandardSubsystemsClient.ActionsBeforeStart(Cancel);
 	// End StandardSubsystems
 	
 EndProcedure
@@ -45,82 +63,15 @@ EndProcedure
 Procedure OnStart()
 	
 	// StandardSubsystems
-	CommonUseClient.SetArbitraryApplicationTitle();
-	
-	// UpdateLegalityCheck
-	If NOT UpdateLegalityCheckClient.ConfirmLegalityOfUpdateObtaining() Then
-		Return;
-	EndIf;
-	// End UpdateLegalityCheck
-	
-	// InfobaseVersionUpdate
-	InfobaseUpdateClient.RunInfobaseUpdate();
-	// End InfobaseVersionUpdate
-	
-	// process system start parameters
-	If ProcessStartParameters(LaunchParameter) Then
-		Return;
-	EndIf;
-	
-	// UserSessionTermination
-	InfobaseConnectionsClient.SetMonitorUserSessionTerminationMode();
-	// End UserSessionTermination
-	
-	// ScheduledJobs
-	// Note : subsystem DynamicUpdateMonitoring
-	//        should be configured after subsystem ScheduledJobs, cause in the mode of start
-	//        separate session of scheduled jobs, control will not be shared with this session.
-	ScheduledJobsClient.OnStart();
-	// End ScheduledJobs
-	
-	// DynamicUpdateMonitoring
-	DynamicUpdateMonitoringClient.OnStart();
-	// End DynamicUpdateMonitoring
-	
+	StandardSubsystemsClient.ActionsOnStart(True);
 	// End StandardSubsystems
 	
 EndProcedure
 
-// Process program start parameter.
-// Function implementation can be extended to handle new parameters.
-//
-// Parameters:
-//  LaunchParameter  – String – start parameter, passed into configuartion
-//                              using command line parameter /C.
-//
-// Value returned:
-//   Boolean   – True, if it is required to abort execution of procedure OnStart.
-//
-Function ProcessStartParameters(Val LaunchParameter)
-	
-	Var Result;
-	Result = False;
+Procedure BeforeExit(Cancel)
 	
 	// StandardSubsystems
-	
-	// If start parameters exist
-	If IsBlankString(LaunchParameter) Then
-		Return Result;
-	EndIf;
-	
-	// Parameter can consist of parts, splited by char ";".
-	// First part - main value of start parameter.
-	// Availability of other parts is defined by logics of main parameter processing.
-	LaunchParameters = StringFunctionsClientServer.DecomposeStringIntoSubstringsArray(LaunchParameter, ";");
-	StartParameterValue = Upper(LaunchParameters[0]);
-	
-	// UserSessionTermination
-	Result = InfobaseConnectionsClient.ProcessStartParameters(StartParameterValue, LaunchParameters);
-	// End UserSessionTermination
-	
+	StandardSubsystemsClient.ActionsBeforeExit(Cancel);
 	// End StandardSubsystems
 	
-	// Configuration code
-		// ...
-	// End Configuration code
-	
-	// StandardSubsystems
-	Return Result;
-	// End StandardSubsystems
-	
-EndFunction
+EndProcedure

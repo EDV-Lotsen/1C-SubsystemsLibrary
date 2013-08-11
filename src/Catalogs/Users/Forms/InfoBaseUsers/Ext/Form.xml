@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="DoMessageBox" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>DoMessageBox</v8:content>
+				</v8:item>
+			</Title>
+			<Height>3</Height>
+			<VerticalStretch>false</VerticalStretch>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="WarningExtendedTooltip" id="3"/>
+			<ChildItems>
+				<PictureDecoration name="WarningPicture" id="4">
+					<Width>4</Width>
+					<Height>2</Height>
+					<SkipOnInput>false</SkipOnInput>
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Warning picture</v8:content>
+						</v8:item>
+					</Title>
+					<Picture>
+						<xr:Ref>CommonPicture.Warning32</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<ContextMenu name="WarningPictureContextMenu" id="5"/>
+					<ExtendedTooltip name="WarningPictureExtendedTooltip" id="6"/>
+				</PictureDecoration>
+				<LabelDecoration name="WarningText" id="7">
+					<SkipOnInput>false</SkipOnInput>
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Some of infobase users are not present in the catalog or their full names do not match full names in catalog items.</v8:content>
+						</v8:item>
+					</Title>
+					<VerticalAlign>Center</VerticalAlign>
+					<ContextMenu name="WarningTextContextMenu" id="8"/>
+					<ExtendedTooltip name="WarningTextExtendedTooltip" id="9"/>
+				</LabelDecoration>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="FilterPresentation" id="10">
+			<DataPath>FilterPresentation</DataPath>
+			<Width>50</Width>
+			<HorizontalStretch>false</HorizontalStretch>
+			<ChoiceButton>true</ChoiceButton>
+			<TextEdit>false</TextEdit>
+			<ChoiceList>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>All</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:string">All</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Added, edited or deleted in Designer mode</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:string">WrittenIncorrectly</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Without of infobase user</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:string">WithoutInfoBaseUser</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Users</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:string">Users</Value>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>External users</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:string">ExternalUsers</Value>
+					</xr:Value>
+				</xr:Item>
+			</ChoiceList>
+			<ContextMenu name="FilterPresentationContextMenu" id="11"/>
+			<ExtendedTooltip name="FilterPresentationExtendedTooltip" id="12"/>
+			<Events>
+				<Event name="OnChange">FilterPresentationOnChange</Event>
+				<Event name="StartChoice">FilterPresentationStartChoice</Event>
+			</Events>
+		</InputField>
+		<CommandBar name="CommandBar" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="14"/>
+			<ChildItems>
+				<Button name="InfoBaseUsersChange" id="15">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.Change</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersChangeExtendedTooltip" id="16"/>
+				</Button>
+				<Button name="InfoBaseUsersDelete" id="17">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<Enabled>false</Enabled>
+					<CommandName>Form.Item.InfoBaseUsers.StandardCommand.Delete</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersDeleteExtendedTooltip" id="18"/>
+				</Button>
+				<Button name="InfoBaseUsersRefresh" id="19">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.Refresh</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersRefreshExtendedTooltip" id="20"/>
+				</Button>
+				<Button name="InfoBaseUsersFind" id="21">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.InfoBaseUsers.StandardCommand.Find</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersFindExtendedTooltip" id="22"/>
+				</Button>
+				<Button name="InfoBaseUsersCancelSearch" id="23">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Item.InfoBaseUsers.StandardCommand.CancelSearch</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersCancelSearchExtendedTooltip" id="24"/>
+				</Button>
+				<Button name="InfoBaseUsersSortAsc" id="25">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<OnlyInAllActions>true</OnlyInAllActions>
+					<CommandName>Form.Item.InfoBaseUsers.StandardCommand.SortListAsc</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersSortAscExtendedTooltip" id="26"/>
+				</Button>
+				<Button name="InfoBaseUsersSortDesc" id="27">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<OnlyInAllActions>true</OnlyInAllActions>
+					<CommandName>Form.Item.InfoBaseUsers.StandardCommand.SortListDesc</CommandName>
+					<ExtendedTooltip name="InfoBaseUsersSortDescExtendedTooltip" id="28"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="InfoBaseUsers" id="29">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<SelectionMode>SingleRow</SelectionMode>
+			<RowSelectionMode>Row</RowSelectionMode>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>InfoBaseUsers</DataPath>
+			<RowPictureDataPath>InfoBaseUsers.Picture</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.UserStates</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</RowsPicture>
+			<CommandSet>
+				<ExcludedCommand>Add</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="InfoBaseUsersContextMenu" id="30">
+				<ChildItems>
+					<Button name="ContextMenuInfoBaseUsersChange" id="31">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Change</CommandName>
+						<ExtendedTooltip name="ContextMenuInfoBaseUsersChangeExtendedTooltip" id="32"/>
+					</Button>
+					<Button name="ContextMenuInfoBaseUsersRefresh" id="33">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Refresh</CommandName>
+						<ExtendedTooltip name="ContextMenuInfoBaseUsersRefreshExtendedTooltip" id="34"/>
+					</Button>
+					<Button name="ContextMenuInfoBaseUsersDelete" id="35">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<Enabled>false</Enabled>
+						<CommandName>Form.Item.InfoBaseUsers.StandardCommand.Delete</CommandName>
+						<ExtendedTooltip name="ContextMenuInfoBaseUsersDeleteExtendedTooltip" id="36"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="InfoBaseUsersCommandBar" id="37"/>
+			<ExtendedTooltip name="InfoBaseUsersExtendedTooltip" id="38"/>
+			<SearchStringAddition name="InfoBaseUsersSearchString" id="66">
+				<AdditionSource>
+					<Item>InfoBaseUsers</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="InfoBaseUsersSearchStringContextMenu" id="67"/>
+				<ExtendedTooltip name="InfoBaseUsersSearchStringExtendedTooltip" id="68"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="InfoBaseUsersViewStatus" id="69">
+				<AdditionSource>
+					<Item>InfoBaseUsers</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="InfoBaseUsersViewStatusContextMenu" id="70"/>
+				<ExtendedTooltip name="InfoBaseUsersViewStatusExtendedTooltip" id="71"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="InfoBaseUsersSearchControl" id="72">
+				<AdditionSource>
+					<Item>InfoBaseUsers</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="InfoBaseUsersSearchControlContextMenu" id="73"/>
+				<ExtendedTooltip name="InfoBaseUsersSearchControlExtendedTooltip" id="74"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">InfoBaseUsersChoice</Event>
+				<Event name="BeforeDeleteRow">InfoBaseUsersBeforeDelete</Event>
+				<Event name="OnActivateRow">InfoBaseUsersOnActivateRow</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="FullName" id="39">
+					<DataPath>InfoBaseUsers.FullName</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Full infobase user name</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="FullNameContextMenu" id="40"/>
+					<ExtendedTooltip name="FullNameExtendedTooltip" id="41"/>
+				</InputField>
+				<InputField name="Name" id="42">
+					<DataPath>InfoBaseUsers.Name</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Infobase user name</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="NameContextMenu" id="43"/>
+					<ExtendedTooltip name="NameExtendedTooltip" id="44"/>
+				</InputField>
+				<CheckBoxField name="StandardAuthentication" id="45">
+					<DataPath>InfoBaseUsers.StandardAuthentication</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>1C:Enterprise authentication</v8:content>
+						</v8:item>
+					</ToolTip>
+					<HorizontalAlign>Center</HorizontalAlign>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="StandardAuthenticationContextMenu" id="46"/>
+					<ExtendedTooltip name="StandardAuthenticationExtendedTooltip" id="47"/>
+				</CheckBoxField>
+				<CheckBoxField name="OSAuthentication" id="48">
+					<DataPath>InfoBaseUsers.OSAuthentication</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>OS authentication</v8:content>
+						</v8:item>
+					</ToolTip>
+					<HorizontalAlign>Center</HorizontalAlign>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="OSAuthenticationContextMenu" id="49"/>
+					<ExtendedTooltip name="OSAuthenticationExtendedTooltip" id="50"/>
+				</CheckBoxField>
+				<InputField name="OSUser" id="51">
+					<DataPath>InfoBaseUsers.OSUser</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Operating system user</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="OSUserContextMenu" id="52"/>
+					<ExtendedTooltip name="OSUserExtendedTooltip" id="53"/>
+				</InputField>
+				<CheckBoxField name="IsUser" id="54">
+					<DataPath>InfoBaseUsers.IsUser</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="IsUserContextMenu" id="55"/>
+					<ExtendedTooltip name="IsUserExtendedTooltip" id="56"/>
+				</CheckBoxField>
+				<CheckBoxField name="IsExternalUser" id="57">
+					<DataPath>InfoBaseUsers.IsExternalUser</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="IsExternalUserContextMenu" id="58"/>
+					<ExtendedTooltip name="IsExternalUserExtendedTooltip" id="59"/>
+				</CheckBoxField>
+				<InputField name="Ref" id="60">
+					<DataPath>InfoBaseUsers.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="RefContextMenu" id="61"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="62"/>
+				</InputField>
+				<CheckBoxField name="DeletionMark" id="63">
+					<DataPath>InfoBaseUsers.DeletionMark</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<EditMode>EnterOnInput</EditMode>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="DeletionMarkShortcutMenu" id="64"/>
+					<ExtendedTooltip name="DeletionMarkExtendedTooltip" id="65"/>
+				</CheckBoxField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="InfoBaseUsers" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infobase users</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Picture" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>2</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="FullName" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Full name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Name" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="StandardAuthentication" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>1C:Enterprise authentication</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="OSAuthentication" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>OS authentication</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="OSUser" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>OS user</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ProblemCode" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Problem code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="InfoBaseUserID" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Infobase user ID</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>v8:UUID</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Ref" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Ref</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.ExternalUsers</v8:Type>
+						<v8:Type>cfg:CatalogRef.Users</v8:Type>
+					</Type>
+				</Column>
+				<Column name="DeletionMark" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Deletion mark</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="IsExternalUser" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Is external user</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="IsUser" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Is user</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="FilterPresentation" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Filter" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Filter</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Refresh" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F5</Shortcut>
+			<Action>Refresh</Action>
+		</Command>
+		<Command name="Change" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F2</Shortcut>
+			<Action>Change</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="Filter">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

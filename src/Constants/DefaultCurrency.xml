@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Constant uuid="fd92f90b-715c-4b6d-82f8-0fe39b1db784">
+	<Constant uuid="e1f2db25-abdc-48dc-baa8-edb91bab2199">
 		<InternalInfo>
 			<xr:GeneratedType name="ConstantManager.DefaultCurrency" category="Manager">
-				<xr:TypeId>88ef083f-672a-4731-8f1e-054c34e3f345</xr:TypeId>
-				<xr:ValueId>aba603a6-34ee-46dd-814b-31f7a9d1ca6f</xr:ValueId>
+				<xr:TypeId>487654f5-123e-4d75-b6f4-7aabcea41062</xr:TypeId>
+				<xr:ValueId>18c173bf-fd01-4065-af36-d572de7bfa90</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="ConstantValueManager.DefaultCurrency" category="ValueManager">
-				<xr:TypeId>b4d3e8fd-e279-4227-b217-a0dd3f82ece2</xr:TypeId>
-				<xr:ValueId>a33db2d0-408c-46cc-b27a-b31d72bd93db</xr:ValueId>
+				<xr:TypeId>8396cb27-9833-4da3-9ac7-34b6c3d84f99</xr:TypeId>
+				<xr:ValueId>cf704281-4c64-48af-9d7a-fa5e5f974544</xr:ValueId>
 			</xr:GeneratedType>
 		</InternalInfo>
 		<Properties>
@@ -18,12 +18,16 @@
 					<v8:lang>en</v8:lang>
 					<v8:content>Default currency</v8:content>
 				</v8:item>
+				<v8:item>
+					<v8:lang>de</v8:lang>
+					<v8:content>Standardwährung</v8:content>
+				</v8:item>
 			</Synonym>
 			<Comment/>
 			<Type>
 				<v8:Type>cfg:CatalogRef.Currencies</v8:Type>
 			</Type>
-			<UseStandardCommands>true</UseStandardCommands>
+			<UseStandardCommands>false</UseStandardCommands>
 			<DefaultForm/>
 			<ExtendedPresentation/>
 			<Explanation/>
@@ -45,7 +49,7 @@
 			<ChoiceForm/>
 			<LinkByType/>
 			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-			<DataLockControlMode>Managed</DataLockControlMode>
+			<DataLockControlMode>Automatic</DataLockControlMode>
 		</Properties>
 	</Constant>
 </MetaDataObject>

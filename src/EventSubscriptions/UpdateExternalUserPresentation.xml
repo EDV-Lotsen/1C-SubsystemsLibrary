@@ -11,11 +11,10 @@
 			</Synonym>
 			<Comment/>
 			<Source>
-				<v8:Type>cfg:CatalogObject.Banks</v8:Type>
 				<v8:Type>cfg:CatalogObject.ExternalUsers</v8:Type>
 			</Source>
 			<Event>OnWrite</Event>
-			<Handler>CommonModule.ExternalUsersEvents.UpdateExternalUserPresentation</Handler>
+			<Handler>CommonModule.UsersEvents.UpdateExternalUserPresentation</Handler>
 		</Properties>
 	</EventSubscription>
 </MetaDataObject>

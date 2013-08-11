@@ -1,92 +1,101 @@
-﻿
-////////////////////////////////////////////////////////////////////////////////
-//                   FORM MODULE OF THE WINDOWS USERS CHOICE                 //
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
+// FORM EVENT HANDLERS
 
-// Procedure handler of event "OnOpen" of form
-//
 &AtClient
-Procedure OnOpen(Cancellation)
+Procedure OnOpen(Cancel)
 	
-	#If ThickClientOrdinaryApplication OR ThickClientManagedApplication Then
-	DomainAndUsersTable = OSUsers();
+	#If ThickClientOrdinaryApplication Or ThickClientManagedApplication Then
+	DomainAndUserTable = OSUsers();
 	#ElsIf ThinClient Then
-	DomainAndUsersTable = New FixedArray (OSUsers());
+	DomainAndUserTable = New FixedArray (OSUsers());
 	#EndIf
 	
-	FillDomainsList();
+	FillDomainList();
 	
 EndProcedure
 
-// Procedure fills list of domains
-//
-&AtClient
-Procedure FillDomainsList ()
-	
-	ListOfDomains.Clear();
-	
-	For Each Record In DomainAndUsersTable Do
-		Domain = ListOfDomains.Add();
-		Domain.DomainName = Record.DomainName;
-	EndDo;
-	
-EndProcedure
+////////////////////////////////////////////////////////////////////////////////
+// FORM HEADER ITEM EVENT HANDLERS
 
-// Procedure handler of event OnActivate row of the domains table
-//
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF DomainTable TABLE
+
 &AtClient
 Procedure DomainTableOnActivateRow(Item)
 	
-	DomainName = Item.CurrentData.DomainName;
+	CurrentDomainUserList.Clear();
 	
-	For Each Record In DomainAndUsersTable Do
-		If Record.DomainName = DomainName Then
-			ListOfUsersOfCurrentDomain.Clear();
-			For Each User In Record.Users Do
-				DomainUser = ListOfUsersOfCurrentDomain.Add();
-				DomainUser.UserName = User;
-			EndDo;
-			Break;
-		EndIf;
-	EndDo;
+	If Item.CurrentData <> Undefined Then
+		DomainName = Item.CurrentData.DomainName;
+		For Each Record In DomainAndUserTable Do
+			If Record.DomainName = DomainName Then
+				For Each User In Record.Users Do
+					DomainUser = CurrentDomainUserList.Add();
+					DomainUser.UserName = User;
+				EndDo;
+				Break;
+			EndIf;
+		EndDo;
+		CurrentDomainUserList.Sort("UserName");
+	EndIf;
 	
 EndProcedure
 
-// Procedure handler of event OnSelection row of the users table.
-// Generates string for using Windows user authentication.
-//
+////////////////////////////////////////////////////////////////////////////////
+// FORM TABLE EVENT HANDLERS OF UserTable TABLE
+
 &AtClient
-Procedure DomainUsersTableSelection(Item, RowSelected, Field, StandardProcessing)
+Procedure DomainUserTableChoice(Item, SelectedRow, Field, StandardProcessing)
 	
 	ComposeResultAndCloseForm();
 	
 EndProcedure
 
-// Handler of click event of button "Windows user choice" of form.
-// Checks, that user is selected and closes form with
-// window-authentication string for the selected user.
-//
+////////////////////////////////////////////////////////////////////////////////
+// FORM COMMAND HANDLERS
+
 &AtClient
-Procedure CommandOKExecute()
+Procedure Choose(Command)
 	
-	DomainName = Items.DomainTable.CurrentData.DomainName;
-	UserName = Items.DomainUsersTable.CurrentData.UserName;
-	
-	If TrimAll(DomainName) <> "" And TrimAll(UserName) <> "" Then
-		ComposeResultAndCloseForm();
+	If Items.DomainTable.CurrentData = Undefined Then
+		DoMessageBox(NStr("en = 'Select a domain.'"));
+		Return;
 	EndIf;
+	DomainName = Items.DomainTable.CurrentData.DomainName;
+	
+	If Items.DomainUserTable.CurrentData = Undefined Then
+		DoMessageBox(NStr("en = 'Select a domain user.'"));
+		Return;
+	EndIf;
+	UserName = Items.DomainUserTable.CurrentData.UserName;
+	
+	ComposeResultAndCloseForm();
 	
 EndProcedure
 
-// Procedure composes choice result in string presentation \\DOMAIN\DOMAIN_USER_NAME
-// and closes form, returning this value, as a form operation result.
-//
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+&AtClient
+Procedure FillDomainList()
+	
+	DomainList.Clear();
+	
+	For Each Record In DomainAndUserTable Do
+		Domain = DomainList.Add();
+		Domain.DomainName = Record.DomainName;
+	EndDo;
+	
+	DomainList.Sort("DomainName");
+	
+EndProcedure
+
 &AtClient
 Procedure ComposeResultAndCloseForm()
 	
-	DomainName 			= Items.DomainTable.CurrentData.DomainName;
-	UserName 			= Items.DomainUsersTable.CurrentData.UserName;
-	WindowsUserString 	= "\\" + DomainName + "\" + UserName;
+	DomainName = Items.DomainTable.CurrentData.DomainName;
+	UserName = Items.DomainUserTable.CurrentData.UserName;
+	WindowsUserString = "\\" + DomainName + "\" + UserName;
 	Close(WindowsUserString);
 	
 EndProcedure

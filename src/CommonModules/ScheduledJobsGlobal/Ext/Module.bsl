@@ -1,58 +1,66 @@
-﻿
+﻿////////////////////////////////////////////////////////////////////////////////
+// Scheduled jobs subsystem.
+// 
 ////////////////////////////////////////////////////////////////////////////////
-// PROCEDURES HANDLING SYSTEM EVENTS
 
-// Procedure NotifyAboutFailureInScheduledJobsProcessingStatus notifies
-// users of not processing of scheduled jobs and "freezing" of background jobs.
-//  Procedure functions only if infobase is of file type. For the server IB
-// responsibility for scheduled jobs processing lays on 1C server administrator.
-//  Attaches in procedure ScheduledJobsClient.OnStart().
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL PROCEDURES AND FUNCTIONS
+
+// Notifies users about schedule job failures and background job hangs.
 //
-Procedure NotifyAboutFailureInScheduledJobsProcessingStatus() Export
+// Works only if the infobase runs in the file mode.
+// If the infobase runs in the server mode, scheduled jobs are executed on the
+// application server.
+//
+//  Is attached in the ScheduledJobsClient.OnStart procedure.
+//
+Procedure NotifyAboutIncorrectScheduledJobExecution() Export
 
-	PeriodNotifications = Undefined; // Minutes.
-	If ScheduledJobsServer.NeedToNotifyAboutIncorrectStatusDataOfScheduledJobsProcessing(PeriodNotifications) Then
+	NotificationPeriod = Undefined; // in minutes
+	If ScheduledJobsServer.NotifyAboutScheduledJobExecutionErrors(NotificationPeriod) Then
 		ErrorDescription = "";
-		TasksAreProcessingOK = Undefined;
-		ScheduledJobsServer.CurrentSessionHandlesTasks(TasksAreProcessingOK, , ErrorDescription);
-		If NOT TasksAreProcessingOK Then
-			ScheduledJobsClient.OnScheduledJobsProcessingError(ErrorDescription);
+		JobsExecutedCorrectly = Undefined;
+		ScheduledJobsServer.CurrentSessionPerformsScheduledJobs(JobsExecutedCorrectly, , ErrorDescription);
+		If Not JobsExecutedCorrectly Then
+			ScheduledJobsClient.OnScheduledJobExecutionError(ErrorDescription);
 		EndIf;
-		AttachIdleHandler("NotifyAboutFailureInScheduledJobsProcessingStatus", PeriodNotifications * 60, True);
+		AttachIdleHandler("NotifyAboutIncorrectScheduledJobExecution", NotificationPeriod * 60, True);
 	EndIf;
 
-EndProcedure // NotifyAboutFailureInScheduledJobsProcessingStatus()
+EndProcedure
 
-// Procedure ScheduledJobsProcessingInMainSession() called
-// by idle handler, that is being attached in
-// ScheduledJobsClient.OnStart().
-//  For processing in separate session form
-// DataProcessors.ScheduledAndBackgroundJobs.Form.ScheduledJobsProcessing is used.
+// Executes next scheduled job in the main session.
 //
-Procedure ScheduledJobsProcessingInMainSession() Export
+// Is called from the idle handler that is attached in the ScheduledJobsClient.OnStart
+// procedure.
+//
+// If you want to execute a scheduled job in a separate session, use 
+// DataProcessors.ScheduledAndBackgroundJobs.Form.ScheduledJobExecution instead.
+//
+Procedure ScheduledJobExecutionInMainSession() Export
 
-	If ScheduledJobsServer.CurrentSessionHandlesTasks() Then
-		ScheduledJobsServer.ProcessScheduledJobs(, True);
-		AttachIdleHandler("ScheduledJobsProcessingInMainSession", 60, True);
-	EndIf;
-	
-EndProcedure // ScheduledJobsProcessingInMainSession()
-
-Procedure OpenSeparateSessionOfScheduledJobsProcessingViaIdleHandler() Export
-	
-	Result = ScheduledJobsClient.OpenSeparateSessionOfScheduledJobsProcessing();
-	
-	If Result.Cancellation  Then
-		DoMessageBox(Result.ErrorDescription);
-		
-	ElsIf Result.ExecutedOpenAttempt Then
-		
-		AttachIdleHandler("ActivateMainWindowOfCurrentSessionAfterLaunchSeparateSessionOfScheduledJobsProcessing", 2, True);
+	If ScheduledJobsServer.CurrentSessionPerformsScheduledJobs() Then
+		ScheduledJobsServer.ExecuteScheduledJobs();
+		AttachIdleHandler("ScheduledJobExecutionInMainSession", 60, True);
 	EndIf;
 	
 EndProcedure
 
-Procedure ActivateMainWindowOfCurrentSessionAfterLaunchSeparateSessionOfScheduledJobsProcessing() Export
+Procedure StartSeparateSessionToExecuteScheduledJobsViaIdleHandler() Export
+	
+	Result = ScheduledJobsClient.StartSeparateSessionToExecuteScheduledJobs();
+	
+	If Result.Cancel Then
+		DoMessageBox(Result.ErrorDescription);
+		
+	ElsIf Result.TriedToOpen Then
+		
+		AttachIdleHandler("ActivateCurrentSessionMainWindowAfterStartingSeparateSessionForExecutingScheduleJobs", 2, True);
+	EndIf;
+	
+EndProcedure
+
+Procedure ActivateCurrentSessionMainWindowAfterStartingSeparateSessionForExecutingScheduleJobs() Export
 	
 	MainWindow = ScheduledJobsClient.MainWindow();
 	If MainWindow <> Undefined Then
@@ -60,4 +68,10 @@ Procedure ActivateMainWindowOfCurrentSessionAfterLaunchSeparateSessionOfSchedule
 	EndIf;
 	
 EndProcedure
+
+
+
+
+
+
 
