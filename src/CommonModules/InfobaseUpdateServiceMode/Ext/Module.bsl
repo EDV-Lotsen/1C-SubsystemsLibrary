@@ -76,7 +76,7 @@ Procedure ScheduleDataAreaUpdate(Val LockAreas = True, Val LockMessage = "") Exp
 	|			ON DataAreas.DataArea = SubsystemVersions.DataArea
 	|			AND (SubsystemVersions.SubsystemName = &SubsystemName)
 	|WHERE
-	|	DataAreas.State IN (VALUE(Enumeration.DataAreaStates.Used))
+	|	DataAreas.State IN (VALUE(Enum.DataAreaStates.Used))
 	|	AND (SubsystemVersions.DataArea IS NULL 
 	|			OR SubsystemVersions.Version <> &Version)
 	|
@@ -100,7 +100,7 @@ Procedure ScheduleDataAreaUpdate(Val LockAreas = True, Val LockMessage = "") Exp
 	|			AND (SubsystemVersions.SubsystemName = &SubsystemName)
 	|WHERE
 	|	DataAreas.DataArea = &DataArea
-	|	AND DataAreas.State IN (VALUE(Enumeration.DataAreaStates.Used))
+	|	AND DataAreas.State IN (VALUE(Enum.DataAreaStates.Used))
 	|	AND (SubsystemVersions.DataArea IS NULL 
 	|			OR SubsystemVersions.Version <> &Version)";
 	Query.SetParameter("SubsystemName", Metadata.Name);

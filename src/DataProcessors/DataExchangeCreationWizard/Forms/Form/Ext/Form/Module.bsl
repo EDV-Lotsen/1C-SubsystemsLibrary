@@ -3897,7 +3897,6 @@ EndProcedure
 
 &AtServer
 Procedure CheckWhetherDataExchangeWithSecondBaseExists(Cancel)
-	
 	NodeCode = ?(IsBlankString(Object.CorrespondentNodeCode),
 					DataExchangeServer.ExchangePlanNodeCodeString(Object.TargetInfoBasePrefix),
 					Object.CorrespondentNodeCode

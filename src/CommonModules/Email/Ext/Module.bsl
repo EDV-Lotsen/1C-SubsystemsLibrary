@@ -254,7 +254,7 @@ EndFunction
 //                             confirmation is required. 
 //   RequestReadReceipt      - Boolean - flag that shows whether the read receipt
 //                             confirmation is required.
-//   TextType                - String, Enumeration.EmailTextTypes - determines the 
+//   TextType                - String, Enum.EmailTextTypes - determines the 
 //                             passed text type. It can take the following values:
 //                              HTML - EmailTextTypes.HTML - HTML formatted text.
 //                              PlainText - EmailTextTypes.PlainText - plain text. 
@@ -295,19 +295,19 @@ Function SendMessage(Val Account,
 	
 	EmailParameters.Property("Attachments", Attachments);
 	
-	Email = New InternetMailMessage;
-	Email.Subject = Subject;
+	CurEmail = New InternetMailMessage;
+	CurEmail.Subject = Subject;
 	
 	// Generating the recipient address	
 	For Each RecipientEmailAddress In Recipient Do
-		Recipient = Email.Recipients.Add(RecipientEmailAddress.Address);
+		Recipient = CurEmail.To.Add(RecipientEmailAddress.Address);
 		Recipient.DisplayName = RecipientEmailAddress.Presentation;
 	EndDo;
 	
 	If EmailParameters.Property("Cc", Cc) Then
 		// Generating the recipient address from the Cc field value
 		For Each CcRecipientEmailAddress In Cc Do
-			Recipient = Email.Cc.Add(CcRecipientEmailAddress.Address);
+			Recipient = CurEmail.Cc.Add(CcRecipientEmailAddress.Address);
 			Recipient.DisplayName = CcRecipientEmailAddress.Presentation;
 		EndDo;
 	EndIf;
@@ -315,7 +315,7 @@ Function SendMessage(Val Account,
 	If EmailParameters.Property("Bcc", Bcc) Then
 		// Generating the recipient address from the Bcc field value
 		For Each BccRecipientEmailAddress In Bcc Do
-			Recipient = Email.Bcc.Add(BccRecipientEmailAddress.Address);
+			Recipient = CurEmail.Bcc.Add(BccRecipientEmailAddress.Address);
 			Recipient.DisplayName = BccRecipientEmailAddress.Presentation;
 		EndDo;
 	EndIf;
@@ -323,35 +323,35 @@ Function SendMessage(Val Account,
 	// Generating the ReplyTo address, if necessary
 	If EmailParameters.Property("ReplyTo", ReplyTo) Then
 		For Each ReplyToEmailAddress In ReplyTo Do
-			ReplyToEmailAddress = Email.ReplyTo.Add(ReplyToEmailAddress.Address);
+			ReplyToEmailAddress = CurEmail.ReplyTo.Add(ReplyToEmailAddress.Address);
 			ReplyToEmailAddress.DisplayName = ReplyToEmailAddress.Presentation;
 		EndDo;
 	EndIf;
 	
 	// Adding the sender name to the message
-	Email.SenderName         = Account.UserName;
-	Email.Sender.DisplayName = Account.UserName;
-	Email.Sender.Address     = Account.EmailAddress;
+	CurEmail.SenderName         = Account.UserName;
+	CurEmail.From.DisplayName = Account.UserName;
+	CurEmail.From.Address     = Account.EmailAddress;
 	
 	// Adding attachments to the message
 	If Attachments <> Undefined Then
 		For Each ItemAttachment In Attachments Do
 			If TypeOf(ItemAttachment.Value) = Type("Structure") Then
-				NewAttachment = Email.Attachments.Add(ItemAttachment.Value.BinaryData, ItemAttachment.Key);
+				NewAttachment = CurEmail.Attachments.Add(ItemAttachment.Value.BinaryData, ItemAttachment.Key);
 				NewAttachment.ID = ItemAttachment.Value.ID;
 			Else
-				Email.Attachments.Add(ItemAttachment.Value, ItemAttachment.Key);
+				CurEmail.Attachments.Add(ItemAttachment.Value, ItemAttachment.Key);
 			EndIf;
 		EndDo;
 	EndIf;
 
 	// Setting basis object IDs
 	If EmailParameters.Property("BasisIDs") Then
-		Email.SetField("References", EmailParameters.BasisIDs);
+		CurEmail.SetField("References", EmailParameters.BasisIDs);
 	EndIf;
 	
 	// Adding the text
-	Text = Email.Texts.Add(Body);
+	Text = CurEmail.Texts.Add(Body);
 	If EmailParameters.Property("TextType", TextType) Then
 		If TypeOf(TextType) = Type("String") Then
 			If TextType = "HTML" Then
@@ -380,13 +380,13 @@ Function SendMessage(Val Account,
 	// Setting the message importance
 	Importance = Undefined;
 	If EmailParameters.Property("Importance", Importance) Then
-		Email.Importance = Importance;
+		CurEmail.Importance = Importance;
 	EndIf;
 	
 	// Setting encoding
 	Encoding = Undefined;
 	If EmailParameters.Property("Encoding", Encoding) Then
-		Email.Encoding = Encoding;
+		CurEmail.Encoding = Encoding;
 	EndIf;
 
 	If EmailParameters.Property("ProcessTexts") And Not EmailParameters.ProcessTexts Then
@@ -396,13 +396,13 @@ Function SendMessage(Val Account,
 	EndIf;
 	
 	If EmailParameters.Property("RequestDeliveryReceipt") Then
-		Email.RequestDeliveryReceipt = EmailParameters.RequestDeliveryReceipt;
-		Email.DeliveryReceiptAddresses.Add(Account.EmailAddress);
+		CurEmail.RequestDeliveryReceipt = EmailParameters.RequestDeliveryReceipt;
+		CurEmail.DeliveryReceiptAddresses.Add(Account.EmailAddress);
 	EndIf;
 	
 	If EmailParameters.Property("RequestReadReceipt") Then
-		Email.RequestReadReceipt = EmailParameters.RequestReadReceipt;
-		Email.ReadReceiptAddresses.Add(Account.EmailAddress);
+		CurEmail.RequestReadReceipt = EmailParameters.RequestReadReceipt;
+		CurEmail.ReadReceiptAddresses.Add(Account.EmailAddress);
 	EndIf;
 	
 	If TypeOf(Connection) <> Type("InternetMail") Then
@@ -412,9 +412,9 @@ Function SendMessage(Val Account,
 	 	Connection.Logon(Profile);
 	EndIf;
 
-	Connection.Send(Email, ProcessMessageText);
+	Connection.Send(CurEmail, ProcessMessageText);
 	
-	Return Email.MessageID;
+	Return CurEmail.MessageID;
 	
 EndFunction
 
@@ -652,6 +652,11 @@ Function GenerateInternetProfile(Val Account,
 			Profile.POP3Authentication = POP3AuthenticationMode.General;
 		EndIf;
 	EndIf;
+	
+	// Passing Use SSL flags to the profile settings
+	Profile.POP3UseSSL = Account.POP3UseSSL;
+	Profile.SMTPUseSSL = Account.SMTPUseSSL;
+	// SSL
 	
 	Return Profile;
 	

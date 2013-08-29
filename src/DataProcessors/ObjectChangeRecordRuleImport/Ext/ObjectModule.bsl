@@ -430,7 +430,7 @@ Procedure LoadExchangePlanFilterItem(Rules, NewRow)
 				
 			EndIf;
 			
-		ElsIf NodeName = "PlanPropertyExchange" Then
+		ElsIf NodeName = "ExchangePlanProperty" Then
 			
 			// The property can be a header property or tabular section property.
 			// If the property is a tabular section property, the FullPropertyName 
@@ -702,7 +702,7 @@ Function GetPropertyGroupConditionText(GroupProperties, BooleanGroupValue, Val O
 	
 	// Getting the offset string for the property group
 	For A = 0 to Offset Do
-		OffsetString = OffsetString + "";
+		OffsetString = OffsetString + " ";
 	EndDo;
 	
 	ConditionText = "";
@@ -711,13 +711,13 @@ Function GetPropertyGroupConditionText(GroupProperties, BooleanGroupValue, Val O
 		
 		If RecordRuleByProperty.IsFolder Then
 			
-			ConditionPrefix = ?(IsBlankString(ConditionText), "", Chars.LF + OffsetString + BooleanGroupValue + "");
+			ConditionPrefix = ?(IsBlankString(ConditionText), "", Chars.LF + OffsetString + BooleanGroupValue + " ");
 			
 			ConditionText = ConditionText + ConditionPrefix + GetPropertyGroupConditionText(RecordRuleByProperty.Rows, RecordRuleByProperty.BooleanGroupValue, Offset + 10, ObjectProperties);
 			
 		Else
 			
-			ConditionPrefix = ?(IsBlankString(ConditionText), "", Chars.LF + OffsetString + BooleanGroupValue + "");
+			ConditionPrefix = ?(IsBlankString(ConditionText), "", Chars.LF + OffsetString + BooleanGroupValue + " ");
 			
 			ConditionText = ConditionText + ConditionPrefix + GetPropertyConditionText(RecordRuleByProperty, ObjectProperties);
 			
@@ -863,7 +863,7 @@ Function GetPropertyConditionText(Rule, ObjectProperties)
 		
 	EndIf;
 	
-	ConditionText = TableSynonym + "." + Rule.NodeParameter + "" + TextOperator + "" + QueryParameterLiteral;
+	ConditionText = TableSynonym + "." + Rule.NodeParameter + " " + TextOperator + " " + QueryParameterLiteral;
 	
 	Return ConditionText;
 	

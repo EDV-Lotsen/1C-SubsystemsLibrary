@@ -47,7 +47,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAccess</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.0.1.15</Version>
+			<Version>2.0.1.16</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.en/tmplts/</UpdateCatalogAddress>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
@@ -399,11 +399,16 @@
 			<EventSubscription>ResetContactInformationKindOrder</EventSubscription>
 			<EventSubscription>SharedSuppliedDataCatalogsBeforeWrite</EventSubscription>
 			<EventSubscription>SeparatedSuppliedDataCatalogsBeforeDelete</EventSubscription>
-			<EventSubscription>_DemoDataExchangeRecordChanges</EventSubscription>
+			<EventSubscription>_DemoExchangeWithSubsystemsLibraryRegisterChanges</EventSubscription>
+			<EventSubscription>_DemoExchangeWithSubsystemsLibraryRecordDocumentChange</EventSubscription>
+			<EventSubscription>_DemoExchangeWithSubsystemsLibraryRecordConstantChange</EventSubscription>
+			<EventSubscription>_DemoExchangeWithSubsystemsLibraryRegisterDeletion</EventSubscription>
+			<EventSubscription>_DemoExchangeWithSubsystemsLibraryRecordRecordSetChanges</EventSubscription>
 			<ScheduledJob>DataExchangeExecution</ScheduledJob>
 			<ScheduledJob>JobProcessingPlanning</ScheduledJob>
 			<ScheduledJob>SendReceiveSystemMessages</ScheduledJob>
 			<ScheduledJob>SeparatedSuppliedDataUpdateControl</ScheduledJob>
+			<ScheduledJob>UpdateDataAreas</ScheduledJob>
 			<ScheduledJob>UpdateSharedSuppliedData</ScheduledJob>
 			<FunctionalOption>CompanyPrefixes</FunctionalOption>
 			<FunctionalOption>CurrentORMCachedValueRefreshDate</FunctionalOption>

@@ -55,7 +55,7 @@ EndProcedure
 // Document - a document Ref for which the function selects its currency.
 //
 // Returned value:
-// Enumeration.Currencies.
+// CatalogRef.Currencies.
 //
 Function GetSpecDocumentCurrency(Document) Export
 	
@@ -117,7 +117,7 @@ EndFunction
 // item type (inventory or non-inventory)
 //
 // Parameters:
-// Enumeration.InventoryTypes - item type (inventory, non-inventory).
+// Enum.InventoryTypes - item type (inventory, non-inventory).
 //
 // Returned value:
 // ChartsOfAccounts.ChartOfAccounts.
@@ -135,7 +135,7 @@ EndFunction
 // Returns an item type (inventory or non-inventory)
 //
 // Parameters:
-// Enumeration.InventoryType
+// Enum.InventoryType
 //
 // Returned value:
 // Boolean

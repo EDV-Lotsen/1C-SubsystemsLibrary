@@ -26,7 +26,7 @@ EndProcedure
 Procedure ButtonOKExecute()
 	
 	If Not FormatMXL And Not FormatXLS And Not FormatHTML Then
-		DoMessageBox(NStr("en = 'It is required to indicate minimum one  of the formats: MXL, XLS, or HTML!'"));
+		DoMessageBox(NStr("en = 'Select at least one of the formats: MXL, XLS, or HTML.'"));
 		Return;
 	EndIf;
 	

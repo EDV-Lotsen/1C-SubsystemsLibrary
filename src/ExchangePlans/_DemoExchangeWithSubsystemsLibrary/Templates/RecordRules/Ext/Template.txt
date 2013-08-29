@@ -43,7 +43,7 @@
 			<Rule Disable="false" Valid="true">
 				<Code>000000003</Code>
 				<Description>Companies</Description>
-				<SettingsObject>Company CatalogRef.description</SettingsObject>
+				<SettingsObject>CatalogRef.Company</SettingsObject>
 				<MetadataObjectName>Catalog.Companies</MetadataObjectName>
 				<MetadataObjectType>Catalog</MetadataObjectType>
 				<ExportModeAttribute>CompanyExportMode</ExportModeAttribute>
@@ -66,14 +66,14 @@
 						</FilterItem>
 						<FilterItem>
 							<IsConstantString>false</IsConstantString>
-							<ObjectPropertyType>Company CatalogRef.description</ObjectPropertyType>
-							<ExchangePlanProperty>[Companies].and Company</ExchangePlanProperty>
+							<ObjectPropertyType>CatalogRef.Company</ObjectPropertyType>
+							<ExchangePlanProperty>[Companies].Company</ExchangePlanProperty>
 							<ComparisonType>Equal</ComparisonType>
 							<ObjectProperty>Ref</ObjectProperty>
 							<ObjectPropertyTable>
 								<Property>
 									<Description>Ref</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Property</Kind>
 								</Property>
 							</ObjectPropertyTable>
@@ -84,7 +84,7 @@
 								</Property>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ExchangePlanPropertyTable>
@@ -165,14 +165,14 @@
 						</FilterItem>
 						<FilterItem>
 							<IsConstantString>false</IsConstantString>
-							<ObjectPropertyType>Company CatalogRef.description</ObjectPropertyType>
-							<ExchangePlanProperty>[Companies].and Company</ExchangePlanProperty>
+							<ObjectPropertyType>CatalogRef.Company</ObjectPropertyType>
+							<ExchangePlanProperty>[Companies].Company</ExchangePlanProperty>
 							<ComparisonType>Equal</ComparisonType>
 							<ObjectProperty>Company</ObjectProperty>
 							<ObjectPropertyTable>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ObjectPropertyTable>
@@ -183,7 +183,7 @@
 								</Property>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ExchangePlanPropertyTable>
@@ -192,6 +192,8 @@
 				</FilterByExchangePlanProperties>
 				<FilterByObjectProperties/>
 			</Rule>
+			
+			
 			<Rule Disable="false" Valid="true">
 				<Code>000000012</Code>
 				<Description>Payroll calculation</Description>
@@ -238,14 +240,14 @@
 						</FilterItem>
 						<FilterItem>
 							<IsConstantString>false</IsConstantString>
-							<ObjectPropertyType>Company CatalogRef.description</ObjectPropertyType>
-							<ExchangePlanProperty>[Companies].and Company</ExchangePlanProperty>
+							<ObjectPropertyType>CatalogRef.Company</ObjectPropertyType>
+							<ExchangePlanProperty>[Companies].Company</ExchangePlanProperty>
 							<ComparisonType>Equal</ComparisonType>
 							<ObjectProperty>Company</ObjectProperty>
 							<ObjectPropertyTable>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ObjectPropertyTable>
@@ -256,7 +258,7 @@
 								</Property>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ExchangePlanPropertyTable>
@@ -265,6 +267,11 @@
 				</FilterByExchangePlanProperties>
 				<FilterByObjectProperties/>
 			</Rule>
+
+
+
+	
+			
 			<Rule Disable="false" Valid="true">
 				<Code>000000013</Code>
 				<Description>Payroll sheet</Description>
@@ -311,14 +318,14 @@
 						</FilterItem>
 						<FilterItem>
 							<IsConstantString>false</IsConstantString>
-							<ObjectPropertyType>Company CatalogRef.description</ObjectPropertyType>
-							<ExchangePlanProperty>[Companies].and Company</ExchangePlanProperty>
+							<ObjectPropertyType>CatalogRef.Company</ObjectPropertyType>
+							<ExchangePlanProperty>[Companies].Company</ExchangePlanProperty>
 							<ComparisonType>Equal</ComparisonType>
 							<ObjectProperty>Company</ObjectProperty>
 							<ObjectPropertyTable>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ObjectPropertyTable>
@@ -329,7 +336,7 @@
 								</Property>
 								<Property>
 									<Description>Company</Description>
-									<Type>Company CatalogRef.description</Type>
+									<Type>CatalogRef.Company</Type>
 									<Kind>Attribute</Kind>
 								</Property>
 							</ExchangePlanPropertyTable>

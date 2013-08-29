@@ -68,23 +68,75 @@
 					<ShowTitle>false</ShowTitle>
 					<ExtendedTooltip name="PortsExtendedTooltip" id="11"/>
 					<ChildItems>
-						<InputField name="POP3Port" id="12">
-							<DataPath>POP3Port</DataPath>
-							<Width>6</Width>
-							<HorizontalStretch>false</HorizontalStretch>
-							<Wrap>false</Wrap>
-							<ContextMenu name="POP3PortContextMenu" id="13"/>
-							<ExtendedTooltip name="POP3PortExtendedTooltip" id="14"/>
-						</InputField>
-						<InputField name="SMTPPort" id="15">
-							<DataPath>SMTPPort</DataPath>
-							<TitleLocation>Left</TitleLocation>
-							<Width>6</Width>
-							<HorizontalStretch>false</HorizontalStretch>
-							<Wrap>false</Wrap>
-							<ContextMenu name="SMTPPortContextMenu" id="16"/>
-							<ExtendedTooltip name="SMTPPortExtendedTooltip" id="17"/>
-						</InputField>
+						<UsualGroup name="POP" id="76">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>POP</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>POP</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="POPExtendedTooltip" id="77"/>
+							<ChildItems>
+								<InputField name="POP3Port" id="12">
+									<DataPath>POP3Port</DataPath>
+									<Width>6</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<Wrap>false</Wrap>
+									<ContextMenu name="POP3PortContextMenu" id="13"/>
+									<ExtendedTooltip name="POP3PortExtendedTooltip" id="14"/>
+								</InputField>
+								<CheckBoxField name="POP3UseSSL" id="78">
+									<DataPath>POP3UseSSL</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="POP3UseSSLContextMenu" id="79"/>
+									<ExtendedTooltip name="POP3UseSSLExtendedTooltip" id="80"/>
+								</CheckBoxField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="SMTP" id="81">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SMTP</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SMTP</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="SMTPExtendedTooltip" id="82"/>
+							<ChildItems>
+								<InputField name="SMTPPort" id="15">
+									<DataPath>SMTPPort</DataPath>
+									<TitleLocation>Left</TitleLocation>
+									<Width>6</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<Wrap>false</Wrap>
+									<ContextMenu name="SMTPPortContextMenu" id="16"/>
+									<ExtendedTooltip name="SMTPPortExtendedTooltip" id="17"/>
+								</InputField>
+								<CheckBoxField name="SMTPUseSSL" id="83">
+									<DataPath>SMTPUseSSL</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="SMTPUseSSLContextMenu" id="84"/>
+									<ExtendedTooltip name="SMTPUseSSLExtendedTooltip" id="85"/>
+								</CheckBoxField>
+							</ChildItems>
+						</UsualGroup>
 					</ChildItems>
 				</UsualGroup>
 				<CommandBar name="SetDefaultGroup" id="18">
@@ -554,7 +606,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>SMTP server</v8:content>
+					<v8:content>SMTP port</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -570,7 +622,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>POP3 server</v8:content>
+					<v8:content>POP3 port</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -760,6 +812,28 @@
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="POP3UseSSL" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>POP3 requires SSL</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="SMTPUseSSL" id="20">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>SMTP requires SSL</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
 		</Attribute>
 	</Attributes>
 	<Commands>

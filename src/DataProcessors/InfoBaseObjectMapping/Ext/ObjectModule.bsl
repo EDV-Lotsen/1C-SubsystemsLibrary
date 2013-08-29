@@ -525,7 +525,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|INTO SourceTable
 	|FROM
 	|	&SourceTableParameter AS SourceTableParameter
-	|INDEX  BY
+	|INDEX BY
 	|	Ref,
 	|	UUID
 	|;
@@ -560,7 +560,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|INTO UnapprovedRelationTable
 	|FROM
 	|	&UnapprovedRelationTable AS UnapprovedRelationTable
-	|INDEX  BY
+	|INDEX BY
 	|	TargetUUID,
 	|	TargetType
 	|;
@@ -930,9 +930,9 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|		TargetTable.Ref AS Ref,
 	|	
-	|		#CUSTOM_FIELDS_UnmappedSourceObjectTable_NestedSelect#
+	|		#CUSTOM_FIELDS_UnmappedTargetObjectTableByFields_NestedSelect#
 	|		
-	|		NULL                        AS IsSourceFolder,
+	|		NULL                  AS IsSourceFolder,
 	|		#TargetTableIsFolder# AS IsTargetFolder,
 	|		
 	|		// {MAPPING REGISTER DATA}
@@ -955,7 +955,8 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_SourceTable#", GetUserFields(UserFields, "SourceTableParameter.# AS #,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappingTable#", GetUserFields(UserFields, "SourceFieldNN, TargetFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappedByRefObjectTable_NestedSelect#", GetUserFields(UserFields, "TargetTable.# AS TargetFieldNN, SourceTable.# AS SourceFieldNN,"));
-	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappedSourceObjectTableByRegister_NestedSelect#", GetUserFields(UserFields, "InfoBaseObjectMaps.SourceUUID.# AS TargetFieldNN, SourceTable.# AS SourceFieldNN,"));
+	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappedSourceObjectTableByRegister_NestedSelect#", GetUserFields(UserFields, "InfoBaseObjectMaps.SourceUUID.# AS TargetFieldNN,
+	|SourceTable.# AS SourceFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappedTargetObjectTableByRegister_NestedSelect#", GetUserFields(UserFields, "TargetTable.# AS TargetFieldNN, NULL AS SourceFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappedObjectTableByUnapprovedRelations_NestedSelect#", GetUserFields(UserFields, "UnapprovedRelationTable.SourceUUID.# AS TargetFieldNN, SourceTable.# AS SourceFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_UnmappedSourceObjectTable_NestedSelect#", GetUserFields(UserFields, "SourceTable.# AS SourceFieldNN, NULL AS TargetFieldNN,"));
@@ -969,17 +970,17 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	
 	If UserFields.Find("IsFolder") <> Undefined Then
 		
-		QueryText = StrReplace(QueryText, "#SourceTableIsFolder#",            "SourceTable.IsFolder");
-		QueryText = StrReplace(QueryText, "#TargetTableIsFolder#",            "TargetTable.IsFolder");
-		QueryText = StrReplace(QueryText, "#UnapprovedRelationTableIsFolder#", "UnapprovedRelationTable.SourceUUID.IsFolder");
-		QueryText = StrReplace(QueryText, "#InfoBaseObjectMapsIsFolder#", "InfoBaseObjectMaps.SourceUUID.IsFolder");
+		QueryText = StrReplace(QueryText, "#SourceTableIsFolder#",				"SourceTable.IsFolder");
+		QueryText = StrReplace(QueryText, "#TargetTableIsFolder#",				"TargetTable.IsFolder");
+		QueryText = StrReplace(QueryText, "#UnapprovedRelationTableIsFolder#",	"UnapprovedRelationTable.SourceUUID.IsFolder");
+		QueryText = StrReplace(QueryText, "#InfoBaseObjectMapsIsFolder#",		"InfoBaseObjectMaps.SourceUUID.IsFolder");
 		
 	Else
 		
-		QueryText = StrReplace(QueryText, "#SourceTableIsFolder#",             "NULL");
-		QueryText = StrReplace(QueryText, "#TargetTableIsFolder#",             "NULL");
-		QueryText = StrReplace(QueryText, "#UnapprovedRelationTableIsFolder#", "NULL");
-		QueryText = StrReplace(QueryText, "#InfoBaseObjectMapsIsFolder#",  "NULL");
+		QueryText = StrReplace(QueryText, "#SourceTableIsFolder#",				"NULL");
+		QueryText = StrReplace(QueryText, "#TargetTableIsFolder#",				"NULL");
+		QueryText = StrReplace(QueryText, "#UnapprovedRelationTableIsFolder#",	"NULL");
+		QueryText = StrReplace(QueryText, "#InfoBaseObjectMapsIsFolder#",		"NULL");
 		
 	EndIf;
 	
@@ -1378,7 +1379,7 @@ Procedure GetAutomaticMappingByGUIDAndSearchFieldTable(SourceTable, MappingField
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappingTable#", GetUserFields(UserFields, "SourceFieldNN, TargetFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_UnmappedObjectTable#", GetUserFields(UserFields, "UnmappedObjectTable.SourceFieldNN AS SourceFieldNN, UnmappedObjectTable.TargetFieldNN AS TargetFieldNN,"));
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_AutomaticallyMappedObjectTableFull_NestedSelect#", GetUserFields(UserFields, "UnmappedSourceObjectTableByFields.SourceFieldNN AS SourceFieldNN, UnmappedTargetObjectTableByFields.TargetFieldNN AS TargetFieldNN,"));
-	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_AutomaticallyMappedObjectTableByGUID_NestedSelect", GetUserFields(UserFields, "UnmappedSourceObjectTable.SourceFieldNN AS SourceFieldNN, UnmappedTargetObjectTable.TargetFieldNN AS TargetFieldNN,"));
+	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_AutomaticallyMappedObjectTableByGUID_NestedSelect#", GetUserFields(UserFields, "UnmappedSourceObjectTable.SourceFieldNN AS SourceFieldNN, UnmappedTargetObjectTable.TargetFieldNN AS TargetFieldNN,"));
 	
 	Query = New Query;
 	Query.Text = QueryText;
@@ -1515,33 +1516,6 @@ Function MergeUnapprovedRelationTableAndAutomaticMappingTable(TempTablesManager)
 	|
 	|	) AS NestedSelect
 	|
-	|		TargetUUID AS SourceUUID,
-	|		SourceUUID AS TargetUUID,
-	|		TargetType AS SourceType,
-	|		SourceType AS TargetType
-	|	FROM 
-	|		AutomaticallyMappedObjectTable
-	|
-	|	) AS NestedSelect
-	|
-	|		TargetUUID AS SourceUUID,
-	|		SourceUUID AS TargetUUID,
-	|		TargetType AS SourceType,
-	|		SourceType AS TargetType
-	|	FROM 
-	|		AutomaticallyMappedObjectTable
-	|
-	|	) AS NestedSelect
-	|
-	|		TargetUUID AS SourceUUID,
-	|		SourceUUID AS TargetUUID,
-	|		TargetType AS SourceType,
-	|		SourceType AS TargetType
-	|	FROM 
-	|		AutomaticallyMappedObjectTable
-	|
-	|	) AS NestedSelect
-	|
 	|";
 	
 	Query = New Query;
@@ -1660,7 +1634,7 @@ Function GetMappingTable(SourceTable, UserFields, TempTablesManager)
 	|";
 	
 	QueryText = StrReplace(QueryText, "#CUSTOM_FIELDS_MappingTable#", GetUserFields(UserFields, "SourceFieldNN, TargetFieldNN,"));
-	QueryText = StrReplace(QueryText, "#ORDER_FIELDS#", GetUserFields(UserFields, "SortFieldNN,"));
+	QueryText = StrReplace(QueryText, "#ORDER_FIELDS#", GetUserFields(UserFields, "OrderFieldNN,"));
 	
 	Query = New Query;
 	Query.Text = QueryText;
@@ -1743,7 +1717,7 @@ Function GetSortingFieldsAtServer()
 	// Return value
 	SortingFields = "";
 	
-	FieldPattern = "SortFieldNN #SortDirection";
+	FieldPattern = "OrderFieldNN #SortDirection";
 	
 	For Each TableRow In SortTable Do
 		
@@ -1793,9 +1767,9 @@ Function GetMappingByFieldsCondition(MappingFieldList)
 			
 			CurrentField = StrReplace(FieldPattern, "NN", String(FieldNumber));
 			
-			OperationLiteral = ?(IsBlankString(Result), "", "And");
+			OperationLiteral = ?(IsBlankString(Result), "", "AND");
 			
-			Result = Result + Chars.LF + OperationLiteral + "" + CurrentField;
+			Result = Result + Chars.LF + OperationLiteral + " " + CurrentField;
 			
 		EndIf;
 		

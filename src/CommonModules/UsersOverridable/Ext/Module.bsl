@@ -15,14 +15,6 @@
 //
 Function RoleEditProhibition() Export
 	
-	// StandardSubsystems.AccessManagement
-	
-	// Roles are set automatically by access group data,
-	// using the following relation: UsersAccessGroups -> Profile -> ProfileRoles
-	Return True;
-	
-	// End StandardSubsystems.AccessManagement
-	
 	Return False;
 	
 EndFunction
@@ -56,10 +48,6 @@ EndProcedure
 //                  external user groups.
 //
 Procedure ChangeActionsOnForm(Val Ref = Undefined, Val ActionsOnForm) Export
-	
-	// StandardSubsystems.AccessManagement
-	ActionsOnForm.Roles = "";
-	// End StandardSubsystems.AccessManagement
 	
 EndProcedure
 
@@ -95,12 +83,6 @@ EndProcedure
 // 
 Procedure QuestionTextBeforeWriteFirstAdministrator(QuestionText) Export
 	
-	// StandardSubsystems.AccessManagement
-	QuestionText = NStr("en = 'The user you want to add is the first infobase user, 
-		|this user will be automatically included into the Administrators access group. 
-		|Do you want to continue?'")
-	// End StandardSubsystems.AccessManagement
-	
 EndProcedure
 
 // Defines extra actions when writing an administrator.
@@ -125,17 +107,6 @@ EndProcedure
 //
 Procedure AfterWriteAdministratorOnAuthorization(Comment) Export
 	
-	// StandardSubsystems.AccessManagement
-	Comment = NStr("en = 'An infobase user with the Full rights role
-	                     |was created in the designer mode:
-	                     |
-	                     |- the user was not found in the Users catalog,
-	                     |- the user has been registered in the Users catalog,
-	                     |- the user has been added to the Administrators access group.
-	                     |
-	                     |It is recommended you to create infobase users in the enterprise mode.'");
-	// End StandardSubsystems.AccessManagement
-	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,54 +120,16 @@ EndProcedure
 //
 Procedure SetDefaultRights(User) Export
 	
-	//// _Demo Start Example
-	//NewAccessGroups = New Array;
-	//NewAccessGroups.Add(Catalogs.AccessGroups.FindByDescription("Users"));
-	//
-	//BeginTransaction();
-	//
-	//Query = New Query;
-	//Query.Text =
-	//"SELECT
-	//|	AccessGroupsUsers.Ref
-	//|FROM
-	//|	Catalog.AccessGroups.Users AS AccessGroupsUsers
-	//|WHERE
-	//|	AccessGroupsUsers.User = &User
-	//|	AND (NOT AccessGroupsUsers.Ref IN (&NewGroups))
-	//|;
-	//|
-	//|////////////////////////////////////////////////////////////////////////////////
-	//|SELECT
-	//|	AccessGroups.Ref
-	//|FROM
-	//|	Catalog.AccessGroups AS  AccessGroups
-	//|		LEFT JOIN Catalog.AccessGroups.Users AS  AccessGroupsUsers
-	//|			ON AccessGroups.Ref =  AccessGroupsUsers.Ref
-	//|			AND (AccessGroupsUsers.User = &User)
-	//|WHERE
-	//|	AccessGroups.Ref IN(&NewGroups)
-	//|	AND  AccessGroupsUsers.Ref IS NULL";
-	//Query.SetParameter("User", User);
-	//Query.SetParameter("NewGroups", NewAccessGroups);
-	//Results = Query.ExecuteBatch();
-	//
-	//SelectionExclude = Results[0].Choose();
-	//While SelectionExclude.Next() Do
-	//	ObjectGroup = SelectionExclude.Ref.GetObject();
-	//	ObjectGroup.Users.Delete(ObjectGroup.Users.Find(User, "User"));
-	//	ObjectGroup.Write();
-	//EndDo;
-	//
-	//SelectionAdd = Results[1].Choose();
-	//While SelectionAdd.Next() Do
-	//	ObjectGroup = SelectionAdd.Ref.GetObject();
-	//	UserRow = ObjectGroup.Users.Add();
-	//	UserRow.User = User;
-	//	ObjectGroup.Write();
-	//EndDo;
-	//
-	//CommitTransaction();
-	//// _Demo End Example
+	// _Demo Start Example
+	BeginTransaction();
+	
+	If Not User.Roles.Contains(Metadata.Roles.Operator) Then
+		User.Roles.Add(Metadata.Roles.Operator);
+	EndIf;
+	
+	User.Write();
+	
+	CommitTransaction();
+	// _Demo End Example
 	
 EndProcedure

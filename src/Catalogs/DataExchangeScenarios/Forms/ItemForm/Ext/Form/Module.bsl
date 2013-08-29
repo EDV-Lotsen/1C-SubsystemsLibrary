@@ -282,7 +282,7 @@ Procedure RefreshDataExchangeStates()
 	|WHERE
 	|	DataExchangeScenariosExchangeSettings.Ref = &Ref
 	|ORDER  BY
-	|	DataExchangeScenariosExchangeSettings.RowNumber ASC
+	|	DataExchangeScenariosExchangeSettings.LineNumber ASC
 	|";
 	
 	Query = New Query;

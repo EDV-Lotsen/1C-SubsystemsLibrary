@@ -269,7 +269,7 @@ Procedure SharedSuppliedDataCatalogsBeforeWrite(Source, Cancel) Export
 			|		INNER JOIN InformationRegister.DataAreas AS DataAreas
 			|			ON SuppliedDataChanges.DataArea = DataAreas.DataArea
 			|WHERE
-			|	DataAreas.State IN (VALUE(Enumeration.DataAreaStates.Used))";
+			|	DataAreas.State IN (VALUE(Enum.DataAreaStates.Used))";
 			
 			NodesSelection = Query.Execute().Choose();
 			While NodesSelection.Next() Do

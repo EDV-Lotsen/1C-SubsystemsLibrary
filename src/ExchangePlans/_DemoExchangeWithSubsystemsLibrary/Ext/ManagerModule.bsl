@@ -53,8 +53,9 @@ Function NodeDefaultValues() Export
 	
 	SettingsStructure = New Structure;
 	SettingsStructure.Insert("DefaultItem", Catalogs.Items.EmptyRef());
-	
+
 	Return SettingsStructure;
+	
 EndFunction
 
 // Returns a string with data transfer restrictions to be displayed to end users.
@@ -289,7 +290,7 @@ EndFunction
 Function CorrespondentInfoBaseNodeFilterSetup() Export
 	
 	CompanyTabularSectionStructure = New Structure;
-	CompanyTabularSectionStructure.Insert("Company",      New Array);
+	CompanyTabularSectionStructure.Insert("Company",     New Array);
 	CompanyTabularSectionStructure.Insert("Company_Key", New Array);
 
 	SettingsStructure = New Structure;

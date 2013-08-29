@@ -175,7 +175,7 @@ Function GetReadObjectConversionRules(Val ExchangePlanName) Export
 	|	AND DataExchangeRules.RuleKind = VALUE(Enum.DataExchangeRuleKinds.ObjectConversionRules)
 	|	AND DataExchangeRules.RulesLoaded
 	|";
-	
+		
 	Query = New Query;
 	Query.Text = QueryText;
 	Query.SetParameter("ExchangePlanName", ExchangePlanName);

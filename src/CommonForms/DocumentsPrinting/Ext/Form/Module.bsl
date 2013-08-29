@@ -72,13 +72,8 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 		Items.Pages.PagesRepresentation = FormPagesRepresentation.None;
 	EndIf;
 	
-	//If Users.CurrentUserHaveFullAccess()
-	//OR ( IsInRole("PrintWriteFilesUseClipboard")
-	//	And EmailOperations.SystemAccountAvailable() )Then
-	//	SystemAccountOfEmail = EmailOperations.GetSystemAccount();
-	//Else
-		 Items.SendViaEmail.Visible = False;
-	//EndIf;
+	// Example does not include access rights verifying.
+	SystemAccountOfEmail = EmailOperations.GetSystemAccount();
 	
 EndProcedure
 

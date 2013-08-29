@@ -72,7 +72,7 @@ EndFunction
 //  Additional structure key that can be used:
 //    ReplyTo       - Map - see Recipient for details.
 //    Password      - String - account password.
-//    TextType      - String, Enumeration.EmailTextTypes - determines the passed text
+//    TextType      - String, Enum.EmailTextTypes - determines the passed text
 //                    type. It can take the following values:
 //                    HTML - EmailTextTypes.HTML - HTML formatted text.
 //                    PlainText - EmailTextTypes.PlainText - plain text. It is 

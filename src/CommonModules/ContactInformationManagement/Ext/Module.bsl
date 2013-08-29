@@ -518,7 +518,7 @@ EndProcedure
 //
 // Parameters:
 // CIKind - Catalog.ContactInformationKinds - contact information kind.
-// Type - Enumeration.ContactInformationTypes - contact information type.
+// Type - Enum.ContactInformationTypes - contact information type.
 // CanChangeEditMode - Boolean - flag that shows whether the edit mode can be changed in
 // the enterprise mode.
 // For example, editing addresses that are used in tax reports must be prohibited.

@@ -15,6 +15,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SenderSettings.Dimension.MessageChannel</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.MaxActiveBackgroundJobExecutionTime</name>
 		<right>
 			<name>Read</name>
@@ -35,20 +42,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -133,6 +160,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.JobQueue.Resource.JobState</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.TryNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.InfoBaseAdministrationParameters</name>
 		<right>
 			<name>Read</name>
@@ -153,20 +194,47 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.Dimension.Node</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -266,6 +334,34 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FILECompressOutgoingMessageFile</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.RecipientSubscriptions.Dimension.MessageChannel</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMOSAuthentication</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.XMLRules</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.SubordinateDIBNodeSettings</name>
 		<right>
 			<name>Read</name>
@@ -280,6 +376,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SuppliedDataVersions.Resource.SuppliedDataVersion</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ProxyServerSettings</name>
 		<right>
 			<name>Read</name>
@@ -291,6 +394,20 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.Resource.EndDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMUserPassword</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -324,10 +441,24 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.Resource.Use</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.AuxiliarySuppliedDataServiceUserName</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.Dimension.InfoBaseUserID</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -494,10 +625,45 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.WorldCountries.Attribute.AlphaCode2</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SenderSettings.Dimension.Recipient</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.Dimension.ID</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.Dimension.ScheduledJob</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.FileSystemExtensionInstallationQuestion</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataRelations.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -531,6 +697,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SubsystemVersions.Dimension.SubsystemName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ImportDataIntoArea</name>
 		<right>
 			<name>View</name>
@@ -546,6 +719,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.WSPassword</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -587,6 +767,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Attribute.ExportID</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -673,20 +860,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataVersions.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataVersions.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataVersions.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataVersions.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -704,6 +911,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreaSessionLocks.Resource.LockMessage</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InfoBaseObjectMapping</name>
 		<right>
 			<name>Use</name>
@@ -712,6 +926,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Resource.State</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -726,6 +947,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -818,10 +1046,45 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.RuleTemplateName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPCompressOutgoingMessageFile</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ExchangePlanNodeChoice</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.Resource.MessageSendingDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.Resource.Version</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.ExchangePlanNameFromRules</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -843,6 +1106,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataExchangeStates.Dimension.ActionOnExchange</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.RuleSource</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.GeneralSettings</name>
 		<right>
 			<name>View</name>
@@ -854,6 +1131,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.RuleFileName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -946,6 +1230,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreaSessionLocks.Resource.LockPeriodEnd</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Attribute.Repeat</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ProxyServerParameters</name>
 		<right>
 			<name>View</name>
@@ -957,6 +1255,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.Resource.ExchangeExecutionResult</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -996,20 +1301,54 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.DefaultExchangeMessageTransportKind</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMPlatformServerName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1037,20 +1376,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreaSessionLocks.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreaSessionLocks.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreaSessionLocks.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreaSessionLocks.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1072,6 +1431,27 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.Dimension.InfoBaseNode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.ScheduledStartTime</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.Parameters</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1157,21 +1537,27 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.EMAILMaxMessageSize</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.Dimension.InfoBaseNode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.SuppliedDataRelations</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -1180,10 +1566,52 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SuppliedDataRelations.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataRelations.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataRelations.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataRelations.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.MetadataObjectChoice</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.WSUserName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.EMAILCompressOutgoingMessageFile</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1207,20 +1635,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SenderSettings.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SenderSettings.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SenderSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SenderSettings.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1230,20 +1678,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1260,20 +1728,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1297,6 +1785,13 @@
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.ReadRulesAlready</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1371,6 +1866,13 @@
 		<right>
 			<name>InteractiveDeleteMarkedPredefinedData</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionMaxMessageSize</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1463,6 +1965,34 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Dimension.ExchangePlanName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPort</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.Resource.MessageNo</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMInfoBaseDirectory</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1623,6 +2153,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.JobQueue.Resource.ActiveBackgroundJob</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Resource.RuleInfo</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.Positions</name>
 		<right>
 			<name>Read</name>
@@ -1780,21 +2324,30 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.CombiExchangeMessageTransportKind</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FILEDataExchangeDirectory</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.Resource.StartDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.WorldCountries</name>
 		<right>
 			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Insert</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Delete</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -1802,48 +2355,71 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>InteractiveInsert</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InteractiveDelete</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InteractiveSetDeletionMark</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InteractiveClearDeletionMark</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>InteractiveDeleteMarked</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>InputByString</name>
 			<value>true</value>
 		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.PredefinedDataName</name>
 		<right>
-			<name>InteractiveDeletePredefinedData</name>
-			<value>true</value>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Predefined</name>
 		<right>
-			<name>InteractiveSetDeletionMarkPredefinedData</name>
-			<value>true</value>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Ref</name>
 		<right>
-			<name>InteractiveClearDeletionMarkPredefinedData</name>
-			<value>true</value>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.DeletionMark</name>
 		<right>
-			<name>InteractiveDeleteMarkedPredefinedData</name>
-			<value>true</value>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.IsFolder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Owner</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Parent</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.StandardAttribute.Code</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -1867,6 +2443,13 @@
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreaSessionLocks.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2023,6 +2606,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SeparatedScheduledJobs.Resource.CustomSettings</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.MaxActiveBackgroundJobCount</name>
 		<right>
 			<name>Read</name>
@@ -2078,10 +2668,31 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreaSessionLocks.Resource.Exclusive</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.DefaultPurchaseVAT</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.Dimension.DataType</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Resource.Presentation</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2091,20 +2702,54 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonNodeDataChanges.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.Resource.EndDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.ExecuteExchangeInDebugMode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2114,20 +2759,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2213,9 +2878,41 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.JobQueue.Resource.ScheduledJob</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.DataImportTransactionItemCount</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ORMCachedValueRefreshDate</name>
 		<right>
 			<name>Read</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SubsystemVersions.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfAccounts.ChartOfAccounts</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
 			<value>true</value>
 		</right>
 	</object>
@@ -2224,6 +2921,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.ExclusiveExecution</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2247,20 +2951,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2275,6 +2999,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2352,6 +3083,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.Attribute.SentNo</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.Dimension.ActionOnExchange</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.WorkTimeTypes</name>
 		<right>
 			<name>Read</name>
@@ -2426,6 +3171,20 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.JobQueue.Dimension.Job</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Attribute.UseSelectiveObjectChangeRecordFilter</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ActiveUsers</name>
 		<right>
 			<name>Use</name>
@@ -2434,6 +3193,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Dimension.RuleKind</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2518,6 +3284,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ProgramInterfaceCache.Resource.UpdateDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard</name>
 		<right>
 			<name>Use</name>
@@ -2542,20 +3315,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2713,15 +3506,7 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -2730,10 +3515,52 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Subsystem.StandardSubsystems.Subsystem.ServiceMode.Subsystem.DataImportExport</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.DataExportTransactionItemCount</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Dimension.Node</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2750,20 +3577,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2778,6 +3625,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMUserName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -2856,6 +3710,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.ExchangeMessageArchivePassword</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.InternalServiceManagerURL</name>
 		<right>
 			<name>Read</name>
@@ -2884,10 +3745,24 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SuppliedDataRelations.Dimension.SeparatedDataItem</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ServiceAgentUserName</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.Key</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3042,13 +3917,16 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.EMAILAccount</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.RecipientSubscriptions</name>
 		<right>
 			<name>Read</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Update</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -3056,12 +3934,36 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Edit</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.RecipientSubscriptions.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.RecipientSubscriptions.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.RecipientSubscriptions.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.RecipientSubscriptions.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3157,10 +4059,38 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreas.Attribute.ProcessingError</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeRules.Attribute.RulesLoaded</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuppliedDataVersions.Dimension.SuppliedDataKind</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.DistributedInfoBaseNodePrefix</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeMessages.Dimension.MessageID</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3189,31 +4119,11 @@
 	<object>
 		<name>Configuration.SubsystemsLibrary</name>
 		<right>
-			<name>DataAdministration</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>ThinClient</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>WebClient</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>ThickClient</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>ExternalConnection</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Automation</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>AllFunctionsMode</name>
 			<value>true</value>
 		</right>
 		<right>
@@ -3230,6 +4140,13 @@
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Dimension.DataArea</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3433,6 +4350,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.RecipientSubscriptions.Dimension.Recipient</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Subsystem.StandardSubsystems.Subsystem.EmailOperations</name>
 		<right>
 			<name>View</name>
@@ -3451,6 +4375,20 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.Dimension.InfoBaseNode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ProgramInterfaceCache.Resource.Data</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3635,20 +4573,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3658,20 +4616,40 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SuccessfulDataExchangeStates.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3780,6 +4758,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPassword</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Subsystem.StandardSubsystems.Subsystem.GetFilesFromInternet</name>
 		<right>
 			<name>View</name>
@@ -3798,6 +4783,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.WorldCountries.Attribute.AlphaCode3</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3835,6 +4827,20 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionUser</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPassiveConnection</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3980,6 +4986,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreaSessionLocks.Resource.LockPeriodStart</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.UpdateDetails</name>
 		<right>
 			<name>View</name>
@@ -3987,10 +5000,24 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SuppliedDataRelations.Dimension.SharedDataItem</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.DefaultCurrency</name>
 		<right>
 			<name>Read</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMInfoBaseNameAtPlatformServer</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -4015,10 +5042,31 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SuppliedDataRelations.Resource.ManualEdit</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.Resource.ExecuteMappingInfoAdjustment</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Subsystem.StandardSubsystems.Subsystem.ItemOrderSetup</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.MethodName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -4081,6 +5129,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataAreas.Attribute.TimeZone</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -4173,6 +5228,27 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.WSURL</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.WSUseLargeDataTransfer</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfoBaseNodeSettings.Resource.InitialDataExport</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.IncomeAccount</name>
 		<right>
 			<name>Read</name>
@@ -4231,6 +5307,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataAreasForSuppliedDataUpdate.Dimension.MessageNo</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ObjectChangeRecordRuleImport</name>
 		<right>
 			<name>Use</name>
@@ -4246,6 +5329,13 @@
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPath</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -4360,6 +5450,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataExchangeMessages.Resource.MessageFileName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.BankServiceChargeAccount</name>
 		<right>
 			<name>Read</name>
@@ -4397,6 +5494,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.WorldCountries.Attribute.LongDescription</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>AccumulationRegister.OrdersDispatched</name>
 		<right>
 			<name>Read</name>
@@ -4420,6 +5524,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.COMInfoBaseOperationMode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.BankInterestEarnedAccount</name>
 		<right>
 			<name>Read</name>
@@ -4433,20 +5544,47 @@
 			<value>true</value>
 		</right>
 		<right>
-			<name>Update</name>
-			<value>true</value>
-		</right>
-		<right>
 			<name>View</name>
-			<value>true</value>
-		</right>
-		<right>
-			<name>Edit</name>
 			<value>true</value>
 		</right>
 		<right>
 			<name>TotalsControl</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.LastStartDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -4532,6 +5670,57 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.Addresses</name>
+		<right>
+			<name>Read</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>Insert</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>Delete</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>View</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveInsert</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMark</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMark</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InputByString</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>true</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ConnectEndPoint</name>
 		<right>
 			<name>View</name>
@@ -4546,10 +5735,24 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ExchangeTransportSettings.Resource.ExchangeLogFileName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>CommonForm.ServiceUsers</name>
 		<right>
 			<name>View</name>
 			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.JobQueue.Resource.Use</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 </Rights>

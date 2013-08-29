@@ -181,7 +181,7 @@
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Mail server info</v8:content>
+									<v8:content>Email server info</v8:content>
 								</v8:item>
 							</Title>
 							<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
@@ -210,6 +210,12 @@
 									<Type>Hyperlink</Type>
 									<SkipOnInput>false</SkipOnInput>
 									<CommandName>Form.Command.AdditionalSettings</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Additional email server settings</v8:content>
+										</v8:item>
+									</Title>
 									<ExtendedTooltip name="AdditionalMailServerSettingsExtendedTooltip" id="39"/>
 								</Button>
 							</ChildItems>

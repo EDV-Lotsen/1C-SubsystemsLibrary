@@ -17,22 +17,22 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Return;
 	EndIf;
 	
-	DataExchangeServer.DefaultValueSetupFormOnCreateAtServer(ThisForm, Metadata.ExchangePlans._DemoExchangeWithSubsystemsLibrary.Name);
+	DataExchangeServer.CorrespondentInfoBaseDefaultValueSetupFormOnCreateAtServer(ThisForm, Metadata.ExchangePlans._DemoExchangeWithSubsystemsLibrary.Name);
 	
-	If ExternalConnectionParameters.ConnectionType = "ExternalConnection" Then
+	If Parameters.ExternalConnectionParameters.ConnectionType = "ExternalConnection" Then
 		
 		ErrorMessageString = "";
-		ExternalConnection = DataExchangeCached.EstablishExternalConnection(ExternalConnectionParameters, ErrorMessageString);
+		ExternalConnection = DataExchangeCached.EstablishExternalConnection(Parameters.ExternalConnectionParameters, ErrorMessageString);
 		
 		If ExternalConnection = Undefined Then
 			CommonUseClientServer.MessageToUser(ErrorMessageString,,,, Cancel);
 			Return;
 		EndIf;
 		
-	ElsIf ExternalConnectionParameters.ConnectionType = "WebService" Then
+	ElsIf Parameters.ExternalConnectionParameters.ConnectionType = "WebService" Then
 		
 		ErrorMessageString = "";
-		WSProxy = DataExchangeCached.GetWSProxy(ExternalConnectionParameters, ErrorMessageString);
+		WSProxy = DataExchangeCached.GetWSProxy(Parameters.ExternalConnectionParameters, ErrorMessageString);
 		
 		If WSProxy = Undefined Then
 			CommonUseClientServer.MessageToUser(ErrorMessageString,,,, Cancel);
@@ -63,6 +63,9 @@ EndProcedure
 &AtClient
 Procedure CancelCommand(Command)
 	
+	Close();
+	
+EndProcedure
 
 //////////////////////////////////////////////////////////
 // FORM ITEM EVENT HANDLERS

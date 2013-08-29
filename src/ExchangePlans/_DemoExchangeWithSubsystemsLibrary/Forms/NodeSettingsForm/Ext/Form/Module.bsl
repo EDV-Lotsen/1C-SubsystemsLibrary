@@ -16,6 +16,13 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 EndProcedure
 
+&AtClient
+Procedure OnOpen(Cancel)
+	
+	SetVisibility();
+	
+EndProcedure
+
 ////////////////////////////////////////////////////////////////////////////////
 // FORM COMMAND HANDLERS
 
@@ -25,3 +32,18 @@ Procedure OKCommand(Command)
 	DataExchangeClient.NodeSettingsFormCloseFormCommand(ThisForm);
 	
 EndProcedure
+
+&AtClient
+Procedure UseFilterByCompaniesOnChange(Item)
+	
+	SetVisibility();
+	
+EndProcedure
+
+&AtClient
+Procedure SetVisibility()
+	
+	Items.Companies.Visible = UseFilterByCompanies;
+	
+EndProcedure
+

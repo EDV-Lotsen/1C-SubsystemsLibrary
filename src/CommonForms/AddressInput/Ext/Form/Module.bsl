@@ -424,7 +424,7 @@ Function GetEditResult()
 	AddFieldValue(Appartment, "Appartment");
 	AddFieldValue(CountryDescription, "Country");
 	AddFieldValue(CountryCode, "CountryCode");
-	
+
 	If Not IsBlankString(Appartment) Then
 		AddFieldValue(AppartmentType, "AppartmentType");
 	EndIf;

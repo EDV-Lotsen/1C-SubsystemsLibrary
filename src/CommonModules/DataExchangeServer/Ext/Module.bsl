@@ -3606,17 +3606,17 @@ Procedure NodeSettingsFormOnCreateAtServerHandler(Form, FormAttributeName)
 	
 	For Each FilterSettings In Form[FormAttributeName] Do
 		
-		Key = FilterSettings.Key;
+		FilterKey = FilterSettings.Key;
 		
-		If Form.Items.Find(Key) = Undefined Then
+		If Form.Items.Find(FilterKey) = Undefined Then
 			Continue;
 		EndIf;
 		
-		If TypeOf(Form[Key]) = Type("FormDataCollection") Then
+		If TypeOf(Form[FilterKey]) = Type("FormDataCollection") Then
 			
 			Table = New ValueTable;
 			
-			TabularSectionStructure = Form.Parameters[FormAttributeName][Key];
+			TabularSectionStructure = Form.Parameters[FormAttributeName][FilterKey];
 			
 			For Each Item In TabularSectionStructure Do
 				
@@ -3628,15 +3628,15 @@ Procedure NodeSettingsFormOnCreateAtServerHandler(Form, FormAttributeName)
 				
 			EndDo;
 			
-			Form[Key].Load(Table);
+			Form[FilterKey].Load(Table);
 			
 		Else
 			
-			Form[Key] = Form.Parameters[FormAttributeName][Key];
+			Form[FilterKey] = Form.Parameters[FormAttributeName][FilterKey];
 			
 		EndIf;
 		
-		Form[FormAttributeName][Key] = Form.Parameters[FormAttributeName][Key];
+		Form[FormAttributeName][FilterKey] = Form.Parameters[FormAttributeName][FilterKey];
 		
 	EndDo;
 	

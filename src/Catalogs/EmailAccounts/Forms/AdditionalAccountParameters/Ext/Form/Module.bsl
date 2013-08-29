@@ -25,6 +25,12 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	SMTPPort = AccountStructure.SMTPPort;
 	POP3Port = AccountStructure.POP3Port;
 	
+	// Passing Use SSL flags
+	POP3UseSSL = AccountStructure.POP3UseSSL;
+	SMTPUseSSL = AccountStructure.SMTPUseSSL;
+	// SSL
+
+	
 	POP3AuthenticationMode = AccountStructure.POP3AuthenticationMode;
 	
 	SMTPAuthenticationMode = AccountStructure.SMTPAuthenticationMode;
@@ -177,11 +183,11 @@ EndProcedure
 //                              be stored on the server.
 //  ServerTimeout             - Number - number of seconds during which the function 
 //                              will wait for operation execution on the server.
-//  SMTPAuthentication        - Enumeration.SMTPAuthentication
+//  SMTPAuthentication        - Enum.SMTPAuthentication
 //  SMTPUser                  - String - SMTP authentication user name.
 //  SMTPPassword              - String - SMTP authentication password.
-//  SMTPAuthenticationMode*   - Enumeration.SMTPAuthenticationMode
-//  POP3AuthenticationMode    - Enumeration.POP3AuthenticationMode
+//  SMTPAuthenticationMode*   - Enum.SMTPAuthenticationMode
+//  POP3AuthenticationMode    - Enum.POP3AuthenticationMode
 //
 // *- If SMTP authentication mode is SimilarlyPOP3, the authentication parameter values
 // are copied from POP3.
@@ -229,6 +235,11 @@ Function FillExtendedParameters()
 	
 	Result.Insert("POP3AuthenticationMode", POP3AuthenticationMode);
 	
+	// Including Use SSL flags into the result structure
+	Result.Insert("POP3UseSSL", POP3UseSSL);
+	Result.Insert("SMTPUseSSL", SMTPUseSSL);
+	// SSL
+
 	Return Result;
 	
 EndFunction

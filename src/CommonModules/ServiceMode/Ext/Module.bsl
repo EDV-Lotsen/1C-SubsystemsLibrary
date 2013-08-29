@@ -594,7 +594,7 @@ Procedure DataAreaMaintenance() Export
 	|FROM
 	|	InformationRegister.DataAreas AS DataAreas
 	|WHERE
-	|	DataAreas.State IN (VALUE(Enumeration.DataAreaStates.New), VALUE(Enum.DataAreaStates.ToDelete))
+	|	DataAreas.State IN (VALUE(Enum.DataAreaStates.New), VALUE(Enum.DataAreaStates.ToDelete))
 	|	And DataAreas.ProcessingError = FALSE
 	|
 	|ORDER BY
