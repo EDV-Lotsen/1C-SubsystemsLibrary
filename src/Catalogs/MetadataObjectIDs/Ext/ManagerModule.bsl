@@ -188,19 +188,19 @@ Procedure UpdateCatalogData(HasChanges = True, HasDeleted = True) Export
 				If Selection.Predefined Then
 					MetadataObject = Metadata.FindByFullName(FullName);
 				Else
-					CurMetadataObjectProperties = MetadataObjectProperties.Find(Selection.Ref, "ID");
-					If CurMetadataObjectProperties = Undefined Then
+					MetadataObjectProperties = MetadataObjectProperties.Find(Selection.Ref, "ID");
+					If MetadataObjectProperties = Undefined Then
 						MetadataObject = Undefined;
 					Else
-						MetadataObject = Metadata.FindByFullName(CurMetadataObjectProperties.FullName);
+						MetadataObject = Metadata.FindByFullName(MetadataObjectProperties.FullName);
 					EndIf;
 				EndIf;
 			Else
 				MetadataObject = MetadataObjectByKey(MetadataObjectKey);
 			EndIf;
 			
-			// If metadata object is found by the key or by name of predefined item,
-			// then a metadata object property row should be prepared
+			// If metadata object is found by the key or by the name of predefined item,
+			// a metadata object property row must be prepared
 			If MetadataObject <> Undefined Then
 				Row = MetadataObjectProperties.Find(MetadataObject.FullName(), "FullName");
 				If ValueIsFilled(Row.ParentFullName) Then

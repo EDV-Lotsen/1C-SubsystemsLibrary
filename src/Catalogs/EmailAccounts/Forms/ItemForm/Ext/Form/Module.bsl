@@ -50,13 +50,6 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 		Object.SMTPAuthentication        = Parameter.SMTPAuthentication;
 		Object.SMTPAuthenticationMode    = Parameter.SMTPAuthenticationMode;
 		Object.POP3AuthenticationMode    = Parameter.POP3AuthenticationMode;
-		
-		// Passing Use SSL flags to the object attributes
-		Object.POP3UseSSL = Parameter.POP3UseSSL;
-		Object.SMTPUseSSL = Parameter.SMTPUseSSL;
-		// SSL
-
-		
 		Modified = True;
 	EndIf;
 	
@@ -79,11 +72,6 @@ Procedure AdditionalSettingsExecute()
 	AccountStructure.Insert("SMTPAuthentication",        Object.SMTPAuthentication);
 	AccountStructure.Insert("SMTPAuthenticationMode",    Object.SMTPAuthenticationMode);
 	AccountStructure.Insert("POP3AuthenticationMode",    Object.POP3AuthenticationMode);
-	
-	// Including Use SSL flags into the account structure
-	AccountStructure.Insert("POP3UseSSL",    			 Object.POP3UseSSL);
-	AccountStructure.Insert("SMTPUseSSL",    			 Object.SMTPUseSSL);
-	// SSL
 	
 	CallParameters = New Structure("Ref, AccountStructure, ReadOnly", Object.Ref, AccountStructure, ReadOnly);
 	

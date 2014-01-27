@@ -2259,31 +2259,5 @@ Function ObjectTabularSections(MetadataObject)
 EndFunction
 
 Procedure _DemoDataExchangeRecordChangesBeforeWrite(Source, Cancel) Export
-	
 	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWrite("_DemoExchangeWithSubsystemsLibrary", Source, Cancel);
-	
-EndProcedure
-
-Procedure _DemoDataExchangeRecordChangesDocumentsBeforeWrite(Source, Cancel, WriteMode, PostingMode) Export
-	
-	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWriteDocument("_DemoExchangeWithSubsystemsLibrary", Source, Cancel, WriteMode, PostingMode)
-	
-EndProcedure
-
-Procedure _DemoExchangeWithSubsystemsLibraryRecordConstantChange(Source, Cancel) Export
-	
-	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWriteConstant("_DemoExchangeWithSubsystemsLibrary", Source, Cancel);
-	
-EndProcedure
-
-Procedure _DemoExchangeWithSubsystemsLibraryRegisterDeletion(Source, Cancel) Export
-	
-	DataExchangeEvents.ObjectChangeRecordMechanismBeforeDelete("_DemoExchangeWithSubsystemsLibrary", Source, Cancel);
-	
-EndProcedure
-
-Procedure _DemoExchangeWithSubsystemsLibraryRecordRecordSetChanges(Source, Cancel, Replacing) Export
-	
-	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWriteRegister("_DemoExchangeWithSubsystemsLibrary", Source, Cancel, Replacing);
-
 EndProcedure

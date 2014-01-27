@@ -25,12 +25,6 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	SMTPPort = AccountStructure.SMTPPort;
 	POP3Port = AccountStructure.POP3Port;
 	
-	// Passing Use SSL flags
-	POP3UseSSL = AccountStructure.POP3UseSSL;
-	SMTPUseSSL = AccountStructure.SMTPUseSSL;
-	// SSL
-
-	
 	POP3AuthenticationMode = AccountStructure.POP3AuthenticationMode;
 	
 	SMTPAuthenticationMode = AccountStructure.SMTPAuthenticationMode;
@@ -235,11 +229,6 @@ Function FillExtendedParameters()
 	
 	Result.Insert("POP3AuthenticationMode", POP3AuthenticationMode);
 	
-	// Including Use SSL flags into the result structure
-	Result.Insert("POP3UseSSL", POP3UseSSL);
-	Result.Insert("SMTPUseSSL", SMTPUseSSL);
-	// SSL
-
 	Return Result;
 	
 EndFunction

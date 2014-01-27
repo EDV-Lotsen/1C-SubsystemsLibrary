@@ -246,9 +246,9 @@ Procedure FillItemQuantity_OnPO_OnSO_OnHand_AvailableToPromise()
 		"SELECT
 		// ------------------------------------------------------
 		// QtyOnPO = OrdersDispatched.Quantity - OrdersDispatched.Received(Invoiced) > 0 
-		|	OrdersDispatchedBalance.Company   AS Company,
-		|	OrdersDispatchedBalance.Order     AS Order,
-		|	OrdersDispatchedBalance.Item   AS Item,
+		|	OrdersDispatchedBalance.Counterparty AS Counterparty,
+		|	OrdersDispatchedBalance.Order   AS Order,
+		|	OrdersDispatchedBalance.Item   	AS Item,
 		|	CASE WHEN &Type = VALUE(Enum.InventoryTypes.Inventory)
 		|             THEN CASE WHEN OrdersDispatchedBalance.QuantityBalance - OrdersDispatchedBalance.ReceivedBalance > 0
 		|	                    THEN OrdersDispatchedBalance.QuantityBalance - OrdersDispatchedBalance.ReceivedBalance 
@@ -276,7 +276,7 @@ Procedure FillItemQuantity_OnPO_OnSO_OnHand_AvailableToPromise()
 		|SELECT
 		// ------------------------------------------------------
 		// QtyOnSO = OrdersRegistered.Quantity - OrdersRegistered.Shipped(Invoiced) > 0 
-		|	OrdersRegisteredBalance.Company,
+		|	OrdersRegisteredBalance.Counterparty,
 		|	OrdersRegisteredBalance.Order,
 		|	OrdersRegisteredBalance.Item,
 		|	0,
@@ -345,7 +345,7 @@ Procedure FillItemQuantity_OnPO_OnSO_OnHand_AvailableToPromise()
 		QueryResult = Query.ExecuteBatch();
 		
 		// Fill form attributes with query result
-		Selection   = QueryResult[QueryTables].Choose();
+		Selection = QueryResult[QueryTables].Choose();
 		If Selection.Next() Then
 			FillPropertyValues(ThisForm, Selection, "QtyOnPO, QtyOnSO, QtyOnHand, QtyAvailableToPromise");
 		EndIf;

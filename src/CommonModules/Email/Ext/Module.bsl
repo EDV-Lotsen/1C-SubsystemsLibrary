@@ -653,11 +653,9 @@ Function GenerateInternetProfile(Val Account,
 		EndIf;
 	EndIf;
 	
-	// Passing Use SSL flags to the profile settings
-	Profile.POP3UseSSL = Account.POP3UseSSL;
-	Profile.SMTPUseSSL = Account.SMTPUseSSL;
-	// SSL
-	
+	//test
+	Profile.POP3UseSSL = True;
+	Profile.SMTPUseSSL = True;
 	Return Profile;
 	
 EndFunction

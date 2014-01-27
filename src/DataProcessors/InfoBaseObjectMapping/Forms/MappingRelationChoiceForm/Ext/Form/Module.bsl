@@ -76,8 +76,8 @@ EndProcedure
 &AtServer
 Procedure SetTableFieldVisible(FormTableName, MaxCustomFieldCount, UsedFieldList)
 	
-	SourceFieldName = StrReplace("#FormTableName#OrderFieldNN","#FormTableName#", FormTableName);
-	TargetFieldName = StrReplace("#FormTableName#OrderFieldNN","#FormTableName#", FormTableName);
+	SourceFieldName = StrReplace("#FormTableName#SortFieldNN","#FormTableName#", FormTableName);
+	TargetFieldName = StrReplace("#FormTableName#SortFieldNN","#FormTableName#", FormTableName);
 	
 	// Making all map table fields invisible
 	For FieldNumber = 1 to MaxCustomFieldCount Do

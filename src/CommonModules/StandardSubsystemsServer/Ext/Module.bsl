@@ -20,7 +20,7 @@ EndProcedure
 //
 Function LibVersion() Export
 	
-	Return "2.0.1.16";
+	Return "2.0.1.17";
 	
 EndFunction
 
