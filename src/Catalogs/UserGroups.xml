@@ -209,7 +209,7 @@
 					<xr:ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Parent group</v8:content>
+							<v8:content>Parent group hierarchy</v8:content>
 						</v8:item>
 					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
@@ -224,7 +224,7 @@
 					<xr:Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Is in group</v8:content>
+							<v8:content>Belongs to Group</v8:content>
 						</v8:item>
 					</xr:Synonym>
 					<xr:Comment/>
@@ -274,7 +274,7 @@
 					<xr:ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Code that identifies the group</v8:content>
+							<v8:content>Group identification code</v8:content>
 						</v8:item>
 					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
@@ -290,7 +290,7 @@
 					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
-					<xr:FillValue xsi:type="xs:string"/>
+					<xr:FillValue xsi:type="xs:string">         </xr:FillValue>
 					<xr:Mask/>
 					<xr:ChoiceParameters/>
 				</xr:StandardAttribute>
@@ -324,7 +324,7 @@
 			<ObjectPresentation>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Users group</v8:content>
+					<v8:content>User Group</v8:content>
 				</v8:item>
 			</ObjectPresentation>
 			<ExtendedObjectPresentation/>
@@ -333,7 +333,7 @@
 			<Explanation>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Groups of users that have the same access level to the systems data</v8:content>
+					<v8:content>User groups, that have the same access to the system</v8:content>
 				</v8:item>
 			</Explanation>
 			<CreateOnInput>Use</CreateOnInput>
@@ -363,7 +363,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Arbitrary string</v8:content>
+							<v8:content>An arbitrary string</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -411,7 +411,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group users</v8:content>
+							<v8:content>Users, belonging to the group</v8:content>
 						</v8:item>
 					</ToolTip>
 					<FillChecking>DontCheck</FillChecking>
@@ -464,7 +464,7 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Group user</v8:content>
+									<v8:content>User included in the group</v8:content>
 								</v8:item>
 							</ToolTip>
 							<MarkNegatives>false</MarkNegatives>

@@ -273,7 +273,7 @@ Procedure UndoPosting(Cancel)
 			If CurRowLineItems.Quantity > CurrentBalance Then
 				Cancel = True;
 				Message = New UserMessage();
-				Message.Text=NStr("en='Insufficient balance';de='Nicht ausreichende Bilanz'");
+				Message.Text=NStr("en='Insufficient balance'");
 				Message.Message();
 				Return;
 			EndIf;

@@ -77,7 +77,7 @@ Procedure DeleteObsoleteUnloadByRefModeRecords(InfoBaseNode) Export
 	
 	If Not Result.IsEmpty() Then
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		
 		While Selection.Next() Do
 			

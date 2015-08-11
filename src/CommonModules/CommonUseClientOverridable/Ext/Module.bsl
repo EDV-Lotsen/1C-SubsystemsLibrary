@@ -38,3 +38,14 @@ EndProcedure
 Procedure BeforeExit(Cancel) Export
 	
 EndProcedure
+
+// Internal use only.
+Procedure AfterStart() Export
+	
+EndProcedure
+
+// Internal use only.
+Procedure ClientSystemTitleOnSet(SystemTitle, OnStart) Export
+	
+EndProcedure
+

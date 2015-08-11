@@ -21,7 +21,7 @@ Procedure FillNodeList()
 	|	SuppliedDataChanges.Ref IS NULL ";
 	
 	Result = Query.Execute();
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	While Selection.Next() Do
 		SuppliedData.CreateDataAreaNode(Selection.DataArea);
 	EndDo;

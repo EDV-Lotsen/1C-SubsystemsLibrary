@@ -19,7 +19,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	PresentationWithKind = KindDescription + ": " + Presentation;
 	Title = KindDescription;
 	
-	HomeCountry = Catalogs.WorldCountries.USA;
+	HomeCountry = Catalogs.WorldCountries.HomeCountry;
 	
 	If Parameters.HomeCountryAddressOnly Then
 		
@@ -322,7 +322,7 @@ Procedure CheckFillingCorrectness(Command)
 		
 	Else
 		
-		DoMessageBox(NStr("en = 'The address format is correct.'"));
+		ShowMessageBox(, NStr("en = 'The address format is correct.'"));
 		
 	EndIf;	
 		
@@ -513,7 +513,7 @@ Procedure FindCountryByCodeOrDescription(CountryCode, CountryDescription)
 		
 	EndIf;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Country = ?(Selection.Next(), Selection.Country, Catalogs.WorldCountries.EmptyRef());
 	
 EndProcedure

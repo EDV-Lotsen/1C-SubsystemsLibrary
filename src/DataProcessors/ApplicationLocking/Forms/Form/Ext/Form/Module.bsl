@@ -47,7 +47,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 			Raise MessageText;
 		EndIf;
 		
-		SessionCount = StrLineCount(InfoBaseConnectionNames);
+		SessionsCount = StrLineCount(InfoBaseConnectionNames);
 		
 	Else	
 		// Checking whether forced session termination is possible if a client application connects to the infobase through the web server.
@@ -61,12 +61,12 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 			Raise MessageText;
 		EndIf;	
 		
-		SessionCount = GetInfoBaseSessions().Count();
+		SessionsCount = GetInfoBaseSessions().Count();
 		
 	EndIf;
 	
 	// Checking whether the application can be locked
-	If Object.LockPeriodStart > Object.LockPeriodEnd 
+	If Object.LockActionStart > Object.LockPeriodEnd 
 		And ValueIsFilled(Object.LockPeriodEnd) Then
 		CommonUseClientServer.MessageToUser(
 			NStr("en = 'The lock end date cannot be less than the lock start date. The application is not locked.'"),,
@@ -74,9 +74,9 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 		Return;
 	EndIf;
 	
-	If Not ValueIsFilled(Object.LockPeriodStart) Then
+	If Not ValueIsFilled(Object.LockActionStart) Then
 		CommonUseClientServer.MessageToUser(
-			NStr("en = 'The lock start date is not specified.'"),,	"Object.LockPeriodStart",,Cancel);
+			NStr("en = 'The lock start date is not specified.'"),,	"Object.LockActionStart",,Cancel);
 		Return;
 	EndIf;
 	
@@ -86,12 +86,12 @@ EndProcedure
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
 	If EventName = "UserSessions" Then
-		SessionCount = Parameter.SessionCount;
+		SessionsCount = Parameter.SessionsCount;
 		UpdateLockState(ThisForm);
 		If Parameter.Status = "Done" Then
 			Close();
 		ElsIf Parameter.Status = "Error" Then
-			DoMessageBox(NStr("en = 'Cannot terminate all active user sessions.
+			ShowMessageBox(, NStr("en = 'Cannot terminate all active user sessions.
 				|See the event log for details.'"), 30);
 			Close();
 		EndIf;
@@ -126,7 +126,7 @@ Procedure Apply(Command)
 	Object.ProhibitUserWorkTemporarily = Not InitialUserWorkProhibitionState;
 	If Object.ProhibitUserWorkTemporarily Then
 		
-		SessionCount = 1;
+		SessionsCount = 1;
 		Try
 			If Not CheckLockPreconditions() Then
 				Return;
@@ -137,20 +137,18 @@ Procedure Apply(Command)
 		EndTry;
 		
 		QuestionTitle = NStr("en = 'Application locking'");
-		If SessionCount > 1 And Object.LockPeriodStart < CommonUseClient.SessionDate() + 5 * 60 Then
+		If SessionsCount > 1 And Object.LockActionStart < CommonUseClient.SessionDate() + 5 * 60 Then
 			QuestionText = NStr("en = 'All active user sessions will be terminated.
 				|The specified lock start time can be not enough for users to save their data and exit application.
 				|It is recommended that you set the lock start time in 5 minutes from now.
 				|
 				|• Click Yes to modify the lock start date and continue (recommended);
 				|• Click No to continue without modifying.'");
-			Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNoCancel,,, QuestionTitle);
-			If Response = DialogReturnCode.Yes Then
-				Object.LockPeriodStart = CommonUseClient.SessionDate() + 5 * 60;
-			ElsIf Response <> DialogReturnCode.No Then
-				Return;
-			EndIf;
-		ElsIf Object.LockPeriodStart > CommonUseClient.SessionDate() + 5 * 60 Then
+			Response = Undefined;
+
+			ShowQueryBox(New NotifyDescription("ApplyEnd2", ThisObject, New Structure("QuestionText, QuestionTitle", QuestionText, QuestionTitle)), QuestionText, QuestionDialogMode.YesNoCancel,,, QuestionTitle);
+            Return;
+		ElsIf Object.LockActionStart > CommonUseClient.SessionDate() + 5 * 60 Then
 			QuestionText = NStr("en = 'All active user sessions will be terminated.
 				|The interval between the present time and the data lock time that you specified 
 				|is too long, new users can log on before this time.
@@ -158,39 +156,101 @@ Procedure Apply(Command)
 				|
 				|• Click Yes to modify the lock start date and continue (recommended);
 				|• Click No to continue without modifying.'");
-			Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNoCancel,,, QuestionTitle);
-			If Response = DialogReturnCode.Yes Then
-				Object.LockPeriodStart = CommonUseClient.SessionDate() + 5 * 60;
-			ElsIf Response <> DialogReturnCode.No Then
-				Return;
-			EndIf;
+			ShowQueryBox(New NotifyDescription("ApplyEnd1", ThisObject, New Structure("QuestionText, QuestionTitle", QuestionText, QuestionTitle)), QuestionText, QuestionDialogMode.YesNoCancel,,, QuestionTitle);
+            Return;
 		Else	
 			QuestionText = NStr("en = 'All active user sessions will be terminated.
 				|Do you want to continue?'");
-			Response = DoQueryBox(QuestionText, QuestionDialogMode.OKCancel,,, QuestionTitle);
-			If Response <> DialogReturnCode.OK Then
-				Return;
-			EndIf;
+			ShowQueryBox(New NotifyDescription("ApplyEnd", ThisObject), QuestionText, QuestionDialogMode.OKCancel,,, QuestionTitle);
+            Return;
 		EndIf;
 		
 	EndIf;
 	
-	If Not LockUnlock() Then
-		Return;	
-	EndIf;
-	
-	ShowUserNotification(NStr("en = 'Application locking'"),
-		"e1cib/app/DataProcessor.ApplicationLocking",
-		?(Object.ProhibitUserWorkTemporarily, NStr("en= 'Locked.'"), NStr("en= 'Unlocked.'")), 
-		PictureLib.Information32);
-	InfoBaseConnectionsClient.SetSessionTerminationHandlers(
-		Object.ProhibitUserWorkTemporarily);
-	If Object.ProhibitUserWorkTemporarily Then	
-		RefreshStatePage(ThisForm);
-	Else
-		RefreshSettingsPage();
-	EndIf;
-	
+	ApplyPart2();
+EndProcedure
+
+&AtClient
+Procedure ApplyEnd2(QuestionResult, AdditionalParameters) Export
+    
+    QuestionText = AdditionalParameters.QuestionText;
+    QuestionTitle = AdditionalParameters.QuestionTitle;
+    
+    
+    Response = QuestionResult;
+    If Response = DialogReturnCode.Yes Then
+        Object.LockActionStart = CommonUseClient.SessionDate() + 5 * 60;
+    ElsIf Response <> DialogReturnCode.No Then
+        Return;
+    EndIf;
+    
+    ApplyPart2();
+
+EndProcedure
+
+&AtClient
+Procedure ApplyPart2()
+    
+    ApplyPart1();
+
+EndProcedure
+
+&AtClient
+Procedure ApplyEnd1(QuestionResult, AdditionalParameters) Export
+    
+    QuestionText = AdditionalParameters.QuestionText;
+    QuestionTitle = AdditionalParameters.QuestionTitle;
+    
+    
+    Response = QuestionResult;
+    If Response = DialogReturnCode.Yes Then
+        Object.LockActionStart = CommonUseClient.SessionDate() + 5 * 60;
+    ElsIf Response <> DialogReturnCode.No Then
+        Return;
+    EndIf;
+    
+    ApplyPart1();
+
+EndProcedure
+
+&AtClient
+Procedure ApplyPart1()
+    
+    ApplyPart();
+
+EndProcedure
+
+&AtClient
+Procedure ApplyEnd(QuestionResult, AdditionalParameters) Export
+    
+    Response = QuestionResult;
+    If Response <> DialogReturnCode.OK Then
+        Return;
+    EndIf;
+    
+    ApplyPart();
+
+EndProcedure
+
+&AtClient
+Procedure ApplyPart()
+    
+    If Not LockUnlock() Then
+        Return;	
+    EndIf;
+    
+    ShowUserNotification(NStr("en = 'Application locking'"),
+    "e1cib/app/DataProcessor.ApplicationLocking",
+    ?(Object.ProhibitUserWorkTemporarily, NStr("en= 'Locked.'"), NStr("en= 'Unlocked.'")), 
+    PictureLib.Information32);
+    InfoBaseConnectionsClient.SetSessionTerminationHandlers(
+    Object.ProhibitUserWorkTemporarily);
+    If Object.ProhibitUserWorkTemporarily Then	
+        RefreshStatePage(ThisForm);
+    Else
+        RefreshSettingsPage();
+    EndIf;
+
 EndProcedure
 
 &AtClient
@@ -200,7 +260,7 @@ Procedure Stop(Command)
 		Return;
 	EndIf;
 	InfoBaseConnectionsClient.SetSessionTerminationHandlers(False);
-	DoMessageBox(NStr("en = 'Active user session termination was canceled. 
+	ShowMessageBox(, NStr("en = 'Active user session termination was canceled. 
 		|The infobase is still locked."));
 EndProcedure
 
@@ -242,7 +302,7 @@ Function LockUnlock()
 		FormAttributeToValue("Object").SetLock();
 		Items.ErrorGroup.Visible = False;
 	Except
-		WriteLogEvent(NStr("en = 'User sessions'"), 
+		WriteLogEvent(NStr("en = 'User sessions'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error,,, 
 			DetailErrorDescription(ErrorInfo()));
 		If Users.InfoBaseUserWithFullAccess(, True) Then
@@ -252,7 +312,7 @@ Function LockUnlock()
 		Return False;
 	EndTry;
 	InitialUserWorkProhibitionState = Object.ProhibitUserWorkTemporarily;
-	SessionCount = GetInfoBaseSessions().Count();
+	SessionsCount = GetInfoBaseSessions().Count();
 	Return True;
 	
 EndFunction
@@ -263,7 +323,7 @@ Function Unlock()
 	Try
 		FormAttributeToValue("Object").Unlock();
 	Except
-		WriteLogEvent(NStr("en= 'User sessions'"), 
+		WriteLogEvent(NStr("en= 'User sessions'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error,,, 
 			DetailErrorDescription(ErrorInfo()));
 		If Users.InfoBaseUserWithFullAccess(, True) Then
@@ -308,7 +368,7 @@ Procedure UpdateLockState(Form)
 	Form.Items.State.Title = StringFunctionsClientServer.SubstituteParametersInString(
 		NStr("en = 'Please wait...
 			|Terminating user sessions. %1 active session(s) left.'"),
-			Form.SessionCount);
+			Form.SessionsCount);
 	
 EndProcedure
 
@@ -319,7 +379,7 @@ Procedure GetLockParameters(CheckOnly = False)
 		DataProcessor.GetLockParameters();
 		Items.ErrorGroup.Visible = False;
 	Except
-		WriteLogEvent(NStr("en = 'User sessions'"), 
+		WriteLogEvent(NStr("en = 'User sessions'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error,,, 
 			DetailErrorDescription(ErrorInfo()));
 		If Users.InfoBaseUserWithFullAccess(, True) Then

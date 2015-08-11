@@ -51,7 +51,7 @@ Procedure StartSeparateSessionToExecuteScheduledJobsViaIdleHandler() Export
 	Result = ScheduledJobsClient.StartSeparateSessionToExecuteScheduledJobs();
 	
 	If Result.Cancel Then
-		DoMessageBox(Result.ErrorDescription);
+		ShowMessageBox(,Result.ErrorDescription);
 		
 	ElsIf Result.TriedToOpen Then
 		

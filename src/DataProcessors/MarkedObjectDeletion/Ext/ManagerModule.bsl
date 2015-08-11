@@ -168,7 +168,7 @@ Function ExecuteDelete(Val ToDelete, DeletedObjectTypeArray)
 	EndDo;
 	
 	RefSearchExclusions = CommonUse.GetOverallRefSearchExceptionList();
-	RegistersDimensions = New Map;
+	RegisterDimensions = New Map;
 	ObjectMasterDimensions = New Map;
 	RecordSets = New Map;
 
@@ -212,7 +212,7 @@ Function ExecuteDelete(Val ToDelete, DeletedObjectTypeArray)
 				
 				If CommonUse.IsRegister(TableRow.Metadata) Then
 					Dimensions = New Array;
-					RegistersDimensions.Insert(DependentObjectFullName, Dimensions);
+					RegisterDimensions.Insert(DependentObjectFullName, Dimensions);
 					If CommonUse.IsInformationRegister(TableRow.Metadata) Then
 						For Each Dimension In TableRow.Metadata.Dimensions Do
 							If Dimension.Master Then
@@ -234,9 +234,9 @@ Function ExecuteDelete(Val ToDelete, DeletedObjectTypeArray)
 			
 			If MasterDimensions.Count() > 0 Then
 				ObjectToDeleteInMasterDimensionsOnly = True;
-				RegisterDimensions = RegistersDimensions[DependentObjectFullName];
+				CurRegisterDimensions = RegisterDimensions[DependentObjectFullName];
 				RecordSet = RecordSets[DependentObjectFullName];
-				For Each Dimension In RegisterDimensions Do
+				For Each Dimension In CurRegisterDimensions Do
 					RecordSet.Filter[Dimension].Set(TableRow.Data[Dimension]);
 				EndDo;
 				RecordSet.Read();
@@ -305,3 +305,11 @@ Function ExecuteDelete(Val ToDelete, DeletedObjectTypeArray)
 	Return PackActionState(New Structure("Found, NotDeleted", Found, NotDeleted));
 	
 EndFunction
+
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ServerEvents.Add(
+		"StandardSubsystems.BaseFunctionality\AfterDeleteMarked");
+	
+EndProcedure

@@ -1,18 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<AutoTitle>false</AutoTitle>
 	<Group>Horizontal</Group>
-	<Customizable>false</Customizable>
 	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="FormCancel" id="2">
+			<Button name="Cancel" id="5">
 				<Type>CommandBarButton</Type>
 				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="FormCancelExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="6"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -21,37 +18,31 @@
 		<Event name="OnClose">OnClose</Event>
 	</Events>
 	<ChildItems>
-		<PictureDecoration name="LongActionDecoration" id="4">
-			<Width>7</Width>
+		<PictureDecoration name="DecorationProgress" id="1">
 			<Height>3</Height>
-			<HorizontalStretch>false</HorizontalStretch>
-			<VerticalStretch>false</VerticalStretch>
 			<Title formatted="false">
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Long action</v8:content>
+					<v8:content>Decoration progress</v8:content>
 				</v8:item>
 			</Title>
 			<Picture>
 				<xr:Ref>CommonPicture.LongAction48</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
 			</Picture>
-			<ContextMenu name="LongActionDecorationContextMenu" id="5"/>
-			<ExtendedTooltip name="LongActionDecorationExtendedTooltip" id="6"/>
+			<ContextMenu name="DecorationProgressContextMenu" id="2"/>
+			<ExtendedTooltip name="DecorationProgressExtendedTooltip" id="7"/>
 		</PictureDecoration>
-		<LabelDecoration name="LongActionInformationTextDecoration" id="7">
+		<LabelDecoration name="DecorationText" id="3">
 			<Height>3</Height>
-			<HorizontalStretch>true</HorizontalStretch>
-			<VerticalStretch>false</VerticalStretch>
 			<Title formatted="false">
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Running action...</v8:content>
+					<v8:content>Please wait...</v8:content>
 				</v8:item>
 			</Title>
-			<VerticalAlign>Center</VerticalAlign>
-			<ContextMenu name="LongActionInformationTextDecorationContextMenu" id="8"/>
-			<ExtendedTooltip name="LongActionInformationTextDecorationExtendedTooltip" id="9"/>
+			<ContextMenu name="DecorationTextContextMenu" id="4"/>
+			<ExtendedTooltip name="DecorationTextExtendedTooltip" id="8"/>
 		</LabelDecoration>
 	</ChildItems>
 	<Attributes>

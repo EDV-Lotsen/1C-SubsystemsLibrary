@@ -15,12 +15,12 @@
 Procedure OpenDataForViewing(CurrentData) Export
 	
 	If CurrentData = Undefined or CurrentData.Data = Undefined Then
-		DoMessageBox(NStr("en = 'This event log item is not linked to data (see Data column)'"));
+		ShowMessageBox(, NStr("en = 'This event log item is not linked to data (see Data column)'"));
 		Return;
 	EndIf;
 	
 	Try
-		OpenValue(CurrentData.Data);
+		ShowValue(, CurrentData.Data);
 	Except
 		WarningText = NStr("en = 'This event log item is linked to data, but there is no way to display them.
 									|%1'");
@@ -36,7 +36,7 @@ Procedure OpenDataForViewing(CurrentData) Export
 						WarningText,
 						NStr("en = 'Perhaps, data was removed from the Infobase'"));
 		EndIf;
-		DoMessageBox(WarningText);
+		ShowMessageBox(, WarningText);
 	EndTry;
 	
 EndProcedure // OpenDataForViewing
@@ -75,7 +75,7 @@ Procedure ViewCurrentEventInSeparateWindow(Data) Export
 		FormParameters.Insert("DataAddress", Data.DataAddress);
 	EndIf;
 	
-	OpenForm("DataProcessor.EventLogMonitor.Form.EventForm", FormParameters);
+	OpenForm("DataProcessor.EventLog.Form.EventForm", FormParameters);
 	
 EndProcedure // ViewCurrentEventInSeparateWindow
 
@@ -86,7 +86,7 @@ EndProcedure // ViewCurrentEventInSeparateWindow
 //	DateInterval - StandardPeriod - filter date interval;
 //	EventLogFilter - Structure - event log filter
 //
-Function SetViewDateInterval(DateInterval, EventLogFilter) Export
+Procedure SetViewDateInterval(DateInterval, EventLogFilter) Export
 	
 	IntervalSet = False;
 		
@@ -110,25 +110,29 @@ Function SetViewDateInterval(DateInterval, EventLogFilter) Export
 	Dialog = New StandardPeriodEditDialog;
 	Dialog.Period = DateInterval;
 	
-	If Dialog.Edit() Then
-		// Refreshing current period
-		DateInterval = Dialog.Period;
-		If DateInterval.StartDate = '00010101000000' Then
-			EventLogFilter.Delete("StartDate");
-		Else
-			EventLogFilter.Insert("StartDate", DateInterval.StartDate);
-		EndIf;
-		If DateInterval.EndDate = '00010101000000' Then
-			EventLogFilter.Delete("EndDate");
-		Else
-			EventLogFilter.Insert("EndDate", DateInterval.EndDate);
-		EndIf;
-		IntervalSet = True;
+	FunctionParameters = New Structure;
+	FunctionParameters.Insert("EventLogFilter", EventLogFilter);
+	Dialog.Show(New NotifyDescription("SetViewDateIntervalAfterEdit", ThisObject, FunctionParameters));
+	
+EndProcedure 
+
+// The continuation of SetViewDateInterval
+Procedure SetViewDateIntervalAfterEdit(Period, AdditionalParameters) Export
+	
+	// Refreshing current period
+	DateInterval = Period;
+	If DateInterval.StartDate = '00010101000000' Then
+		AdditionalParameters.EventLogFilter.Delete("StartDate");
+	Else
+		AdditionalParameters.EventLogFilter.Insert("StartDate", DateInterval.StartDate);
+	EndIf;
+	If DateInterval.EndDate = '00010101000000' Then
+		AdditionalParameters.EventLogFilter.Delete("EndDate");
+	Else
+		AdditionalParameters.EventLogFilter.Insert("EndDate", DateInterval.EndDate);
 	EndIf;
 	
-	Return IntervalSet;
-	
-EndFunction // SetViewDateInterval
+EndProcedure 
 
 // Performs separate event choise processing in the event table
 //

@@ -110,7 +110,7 @@ Function GetInfoBaseNodeFromFirstSettingsRow(ExchangeExecutionSettings) Export
 	
 	If Not QueryResult.IsEmpty() Then
 		
-		Selection = QueryResult.Choose();
+		Selection = QueryResult.Select();
 		Selection.Next();
 		
 		InfoBaseNode = Selection.InfoBaseNode;

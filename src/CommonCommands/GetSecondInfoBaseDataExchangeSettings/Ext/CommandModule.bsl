@@ -12,7 +12,7 @@ Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error retrieving data exchange settings.'"));
+		ShowMessageBox(,NStr("en = 'Error retrieving data exchange settings.'"));
 		
 	Else
 		

@@ -120,9 +120,9 @@ Procedure CheckCOMConnection(Command)
 	CheckExternalConnection(Cancel);
 	
 	If Cancel Then
-		DoMessageBox(NStr("en = 'Failed to establish the connection.'"));
+		ShowMessageBox(,NStr("en = 'Failed to establish the connection.'"));
 	Else
-		DoMessageBox(NStr("en = 'The connection was successfully established.'"));
+		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
 	EndIf;
 	
 EndProcedure
@@ -141,19 +141,28 @@ Procedure CheckWSConnection(Command)
 		NString = NStr("en = 'Error establishing the connection.
 		                     |Do you want to open the event log?'"
 		);
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			Filter = New Structure;
-			Filter.Insert("EventLogMessageText", EventLogMessageTextEstablishingConnectionToWebService);
-			OpenFormModal("DataProcessor.EventLogMonitor.Form", Filter, ThisForm);
-			
-		EndIf;
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("CheckWSConnectionEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		
 	Else
-		DoMessageBox(NStr("en = 'The connection was successfully established.'"));
+		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure CheckWSConnectionEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		Filter = New Structure;
+		Filter.Insert("EventLogMessageText", EventLogMessageTextEstablishingConnectionToWebService);
+		OpenForm("DataProcessor.EventLogMonitor.Form", Filter, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -190,9 +199,9 @@ Procedure CheckConnection(TransportKindString)
 	CheckConnectionAtServer(Cancel, TransportKindString);
 	
 	If Cancel Then
-		DoMessageBox(NStr("en = 'Failed to establish the connection.'"));
+		ShowMessageBox(,NStr("en = 'Failed to establish the connection.'"));
 	Else
-		DoMessageBox(NStr("en = 'The connection was successfully established.'"));
+		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
 	EndIf;
 	
 EndProcedure
@@ -329,7 +338,7 @@ Procedure CheckExchangeLogFileAvailability(Cancel)
 	EndIf;
 	
 	CommonUseClientServer.MessageToUser(MessageString,,,, Cancel);
-	WriteLogEvent(NStr("en = 'Exchange message transport'"), EventLogLevel.Error,,, MessageString);
+	WriteLogEvent(NStr("en = 'Exchange message transport'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, MessageString);
 	
 EndProcedure
 

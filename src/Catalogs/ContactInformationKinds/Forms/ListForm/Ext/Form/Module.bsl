@@ -24,7 +24,7 @@ Procedure ListBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
 	// Checking whether copying a folder is allowed
 	If Copy And Group Then
-		DoMessageBox(NStr("en = 'Adding new groups is not allowed.'"));
+		ShowMessageBox(, NStr("en = 'Adding new groups is not allowed.'"));
 		Cancel = True;
 	EndIf;
 	

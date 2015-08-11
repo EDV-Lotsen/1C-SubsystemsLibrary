@@ -60,7 +60,7 @@ Procedure BeforeClose(Cancel, StandardProcessing)
 	If  Object.AutomaticallyMappedObjectTable.Count() > 0
 		And mWarnOnFormClose = True Then
 			
-		DoMessageBox(NStr("en = 'The form contains data of automatic mapping. The action has been canceled.'"));
+		ShowMessageBox(,NStr("en = 'The form contains data of automatic mapping. The action has been canceled.'"));
 		
 		Cancel = True;
 		

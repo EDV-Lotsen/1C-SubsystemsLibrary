@@ -59,7 +59,7 @@ Procedure Create(Command)
 	
 	FormParameters = New Structure("InfoBaseNode", Parameters.InfoBaseNode);
 	
-	OpenFormModal("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm);
+	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -75,7 +75,7 @@ Procedure EditDataExchangeScenario(Command)
 	FormParameters = New Structure;
 	FormParameters.Insert("Key", CurrentData.Ref);
 	
-	OpenFormModal("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm);
+	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 

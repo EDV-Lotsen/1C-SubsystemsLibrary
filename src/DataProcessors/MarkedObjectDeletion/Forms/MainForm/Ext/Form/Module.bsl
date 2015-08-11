@@ -53,7 +53,7 @@ Procedure MarkedForDeletionListChoice(Item, SelectedRow, Field, StandardProcessi
 	StandardProcessing = False;
 	
 	If Item.CurrentData <> Undefined Then 
-		OpenValue(Item.CurrentData.Value);	
+		ShowValue(, Item.CurrentData.Value);	
 	EndIf;
 	
 EndProcedure
@@ -71,7 +71,7 @@ Procedure RemainingObjectTreeChoice(Item, SelectedRow, Field, StandardProcessing
 	StandardProcessing = False;
 	
 	If Item.CurrentData <> Undefined Then 
-		OpenValue(Item.CurrentData.Value);	
+		ShowValue(, Item.CurrentData.Value);	
 	EndIf;
 	
 EndProcedure
@@ -82,11 +82,10 @@ Procedure RemainingObjectTreeBeforeRowChange(Item, Cancel)
 	Cancel = True;
 	
 	If Item.CurrentData <> Undefined Then
-		OpenValue(Item.CurrentData.Value);
+		ShowValue(, Item.CurrentData.Value);
 	EndIf;
 	
 EndProcedure
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // FORM COMMAND HANDLERS
@@ -135,7 +134,7 @@ Procedure NextExecute(Command)
 	CurrentPage = Items.FormPages.CurrentPage;
 	
 	If CurrentPage = Items.DeletionModeChoice Then
-		Status(NStr("en = 'Searching for marked for deletion objects'"));
+		Status(NStr("en='Searching for marked for deletion objects'"));
 		
 		FillMarkedForDeletionTree();
 		
@@ -180,9 +179,9 @@ Procedure ExecuteDelete(Command)
 	Var DeletedObjectTypes;
 	
 	If DeletionMode = "Full" Then
-		Status(NStr("en = 'Searching for marked objects and deleting them'"));
+		Status(NStr("en='Searching for marked objects and deleting them'"));
 	Else
-		Status(NStr("en = 'Deleting selected objects'"));
+		Status(NStr("en='Deleting selected objects'"));
 	EndIf;
 	
 	Result = DeleteSelectedAtServer(DeletedObjectTypes);
@@ -213,23 +212,23 @@ Procedure RefreshContents(Result, ErrorMessage, DeletedObjectTypes)
 		EndDo;
 	Else
 		Items.FormPages.CurrentPage = Items.DeletionModeChoice;
-		DoMessageBox(ErrorMessage);
+		ShowMessageBox(, ErrorMessage);
 		Return;
 	EndIf;
 	
 	RefreshMarkedTree = True;
 	If NotDeletedObjectCount = 0 Then
 		If DeletedObjects = 0 Then
-			Text = NStr("en = 'No objects are marked for deletion. Object deletion was not executed'");
+			Text = NStr("en='No objects are marked for deletion. Object deletion was not executed.'");
 			RefreshMarkedTree = False;
 		Else
 			Text = StringFunctionsClientServer.SubstituteParametersInString(
-			 NStr("en = 'Marked objects deletion completed successfully.
-			 |%1 object(s) were deleted.'"),
+			 NStr("en='Marked objects deletion completed successfully."
+"%1 object(s) were deleted.'"),
 			 DeletedObjects);
 		EndIf;
 		Items.FormPages.CurrentPage = Items.DeletionModeChoice;			 
-		DoMessageBox(Text);
+		ShowMessageBox(, Text);
 	Else
 		Items.FormPages.CurrentPage = Items.DeletionImpossibilityReasons;
 		For Each Item In RemainingObjectTree.GetItems() Do
@@ -237,7 +236,7 @@ Procedure RefreshContents(Result, ErrorMessage, DeletedObjectTypes)
 			Items.RemainingObjectTree.Expand(ID, False);
 		EndDo;
 		ButtonEnabledStates();
-		DoMessageBox(ResultString);
+		ShowMessageBox(, ResultString);
 	EndIf;
 	
 	If RefreshMarkedTree Then
@@ -499,21 +498,22 @@ Procedure FillResultString(ToDeleteCount)
 	DeletedObjects = ToDeleteCount - NotDeletedObjectCount;
 	
 	If DeletedObjects = 0 Then
-		ResultString = NStr("en = 'No objects were deleted because references to them were found in the infobase'");
+		ResultString = NStr("en='No objects were deleted because references to them were found in the infobase.'");
 	Else
 		ResultString = 
 			StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Deletion of marked objects completed.
-							| %1 object(s) were deleted.'"),
+				NStr("en='Deletion of marked objects completed."
+" %1 object(s) were deleted.'"),
 							String(DeletedObjects));
 	EndIf;
 	
 	If NotDeletedObjectCount > 0 Then
 		ResultString = ResultString + Chars.LF +
 			StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = '%1 object(s) were not deleted to keep the infobase integrity because references to them were found.
-							|Click OK to view the list of objects that were not deleted.'"),
+				NStr("en='%1 object(s) were not deleted to keep the infobase integrity because references to them were found."
+"Click OK to view the list of objects that were not deleted.'"),
 				String(NotDeletedObjectCount));
 	EndIf;
 
 EndProcedure
+ 

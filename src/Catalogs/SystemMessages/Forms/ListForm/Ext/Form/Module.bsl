@@ -47,7 +47,7 @@ Procedure Delete(Command)
 		If Items.List.CurrentData.Property("RowGroup")
 			And TypeOf(Items.List.CurrentData.RowGroup) = Type("DynamicalListGroupRow") Then
 			
-			DoMessageBox(NStr("en = 'A list group row cannot be deleted.'"));
+			ShowMessageBox(, NStr("en = 'A list group row cannot be deleted.'"));
 			
 		Else
 			

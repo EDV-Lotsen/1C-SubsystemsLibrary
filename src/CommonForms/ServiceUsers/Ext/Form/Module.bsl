@@ -127,7 +127,7 @@ Procedure AddSelectedUsersAtServer()
 			MessagePattern = NStr("en = 'Error retrieving details of a user whose ID is %1:
 				|%2'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, TableRow.ID, ErrorMessage);
-			WriteLogEvent("ManagementApplication", EventLogLevel.Error, , , MessageText);
+			WriteLogEvent(NStr("en = 'ManagementApplication'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , MessageText);
 			CommonUseClientServer.MessageToUser(MessageText);
 			Continue;
 		EndIf;
@@ -141,7 +141,7 @@ Procedure AddSelectedUsersAtServer()
 			MessagePattern = NStr("en = 'Error providing user access to the application %1 with the service:
 				|%2'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, TableRow.Name, ErrorMessage);
-			WriteLogEvent("ManagementApplication", EventLogLevel.Error, , , MessageText);
+			WriteLogEvent(NStr("en = 'ManagementApplication'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , MessageText);
 			CommonUseClientServer.MessageToUser(MessageText);
 			RollbackTransaction();
 			Continue;

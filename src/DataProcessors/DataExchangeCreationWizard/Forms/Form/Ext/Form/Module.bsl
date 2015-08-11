@@ -305,7 +305,7 @@ EndProcedure
 Procedure BeforeClose(Cancel, StandardProcessing)
 	
 	If LongAction Then
-		DoMessageBox(NStr("en = 'Creating the data exchange.
+		ShowMessageBox(,NStr("en = 'Creating the data exchange.
 							|The wizard cannot be terminated.'")
 		);
 		Cancel = True;
@@ -347,12 +347,12 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 		UpdateMappingStatisticsDataAtServer(Cancel, Parameter);
 		
 		If Cancel Then
-			DoMessageBox(NStr("en = 'Error gathering statistic data.'"));
+			ShowMessageBox(,NStr("en = 'Error gathering statistic data.'"));
 		Else
 			
 			ExpandStatisticsTree(Parameter.UniqueKey);
 			
-			Status(NStr("en = 'Data gathering completed."));
+			Status(NStr("en = 'Data gathering completed.'"));
 		EndIf;
 		
 	EndIf;
@@ -380,7 +380,7 @@ Procedure DataExchangeSettingsFileNameToImportOnChange(Item)
 	If    Not File.Exist()
 		Or Not File.IsFile() Then
 		
-		DoMessageBox(NStr("en = 'Specify the correct settings file name.'"));
+		ShowMessageBox(,NStr("en = 'Specify the correct settings file name.'"));
 		Object.DataExchangeSettingsFileNameToImport = "";
 		Return;
 	EndIf;
@@ -555,7 +555,7 @@ Procedure DoneCommand(Command)
 		
 		If Not IsBlankString(DoMessageBox) Then
 			
-			DoMessageBox(DoMessageBox);
+			ShowMessageBox(,DoMessageBox);
 			
 		EndIf;
 		
@@ -632,7 +632,17 @@ Procedure SetupDataExport(Command)
 	FormParameters.Insert("ConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
 	FormParameters.Insert("Settings", NodesSetupFormContext);
 	
-	OpeningResult = OpenFormModal(NodeSettingsFormName, FormParameters, ThisForm);
+	OpeningResult = Undefined;
+
+	
+	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("SetupDataExportEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure SetupDataExportEnd(Result, AdditionalParameters) Export
+	
+	OpeningResult = Result;
 	
 	If OpeningResult <> Undefined Then
 		
@@ -641,7 +651,7 @@ Procedure SetupDataExport(Command)
 		DataExportSettingsDescription = OpeningResult.ContextDetails;
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -650,7 +660,17 @@ Procedure DataRegistrationRestrictionSetup(Command)
 	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.NodeSettingsForm";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
 	
-	OpeningResult = OpenFormModal(NodeSettingsFormName, New Structure("NodeFilterStructure", NodeFilterStructure), ThisForm);
+	OpeningResult = Undefined;
+
+	
+	OpenForm(NodeSettingsFormName, New Structure("NodeFilterStructure", NodeFilterStructure), ThisForm,,,, New NotifyDescription("DataRegistrationRestrictionSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure DataRegistrationRestrictionSetupEnd(Result, AdditionalParameters) Export
+	
+	OpeningResult = Result;
 	
 	If OpeningResult <> Undefined Then
 		
@@ -664,7 +684,7 @@ Procedure DataRegistrationRestrictionSetup(Command)
 		GetDataTransferRestrictionDetails(NodeFilterStructure);
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -690,7 +710,17 @@ Procedure DefaultValueSetup(Command)
 	FormParameters = New Structure;
 	FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
 	
-	OpeningResult = OpenFormModal(NodeSettingsFormName, FormParameters, ThisForm);
+	OpeningResult = Undefined;
+
+	
+	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("DefaultValueSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure DefaultValueSetupEnd(Result, AdditionalParameters) Export
+	
+	OpeningResult = Result;
 	
 	If OpeningResult <> Undefined Then
 		
@@ -704,7 +734,7 @@ Procedure DefaultValueSetup(Command)
 		GetDefaultValueDetails(NodeDefaultValues);
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -733,7 +763,7 @@ Procedure SaveDataExchangeSettingsFile(Command)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error saving data exchange settings file.'"));
+		ShowMessageBox(,NStr("en = 'Error saving data exchange settings file.'"));
 		
 	Else
 		
@@ -815,7 +845,7 @@ Procedure CheckCOMConnection(Command)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error establishing connection (see the event log for details).'"));
+		ShowMessageBox(,NStr("en = 'Error establishing connection (see the event log for details).'"));
 		
 		If ErrorAttachingAddIn And FileInfoBase Then
 			
@@ -824,7 +854,7 @@ Procedure CheckCOMConnection(Command)
 		EndIf;
 		
 	Else
-		DoMessageBox(NStr("en = 'Connection established successfully.'"));
+		ShowMessageBox(,NStr("en = 'Connection established successfully.'"));
 	EndIf;
 	
 EndProcedure
@@ -838,7 +868,7 @@ Procedure CheckWSConnection(Command)
 	
 	If Not Cancel Then
 		
-		DoMessageBox(NStr("en = 'Connection established successfully.'"));
+		ShowMessageBox(,NStr("en = 'Connection established successfully.'"));
 		
 	EndIf;
 	
@@ -859,7 +889,7 @@ Procedure HowToGetWebServiceConnectionParameters(Command)
 	FormParameters.Insert("TemplateName", "HowToGetWebServiceConnectionParameters");
 	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the second infobase'"));
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -870,7 +900,7 @@ Procedure HowToGetServiceConnectionParameters(Command)
 	FormParameters.Insert("TemplateName", "HowToGetServiceConnectionParameters");
 	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the application located in the service'"));
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -881,7 +911,7 @@ Procedure HowToGetConnectionParameters(Command)
 	FormParameters.Insert("TemplateName", "HowToGetConnectionParameters");
 	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the second infobase'"));
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -892,7 +922,7 @@ Procedure HowToGetSecondInfoBasePrefix(Command)
 	FormParameters.Insert("TemplateName", "HowToGetSecondInfoBasePrefix");
 	FormParameters.Insert("Title", NStr("en = 'How to determine the prefix of the correspondent infobase'"));
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -903,14 +933,14 @@ Procedure HowToGenerateExchangeSettingsFile(Command)
 	FormParameters.Insert("TemplateName", "HowToGenerateExchangeSettingsFile");
 	FormParameters.Insert("Title", NStr("en = 'How to generate the data exchange settings file'"));
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
 &AtClient
 Procedure GetThisInfoBasePrefix(Command)
 	
-	OpenFormModal("DataProcessor.DataExchangeCreationWizard.Form.GetThisInfoBasePrefix", , ThisForm);
+	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.GetThisInfoBasePrefix", , ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -1517,7 +1547,7 @@ Procedure DataExchangeInitializationAtClient(Cancel)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error exporting data (see the event log for details).'"));
+		ShowMessageBox(,NStr("en = 'Error exporting data (see the event log for details).'"));
 		
 	EndIf;
 	
@@ -1628,7 +1658,7 @@ Procedure CheckConnection(TransportKind)
 	MessageString = ?(Cancel,  NStr("en = 'Error establishing the connection (see the event log for details).'"),
 								NStr("en = 'The connection has been successfully established.'"));
 	
-	DoMessageBox(MessageString);
+	ShowMessageBox(,MessageString);
 	
 EndProcedure
 
@@ -1922,7 +1952,18 @@ Procedure SelectExchangeSettingsFile(Interactively)
 	
 	DefaultFileName = ?(IsBlankString(Object.DataExchangeSettingsFileNameToImport), SettingsFileNameForTarget, Object.DataExchangeSettingsFileNameToImport);
 	
-	If PutFile(TempStorageAddress, DefaultFileName, SelectedFileName, Interactively, UUID) Then
+	BeginPutFile(New NotifyDescription("SelectExchangeSettingsFileEnd", ThisObject, New Structure("Interactively, SelectedFileName, TempStorageAddress", Interactively, SelectedFileName, TempStorageAddress)), TempStorageAddress, DefaultFileName, Interactively, UUID);
+	
+EndProcedure
+
+&AtClient
+Procedure SelectExchangeSettingsFileEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	Interactively = AdditionalParameters.Interactively;
+	TempStorageAddress = AdditionalParameters.TempStorageAddress;
+	
+	
+	If Result Then
 		
 		Cancel = False;
 		
@@ -1930,10 +1971,10 @@ Procedure SelectExchangeSettingsFile(Interactively)
 		ImportWizardParameters(Cancel, TempStorageAddress);
 		
 		If Cancel Then
-			DoMessageBox(NStr("en = 'Invalid data exchange settings file is specified. Specify the correct file.'"));
+			ShowMessageBox(,NStr("en = 'Invalid data exchange settings file is specified. Specify the correct file.'"));
 			Return;
 		EndIf;
-			
+		
 		If Interactively Then
 			
 			Object.DataExchangeSettingsFileNameToImport = SelectedFileName;
@@ -1941,7 +1982,7 @@ Procedure SelectExchangeSettingsFile(Interactively)
 		EndIf;
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -2015,7 +2056,17 @@ Procedure CorrespondentInfoBaseRegistrationRestrictionSetup(ConnectionType)
 	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
 	FormParameters.Insert("NodeFilterStructure",      CorrespondentInfoBaseNodeFilterSetup);
 	
-	OpeningResult = OpenFormModal(NodeSettingsFormName, FormParameters, ThisForm);
+	OpeningResult = Undefined;
+
+	
+	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("CorrespondentInfoBaseRegistrationRestrictionSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure CorrespondentInfoBaseRegistrationRestrictionSetupEnd(Result, AdditionalParameters) Export
+	
+	OpeningResult = Result;
 	
 	If OpeningResult <> Undefined Then
 		
@@ -2029,7 +2080,7 @@ Procedure CorrespondentInfoBaseRegistrationRestrictionSetup(ConnectionType)
 		GetCorrespondentInfoBaseDataTransferRestrictionDetails(CorrespondentInfoBaseNodeFilterSetup);
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -2042,7 +2093,17 @@ Procedure CorrespondentInfoBaseDefaultValueSetup(ConnectionType)
 	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
 	FormParameters.Insert("NodeDefaultValues",   CorrespondentInfoBaseNodeDefaultValues);
 	
-	OpeningResult = OpenFormModal(NodeSettingsFormName, FormParameters, ThisForm);
+	OpeningResult = Undefined;
+
+	
+	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("CorrespondentInfoBaseDefaultValueSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure CorrespondentInfoBaseDefaultValueSetupEnd(Result, AdditionalParameters) Export
+	
+	OpeningResult = Result;
 	
 	If OpeningResult <> Undefined Then
 		
@@ -2056,7 +2117,7 @@ Procedure CorrespondentInfoBaseDefaultValueSetup(ConnectionType)
 		GetCorrespondentInfoBaseDefaultValueDetails(CorrespondentInfoBaseNodeDefaultValues);
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -2168,7 +2229,7 @@ Procedure FinishSecondExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error creating data exchange settings.'"));
+		ShowMessageBox(,NStr("en = 'Error creating data exchange settings.'"));
 		Return;
 	EndIf;
 	
@@ -2224,7 +2285,7 @@ Procedure OpenMappingForm()
 	EndIf;
 	
 	If Not CurrentData.UsePreview Then
-		DoMessageBox(NStr("en = 'This data cannot be mapped.'"));
+		ShowMessageBox(,NStr("en = 'This data cannot be mapped.'"));
 		Return;
 	EndIf;
 	
@@ -2910,7 +2971,7 @@ Function Attachable_WizardPageWaitForDataAnalysisExchangeSettingsCreation_LongAc
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during creating data exchange settings.
+		ShowMessageBox(,NStr("en = 'Errors occurred during creating data exchange settings.
 					|Use the event log to solve the problems.'")
 		);
 		
@@ -2951,7 +3012,7 @@ Function Attachable_WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during the data analysis.
+		ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.
 					|Use the event log to solve the problems.'")
 		);
 		
@@ -2990,7 +3051,7 @@ Function Attachable_WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongAct
 		
 		If Cancel Then
 			
-			DoMessageBox(NStr("en = 'Errors occurred during the data analysis.
+			ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.
 						|Use the event log to solve the problems.'")
 			);
 			
@@ -3012,7 +3073,7 @@ Function Attachable_WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProc
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during the data analysis.'"));
+		ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.'"));
 		
 	EndIf;
 	
@@ -3125,7 +3186,7 @@ Function Attachable_WizardPageWaitForCatalogSynchronizationImport_LongActionProc
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during catalog synchronization.
+		ShowMessageBox(,NStr("en = 'Errors occurred during catalog synchronization.
 					|Use the event log to solve problems.'")
 		);
 		
@@ -3152,7 +3213,7 @@ Function Attachable_WizardPageWaitForCatalogSynchronizationExport_LongActionProc
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during catalog synchronization.
+		ShowMessageBox(,NStr("en = 'Errors occurred during catalog synchronization.
 					|Use the event log to solve problems.'")
 		);
 		
@@ -3227,7 +3288,7 @@ Function Attachable_WizardPageWaitForSaveSettings_LongActionProcessing(Cancel, G
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during settings saving.
+		ShowMessageBox(,NStr("en = 'Errors occurred during settings saving.
 					|Use the event log to solve the problems.'")
 		);
 		
@@ -3269,7 +3330,7 @@ Function Attachable_WizardPageWaitForDataSynchronizationImport_LongActionProcess
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during data synchronization.
+		ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
 					|Use the event log to solve the problems.'")
 		);
 		
@@ -3331,7 +3392,7 @@ Function Attachable_WizardPageWaitForDataSynchronizationImportLongActionEnd_Long
 		
 		If Cancel Then
 			
-			DoMessageBox(NStr("en = 'Errors occurred during data synchronization.
+			ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
 						|Use the event log to solve the problems.'")
 			);
 			
@@ -3360,7 +3421,7 @@ Function Attachable_WizardPageWaitForDataSynchronizationExport_LongActionProcess
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Errors occurred during data synchronization.
+		ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
 					|Use the event log to solve the problems.'")
 		);
 		

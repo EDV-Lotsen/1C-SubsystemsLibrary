@@ -1,13 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<EnterKeyBehavior>DefaultButton</EnterKeyBehavior>
-	<AutoTitle>false</AutoTitle>
+	<WindowOpeningMode>LockWholeInterface</WindowOpeningMode>
 	<Group>Horizontal</Group>
-	<Customizable>false</Customizable>
-	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
-		<HorizontalAlign>Right</HorizontalAlign>
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<Autofill>false</Autofill>
 	</AutoCommandBar>
 	<Events>
@@ -15,23 +10,23 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<PictureDecoration name="Warning" id="2">
+		<PictureDecoration name="DecorationIcon" id="2">
 			<Width>5</Width>
 			<Height>2</Height>
 			<Title formatted="false">
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Warning</v8:content>
+					<v8:content>Decoration icon</v8:content>
 				</v8:item>
 			</Title>
 			<Picture>
 				<xr:Ref>CommonPicture.Question32</xr:Ref>
-				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
 			</Picture>
-			<ContextMenu name="WarningContextMenu" id="3"/>
-			<ExtendedTooltip name="WarningExtendedTooltip" id="4"/>
+			<ContextMenu name="DecorationIconContextMenu" id="3"/>
+			<ExtendedTooltip name="DecorationIconExtendedTooltip" id="8"/>
 		</PictureDecoration>
-		<UsualGroup name="Group" id="5">
+		<UsualGroup name="Group" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -47,52 +42,41 @@
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupExtendedTooltip" id="6"/>
+			<ExtendedTooltip name="GroupExtendedTooltip" id="9"/>
 			<ChildItems>
-				<LabelDecoration name="MessageText" id="7">
-					<VerticalStretch>true</VerticalStretch>
+				<LabelDecoration name="MessageText" id="4">
 					<Title formatted="false">
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Message text</v8:content>
 						</v8:item>
 					</Title>
-					<VerticalAlign>Center</VerticalAlign>
-					<ContextMenu name="MessageTextContextMenu" id="8"/>
-					<ExtendedTooltip name="MessageTextExtendedTooltip" id="9"/>
+					<ContextMenu name="MessageTextContextMenu" id="5"/>
+					<ExtendedTooltip name="MessageTextExtendedTooltip" id="10"/>
 				</LabelDecoration>
-				<CheckBoxField name="DontAskAgain" id="10">
+				<CheckBoxField name="DontAskAgain" id="6">
 					<DataPath>DontAskAgain</DataPath>
 					<TitleLocation>Right</TitleLocation>
 					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="DontAskAgainContextMenu" id="11"/>
-					<ExtendedTooltip name="DontAskAgainExtendedTooltip" id="12"/>
+					<ContextMenu name="DontAskAgainContextMenu" id="7"/>
+					<ExtendedTooltip name="DontAskAgainExtendedTooltip" id="11"/>
 				</CheckBoxField>
 			</ChildItems>
 		</UsualGroup>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="ButtonAndReturnValueMap" id="1">
+		<Attribute name="DontAskAgain" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Mapping between buttons and return values</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
-		</Attribute>
-		<Attribute name="DontAskAgain" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Do not ask again</v8:content>
+					<v8:content>Don't ask again</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="Timeout" id="3">
+		<Attribute name="Timeout" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -104,26 +88,20 @@
 				<v8:NumberQualifiers>
 					<v8:Digits>5</v8:Digits>
 					<v8:FractionDigits>0</v8:FractionDigits>
-					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+					<v8:AllowedSign>Any</v8:AllowedSign>
 				</v8:NumberQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="TimeoutCommand" id="4">
+		<Attribute name="ButtonAndReturnValueMap" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Timeout command</v8:content>
+					<v8:content>Button and return value map</v8:content>
 				</v8:item>
 			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
+			<Type/>
 		</Attribute>
-		<Attribute name="TimeoutCommandTitle" id="5">
+		<Attribute name="TimeoutCommandTitle" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -138,9 +116,34 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
+		<Attribute name="TimeoutCommand" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Timeout command</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
 	</Attributes>
 	<Parameters>
-		<Parameter name="Title">
+		<Parameter name="Timeout">
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="MessageText">
 			<Type>
 				<v8:Type>xs:string</v8:Type>
 				<v8:StringQualifiers>
@@ -159,7 +162,13 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Parameter>
-		<Parameter name="MessageText">
+		<Parameter name="TimeoutButton">
+			<Type/>
+		</Parameter>
+		<Parameter name="DefaultButton">
+			<Type/>
+		</Parameter>
+		<Parameter name="Title">
 			<Type>
 				<v8:Type>xs:string</v8:Type>
 				<v8:StringQualifiers>
@@ -167,22 +176,6 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
-		</Parameter>
-		<Parameter name="Timeout">
-			<Type>
-				<v8:Type>xs:decimal</v8:Type>
-				<v8:NumberQualifiers>
-					<v8:Digits>5</v8:Digits>
-					<v8:FractionDigits>0</v8:FractionDigits>
-					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
-				</v8:NumberQualifiers>
-			</Type>
-		</Parameter>
-		<Parameter name="DefaultButton">
-			<Type/>
-		</Parameter>
-		<Parameter name="TimeoutButton">
-			<Type/>
 		</Parameter>
 	</Parameters>
 </Form>

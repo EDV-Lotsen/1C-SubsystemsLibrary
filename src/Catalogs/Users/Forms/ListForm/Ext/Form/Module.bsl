@@ -1,34 +1,11 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+﻿
+
+////////////////////////////////////////////////////////////////////////////////
 // FORM EVENT HANDLERS
+//
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
-	UpdateDataCompositionParameterValue(UserList, "UnspecifiedUser", Users.UnspecifiedUserProperties().StandardRef);
-	
-	UpdateDataCompositionParameterValue(UserList, "SeparationDisabled", Not CommonUseCached.DataSeparationEnabled());
-	
-	ShowNotValidUsers = False;
-	
-	If Parameters.ChoiceMode Then
-		
-		WindowOpeningMode = FormWindowOpeningMode.LockOwnerWindow;
-		
-	Else
-		
-		// Filtering only if ChoiceMode is False
-		
-		If ShowNotValidUsers Then
-			CommonUseClientServer.DeleteFilterItems(UserList.Filter, "NotValid");
-		Else	
-			CommonUseClientServer.SetFilterItem(
-				UserList.Filter,
-				"NotValid",
-				False);
-		EndIf;
-			
-	EndIf;
-	
 	UseGroups = GetFunctionalOption("UseUserGroups");
 	
 	If TypeOf(Parameters.CurrentRow) = Type("CatalogRef.UserGroups") Then
@@ -38,80 +15,88 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 			Parameters.CurrentRow = Undefined;
 		EndIf;
 	Else
-		CurrentItem = Items.UserList;
+		CurrentItem = Items.UsersList;
 		Items.UserGroups.CurrentRow = Catalogs.UserGroups.AllUsers;
+		RefreshDataCompositionParameterValue(UsersList, "UserGroup", Catalogs.UserGroups.AllUsers);
+		RefreshDataCompositionParameterValue(UsersList, "SelectHierarchically", True);
 	EndIf;
 	
-	If Not UseGroups Then
-		Parameters.UserGroupChoice = False;
-		Items.ShowNestedGroupUsersGroup.Visible = False;
-		Items.CreateUserGroup.Visible = False;
+	If NOT UseGroups Then
+		Parameters.ChoiceOfUserGroups = False;
+		Items.GroupShowChildGroupUsers.Visible = False;
+		Items.CreateGroupOfUsers.Visible = False;
 	EndIf;
 	
-	// Setting up permanent data of the user list
-	UpdateDataCompositionParameterValue(UserList, "EmptyUUID", New UUID("00000000-0000-0000-0000-000000000000"));
-	AllUsersUserGroup = Catalogs.UserGroups.AllUsers;
+	// Configure constant data for user list
+	RefreshDataCompositionParameterValue(UsersList, "EmptyUUID", New Uuid("00000000-0000-0000-0000-000000000000"));
+	UsersGroupAllUsers = Catalogs.UserGroups.AllUsers;
 	
-	If Not AccessRight("Insert", Metadata.Catalogs.UserGroups) Then
-		Items.CreateUserGroup.Visible = False;
+	If NOT AccessRight("Insert", Metadata.Catalogs.UserGroups) Then
+		Items.CreateGroupOfUsers.Visible = False;
 	EndIf;
-	If Not AccessRight("Insert", Metadata.Catalogs.Users) Then
+	If NOT AccessRight("Insert", Metadata.Catalogs.Users) Then
 		Items.CreateUser.Visible = False;
 	EndIf;
 	
 	If Parameters.ChoiceMode Then
-	
+		
 		If Items.Find("InfoBaseUsers") <> Undefined Then
 			Items.InfoBaseUsers.Visible = False;
 		EndIf;
 		
-		// Selecting items that are not marked for deletion
-		UserList.Filter.Items[0].Use = True;
+		// Filter of items not marked for deletion
+		UsersList.SettingsComposer.Settings.Filter.Items[0].Use = True;
 		
-		Items.UserList.ChoiceMode = True;
-		Items.UserGroups.ChoiceMode = Parameters.UserGroupChoice;
-		Items.ChooseGroupUsers.Visible = Parameters.UserGroupChoice;
-		Items.ChooseUser.DefaultButton = Not Parameters.UserGroupChoice;
+		Items.UsersList.ChoiceMode       	=	True;
+		Items.UserGroups.ChoiceMode       	=	Parameters.ChoiceOfUserGroups;
+		Items.SelectUsersGroup.Visible  	=	Parameters.ChoiceOfUserGroups;
+		Items.SelectUser.DefaultButton 		= 	NOT Parameters.ChoiceOfUserGroups;
 		
 		If Parameters.CloseOnChoice = False Then
-			// Multiple choice mode
-			Items.UserList.MultipleChoice = True;
+			// Selection mode
+			Items.UsersList.MultipleChoice = True;
+			Items.UsersList.SelectionMode = TableSelectionMode.MultiRow;
 			
-			If Parameters.UserGroupChoice Then
-				Title = NStr("en = 'Choose users and groups'");
-				Items.ChooseUser.Title = NStr("en = 'Choose users'");
-				Items.ChooseGroupUsers.Title = NStr("en = 'Choose groups'");
+			If Parameters.ChoiceOfUserGroups Then
+				Title                         	= NStr("en='User and group selection'");
+				Items.SelectUser.Title        	= NStr("en='Select users'");
+				
+				Items.SelectUsersGroup.Title 	= NStr("en='Select groups'");
 				
 				Items.UserGroups.MultipleChoice = True;
-				Items.UserGroups.SelectionMode = TableSelectionMode.MultiRow;
+				Items.UserGroups.SelectionMode 	= TableSelectionMode.MultiRow;
 			Else
-				Title = NStr("en = 'Choose users'");
+				Title                          	= NStr("en='User selection'");
 			EndIf;
 		Else
-			// Single choice mode
-			If Parameters.UserGroupChoice Then
-				Title = NStr("en = 'Choose users and groups'");
-				Items.ChooseUser.Title = NStr("en = 'Choose users'");
+			If Parameters.ChoiceOfUserGroups Then
+				Title							= NStr("en='Select user and group'");
+				Items.SelectUser.Title        	= NStr("en='Select user'");
 			Else
-				Title = NStr("en = 'Choose users'");
+				Title							= NStr("en='Select user'");
 			EndIf;
 		EndIf;
 	Else
-		Items.ChooseUser.Visible = False;
-		Items.ChooseGroupUsers.Visible = False;
+		Items.SelectUser.Visible        = False;
+		Items.SelectUsersGroup.Visible  = False;
 	EndIf;
 	
-	RefreshFormContentOnGroupChange(ThisForm);
+EndProcedure
+
+&AtClient
+Procedure OnOpen(Cancel)
+	
+	RefreshFormContentOnGroupChange();
 	
 EndProcedure
 
 &AtClient
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
-	If Upper(EventName) = Upper("Write_UserGroups")
-	 And Source = Items.UserGroups.CurrentRow Then
-		
-		Items.UserList.Refresh();
+	If EventName = "UserGroupContentChanged" Then
+		If Parameter = Items.UserGroups.CurrentRow Then
+			Items.UsersList.Refresh();
+		EndIf;
 	EndIf;
 	
 EndProcedure
@@ -119,29 +104,29 @@ EndProcedure
 &AtServer
 Procedure OnLoadDataFromSettingsAtServer(Settings)
 	
-	If Settings[SelectHierarchy] = Undefined Then
-		SelectHierarchy = True;
+	If Settings[SelectHierarchically] = Undefined Then
+		SelectHierarchically = True;
 	EndIf;
 	
 EndProcedure
 
+
 ////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+// Event handlers of commands and form items
+//
 
 &AtClient
-Procedure SelectHierarchicallyOnChange(Item)
+Procedure CreateGroupOfUsers(Command)
 	
-	RefreshFormContentOnGroupChange(ThisForm);
+	Items.UserGroups.AddRow();
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF UserGroups TABLE 
 
 &AtClient
 Procedure UserGroupsOnActivateRow(Item)
 	
-	AttachIdleHandler("UserGroupsAfterActivateRow", 0.1, True);
+	RefreshFormContentOnGroupChange();
 	
 EndProcedure
 
@@ -155,9 +140,9 @@ Procedure UserGroupsValueChoice(Item, Value, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure UserGroupsBeforeAddRow(Item, Cancel, Copy, Parent, Group)
+Procedure UserGroupsBeforeAddRow(Item, Cancel, Clone, Parent, Folder)
 	
-	If Not Copy Then
+	If NOT Clone Then
 		Cancel = True;
 		FormParameters = New Structure;
 		
@@ -171,11 +156,9 @@ Procedure UserGroupsBeforeAddRow(Item, Cancel, Copy, Parent, Group)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF UserList TABLE
 
 &AtClient
-Procedure UserListValueChoice(Item, Value, StandardProcessing)
+Procedure UsersListValueChoice(Item, Value, StandardProcessing)
 	
 	StandardProcessing = False;
 	
@@ -184,80 +167,53 @@ Procedure UserListValueChoice(Item, Value, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure UserListBeforeAddRow(Item, Cancel, Copy, Parent, Group)
+Procedure UsersListBeforeAddRow(Item, Cancel, Clone, Parent, Folder)
 	
 	Cancel = True;
 	
 	FormParameters = New Structure;
-	FormParameters.Insert("NewUserGroup", Items.UserGroups.CurrentRow);
+	FormParameters.Insert("GroupNewUser", Items.UserGroups.CurrentRow);
 	
-	If Copy And Item.CurrentData <> Undefined Then
+	If Clone And Item.CurrentData <> Undefined Then
 		FormParameters.Insert("CopyingValue", Item.CurrentRow);
 	EndIf;
 	
-	OpenForm("Catalog.Users.ObjectForm", FormParameters, Items.UserList);
+	OpenForm("Catalog.Users.ObjectForm", FormParameters, Items.UsersList);
+	
+EndProcedure
+
+
+&AtClient
+Procedure SelectHierarchicallyOnChange(Item)
+	
+	RefreshFormContentOnGroupChange();
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+// Auxiliary form procedures and functions
+//
 
 &AtClient
-Procedure CreateUserGroup(Command)
-	
-	Items.UserGroups.AddRow();
-	
-EndProcedure
-
-&AtClient
-Procedure ShowNotValidUsers(Command)
-	
-	ShowNotValidUsers = Not ShowNotValidUsers;
-	
-	Items.ShowNotValidUsers.Check = ShowNotValidUsers;
-	
-	If ShowNotValidUsers Then
-		CommonUseClientServer.DeleteFilterItems(UserList.Filter, "NotValid");
-	Else	
-		CommonUseClientServer.SetFilterItem(
-			UserList.Filter,
-			"NotValid",
-			False);
-	EndIf;
-		
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-&AtClient
-Procedure UserGroupsAfterActivateRow()
-	
-	RefreshFormContentOnGroupChange(ThisForm);
-	
-EndProcedure
-
-&AtClientAtServerNoContext
-Procedure RefreshFormContentOnGroupChange(ThisForm)
-	
-	Items = ThisForm.Items;
-	If Not ThisForm.UseGroups
-	 Or Items.UserGroups.CurrentRow = ThisForm.AllUsersUserGroup Then
-		Items.ShowNestedGroupUsersGroup.CurrentPage = Items.CannotSetPropertyGroup;
-		UpdateDataCompositionParameterValue(ThisForm.UserList, "SelectHierarchy", True);
-		UpdateDataCompositionParameterValue(ThisForm.UserList, "UserGroup", ThisForm.AllUsersUserGroup);
+Procedure RefreshFormContentOnGroupChange()
+	If NOT UseGroups
+		OR Items.UserGroups.CurrentRow = UsersGroupAllUsers Then
+		//
+		Items.GroupShowChildGroupUsers.CurrentPage = Items.GroupUnableToSetProperty;
+		RefreshDataCompositionParameterValue(UsersList, "SelectHierarchically", True);
+		RefreshDataCompositionParameterValue(UsersList, "UserGroup", UsersGroupAllUsers);
 	Else
-		Items.ShowNestedGroupUsersGroup.CurrentPage = Items.SetPropertyGroup;
-		UpdateDataCompositionParameterValue(ThisForm.UserList, "SelectHierarchy", ThisForm.SelectHierarchy);
-		UpdateDataCompositionParameterValue(ThisForm.UserList, "UserGroup", Items.UserGroups.CurrentRow);
+		Items.GroupShowChildGroupUsers.CurrentPage = Items.GroupSetProperty;
+		RefreshDataCompositionParameterValue(UsersList, "SelectHierarchically", SelectHierarchically);
+		RefreshDataCompositionParameterValue(UsersList, "UserGroup", Items.UserGroups.CurrentRow);
 	EndIf;
 	
 EndProcedure
 
 &AtClientAtServerNoContext
-Procedure UpdateDataCompositionParameterValue(Val ParameterOwner, Val ParameterName, Val ParameterValue)
+Procedure RefreshDataCompositionParameterValue(Val OwnerOfParameters, Val ParameterName, Val ParameterValue)
 	
-	For Each Parameter In ParameterOwner.Parameters.Items Do
+	For each Parameter In OwnerOfParameters.Parameters.Items Do
 		If String(Parameter.Parameter) = ParameterName Then
 			If Parameter.Use And Parameter.Value = ParameterValue Then
 				Return;
@@ -266,6 +222,7 @@ Procedure UpdateDataCompositionParameterValue(Val ParameterOwner, Val ParameterN
 		EndIf;
 	EndDo;
 	
-	ParameterOwner.Parameters.SetParameterValue(ParameterName, ParameterValue);
+	OwnerOfParameters.Parameters.SetParameterValue(ParameterName, ParameterValue);
 	
 EndProcedure
+

@@ -73,7 +73,10 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Parameters.Property("AuthorizationObjectType", AuthorizationObjectType);
 		
 		// Selecting items that are not marked for deletion
-		ExternalUserList.Filter.Items[0].Use = True;
+		CommonUseClientServer.SetFilterItem(
+			ExternalUserList.Filter,
+			"DeletionMark",
+			False);
 		
 		Items.ExternalUserList.ChoiceMode = True;
 		Items.ChooseExternalUserGroup.Visible = Parameters.ExternalUserGroupChoice;

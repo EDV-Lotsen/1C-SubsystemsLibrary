@@ -158,7 +158,7 @@ Procedure SetPrefix(Source, Prefix, SetInfoBasePrefix, SetCompanyPrefix)
 		
 		If CompanyAttributeAvailable(Source) Then
 			
-			CompanyPrefix = GetFunctionalOption("CompanyPrefixes", New Structure("Company", Source.Company));
+			CompanyPrefix = "";//GetFunctionalOption("CompanyPrefixes", New Structure("Company", Source.Company));
 			
 			// If the company reference is empty
 			If CompanyPrefix = False Then
@@ -209,7 +209,7 @@ Procedure CheckObjectNumberByDate(Object)
 	Query = New Query(QueryText);
 	Query.SetParameter("Ref", Object.Ref);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	If Not ObjectPrefixation.IsObjectDatesOfSamePeriod(Selection.Date, Object.Date, Object.Ref) Then

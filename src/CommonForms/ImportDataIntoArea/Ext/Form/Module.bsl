@@ -8,15 +8,40 @@ Procedure ContinueDataImport(Command)
 	If SeparatorExists(SeparatorValue) Then
 		Text = NStr("en = 'The specified data area exists. If import will be continued, current data can become damaged.
 			|Do you want to continue data import?'");
-		Result = DoQueryBox(Text, QuestionDialogMode.YesNo, , DialogReturnCode.No);
-		
-		If Result = DialogReturnCode.No Then
-			Return;
-		EndIf;
+		Result = Undefined;
+
+		ShowQueryBox(New NotifyDescription("ContinueDataImportEnd1", ThisObject), Text, QuestionDialogMode.YesNo, , DialogReturnCode.No);
+        Return;
 	EndIf;
 	
+	ContinueDataImportPart();
+EndProcedure
+
+&AtClient
+Procedure ContinueDataImportEnd1(QuestionResult, AdditionalParameters) Export
+	
+	Result = QuestionResult;
+	
+	If Result = DialogReturnCode.No Then
+		Return;
+	EndIf;
+	
+	ContinueDataImportPart();
+
+EndProcedure
+
+&AtClient
+Procedure ContinueDataImportPart()
+	
 	AddressInStorage = Undefined;
-	If Not PutFile(AddressInStorage) Then
+	BeginPutFile(New NotifyDescription("ContinueDataImportEnd", ThisObject), AddressInStorage,,,);
+
+EndProcedure
+
+&AtClient
+Procedure ContinueDataImportEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	If Not Result Then
 		Return;
 	EndIf;
 	
@@ -29,19 +54,19 @@ Procedure ContinueDataImport(Command)
 		InfoBaseUpdate.ExecuteInfoBaseUpdate(True);
 		
 		Cancel = False;
-		
-		StandardSubsystemsClient.ActionsBeforeStart(Cancel);
-		
-		If Cancel Then
-			DoMessageBox(NStr("en = 'Data import completed with errors'"));
-			Return;
-		EndIf;
-		
-		StandardSubsystemsClient.ActionsOnStart();
-		
+		//
+		//StandardSubsystemsClient.ActionsBeforeStart(Cancel);
+		//
+		//If Cancel Then
+		//	ShowMessageBox(,NStr("en = 'Data import completed with errors'"));
+		//	Return;
+		//EndIf;
+		//
+		//StandardSubsystemsClient.ActionsOnStart();
+		//
 		Status(NStr("en = 'Data import completed successfully'"));
 	Except
-		DoMessageBox(BriefErrorDescription(ErrorInfo()));
+		ShowMessageBox(,BriefErrorDescription(ErrorInfo()));
 	EndTry;
 
 EndProcedure
@@ -74,7 +99,7 @@ Procedure ImportDataAtServer(Val AddressInStorage, SeparatorValue)
 	Try
 		DeleteFiles(ArchiveName);
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary files'"),
+		WriteLogEvent(NStr("en = 'Deleting temporary files'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,,
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;

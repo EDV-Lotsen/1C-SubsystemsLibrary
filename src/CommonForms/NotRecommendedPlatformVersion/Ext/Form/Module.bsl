@@ -16,6 +16,8 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Items.Version.Title, SystemInfo.AppVersion);
 	If Parameters.Exit Then
 		Items.FormNo.Visible = False;
+	Else
+		Items.FormExit.Visible = False;
 	EndIf;
 	
 EndProcedure
@@ -27,7 +29,7 @@ EndProcedure
 &AtClient
 Procedure HyperlinkTextClick(Item)
 	StandardProcessing = False;
-	RunApp(Items.HyperlinkText.ToolTip);
+	BeginRunningApplication(Undefined, Items.HyperlinkText.ToolTip);
 EndProcedure
 
 
@@ -44,6 +46,6 @@ EndProcedure
 &AtClient
 Procedure ExitExecute(Command)
 	
-	Close(DialogReturnCode.OK);
+	Terminate();
 	
 EndProcedure

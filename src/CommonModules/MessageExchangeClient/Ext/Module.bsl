@@ -16,7 +16,7 @@ Procedure SendAndReceiveMessages() Export
 	
 	Cancel = False;
 	
-	MessageExchangeInternal.SendAndReceiveMessages(Cancel);
+	MessageExchangeClient.SendAndReceiveMessages(Cancel);
 	
 	If Cancel Then
 		

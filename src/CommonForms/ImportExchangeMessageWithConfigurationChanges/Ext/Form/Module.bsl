@@ -42,22 +42,31 @@ Procedure ExecuteDataImport(Command)
 		
 		NString = NStr("en = 'Error importing data.
 							|Do you want to open the event log?'");
-		//
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
-		If Response = DialogReturnCode.Yes Then
-			
-			DataExchangeClient.GoToDataEventLogModally(InfoBaseNode, ThisForm, "DataImport");
-			
-		EndIf;
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("ExecuteDataImportEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
 		
 	Else
 		
-		DoMessageBox(NStr("en = 'Data import completed successfully.'"), 30);
+		ShowMessageBox(,NStr("en = 'Data import completed successfully.'"), 30);
 		
 		Close(True);
 		
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportEnd(QuestionResult, AdditionalParameters) Export
+	
+	//
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		DataExchangeClient.GoToDataEventLogModally(InfoBaseNode, ThisForm, "DataImport");
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient

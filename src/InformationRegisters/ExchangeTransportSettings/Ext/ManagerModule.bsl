@@ -85,7 +85,7 @@ Function DefaultExchangeMessageTransportKind(InfoBaseNode) Export
 	Query.Text = QueryText;
 	Query.SetParameter("InfoBaseNode", InfoBaseNode);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		
@@ -196,7 +196,7 @@ Function DataImportTransactionItemCount(Node) Export
 	Query.SetParameter("Node", Node);
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		
@@ -225,7 +225,7 @@ Function DataExportTransactionItemCount(Node) Export
 	Query.SetParameter("Node", Node);
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		
@@ -313,7 +313,7 @@ Function GetRegisterDataByStructure(Node, SettingsStructure)
 	Query.Text = QueryText;
 	Query.SetParameter("Node", Node);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	// Filling the structure if settings for the node are filled.
 	If Selection.Next() Then

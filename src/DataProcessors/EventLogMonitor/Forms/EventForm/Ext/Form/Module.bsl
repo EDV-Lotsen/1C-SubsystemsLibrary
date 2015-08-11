@@ -128,7 +128,7 @@ EndProcedure
 &AtClient
 Procedure MetadataPresentationOpening(Item, StandardProcessing)
 	
-	OpenValue(MetadataPresentation);
+	ShowValue(Undefined, MetadataPresentation);
 	
 EndProcedure
 
@@ -139,7 +139,7 @@ EndProcedure
 &AtClient
 Procedure DataTableChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	OpenValue(Item.CurrentData[Mid(Field.Name, StrLen(Item.Name)+1)]);
+	ShowValue(Undefined, Item.CurrentData[Mid(Field.Name, StrLen(Item.Name)+1)]);
 	
 EndProcedure
 

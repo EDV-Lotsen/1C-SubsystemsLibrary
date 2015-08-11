@@ -55,7 +55,7 @@ Var PerformanceEstimationTimeMeasurement Export;
 Procedure BeforeStart(Cancel)
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsBeforeStart(Cancel);
+	StandardSubsystemsClient.BeforeStart();
 	// End StandardSubsystems
 	
 EndProcedure
@@ -63,7 +63,7 @@ EndProcedure
 Procedure OnStart()
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsOnStart(True);
+	StandardSubsystemsClient.OnStart();
 	// End StandardSubsystems
 	
 EndProcedure
@@ -71,7 +71,7 @@ EndProcedure
 Procedure BeforeExit(Cancel)
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsBeforeExit(Cancel);
+	StandardSubsystemsClient.BeforeExit(Cancel);
 	// End StandardSubsystems
 	
 EndProcedure

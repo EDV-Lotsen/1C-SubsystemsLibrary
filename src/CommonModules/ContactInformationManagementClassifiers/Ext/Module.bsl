@@ -282,7 +282,7 @@ Function GetAddressStructureAtServer(AddressItemCode, Building = "", Appartment 
 		PostalCode = GetPostalCode(AddressStructure.State, AddressStructure.County,
 		  AddressStructure.City, AddressStructure.Settlement, AddressStructure.Street, Building);
 	Else
-		Selection = QueryResult.Choose();
+		Selection = QueryResult.Select();
 		Selection.Next();
 		PostalCode = Selection.PostalCode;
 	EndIf;	
@@ -853,7 +853,7 @@ Function GetPostalCodeByStreetBuilding(Street, BuildingNumber)
 	Query.SetParameter("SettlementCodeInCode", Street.SettlementCodeInCode);
 	Query.SetParameter("StreetCodeInCode", Street.StreetCodeInCode);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	BuildingPostalCode = "";
 	
 	While Selection.Next() Do
@@ -1007,7 +1007,7 @@ Function GetAddressItem(ItemName, ItemType, ParentItem)
 		Return GetEmptyAddressStructure();
 	Else
 		
-		Selection = QueryResult.Choose();
+		Selection = QueryResult.Select();
 		Selection.Next();
 		ResultStructure = New Structure;
 		For Each Column In QueryResult.Columns Do

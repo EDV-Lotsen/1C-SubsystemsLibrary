@@ -11,7 +11,7 @@ Function AdministratorList() Export
 		|	SharedUsers.InfoBaseUserID
 		|FROM
 		|	InformationRegister.SharedUsers AS SharedUsers";
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	AdministratorList = New ValueList;
 	While Selection.Next() Do
 		IBUser = InfoBaseUsers.FindByUUID(

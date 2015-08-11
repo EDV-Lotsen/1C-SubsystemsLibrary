@@ -203,7 +203,7 @@ Procedure FillLastAverageAccountingCost()
 		Query.SetParameter("Ref", Object.Ref);
 		
 		// Execute query and read costs
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		// Last cost
 		If Selection.Next() Then LastCost = Selection.Cost;	Else LastCost = 0; EndIf;
 		// Average cost

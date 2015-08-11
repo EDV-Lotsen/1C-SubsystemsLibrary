@@ -27,7 +27,7 @@ EndProcedure
 &AtClient
 Procedure OpenActiveUsersForm(Command)
 	
-	OpenForm("DataProcessor.ActiveUsers.Form.ActiveUserListForm");
+	OpenForm("DataProcessor.ActiveUsers.Form.ActiveUsersListForm");
 	
 EndProcedure
 
@@ -241,7 +241,7 @@ Procedure CancelInitializationJob(Val JobID)
 		Job.Cancel();
 	Except
 		// Perhaps the job finished just at this moment and there is no error.
-		WriteLogEvent(NStr("en = 'Canceling the job of initialization of the data area export'"),
+		WriteLogEvent(NStr("en = 'Canceling the job of initialization of the data area export'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,,
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;

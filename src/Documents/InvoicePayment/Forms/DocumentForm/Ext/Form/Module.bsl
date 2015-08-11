@@ -22,7 +22,7 @@ Procedure FillDocumentList(Counterparty)
 				 
 	Query.SetParameter("Counterparty", Counterparty);
 	
-	Result = Query.Execute().Choose();
+	Result = Query.Execute().Select();
 	
 	While Result.Next() Do
 		// Skip credit memos. Due to high load on subdimensions in query and small quantity of returns - do this in loop

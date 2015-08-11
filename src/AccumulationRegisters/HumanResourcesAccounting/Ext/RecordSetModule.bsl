@@ -218,7 +218,7 @@ Procedure OnWrite(Cancellation, Replacing)
 	
 	QueryResult = Query.Execute();
 	
-	QueryResultSelection = QueryResult.Choose();
+	QueryResultSelection = QueryResult.Select();
 	QueryResultSelection.Next();
 	
 	// New changes have been placed to the temporary table "RegisterRecordsHumanResourcesAccountingChange".

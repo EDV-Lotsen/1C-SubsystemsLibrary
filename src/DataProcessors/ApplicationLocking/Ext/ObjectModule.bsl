@@ -1,86 +1,39 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-// Locks or unlocks the infobase,
-// depends on the ProhibitUserWorkTemporarily attribute value.
+﻿// Set or remove infobase lock,
+// on the basis of data processor attribute values.
 //
-Procedure SetLock() Export
+Procedure RunSetup() Export
 	
-	ExecuteSetLock(ProhibitUserWorkTemporarily);
+	Block 			= New SessionsLock;
+	Block.Begin           = LockBegin;
+	Block.End            = LockEnding;
+	Block.Message   = InfoBaseConnections.GenerateLockMessage(Message, KeyCode);
+	Block.Use      = SetConnectionsBlock;
+	Block.KeyCode   = KeyCode;
+	
+	SetSessionsLock(Block);
 	
 EndProcedure
 
-// Disables the previously enabled session lock.
+// Read infobase lock parameters
+// to data processor attributes.
 //
-Procedure Unlock() Export
+Procedure GetBlockParameters() Export
 	
-	ExecuteSetLock(False);
+	CurrentMode = GetSessionsLock();
 	
-EndProcedure
-
-// Reads infobase lock parameters 
-// and passes them to the DataProcessor attributes.
-//
-Procedure GetLockParameters() Export
+	SetConnectionsBlock = CurrentMode.Use;
+	Message = InfoBaseConnectionsClientServer.ExtractLockMessage(CurrentMode.Message);
+	KeyCode = CurrentMode.KeyCode;
 	
-	If Users.InfoBaseUserWithFullAccess(, True) Then
-		CurrentMode = GetSessionsLock();
-		UnlockCode = CurrentMode.KeyCode;
+	If SetConnectionsBlock Then
+		LockBegin    = CurrentMode.Begin;
+		LockEnding = CurrentMode.End;
 	Else	
-		CurrentMode = InfoBaseConnections.GetDataAreaSessionLock();
-	EndIf;
-	
-	ProhibitUserWorkTemporarily = CurrentMode.Use;
-	MessageForUsers = InfoBaseConnectionsClientServer.ExtractLockMessage(CurrentMode.Message);
-	
-	If ProhibitUserWorkTemporarily Then
-		LockPeriodStart = CurrentMode.Begin;
-		LockPeriodEnd = CurrentMode.End;
-	Else	
-		// If data lock is disabled, most probably
-		// the user opened the form to enable the lock.
-		// Setting the lock date equal to the current date.
-		LockPeriodStart = BegOfMinute(CurrentSessionDate() + 5 * 60);
-	EndIf;
-	
-	If Users.InfoBaseUserWithFullAccess(, True) Then
-		DisableScheduledJobs = InfoBaseConnectionsClientServer.ScheduledJobsLocked();
+		// If lock is not set, then it's possible, that
+		// user has opened form for lock setup.
+		// Thus set lock date equal to current date
+		LockBegin     = CurrentDate();
 	EndIf;
 
 EndProcedure
 
-Procedure ExecuteSetLock(Value)
-	
-	ConnectionsLocked = InfoBaseConnections.ConnectionsLocked();
-	If Users.InfoBaseUserWithFullAccess(, True) Then
-		DataLock = New SessionsLock;
-		DataLock.KeyCode = UnlockCode;
-	Else
-		DataLock = InfoBaseConnections.NewLockConnectionParameters();
-	EndIf;
-	
-	DataLock.Begin = LockPeriodStart;
-	DataLock.End = LockPeriodEnd;
-	DataLock.Message = InfoBaseConnections.GenerateLockMessage(MessageForUsers, 
-		UnlockCode); 
-	DataLock.Use = Value;
-	
-	If Users.InfoBaseUserWithFullAccess(, True) Then
-		SetSessionsLock(DataLock);
-		If Not CommonUse.FileInfoBase() Then
-			Try
-				InfoBaseConnectionsClientServer.SetSheduledJobLock(DisableScheduledJobs);
-			Except
-				// Rolling lock enabling back in case of error
-				If Not ConnectionsLocked And Value Then
-					DataLock.Use = False;
-					SetSessionsLock(DataLock);
-				EndIf;
-				Raise;
-			EndTry;
-		EndIf;
-	Else
-		InfoBaseConnections.SetDataAreaSessionLock(DataLock);
-	EndIf;
-	
-EndProcedure

@@ -152,7 +152,7 @@ Function PrintForm(ObjectsArray, PrintObjects)
 		|WHERE
 		|	Timesheet.Ref = &CurrentDocument";
 		
-		Header = Query.Execute().Choose();
+		Header = Query.Execute().Select();
 		Header.Next();
 		
 		If Header.DataInputMethod = Enums.TimeDataInputMethods.Daily Then
@@ -389,7 +389,7 @@ Function PrintForm(ObjectsArray, PrintObjects)
 			|ORDER BY
 			|	TimesheetTimeWorkedByDays.LineNumber";
 			
-			Selection = Query.Execute().Choose();
+			Selection = Query.Execute().Select();
             				
 			CON = 0;
 			While Selection.Next() Do
@@ -490,7 +490,7 @@ Function PrintForm(ObjectsArray, PrintObjects)
 			|ORDER BY
 			|	TimesheetTimeWorkedPerPeriod.LineNumber";
 			
-			Selection = Query.Execute().Choose();		
+			Selection = Query.Execute().Select();		
 				
 			CON = 0;
 			While Selection.Next() Do

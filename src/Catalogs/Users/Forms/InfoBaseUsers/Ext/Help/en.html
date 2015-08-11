@@ -1,8 +1,10 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
-<p>When a <a href="Catalog.Users/Help">user</a> (or <a href="Catalog.ExternalUsers/Help">external user</a>) is written with <strong>Access to infobase allowed</strong> check box set, the corresponding new infobase user is automatically created or the existing one is modified. And on the contrary, when a user (or an external user) is written with <strong>Access to infobase allowed</strong> check box cleared the corresponding infobase user is deleted automatically from the infobase user list. However there is a number of situations when the infobase user list becomes out of synch. In that case this list can be used for the following tasks:</p>
-<ul><li>Find invalid infobase users and synchronize user and infobase user lists between each other: 
-<ul><li>if the infobase user was added using Designer (or programmatically bypassing the recommended mechanism), it will be suggested to delete this infobase user; 
-</li><li>if the infobase user was deleted using Designer (or programmatically bypassing the recommended mechanism) and there is row in users list for that user, it will be suggested to open and overwrite the user info to remove reference to the deleted infobase user; 
-</li><li>if full name of the existing infobase user was modified using Designer (or programmatically bypassing the recommended mechanism), it will be suggested to open and overwrite the user info to restore the full name of the infobase user.</li></ul></li><li>View the list of users and external users that do not have corresponding infobase users (the ones who have <strong>Access to infoinfobase allowed</strong> check box cleared). 
-</li><li>View the list of all infobase users (the same as in Designer).</li></ul><p> </p>
-<p>To open this list you can use <strong>Infobase users</strong> command in <strong>All actions</strong> menu of users (or external users) list.<br></p></body></html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.17801"></meta></head><body>
+<p>The purpose of form "Users of information base".</p>
+<ul><li>Find invalid user of informational base and perform corrections: 
+<ul><li>if the user was added with the help of configurator (or nonstandard by a software): 
+<ul><li>you can delete the user, 
+</li><li>you can create the user, linked to invalid user from the catalog;</li></ul></li><li>if user was deleted by the designer (or nonstandard by a software): 
+<ul><li>you can re-enable access to the informational base;</li></ul></li><li>If the full name of the user was changed by the designer (or nonstandard by a software): 
+<ul><li>You can open and store the user,<br>as the result the full name will be rewritten.</li></ul></li></ul></li><li>Find users and external users without the informational base user<br>(when access to the informational base is forbidden),<br>For example user was fired and left in the catalog for history. 
+</li><li>See the list of all informational base users.</li></ul><p> </p>
+<p> </p></body></html>

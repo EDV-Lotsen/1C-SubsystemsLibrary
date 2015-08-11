@@ -981,5 +981,5 @@ Procedure CheckIncomingMailServerConnection(Val Account,
 EndProcedure
 
 Function EventLogMessageText()
-	Return NStr("en = 'Verifying email account'");	
+	Return NStr("en = 'Verifying email account'", Metadata.DefaultLanguage.LanguageCode);	
 EndFunction

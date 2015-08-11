@@ -34,15 +34,30 @@ EndProcedure
 &AtClient
 Procedure SetNow(Command)
 	
-	InstallFileSystemExtension();
+	BeginInstallFileSystemExtension(New NotifyDescription("SetNowEnd", ThisObject));	
 	
-	ExtensionConnected = AttachFileSystemExtension();
+EndProcedure
+
+&AtClient
+Procedure SetNowEnd(AdditionalParameters) Export
+    
+    ExtensionConnected = Undefined;
+
+    
+    BeginAttachingFileSystemExtension(New NotifyDescription("SetNowEndEnd", ThisObject));
+
+EndProcedure
+
+&AtClient
+Procedure SetNowEndEnd(Attached, AdditionalParameters1) Export
+	
+	ExtensionConnected = Attached;
 	If Not ExtensionConnected Then
 		Close(True); // Offer later - in another session
 	Else	
 		Close(False); // Don't offer
-	EndIf;	
-	
+	EndIf;
+
 EndProcedure
 
 &AtClient

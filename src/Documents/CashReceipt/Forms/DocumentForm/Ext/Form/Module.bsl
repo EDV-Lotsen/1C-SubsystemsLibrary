@@ -35,7 +35,7 @@ Procedure FillDocumentList(Counterparty)
 	Query.SetParameter("Date",    ?(ValueIsFilled(Object.Ref), Object.Date, CurrentSessionDate()));
 	Query.SetParameter("Counterparty", Counterparty);
 	
-	ResultSelection = Query.Execute().Choose();
+	ResultSelection = Query.Execute().Select();
 	While ResultSelection.Next() Do
 		LineItems = Object.LineItems.Add();
 		FillPropertyValues(LineItems, ResultSelection);
@@ -79,7 +79,7 @@ Procedure FillCreditMemos(Counterparty)
 	Query.SetParameter("Date",    ?(ValueIsFilled(Object.Ref), Object.Date, CurrentSessionDate()));
 	Query.SetParameter("Counterparty", Counterparty);
 	
-	ResultSelection = Query.Execute().Choose();
+	ResultSelection = Query.Execute().Select();
 	While ResultSelection.Next() Do
 		LineItems = Object.CreditMemos.Add();
 		FillPropertyValues(LineItems, ResultSelection);

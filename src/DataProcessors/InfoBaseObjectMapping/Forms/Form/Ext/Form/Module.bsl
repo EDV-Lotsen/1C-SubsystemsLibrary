@@ -115,7 +115,7 @@ Procedure BeforeClose(Cancel, StandardProcessing)
 		
 		If Cancel Then
 			
-			DoMessageBox(NStr("en = 'Errors occurred.'"));
+			ShowMessageBox(,NStr("en = 'Errors occurred.'"));
 			
 		EndIf;
 		
@@ -182,7 +182,7 @@ Procedure Refresh(Command)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error mapping objects.'"));
+		ShowMessageBox(,NStr("en = 'Error mapping objects.'"));
 		
 	EndIf;
 	
@@ -203,7 +203,21 @@ Procedure ExecuteAutomaticMapping(Command)
 	// Getting the mapping field list
 	FormParameters = New Structure("MappingFieldList", Object.TableFieldList.Copy());
 	
-	MappingFieldList = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.AutomaticMappingSetup", FormParameters, ThisForm);
+	MappingFieldList = Undefined;
+
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.AutomaticMappingSetup", FormParameters, ThisForm,,,, New NotifyDescription("ExecuteAutomaticMappingEnd1", ThisObject, New Structure("Cancel, FormParameters", Cancel, FormParameters)), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure ExecuteAutomaticMappingEnd1(Result, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	FormParameters = AdditionalParameters.FormParameters;
+	
+	
+	MappingFieldList = Result;
 	
 	If TypeOf(MappingFieldList) <> Type("ValueList") Then
 		Return;
@@ -229,8 +243,21 @@ Procedure ExecuteAutomaticMapping(Command)
 	
 	Status(NStr("en = 'Automatic mapping is being executed. Please wait...'"));
 	
+	TempStorageAddress = Undefined;
+	
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.AutomaticMappingResult", FormParameters, ThisForm,,,, New NotifyDescription("ExecuteAutomaticMappingEnd", ThisObject, New Structure("Cancel", Cancel)), FormWindowOpeningMode.LockWholeInterface);
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteAutomaticMappingEnd(Result, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	
+	
 	// Opening the form of automatic object mapping
-	TempStorageAddress = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.AutomaticMappingResult", FormParameters, ThisForm);
+	TempStorageAddress = Result;
 	
 	If TypeOf(TempStorageAddress) = Type("String") Then
 		
@@ -245,13 +272,13 @@ Procedure ExecuteAutomaticMapping(Command)
 		EndIf;
 		
 	EndIf;
-		
+	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error occured during automatically object mapping.'"));
+		ShowMessageBox(,NStr("en = 'Error occured during automatically object mapping.'"));
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -260,7 +287,20 @@ Procedure ExecuteDataImport(Command)
 	Cancel = False;
 	
 	NString = NStr("en = 'Do you want to import data into the infobase?'");
-	Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+	Response = Undefined;
+
+	ShowQueryBox(New NotifyDescription("ExecuteDataImportEnd2", ThisObject, New Structure("Cancel, Command, NString", Cancel, Command, NString)), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportEnd2(QuestionResult, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	Command = AdditionalParameters.Command;
+	NString = AdditionalParameters.NString;
+	
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.No Then
 		Return;
 	EndIf;
@@ -268,14 +308,39 @@ Procedure ExecuteDataImport(Command)
 	If Object.DataImportedSuccessfully Then
 		
 		NString = NStr("en = 'Data has already been imported. Do you want to re-import data into the infobase?'");
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.No Then
-			Return;
-		EndIf;
+		ShowQueryBox(New NotifyDescription("ExecuteDataImportEnd1", ThisObject, New Structure("Cancel, Command, NString", Cancel, Command, NString)), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
+		Return;
 		
 	EndIf;
 	
 	// State notification
+	ExecuteDataImportPart(Cancel, Command);
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportEnd1(QuestionResult, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	Command = AdditionalParameters.Command;
+	NString = AdditionalParameters.NString;
+	
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.No Then
+		Return;
+	EndIf;
+	
+	
+	ExecuteDataImportPart(Cancel, Command);
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportPart(Val Cancel, Val Command)
+	
+	Var NString;
+	
 	Status(NStr("en = 'Data is being imported. Please wait...'"));
 	
 	// Importing data on the server
@@ -287,17 +352,24 @@ Procedure ExecuteDataImport(Command)
 	If Cancel Then
 		
 		NString = NStr("en = 'Error importing data.
-							|Do you want to open the event log?'");
+		|Do you want to open the event log?'");
 		
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
-			
-		EndIf;
+		ShowQueryBox(New NotifyDescription("ExecuteDataImportEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		
 	EndIf;
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportEnd(QuestionResult, AdditionalParameters) Export
 	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -305,7 +377,17 @@ Procedure ChangeTableFields(Command)
 	
 	FormParameters = New Structure("FieldList", Object.UsedFieldList.Copy());
 	
-	SetupFormFieldList = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.TableFieldSetup", FormParameters, ThisForm);
+	SetupFormFieldList = Undefined;
+
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.TableFieldSetup", FormParameters, ThisForm,,,, New NotifyDescription("ChangeTableFieldsEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure ChangeTableFieldsEnd(Result, AdditionalParameters) Export
+	
+	SetupFormFieldList = Result;
 	
 	If TypeOf(SetupFormFieldList) <> Type("ValueList") Then
 		
@@ -317,7 +399,7 @@ Procedure ChangeTableFields(Command)
 	
 	// Setting mapping table field titles and visibility
 	SetTableFieldVisible("MappingTable");
-	
+
 EndProcedure
 
 &AtClient
@@ -327,7 +409,20 @@ Procedure SetupTableFieldList(Command)
 	
 	FormParameters = New Structure("FieldList", Object.TableFieldList.Copy());
 	
-	SetupFormFieldList = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.MappingFieldTableSetup", FormParameters, ThisForm);
+	SetupFormFieldList = Undefined;
+
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.MappingFieldTableSetup", FormParameters, ThisForm,,,, New NotifyDescription("SetupTableFieldListEnd", ThisObject, New Structure("Command", Command)), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure SetupTableFieldListEnd(Result, AdditionalParameters) Export
+	
+	Command = AdditionalParameters.Command;
+	
+	
+	SetupFormFieldList = Result;
 	
 	If TypeOf(SetupFormFieldList) <> Type("ValueList") Then
 		Return;
@@ -342,7 +437,7 @@ Procedure SetupTableFieldList(Command)
 	
 	// Updating the mapping table according the new table fields
 	Refresh(Command);
-	
+
 EndProcedure
 
 &AtClient
@@ -350,7 +445,17 @@ Procedure Sorting(Command)
 	
 	FormParameters = New Structure("SortTable", Object.SortTable);
 	
-	SortTableResult = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.SortingSetup", FormParameters, ThisForm);
+	SortTableResult = Undefined;
+
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.SortingSetup", FormParameters, ThisForm,,,, New NotifyDescription("SortingEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure SortingEnd(Result, AdditionalParameters) Export
+	
+	SortTableResult = Result;
 	
 	If TypeOf(SortTableResult) <> Type("FormDataCollection") Then
 		
@@ -372,7 +477,7 @@ Procedure Sorting(Command)
 	
 	// Update the filter 
 	SetTabularSectionFilter();
-	
+
 EndProcedure
 
 &AtClient
@@ -406,7 +511,7 @@ Procedure WriteRefresh(Command)
 	SetTabularSectionFilter();
 	
 	If Cancel Then
-		DoMessageBox(NStr("en = 'Error occurred.'"));
+		ShowMessageBox(,NStr("en = 'Error occurred.'"));
 	Else
 		Modified = False;
 	EndIf;
@@ -807,7 +912,7 @@ Procedure SetRelationInteractively()
 	If Not (CurrentData.MappingState = -1
 		 Or CurrentData.MappingState = +1) Then
 		
-		DoMessageBox(NStr("en = 'Objects are already mapped.'"), 2);
+		ShowMessageBox(,NStr("en = 'Objects are already mapped.'"), 2);
 		
 		// Switching to the mapping table
 		CurrentItem = Items.MappingTable;
@@ -827,8 +932,21 @@ Procedure SetRelationInteractively()
 	FormParameters.Insert("MaxCustomFieldCount",  MaxCustomFieldCount());
 	FormParameters.Insert("ObjectToMap",          GetObjectToMap(CurrentData));
 	
+	EndingRowSerialNumber = Undefined;
+
+	
+	OpenForm("DataProcessor.InfoBaseObjectMapping.Form.MappingRelationChoiceForm", FormParameters, ThisForm,,,, New NotifyDescription("SetRelationInteractivelyEnd", ThisObject, New Structure("BeginningRowID", BeginningRowID)), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure SetRelationInteractivelyEnd(Result, AdditionalParameters) Export
+	
+	BeginningRowID = AdditionalParameters.BeginningRowID;
+	
+	
 	// Calling the server
-	EndingRowSerialNumber = OpenFormModal("DataProcessor.InfoBaseObjectMapping.Form.MappingRelationChoiceForm", FormParameters, ThisForm);
+	EndingRowSerialNumber = Result;
 	
 	If EndingRowSerialNumber = Undefined Then
 		Return; // refusing to choose a relation for mapping
@@ -844,7 +962,7 @@ Procedure SetRelationInteractively()
 	
 	// Switching to the mapping table
 	CurrentItem = Items.MappingTable;
-	
+
 EndProcedure
 
 &AtClient

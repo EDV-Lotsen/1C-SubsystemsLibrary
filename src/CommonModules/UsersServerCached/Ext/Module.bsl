@@ -304,17 +304,3 @@ Procedure FillSubsystemsAndRoles(TreeRowCollection, Subsystems = Undefined, User
 	
 EndProcedure
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

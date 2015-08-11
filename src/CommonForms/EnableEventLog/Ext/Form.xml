@@ -1,29 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Title>
-		<v8:item>
-			<v8:lang>en</v8:lang>
-			<v8:content>Enable event log</v8:content>
-		</v8:item>
-	</Title>
 	<AutoTitle>false</AutoTitle>
 	<Customizable>false</Customizable>
 	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="Retry" id="2">
+			<Button name="Retry" id="7">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
 				<CommandName>Form.Command.Retry</CommandName>
-				<ExtendedTooltip name="RetryExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="RetryExtendedTooltip" id="14"/>
 			</Button>
-			<Button name="FormCancel" id="4">
+			<Button name="FormCancel" id="12">
 				<Type>CommandBarButton</Type>
 				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="FormCancelExtendedTooltip" id="5"/>
+				<ExtendedTooltip name="FormCancelExtendedTooltip" id="15"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -32,68 +25,73 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="ErrorCommentGroup" id="6">
+		<UsualGroup name="ErrorDetailsGroup" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Error comments group</v8:content>
+					<v8:content>Error details group</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Error comments group</v8:content>
+					<v8:content>Error details group</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ErrorCommentGroupExtendedTooltip" id="7"/>
+			<ExtendedTooltip name="ErrorDetailsGroupExtendedTooltip" id="16"/>
 			<ChildItems>
-				<PictureDecoration name="WarningDecoration" id="8">
+				<PictureDecoration name="DecorationWarning" id="10">
 					<Width>4</Width>
 					<Height>2</Height>
 					<Title formatted="false">
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Warning decoration</v8:content>
+							<v8:content>Decoration warning</v8:content>
 						</v8:item>
 					</Title>
 					<Picture>
 						<xr:Ref>CommonPicture.Warning32</xr:Ref>
-						<xr:LoadTransparent>true</xr:LoadTransparent>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
 					</Picture>
-					<ContextMenu name="WarningDecorationContextMenu" id="9"/>
-					<ExtendedTooltip name="WarningDecorationExtendedTooltip" id="10"/>
+					<ContextMenu name="DecorationWarningContextMenu" id="11"/>
+					<ExtendedTooltip name="DecorationWarningExtendedTooltip" id="17"/>
 				</PictureDecoration>
-				<UsualGroup name="Group" id="11">
+				<UsualGroup name="Group" id="13">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Group</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Group</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupExtendedTooltip" id="12"/>
+					<ExtendedTooltip name="GroupExtendedTooltip" id="18"/>
 					<ChildItems>
-						<LabelDecoration name="FailedSetExclusiveAccessLabel" id="13">
+						<LabelDecoration name="FailedSetExclusiveAccessLabel" id="1">
 							<Height>2</Height>
 							<HorizontalStretch>false</HorizontalStretch>
 							<Title formatted="false">
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Could not set the exclusive access mode to the infobase.
-To enable the event log the only one, current, user
-should work with this infobase.</v8:content>
+									<v8:content>Unable to set the exclusive access to this infobase.
+To enable the event log the only one, current, user should be logged in.</v8:content>
 								</v8:item>
 							</Title>
 							<VerticalAlign>Center</VerticalAlign>
-							<ContextMenu name="FailedSetExclusiveAccessLabelContextMenu" id="14"/>
-							<ExtendedTooltip name="FailedSetExclusiveAccessLabelExtendedTooltip" id="15"/>
+							<ContextMenu name="FailedSetExclusiveAccessLabelContextMenu" id="2"/>
+							<ExtendedTooltip name="FailedSetExclusiveAccessLabelExtendedTooltip" id="19"/>
 						</LabelDecoration>
-						<UsualGroup name="ActiveUsersGroup" id="16">
+						<UsualGroup name="ActiveUsersGroup" id="3">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -109,19 +107,19 @@ should work with this infobase.</v8:content>
 							<Group>Horizontal</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="ActiveUsersGroupExtendedTooltip" id="17"/>
+							<ExtendedTooltip name="ActiveUsersGroupExtendedTooltip" id="20"/>
 							<ChildItems>
-								<LabelDecoration name="ActiveUsersLabel" id="18">
+								<LabelDecoration name="ActiveUsersLabel" id="4">
 									<Title formatted="false">
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Active users:</v8:content>
+											<v8:content>Number of active users:</v8:content>
 										</v8:item>
 									</Title>
-									<ContextMenu name="ActiveUsersLabelContextMenu" id="19"/>
-									<ExtendedTooltip name="ActiveUsersLabelExtendedTooltip" id="20"/>
+									<ContextMenu name="ActiveUsersLabelContextMenu" id="5"/>
+									<ExtendedTooltip name="ActiveUsersLabelExtendedTooltip" id="21"/>
 								</LabelDecoration>
-								<Button name="ActiveUsersButton" id="21">
+								<Button name="ActiveUsersButton" id="6">
 									<Type>Hyperlink</Type>
 									<CommandName>Form.Command.OpenActiveUsersForm</CommandName>
 									<Title>

@@ -94,7 +94,7 @@ EndProcedure
 &AtClient
 Procedure GoToEventLog(Command)
 	
-	OpenFormModal("DataProcessor.EventLogMonitor.Form", GetEventLogFilterDataStructure(InfoBaseNode), ThisForm);
+	OpenForm("DataProcessor.EventLogMonitor.Form", GetEventLogFilterDataStructure(InfoBaseNode), ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 

@@ -9,10 +9,10 @@
 // Returns a new remote administration message for sending to the service manager.
 //
 // Parameters:
-//  MessageType - XDTOObjectType - type of messages to be generated.
+// MessageType - XDTOObjectType - type of messages to be generated.
 //
 // Returns:
-//  XDTODataObject - Object of the required type.
+// XDTODataObject - Object of the required type.
 //
 Function NewMessage(Val MessageType) Export
 	
@@ -25,9 +25,9 @@ EndFunction
 // Parameters:
 // Content - XDTODataObject - message content;
 // Recipient - ExchangePlanRef.MessageExchange - message recipient;
-// Immediately - Boolean - flag that shows whether the message must be sent with the instant message mechanism.
+// Now - Boolean - flag that shows whether the message must be sent with the instant message engine.
 //
-Procedure SendMessage(Val Content, Val Recipient = Undefined, Val Immediately = False) Export
+Procedure SendMessage(Val Content, Val Recipient = Undefined, Val Now = False) Export
 	
 	Writer = New XMLWriter;
 	Writer.SetString();
@@ -36,7 +36,7 @@ Procedure SendMessage(Val Content, Val Recipient = Undefined, Val Immediately = 
 	
 	MessageChannel = ChannelNameByMessageType(Content.Type());
 	
-	If Immediately Then
+	If Now Then
 		MessageExchange.SendMessageImmediately(MessageChannel, Writer.Close(), Recipient);
 	Else
 		MessageExchange.SendMessage(MessageChannel, Writer.Close(), Recipient);

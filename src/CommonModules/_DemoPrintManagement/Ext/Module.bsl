@@ -270,7 +270,7 @@ Function GetTemplate(FullPathToTemplate) Export
 	                                      	
 	SetPrivilegedMode(True);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	SetPrivilegedMode(False);
 	

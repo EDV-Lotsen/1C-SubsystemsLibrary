@@ -69,7 +69,7 @@ Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 	CheckedObjectAttributes.Add("Content.User");
 	
 	For Each CurrentRow In Content Do;
-		LineNumber = Content.IndexOf(CurrentRow);
+		RowNumber = Content.IndexOf(CurrentRow);
 		
 		// Checking whether the value is filled
 		If Not ValueIsFilled(CurrentRow.User) Then
@@ -77,7 +77,7 @@ Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 				"Object.Content[%1].User",
 				NStr("en = 'User is not selected.'"),
 				"Object.Content",
-				LineNumber,
+				RowNumber,
 				NStr("en = 'A user in the row #%1 is not selected.'"));
 			Continue;
 		EndIf;
@@ -89,7 +89,7 @@ Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 				"Object.Content[%1].User",
 				NStr("en = 'Repeated user.'"),
 				"Object.Content",
-				LineNumber,
+				RowNumber,
 				NStr("en = 'There is a repeated user in the row #%1.'"));
 		EndIf;
 	EndDo;

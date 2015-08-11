@@ -366,7 +366,7 @@ Procedure UpdateDataExchangeScenarioScheduledJobs() Export
 	Query = New Query;
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -406,9 +406,15 @@ EndProcedure
 //
 Procedure CheckFunctionalOptionsAreSetOnInfoBaseUpdate() Export
 	
-	If Constants.UseDataExchange.Get() = True Then
+	If GetFunctionalOption("UseDataExchange") = False Then
 		
-		Constants.UseDataExchange.Set(True);
+		If CommonUseCached.DataSeparationEnabled() Then
+			Constants.UseDataExchange.Set(True);
+		Else
+			If GetUsedExchangePlans().Count() > 0 Then
+				Constants.UseDataExchange.Set(True);
+			EndIf;
+		EndIf;
 		
 	EndIf;
 	
@@ -606,7 +612,7 @@ Procedure ExecuteDataExchangeByDataExchangeScenario(Cancel, ExchangeExecutionSet
 	Query.SetParameter("ExchangeExecutionSettings", ExchangeExecutionSettings);
 	Query.SetParameter("LineNumber", LineNumber);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -692,7 +698,7 @@ Procedure ExecuteDataExchangeWithScheduledJob(ExchangeScenarioCode) Export
 	Query.SetParameter("Code", ExchangeScenarioCode);
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		
@@ -2208,7 +2214,7 @@ Procedure ExecuteStandardNodeChangeImport(
 				Else
 					
 					WriteLogEvent(EventLogMessageKey, EventLogLevel.Warning,
-						MetadataObject, String(Data), NStr("en = 'Object change recording conflict. Object from this infobase was not changed."));
+						MetadataObject, String(Data), NStr("en = 'Object change recording conflict. Object from this infobase was not changed.'"));
 					
 					Continue;
 				EndIf;
@@ -2516,7 +2522,7 @@ Function GetFileFromStorageInService(Val FileID, Val InfoBaseNode, Val PartSize 
 			Try
 				DeleteFiles(AssemblyDirectory);
 			Except
-				WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+				WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 			EndTry;
 			Raise(NStr("en = 'The archive file does not contain data.'"));
@@ -2535,7 +2541,7 @@ Function GetFileFromStorageInService(Val FileID, Val InfoBaseNode, Val PartSize 
 		Try
 			DeleteFiles(AssemblyDirectory);
 		Except
-			WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+			WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		EndTry;
 		
@@ -2602,7 +2608,7 @@ Function PutFileToStorageInService(Val FileName, Val InfoBaseNode, Val PartSize 
 		Try
 			DeleteFiles(FileDirectory);
 		Except
-			WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+			WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		EndTry;
 		
@@ -2643,7 +2649,7 @@ Function GetFileFromStorage(Val FileID) Export
 		Raise StringFunctionsClientServer.SubstituteParametersInString(Details, String(FileID));
 	EndIf;
 	
-	Selection = QueryResult.Choose();
+	Selection = QueryResult.Select();
 	Selection.Next();
 	FileName = Selection.FileName;
 	
@@ -2699,7 +2705,7 @@ Function IsExchangeInSameLAN(Val InfoBaseNode) Export
 		Try
 			DeleteFiles(TempFileFullName);
 		Except
-			WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+			WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		EndTry;
 		Raise DetailErrorDescription;
@@ -2708,7 +2714,7 @@ Function IsExchangeInSameLAN(Val InfoBaseNode) Export
 	Try
 		DeleteFiles(TempFileFullName);
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+		WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	
@@ -2960,7 +2966,7 @@ Function DocumentSelectionByExportStartDateAndCompany(FullObjectName, ExportStar
 	Query.SetParameter("Companies", Companies);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function ObjectSelectionByExportStartDate(FullObjectName, ExportStartDate)
@@ -2979,7 +2985,7 @@ Function ObjectSelectionByExportStartDate(FullObjectName, ExportStartDate)
 	Query.SetParameter("ExportStartDate", ExportStartDate);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function RecordSetRecorderSelectionByExportStartDateAndCompany(FullObjectName, ExportStartDate, Companies)
@@ -3000,7 +3006,7 @@ Function RecordSetRecorderSelectionByExportStartDateAndCompany(FullObjectName, E
 	Query.SetParameter("Companies", Companies);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function RecordSetRecorderSelectionByExportStartDate(FullObjectName, ExportStartDate)
@@ -3019,7 +3025,7 @@ Function RecordSetRecorderSelectionByExportStartDate(FullObjectName, ExportStart
 	Query.SetParameter("ExportStartDate", ExportStartDate);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function MainInformationRegisterFilterValueSelectionByExportStartDateAndCompanies(MainFilter,
@@ -3044,7 +3050,7 @@ Function MainInformationRegisterFilterValueSelectionByExportStartDateAndCompanie
 	Query.SetParameter("Companies", Companies);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function MainInformationRegisterFilterValueSelectionByExportStartDate(MainFilter, FullObjectName, ExportStartDate)
@@ -3064,7 +3070,7 @@ Function MainInformationRegisterFilterValueSelectionByExportStartDate(MainFilter
 	Query.SetParameter("ExportStartDate", ExportStartDate);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function MainInformationRegisterFilterByCompaniesValueSelection(MainFilter, FullObjectName, Companies)
@@ -3084,7 +3090,7 @@ Function MainInformationRegisterFilterByCompaniesValueSelection(MainFilter, Full
 	Query.SetParameter("Companies", Companies);
 	Query.Text = QueryText;
 	
-	Return Query.Execute().Choose();
+	Return Query.Execute().Select();
 EndFunction
 
 Function MainInformationRegisterFilter(MetadataObject)
@@ -3308,7 +3314,7 @@ Procedure DeleteObsoleteRecordsFromDataExchangeRuleRegister()
 	Query = New Query;
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -3441,7 +3447,7 @@ Procedure CheckUseDataExchange() Export
 		
 		Message = NStr("en = 'Exchange execution has been disabled by your administrator.'");
 		
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, Message);
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, Message);
 		
 		Raise Message;
 	EndIf;
@@ -3789,7 +3795,7 @@ Function RecordCountInInfoBaseTable(Val TableName) Export
 	Query = New Query;
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	Return Selection["Count"];
@@ -3820,7 +3826,7 @@ Function TempInfoBaseTableRecordCount(Val TableName, TempTablesManager) Export
 	Query.Text = QueryText;
 	Query.TempTablesManager = TempTablesManager;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	Return Selection["Count"];
@@ -4427,7 +4433,7 @@ Function DataForThisInfoBaseNodeTabularSections(Val ExchangePlanName) Export
 		Query = New Query;
 		Query.Text = QueryText;
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		While Selection.Next() Do
 			
@@ -4804,7 +4810,7 @@ Procedure CheckLoadedFromFileExchangeRulesAvailability(LoadedFromFileExchangeRul
 		
 		ExchangePlansArray = New Array;
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		
 		While Selection.Next() Do
 			
@@ -4866,7 +4872,7 @@ Procedure CheckExchangeMessageTransportDataProcessorConnection(Cancel, SettingsS
 		
 		CommonUseClientServer.MessageToUser(ErrorMessage,,,, Cancel);
 		
-		WriteLogEvent(NStr("en = 'Exchange message transport'"), EventLogLevel.Error,,, DataProcessorObject.ErrorMessageStringEL);
+		WriteLogEvent(NStr("en = 'Exchange message transport'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DataProcessorObject.ErrorMessageStringEL);
 		
 	EndIf;
 	
@@ -4892,27 +4898,27 @@ EndProcedure
 
 Function EstablishExternalConnection(SettingsStructure, ErrorMessageString = "", ErrorAttachingAddIn = False) Export
 	
-	// Attempting to establish the external connection
-	ExternalConnection = CommonUse.EstablishExternalConnection(FillExternalConnectionParameters(SettingsStructure), ErrorMessageString, ErrorAttachingAddIn);
-	
-	If ExternalConnection = Undefined Then
-		Return Undefined;
-	EndIf;
-	
-	Try
-		
-		If Not ExternalConnection.DataExchangeExternalConnection.IsInRoleFullAccess() Then
-			
-			ErrorMessageString = NStr("en = 'The ""Full access"" role must be selected for the external connection user.'");
-			Return Undefined;
-		EndIf;
-	Except
-		
-		ErrorMessageString = NStr("en = 'The second infobase does not provide an exchange with the current infobase.'");
-		Return Undefined;
-	EndTry;
-	
-	Return ExternalConnection;
+	//// Attempting to establish the external connection
+	//ExternalConnection = CommonUse.EstablishExternalConnection(FillExternalConnectionParameters(SettingsStructure), ErrorMessageString, ErrorAttachingAddIn);
+	//
+	//If ExternalConnection = Undefined Then
+	//	Return Undefined;
+	//EndIf;
+	//
+	//Try
+	//	
+	//	If Not ExternalConnection.DataExchangeExternalConnection.IsInRoleFullAccess() Then
+	//		
+	//		ErrorMessageString = NStr("en = 'The ""Full access"" role must be selected for the external connection user.'");
+	//		Return Undefined;
+	//	EndIf;
+	//Except
+	//	
+	//	ErrorMessageString = NStr("en = 'The second infobase does not provide an exchange with the current infobase.'");
+	//	Return Undefined;
+	//EndTry;
+	//
+	//Return ExternalConnection;
 	
 EndFunction
 
@@ -4930,7 +4936,7 @@ Function GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString 
 		
 		WSProxy = New WSProxy(
 			Definition,
-			SettingsStructure.NamespaceWebServiceURL,
+			SettingsStructure.ServiceNamespaceWSURL,
 			SettingsStructure.WSServiceName,
 			SettingsStructure.WSServiceName + "Soap");
 			
@@ -4947,7 +4953,7 @@ EndFunction
 
 Function GetWSProxy(SettingsStructure, ErrorMessageString = "") Export
 	
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SSL/Exchange");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/Exchange");
 	SettingsStructure.Insert("WSServiceName",          "Exchange");
 	
 	Return GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
@@ -4955,7 +4961,7 @@ EndFunction
 
 Function GetWSProxy_2_0_1_6(SettingsStructure, ErrorMessageString = "") Export
 	
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SSL/Exchange_2_0_1_6");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/Exchange_2_0_1_6");
 	SettingsStructure.Insert("WSServiceName",          "Exchange_2_0_1_6");
 	
 	Return GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
@@ -5440,7 +5446,7 @@ Function GetObjectChangeRecordRules() Export
 	Query = New Query;
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -5478,7 +5484,7 @@ Function GetSelectiveObjectChangeRecordRules() Export
 	Query = New Query;
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -5808,7 +5814,7 @@ Procedure InitExchangeSettingsStructure(ExchangeSettingsStructure, ExchangeExecu
 	Query.SetParameter("ExchangeExecutionSettings", ExchangeExecutionSettings);
 	Query.SetParameter("LineNumber",               LineNumber);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	// Filling structure property value
@@ -6508,7 +6514,7 @@ Function GetPropertyValuesForRef(Ref, ObjectProperties, Val ObjectPropertiesStri
 	
 	Try
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 	Except
 		
@@ -6697,7 +6703,7 @@ EndFunction
 
 Function EventLogMessageTextEstablishingConnectionToWebService() Export
 	
-	Return NStr("en = 'Data exchange. Establishing connection to web service.'");
+	Return NStr("en = 'Data exchange. Establishing connection to web service.'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction
 
@@ -6709,6 +6715,46 @@ EndFunction
 
 Function DataExchangeCreationEventLogMessageText() Export
 	
-	Return NStr("en = 'Data exchange. Creating data exchange.'");
+	Return NStr("en = 'Data exchange. Creating data exchange.'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction
+
+Function SubordinateDIBNodeSetup() Export
+	
+	SetPrivilegedMode(True);
+	
+	Return IsSubordinateDIBNode()
+	      And Constants.SubordinateDIBNodeSetupCompleted.Get() = False;
+	
+EndFunction
+
+Function LoadDataExchangeMessage() Export
+	
+	SetPrivilegedMode(True);
+	
+	Return Constants.LoadDataExchangeMessage.Get() = True;
+	
+EndFunction
+
+Procedure SessionParameterSettingHandlersOnAdd(Handlers) Export
+	
+	Handlers.Insert("DataExchangeEnabled", "DataExchangeServerCall.SessionParametersSetting");
+	Handlers.Insert("UsedExchangePlans", "DataExchangeServerCall.SessionParametersSetting");
+	Handlers.Insert("SelectiveObjectChangeRecordRules", "DataExchangeServerCall.SessionParametersSetting");
+	Handlers.Insert("ObjectChangeRecordRules", "DataExchangeServerCall.SessionParametersSetting");
+	Handlers.Insert("ORMCachedValueRefreshDate", "DataExchangeServerCall.SessionParametersSetting");
+	
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ServerEvents.Add("StandardSubsystems.DataExchange\OnDataExportInternal");
+	ServerEvents.Add("StandardSubsystems.DataExchange\OnDataImportInternal");
+	
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

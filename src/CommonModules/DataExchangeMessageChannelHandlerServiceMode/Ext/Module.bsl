@@ -29,7 +29,7 @@ EndProcedure
 //  Sender         - ExchangePlanRef.MessageExchange (mandatory) - end point that is
 //                   a message sender.
 //
-Procedure ProcessMessage(MessageChannel, Body, Sender) Export
+Procedure HandleMessage(MessageChannel, Body, Sender) Export
 	
 	SetDataArea(Body.DataArea);
 	
@@ -77,7 +77,7 @@ Procedure CreateDataExchangeInInfoBase(Sender, Settings, NodeFilterStructure, No
 			// Sending a message about the operation execution error to the managing application
 			SendErrorCreatingExchangeMessage(Number(ThisNodeCode), Number(NewNodeCode), ErrorMessageString, Sender);
 			
-			WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, ErrorMessageString);
+			WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, ErrorMessageString);
 			Return;
 		EndTry;
 	EndIf;
@@ -121,7 +121,7 @@ Procedure CreateDataExchangeInInfoBase(Sender, Settings, NodeFilterStructure, No
 			// Sending a message about the operation execution error to the managing application
 		SendErrorCreatingExchangeMessage(Number(ThisNodeCode), Number(NewNodeCode), ErrorMessageString, Sender);
 		
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
@@ -173,7 +173,7 @@ Procedure DeleteDataExchangeFromInfoBase(Sender, ExchangePlanName, NodeCode)
 	
 	If Not Result.IsEmpty() Then
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		
 		While Selection.Next() Do
 			
@@ -199,7 +199,7 @@ Procedure DeleteDataExchangeFromInfoBase(Sender, ExchangePlanName, NodeCode)
 				// Sending a message about the operation execution error to the managing application
 				SendErrorDeletingExchangeMessage(ThisNodeCode, Number(NodeCode), ErrorMessageString, Sender);
 				
-				WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, ErrorMessageString);
+				WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, ErrorMessageString);
 				Return;
 			EndTry;
 			
@@ -225,7 +225,7 @@ Procedure DeleteDataExchangeFromInfoBase(Sender, ExchangePlanName, NodeCode)
 		// Sending a message about the operation execution error to the managing application
 		SendErrorDeletingExchangeMessage(ThisNodeCode, Number(NodeCode), ErrorMessageString, Sender);
 		
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndTry;
 	
@@ -275,7 +275,7 @@ Procedure SendMessageActionSuccessful(Code1, Code2, EndPoint)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Sending messages'"), 
+		WriteLogEvent(NStr("en = 'Sending messages'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -294,7 +294,7 @@ Procedure SendErrorCreatingExchangeMessage(Code1, Code2, ErrorString, EndPoint)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Sending messages'"), 
+		WriteLogEvent(NStr("en = 'Sending messages'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -313,7 +313,7 @@ Procedure SendErrorDeletingExchangeMessage(Code1, Code2, ErrorString, EndPoint)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Sending messages'"), 
+		WriteLogEvent(NStr("en = 'Sending messages'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;

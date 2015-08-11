@@ -59,7 +59,7 @@ Function ExecuteInBackground(Val FormID, Val ExportProcedureName,
 		Try
 			Job.WaitForCompletion(Timeout);
 		Except
-			// There is no need in special processing. Perhaps the exception was raised because a time-out occurred.
+			// There is no need in special processing. Perhaps the exception was raised because of a time-out occurred.
 		EndTry;
 		
 		CommonUse.SetSessionSeparation(True);
@@ -69,7 +69,7 @@ Function ExecuteInBackground(Val FormID, Val ExportProcedureName,
 		Try
 			Job.WaitForCompletion(Timeout);
 		Except		
-			// There is no need in a special processing. Perhaps the exception was raised because a time-out occurred.
+			// There is no need in a special processing. Perhaps the exception was raised because of a time-out occurred.
 		EndTry;
 	EndIf;
 	
@@ -105,7 +105,7 @@ Procedure CancelJobExecution(Val JobID) Export
 		Job.Cancel();
 	Except
 		// Perhaps job finished just at this moment and there is no error.
-		WriteLogEvent(NStr("en = 'Long actions. Background job cancellation'"),
+		WriteLogEvent(NStr("en = 'Long actions. Background job cancellation'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,,
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;
@@ -133,23 +133,23 @@ Function JobCompleted(Val JobID) Export
 	ActionNotExecuted = True;
 	ShowFullErrorText = False;
 	If Job = Undefined Then
-		WriteLogEvent(NStr("en = 'Long actions. Background job is not found'"),
+		WriteLogEvent(NStr("en = 'Long actions. Background job is not found'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, String(JobID));
 	Else	
 		If Job.State = BackgroundJobState.Failed Then
 			JobError = Job.ErrorInfo;
 			If JobError <> Undefined Then
-				WriteLogEvent(NStr("en = 'Long actions. Background job failed'"),
+				WriteLogEvent(NStr("en = 'Long actions. Background job failed'", Metadata.DefaultLanguage.LanguageCode),
 					EventLogLevel.Error,,,
 					DetailErrorDescription(Job.ErrorInfo));
 				ShowFullErrorText = True;	
 			Else
-				WriteLogEvent(NStr("en = 'Long actions. Background job failed'"),
+				WriteLogEvent(NStr("en = 'Long actions. Background job failed'", Metadata.DefaultLanguage.LanguageCode),
 					EventLogLevel.Error,,,
 					NStr("en = 'The job finished with an unknown error.'"));
 			EndIf;
 		ElsIf Job.State = BackgroundJobState.Canceled Then
-			WriteLogEvent(NStr("en = 'Long actions. Administrator canceled background job'"),
+			WriteLogEvent(NStr("en = 'Long actions. Administrator canceled background job'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,,
 				NStr("en = 'The job finished with an unknown error.'"));
 		Else
@@ -162,7 +162,7 @@ Function JobCompleted(Val JobID) Export
 		Raise(ErrorText);
 	ElsIf ActionNotExecuted Then
 		Raise(NStr("en = 'This job cannot be executed. 
-|See details in the Event log.'"));
+						|See details in the Event log.'"));
 	EndIf;
 	
 EndFunction

@@ -71,40 +71,76 @@ Procedure ImportRules(Command)
 
 		CommonUseClient.SuggestFileSystemExtensionInstallationNow();
 		
-		If AttachFileSystemExtension()Then
-			
-			// Suggesting the user to select a file for loading rules
-			Mode = FileDialogMode.Open;
-			FileDialog = New FileDialog(Mode);
-			FileExtension = Lower(Right(Record.RuleFileName, 4));
-			FileNameWithoutExtension = StrReplace(Record.RuleFileName, FileExtension, "");
-			FileDialog.FullFileName = FileNameWithoutExtension;
-			Filter = NStr("en = 'Rule files'") + " (*.xml)|*.xml|"
-			+ NStr("en = 'ZIP archives'") + " (*.zip)|*.zip";
-			FileDialog.Filter = Filter;
-			If Lower(Right(Record.RuleFileName, 4)) = ".zip" Then
-				FileDialog.FilterIndex = 1;
-			Else
-				FileDialog.FilterIndex = 0;
-			EndIf;
-			FileDialog.Multiselect = False;
-			FileDialog.Title = NStr("en = 'Select a file with rules to be imported.'");
-			
-			// Putting the file into the temporary storage to load it on the server in future if the file is selected. 
-			If FileDialog.Choose() Then
-				PutFile(TempStorageAddress, FileDialog.FullFileName, , False, UUID);
-				RuleFileName = StrReplace(FileDialog.FullFileName, FileDialog.Directory, "");
-				FileExtension = Lower(Right(FileDialog.FullFileName, 4));
-				IsArchive = (FileExtension = ".zip");
-			Else
-				Return;
-			EndIf; 
-			
+		BeginAttachingFileSystemExtension(New NotifyDescription("ImportRulesEnd2", ThisObject, New Structure("Cancel, IsArchive, RuleFileName, TempStorageAddress", Cancel, IsArchive, RuleFileName, TempStorageAddress)));
+
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure ImportRulesEnd2(Attached, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	IsArchive = AdditionalParameters.IsArchive;
+	RuleFileName = AdditionalParameters.RuleFileName;
+	TempStorageAddress = AdditionalParameters.TempStorageAddress;
+	
+	
+	If Attached Then
+		
+		// Suggesting the user to select a file for loading rules
+		Mode = FileDialogMode.Open;
+		FileDialog = New FileDialog(Mode);
+		FileExtension = Lower(Right(Record.RuleFileName, 4));
+		FileNameWithoutExtension = StrReplace(Record.RuleFileName, FileExtension, "");
+		FileDialog.FullFileName = FileNameWithoutExtension;
+		Filter = NStr("en = 'Rule files'") + " (*.xml)|*.xml|"
+		+ NStr("en = 'ZIP archives'") + " (*.zip)|*.zip";
+		FileDialog.Filter = Filter;
+		If Lower(Right(Record.RuleFileName, 4)) = ".zip" Then
+			FileDialog.FilterIndex = 1;
+		Else
+			FileDialog.FilterIndex = 0;
+		EndIf;
+		FileDialog.Multiselect = False;
+		FileDialog.Title = NStr("en = 'Select a file with rules to be imported.'");
+		
+		// Putting the file into the temporary storage to load it on the server in future if the file is selected. 
+		If FileDialog.Choose() Then
+			BeginPutFile(New NotifyDescription("ImportRulesEnd1", ThisObject, New Structure("Cancel, FileDialog, TempStorageAddress", Cancel, FileDialog, TempStorageAddress)), TempStorageAddress, FileDialog.FullFileName, False, UUID);
+			Return;
 		Else
 			Return;
-		EndIf;
+		EndIf; 
 		
+	Else
+		Return;
 	EndIf;
+	
+	ImportRulesPart(Cancel, IsArchive, RuleFileName, TempStorageAddress);
+
+EndProcedure
+
+&AtClient
+Procedure ImportRulesEnd1(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	FileDialog = AdditionalParameters.FileDialog;
+	TempStorageAddress = AdditionalParameters.TempStorageAddress;
+	
+	
+	RuleFileName = StrReplace(FileDialog.FullFileName, FileDialog.Directory, "");
+	FileExtension = Lower(Right(FileDialog.FullFileName, 4));
+	IsArchive = (FileExtension = ".zip");
+	
+	ImportRulesPart(Cancel, IsArchive, RuleFileName, TempStorageAddress);
+
+EndProcedure
+
+&AtClient
+Procedure ImportRulesPart(Cancel, Val IsArchive, Val RuleFileName, Val TempStorageAddress)
+	
+	Var NString, Response;
 	
 	Status(NStr("en = 'Importing rules to the infobase...'"));
 	
@@ -120,21 +156,34 @@ Procedure ImportRules(Command)
 		
 		
 		
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			Filter = New Structure;
-			Filter.Insert("EventLogMessageText", DataExchangeRuleLoadingEventLogMessageText);
-			OpenFormModal("DataProcessor.EventLogMonitor.Form", Filter, ThisForm);
-			
-		EndIf;
+		Response = Undefined;
+		
+		
+		
+		
+		
+		ShowQueryBox(New NotifyDescription("ImportRulesEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		
 	Else
 		
-		DoMessageBox(NStr("en = 'Rules are successfully loaded into the infobase.'"));
+		ShowMessageBox(,NStr("en = 'Rules are successfully loaded into the infobase.'"));
 		
 	EndIf;
+
+EndProcedure
+
+&AtClient
+Procedure ImportRulesEnd(QuestionResult, AdditionalParameters) Export
 	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		Filter = New Structure;
+		Filter.Insert("EventLogMessageText", DataExchangeRuleLoadingEventLogMessageText);
+		OpenForm("DataProcessor.EventLogMonitor.Form", Filter, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -142,7 +191,14 @@ Procedure ExportRules(Command)
 	
 	CommonUseClient.SuggestFileSystemExtensionInstallationNow();
 	
-	If AttachFileSystemExtension() Then
+	BeginAttachingFileSystemExtension(New NotifyDescription("ExportRulesEnd", ThisObject));
+	
+EndProcedure
+
+&AtClient
+Procedure ExportRulesEnd(Attached, AdditionalParameters) Export
+	
+	If Attached Then
 		
 		// Suggesting the user to select a file for unloading rules
 		Mode = FileDialogMode.Save;
@@ -186,7 +242,7 @@ Procedure ExportRules(Command)
 	Else
 		Return;
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -324,7 +380,7 @@ Function GetRuleArchiveTempStorageAddressAtServer(FileName)
 		
 	Else
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		
 		// Getting, saving, and archiving the rule file from the temporary directory

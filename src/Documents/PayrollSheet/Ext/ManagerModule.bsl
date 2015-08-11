@@ -32,7 +32,7 @@ Function PrintForm(ObjectsArray, PrintObjects)
 		|WHERE
 		|	PayrollSheet.Ref = &CurrentDocument";
 		
-		Header = Query.Execute().Choose();
+		Header = Query.Execute().Select();
 		Header.Next();
 		
 		Query = New Query;
@@ -59,7 +59,7 @@ Function PrintForm(ObjectsArray, PrintObjects)
 		|ORDER BY
 		|	EmployeePresentation";
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 
 		SpreadsheetDocument.PrintParametersKey = "PRINT_PARAMETERS_PayrollSheet_Template";
 		

@@ -22,7 +22,7 @@ Function GetExchangeServiceWSProxy() Export
 	SettingsStructure.Insert("WSUserName",             UserName);
 	SettingsStructure.Insert("WSPassword",             UserPassword);
 	SettingsStructure.Insert("WSServiceName",          "ManagementApplicationExchange");
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SaaS/1.0/WS/ManagementApplicationExchange");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SaaS/1.0/WS/ManagementApplicationExchange");
 	
 	Result = DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure);
 	
@@ -49,7 +49,7 @@ Function GetExchangeServiceWSProxy_1_0_6_5() Export
 	SettingsStructure.Insert("WSUserName",             UserName);
 	SettingsStructure.Insert("WSPassword",             UserPassword);
 	SettingsStructure.Insert("WSServiceName",           "ManagementApplicationExchange_1_0_6_5");
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SaaS/1.0/WS/ManagementApplicationExchange_1_0_6_5");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SaaS/1.0/WS/ManagementApplicationExchange_1_0_6_5");
 	
 	Result = DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure);
 	
@@ -74,7 +74,7 @@ Function GetCorrespondentWSProxy(InfoBaseNode, ErrorMessageString = "") Export
 	
 	SettingsStructure = InformationRegisters.ExchangeTransportSettings.GetWSTransportSettings(InfoBaseNode);
 	SettingsStructure.Insert("WSServiceName", "RemoteExchangeAdministration");
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://www.1c-dc.com/SaaS/1.0/WS/ExchangeRemoteAdministration");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://www.1c-dc.com/SaaS/1.0/WS/ExchangeRemoteAdministration");
 	
 	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
 	
@@ -94,7 +94,7 @@ Function GetCorrespondentWSProxy_2_0_1_6(InfoBaseNode, ErrorMessageString = "") 
 	
 	SettingsStructure = InformationRegisters.ExchangeTransportSettings.GetWSTransportSettings(InfoBaseNode);
 	SettingsStructure.Insert("WSServiceName", "RemoteExchangeAdministration_2_0_1_6");
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SaaS/1.0/WS/ExchangeRemoteAdministration_2_0_1_6");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SaaS/1.0/WS/ExchangeRemoteAdministration_2_0_1_6");
 	
 	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
 EndFunction

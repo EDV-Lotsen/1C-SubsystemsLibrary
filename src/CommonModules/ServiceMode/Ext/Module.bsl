@@ -158,7 +158,7 @@ Procedure LockCurrentDataArea(Val CheckNoOtherSessions = False, Val SeparatedDat
 			EndIf;
 			
 			// There are other users
-			Raise(NStr("en = 'Error accessing the infobase in separated mode'"));
+			Raise(NStr("en = 'Error accessing infobase in separated mode'"));
 		EndDo;
 	EndIf;
 	
@@ -182,7 +182,7 @@ Function SharedInformationRegistersWithSeparatedData() Export
 	
 EndFunction
 
-// Prepares the data area to use. Starts
+// Prepares the data area to use. Launches
 // Infobase update procedures; if nececcary, fills Infobase with demo
 // data; sets a new state in the DataAreas register.
 // 
@@ -226,7 +226,7 @@ Procedure PrepareDataAreaToUse(Val DataArea, Val ExportFileID = Undefined) Expor
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Data area preparation'"), 
+		WriteLogEvent(NStr("en = 'Data area preparation'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -242,7 +242,7 @@ Procedure PrepareDataAreaToUse(Val DataArea, Val ExportFileID = Undefined) Expor
 		Try
 			DeleteFiles(ExportFileName);
 		Except
-			WriteLogEvent(NStr("en = 'Data area preparation'"), 
+			WriteLogEvent(NStr("en = 'Data area preparation'", Metadata.DefaultLanguage.LanguageCode), 
 				EventLogLevel.Warning, , , DetailErrorDescription(ErrorInfo()));
 		EndTry;
 	Else
@@ -275,7 +275,7 @@ Procedure PrepareDataAreaToUse(Val DataArea, Val ExportFileID = Undefined) Expor
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Data area preparation'"), 
+		WriteLogEvent(NStr("en = 'Data area preparation'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -309,7 +309,7 @@ Procedure CopyAreaData(Val SourceArea, Val DestinationArea) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Data area copying'"), 
+		WriteLogEvent(NStr("en = 'Data area copying'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		If ExportFileName <> Undefined Then
 			Try
@@ -329,7 +329,7 @@ Procedure CopyAreaData(Val SourceArea, Val DestinationArea) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Data area copying'"), 
+		WriteLogEvent(NStr("en = 'Data area copying'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Try
 			DeleteFiles(ExportFileName);
@@ -439,7 +439,7 @@ Procedure ClearDataArea(Val DataArea) Export
 				EndIf;
 				
 				QueryResult = Query.Execute();
-				Selection = QueryResult.Choose();
+				Selection = QueryResult.Select();
 				While Selection.Next() Do
 					Delete = New ObjectDeletion(Selection.Ref);
 					Delete.DataExchange.Load = True;
@@ -478,7 +478,7 @@ Procedure ClearDataArea(Val DataArea) Export
 				|FROM
 				|	" + RegisterMD.FullName() + " AS _XMLExport_Table";
 				QueryResult = Query.Execute();
-				Selection = QueryResult.Choose();
+				Selection = QueryResult.Select();
 				While Selection.Next() Do
 					RecordSet = TypeManager.CreateRecordSet();
 					RecordSet.Filter.Recorder.Set(Selection.Recorder);
@@ -525,7 +525,7 @@ Procedure ClearDataArea(Val DataArea) Export
 			|	_XMLExport_Table.Ref <> &ThisNode";
 			Query.SetParameter("ThisNode", TypeManager.ThisNode());
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				Delete = New ObjectDeletion(Selection.Ref);
 				Delete.DataExchange.Load = True;
@@ -567,7 +567,7 @@ Procedure ClearDataArea(Val DataArea) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Data area clearing'"), 
+		WriteLogEvent(NStr("en = 'Data area clearing'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -600,7 +600,7 @@ Procedure DataAreaMaintenance() Export
 	|ORDER BY
 	|	DataArea";
 	Result = Query.Execute();
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	
 	Executing = 0;
 	
@@ -682,7 +682,7 @@ Procedure DataAreaMaintenance() Export
 				CommitTransaction();
 			Except
 				RollbackTransaction();
-				WriteLogEvent(NStr("en = 'Data area maintenance'"), 
+				WriteLogEvent(NStr("en = 'Data area maintenance'", Metadata.DefaultLanguage.LanguageCode), 
 					EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 				Raise;
 			EndTry;
@@ -804,7 +804,7 @@ Procedure AddClientParametersServiceMode(Val Parameters) Export
 		Result = Query.Execute();
 		SetPrivilegedMode(False);
 		If Not Result.IsEmpty() Then
-			Selection = Result.Choose();
+			Selection = Result.Select();
 			Selection.Next();
 			If Not IsBlankString(Selection.Presentation) Then
 				Parameters.Insert("DataAreaPresentation", Selection.Presentation);
@@ -841,7 +841,7 @@ EndFunction
 
 // Returns the Infobase parameter description table
 //
-// Returns: 
+// Return: 
 // Value table.
 // Table that describes Infobase parameters.
 // Columns:
@@ -866,7 +866,7 @@ Function GetInfoBaseParameterTable() Export
 EndFunction
 
 // Gets file details by its ID in the Files register.
-// If the file is stored on a hard disk and PathNotData = True, 
+// If the file is stored on a hard drive and PathNotData = True, 
 // then in the returned structure: Data = Undefined, FullName = full name of the file,
 // else Data is a binary data of the file, FullName = Undefined.
 // The Name key value always contains a name, that it is in the storage.
@@ -898,9 +898,9 @@ Function GetFileFromStorage(Val FileID, Val ConnectionParameters, Val PathNotDat
 		Proxy = GetServiceConnectionProxy(ConnectionParameters, "FilesTransfer", "1.0.2.1");
 	EndIf;
 	
-	ExchangeOverFS = CanPassViaFSFromServer(Proxy, HasVersion2Support);
+	ExchangeViaFS = CanPassViaFSFromServer(Proxy, HasVersion2Support);
 	
-	If ExchangeOverFS Then
+	If ExchangeViaFS Then
 			
 		Try
 			FileName = Proxy.WriteFileToFS(FileID);
@@ -923,24 +923,24 @@ Function GetFileFromStorage(Val FileID, Val ConnectionParameters, Val PathNotDat
 				
 				Return FileDetails;
 			Else
-				ExchangeOverFS = False;
+				ExchangeViaFS = False;
 			EndIf;
 		Except
-			WriteLogEvent(NStr("en = 'Getting file from storage'"),
+			WriteLogEvent(NStr("en = 'Getting file from storage'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
-			ExchangeOverFS = False;
+			ExchangeViaFS = False;
 		EndTry;
 			
-	EndIf; // ExchangeOverFS
+	EndIf; // ExchangeViaFS
 	
-	PartCount = Undefined;
+	PartsCount = Undefined;
 	FileNameInCatalog = Undefined;
 	FileTransferBlockSize = GetFileTransferBlockSize();
 	If HasVersion2Support Then
-		TransferID = Proxy.PrepareGetFile(FileID, FileTransferBlockSize * 1024, PartCount);
+		TransferID = Proxy.PrepareGetFile(FileID, FileTransferBlockSize * 1024, PartsCount);
 	Else
 		TransferID = Undefined;
-		Proxy.PrepareGetFile(FileID, FileTransferBlockSize * 1024, TransferID, PartCount);
+		Proxy.PrepareGetFile(FileID, FileTransferBlockSize * 1024, TransferID, PartsCount);
 	EndIf;
 	
 	FileNames = New Array;
@@ -948,14 +948,14 @@ Function GetFileFromStorage(Val FileID, Val ConnectionParameters, Val PathNotDat
 	AssemblyDirectory = CreateAssemblyDirectory();
 	
 	If HasVersion2Support Then
-		For PartNumber = 1 to PartCount Do
-			PartData = Proxy.GetFilePart(TransferID, PartNumber, PartCount);
+		For PartNumber = 1 to PartsCount Do
+			PartData = Proxy.GetFilePart(TransferID, PartNumber, PartsCount);
 			FileNamePart = AssemblyDirectory + "part" + Format(PartNumber, "ND=4; NLZ=; NG=");
 			PartData.Write(FileNamePart);
 			FileNames.Add(FileNamePart);
 		EndDo;
 	Else // Version 1.
-		For PartNumber = 1 to PartCount Do
+		For PartNumber = 1 to PartsCount Do
 			PartData = Undefined;
 			Proxy.GetFilePart(TransferID, PartNumber, PartData);
 			FileNamePart = AssemblyDirectory + "part" + Format(PartNumber, "ND=4; NLZ=; NG=");
@@ -1106,12 +1106,12 @@ EndFunction
 //							- UserName - String - Name of a service user.
 //							- Password - String - Password of aservice user.
 // BaseServiceName - String - name of web service basic version. Examples: "FilesTransfer", "ManageAgent". 
-// InterfaceVersioning - String - service version number, access to which is required.
+// InterfaceVersion - String - service version number, access to which is required.
 //
 // Returns:
 // WSProxy.
 //
-Function GetServiceConnectionProxy(Val ConnectionParameters, Val BaseServiceName, Val InterfaceVersioning) Export
+Function GetServiceConnectionProxy(Val ConnectionParameters, Val BaseServiceName, Val InterfaceVersion) Export
 	
 	If Not ConnectionParameters.Property("URL") 
 		or Not ValueIsFilled(ConnectionParameters.URL) Then
@@ -1129,10 +1129,10 @@ Function GetServiceConnectionProxy(Val ConnectionParameters, Val BaseServiceName
 		UserPassword = Undefined;
 	EndIf;
 	
-	If InterfaceVersioning = Undefined or InterfaceVersioning = "1.0.1.1" Then // Version 1.
+	If InterfaceVersion = Undefined or InterfaceVersion = "1.0.1.1" Then // Version 1.
 		ServiceName = BaseServiceName;
 	Else // Version 2 and later.
-		ServiceName = BaseServiceName + "_" + StrReplace(InterfaceVersioning, ".", "_");
+		ServiceName = BaseServiceName + "_" + StrReplace(InterfaceVersion, ".", "_");
 	EndIf;
 	
 	// Getting proxy of working with files.
@@ -1256,7 +1256,7 @@ Function TerminateSessionsByListViaServiceAgent(Val SessionsToDelete, Val InfoBa
 	ClusterAdministrationParameters = XDTOFactory.Create(AdministrationParameterType);
 	ClusterAdministrationParameters.AgentConnectionString = 
 		"tcp://" + ConnectionParameters.Srvr + ":" 
-		+ Format(InfoBaseAdministrationParameters.ServerAgentPort, "NG=");
+		+ Format(InfoBaseAdministrationParameters.ServerAgentPort, "NG=0");
 	ClusterAdministrationParameters.WorkServerUserName = InfoBaseAdministrationParameters.ClusterAdministratorName;
 	ClusterAdministrationParameters.WorkServerPassword = StringToBase64(InfoBaseAdministrationParameters.ClusterAdministratorPassword);
 	ClusterAdministrationParameters.ClusterPort = InfoBaseAdministrationParameters.ServerClusterPort;
@@ -1281,9 +1281,9 @@ Function TerminateSessionsByListViaServiceAgent(Val SessionsToDelete, Val InfoBa
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// Infobase parameter operations.
+// Infobase parameter operations
 
-// Returns an empty infobase parameter table.
+// Returns empty Infobase parameter table
 // 
 Function GetEmptyInfoBaseParameterTable()
 	
@@ -1298,7 +1298,7 @@ Function GetEmptyInfoBaseParameterTable()
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// File operations.
+// File operations
 
 // Returns the full name of a file, received from the service manager file storage by the file ID.
 //
@@ -1372,13 +1372,13 @@ Function CreateAssemblyDirectory()
 	
 EndFunction
 
-// Reads a test file from a hard disk, comparing content and a name: they must be equal.
+// Reads a test file from a hard drive, comparing content and a name: they must be equal.
 // The calling side must delete this file.
 //
 // Parameters:
 // FileName - String - file name without a path.
 //
-// Returns:
+// Return:
 // Boolean - True, if the file has been read successfully and its content is equal its name.
 //
 Function ReadTestFile(Val FileName)
@@ -1413,6 +1413,135 @@ Function CreateFileDetails()
 	Return FileDetails;
 	
 EndFunction
+
+///////////////////////////////////////////////////////////////////////////////
+// Verifying the safe mode of data separation
+
+// Verifying the safe mode of data separation.
+// To be called only from the session module.
+//
+Procedure EnablingDataSeparationSafeModeOnCheck()  Export
+	
+	If SafeMode() = False
+		And CommonUseCached.DataSeparationEnabled()
+		And CommonUseCached.CanUseSeparatedData()
+		And Not  CommonUseCached.SessionWithoutSeparator() Then
+		
+		SeparationSwitched = Undefined;
+		Try
+			SessionParameters.UseDataArea = False; // Special case, the standard function cannot be used
+			SeparationSwitched = True;
+		Except
+			// Access violation are expected in the correctly published infobase
+			SeparationSwitched = False;
+		EndTry;
+		
+		If SeparationSwitched Then
+			// The safe mode of data separation is not set
+			WriteLogEvent(NStr("en = 'Publication error'", Metadata.DefaultLanguage.LanguageCode), 
+				EventLogLevel.Error,
+				,
+				,
+				NStr("en = 'Safe mode of data separation is not set'"));
+			Raise(NStr("en = 'Infobase published incorrectly. Session will be terminated'"));
+		EndIf;
+		
+	EndIf;
+	
+EndProcedure
+ 
+///////////////////////////////////////////////////////////////////////////////
+// Checking whether the data area is locked when starting
+
+// Checking whether the data area is locked when starting.
+// To be called only from StandardSubsystemsServer.AddClientParametersOnStart().
+//
+Procedure LockDataAreaAtStartOnCheck(ErrorDescription) Export
+	
+	If CommonUseCached.DataSeparationEnabled()
+			And CommonUseCached.CanUseSeparatedData()
+			And DataAreaLocked(CommonUse.SessionSeparatorValue()) Then
+		
+		ErrorDescription =
+			NStr("en = 'The application cannot be started now.
+			           |Scheduled maintenance operations are in progress.
+			           |
+			           |Try to start the application in a few minutes.'");
+		
+	EndIf;
+	
+EndProcedure
+
+// Checks whether the data area is locked.
+//
+// Parameters:
+//  DataArea - Number - separator value of the data area whose lock state must be checked.
+//
+// Returns:
+//  Boolean - True if data area is locked, otherwise is False.
+//
+Function DataAreaLocked(Val DataArea) Export
+	
+	RecordKey =  CreateAuxiliaryDataInformationRegisterRecordKey(
+		InformationRegisters.DataAreas,
+		New Structure(AuxiliaryDataSeparator(), DataArea));
+	
+	Try
+		LockDataForEdit(RecordKey);
+	Except
+		Return True;
+	EndTry;
+	
+	UnlockDataForEdit(RecordKey);
+	
+	Return False;
+	
+EndFunction
+ 
+// Returns the name of the common attribute that is a separator of auxiliary data.
+//
+// Returns: String.
+//
+Function AuxiliaryDataSeparator() Export
+	
+	Return Metadata.CommonAttributes.DataAreaAuxiliaryData.Name;
+	
+EndFunction
+ 
+// Creates the record key for the information register included in the DataAreaAuxiliaryData
+// separator content.
+//
+// Parameters:
+//  Manager   - InformationRegisterManager - information register manager whose record key is
+//              created.
+//  KeyValues - Structure - contains values used for filling record key properties.
+//              Structure item names must correspond with the names of key fields.
+//
+// Returns: InformationRegisterRecordKey.
+//
+Function  CreateAuxiliaryDataInformationRegisterRecordKey(Val Manager,  Val KeyValues) Export
+	
+	RecordKey = Manager.CreateRecordKey(KeyValues);
+	
+	DataArea = Undefined;
+	Separator = AuxiliaryDataSeparator();
+	
+	If KeyValues.Property(Separator, DataArea) Then
+		
+		If RecordKey[Separator] <> DataArea Then
+			
+			Object = XDTOSerializer.WriteXDTO(RecordKey);
+			Object[Separator]  = DataArea;
+			RecordKey = XDTOSerializer.ReadXDTO(Object);
+			
+		EndIf;
+		
+	EndIf;
+	
+	Return RecordKey;
+	
+EndFunction
+ 
 
 /////////////////////////////////////////////////////////////////////////////////
 // Serialization
@@ -1651,16 +1780,16 @@ Function XDTOObjectToStructuralObject(XDTODataObject)
 		EndDo;
 		For Each Index In XDTODataObject.index Do
 			
-			IndexString = "";
+			IndexAsString = "";
 			For Each IndexField In Index.column Do
-				IndexString = IndexString + IndexField + ", ";
+				IndexAsString = IndexAsString + IndexField + ", ";
 			EndDo;
-			IndexString = TrimAll(IndexString);
-			If StrLen(IndexString) > 0 Then
-				IndexString = Left(IndexString, StrLen(IndexString) - 1);
+			IndexAsString = TrimAll(IndexAsString);
+			If StrLen(IndexAsString) > 0 Then
+				IndexAsString = Left(IndexAsString, StrLen(IndexAsString) - 1);
 			EndIf;
 			
-			StructuralObject.Indexes.Add(IndexString);
+			StructuralObject.Indexes.Add(IndexAsString);
 		EndDo;
 		For Each XDTORow In XDTODataObject.row Do
 			
@@ -1753,3 +1882,26 @@ Function XDTOValueToTypeValue(XDTODataValue)
 	EndIf;
 	
 EndFunction
+
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\DataAreaOnDelete");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\InfobaseParameterTableOnGet");	
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\OnSetInfoBaseParameterValues");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\InfobaseParameterTableOnFill");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\DefaultRightsOnSet");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode\UserAliasOnDetermine");
+		
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

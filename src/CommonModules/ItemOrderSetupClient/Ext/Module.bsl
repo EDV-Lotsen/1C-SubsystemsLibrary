@@ -52,7 +52,7 @@ Procedure MoveItemExecute(ListAttribute, ListItem, Up)
 	If IsBlankString(ErrorText) Then
 		ListItem.Refresh();
 	Else
-		DoMessageBox(ErrorText);
+		ShowMessageBox(, ErrorText);
 	EndIf;
 	
 EndProcedure
@@ -66,7 +66,7 @@ Function CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters)
 	
 	// Checking whether an order is set
 	If Not IsListSortingCorrect(ListAttribute) Then
-		DoMessageBox(NStr("en = 'If you want to change the item order, you have to configure
+		ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to configure
 								 |the list order in the following way: the Order field with order kind   
 								 |set to Ascending must be the first row of the order table.'"));
 		Return False;
@@ -74,14 +74,14 @@ Function CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters)
 	
 	// Checking whether filters are set
 	If Not CheckFiltersSetInList(ListAttribute, AdjustedFilters) Then
-		DoMessageBox(NStr("en = 'If you want to change the item order, you have to clear all 
+		ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to clear all 
 								 |filters, except filters by owner and by folder.'"));
 		Return False;
 	EndIf;
 	
 	For Each GroupItem In ListAttribute.Group.Items Do
 		If GroupItem.Use Then
-			DoMessageBox(NStr("en = 'If you want to change the item order, you have to clear using groups.'"));
+			ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to clear using groups.'"));
 			Return False;
 		EndIf;
 	EndDo;

@@ -127,7 +127,7 @@ Procedure ProcessInfoBaseUser(Cancel)
 	If AccessLevel <> "FullAccess" And AccessLevel <> "ListManagement"
 		And AdditionalProperties.InfoBaseUserExists <> AdditionalProperties.InfoBaseAccessAllowed Then
 		
-		MessageText = NStr("en = 'Insufficient rights to change infobase users.");
+		MessageText = NStr("en = 'Insufficient rights to change infobase users.'");
 		CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
 		Return;
 	EndIf;
@@ -138,7 +138,7 @@ Procedure ProcessInfoBaseUser(Cancel)
 		
 		If AccessLevel = "ListManagement" Then
 			If InfoBaseUserInfoStructure.Property("InfoBaseUserRoles") Then
-				MessageText = NStr("en = 'Insufficient rights to change infobase user roles.");
+				MessageText = NStr("en = 'Insufficient rights to change infobase user roles.'");
 				CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
 				Return;
 			EndIf;

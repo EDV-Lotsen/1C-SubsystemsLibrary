@@ -45,11 +45,12 @@
 			<ScriptVariant>English</ScriptVariant>
 			<DefaultRoles>
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAccess</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAdministrator</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.0.1.17</Version>
+			<Version>2.0.2.1</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.en/tmplts/</UpdateCatalogAddress>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
 			<UseOrdinaryFormInManagedApplication>false</UseOrdinaryFormInManagedApplication>
 			<AdditionalFullTextSearchDictionaries/>
@@ -140,7 +141,7 @@
 			<ModalityUseMode>Use</ModalityUseMode>
 			<SynchronousPlatformExtensionAndAddInCallUseMode>Use</SynchronousPlatformExtensionAndAddInCallUseMode>
 			<InterfaceCompatibilityMode>Taxi</InterfaceCompatibilityMode>
-			<CompatibilityMode>Version8_3_3</CompatibilityMode>
+			<CompatibilityMode>Version8_3_5</CompatibilityMode>
 			<DefaultConstantsForm/>
 		</Properties>
 		<ChildObjects>
@@ -152,19 +153,27 @@
 			<Subsystem>Settings</Subsystem>
 			<Subsystem>StandardSubsystems</Subsystem>
 			<Subsystem>_DemoDataExchange</Subsystem>
-			<StyleItem>InaccessibleDataColor</StyleItem>
+			<StyleItem>ContextFont</StyleItem>
+			<StyleItem>ColorGroupLabel</StyleItem>
+			<StyleItem>ColorInformationLabel</StyleItem>
+			<StyleItem>ColorSecondaryLabel</StyleItem>
+			<StyleItem>ColorDisabledLabel</StyleItem>
 			<StyleItem>SelectedUser</StyleItem>
-			<StyleItem>ErrorInformationText</StyleItem>
+			<StyleItem>DataFont</StyleItem>
 			<StyleItem>InformationText</StyleItem>
 			<StyleItem>OverdueDataColor</StyleItem>
 			<StyleItem>InaccessibleCellTextColor</StyleItem>
 			<StyleItem>HighlightBackgroundColor</StyleItem>
+			<StyleItem>ErrorInformationText</StyleItem>
+			<StyleItem>InaccessibleDataColor</StyleItem>
+			<CommonPicture>Accessibility</CommonPicture>
 			<CommonPicture>ActiveUserTypeCollection</CommonPicture>
 			<CommonPicture>AdministrationSubsystem</CommonPicture>
 			<CommonPicture>AttachFile</CommonPicture>
 			<CommonPicture>Banking</CommonPicture>
 			<CommonPicture>Calculate</CommonPicture>
 			<CommonPicture>CatalogHierarchy</CommonPicture>
+			<CommonPicture>ClearAllMarks</CommonPicture>
 			<CommonPicture>Comment</CommonPicture>
 			<CommonPicture>ContactInformation</CommonPicture>
 			<CommonPicture>DataExchangeParameters</CommonPicture>
@@ -181,6 +190,8 @@
 			<CommonPicture>ExternalActionSplash</CommonPicture>
 			<CommonPicture>ExternalActionSplashIcon</CommonPicture>
 			<CommonPicture>FillForm</CommonPicture>
+			<CommonPicture>FullTextSearchBack</CommonPicture>
+			<CommonPicture>FullTextSearchNext</CommonPicture>
 			<CommonPicture>HierarchicalList</CommonPicture>
 			<CommonPicture>ImportanceVariantCollection</CommonPicture>
 			<CommonPicture>Information</CommonPicture>
@@ -188,6 +199,9 @@
 			<CommonPicture>ItemIconCollection</CommonPicture>
 			<CommonPicture>ItemIcons</CommonPicture>
 			<CommonPicture>LeadingEndPoint</CommonPicture>
+			<CommonPicture>LongAction</CommonPicture>
+			<CommonPicture>LongAction16</CommonPicture>
+			<CommonPicture>LongAction32</CommonPicture>
 			<CommonPicture>LongAction48</CommonPicture>
 			<CommonPicture>MarkedForDeletionObjectCollection</CommonPicture>
 			<CommonPicture>ObjectMappingClipArt</CommonPicture>
@@ -198,6 +212,8 @@
 			<CommonPicture>Question32</CommonPicture>
 			<CommonPicture>Sales</CommonPicture>
 			<CommonPicture>ScheduledJobExecutionSetup</CommonPicture>
+			<CommonPicture>SetAllMarks</CommonPicture>
+			<CommonPicture>Settings</CommonPicture>
 			<CommonPicture>ShowSelectedRolesOnly</CommonPicture>
 			<CommonPicture>StartDataExchangeExecution</CommonPicture>
 			<CommonPicture>StartSeparateSessionToExecuteScheduledJobs</CommonPicture>
@@ -220,17 +236,19 @@
 			<CommonPicture>UserStates</CommonPicture>
 			<CommonPicture>Warning</CommonPicture>
 			<CommonPicture>Warning32</CommonPicture>
-			<SessionParameter>ORMCachedValueRefreshDate</SessionParameter>
-			<SessionParameter>UsedExchangePlans</SessionParameter>
-			<SessionParameter>DataAreaValue</SessionParameter>
-			<SessionParameter>UseDataArea</SessionParameter>
-			<SessionParameter>DataExchangeEnabled</SessionParameter>
-			<SessionParameter>SelectiveObjectChangeRecordRules</SessionParameter>
-			<SessionParameter>ObjectChangeRecordRules</SessionParameter>
+			<SessionParameter>ClientParametersAtServer</SessionParameter>
 			<SessionParameter>CurrentExternalUser</SessionParameter>
 			<SessionParameter>CurrentUser</SessionParameter>
+			<SessionParameter>DataAreaValue</SessionParameter>
+			<SessionParameter>DataExchangeEnabled</SessionParameter>
+			<SessionParameter>InfoBaseUpdateInProgress</SessionParameter>
+			<SessionParameter>ObjectChangeRecordRules</SessionParameter>
+			<SessionParameter>ORMCachedValueRefreshDate</SessionParameter>
+			<SessionParameter>SelectiveObjectChangeRecordRules</SessionParameter>
 			<SessionParameter>SuggestWorkWithFilesExtensionInstallationByDefault</SessionParameter>
-			<Role>AddEditBaseReferentialInformation</Role>
+			<SessionParameter>UseDataArea</SessionParameter>
+			<SessionParameter>UsedExchangePlans</SessionParameter>
+			<Role>AddEditBasicReferentialInformation</Role>
 			<Role>AddEditCommonBasicReferentialInformation</Role>
 			<Role>AddEditDataExchanges</Role>
 			<Role>AddEditExternalUsers</Role>
@@ -238,12 +256,14 @@
 			<Role>Administration</Role>
 			<Role>AllFunctionsMode</Role>
 			<Role>BasicRights</Role>
+			<Role>ChangingCurrentUser</Role>
 			<Role>EditCurrentExternalUser</Role>
 			<Role>EditCurrentUser</Role>
 			<Role>ExecuteDataExchange</Role>
 			<Role>FullAccess</Role>
 			<Role>FullAdministrator</Role>
-			<Role>InteractiveOpenExtReportsAndDataProcessors</Role>
+			<Role>InteractiveOpenExternalReportsAndDataProcessors</Role>
+			<Role>Operator</Role>
 			<Role>OutputToPrinterFileClipboard</Role>
 			<Role>ReadBasicReferentialInformation</Role>
 			<Role>ReadExternalUsers</Role>
@@ -259,7 +279,7 @@
 			<Role>UpdateDataBaseConfiguration</Role>
 			<Role>UseEmailAccounts</Role>
 			<Role>ViewEventLog</Role>
-			<Role>Operator</Role>
+			<CommonTemplate>UpdateDetails</CommonTemplate>
 			<CommonTemplate>SharedDataCodeExtraction</CommonTemplate>
 			<CommonModule>_DemoCommonUse</CommonModule>
 			<CommonModule>_DemoCommonUseClient</CommonModule>
@@ -286,6 +306,9 @@
 			<CommonModule>CommonUseClientOverridable</CommonModule>
 			<CommonModule>CommonUseClientServer</CommonModule>
 			<CommonModule>CommonUseOverridable</CommonModule>
+			<CommonModule>CommonUseServerCall</CommonModule>
+			<CommonModule>CompaniesInternal</CommonModule>
+			<CommonModule>ConfigurationSubsystemsOverridable</CommonModule>
 			<CommonModule>ContactInformationManagement</CommonModule>
 			<CommonModule>ContactInformationManagementClassifiers</CommonModule>
 			<CommonModule>ContactInformationManagementClassifiersClient</CommonModule>
@@ -301,6 +324,7 @@
 			<CommonModule>DataExchangeMessageChannelHandlerServiceMode</CommonModule>
 			<CommonModule>DataExchangeOverridable</CommonModule>
 			<CommonModule>DataExchangeServer</CommonModule>
+			<CommonModule>DataExchangeServerCall</CommonModule>
 			<CommonModule>DataExchangeServiceMode</CommonModule>
 			<CommonModule>DataExchangeServiceModeCached</CommonModule>
 			<CommonModule>DataImportExport</CommonModule>
@@ -312,6 +336,8 @@
 			<CommonModule>EventLogClient</CommonModule>
 			<CommonModule>EventLogServerCall</CommonModule>
 			<CommonModule>ExternalUsers</CommonModule>
+			<CommonModule>FileFunctionsClientServer</CommonModule>
+			<CommonModule>FullTextSearchManagement</CommonModule>
 			<CommonModule>GetFilesFromInternet</CommonModule>
 			<CommonModule>GetFilesFromInternetClient</CommonModule>
 			<CommonModule>GetFilesFromInternetClientServer</CommonModule>
@@ -323,13 +349,18 @@
 			<CommonModule>InfoBaseUpdate</CommonModule>
 			<CommonModule>InfoBaseUpdateClient</CommonModule>
 			<CommonModule>InfoBaseUpdateClientOverridable</CommonModule>
+			<CommonModule>InfoBaseUpdateInternal</CommonModule>
+			<CommonModule>InfoBaseUpdateInternalServiceMode</CommonModule>
 			<CommonModule>InfoBaseUpdateOverridable</CommonModule>
-			<CommonModule>InfobaseUpdateServiceMode</CommonModule>
+			<CommonModule>InfoBaseUpdateServerCall</CommonModule>
+			<CommonModule>InfoBaseUpdateServiceMode</CommonModule>
+			<CommonModule>InfoBaseUpdateSL</CommonModule>
 			<CommonModule>ItemOrderSetup</CommonModule>
 			<CommonModule>ItemOrderSetupClient</CommonModule>
 			<CommonModule>ItemOrderSetupEvents</CommonModule>
 			<CommonModule>JobQueue</CommonModule>
 			<CommonModule>JobQueueCached</CommonModule>
+			<CommonModule>JobQueueInternal</CommonModule>
 			<CommonModule>JobQueueOverridable</CommonModule>
 			<CommonModule>LongActions</CommonModule>
 			<CommonModule>LongActionsClient</CommonModule>
@@ -348,16 +379,24 @@
 			<CommonModule>RemoteAdministrationMessageChannelHandler</CommonModule>
 			<CommonModule>RemoteAdministrationMessages</CommonModule>
 			<CommonModule>RemoteAdministrationMessagesCached</CommonModule>
+			<CommonModule>SafeMode</CommonModule>
+			<CommonModule>SafeModeInternal</CommonModule>
+			<CommonModule>SafeModeInternalCached</CommonModule>
+			<CommonModule>SafeModeOverridable</CommonModule>
 			<CommonModule>ScheduledJobsClient</CommonModule>
 			<CommonModule>ScheduledJobsGlobal</CommonModule>
+			<CommonModule>ScheduledJobsInternal</CommonModule>
 			<CommonModule>ScheduledJobsServer</CommonModule>
 			<CommonModule>ServiceMode</CommonModule>
 			<CommonModule>ServiceModeCached</CommonModule>
+			<CommonModule>ServiceModeClient</CommonModule>
 			<CommonModule>ServiceModeOverridable</CommonModule>
+			<CommonModule>StandardSubsystemsCached</CommonModule>
 			<CommonModule>StandardSubsystemsClient</CommonModule>
 			<CommonModule>StandardSubsystemsClientCached</CommonModule>
 			<CommonModule>StandardSubsystemsClientOverridable</CommonModule>
 			<CommonModule>StandardSubsystemsClientServerOverridable</CommonModule>
+			<CommonModule>StandardSubsystemsGlobal</CommonModule>
 			<CommonModule>StandardSubsystemsOverridable</CommonModule>
 			<CommonModule>StandardSubsystemsServer</CommonModule>
 			<CommonModule>StandardSubsystemsServerCall</CommonModule>
@@ -367,15 +406,21 @@
 			<CommonModule>SuppliedDataCached</CommonModule>
 			<CommonModule>SuppliedDataClientServer</CommonModule>
 			<CommonModule>SuppliedDataOverridable</CommonModule>
+			<CommonModule>SystemSettings</CommonModule>
 			<CommonModule>Users</CommonModule>
 			<CommonModule>UsersEvents</CommonModule>
+			<CommonModule>UsersInternal</CommonModule>
+			<CommonModule>UsersInternalCached</CommonModule>
+			<CommonModule>UsersInternalClient</CommonModule>
 			<CommonModule>UsersOverridable</CommonModule>
 			<CommonModule>UsersServerCached</CommonModule>
 			<CommonModule>UsersServiceMode</CommonModule>
+			<CommonAttribute>DataAreaAuxiliaryData</CommonAttribute>
 			<CommonAttribute>DataArea</CommonAttribute>
-			<ExchangePlan>SuppliedDataChanges</ExchangePlan>
-			<ExchangePlan>MessageExchange</ExchangePlan>
 			<ExchangePlan>_DemoExchangeWithSubsystemsLibrary</ExchangePlan>
+			<ExchangePlan>MessageExchange</ExchangePlan>
+			<ExchangePlan>SuppliedDataChanges</ExchangePlan>
+			<XDTOPackage>ApdexExport</XDTOPackage>
 			<XDTOPackage>DataDump</XDTOPackage>
 			<XDTOPackage>RemoteAdministrationControl</XDTOPackage>
 			<XDTOPackage>RemoteAdministrationMessages</XDTOPackage>
@@ -384,27 +429,29 @@
 			<WebService>InterfaceVersioning</WebService>
 			<WebService>MessageExchange</WebService>
 			<WebService>RemoteExchangeAdministration</WebService>
-			<EventSubscription>EnableUseExchangePlan</EventSubscription>
-			<EventSubscription>FillContactInformation</EventSubscription>
-			<EventSubscription>RegisterCommonNodeDataChanges</EventSubscription>
-			<EventSubscription>RecordDataMigrationRestrictionFilterChanges</EventSubscription>
-			<EventSubscription>SetContactInformationKindOrder</EventSubscription>
-			<EventSubscription>UpdateExternalUserPresentation</EventSubscription>
-			<EventSubscription>DisableUseExchangePlan</EventSubscription>
+			<EventSubscription>_DemoDataExchangeRecordChanges</EventSubscription>
 			<EventSubscription>CancelSendNodeDataInDistributedInfoBase</EventSubscription>
-			<EventSubscription>OnSendDataToSubordinate</EventSubscription>
-			<EventSubscription>OnReceiveDataFromSubordinate</EventSubscription>
 			<EventSubscription>CanChangeDataExchangeSettings</EventSubscription>
 			<EventSubscription>CheckDataMigrationRestrictionFiltersChanged</EventSubscription>
+			<EventSubscription>DisableUseExchangePlan</EventSubscription>
+			<EventSubscription>EnableUseExchangePlan</EventSubscription>
+			<EventSubscription>FillContactInformation</EventSubscription>
+			<EventSubscription>OnReceiveDataFromSubordinate</EventSubscription>
+			<EventSubscription>OnSendDataToSubordinate</EventSubscription>
+			<EventSubscription>RecordDataMigrationRestrictionFilterChanges</EventSubscription>
+			<EventSubscription>RegisterCommonNodeDataChanges</EventSubscription>
 			<EventSubscription>ResetContactInformationKindOrder</EventSubscription>
-			<EventSubscription>SharedSuppliedDataCatalogsBeforeWrite</EventSubscription>
 			<EventSubscription>SeparatedSuppliedDataCatalogsBeforeDelete</EventSubscription>
-			<EventSubscription>_DemoDataExchangeRecordChanges</EventSubscription>
+			<EventSubscription>SetContactInformationKindOrder</EventSubscription>
+			<EventSubscription>SharedSuppliedDataCatalogsBeforeWrite</EventSubscription>
+			<EventSubscription>UpdateExternalUserPresentation</EventSubscription>
 			<ScheduledJob>DataExchangeExecution</ScheduledJob>
 			<ScheduledJob>JobProcessingPlanning</ScheduledJob>
+			<ScheduledJob>JoinFullTextSearchIndex</ScheduledJob>
 			<ScheduledJob>SendReceiveSystemMessages</ScheduledJob>
 			<ScheduledJob>SeparatedSuppliedDataUpdateControl</ScheduledJob>
 			<ScheduledJob>UpdateDataAreas</ScheduledJob>
+			<ScheduledJob>UpdateFullTextSearchIndex</ScheduledJob>
 			<ScheduledJob>UpdateSharedSuppliedData</ScheduledJob>
 			<FunctionalOption>CompanyPrefixes</FunctionalOption>
 			<FunctionalOption>CurrentORMCachedValueRefreshDate</FunctionalOption>
@@ -417,49 +464,57 @@
 			<FunctionalOption>StandardSubsystemsLocalMode</FunctionalOption>
 			<FunctionalOption>StandardSubsystemsServiceMode</FunctionalOption>
 			<FunctionalOption>UseDataExchange</FunctionalOption>
-			<FunctionalOption>UseDataExchangeServiceMode</FunctionalOption>
 			<FunctionalOption>UseDataExchangeLocalMode</FunctionalOption>
+			<FunctionalOption>UseDataExchangeServiceMode</FunctionalOption>
+			<FunctionalOption>UseEmailClient</FunctionalOption>
 			<FunctionalOption>UseExternalUsers</FunctionalOption>
+			<FunctionalOption>UseOtherInteractions</FunctionalOption>
+			<FunctionalOption>UseSecurityProfiles</FunctionalOption>
 			<FunctionalOption>UseSeparationByDataAreas</FunctionalOption>
 			<FunctionalOption>UseUserGroups</FunctionalOption>
 			<FunctionalOption>USFiscalLocalization</FunctionalOption>
 			<FunctionalOption>VATFiscalLocalization</FunctionalOption>
 			<FunctionalOptionsParameter>Company</FunctionalOptionsParameter>
+			<CommonCommand>AddServiceUsers</CommonCommand>
 			<CommonCommand>APAging</CommonCommand>
 			<CommonCommand>ARAging</CommonCommand>
-			<CommonCommand>PurchasingTransactionDetail</CommonCommand>
-			<CommonCommand>SalesTransactionDetail</CommonCommand>
 			<CommonCommand>BankBalances</CommonCommand>
-			<CommonCommand>ExportDataIntoLocalVersion</CommonCommand>
-			<CommonCommand>ExportDataForMigrationToService</CommonCommand>
+			<CommonCommand>ClearSuppliedDataChangeRecords</CommonCommand>
 			<CommonCommand>ExecuteDataExchange</CommonCommand>
 			<CommonCommand>ExecuteDataExchangeInteractively</CommonCommand>
-			<CommonCommand>AddServiceUsers</CommonCommand>
-			<CommonCommand>ImportDataIntoArea</CommonCommand>
-			<CommonCommand>ImportDataFromLocalVersion</CommonCommand>
-			<CommonCommand>ImportDataFromService</CommonCommand>
-			<CommonCommand>SetupExchangeMessageTransportParameters</CommonCommand>
-			<CommonCommand>MessageExchangeSetup</CommonCommand>
-			<CommonCommand>SystemEmailAccountSetup</CommonCommand>
-			<CommonCommand>MessageExchange</CommonCommand>
-			<CommonCommand>UpdateSharedSuppliedData</CommonCommand>
-			<CommonCommand>SuppliedDataUpdate</CommonCommand>
-			<CommonCommand>OpenDataExchange</CommonCommand>
-			<CommonCommand>OpenObjectConversionRules</CommonCommand>
-			<CommonCommand>OpenObjectChangeRecordRules</CommonCommand>
-			<CommonCommand>OpenDataExchangeScenarios</CommonCommand>
-			<CommonCommand>ClearSuppliedDataChangeRecords</CommonCommand>
+			<CommonCommand>ExportDataForMigrationToService</CommonCommand>
+			<CommonCommand>ExportDataIntoLocalVersion</CommonCommand>
+			<CommonCommand>GetSecondInfoBaseDataExchangeSettings</CommonCommand>
 			<CommonCommand>GoToDataExportEventLog</CommonCommand>
 			<CommonCommand>GoToDataImportEventLog</CommonCommand>
-			<CommonCommand>ProxyServerCustomParameters</CommonCommand>
-			<CommonCommand>GetSecondInfoBaseDataExchangeSettings</CommonCommand>
-			<CommonCommand>SynchronizeData</CommonCommand>
+			<CommonCommand>ImportDataFromLocalVersion</CommonCommand>
+			<CommonCommand>ImportDataFromService</CommonCommand>
+			<CommonCommand>ImportDataIntoArea</CommonCommand>
 			<CommonCommand>InstallFileSystemExtension</CommonCommand>
-			<CommandGroup>Reports</CommandGroup>
-			<CommandGroup>Print</CommandGroup>
+			<CommonCommand>LaunchSettings</CommonCommand>
+			<CommonCommand>MessageExchange</CommonCommand>
+			<CommonCommand>MessageExchangeSetup</CommonCommand>
+			<CommonCommand>OpenDataExchange</CommonCommand>
+			<CommonCommand>OpenDataExchangeScenarios</CommonCommand>
+			<CommonCommand>OpenObjectChangeRecordRules</CommonCommand>
+			<CommonCommand>OpenObjectConversionRules</CommonCommand>
+			<CommonCommand>OpenSettings</CommonCommand>
+			<CommonCommand>OpenUpdateDetails</CommonCommand>
+			<CommonCommand>ProxyServerCustomParameters</CommonCommand>
+			<CommonCommand>PurchasingTransactionDetail</CommonCommand>
+			<CommonCommand>SalesTransactionDetail</CommonCommand>
+			<CommonCommand>SendEmail</CommonCommand>
+			<CommonCommand>SetupExchangeMessageTransportParameters</CommonCommand>
+			<CommonCommand>SuppliedDataUpdate</CommonCommand>
+			<CommonCommand>SynchronizeData</CommonCommand>
+			<CommonCommand>SystemEmailAccountSetup</CommonCommand>
+			<CommonCommand>UpdateSharedSuppliedData</CommonCommand>
 			<CommandGroup>DataExchangeExecution</CommandGroup>
-			<CommandGroup>Organizer</CommandGroup>
 			<CommandGroup>DataExchangeParameters</CommandGroup>
+			<CommandGroup>Organizer</CommandGroup>
+			<CommandGroup>Print</CommandGroup>
+			<CommandGroup>Reports</CommandGroup>
+			<Constant>AutomaticallySetUpPermissionsInSecurityProfiles</Constant>
 			<Constant>AuxiliaryServiceManagerUserName</Constant>
 			<Constant>AuxiliaryServiceManagerUserPassword</Constant>
 			<Constant>AuxiliarySuppliedDataServiceUserName</Constant>
@@ -491,11 +546,15 @@
 			<Constant>FunctionalOptionMultipleCompanies</Constant>
 			<Constant>IncomeAccount</Constant>
 			<Constant>InfoBaseAdministrationParameters</Constant>
+			<Constant>InfoBaseUpdateInfo</Constant>
 			<Constant>InfoBaseUsageMode</Constant>
 			<Constant>InstantMessageSendingLocked</Constant>
+			<Constant>InternalEventParameters</Constant>
 			<Constant>InternalServiceManagerURL</Constant>
 			<Constant>InventoryAccount</Constant>
+			<Constant>LoadDataExchangeMessage</Constant>
 			<Constant>LockMessageOnConfigurationUpdate</Constant>
+			<Constant>MasterNode</Constant>
 			<Constant>MaxActiveBackgroundJobCount</Constant>
 			<Constant>MaxActiveBackgroundJobExecutionTime</Constant>
 			<Constant>MultiCurrency</Constant>
@@ -503,6 +562,7 @@
 			<Constant>PriceIncludesVAT</Constant>
 			<Constant>ProxyServerSettings</Constant>
 			<Constant>ScheduledJobExecutionSettings</Constant>
+			<Constant>SendingInstantMessagesLocked</Constant>
 			<Constant>ServiceAgentAddress</Constant>
 			<Constant>ServiceAgentUserName</Constant>
 			<Constant>ServiceAgentUserPassword</Constant>
@@ -517,7 +577,11 @@
 			<Constant>UseDataExchange</Constant>
 			<Constant>UseDataExchangeLocalMode</Constant>
 			<Constant>UseDataExchangeServiceMode</Constant>
+			<Constant>UseEmailClient</Constant>
 			<Constant>UseExternalUsers</Constant>
+			<Constant>UseOtherInteractions</Constant>
+			<Constant>UserSessionParameters</Constant>
+			<Constant>UseSecurityProfiles</Constant>
 			<Constant>UseSeparationByDataAreas</Constant>
 			<Constant>UseUserGroups</Constant>
 			<Constant>USFiscalLocalization</Constant>
@@ -543,6 +607,7 @@
 			<CommonForm>ImportExchangeMessageWithConfigurationChanges</CommonForm>
 			<CommonForm>LeadingEndPointSetting</CommonForm>
 			<CommonForm>LongAction</CommonForm>
+			<CommonForm>MessageBox</CommonForm>
 			<CommonForm>MessageExchangeSetup</CommonForm>
 			<CommonForm>MetadataObjectChoice</CommonForm>
 			<CommonForm>NotRecommendedPlatformVersion</CommonForm>
@@ -550,10 +615,14 @@
 			<CommonForm>PrintingFormsSettingsBeforeSending</CommonForm>
 			<CommonForm>ProxyServerParameters</CommonForm>
 			<CommonForm>Question</CommonForm>
+			<CommonForm>ReconnectionToMasterNode</CommonForm>
 			<CommonForm>ServerInfoBaseAdministrationSettings</CommonForm>
 			<CommonForm>ServiceUsers</CommonForm>
 			<CommonForm>SharedUserInfo</CommonForm>
 			<CommonForm>UpdateDetails</CommonForm>
+			<CommonForm>UserSettingsForm</CommonForm>
+			<Catalog>AccessGroupProfiles</Catalog>
+			<Catalog>AccessGroups</Catalog>
 			<Catalog>Addresses</Catalog>
 			<Catalog>CalculationParameters</Catalog>
 			<Catalog>Calendars</Catalog>
@@ -610,9 +679,11 @@
 			<Enum>DataAreaStates</Enum>
 			<Enum>DataExchangeRuleKinds</Enum>
 			<Enum>DataExchangeRuleSources</Enum>
+			<Enum>DataExchangeTypes</Enum>
 			<Enum>EmailTextTypes</Enum>
 			<Enum>ExchangeExecutionResults</Enum>
 			<Enum>ExchangeMessageTransportKinds</Enum>
+			<Enum>ExchangeMessageTransportTypes</Enum>
 			<Enum>ExchangeObjectExportModes</Enum>
 			<Enum>ExchangeObjectPriorities</Enum>
 			<Enum>Genders</Enum>
@@ -621,6 +692,8 @@
 			<Enum>InventoryCostingMethods</Enum>
 			<Enum>InventoryTypes</Enum>
 			<Enum>JobStates</Enum>
+			<Enum>MessageStatus</Enum>
+			<Enum>OperationsWithPermissionSets</Enum>
 			<Enum>OrderStatuses</Enum>
 			<Enum>PaymentDeductionTypes</Enum>
 			<Enum>Periodicities</Enum>
@@ -633,25 +706,29 @@
 			<Enum>SMTPAuthenticationVariants</Enum>
 			<Enum>SuppliedDataTypes</Enum>
 			<Enum>TimeDataInputMethods</Enum>
+			<Enum>UserSettings</Enum>
 			<Enum>UserTypes</Enum>
 			<Report>APAging</Report>
 			<Report>ARAging</Report>
-			<Report>PurchasingTransactionDetail</Report>
-			<Report>SalesTransactionDetail</Report>
 			<Report>BankBalances</Report>
 			<Report>HumanResourcesAccounting</Report>
+			<Report>PurchasingTransactionDetail</Report>
+			<Report>SalesTransactionDetail</Report>
 			<Report>TimeWorked</Report>
 			<DataProcessor>ActiveUsers</DataProcessor>
 			<DataProcessor>ApplicationLocking</DataProcessor>
 			<DataProcessor>DataExchangeCreationWizard</DataProcessor>
 			<DataProcessor>DistributedInfoBaseObjectsConversion</DataProcessor>
+			<DataProcessor>EventLog</DataProcessor>
 			<DataProcessor>EventLogMonitor</DataProcessor>
 			<DataProcessor>ExchangeMessageTransportEMAIL</DataProcessor>
 			<DataProcessor>ExchangeMessageTransportFILE</DataProcessor>
 			<DataProcessor>ExchangeMessageTransportFTP</DataProcessor>
 			<DataProcessor>FormSettingsManagement</DataProcessor>
+			<DataProcessor>FullTextSearchManagement</DataProcessor>
 			<DataProcessor>InfoBaseObjectConversion</DataProcessor>
 			<DataProcessor>InfoBaseObjectMapping</DataProcessor>
+			<DataProcessor>InfoBaseUpdate</DataProcessor>
 			<DataProcessor>InteractiveDataExchangeWizard</DataProcessor>
 			<DataProcessor>MarkedObjectDeletion</DataProcessor>
 			<DataProcessor>ObjectChangeRecordRuleImport</DataProcessor>
@@ -660,6 +737,7 @@
 			<InformationRegister>CommonInfoBaseNodeSettings</InformationRegister>
 			<InformationRegister>CommonNodeDataChanges</InformationRegister>
 			<InformationRegister>CurrencyRates</InformationRegister>
+			<InformationRegister>CustomPrintForms</InformationRegister>
 			<InformationRegister>DataAreas</InformationRegister>
 			<InformationRegister>DataAreaSessionLocks</InformationRegister>
 			<InformationRegister>DataAreasForSuppliedDataUpdate</InformationRegister>
@@ -688,13 +766,15 @@
 			<InformationRegister>TransactionReconciliation</InformationRegister>
 			<InformationRegister>UserEmployees</InformationRegister>
 			<InformationRegister>UserGroupContent</InformationRegister>
+			<InformationRegister>UserSettings</InformationRegister>
 			<InformationRegister>UsersSettings</InformationRegister>
+			<AccumulationRegister>HumanResourcesAccounting</AccumulationRegister>
 			<AccumulationRegister>Inventory</AccumulationRegister>
 			<AccumulationRegister>OrdersDispatched</AccumulationRegister>
 			<AccumulationRegister>OrdersRegistered</AccumulationRegister>
-			<AccumulationRegister>HumanResourcesAccounting</AccumulationRegister>
 			<AccumulationRegister>PaymentDeductionKinds</AccumulationRegister>
 			<AccumulationRegister>Timesheet</AccumulationRegister>
+			<ChartOfCharacteristicTypes>AccessTypes</ChartOfCharacteristicTypes>
 			<ChartOfCharacteristicTypes>Dimensions</ChartOfCharacteristicTypes>
 			<ChartOfCharacteristicTypes>UsersSettings</ChartOfCharacteristicTypes>
 			<ChartOfAccounts>ChartOfAccounts</ChartOfAccounts>

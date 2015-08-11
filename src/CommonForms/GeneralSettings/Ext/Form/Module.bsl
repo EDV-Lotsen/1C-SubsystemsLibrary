@@ -143,7 +143,7 @@ EndProcedure
 &AtClient
 Procedure AfterWrite(WriteParameters)
 	If RestartRequired = True Then
-		DoMessageBox("Restart the application for the settings to take effect.");
+		ShowMessageBox(, NStr("en = 'Restart the application for the settings to take effect.'"));
 		RestartRequired = False;
 	EndIf;
 EndProcedure

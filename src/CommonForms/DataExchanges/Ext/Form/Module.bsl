@@ -111,7 +111,7 @@ Procedure ChangeInfoBaseNode(Command)
 	
 	CurrentData = Items.NodeStateList.CurrentData;
 	
-	OpenValue(CurrentData.InfoBaseNode);
+	ShowValue(Undefined, CurrentData.InfoBaseNode);
 	
 EndProcedure
 

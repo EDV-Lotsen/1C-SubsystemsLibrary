@@ -2,9 +2,8 @@
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
 	<CommandBarLocation>Top</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<Events>
 		<Event name="AfterWrite">AfterWrite</Event>
 		<Event name="OnReadAtServer">OnReadAtServer</Event>
@@ -13,25 +12,25 @@
 		<Event name="BeforeLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="Description" id="2">
+		<InputField name="Description" id="4">
 			<DataPath>Object.Description</DataPath>
 			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
 			<Width>40</Width>
 			<Wrap>false</Wrap>
 			<BorderColor>style:BorderColor</BorderColor>
-			<ContextMenu name="DescriptionContextMenu" id="3"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="4"/>
+			<ContextMenu name="DescriptionContextMenu" id="5"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="147"/>
 		</InputField>
-		<InputField name="Parent" id="5">
+		<InputField name="Parent" id="40">
 			<DataPath>Object.Parent</DataPath>
-			<ContextMenu name="ParentContextMenu" id="6"/>
-			<ExtendedTooltip name="ParentExtendedTooltip" id="7"/>
+			<ContextMenu name="ParentContextMenu" id="41"/>
+			<ExtendedTooltip name="ParentExtendedTooltip" id="148"/>
 			<Events>
 				<Event name="OnChange">ParentOnChange</Event>
 				<Event name="StartChoice">ParentStartChoice</Event>
 			</Events>
 		</InputField>
-		<Pages name="ContentAndRoles" id="8">
+		<Pages name="ContentAndRoles" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -41,62 +40,62 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Content and roles.</v8:content>
+					<v8:content>Content and roles</v8:content>
 				</v8:item>
 			</ToolTip>
-			<ExtendedTooltip name="ContentAndRolesExtendedTooltip" id="9"/>
+			<ExtendedTooltip name="ContentAndRolesExtendedTooltip" id="149"/>
 			<ChildItems>
-				<Page name="GroupExternalUsers" id="10">
+				<Page name="ExternalUsersOfGroup" id="55">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>External users</v8:content>
+							<v8:content>External users </v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>External users of this group.</v8:content>
+							<v8:content>External users of group</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="ExternalGroupUsersExtendedTooltip" id="11"/>
+					<ExtendedTooltip name="ExternalUsersOfGroupExtendedTooltip" id="150"/>
 					<ChildItems>
-						<UsualGroup name="UserType" id="12">
+						<UsualGroup name="UsersType" id="124">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>User type</v8:content>
+									<v8:content>Users type</v8:content>
 								</v8:item>
 							</Title>
 							<Group>Horizontal</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="UserTypeExtendedTooltip" id="13"/>
+							<ExtendedTooltip name="UsersTypeExtendedTooltip" id="151"/>
 							<ChildItems>
-								<InputField name="AuthorizationObjectTypePresentation" id="14">
+								<InputField name="AuthorizationObjectsTypePresentation" id="127">
 									<DataPath>AuthorizationObjectTypePresentation</DataPath>
 									<ChoiceButton>true</ChoiceButton>
 									<ClearButton>true</ClearButton>
 									<TextEdit>false</TextEdit>
-									<ContextMenu name="AuthorizationObjectTypePresentationContextMenu" id="15"/>
-									<ExtendedTooltip name="AuthorizationObjectTypePresentationExtendedTooltip" id="16"/>
+									<ContextMenu name="AuthorizationObjectsTypePresentationContextMenu" id="128"/>
+									<ExtendedTooltip name="AuthorizationObjectsTypePresentationExtendedTooltip" id="152"/>
 									<Events>
 										<Event name="OnChange">AuthorizationObjectTypePresentationOnChange</Event>
 										<Event name="StartChoice">AuthorizationObjectTypePresentationStartChoice</Event>
 									</Events>
 								</InputField>
-								<CheckBoxField name="AllAuthorizationObjects" id="17">
+								<CheckBoxField name="AllAuthorizationObjects" id="129">
 									<DataPath>Object.AllAuthorizationObjects</DataPath>
 									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="AllAuthorizationObjectsContextMenu" id="18"/>
-									<ExtendedTooltip name="AllAuthorizationObjectsExtendedTooltip" id="19"/>
+									<ContextMenu name="AllAuthorizationObjectsContextMenu" id="130"/>
+									<ExtendedTooltip name="AllAuthorizationObjectsExtendedTooltip" id="153"/>
 									<Events>
 										<Event name="OnChange">AllAuthorizationObjectsOnChange</Event>
 									</Events>
 								</CheckBoxField>
 							</ChildItems>
 						</UsualGroup>
-						<Table name="Content" id="20">
+						<Table name="Content" id="10">
 							<Representation>List</Representation>
 							<SkipOnInput>false</SkipOnInput>
 							<Width>30</Width>
@@ -116,128 +115,131 @@
 								</v8:item>
 							</Title>
 							<TitleFont ref="sys:DefaultGUIFont" kind="WindowsFont"/>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+							</CommandSet>
 							<SearchStringLocation>None</SearchStringLocation>
 							<ViewStatusLocation>None</ViewStatusLocation>
 							<SearchControlLocation>None</SearchControlLocation>
 							<RowFilter xsi:nil="true"/>
-							<ContextMenu name="ContentContextMenu" id="21">
+							<ContextMenu name="ContentContextMenu" id="11">
 								<Autofill>false</Autofill>
 								<ChildItems>
-									<Button name="ShortcutMenuContentFill" id="22">
+									<Button name="ContextMenuContentPick" id="42">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
-										<CommandName>Form.Command.FillExternalUsers</CommandName>
-										<ExtendedTooltip name="ContextMenuContentFillExtendedTooltip" id="23"/>
+										<CommandName>Form.Command.PickExternalUsers</CommandName>
+										<ExtendedTooltip name="ContextMenuContentPickExtendedTooltip" id="154"/>
 									</Button>
-									<Button name="ContextMenuContentAdd" id="24">
+									<Button name="ContextMenuContentAdd" id="45">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.Add</CommandName>
-										<ExtendedTooltip name="ContextMenuContentAddExtendedTooltip" id="25"/>
+										<ExtendedTooltip name="ContextMenuContentAddExtendedTooltip" id="155"/>
 									</Button>
-									<Button name="ContextMenuContentCopy" id="26">
+									<Button name="ContextMenuContentCopy" id="50">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
-										<CommandName>0</CommandName>
-										<ExtendedTooltip name="ContextMenuContentCopyExtendedTooltip" id="27"/>
+										<CommandName>Form.StandardCommand.Copy</CommandName>
+										<ExtendedTooltip name="ContextMenuContentCopyExtendedTooltip" id="156"/>
 									</Button>
-									<Button name="ContextMenuContentDelete" id="28">
+									<Button name="ContextMenuContentDelete" id="46">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.Delete</CommandName>
-										<ExtendedTooltip name="ContextMenuContentDeleteExtendedTooltip" id="29"/>
+										<ExtendedTooltip name="ContextMenuContentDeleteExtendedTooltip" id="157"/>
 									</Button>
 								</ChildItems>
 							</ContextMenu>
-							<AutoCommandBar name="ContentCommandBar" id="30">
+							<AutoCommandBar name="ContentCommandBar" id="12">
 								<Autofill>false</Autofill>
 								<ChildItems>
-									<Button name="ContentFill" id="31">
+									<Button name="ContentPick" id="31">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
-										<CommandName>Form.Command.FillExternalUsers</CommandName>
-										<ExtendedTooltip name="ContentFillExtendedTooltip" id="32"/>
+										<CommandName>Form.Command.PickExternalUsers</CommandName>
+										<ExtendedTooltip name="ContentPickExtendedTooltip" id="158"/>
 									</Button>
-									<Button name="ContentAdd" id="33">
+									<Button name="ContentAdd" id="32">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.Add</CommandName>
-										<ExtendedTooltip name="ContentAddExtendedTooltip" id="34"/>
+										<ExtendedTooltip name="ContentAddExtendedTooltip" id="159"/>
 									</Button>
-									<Button name="CopyContent" id="35">
+									<Button name="ContentCopy" id="49">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
-										<CommandName>0</CommandName>
-										<ExtendedTooltip name="CopyContentExtendedTooltip" id="36"/>
+										<CommandName>Form.StandardCommand.Copy</CommandName>
+										<ExtendedTooltip name="ContentCopyExtendedTooltip" id="160"/>
 									</Button>
-									<Button name="ContentDelete" id="37">
+									<Button name="ContentDelete" id="33">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.Delete</CommandName>
-										<ExtendedTooltip name="ContentDeleteExtendedTooltip" id="38"/>
+										<ExtendedTooltip name="ContentDeleteExtendedTooltip" id="161"/>
 									</Button>
-									<Button name="ContentMoveUp" id="39">
+									<Button name="ContentMoveUp" id="43">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.MoveUp</CommandName>
-										<ExtendedTooltip name="ContentMoveUpExtendedTooltip" id="40"/>
+										<ExtendedTooltip name="ContentMoveUpExtendedTooltip" id="162"/>
 									</Button>
-									<Button name="ContentMoveDown" id="41">
+									<Button name="ContentMoveDown" id="44">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Item.Content.StandardCommand.MoveDown</CommandName>
-										<ExtendedTooltip name="ContentMoveDownExtendedTooltip" id="42"/>
+										<ExtendedTooltip name="ContentMoveDownExtendedTooltip" id="163"/>
 									</Button>
-									<Button name="SortAsc" id="43">
+									<Button name="SortListAsc" id="34">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<OnlyInAllActions>true</OnlyInAllActions>
 										<CommandName>Form.Item.Content.StandardCommand.SortListAsc</CommandName>
-										<ExtendedTooltip name="SortAscExtendedTooltip" id="44"/>
+										<ExtendedTooltip name="SortListAscExtendedTooltip" id="164"/>
 									</Button>
-									<Button name="SortDesc" id="45">
+									<Button name="SortListDesc" id="35">
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<OnlyInAllActions>true</OnlyInAllActions>
 										<CommandName>Form.Item.Content.StandardCommand.SortListDesc</CommandName>
-										<ExtendedTooltip name="SortDescExtendedTooltip" id="46"/>
+										<ExtendedTooltip name="SortListDescExtendedTooltip" id="165"/>
 									</Button>
 								</ChildItems>
 							</AutoCommandBar>
-							<ExtendedTooltip name="ContentExtendedTooltip" id="47"/>
-							<SearchStringAddition name="ContentSearchString" id="78">
+							<ExtendedTooltip name="ContentExtendedTooltip" id="166"/>
+							<SearchStringAddition name="ContentSearchString" id="167">
 								<AdditionSource>
 									<Item>Content</Item>
 									<Type>SearchStringRepresentation</Type>
 								</AdditionSource>
-								<ContextMenu name="ContentSearchStringContextMenu" id="79"/>
-								<ExtendedTooltip name="ContentSearchStringExtendedTooltip" id="80"/>
+								<ContextMenu name="ContentSearchStringContextMenu" id="168"/>
+								<ExtendedTooltip name="ContentSearchStringExtendedTooltip" id="169"/>
 							</SearchStringAddition>
-							<ViewStatusAddition name="ContentViewStatus" id="81">
+							<ViewStatusAddition name="ContentViewStatus" id="170">
 								<AdditionSource>
 									<Item>Content</Item>
 									<Type>ViewStatusRepresentation</Type>
 								</AdditionSource>
-								<ContextMenu name="ContentViewStatusContextMenu" id="82"/>
-								<ExtendedTooltip name="ContentViewStatusExtendedTooltip" id="83"/>
+								<ContextMenu name="ContentViewStatusContextMenu" id="171"/>
+								<ExtendedTooltip name="ContentViewStatusExtendedTooltip" id="172"/>
 							</ViewStatusAddition>
-							<SearchControlAddition name="ContentSearchControl" id="84">
+							<SearchControlAddition name="ContentSearchControl" id="173">
 								<AdditionSource>
 									<Item>Content</Item>
 									<Type>SearchControl</Type>
 								</AdditionSource>
-								<ContextMenu name="ContentSearchControlContextMenu" id="85"/>
-								<ExtendedTooltip name="ContentSearchControlExtendedTooltip" id="86"/>
+								<ContextMenu name="ContentSearchControlContextMenu" id="174"/>
+								<ExtendedTooltip name="ContentSearchControlExtendedTooltip" id="175"/>
 							</SearchControlAddition>
 							<Events>
 								<Event name="ChoiceProcessing">ContentChoiceProcessing</Event>
 							</Events>
 							<ChildItems>
-								<InputField name="ContentExternalUser" id="48">
+								<InputField name="ContentExternalUser" id="53">
 									<DataPath>Object.Content.ExternalUser</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ContentExternalUserContextMenu" id="49"/>
-									<ExtendedTooltip name="ContentExternalUserExtendedTooltip" id="50"/>
+									<ContextMenu name="ContentExternalUserContextMenu" id="54"/>
+									<ExtendedTooltip name="ContentExternalUserExtendedTooltip" id="176"/>
 									<Events>
 										<Event name="StartChoice">ContentExternalUserStartChoice</Event>
 									</Events>
@@ -246,35 +248,35 @@
 						</Table>
 					</ChildItems>
 				</Page>
-				<Page name="GroupRoles" id="51">
+				<Page name="GroupsRoles" id="56">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Allowed actions (roles)</v8:content>
+							<v8:content>Permitted actions (roles)</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Roles of this group.</v8:content>
+							<v8:content>Groups roles</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="GroupRolesExtendedTooltip" id="52"/>
+					<ExtendedTooltip name="GroupsRolesExtendedTooltip" id="177"/>
 					<ChildItems>
-						<UsualGroup name="RoleRepresentation" id="53">
+						<UsualGroup name="RepresentationOfRoles" id="64">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Roles representation</v8:content>
+									<v8:content>Representation of roles</v8:content>
 								</v8:item>
 							</Title>
 							<Width>48</Width>
 							<Group>Vertical</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="RoleRepresentationExtendedTooltip" id="54"/>
+							<ExtendedTooltip name="RepresentationOfRolesExtendedTooltip" id="178"/>
 							<ChildItems>
-								<Table name="Roles" id="55">
+								<Table name="Roles" id="131">
 									<Representation>Tree</Representation>
 									<SkipOnInput>false</SkipOnInput>
 									<ChangeRowSet>false</ChangeRowSet>
@@ -286,75 +288,83 @@
 									<EnableStartDrag>true</EnableStartDrag>
 									<EnableDrag>true</EnableDrag>
 									<DataPath>Roles</DataPath>
-									<RowPictureDataPath>Roles.PictureNumber</RowPictureDataPath>
-									<RowsPicture>
-										<xr:Ref>CommonPicture.ItemIcons</xr:Ref>
-										<xr:LoadTransparent>true</xr:LoadTransparent>
-									</RowsPicture>
+									<RowPictureDataPath>Roles.PictureNo</RowPictureDataPath>
 									<CommandSet>
+										<ExcludedCommand>HierarchicalList</ExcludedCommand>
+										<ExcludedCommand>Tree</ExcludedCommand>
+										<ExcludedCommand>Copy</ExcludedCommand>
+										<ExcludedCommand>List</ExcludedCommand>
+										<ExcludedCommand>SortListAsc</ExcludedCommand>
+										<ExcludedCommand>MoveUp</ExcludedCommand>
+										<ExcludedCommand>OutputList</ExcludedCommand>
+										<ExcludedCommand>SortListDesc</ExcludedCommand>
+										<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+										<ExcludedCommand>Delete</ExcludedCommand>
+										<ExcludedCommand>EndEdit</ExcludedCommand>
 										<ExcludedCommand>Add</ExcludedCommand>
+										<ExcludedCommand>MoveDown</ExcludedCommand>
 									</CommandSet>
 									<SearchStringLocation>None</SearchStringLocation>
 									<ViewStatusLocation>None</ViewStatusLocation>
 									<SearchControlLocation>None</SearchControlLocation>
-									<ContextMenu name="RolesContextMenu" id="56">
+									<ContextMenu name="RolesContextMenu" id="132">
 										<Autofill>false</Autofill>
 									</ContextMenu>
-									<AutoCommandBar name="RolesCommandBar" id="57">
+									<AutoCommandBar name="RolesCommandBar" id="133">
 										<Autofill>false</Autofill>
 										<ChildItems>
-											<Button name="RolesCheckAll" id="58">
+											<Button name="RolesCheckAll" id="139">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
 												<CommandName>Form.Command.CheckAll</CommandName>
-												<ExtendedTooltip name="RolesCheckAllExtendedTooltip" id="59"/>
+												<ExtendedTooltip name="RolesCheckAllExtendedTooltip" id="179"/>
 											</Button>
-											<Button name="RolesUncheckAll" id="60">
+											<Button name="RolesUncheckAll" id="140">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
 												<CommandName>Form.Command.UncheckAll</CommandName>
-												<ExtendedTooltip name="RolesUncheckAllExtendedTooltip" id="61"/>
+												<ExtendedTooltip name="RolesUncheckAllExtendedTooltip" id="180"/>
 											</Button>
-											<Button name="RolesShowSelectedRolesOnly" id="62">
+											<Button name="RolesShowOnlySelectedRoles" id="141">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
-												<CommandName>Form.Command.ShowSelectedRolesOnly</CommandName>
-												<ExtendedTooltip name="RolesShowSelectedRolesOnlyExtendedTooltip" id="63"/>
+												<CommandName>Form.Command.ShowOnlySelectedRoles</CommandName>
+												<ExtendedTooltip name="RolesShowOnlySelectedRolesExtendedTooltip" id="181"/>
 											</Button>
-											<Button name="RolesShowRoleSubsystems" id="64">
+											<Button name="RolesShowRolesSubsystems" id="146">
 												<Type>CommandBarButton</Type>
-												<CommandName>Form.Command.ShowRoleSubsystems</CommandName>
-												<ExtendedTooltip name="RolesShowRoleSubsystemsExtendedTooltip" id="65"/>
+												<CommandName>Form.Command.ShowRolesSubsystems</CommandName>
+												<ExtendedTooltip name="RolesShowRolesSubsystemsExtendedTooltip" id="182"/>
 											</Button>
 										</ChildItems>
 									</AutoCommandBar>
-									<ExtendedTooltip name="RolesExtendedTooltip" id="66"/>
-									<SearchStringAddition name="RolesSearchString" id="87">
+									<ExtendedTooltip name="RolesExtendedTooltip" id="183"/>
+									<SearchStringAddition name="RolesSearchString" id="184">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>SearchStringRepresentation</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesSearchStringContextMenu" id="88"/>
-										<ExtendedTooltip name="RolesSearchStringExtendedTooltip" id="89"/>
+										<ContextMenu name="RolesSearchStringContextMenu" id="185"/>
+										<ExtendedTooltip name="RolesSearchStringExtendedTooltip" id="186"/>
 									</SearchStringAddition>
-									<ViewStatusAddition name="RolesViewStatus" id="90">
+									<ViewStatusAddition name="RolesViewStatus" id="187">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>ViewStatusRepresentation</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesViewStatusContextMenu" id="91"/>
-										<ExtendedTooltip name="RolesViewStatusExtendedTooltip" id="92"/>
+										<ContextMenu name="RolesViewStatusContextMenu" id="188"/>
+										<ExtendedTooltip name="RolesViewStatusExtendedTooltip" id="189"/>
 									</ViewStatusAddition>
-									<SearchControlAddition name="RolesSearchControl" id="93">
+									<SearchControlAddition name="RolesSearchControl" id="190">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>SearchControl</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesSearchControlContextMenu" id="94"/>
-										<ExtendedTooltip name="RolesSearchControlExtendedTooltip" id="95"/>
+										<ContextMenu name="RolesSearchControlContextMenu" id="191"/>
+										<ExtendedTooltip name="RolesSearchControlExtendedTooltip" id="192"/>
 									</SearchControlAddition>
 									<ChildItems>
-										<ColumnGroup name="RolesGroup" id="67">
+										<ColumnGroup name="ColumnRoles" id="134">
 											<Title>
 												<v8:item>
 													<v8:lang>en</v8:lang>
@@ -368,25 +378,25 @@
 												</v8:item>
 											</ToolTip>
 											<Group>InCell</Group>
-											<ExtendedTooltip name="RolesGroupExtendedTooltip" id="68"/>
+											<ExtendedTooltip name="ColumnRolesExtendedTooltip" id="193"/>
 											<ChildItems>
-												<CheckBoxField name="RolesCheck" id="69">
+												<CheckBoxField name="RolesCheck" id="142">
 													<DataPath>Roles.Check</DataPath>
 													<EditMode>Directly</EditMode>
 													<ShowInHeader>false</ShowInHeader>
 													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="RolesCheckContextMenu" id="70"/>
-													<ExtendedTooltip name="RolesCheckExtendedTooltip" id="71"/>
+													<ContextMenu name="RolesCheckContextMenu" id="143"/>
+													<ExtendedTooltip name="RolesCheckExtendedTooltip" id="194"/>
 													<Events>
 														<Event name="OnChange">RolesCheckOnChange</Event>
 													</Events>
 												</CheckBoxField>
-												<InputField name="RolesSynonym" id="72">
+												<InputField name="RolesSynonym" id="144">
 													<DataPath>Roles.Synonym</DataPath>
 													<ReadOnly>true</ReadOnly>
 													<EditMode>EnterOnInput</EditMode>
-													<ContextMenu name="RolesSynonymContextMenu" id="73"/>
-													<ExtendedTooltip name="RolesSynonymExtendedTooltip" id="74"/>
+													<ContextMenu name="RolesSynonymContextMenu" id="145"/>
+													<ExtendedTooltip name="RolesSynonymExtendedTooltip" id="195"/>
 												</InputField>
 											</ChildItems>
 										</ColumnGroup>
@@ -398,20 +408,14 @@
 				</Page>
 			</ChildItems>
 		</Pages>
-		<InputField name="Comment" id="75">
+		<InputField name="Comment" id="38">
 			<DataPath>Object.Comment</DataPath>
-			<ContextMenu name="CommentContextMenu" id="76"/>
-			<ExtendedTooltip name="CommentExtendedTooltip" id="77"/>
+			<ContextMenu name="CommentContextMenu" id="39"/>
+			<ExtendedTooltip name="CommentExtendedTooltip" id="196"/>
 		</InputField>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="Object" id="1">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Object</v8:content>
-				</v8:item>
-			</Title>
+		<Attribute name="Object" id="2">
 			<Type>
 				<v8:Type>cfg:CatalogObject.ExternalUserGroups</v8:Type>
 			</Type>
@@ -421,7 +425,7 @@
 				<AdditionalColumns table="Object.Roles"/>
 			</Columns>
 		</Attribute>
-		<Attribute name="ShowSelectedRolesOnly" id="2">
+		<Attribute name="ShowSelectedRolesOnly" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -432,7 +436,7 @@
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="ActionsOnForm" id="3">
+		<Attribute name="ActionsOnForm" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -441,11 +445,11 @@
 			</Title>
 			<Type/>
 		</Attribute>
-		<Attribute name="AuthorizationObjectTypePresentation" id="4">
+		<Attribute name="AuthorizationObjectTypePresentation" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Participant type</v8:content>
+					<v8:content>Types of participants</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -457,7 +461,7 @@
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="AuthorizationObjectTypes" id="5">
+		<Attribute name="AuthorizationObjectTypes" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -468,7 +472,7 @@
 				<v8:Type>v8:ValueListType</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="Roles" id="6">
+		<Attribute name="Roles" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -494,7 +498,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Allowed action (role)</v8:content>
+							<v8:content>Synonym</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -505,11 +509,11 @@
 						</v8:StringQualifiers>
 					</Type>
 				</Column>
-				<Column name="PictureNumber" id="3">
+				<Column name="PictureNo" id="3">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Picture number</v8:content>
+							<v8:content>Picture no</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -536,11 +540,11 @@
 						</v8:StringQualifiers>
 					</Type>
 				</Column>
-				<Column name="IsRole" id="5">
+				<Column name="ThisIsRole" id="5">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Is role</v8:content>
+							<v8:content>This is role</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -549,7 +553,7 @@
 				</Column>
 			</Columns>
 		</Attribute>
-		<Attribute name="ShowRoleSubsystems" id="7">
+		<Attribute name="ShowRoleSubsystems" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -559,6 +563,9 @@
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<Save>
+				<Field>ShowRoleSubsystems</Field>
+			</Save>
 		</Attribute>
 		<Attribute name="HideFullAccessRole" id="8">
 			<Title>
@@ -573,81 +580,89 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="FillExternalUsers" id="1">
+		<Command name="PickExternalUsers" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fill</v8:content>
+					<v8:content>Pick</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fill users</v8:content>
+					<v8:content>Pick external users</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>FillExternalUsers</Action>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="ShowSelectedRolesOnly" id="2">
+		<Command name="ShowOnlySelectedRoles" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Selected roles only</v8:content>
+					<v8:content>Only selected roles</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Show selected roles only.</v8:content>
+					<v8:content>Show only selected roles</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>ShowSelectedRolesOnly</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="UncheckAll" id="3">
+		<Command name="UncheckAll" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Clear all flags</v8:content>
+					<v8:content>Uncheck all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Clear all flags.</v8:content>
+					<v8:content>Uncheck all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>UncheckAll</Action>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="CheckAll" id="4">
+		<Command name="CheckAll" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set all flags</v8:content>
+					<v8:content>Check all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set all flags.</v8:content>
+					<v8:content>Check all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>CheckAll</Action>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="ShowRoleSubsystems" id="5">
+		<Command name="ShowRolesSubsystems" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group by subsystems</v8:content>
+					<v8:content>Subsystem grouping</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Show grouping by subsystems.</v8:content>
+					<v8:content>Display grouping by subsystems</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>ShowRoleSubsystems</Action>

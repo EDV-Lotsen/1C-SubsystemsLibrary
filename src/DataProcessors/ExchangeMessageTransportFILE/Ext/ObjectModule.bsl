@@ -443,7 +443,7 @@ Function CreateCheckFile()
 		TextDocument.Write(CommonUseClientServer.GetFullFileName(DataExchangeDirectoryName(), FlagTempFileName()));
 		
 	Except
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	
@@ -457,7 +457,7 @@ Function DeleteCheckFiles()
 		DeleteFiles(DataExchangeDirectoryName(), FlagTempFileName());
 		
 	Except
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	

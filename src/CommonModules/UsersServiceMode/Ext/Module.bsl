@@ -63,7 +63,7 @@ Procedure RegisterSharedUser() Export
 			CommitTransaction();
 		Except
 			RollbackTransaction();
-			WriteLogEvent(NStr("en = 'Registering shared user'"), 
+			WriteLogEvent(NStr("en = 'Registering shared user'", Metadata.DefaultLanguage.LanguageCode), 
 				EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 			Raise;
 		EndTry;

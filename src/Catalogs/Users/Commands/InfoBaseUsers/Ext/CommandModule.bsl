@@ -1,4 +1,5 @@
 ﻿
+
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
@@ -9,7 +10,7 @@ Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 		If CommandExecuteParameters.Source.FormName = "Catalog.Users.Form.ListForm" Then
 			FormParameters.Insert("Filter", "Users");
 			
-		ElsIf CommandExecuteParameters.Source.FormName = "Catalog.ExternalUsers.Form.ListForm" Then
+		ElsIf  CommandExecuteParameters.Source.FormName = "Catalog.ExternalUsers.Form.ListForm" Then
 			FormParameters.Insert("Filter", "ExternalUsers");
 			
 		EndIf;

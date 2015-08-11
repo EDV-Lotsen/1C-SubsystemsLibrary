@@ -173,7 +173,7 @@ Procedure InitializeAdditionalPropertiesForPosting(DocumentRef, StructureAdditio
 		
 	EndDo;
 	
-	QueryResultSelection = QueryResult.Choose();
+	QueryResultSelection = QueryResult.Select();
 	QueryResultSelection.Next();
 	
 	// Fill values of the keys, containig document data.
@@ -187,7 +187,7 @@ Procedure InitializeAdditionalPropertiesForPosting(DocumentRef, StructureAdditio
 	StructureAdditionalProperties.ForPosting.Company = StructureAdditionalProperties.ForPosting.Company;
 	
 
-	QueryResultSelection = QueryResult.Choose();
+	QueryResultSelection = QueryResult.Select();
 	QueryResultSelection.Next();
 	
 	// Fill values for the keys, containing acounting policy data.
@@ -271,7 +271,7 @@ Function GetNamesArrayOfUsedRegisters(Recorder, DocumentMetadata)
 				
 			Else
 				
-				Selection = Query.Execute().Choose();
+				Selection = Query.Execute().Select();
 				
 				While Selection.Next() Do
 					
@@ -826,7 +826,7 @@ Function CompanyResponsiblePersons(Company, SliceDate) Export
 		|FROM
 		|	InformationRegister.ResponsiblePersons.SliceLast(&SliceDate, Company = &Company) AS ResponsiblePersonsSliceLast";
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 
 		While Selection.Next() Do
 			If Selection.Position = Catalogs.Positions.Director Then

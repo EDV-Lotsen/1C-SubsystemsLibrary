@@ -428,7 +428,7 @@ Function EventLogMessageKey()
 	If TypeOf(EventLogMessageKey) <> Type("String")
 		Or IsBlankString(EventLogMessageKey) Then
 		
-		EventLogMessageKey = NStr("en = 'Data exchange'");
+		EventLogMessageKey = NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode);
 		
 	EndIf;
 	
@@ -4750,7 +4750,7 @@ Function GetDocumentHasRegisterRecords(DocumentRef)
 		
 	EndDo;
 	Query.Text = QueryText;
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		TableRow = QueryTable.Add();
 		FillPropertyValues(TableRow, Selection);
@@ -5517,7 +5517,7 @@ Function FindItemUsingRequest(PropertyStructure, SearchProperties, ObjectType = 
 	Else
 		
 		// return first the found object
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		ObjectRef = Selection.Ref;
 				
@@ -11027,7 +11027,7 @@ Function GetSelectionForExportWithRestrictions(Rule)
 	EndIf;
 
 	ReportBuilder.Execute();
-	Selection = ReportBuilder.Result.Choose();
+	Selection = ReportBuilder.Result.Select();
 		
 	Return Selection;
 		
@@ -11458,7 +11458,7 @@ Function GetChangeRecordAttributeStructure(PCRTable)
 		Try
 			ChangeRecordAttributeStructure.Insert(PCR.Source);
 		Except
-			WriteLogEvent(NStr("en = 'Data exchange. Importing conversion rules.'"),
+			WriteLogEvent(NStr("en = 'Data exchange. Importing conversion rules.'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
 			);
 		EndTry;

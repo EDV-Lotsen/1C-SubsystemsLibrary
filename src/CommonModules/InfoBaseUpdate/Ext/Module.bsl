@@ -11,22 +11,33 @@
 // Checks whether the infobase update is required when configuration version is changed.
 // 
 Function InfoBaseUpdateRequired() Export
-	
+
 	Return UpdateRequired(Metadata.Version, InfoBaseVersion(Metadata.Name));
 	
 EndFunction
 
 // Checks whether the current user has rights to execute the infobase update.
 // 
-Function CanUpdateInfoBase() 
+Function CanUpdateInfoBase(PrivilegedMode = True, SeparatedData = Undefined) Export 
 	
-	If Not CommonUseCached.DataSeparationEnabled() 
-		Or Not CommonUseCached.CanUseSeparatedData() Then
-		
-		Return AccessRight("ExclusiveMode", Metadata) And Users.InfoBaseUserWithFullAccess(, True);
-	Else
-		Return True;
+	CheckFullAdministratorRights = True;
+	
+	If SeparatedData = Undefined Then
+		SeparatedData = Not CommonUseCached.DataSeparationEnabled()
+			Or CommonUseCached.CanUseSeparatedData();
 	EndIf;
+	
+	If CommonUseCached.DataSeparationEnabled()
+	   And SeparatedData Then
+		
+		If Not CommonUseCached.CanUseSeparatedData() Then
+			Return False;
+		EndIf;
+		CheckFullAdministratorRights = False;
+	EndIf;
+	
+	Return Users.InfoBaseUserWithFullAccess(
+		, CheckFullAdministratorRights, PrivilegedMode);
 	
 EndFunction
 
@@ -98,14 +109,13 @@ Function ExecuteInfoBaseUpdate(Val Force = False) Export
 	EndIf;
 	
 	Message = StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en = 'The application version number is changed from %1 to %2. The infobase will be updated.'"),
+		NStr("en='The application version number is changed from %1 to %2. The infobase will be updated.'"),
 		DataVersion, MetadataVersion);
 	WriteInformation(Message);
 	
 	// Checking whether the user has rights for updating the infobase
-	
 	If Not CanUpdateInfoBase() Then
-		Message = NStr("en = 'Insufficient rights to perform the update. Please contact your infobase administrator.'");
+		Message = NStr("en='Insufficient rights to perform the update. Please contact your infobase administrator.'");
 		WriteError(Message);
 		Raise Message;
 	EndIf;
@@ -137,16 +147,15 @@ Function ExecuteInfoBaseUpdate(Val Force = False) Export
 	
 	// Setting the exclusive mode for updating the infobase.
 	If Not DebugMode Then
-		
 		Try
 			CommonUse.LockInfoBase();
 		Except
 			Message = StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'The infobase update cannot be performed because there are other connected sessions.
-					 |Please contact your infobase administrator.
-					 |
-					 |Error details:
-					 |%1'"), BriefErrorDescription(ErrorInfo()));
+				NStr("en='The infobase update cannot be performed because there are other connected sessions."
+"Please contact your infobase administrator."
+""
+"Error details:"
+"%1'"), BriefErrorDescription(ErrorInfo()));
 			
 			WriteError(Message);
 			
@@ -175,8 +184,8 @@ Function ExecuteInfoBaseUpdate(Val Force = False) Export
 			UpdateHandlerList);
 	Except
 		Message = StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Errors occurred during updating the infobase to the version %1: 
-				|%2'"), MetadataVersion, DetailErrorDescription(ErrorInfo()));
+			NStr("en='Errors occurred during updating the infobase to the version %1: "
+"%2'"), MetadataVersion, DetailErrorDescription(ErrorInfo()));
 		WriteError(Message);
 		// Disabling the exclusive mode
 		If Not DebugMode Then
@@ -205,7 +214,7 @@ Function ExecuteInfoBaseUpdate(Val Force = False) Export
 	EndIf;	
 	
 	Message = StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en = 'The infobase has been successfully updated to the version %1.'"), MetadataVersion);
+		NStr("en='The infobase has been successfully updated to the version %1.'"), MetadataVersion);
 	WriteInformation(Message);
 	
 	PutUpdateDetails = DataVersion <> "0.0.0.0";
@@ -219,6 +228,7 @@ Function ExecuteInfoBaseUpdate(Val Force = False) Export
 			
 			SaveUpdateDetailsForUsers(ExecutedHandlers);
 		Else
+			SaveUpdateDetailsForUsers(ExecutedHandlers);
 			Address = PutToTempStorage(ExecutedHandlers, New UUID);
 		EndIf;
 	EndIf;
@@ -255,14 +265,14 @@ Function ExecuteUpdateIteration(Val LibraryID, Val InfoBaseMetadataVersion,
 	For Each Version In HandlersToExecute.Rows Do
 		
 		If Version.Version = "*" Then
-			Message = NStr("en = 'Performing mandatory infobase update procedures.'");
+			Message = NStr("en='Performing mandatory infobase update procedures.'");
 		Else
 			NewInfoBaseVersion = Version.Version;
 			
 			If LibraryID = Metadata.Name Then 
-				Message = NStr("en = 'Performing the infobase update from the version %1 to the version %2.'");
+				Message = NStr("en='Performing the infobase update from the version %1 to the version %2.'");
 			Else
-				Message = NStr("en = 'Performing the infobase update of the parent configuration %3 from the version %1 to the version %2'");
+				Message = NStr("en='Performing the infobase update of the parent configuration %3 from the version %1 to the version %2'");
 			EndIf;
 			
 			Message = StringFunctionsClientServer.SubstituteParametersInString(Message,
@@ -277,15 +287,15 @@ Function ExecuteUpdateIteration(Val LibraryID, Val InfoBaseMetadataVersion,
 		EndDo;
 		
 		If Version.Version = "*" Then
-			Message = NStr("en = 'Mandatory infobase update procedures have been performed successfully.'");
+			Message = NStr("en='Mandatory infobase update procedures have been performed successfully.'");
 		Else
 			// Setting the infobase version number
 			SetInfoBaseVersion(LibraryID, NewInfoBaseVersion);
 			
 			If LibraryID = Metadata.Name Then 
-				Message = NStr("en = 'The infobase has been successfully updated from the version %1 to the version %2.'");
+				Message = NStr("en='The infobase has been successfully updated from the version %1 to the version %2.'");
 			Else
-				Message = NStr("en = 'The infobase of the parent configuration %3 has been successfully updated from the version %1 to the version %2.'");
+				Message = NStr("en='The infobase of the parent configuration %3 has been successfully updated from the version %1 to the version %2.'");
 			EndIf;
 			
 			Message = StringFunctionsClientServer.SubstituteParametersInString(Message,
@@ -489,7 +499,7 @@ Function UpdateInIntervalHandlers(Val AllHandlers, Val VersionFrom, Val VersionB
 	QueryBuilder.DataSource = Source;
 	QueryBuilder.Dimensions.Add("Version");
 	QueryBuilder.Execute();
-	SelectionTotals = QueryBuilder.Result.Choose(QueryResultIteration.ByGroups);
+	SelectionTotals = QueryBuilder.Result.Select(QueryResultIteration.ByGroups);
 	
 	SharedDataFilter = New Array;
 	If CommonUseCached.DataSeparationEnabled() Then
@@ -512,7 +522,7 @@ Function UpdateInIntervalHandlers(Val AllHandlers, Val VersionFrom, Val VersionB
 		EndIf;
 		
 		VersionString = Undefined;
-		Selection = SelectionTotals.Choose(QueryResultIteration.Linear);
+		Selection = SelectionTotals.Select(QueryResultIteration.Linear);
 		While Selection.Next() Do
 			If Selection.Procedure = Null Then
 				Continue;
@@ -582,7 +592,7 @@ Procedure SaveUpdateDetailsForUsers(Val ExecutedHandlers)
 	For Each InfoBaseUser In InfoBaseUsers.GetUsers() Do
 		PreviouslyExecutedHandlers = CommonSettingsStorage.Load("UpdateInfoBase", 
 			"ExecutedHandlers", , InfoBaseUser.Name);
-		
+			
 		If PreviouslyExecutedHandlers = Undefined Then
 			HandlerTree = ExecutedHandlers;
 		Else
@@ -611,19 +621,19 @@ Function GetColumnStructure(Val SourceCollection)
 	
 EndFunction
 
-Procedure CopyRowsToTree(Val TargetRows, Val SourceRows, Val ColumnStructure)
+Procedure CopyRowsToTree(Val ReceiverRows, Val SourceRows, Val ColumnStructure)
 	
 	For Each SourceRow In SourceRows Do
 		FillPropertyValues(ColumnStructure, SourceRow);
-		FoundRows = TargetRows.FindRows(ColumnStructure);
+		FoundRows = ReceiverRows.FindRows(ColumnStructure);
 		If FoundRows.Count() = 0 Then
-			TargetRow = TargetRows.Add();
-			FillPropertyValues(TargetRow, SourceRow);
+			ReceiverRow = ReceiverRows.Add();
+			FillPropertyValues(ReceiverRow, SourceRow);
 		Else
-			TargetRow = FoundRows[0];
+			ReceiverRow = FoundRows[0];
 		EndIf;
 		
-		CopyRowsToTree(TargetRow.Rows, SourceRow.Rows, ColumnStructure);
+		CopyRowsToTree(ReceiverRow.Rows, SourceRow.Rows, ColumnStructure);
 	EndDo;
 	
 EndProcedure
@@ -638,7 +648,7 @@ EndProcedure
 //
 Function EventLogMessageText() Export
 	
-	Return NStr("en = 'Infobase update'");
+	Return NStr("en = 'Infobase update'; ru = 'Обновление информационной базы'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction	
 
@@ -711,3 +721,16 @@ Procedure OutputUpdateDetails(Val VersionNumber, DocumentUpdateDetails, UpdateDe
 	
 EndProcedure
 
+// Internal use only.
+Procedure WriteData(Val Data, Val RegisterInExchangePlans = False, 
+	Val EnableBusinessLogic = False) Export
+	
+	Data.DataExchange.Load = Not EnableBusinessLogic;
+	If Not RegisterInExchangePlans Then
+		Data.AdditionalProperties.Insert("DisableObjectChangeRecordMechanism");
+		Data.DataExchange.Recipients.AutoFill = False;
+	EndIf;
+	
+	Data.Write();
+	
+EndProcedure

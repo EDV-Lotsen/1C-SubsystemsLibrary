@@ -41,14 +41,14 @@ EndProcedure
 Procedure CopyExecute()
 	
 	If Items.FilteredForms.SelectedRows.Count() = 0 Then
-		DoMessageBox(NStr("en = 'You should select settings to be copied.'"));
+		ShowMessageBox(,NStr("en = 'You should select settings to be copied.'"));
 		Return;
 	EndIf;
 	
 	UserList = Items.User.ChoiceList.Copy();
 	
 	If UserList.Count() = 0 Then
-		DoMessageBox(NStr("en = 'It is impossible to copy settings because there are no user accounts in the application.'"));
+		ShowMessageBox(,NStr("en = 'It is impossible to copy settings because there are no user accounts in the application.'"));
 		Return;
 	EndIf;
 	
@@ -67,22 +67,34 @@ Procedure CopyExecute()
 		EndDo;
 		
 		If UsersTarget.Count() = 0 Then
-			DoMessageBox(NStr("en = 'You should select users to whom the settings will be copied.'"));
+			ShowMessageBox(,NStr("en = 'You should select users to whom the settings will be copied.'"));
 			Return;
 		EndIf;
 		
 		QuestionText = NStr("en = 'After you copy settings to a user,
 		|previous settings of this user will be lost. 
 		|Are you really want to copy settings to the selected users?'");
-		Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
-		If Response = DialogReturnCode.No Then
-			Return;
-		EndIf;
-		
-		CopyAtServer(UsersTarget);
-		ShowUserNotification(NStr("en = 'Settings are copied'"));
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("CopyExecuteEnd", ThisObject, New Structure("UsersTarget", UsersTarget)), QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure CopyExecuteEnd(QuestionResult, AdditionalParameters) Export
+	
+	UsersTarget = AdditionalParameters.UsersTarget;
+	
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.No Then
+		Return;
+	EndIf;
+	
+	CopyAtServer(UsersTarget);
+	ShowUserNotification(NStr("en = 'Settings are copied'"));
+
 EndProcedure
 
 &AtClient
@@ -90,14 +102,23 @@ Procedure DeleteExecute()
 	
 	If Items.FilteredForms.SelectedRows.Count() = 0 Then
 		
-		DoMessageBox(NStr("en = 'You should select settings to be deleted.'"));
+		ShowMessageBox(,NStr("en = 'You should select settings to be deleted.'"));
 		Return;
 		
 	EndIf;
 	
 	QuestionText = NStr("en = 'After you delete settings, the form will be opened with default settings. 
 	|Are you really want to copy settings?'");
-	Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
+	Response = Undefined;
+
+	ShowQueryBox(New NotifyDescription("DeleteExecuteEnd", ThisObject), QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
+	
+EndProcedure
+
+&AtClient
+Procedure DeleteExecuteEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.No Then
 		
 		Return;
@@ -107,7 +128,7 @@ Procedure DeleteExecute()
 	DeleteAtServer();
 	
 	ShowUserNotification(NStr("en = 'Settings are deleted'"));
-	
+
 EndProcedure
 
 &AtClient

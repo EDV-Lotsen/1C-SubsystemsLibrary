@@ -60,7 +60,7 @@ Function SeparatedMetadataObjects() Export
 		If SequenceMetadata.Documents.Count() = 0 Then
 			MessageTemplate = NStr("en = 'There are no documents in %1 sequence.'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageTemplate, SequenceMetadata.Name);
-			WriteLogEvent("CommonUseCached.SeparatedMetadataObjects", EventLogLevel.Error, 
+			WriteLogEvent(NStr("en = 'CommonUseCached.SeparatedMetadataObjects'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, 
 				SequenceMetadata, , MessageText);
 			Result.Insert(SequenceMetadata.FullName(), True);
 		Else	
@@ -75,14 +75,14 @@ Function SeparatedMetadataObjects() Export
 	
 	// 2) Journals. Going over with first incoming document test. If there are no documents than considering that the configuration is separated.
 	For Each DocumentJournalMetadata In Metadata.DocumentJournals Do
-		If DocumentJournalMetadata.DocumentsToRegister.Count() = 0 Then
+		If DocumentJournalMetadata.RegisteredDocuments.Count() = 0 Then
 			MessageTemplate = NStr("en = 'There are no documents in %1 journal.'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageTemplate, DocumentJournalMetadata.Name);
-			WriteLogEvent("CommonUseCached.SeparatedMetadataObjects", EventLogLevel.Error, 
+			WriteLogEvent(NStr("en = 'CommonUseCached.SeparatedMetadataObjects'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, 
 				DocumentJournalMetadata, , MessageText);
 			Result.Insert(DocumentJournalMetadata.FullName(), True);
 		Else
-			For Each DocumentMetadata In DocumentJournalMetadata.DocumentsToRegister Do
+			For Each DocumentMetadata In DocumentJournalMetadata.RegisteredDocuments Do
 				If Result.Get(DocumentMetadata.FullName()) <> Undefined Then
 					Result.Insert(DocumentJournalMetadata.FullName(), True);
 				EndIf;
@@ -172,15 +172,15 @@ Function GetWSDefinitions(Val WSDLAddress, Val UserName, Val Password) Export
 	StandardSubsystemsOverridable.CanGetFilesFromInternet(CanGetFilesFromInternet);
 	If CanGetFilesFromInternet = True Then
 	
-		ReceivingParameters = New Array;
-		ReceivingParameters.Add(WSDLAddress);
-		ReceivingParameters.Add(UserName);
-		ReceivingParameters.Add(Password);
+		ReceptionParameters = New Array;
+		ReceptionParameters.Add(WSDLAddress);
+		ReceptionParameters.Add(UserName);
+		ReceptionParameters.Add(Password);
 		
 		WSDLData = CommonUseCached.GetVersionCacheData(
 			WSDLAddress, 
 			Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails, 
-			CommonUse.ValueToXMLString(ReceivingParameters),
+			CommonUse.ValueToXMLString(ReceptionParameters),
 			False);
 			
 		WSDLFileName = GetTempFileName("wsdl");
@@ -192,7 +192,7 @@ Function GetWSDefinitions(Val WSDLAddress, Val UserName, Val Password) Export
 		Try
 			DeleteFiles(WSDLFileName);
 		Except
-			WriteLogEvent("TempFileDeletion", EventLogLevel.Error, , , 
+			WriteLogEvent(NStr("en = 'TempFileDeletion'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , 
 				DetailErrorDescription(ErrorInfo()));
 		EndTry;
 		
@@ -314,19 +314,19 @@ EndFunction
 // Parameters:
 // ID - String - Cache record ID
 // DataType - EnumRef.ProgramInterfaceCacheDataTypes.
-// ReceivingParameters - String - Parameter array serialized to XML for passing into 
+// ReceptionParameters - String - Parameter array serialized to XML for passing into 
 // the cache update procedure;
 // UseObsoleteData - Boolean - flag that shows a need of waiting for 
-// cache update, if they are obsolete.
-// True - always use cache data, if any. False - wait for cache update if data is obsolete.
+// cache data update, if they are obsolete.
+// True - always use cache data, if any. False - wait for data update if data is obsolete.
 //
 // Returns:
 // Arbitrary.
 //
 Function GetVersionCacheData(Val ID, Val DataType, 
-		Val ReceivingParameters, Val UseObsoleteData = True) Export
+		Val ReceptionParameters, Val UseObsoleteData = True) Export
 	
-	ReceivingParameters = CommonUse.ValueFromXMLString(ReceivingParameters);
+	ReceptionParameters = CommonUse.ValueFromXMLString(ReceptionParameters);
 	
 	SetPrivilegedMode(True);
 	
@@ -368,7 +368,7 @@ Function GetVersionCacheData(Val ID, Val DataType,
 	JobParameters = New Array;
 	JobParameters.Add(ID);
 	JobParameters.Add(DataType);
-	JobParameters.Add(ReceivingParameters);
+	JobParameters.Add(ReceptionParameters);
 	
 	JobFilter = New Structure;
 	JobFilter.Insert("MethodName", JobMethodName);
@@ -380,7 +380,7 @@ Function GetVersionCacheData(Val ID, Val DataType,
 	If Result.IsEmpty() Then
 		
 		If CommonUse.FileInfoBase() Then
-			CommonUse.RefreshVersionCacheData(ID, DataType, ReceivingParameters);
+			CommonUse.RefreshVersionCacheData(ID, DataType, ReceptionParameters);
 		Else
 			Jobs = BackgroundJobs.GetBackgroundJobs(JobFilter);
 			If Jobs.Count() = 0 Then
@@ -396,11 +396,11 @@ Function GetVersionCacheData(Val ID, Val DataType,
 			Except
 				Job = BackgroundJobs.FindByUUID(Job.UUID);
 				If Job.ErrorInfo <> Undefined Then
-					WriteLogEvent("RefreshVersionCache", EventLogLevel.Error, , ,
+					WriteLogEvent(NStr("en = 'UpdateVersionCache'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 						DetailErrorDescription(Job.ErrorInfo));
 					Raise(BriefErrorDescription(Job.ErrorInfo));
 				Else
-					WriteLogEvent("RefreshVersionCache", EventLogLevel.Error, , ,
+					WriteLogEvent(NStr("en = 'UpdateVersionCache'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 						DetailErrorDescription(ErrorInfo()));
 					Raise;
 				EndIf;
@@ -425,11 +425,11 @@ Function GetVersionCacheData(Val ID, Val DataType,
 		EndIf;
 	Else
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		If CommonUse.VersionCacheRecordObsolete(Selection) Then
 			If CommonUse.FileInfoBase() Then
-				CommonUse.RefreshVersionCacheData(ID, DataType, ReceivingParameters);
+				CommonUse.RefreshVersionCacheData(ID, DataType, ReceptionParameters);
 				Selection = Undefined;
 			Else
 				// Obsolete data
@@ -448,11 +448,11 @@ Function GetVersionCacheData(Val ID, Val DataType,
 					Except
 						Job = BackgroundJobs.FindByUUID(Job.UUID);
 						If Job.ErrorInfo <> Undefined Then
-							WriteLogEvent("RefreshVersionCache", EventLogLevel.Error, , ,
+							WriteLogEvent(NStr("en = 'UpdateVersionCache'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 								DetailErrorDescription(Job.ErrorInfo));
 							Raise(BriefErrorDescription(Job.ErrorInfo));
 						Else
-							WriteLogEvent("RefreshVersionCache", EventLogLevel.Error, , ,
+							WriteLogEvent(NStr("en = 'UpdateVersionCache'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 								DetailErrorDescription(ErrorInfo()));
 							Raise;
 						EndIf;
@@ -464,7 +464,7 @@ Function GetVersionCacheData(Val ID, Val DataType,
 	EndIf;
 	
 	If Selection = Undefined Then
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 	EndIf;
 	
@@ -474,4 +474,23 @@ Function GetVersionCacheData(Val ID, Val DataType,
 	
 	Return Selection.Data.Get();
 	
+EndFunction
+
+// Internal use only.
+Function InterfaceOptions() Export
+	
+	InterfaceOptions = New Structure;
+	Try
+		CommonUseOverridable.OnGetInterfaceFunctionalOptionParameters(InterfaceOptions);
+	Except
+		ErrorInfo = ErrorInfo();
+		EventName = NStr("en = 'Interface setup'", Metadata.DefaultLanguage.LanguageCode);
+		ErrorText = StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en='The following error occurred during obtaining the interface options:"
+"%1'"),
+			DetailErrorDescription(ErrorInfo));
+		WriteLogEvent(EventName, EventLogLevel.Error,,, ErrorText);
+	EndTry;
+	
+	Return InterfaceOptions;
 EndFunction

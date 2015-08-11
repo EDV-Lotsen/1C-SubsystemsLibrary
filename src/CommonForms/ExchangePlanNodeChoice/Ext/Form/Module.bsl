@@ -98,7 +98,7 @@ Procedure Choose(Command)
 		CurrentData = Items.ExchangePlanNodes.CurrentData;
 
 		If CurrentData = Undefined Then
-			DoMessageBox(NStr("en = 'Node is not selected.'"));
+			ShowMessageBox(, NStr("en = 'Node is not selected.'"));
 		Else
 			NotifyChoice(CurrentData.Node);
 		EndIf;
@@ -143,7 +143,7 @@ Procedure AddUsedExchangePlan(MetadataObject)
 	|	Presentation";
 	Query.Text = StrReplace(Query.Text, "&ExchangePlanTable", MetadataObject.FullName());
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		NewRow = ExchangePlanNodes.Add();

@@ -12,7 +12,11 @@
 				<Code>00002</Code>
 				<Description>Default company</Description>
 				<Type>
-					<v8:Type xmlns:d6p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d6p1:CatalogRef.Counterparties</v8:Type>
+					<v8:Type>xs:string</v8:Type>
+					<v8:StringQualifiers>
+						<v8:Length>10</v8:Length>
+						<v8:AllowedLength>Variable</v8:AllowedLength>
+					</v8:StringQualifiers>
 				</Type>
 				<IsFolder>false</IsFolder>
 			</Item>
@@ -21,7 +25,11 @@
 				<Code>00005</Code>
 				<Description>Default responsible</Description>
 				<Type>
-					<v8:Type xmlns:d6p1="http://v8.1c.ru/8.1/data/enterprise/current-config">d6p1:CatalogRef.Employees</v8:Type>
+					<v8:Type>xs:string</v8:Type>
+					<v8:StringQualifiers>
+						<v8:Length>10</v8:Length>
+						<v8:AllowedLength>Variable</v8:AllowedLength>
+					</v8:StringQualifiers>
 				</Type>
 				<IsFolder>false</IsFolder>
 			</Item>

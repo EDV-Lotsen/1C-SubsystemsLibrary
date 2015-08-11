@@ -148,7 +148,7 @@ Procedure UpdateSuppliedData(DataArea, MessageNo) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Updating supplied data'"), 
+		WriteLogEvent(NStr("en = 'Updating supplied data'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -169,7 +169,7 @@ Procedure SeparatedSuppliedDataUpdateControl() Export
 	|FROM
 	|	InformationRegister.DataAreasForSuppliedDataUpdate AS DataAreasForSuppliedDataUpdate";
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
@@ -192,7 +192,7 @@ Procedure SeparatedSuppliedDataUpdateControl() Export
 			CommitTransaction();
 		Except
 			RollbackTransaction();
-			WriteLogEvent(NStr("en = 'Controlling supplied data update"), 
+			WriteLogEvent(NStr("en = 'Controlling supplied data update'", Metadata.DefaultLanguage.LanguageCode), 
 				EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 			Raise;
 		EndTry;
@@ -271,7 +271,7 @@ Procedure SharedSuppliedDataCatalogsBeforeWrite(Source, Cancel) Export
 			|WHERE
 			|	DataAreas.State IN (VALUE(Enum.DataAreaStates.Used))";
 			
-			NodesSelection = Query.Execute().Choose();
+			NodesSelection = Query.Execute().Select();
 			While NodesSelection.Next() Do
 				
 				RecordManager = InformationRegisters.SuppliedDataRelations.CreateRecordManager();
@@ -428,7 +428,7 @@ Procedure FillFromClassifier(Val Refs, Val IgnoreManualChanges = False) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Filling from classifier'"), 
+		WriteLogEvent(NStr("en = 'Filling from classifier'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -463,7 +463,7 @@ Function GetUseDataItemNodeArray(DataItemRef) Export
 	|	SuppliedDataRelations.SharedDataItem = &SharedDataItem
 	|	AND SuppliedDataRelations.ManualEdit = FALSE";
 	Query.SetParameter("SharedDataItem", DataItemRef);
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	Return Selection;
 	
@@ -493,7 +493,7 @@ Function GetNodeArrayWhereDataItemListUsed(DataItemList) Export
 	|	SuppliedDataRelations.SharedDataItem IN(&DataItemList)
 	|	AND SuppliedDataRelations.ManualEdit = FALSE";
 	Query.SetParameter("DataItemList", DataItemList);
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	Return Selection;
 	
@@ -874,7 +874,7 @@ Procedure RegisterInformationRegisterDataChanges(SharedDataItem, InformationRegi
 	RecordSet = InformationRegisters[InformationRegisterName].CreateRecordSet();
 	RecordSet.Filter[SharedDataItemName].Set(SharedDataItem);
 	
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	
 	KeyNames = StringFunctionsClientServer.SplitStringIntoSubstringArray(KeyString);
 	
@@ -1126,7 +1126,7 @@ Procedure ReadManualEditFlag(Val Form) Export
 			
 		Else
 			
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			Selection.Next();
 			Form.ManualEdit = Selection.ManualEdit;
 			
@@ -1163,7 +1163,7 @@ Procedure RestoreItemFromSharedData(Val Form) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Restoring from shared data.'"), 
+		WriteLogEvent(NStr("en = 'Restoring from shared data.'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -1204,7 +1204,7 @@ Function SupplementArrayWithRefParents(Val Refs)
 		EndIf;
 		
 		CurrentRefs = New Array;
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		While Selection.Next() Do
 			CurrentRefs.Add(Selection.Ref);
 			RefArray.Add(Selection.Ref);
@@ -1350,7 +1350,7 @@ Procedure ImportData(Results, ImportNumber)
 			
 			XMLReader.Close();
 		Except
-			WriteLogEvent(NStr("en = 'Importing supplied data'"), EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
+			WriteLogEvent(NStr("en = 'Importing supplied data'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 			ErrorText = BriefErrorDescription(ErrorInfo());
 			Try
 				XMLReader.Close();
@@ -1672,7 +1672,7 @@ Procedure FillDescriptionsByCodes() Export
 		|	ExchangePlan.SuppliedDataChanges AS SuppliedDataChanges
 		|WHERE
 		|	SuppliedDataChanges.Description = """"";
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 
 	While Selection.Next() Do
 		ExchangePlanObject = Selection.Ref.GetObject();
@@ -1681,3 +1681,16 @@ Procedure FillDescriptionsByCodes() Export
 	EndDo;
 
 EndProcedure	
+
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode.SuppliedData\OnGetSuppliedDataHandlers");
+	
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

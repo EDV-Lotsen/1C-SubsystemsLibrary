@@ -21,7 +21,7 @@ Procedure FillOrderStatuses()
 			|	Order = &Ref
 			|ORDER BY
 			|	OrdersStatuses.Status.Order Desc";
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		// Fill order status
 		If Selection.Next() Then
@@ -112,7 +112,7 @@ Procedure FillOrdersRegistered()
 			|			AND OrdersRegistered.Quantity		= OrdersRegisteredBalance.QuantityBalance)
 			|ORDER BY
 			|	OrdersRegistered.LineNumber";
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		// Fill ordered items quantities
 		SearchRec = New Structure("LineNumber, Item, Quantity");
@@ -154,7 +154,7 @@ Procedure FillItemTypes()
 		|	SalesOrderLineItems.Ref = &Ref
 		|ORDER BY
 		|	LineNumber";
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		// Fill ordered items quantities
 		While Selection.Next() Do

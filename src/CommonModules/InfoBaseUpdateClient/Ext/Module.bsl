@@ -12,7 +12,6 @@
 //
 Procedure ExecuteInfoBaseUpdate() Export
 	
-
 	If Not CommonUseCached.CanUseSeparatedData() Then
 		Return;
 	EndIf;
@@ -21,25 +20,24 @@ Procedure ExecuteInfoBaseUpdate() Export
 		Return;
 	EndIf;
 	
-	Status(NStr("en = 'Executing the infobase update. 
-	|Please wait...'"));
+	Status(NStr("en='Executing the infobase update. "
+"Please wait...'"));
 	DocumentUpdateDetails = Undefined;
 	
 	Try
 		ExecutedUpdateHandlers = InfoBaseUpdate.ExecuteInfoBaseUpdate();
 	Except
-		ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(NStr(
-			"en = 'Error updating the infobase:
-			|
-			|%1
-			|
-			|See the event log for details.'"), 
+		ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(NStr("en='Error updating the infobase:"
+""
+"%1"
+""
+"See the event log for details.'"), 
 			BriefErrorDescription(ErrorInfo()));
 		
 		Raise ErrorMessageText;
 	EndTry;
 	
-	Status(NStr("en = 'The infobase update completed successfully.'"));
+	Status(NStr("en='The infobase update completed successfully.'"));
 		
 	If ExecutedUpdateHandlers <> Undefined Then	
 		RefreshInterface();
@@ -68,7 +66,15 @@ Procedure ShowUpdateDetails() Export
 		Return;
 	EndIf;
 	
-	OpenForm("CommonForm.UpdateDetails"); 
+	ExecutedHandlers = InfoBaseUpdateServerCall.GetExecutedHandlers();
+	
+	If ExecutedHandlers = Undefined Then
+		OpenForm("CommonForm.UpdateDetails"); 
+	Else
+		OpenForm("CommonForm.UpdateDetails", 
+			New Structure("ExecutedUpdateHandlers", ExecutedHandlers));
+		CommonUse.CommonSettingsStorageSave("UpdateInfoBase", "ExecutedHandlers", Undefined);
+	EndIf;
 	
 EndProcedure
 
@@ -78,11 +84,138 @@ Function CanExecuteInfoBaseUpdate() Export
 	
 	Result = StandardSubsystemsClientCached.ClientParameters().InfoBaseLockedForUpdate;
 	If Result Then
-		Message = NStr("en = 'Infobase is locked to execute the configuration update. The application will be terminated.
-		 |Please contact your infobase administrator for details.'");
-		DoMessageBox(Message);
+		Message = NStr("en='Infobase is locked to execute the configuration update. The application will be terminated."
+"Please contact your infobase administrator for details or log in using a user with Full administrator role.'");
+		ShowMessageBox(, Message);
 	EndIf;
 	
 	Return Not Result;
 	
 EndFunction
+
+// Internal use only.
+Procedure StartInfoBaseUpdate(StandardProcessing, AdditionalParameters) Export
+	ExecuteInfoBaseUpdate();
+EndProcedure
+
+// Internal use only.
+Procedure UpdateInfobase(Parameters) Export
+	
+	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
+	If Not ClientParameters.CanUseSeparatedData Then
+		CloseUpdateProgressFormIfOpened(Parameters);
+		Return;
+	EndIf;
+	
+	If ClientParameters.Property("InfoBaseUpdateRequired") 
+	   Or ClientParameters.Property("SharedDataUpdateRequired") Then
+		Parameters.InteractiveProcessing = New NotifyDescription(
+			"StartInfoBaseUpdate", ThisObject);
+	Else
+		If ClientParameters.Property("LoadDataExchangeMessage") Then
+			Restart = False;
+			InfoBaseUpdateServerCall.UpdateInfoBase(, True, Restart);
+			If Restart Then                                         
+				Parameters.Cancel = True;
+				Parameters.Restart = True;
+			EndIf;
+		EndIf;
+		CloseUpdateProgressFormIfOpened(Parameters);
+	EndIf;
+	
+EndProcedure     
+
+// Internal use only.
+Procedure CloseUpdateProgressFormIfOpened(Parameters)
+	
+	If Parameters.Property("InfoBaseUpdateProgressForm") Then
+		If Parameters.InfoBaseUpdateProgressForm.IsOpen() Then
+			Parameters.InfoBaseUpdateProgressForm.StartClosing();
+		EndIf;
+		Parameters.Delete("InfoBaseUpdateProgressForm");
+	EndIf;
+	
+EndProcedure
+
+// Internal use only.
+Procedure LoadRefreshClientParameters(Parameters, NotSet) Export
+	
+	FormName = "DataProcessor.InfoBaseUpdate.Form.InfoBaseUpdateProgress";
+	
+	Form = OpenForm(FormName,,,,,, New NotifyDescription(
+		"AfterCloseInfoBaseUpdateProgress", ThisObject, Parameters));
+	
+	Parameters.Insert("InfoBaseUpdateProgressForm", Form);
+	
+	Form.LoadRefreshClientParameters(Parameters);
+	
+EndProcedure
+
+// Internal use only.
+Procedure AfterCloseInfoBaseUpdateProgress(Result, Parameters) Export
+	
+	If TypeOf(Result) <> Type("Structure") Then
+		Result = New Structure("Cancel, Restart", True, False);
+	EndIf;
+	
+	If Result.Cancel Then
+		Parameters.Cancel = True;
+		If Result.Restart Then
+			Parameters.Restart = True;
+		EndIf;
+	EndIf;
+	
+	//ExecuteNotifyProcessing(Parameters.ContinuationHandler);
+	
+EndProcedure
+
+// Internal use only.
+Procedure AfterStart() Export
+	
+	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
+	
+	If ClientParameters.Property("ShowInvalidHandlersMessage")
+		Or ClientParameters.Property("ShowNotProcessedHandlersMessage") Then
+		AttachIdleHandler("ShowDeferredUpdateStatus", 2, True);
+	EndIf;
+	
+EndProcedure     
+
+// Internal use only.
+Procedure BeforeStart(Parameters) Export
+	
+	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
+	
+	If ClientParameters.Property("InfoBaseLockedForUpdate") Then
+		Parameters.Cancel = True;
+		Parameters.InteractiveProcessing = New NotifyDescription(
+			"ShowMessageBoxAndContinue",
+			StandardSubsystemsClient.ThisObject,
+			ClientParameters.InfoBaseLockedForUpdate);
+		
+	ElsIf ClientParameters.Property("ClientParametersUpdateRequired") Then
+		Parameters.InteractiveProcessing = New NotifyDescription(
+			"LoadRefreshClientParameters", ThisObject, Parameters);
+		
+	ElsIf Find(Lower(LaunchParameter), Lower("RegisterFullChangeMOForSubordinateDIBNodes")) > 0 Then
+		Parameters.Cancel = True;
+		Parameters.InteractiveProcessing = New NotifyDescription(
+			"ShowMessageBoxAndContinue",
+			StandardSubsystemsClient.ThisObject,
+			NStr("en='The RegisterFullChangeMOForSubordinateDIBNodes launch parameter"
+"can be used only with the StartInfoBaseUpdate parameter.'"));
+	EndIf;
+	
+EndProcedure
+
+// Internal use only.
+Procedure OnStart(Parameters) Export
+	
+	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
+	If Not ClientParameters.CanUseSeparatedData Then
+		Return;
+	EndIf;
+	
+	ShowUpdateDetails();
+	
+EndProcedure

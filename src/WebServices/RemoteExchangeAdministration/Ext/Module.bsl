@@ -42,7 +42,7 @@ Function ScheduleDataExchangeExecution(AreasForDataExchangeString)
 			JobQueue.ScheduleJobExecution(
 			"DataExchangeServiceMode.ExecuteDataExchange", Parameters, "1",, SeparatorValue);
 		Except
-			If ErrorInfo().Details <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
+			If ErrorInfo().Description <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
 				Raise;
 			EndIf;
 		EndTry;
@@ -71,7 +71,7 @@ Function ExecuteDataExchangeScenarioActionInFirstInfoBase(ScenarioRowIndex, Data
 			"DataExchangeServiceMode.ExecuteDataExchangeScenarioActionInFirstInfoBase", 
 			Parameters, Key,, ScenarioRow.FirstInfoBaseSeparatorValue);
 	Except
-		If ErrorInfo().Details <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
+		If ErrorInfo().Description <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
 			Raise;
 		EndIf;
 	EndTry;
@@ -98,7 +98,7 @@ Function ExecuteDataExchangeScenarioActionInSecondInfoBase(ScenarioRowIndex, Dat
 			"DataExchangeServiceMode.ExecuteDataExchangeScenarioActionInSecondInfoBase", 
 			Parameters, Key,, ScenarioRow.SecondInfoBaseSeparatorValue);
 	Except
-		If ErrorInfo().Details <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
+		If ErrorInfo().Description <> JobQueue.GetJobsWithSameKeyDuplicationErrorMessage() Then
 			Raise;
 		EndIf;
 	EndTry;

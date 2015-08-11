@@ -16,19 +16,18 @@ Procedure Import(Command)
 	Mode = FileDialogMode.Open;
 	OpeningFileDialogue = New FileDialog(Mode);
 	OpeningFileDialogue.FullFileName = "";
-	Filter = "Excel(*.xlsx)|*.xlsx|Excel 97(*.xls)|*.xls";
+	Filter = NStr("en = 'Excel(*.xlsx)|*.xlsx|Excel 97(*.xls)|*.xls'");
 	OpeningFileDialogue.Filter = Filter;
 	OpeningFileDialogue.Multiselect = False;
-	OpeningFileDialogue.Title = "Select file";
+	OpeningFileDialogue.Title = NStr("en = 'Select file'");
 	If OpeningFileDialogue.Choose() Then
 	    FilesArray = OpeningFileDialogue.SelectedFiles;
 	    For Each FileName In FilesArray Do
 	        Selection = New File(FileName);
-	        //Message(FileName+"; Size = "+Selection.Size());
 		EndDo;
 		ImportCounterparties(Selection.FullName);
 	Else
-	    DoMessageBox("File(s) not selected!");
+	    ShowMessageBox(, "en = 'File(s) not selected!'");
 	EndIf;
 
 EndProcedure

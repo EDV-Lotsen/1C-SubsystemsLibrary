@@ -1,6 +1,6 @@
 ﻿Procedure SessionParametersSetting(SessionParameterNames)
 	
-	StandardSubsystemsServer.SessionParametersSetting(SessionParameterNames);
+	StandardSubsystemsServer.SetSessionParameters(SessionParameterNames);
 	
 EndProcedure
 

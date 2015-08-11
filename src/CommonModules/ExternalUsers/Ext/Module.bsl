@@ -71,7 +71,7 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 // INTERNAL PROCEDURES AND FUNCTIONS
 
-// Updates a map of external user groups to external users
+// Updates a map of external user groups and external users
 // according to the external user group hierarchy (parent groups includes
 // subgroup users).
 // This data is used in the list form and in the external user choice form.
@@ -129,7 +129,7 @@ Procedure UpdateExternalUserGroupContent(Val ExternalUserGroup, ModifiedExternal
 			|WHERE
 			|	UserGroupContent.UserGroup = &ExternalUserGroup
 			|	AND ExternalUserGroupContent.Ref IS NULL ";
-			DeletedFromGroupExternalUsers = Query.Execute().Choose();
+			DeletedFromGroupExternalUsers = Query.Execute().Select();
 			RecordManager = InformationRegisters.UserGroupContent.CreateRecordManager();
 			While DeletedFromGroupExternalUsers.Next() Do
 				RecordManager.UserGroup = ExternalUserGroup;
@@ -253,7 +253,7 @@ Procedure UpdateExternalUserRoles(Val ExternalUserArray) Export
 		|	ExternalUsers.Ref IN(&ExternalUsers)
 		|	AND (NOT ExternalUsers.SetRolesDirectly)");
 	Query.SetParameter("ExternalUsers", ExternalUserArray);
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		InfoBaseUserIDs.Insert(Selection.ExternalUser, Selection.InfoBaseUserID);
 	EndDo;
@@ -368,14 +368,14 @@ Procedure UpdateExternalUserRoles(Val ExternalUserArray) Export
 	Query.SetParameter("OldExternalUserRoles", OldExternalUserRoles);
 	
 	// Logging role names errors in access group profiles.
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en= 'Error updating roles of the external user <%1>. The role <%2> of the external user group <%3> is not found in metadata.'"),
 			TrimAll(Selection.ExternalUser.Description),
 			Selection.Role,
 			String(Selection.ExternalUserGroup));
-		WriteLogEvent(NStr("en = 'External users. Role not found in metadata'"),
+		WriteLogEvent(NStr("en = 'External users. Role not found in metadata'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, MessageText, EventLogEntryTransactionMode.Transactional);
 	EndDo;
 	
@@ -414,7 +414,7 @@ Procedure UpdateExternalUserRoles(Val ExternalUserArray) Export
 		|ORDER BY
 		|	ChangedExternalUsersAndRoles.ExternalUser,
 		|	ChangedExternalUsersAndRoles.Role";
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	InfoBaseUser = Undefined;
 	While Selection.Next() Do
@@ -447,7 +447,7 @@ CanAddExternalUser = False) Export
 	SetPrivilegedMode(True);
 	
 	Query = New Query;
-	Query.Text = "SELECT Top 1
+	Query.Text = "SELECT TOP 1
 	 |	ExternalUsers.Ref
 	 |FROM
 	 |	Catalog.ExternalUsers AS ExternalUsers
@@ -482,7 +482,7 @@ Procedure UpdateExternalUserPresentation(AuthorizationObjectRef) Export
 	|	AND ExternalUsers.Description <> &NewAuthorizationObjectPresentation");
 	Query.SetParameter("AuthorizationObjectRef", AuthorizationObjectRef);
 	Query.SetParameter("NewAuthorizationObjectPresentation", String(AuthorizationObjectRef));
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		
@@ -530,7 +530,7 @@ Procedure ForExternalUsersCreateInfoBaseUsers() Export
 				ExternalUserObject.InfoBaseUserID = InfoBaseUser.UUID;
 				ExternalUserObject.Write();
 			Except
-				WriteLogEvent(NStr("en = 'External users. Error updating infobase'"),
+				WriteLogEvent(NStr("en = 'External users. Error updating infobase'", Metadata.DefaultLanguage.LanguageCode),
 				 EventLogLevel.Error,
 				 ,
 				 ,

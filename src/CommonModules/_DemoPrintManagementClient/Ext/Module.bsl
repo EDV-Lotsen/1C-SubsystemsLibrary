@@ -212,15 +212,32 @@ EndFunction
 // Value returned:
 //  RefTemplate
 //
-Function InitializeTemplate(Val LayoutBinaryData, Val TemplateType, Val PathToDirectory = "", Val DesignName = "") Export
+Procedure InitializeTemplate(Val Notification, Val LayoutBinaryData, Val TemplateType, Val PathToDirectory = "", Val DesignName = "") Export
 	
+	TemporaryFileName = "";
 	#If WebClient Then
 	
 	MessageText = NStr("en = 'Work with file extension in Web client has not been set up.'");
-	_DemoCommonUseClient.SuggestWorkWithFilesExtensionInstallationNow(MessageText);
+	_DemoCommonUseClient.SuggestWorkWithFilesExtensionInstallationNow(New NotifyDescription("InitializeTemplateEnd", ThisObject, New Structure("DesignName, LayoutBinaryData, Notification, PathToDirectory, TemplateType", DesignName, LayoutBinaryData, Notification, PathToDirectory, TemplateType)), MessageText);
+    Return;
+	#EndIf
+
+	InitializeTemplatePart(LayoutBinaryData, Notification, TemplateType, TemporaryFileName);
+EndProcedure
+
+#If WebClient Then
+Procedure InitializeTemplateEnd(Result1, AdditionalParameters) Export
+	
+	DesignName = AdditionalParameters.DesignName;
+	LayoutBinaryData = AdditionalParameters.LayoutBinaryData;
+	Notification = AdditionalParameters.Notification;
+	PathToDirectory = AdditionalParameters.PathToDirectory;
+	TemplateType = AdditionalParameters.TemplateType;
+	
 	
 	If NOT AttachFileSystemExtension() Then
-		Return Undefined;
+		ExecuteNotifyProcessing(Notification, Undefined);
+		Return;
 	EndIf;
 	
 	If IsBlankString(DesignName) Then
@@ -235,26 +252,35 @@ Function InitializeTemplate(Val LayoutBinaryData, Val TemplateType, Val PathToDi
 	Result = GetFilesToFilesPrintDirectory(PathToDirectory, FilesBeingReceived);
 	
 	If Result = Undefined Then
-		Return Undefined;
+		ExecuteNotifyProcessing(Notification, Undefined);
+		Return;
 	EndIf;
 	
 	TemporaryFileName = Result + TemporaryFileName;
-	#Else
-	TemporaryFileName = "";
-	#EndIf
+	
+	InitializeTemplatePart(LayoutBinaryData, Notification, TemplateType, TemporaryFileName);
 
+EndProcedure
+#EndIf
+
+Procedure InitializeTemplatePart(Val LayoutBinaryData, Val Notification, Val TemplateType, TemporaryFileName)
+	
+	Var Template;
+	
 	If Upper(TemplateType) 	  = "DOC" Then
 		Template = _DemoPrintManagementMSWordClient.GetMSWordTemplate(LayoutBinaryData, TemporaryFileName);
 		Template.Insert("Type", "DOC");
-		Return Template;
+		ExecuteNotifyProcessing(Notification, Template);
+		Return;
 	ElsIf Upper(TemplateType) = "ODT" Then
 		Template = _DemoPrintManagementOOWriterClient.GetOOWriterTemplate(LayoutBinaryData, TemporaryFileName);
 		Template.Insert("Type", "ODT");
 		Template.Insert("TemplatePageSettings", Undefined);
-		Return Template;
+		ExecuteNotifyProcessing(Notification, Template);
+		Return;
 	EndIf;
-	
-EndFunction
+
+EndProcedure
 
 #If WebClient Then
 // Function gets file(s) from server to a local directory on disk and returns

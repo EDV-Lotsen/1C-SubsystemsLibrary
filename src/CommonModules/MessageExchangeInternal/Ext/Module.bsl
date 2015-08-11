@@ -18,7 +18,8 @@ Procedure BeforeSendData(StandardProcessing,
 								MessageData,
 								TransactionItemCount,
 								EventLogEventName,
-								SentObjectCount) Export
+								SentObjectCount
+	) Export
 	
 	If TypeOf(Recipient) <> Type("ExchangePlanRef.MessageExchange") Then
 		Return;
@@ -88,7 +89,7 @@ Procedure BeforeSendData(StandardProcessing,
 				And TransactionItemCount > 0
 				And WrittenObjectCount = TransactionItemCount Then
 				
-				// Committing the transaction and beginning a new one
+				// Committing the transaction and begining a new one
 				CommitTransaction();
 				BeginTransaction();
 				
@@ -101,7 +102,7 @@ Procedure BeforeSendData(StandardProcessing,
 			CommitTransaction();
 		EndIf;
 		
-		// Finishing writing the message
+		// Ending writing the message
 		WriteMessage.EndWrite();
 		
 		MessageData = XMLWriter.Close();
@@ -128,7 +129,8 @@ Procedure BeforeReceiveData(StandardProcessing,
 								MessageData,
 								TransactionItemCount,
 								EventLogEventName,
-								ReceivedObjectCount) Export
+								ReceivedObjectCount
+	) Export
 	
 	If TypeOf(Sender) <> Type("ExchangePlanRef.MessageExchange") Then
 		Return;
@@ -205,7 +207,7 @@ Procedure BeforeReceiveData(StandardProcessing,
 				And TransactionItemCount > 0
 				And WrittenObjectCount = TransactionItemCount Then
 				
-				// Committing the transaction and beginning a new one
+				// Committing the transaction and begining a new one
 				CommitTransaction();
 				BeginTransaction();
 				
@@ -234,11 +236,11 @@ EndProcedure
 ////////////////////////////////////////////////////////////////////////////////
 // Infobase update.
 
-// Adds update handlers required by this subsystem to the Handlers list. 
+// Adds update handlers required to this subsystem in the Handlers list. 
 // 
 // Parameters:
-//  Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details.
-// 
+// Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details. 
+//
 Procedure RegisterUpdateHandlers(Handlers) Export
 	
 	Handler = Handlers.Add();
@@ -248,8 +250,8 @@ Procedure RegisterUpdateHandlers(Handlers) Export
 	
 EndProcedure
 
-// Sets a code for this end point if the code is not specified yet.
-//
+// Sets a code for this end point if code is not specified yet.
+// 
 Procedure SetThisEndPointCode() Export
 	
 	If IsBlankString(ThisNodeCode()) Then
@@ -268,7 +270,7 @@ EndProcedure
 ////////////////////////////////////////////////////////////////////////////////
 // Export internal procedures and functions.
 
-// The handler of the scheduled job that sends and receives system messages.
+// The handler of the shaduled job that sends and receives system messages.
 //
 Procedure SendReceiveMessagesByScheduledJob() Export
 	
@@ -283,7 +285,7 @@ EndProcedure
 // Sends and receives system messages.
 //
 // Parameters:
-//  Cancel – Boolean. Cancel flag. It will be set to True if an error occurs during the procedure execution.
+// Cancel – Boolean. Cancel flag. It will be set to True if an error occures during the procedure execution.
 //
 Procedure SendAndReceiveMessages(Cancel) Export
 	
@@ -293,13 +295,13 @@ Procedure SendAndReceiveMessages(Cancel) Export
 	
 	SendReceiveMessagesViaStandardCommunicationLines(Cancel);
 	
-	ProcessSystemMessageQueue();
+	HandleSystemMessageQueue();
 	
 EndProcedure
 
 // For internal use only
 //
-Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
+Procedure HandleSystemMessageQueue(Filter = Undefined) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -329,7 +331,7 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 	
 	QueryResult = GetQueryResult(Query);
 	
-	Selection = QueryResult.Choose();
+	Selection = QueryResult.Select();
 	
 	While Selection.Next() Do
 		
@@ -339,7 +341,8 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 			MessageObject.Lock();
 		Except
 			WriteLogEvent(ThisSubsystemEventLogMessageText(),
-				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
+			);
 			Continue;
 		EndTry;
 		
@@ -361,7 +364,7 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 				
 				For Each TableRow In FoundRows Do
 					
-					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, MessageObject.Body.Get(), MessageTitle.Sender);
+					TableRow.Handler.HandleMessage(MessageTitle.MessageChannel, MessageObject.Body.Get(), MessageTitle.Sender);
 					
 				EndDo;
 			Except
@@ -377,7 +380,8 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 						EventLogLevel.Error,,,
 						StringFunctionsClientServer.SubstituteParametersInString(
 							NStr("en = 'Error handling the message %1: %2'"),
-							MessageTitle.MessageChannel, DetailErrorDescription));
+							MessageTitle.MessageChannel, DetailErrorDescription)
+				);
 			EndTry;
 			
 			If MessageHandled Then
@@ -411,7 +415,8 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 		Except
 			WriteLogEvent(ThisSubsystemEventLogMessageText(),
 					EventLogLevel.Error,,,
-					DetailErrorDescription(ErrorInfo()));
+					DetailErrorDescription(ErrorInfo())
+			);
 		EndTry;
 		
 	EndDo;
@@ -430,7 +435,7 @@ Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, EndPoint)
 	
 	If WSProxy = Undefined Then
 		Cancel = True;
-		WriteLogEvent(LeadingEndPointSettingEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
@@ -441,10 +446,10 @@ Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, EndPoint)
 		EndPointObject.Leading = False;
 		EndPointObject.Write();
 		
-		// Updating connection settings
+		//Updating connection settings
 		RecordStructure = New Structure;
 		RecordStructure.Insert("Node", EndPoint);
-		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
+		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
 		
 		RecordStructure.Insert("WSURL", SenderConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", SenderConnectionSettings.WSUserName);
@@ -453,15 +458,16 @@ Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, EndPoint)
 		// Adding the record to the information register
 		InformationRegisters.ExchangeTransportSettings.AddRecord(RecordStructure);
 		
-		// Setting the recipient leading end point
+		// Setting the recipient leading end point 
 		WSProxy.SetLeadingEndPoint(EndPointObject.Code, ThisNodeCode());
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
 		Cancel = True;
-		WriteLogEvent(LeadingEndPointSettingEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo())
+		);
 		Return;
 	EndTry;
 	
@@ -469,13 +475,13 @@ EndProcedure
 
 // For internal use only.
 //
-Procedure SetLeadingEndPointAtRecipient(ThisEndPointCode, LeadingEndPointCode) Export
+Procedure SetRecipientLeadingEndPoint(ThisEndPointCode, LeadingEndPointCode) Export
 	
 	SetPrivilegedMode(True);
 	
 	If ExchangePlans.MessageExchange.FindByCode(ThisEndPointCode) <> ThisNode() Then
 		ErrorMessageString = NStr("en = 'End point connection parameters are specified incorrectly. Connection parameters belong to a different end point.'");
-		WriteLogEvent(LeadingEndPointSettingEventLogMessageText(),
+		WriteLogEvent(LeadingEndPointSetEventLogMessageText(),
 				EventLogLevel.Error,,, ErrorMessageString);
 		Raise ErrorMessageString;
 	EndIf;
@@ -497,8 +503,9 @@ Procedure SetLeadingEndPointAtRecipient(ThisEndPointCode, LeadingEndPointCode) E
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(LeadingEndPointSettingEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo())
+		);
 		Raise DetailErrorDescription(ErrorInfo());
 	EndTry;
 	
@@ -513,7 +520,7 @@ Procedure ConnectEndPointAtReceiver(Cancel, Code, Description, RecipientConnecti
 	BeginTransaction();
 	Try
 		
-		// Creating / Updating the exchange plan node that corresponds to the connected end point
+		// Creating / Updating the exchange plan node that corresponds to the the connecting end point
 		EndPointNode = ExchangePlans.MessageExchange.FindByCode(Code);
 		If EndPointNode.IsEmpty() Then
 			EndPointNodeObject = ExchangePlans.MessageExchange.CreateNode();
@@ -529,7 +536,7 @@ Procedure ConnectEndPointAtReceiver(Cancel, Code, Description, RecipientConnecti
 		// Updating connection settings
 		RecordStructure = New Structure;
 		RecordStructure.Insert("Node", EndPointNodeObject.Ref);
-		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
+		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
 		
 		RecordStructure.Insert("DataExportTransactionItemCount", 0);
 		RecordStructure.Insert("DataImportTransactionItemCount", 0);
@@ -545,10 +552,11 @@ Procedure ConnectEndPointAtReceiver(Cancel, Code, Description, RecipientConnecti
 			Constants.UseDataExchange.Set(True);
 		EndIf;
 		
-		// Setting the scheduled job usage attribute
+		// Setting the sheduled job usage attribute
 		ScheduledJob = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.SendReceiveSystemMessages);
 		If Not ScheduledJob.Use Then
 			ScheduledJobsServer.SetScheduledJobUse(String(ScheduledJob.UUID), True);
+			Cancel = True;
 		EndIf;
 		
 		CommitTransaction();
@@ -556,7 +564,8 @@ Procedure ConnectEndPointAtReceiver(Cancel, Code, Description, RecipientConnecti
 		RollbackTransaction();
 		Cancel = True;
 		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo()));
+				DetailErrorDescription(ErrorInfo())
+		);
 		Raise DetailErrorDescription(ErrorInfo());
 	EndTry;
 	
@@ -587,9 +596,9 @@ Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSet
 	
 	Try
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.CheckConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.CheckConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 	Except
 		Cancel = True;
@@ -603,7 +612,7 @@ Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSet
 		// Updating connection settings
 		RecordStructure = New Structure;
 		RecordStructure.Insert("Node", EndPoint);
-		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
+		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
 		
 		RecordStructure.Insert("WSURL", SenderConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", SenderConnectionSettings.WSUserName);
@@ -798,7 +807,7 @@ EndProcedure
 //
 Function GetWSProxy(SettingsStructure, ErrorMessageString = "") Export
 	
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SL/MessageExchange");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/MessageExchange");
 	SettingsStructure.Insert("WSServiceName", "MessageExchange");
 	
 	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
@@ -808,7 +817,7 @@ EndFunction
 //
 Function GetWSProxy_2_0_1_6(SettingsStructure, ErrorMessageString = "") Export
 	
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://1c-dn.com/SL/MessageExchange_2_0_1_6");
+	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/MessageExchange_2_0_1_6");
 	SettingsStructure.Insert("WSServiceName", "MessageExchange_2_0_1_6");
 	
 	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
@@ -817,7 +826,7 @@ EndFunction
 // Returns an array of version numbers supported by correspondent API for the MessageExchange subsystem.
 //
 // Parameters:
-// Correspondent – Structure or ExchangePlanRef - exchange plan note that matches the correspondent infobase.
+// Correspondent – Structure or ExchangePlanRef - exchange plan note that corresponds to the correspondent infobase.
 //
 // Returns:
 // Array of version numbers that are supported by correspondent API.
@@ -849,9 +858,9 @@ EndFunction
 
 // For internal use only.
 //
-Function LeadingEndPointSettingEventLogMessageText() Export
+Function LeadingEndPointSetEventLogMessageText() Export
 	
-	Return NStr("en = 'Message exchange. Setting the leading end point.'");
+	Return NStr("en = 'Message exchange.Setting the leading end point.'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction
 
@@ -859,7 +868,7 @@ EndFunction
 //
 Function ThisSubsystemEventLogMessageText() Export
 	
-	Return NStr("en = 'Message exchange.'");
+	Return NStr("en = 'Message exchange.'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction
 
@@ -867,7 +876,8 @@ EndFunction
 //
 Function ThisNodeDefaultDescription() Export
 	
-	Return ?(CommonUseCached.DataSeparationEnabled(), Metadata.Synonym, DataExchangeCached.ThisInfoBaseName());
+	//Return ?(CommonUseCached.DataSeparationEnabled(), Metadata.Synonym, DataExchangeCached.ThisInfoBaseName());
+	Return Metadata.Synonym;
 	
 EndFunction
 
@@ -889,7 +899,7 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 	|	MessageExchange.Ref <> &ThisNode
 	|	AND (NOT MessageExchange.Leading)
 	|	AND (NOT MessageExchange.DeletionMark)
-	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportKind = VALUE(Enum.ExchangeMessageTransportKinds.WS)";
+	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportType = VALUE(Enum.ExchangeMessageTransportTypes.WS)";
 	
 	Query = New Query;
 	Query.SetParameter("ThisNode", ThisNode());
@@ -908,7 +918,8 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 		
 		Cancel1 = False;
 		
-		DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False, Enums.ExchangeMessageTransportKinds.WS);
+		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False, Enums.ExchangeMessageTransportTypes.WS);
+		Cancel1 = True;
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -919,7 +930,8 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 		
 		Cancel1 = False;
 		
-		DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True, Enums.ExchangeMessageTransportKinds.WS);
+		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True, Enums.ExchangeMessageTransportTypes.WS);
+		Cancel1 = True;
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -941,7 +953,7 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 	|WHERE
 	|	MessageExchange.Ref <> &ThisNode
 	|	AND (NOT MessageExchange.DeletionMark)
-	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportKind <> VALUE(Enum.ExchangeMessageTransportKinds.WS)";
+	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportType <> VALUE(Enum.ExchangeMessageTransportTypes.WS)";
 	
 	Query = New Query;
 	Query.SetParameter("ThisNode", ThisNode());
@@ -960,7 +972,8 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 		
 		Cancel1 = False;
 		
-		DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False);
+		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False);
+		Cancel1 = True;
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -971,7 +984,8 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 		
 		Cancel1 = False;
 		
-		DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True);
+		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True);
+		Cancel1 = True;
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -986,7 +1000,8 @@ Procedure ConnectEndPointAtSender(Cancel,
 														RecipientConnectionSettings,
 														EndPoint,
 														RecipientEndPointDescription,
-														SenderEndPointDescription) Export
+														SenderEndPointDescription
+	) Export
 	
 	ErrorMessageString = "";
 	
@@ -1010,9 +1025,9 @@ Procedure ConnectEndPointAtSender(Cancel,
 	Try
 		
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.CheckConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.CheckConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 		
 	Except
@@ -1022,9 +1037,9 @@ Procedure ConnectEndPointAtSender(Cancel,
 	EndTry;
 	
 	If CorrespondentVersion_2_0_1_6 Then
-		EndPointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfoBaseParameters(RecipientEndPointDescription));
+		EndPointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetIBParameters(RecipientEndPointDescription));
 	Else
-		EndPointParameters = ValueFromStringInternal(WSProxy.GetInfoBaseParameters(RecipientEndPointDescription));
+		EndPointParameters = ValueFromStringInternal(WSProxy.GetIBParameters(RecipientEndPointDescription));
 	EndIf;
 	
 	EndPointNode = ExchangePlans.MessageExchange.FindByCode(EndPointParameters.Code);
@@ -1049,7 +1064,7 @@ Procedure ConnectEndPointAtSender(Cancel,
 			
 		EndIf;
 		
-		// Creating the exchange plan node that corresponds to the connected end point
+		// Creating the exchange plan node that corresponds to the connecting end point
 		EndPointNodeObject = ExchangePlans.MessageExchange.CreateNode();
 		EndPointNodeObject.Code = EndPointParameters.Code;
 		EndPointNodeObject.Description = EndPointParameters.Description;
@@ -1058,7 +1073,7 @@ Procedure ConnectEndPointAtSender(Cancel,
 		// Updating connection settings
 		RecordStructure = New Structure;
 		RecordStructure.Insert("Node", EndPointNodeObject.Ref);
-		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
+		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
 		
 		RecordStructure.Insert("DataExportTransactionItemCount", 0);
 		RecordStructure.Insert("DataImportTransactionItemCount", 0);
@@ -1083,10 +1098,11 @@ Procedure ConnectEndPointAtSender(Cancel,
 			Constants.UseDataExchange.Set(True);
 		EndIf;
 		
-		// Setting the scheduled job usage attribute
+		// Setting the schaduled job usage attribute
 		ScheduledJob = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.SendReceiveSystemMessages);
 		If Not ScheduledJob.Use Then
 			ScheduledJobsServer.SetScheduledJobUse(String(ScheduledJob.UUID), True);
+			Cancel = True;
 		EndIf;
 		
 		EndPoint = EndPointNodeObject.Ref;
@@ -1097,7 +1113,8 @@ Procedure ConnectEndPointAtSender(Cancel,
 		Cancel = True;
 		EndPoint = Undefined;
 		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo()));
+				DetailErrorDescription(ErrorInfo())
+		);
 		Return;
 	EndTry;
 	

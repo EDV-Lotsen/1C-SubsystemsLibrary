@@ -50,17 +50,17 @@ Procedure TerminateSession(Command)
 	SessionNumberToTerminate = Items.UserList.CurrentData.Session;
 	
 	If SessionNumberToTerminate = InfoBaseSessionNumber Then
-		DoMessageBox(NStr("en = 'The current session cannot be terminated. You should close the main application window if you want exit the application.'"));
+		ShowMessageBox(, NStr("en = 'The current session cannot be terminated. You should close the main application window if you want exit the application.'"));
 		Return;
 	EndIf;
 	
 	Terminated = InfoBaseConnectionsClientServer.TerminateSessionWithMessage(SessionNumberToTerminate, Message);
 	If Not IsBlankString(Message) And Not Terminated Then
-		DoMessageBox(Message);
+		ShowMessageBox(, Message);
 	EndIf;
 	
 	If Terminated Then
-		DoMessageBox(NStr("en = 'The session was terminated.'"));
+		ShowMessageBox(, NStr("en = 'The session was terminated.'"));
 	EndIf;
 	
 	FillList();
@@ -78,13 +78,13 @@ EndProcedure
 Procedure OpenEventLog(Command)
 	
 	If Items.UserList.SelectedRows.Count() > 1 Then
-		DoMessageBox(NStr("en = 'You have to choose only one user from the list if you want to view the event log.'"));
+		ShowMessageBox(, NStr("en = 'You have to choose only one user from the list if you want to view the event log.'"));
 		Return;
 	EndIf;
 		
 	CurrentData = Items.UserList.CurrentData;
 	If CurrentData = Undefined Then
-		DoMessageBox(NStr("en = 'The event log cannot be opened for the chosen user.'"));
+		ShowMessageBox(, NStr("en = 'The event log cannot be opened for the chosen user.'"));
 		Return;
 	EndIf;
 	
@@ -277,7 +277,7 @@ Function FindRefByUserID(ID)
 	Result = Query.Execute();
 	
 	If Not Result.IsEmpty() Then
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		Return Selection.Ref;
 	EndIf;
@@ -286,7 +286,7 @@ Function FindRefByUserID(ID)
 	Result = Query.Execute();
 	
 	If Not Result.IsEmpty() Then
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		Return Selection.Ref;
 	EndIf;

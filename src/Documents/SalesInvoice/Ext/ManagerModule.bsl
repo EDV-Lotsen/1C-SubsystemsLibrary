@@ -1147,7 +1147,7 @@ Function PrintTemplate(ObjectArray, PrintObjects)
    |WHERE
    |	SalesInvoice.Ref IN(&ObjectArray)";
    Query.SetParameter("ObjectArray", ObjectArray);
-   Selection = Query.Execute().Choose();
+   Selection = Query.Execute().Select();
    
    	FirstDocument = True;
 

@@ -8,7 +8,7 @@
 
 // Terminates the current session if the infobase is locked.
 //
-Procedure SessionTerminationControlMode() Export
+Procedure UserSessionTerminationControlMode() Export
 
 	// Getting current values of lock parameters.
 	CurrentMode = InfoBaseConnections.SessionLockParameters();
@@ -18,10 +18,10 @@ Procedure SessionTerminationControlMode() Export
 		Return;	
 	EndIf;
 		
-	LockBeginTime = CurrentMode.Begin;
+	LockBeginTime = CurrentMode.Start;
 	LockEndTime = CurrentMode.End;
 	
-	WaitTimeout = CurrentMode.SessionTerminationTimeout;
+	WaitTimeout = CurrentMode.UserSessionTerminationTimeout;
 	ExitWithConfirmationInterval = 0;
 	CloseWithoutConfirmationInterval = - WaitTimeout / 5;
 	StopInterval = - WaitTimeout / 2.5;
@@ -33,7 +33,7 @@ Procedure SessionTerminationControlMode() Export
 	
 	MessageText = InfoBaseConnectionsClientServer.ExtractLockMessage(CurrentMode.Message);
 	MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en = 'It is recommended that you save all your data and exit the application. The application will be terminated at %1. 
+		NStr("en= 'It is recommended that you save all your data and exit the application. The application will be terminated at %1. 
 		|%2'"),
 		LockBeginTime, MessageText);
 	
@@ -45,22 +45,22 @@ Procedure SessionTerminationControlMode() Export
 		
 	ElsIf LockBeginTime - CurrentTime <= CloseWithoutConfirmationInterval Then
 		
-		DoMessageBox(MessageText, 30);
+		ShowMessageBox(, MessageText, 30);
 		StandardSubsystemsClient.SkipExitConfirmation();
 		Exit(False, True);
 		
 	ElsIf LockBeginTime - CurrentTime <= ExitWithConfirmationInterval Then
 		
-		DoMessageBox(MessageText, 30);
+		ShowMessageBox(, MessageText, 30);
 		StandardSubsystemsClient.SkipExitConfirmation();
 		Exit(True, True);
 		
 	ElsIf LockBeginTime - CurrentTime <= WaitTimeout Then
 		
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-		 NStr("en = 'The application will be terminated at %1.'"),
+		 NStr("en= 'The application will be terminated at %1.'"),
 		 LockBeginTime);
-		DoMessageBox(MessageText, 30);
+		ShowMessageBox(, MessageText, 30);
 		
 	EndIf;
 	
@@ -74,13 +74,13 @@ Procedure TerminateSessions() Export
 	// Get current values of the lock parameters
 	CurrentMode = InfoBaseConnections.SessionLockParameters(True);
 
-	SessionCount = CurrentMode.SessionCount;
-	If SessionCount <= 1 Then
+	SessionsCount = CurrentMode.SessionsCount;
+	If SessionsCount <= 1 Then
 		// There are no sessions except the current one.
 		// Update with the batch file requires the following termination order:
 		// the session with Terminate user sessions parameter must be the last session to be terminated.
-		InfoBaseConnectionsClient.SetUserTerminationInProgressFlag(False);
-		Notify("UserSessions", New Structure("Status,SessionCount", "Done", SessionCount));
+		InfoBaseConnectionsClient.SetSessionTerminationInProgressFlag(False);
+		Notify("UserSessions", New Structure("Status,SessionsCount", "Done", SessionsCount));
 		DisconnectThisSession();
 		Return;
 	EndIf; 
@@ -90,22 +90,22 @@ Procedure TerminateSessions() Export
 		Return;
 	EndIf;
 	
-	LockBeginTime = CurrentMode.Begin;
-	TerminationInterval = - CurrentMode.SessionTerminationTimeout;
+	LockBeginTime = CurrentMode.Start;
+	TerminationInterval = - CurrentMode.UserSessionTerminationTimeout;
 	CurrentTime = CommonUseClient.SessionDate();
 	ForceTermination = Not ValueIsFilled(LockBeginTime)
 		Or LockBeginTime - CurrentTime <= TerminationInterval;
 		
 	If Not ForceTermination Then
 		
-		MessageText = NStr("en = '%1 active session(s).
+		MessageText = NStr("en= '%1 active session(s).
 			|Next session check will be executed in one minute.'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-			MessageText, SessionCount);
+			MessageText, SessionsCount);
 		ShowUserNotification(NStr("en= 'User session termination'"), 
 			"e1cib/app/DataProcessor.ApplicationLocking", 
 			MessageText, PictureLib.Information32);
-		Notify("UserSessions", New Structure("Status,SessionCount", "Executing", SessionCount));
+		Notify("UserSessions", New Structure("Status,SessionsCount", "Executing", SessionsCount));
 		Return;
 	EndIf;
 	
@@ -115,18 +115,18 @@ Procedure TerminateSessions() Export
 	
 	Result = InfoBaseConnectionsClientServer.TerminateAllSessions();
 	If Result Then	
-		InfoBaseConnectionsClient.SetUserTerminationInProgressFlag(False);
-		ShowUserNotification(NStr("en = 'User session termination'"), 
+		InfoBaseConnectionsClient.SetSessionTerminationInProgressFlag(False);
+		ShowUserNotification(NStr("en= 'User session termination'"), 
 			"e1cib/app/DataProcessor.ApplicationLocking", 
-			NStr("en = 'Session termination completed successfully'"), PictureLib.Information32);
-		Notify("UserSessions", New Structure("Status,SessionCount", "Done", SessionCount));
+			NStr("en= 'Session termination completed successfully'"), PictureLib.Information32);
+		Notify("UserSessions", New Structure("Status,SessionsCount", "Done", SessionsCount));
 		DisconnectThisSession();
 	Else
-		InfoBaseConnectionsClient.SetUserTerminationInProgressFlag(False);
-		ShowUserNotification(NStr("en = 'User session termination'"), 
+		InfoBaseConnectionsClient.SetSessionTerminationInProgressFlag(False);
+		ShowUserNotification(NStr("en= 'User session termination'"), 
 			"e1cib/app/DataProcessor.ApplicationLocking", 
-			NStr("en = 'Session termination failed. See the event log for details.'"), PictureLib.Warning32);
-		Notify("UserSessions", New Structure("Status,SessionCount", "Error", SessionCount));
+			NStr("en= 'Session termination failed! See the event log for details.'"), PictureLib.Warning32);
+		Notify("UserSessions", New Structure("Status,SessionsCount", "Error", SessionsCount));
 	EndIf;
 	
 EndProcedure
@@ -136,10 +136,8 @@ EndProcedure
 Procedure DisconnectThisSession()
 	
 	InfoBaseConnectionsClient.SetSessionTerminationHandlers(False);
-	MessageText = NStr("en = 'Users are denied access to the infobase. Do you want to end this session?'");
-	If DoQueryBox(MessageText, QuestionDialogMode.OKCancel, 60) = DialogReturnCode.OK Then
-		StandardSubsystemsClient.SkipExitConfirmation();
-		Exit(False);
-	EndIf;
+	MessageText = NStr("en= 'Users are denied access to the infobase. The session is terminated.'");
+	ShowMessageBox(, MessageText, 60);
 	
 EndProcedure
+

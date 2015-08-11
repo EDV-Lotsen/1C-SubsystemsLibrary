@@ -81,7 +81,18 @@ Procedure ChangeSeparatedItem(Val Form) Export
 	Text = NStr("en = 'Supplied data is updated automatically.
 		|By applying your changes, you will disable future automatic updates of this item.
 		|Do you want to save changes and continue?'");
-	Result = DoQueryBox(Text, QuestionDialogMode.YesNo, , DialogReturnCode.No);
+	Result = Undefined;
+
+	ShowQueryBox(New NotifyDescription("ChangeSeparatedItemEnd", ThisObject, New Structure("Form", Form)), Text, QuestionDialogMode.YesNo, , DialogReturnCode.No);
+	
+EndProcedure
+
+Procedure ChangeSeparatedItemEnd(QuestionResult, AdditionalParameters) Export
+	
+	Form = AdditionalParameters.Form;
+	
+	
+	Result = QuestionResult;
 	
 	If Result = DialogReturnCode.Yes Then
 		
@@ -93,6 +104,6 @@ Procedure ChangeSeparatedItem(Val Form) Export
 		ProcessManualEditFlag(Form);
 		
 	EndIf;
-	
+
 EndProcedure
 #EndIf

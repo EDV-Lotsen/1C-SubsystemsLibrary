@@ -76,7 +76,7 @@ Procedure FillMetadataList(Filter = Undefined)
 						|FROM
 						|	InformationRegister.PrintedFormTemplates";
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		While Selection.Next() Do
 			TreeRow = TemplatesListTree.Rows.Find(Selection.Object, "FullMOName");
@@ -218,7 +218,7 @@ Function GetTemplatesBinaryData(PathsToTemplates)
 	CorrBinaryData = New Map;
 	
 	For Each PathToTemplate In PathsToTemplates Do
-		Data = _DemoPrintManagement.GetTemplate(PathToTemplate.Value + "." + PathToTemplate.Key);
+		Data = GetPrintFormTemplate(PathToTemplate.Value, PathToTemplate.Key);
 		If TypeOf(Data) = Type("SpreadsheetDocument") Then
 			TemporaryFileName = GetTempFileName();
 			Data.Write(TemporaryFileName);
@@ -303,9 +303,9 @@ Procedure SetTemplateUse(InstalledTemplates, Use)
 EndProcedure
 
 &AtServerNoContext
-Function GetPrintFormTemplate(Val MODescription, Val DesignName)
+Function GetPrintFormTemplate(Val MODescription, Val DesignName) 
 	
-	Return _DemoPrintManagement.GetTemplate(MODescription+"."+DesignName);
+	Return Metadata.Documents[MODescription].GetTemplate(DesignName);
 	
 EndFunction
 
@@ -367,7 +367,7 @@ Procedure DeleteTemplateFromInformationBase(TemplatesToBeDeleted)
 EndProcedure
 
 &AtClient
-Procedure OpenPrintedFormTemplates(Val Edit = False)
+Procedure OpenPrintedFormTemplates(Val Edit = False, PathToFilePrintDirectory)
 	
 	If NOT SuggestWorkWithFilesExtensionInstallationNow() Then
 		Return;
@@ -401,12 +401,6 @@ Procedure OpenPrintedFormTemplates(Val Edit = False)
 		GivenBinaryDataSet.Insert(TemplateType.Key+"."+TemplateType.Value, SetOfBinaryData[TemplateType.Key]);
 	EndDo;
 	
-	Result = _DemoPrintManagementClient.GetFilesToFilesPrintDirectory(PathToFilePrintDirectory, GivenBinaryDataSet);
-	If Result = Undefined Then
-		Return;
-	EndIf;
-	PathToFilePrintDirectory = Result;
-	
 	WarningText = "";
 	
 	For Each String In SelectedRows Do
@@ -439,7 +433,7 @@ Procedure OpenPrintedFormTemplates(Val Edit = False)
 	EndDo;
 	
 	If Not IsBlankString(WarningText) Then
-		DoMessageBox(WarningText);
+		ShowMessageBox(,WarningText);
 	EndIf;
 #Else
 	For Each String In SelectedRows Do
@@ -569,7 +563,7 @@ Procedure OpenFile(OpenedFileName)
 	Try
 		RunApp(OpenedFileName);
 	Except
-		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
+		ShowMessageBox(, StringFunctionsClientServer.SubstituteParametersInString(
 						NStr("en = 'Description=""%1""'"),
 						ErrorInfo().Description));
 	EndTry;
@@ -584,14 +578,14 @@ EndProcedure // OpenFile()
 &AtClient
 Procedure OpenForViewing(Command)
 	
-	OpenPrintedFormTemplates(False);
+	OpenPrintedFormTemplates(False, PathToFilePrintDirectory);
 	
 EndProcedure
 
 &AtClient
 Procedure Edit(Command)
 	
-	OpenPrintedFormTemplates(True);
+	OpenPrintedFormTemplates(True, PathToFilePrintDirectory);
 	
 EndProcedure
 
@@ -656,7 +650,7 @@ Procedure FinishEdit(Command)
 #If WebClient Then
 	Try
 		If NOT PutFiles(FilesBeingPlaced, PlacedFiles, , False) Then
-			DoMessageBox(NStr("en = 'Error while placing files to the storage.'"));
+			ShowMessageBox(, NStr("en = 'Error while placing files to the storage.'"));
 			Return;
 		EndIf;
 	Except
@@ -789,13 +783,18 @@ EndProcedure
 &AtClient
 Procedure SetActionOnPrintFormTemplateSelect(Command)
 	
-	Result = OpenFormModal("InformationRegister.PrintedFormTemplates.Form.ChoiceOfTemplateOpenMode");
+	OpenForm("InformationRegister.PrintedFormTemplates.Form.ChoiceOfTemplateOpenMode",,,,,, New NotifyDescription("SetActionOnPrintFormTemplateSelectEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	
+EndProcedure
+
+&AtClient
+Procedure SetActionOnPrintFormTemplateSelectEnd(Result, AdditionalParameters) Export
 	
 	If TypeOf(Result) = Type("Structure") Then
 		TemplateOpeningModeView = Result.OpeningModeView;
 		AskTemplateOpeningMode = NOT Result.DoNotAskAnyMore;
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
@@ -807,13 +806,13 @@ EndProcedure
 Function SuggestWorkWithFilesExtensionInstallationNow()
 	
 	TextOfMessage = NStr("en = 'Extension to work in Web client has not been set up'");
-	_DemoCommonUseClient.SuggestWorkWithFilesExtensionInstallationNow(TextOfMessage);
+	CommonUseClient.SuggestFileSystemExtensionInstallationNow(TextOfMessage);
 	
 	If AttachFileSystemExtension() Then
 		Return True;
 	EndIf;
 	
-	DoMessageBox(NStr("en = 'To open and edit the templates it is necessary to set file extension for work in the Web-client.'"));
+	ShowMessageBox(, NStr("en = 'To open and edit the templates it is necessary to set file extension for work in the Web-client.'"));
 	
 	Return False;
 	
@@ -824,7 +823,7 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 
 &AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	Var Filter;
 	
@@ -833,8 +832,6 @@ Procedure OnCreateAtServer(Cancellation, StandardProcessing)
 	EndIf;
 	
 	FillMetadataList(Filter);
-	
-	PathToFilePrintDirectory = _DemoPrintManagement.GetPrintFilesLocalDirectory();
 	
 	Value = CommonSettingsStorage.Load("SetupOfTemplatesOpening", "AskTemplateOpeningMode");
 	
@@ -862,7 +859,7 @@ Procedure TemplatesListOnActivateRow(Item)
 EndProcedure
 
 &AtClient
-Procedure BeforeClose(Cancellation, StandardProcessing)
+Procedure BeforeClose(Cancel, StandardProcessing)
 	
 	AreEditable = False;
 	
@@ -879,13 +876,22 @@ Procedure BeforeClose(Cancellation, StandardProcessing)
 		EndIf;
 	EndDo;
 	
-	If AreEditable Then
-		Result = DoQueryBox(NStr("en = 'Attention, the list contains templates marked as being edited. Proceed with form closure? '"), QuestionDialogMode.YesNo, , DialogReturnCode.No,);
-		If Result = DialogReturnCode.No Then
-			Cancellation = True;
-		EndIf;
+	If AreEditable And Modified Then
+		ShowQueryBox(New NotifyDescription("BeforeCloseEnd", ThisObject), NStr("en = 'Attention, the list contains templates marked as being edited. Proceed with form closure? '"), QuestionDialogMode.YesNo, , DialogReturnCode.No,);
+        Cancel = True;
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure BeforeCloseEnd(QuestionResult, AdditionalParameters) Export
+	
+	Result = QuestionResult;
+	If Result <> DialogReturnCode.No Then
+		Modified = False;
+		Close();
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -897,20 +903,36 @@ Procedure TemplatesListSelection(Item, RowSelected, Field, StandardProcessing)
 	
 	If AskTemplateOpeningMode Then
 		
-		Result = OpenFormModal("InformationRegister.PrintedFormTemplates.Form.ChoiceOfTemplateOpenMode");
-		
-		If TypeOf(Result) = Type("Structure") Then
-			TemplateOpeningModeView = Result.OpeningModeView;
-			AskTemplateOpeningMode = NOT Result.DoNotAskAnyMore;
-			If Result.DoNotAskAnyMore Then
-				SaveSettingsOfTemplateOpeningMode(AskTemplateOpeningMode, TemplateOpeningModeView);
-			EndIf;
-		Else
-			Return;
-		EndIf;
+		OpenForm("InformationRegister.PrintedFormTemplates.Form.ChoiceOfTemplateOpenMode",,,,,, New NotifyDescription("TemplatesListSelectionEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+        Return;
 		
 	EndIf;
 	
-	OpenPrintedFormTemplates(NOT TemplateOpeningModeView);
+	TemplatesListSelectionPart();
 	
 EndProcedure
+
+&AtClient
+Procedure TemplatesListSelectionEnd(Result, AdditionalParameters) Export
+	
+	If TypeOf(Result) = Type("Structure") Then
+		TemplateOpeningModeView = Result.OpeningModeView;
+		AskTemplateOpeningMode = NOT Result.DoNotAskAnyMore;
+		If Result.DoNotAskAnyMore Then
+			SaveSettingsOfTemplateOpeningMode(AskTemplateOpeningMode, TemplateOpeningModeView);
+		EndIf;
+	Else
+		Return;
+	EndIf;
+	
+	TemplatesListSelectionPart();
+
+EndProcedure
+
+&AtClient
+Procedure TemplatesListSelectionPart()
+	
+	OpenPrintedFormTemplates(NOT TemplateOpeningModeView, PathToFilePrintDirectory);
+	
+EndProcedure
+

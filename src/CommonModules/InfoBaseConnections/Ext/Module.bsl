@@ -248,9 +248,9 @@ Procedure SetDataAreaSessionLock(Parameters, Val LocalTime = True) Export
 	If Parameters.Use Then 
 		DataLock = LockSet.Add();
 		DataLock.DataArea = CommonUse.SessionSeparatorValue();
-		DataLock.LockPeriodStart = ?(LocalTime And ValueIsFilled(SettingsStructure.Begin), 
+		DataLock.BeginLock = ?(LocalTime And ValueIsFilled(SettingsStructure.Begin), 
 			ToUniversalTime(SettingsStructure.Begin), SettingsStructure.Begin);
-		DataLock.LockPeriodEnd = ?(LocalTime And ValueIsFilled(SettingsStructure.End), 
+		DataLock.EndLock = ?(LocalTime And ValueIsFilled(SettingsStructure.End), 
 			ToUniversalTime(SettingsStructure.End), SettingsStructure.End);
 		DataLock.LockMessage = SettingsStructure.Message;
 		DataLock.Exclusive = SettingsStructure.Exclusive;
@@ -286,17 +286,17 @@ Function GetDataAreaSessionLock(Val LocalTime = True) Export
 		Return Result;
 	EndIf;
 	DataLock = LockSet[0];
-	Result.Begin = ?(LocalTime And ValueIsFilled(DataLock.LockPeriodStart), 
-		ToLocalTime(DataLock.LockPeriodStart), DataLock.LockPeriodStart);
-	Result.End = ?(LocalTime And ValueIsFilled(DataLock.LockPeriodEnd), 
-		ToLocalTime(DataLock.LockPeriodEnd), DataLock.LockPeriodEnd);
+	Result.Begin = ?(LocalTime And ValueIsFilled(DataLock.BeginLock), 
+		ToLocalTime(DataLock.BeginLock), DataLock.BeginLock);
+	Result.End = ?(LocalTime And ValueIsFilled(DataLock.EndLock), 
+		ToLocalTime(DataLock.EndLock), DataLock.EndLock);
 	Result.Message = DataLock.LockMessage;
 	Result.Exclusive = DataLock.Exclusive;
 	CurrentDate = CurrentSessionDate();
 	Result.Use = True;
 	// Getting the Use field value by the lock period
-	Result.Use = Not ValueIsFilled(DataLock.LockPeriodEnd) 
-		Or DataLock.LockPeriodEnd >= CurrentDate 
+	Result.Use = Not ValueIsFilled(DataLock.EndLock) 
+		Or DataLock.EndLock >= CurrentDate 
 		Or ConnectionsLockedForDate(Result, CurrentDate);
 	Return Result;
 	
@@ -460,18 +460,18 @@ Function GenerateLockMessage(Val Message, Val KeyCode) Export
 	
 	If CommonUseCached.DataSeparationEnabled() Then
 		MessageText = MessageText +
-		 NStr("en = '%1
+		 NStr("en= '%1
 		 |If you want to allow user logon, start the application with the AllowUserLogon parameter. For example:
 		 |http://<the web address of the server>/?C=AllowUsers'");
 	Else
 		MessageText = MessageText +
-		 NStr("en = '%1
+		 NStr("en= '%1
 		 |If you want to allow user logon, use the server cluster console or start 1C:Enterprise with the following parameters:
 		 |ENTERPRISE %2 /CAllowUserLogon /UC%3'");
 	EndIf;
 	MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText,
 		InfoBaseConnectionsClientServer.TextForAdministrator(), InfoBasePathString, 
-		NStr("en = '<key code>'"));
+		NStr("en= '<key code>'"));
 	
 	Return MessageText;
 	
@@ -574,7 +574,7 @@ EndFunction
 //
 Function EventLogMessageText()
 	
-	Return NStr("en= 'User sessions'");
+	Return NStr("en= 'User sessions'", Metadata.DefaultLanguage.LanguageCode);
 	
 EndFunction
 
@@ -626,3 +626,14 @@ Function ConnectionsLockedForDate(CurrentMode, CurrentDate)
 		
 EndFunction
 
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ClientEvents.Add("StandardSubsystems.UserSessions\OnDisconnect");
+	
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

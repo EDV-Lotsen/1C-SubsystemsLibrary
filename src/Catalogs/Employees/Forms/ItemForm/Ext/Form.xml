@@ -11,14 +11,6 @@
 		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="IndOfFilling" id="26">
-			<DataPath>1/0:41e55510-093e-4af0-b8d4-443d6e0d15ce</DataPath>
-			<ContextMenu name="IndOfFillingContextMenu" id="27"/>
-			<ExtendedTooltip name="IndOfFillingExtendedTooltip" id="92"/>
-			<Events>
-				<Event name="OnChange">IndOfFillingOnChange</Event>
-			</Events>
-		</InputField>
 		<UsualGroup name="ParentCode" id="20">
 			<Title>
 				<v8:item>
@@ -100,27 +92,6 @@
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-						<UsualGroup name="Indent2" id="91">
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Indent2</v8:content>
-								</v8:item>
-							</Title>
-							<Group>Vertical</Group>
-							<Representation>NormalSeparation</Representation>
-							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="Indent2ExtendedTooltip" id="101"/>
-							<ChildItems>
-								<InputField name="Individual" id="7">
-									<DataPath>1/0:41e55510-093e-4af0-b8d4-443d6e0d15ce</DataPath>
-									<EditMode>EnterOnInput</EditMode>
-									<Wrap>false</Wrap>
-									<ContextMenu name="IndividualContextMenu" id="8"/>
-									<ExtendedTooltip name="IndividualExtendedTooltip" id="102"/>
-								</InputField>
-							</ChildItems>
-						</UsualGroup>
 					</ChildItems>
 				</Page>
 				<Page name="PersonalData" id="41">
@@ -143,12 +114,6 @@
 							<HorizontalStretch>false</HorizontalStretch>
 							<ContextMenu name="GenderContextMenu" id="45"/>
 							<ExtendedTooltip name="GenderExtendedTooltip" id="105"/>
-						</InputField>
-						<InputField name="IndView" id="53">
-							<DataPath>1/0:41e55510-093e-4af0-b8d4-443d6e0d15ce</DataPath>
-							<ReadOnly>true</ReadOnly>
-							<ContextMenu name="IndViewContextMenu" id="54"/>
-							<ExtendedTooltip name="IndViewExtendedTooltip" id="106"/>
 						</InputField>
 					</ChildItems>
 				</Page>

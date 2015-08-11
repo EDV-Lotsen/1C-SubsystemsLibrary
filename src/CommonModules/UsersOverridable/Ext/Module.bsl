@@ -15,6 +15,14 @@
 //
 Function RoleEditProhibition() Export
 	
+	//// StandardSubsystems.AccessManagement
+	//
+	//// Roles are set automatically by access group data,
+	//// using the following relation: UsersAccessGroups -> Profile -> ProfileRoles
+	//Return True;
+	//
+	//// End StandardSubsystems.AccessManagement
+	
 	Return False;
 	
 EndFunction
@@ -49,6 +57,10 @@ EndProcedure
 //
 Procedure ChangeActionsOnForm(Val Ref = Undefined, Val ActionsOnForm) Export
 	
+	//// StandardSubsystems.AccessManagement
+	//ActionsOnForm.Roles = "";
+	//// End StandardSubsystems.AccessManagement
+	
 EndProcedure
 
 // Defines extra actions when writing an infobase user.
@@ -59,6 +71,15 @@ EndProcedure
 //  NewProperties - Structure - see Users.WriteIBUser function return parameters for details.
 //
 Procedure OnWriteInfoBaseUser(Val OldProperties, Val NewProperties) Export
+	
+	// StandardSubsystems.FileFunctions
+	If ValueIsFilled(OldProperties.InfoBaseUserName) And
+	     Upper(OldProperties.InfoBaseUserName) <> Upper(NewProperties.InfoBaseUserName) Then
+		
+		//FileFunctions.MoveSettingsOnChangeUserName(
+		//	OldProperties.InfoBaseUserName, NewProperties.InfoBaseUserName);
+	EndIf;
+	// End StandardSubsystems.FileFunctions
 	
 EndProcedure
 
@@ -83,6 +104,12 @@ EndProcedure
 // 
 Procedure QuestionTextBeforeWriteFirstAdministrator(QuestionText) Export
 	
+	// StandardSubsystems.AccessManagement
+	QuestionText = NStr("en = 'The user you want to add is the first infobase user, 
+		|this user will be automatically included into the Administrators access group. 
+		|Do you want to continue?'")
+	// End StandardSubsystems.AccessManagement
+	
 EndProcedure
 
 // Defines extra actions when writing an administrator.
@@ -94,7 +121,19 @@ EndProcedure
 //  User - CatalogRef.Users (object change is prohibited).
 //
 Procedure OnWriteFirstAdministrator(User) Export
-		
+	
+	// StandardSubsystems.AccessManagement
+	
+	// First administrator is added into the Administrators access group automatically
+	Object = Catalogs.AccessGroups.Administrators.GetObject();
+	If Object.Users.Find(User, "User") = Undefined Then
+		Object.Users.Add().User = User;
+		Object.DataExchange.Load = True;
+		Object.Write();
+	EndIf;
+	
+	// End StandardSubsystems.AccessManagement
+	
 EndProcedure
 
 // Overrides the comment text when authorizing an infobase user that has been created
@@ -106,6 +145,17 @@ EndProcedure
 //  Comment - String - initial value has been set.
 //
 Procedure AfterWriteAdministratorOnAuthorization(Comment) Export
+	
+	// StandardSubsystems.AccessManagement
+	Comment = NStr("en = 'An infobase user with the Full rights role
+	                     |was created in the designer mode:
+	                     |
+	                     |- the user was not found in the Users catalog,
+	                     |- the user has been registered in the Users catalog,
+	                     |- the user has been added to the Administrators access group.
+	                     |
+	                     |It is recommended you to create infobase users in the enterprise mode.'");
+	// End StandardSubsystems.AccessManagement
 	
 EndProcedure
 
@@ -121,15 +171,60 @@ EndProcedure
 Procedure SetDefaultRights(User) Export
 	
 	// _Demo Start Example
+	NewAccessGroups = New Array;
+	NewAccessGroups.Add(Catalogs.AccessGroups.FindByDescription("Users"));
+	
 	BeginTransaction();
 	
-	If Not User.Roles.Contains(Metadata.Roles.Operator) Then
-		User.Roles.Add(Metadata.Roles.Operator);
-	EndIf;
+	Query = New Query;
+	Query.Text =
+	"SELECT
+	|	AccessGroupsUsers.Ref
+	|FROM
+	|	Catalog.AccessGroups.Users AS AccessGroupsUsers
+	|WHERE
+	|	AccessGroupsUsers.User = &User
+	|	AND (NOT AccessGroupsUsers.Ref IN (&NewGroups))
+	|;
+	|
+	|////////////////////////////////////////////////////////////////////////////////
+	|SELECT
+	|	AccessGroups.Ref
+	|FROM
+	|	Catalog.AccessGroups AS  AccessGroups
+	|		LEFT JOIN Catalog.AccessGroups.Users AS  AccessGroupsUsers
+	|			ON AccessGroups.Ref =  AccessGroupsUsers.Ref
+	|			AND (AccessGroupsUsers.User = &User)
+	|WHERE
+	|	AccessGroups.Ref IN(&NewGroups)
+	|	AND  AccessGroupsUsers.Ref IS NULL";
+	Query.SetParameter("User", User);
+	Query.SetParameter("NewGroups", NewAccessGroups);
+	Results = Query.ExecuteBatch();
 	
-	User.Write();
+	SelectionExclude = Results[0].Select();
+	While SelectionExclude.Next() Do
+		ObjectGroup = SelectionExclude.Ref.GetObject();
+		ObjectGroup.Users.Delete(ObjectGroup.Users.Find(User, "User"));
+		ObjectGroup.Write();
+	EndDo;
+	
+	SelectionAdd = Results[1].Select();
+	While SelectionAdd.Next() Do
+		ObjectGroup = SelectionAdd.Ref.GetObject();
+		UserRow = ObjectGroup.Users.Add();
+		UserRow.User = User;
+		ObjectGroup.Write();
+	EndDo;
 	
 	CommitTransaction();
 	// _Demo End Example
+	
+EndProcedure
+
+// Internal use only.
+Procedure OnSetInitialSettings(InitialSettings) Export
+	
+	InitialSettings.InterfaceSettings.SectionsPanelRepresentation = SectionsPanelRepresentation.PictureAndText;
 	
 EndProcedure

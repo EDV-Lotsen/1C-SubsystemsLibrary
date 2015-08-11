@@ -94,12 +94,7 @@ Procedure OnStart() Export
 						OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.SeparateScheduledJobExecutionSessionDesktop",ParametersToForm,,, MainWindow);
 					EndIf;
 
-					If OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecution") = "Restart" Then
-						SkipExitConfirmation = True;
-						Exit(False, True, " /C""" + LaunchParameter + """");
-					EndIf;
-					SkipExitConfirmation = True;
-					Exit(False);
+					OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecution",,,,,, New NotifyDescription("OnStartEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
 				Else
 					// Executing in this session
 					AttachIdleHandler("ScheduledJobExecutionInMainSession", 1, True);
@@ -114,7 +109,7 @@ Procedure OnStart() Export
 							NStr("en = 'The session that performs scheduled jobs is already started.'
 								| 
 								|%1'"), ErrorDescription);
-						DoMessageBox(MessageText);
+						ShowMessageBox(,MessageText);
 					EndIf;
 				EndIf;
 				If SeparateSession Then
@@ -124,7 +119,7 @@ Procedure OnStart() Export
 			EndIf;
 		Else
 			If Warn Then
-				DoMessageBox(NStr("en = 'Scheduled jobs are executed on the server.'"));
+				ShowMessageBox(,NStr("en = 'Scheduled jobs are executed on the server.'"));
 			EndIf;
 			If SeparateSession Then
 				SkipExitConfirmation = True;
@@ -147,6 +142,17 @@ Procedure OnStart() Export
 		EndIf;
 	EndIf;
 	
+EndProcedure
+
+Procedure OnStartEnd(Result, AdditionalParameters) Export
+	
+	If Result = "Restart" Then
+		SkipExitConfirmation = True;
+		Exit(False, True, " /C""" + LaunchParameter + """");
+	EndIf;
+	SkipExitConfirmation = True;
+	Exit(False);
+
 EndProcedure
 
 // Attempts to start a new session that will handle scheduled jobs.

@@ -51,7 +51,7 @@ Function CheckCommandParameterType(Val Parameter, Val ExpectedType) Export
 	EndIf;
 	
 	If Not Result Then
-		DoMessageBox(NStr("en = 'Command can not be executed for the current object.'"));
+		ShowMessageBox(, NStr("en = 'Command can not be executed for the current object.'"));
 	EndIf;
 	
 	Return Result;
@@ -127,15 +127,9 @@ Function SuggestFileSystemExtensionInstallationNow(SuggestionText = Undefined) E
 	
 	If FirstCallInSession Then
 		FormParameters = New Structure("Message", SuggestionText);
-		ReturnCode = OpenFormModal("CommonForm.FileSystemExtensionInstallationQuestion", FormParameters);
-		If ReturnCode = Undefined Then
-			ReturnCode = True;
-		EndIf;
-		
-		SuggestFileSystemExtensionInstallation = ReturnCode;
-		CommonUse.CommonSettingsStorageSave(
-			"ProgramSettings/SuggestFileSystemExtensionInstallation", ClientID,
-			SuggestFileSystemExtensionInstallation);
+		FunctionParameters = New Structure("ClientID", ClientID);
+		ReturnCode = OpenForm("CommonForm.FileSystemExtensionInstallationQuestion", FormParameters, , , , ,
+			New NotifyDescription("SuggestFileSystemExtensionInstallationNowSaveSettings", ThisObject, FunctionParameters));
 	EndIf;
 	Return ?(AttachFileSystemExtension(), "Attached", "NotAttached");
 	
@@ -144,6 +138,20 @@ Function SuggestFileSystemExtensionInstallationNow(SuggestionText = Undefined) E
 #EndIf
 	
 EndFunction
+
+// The continuation of SuggestFileSystemExtensionInstallationNow
+Procedure SuggestFileSystemExtensionInstallationNowSaveSettings(ReturnCode, AdditionalParameters) Export
+	
+	If ReturnCode = Undefined Then
+		ReturnCode = True;
+	EndIf;
+
+	SuggestFileSystemExtensionInstallation = ReturnCode;
+	CommonUse.CommonSettingsStorageSave(
+		"ProgramSettings/SuggestFileSystemExtensionInstallation", AdditionalParameters.ClientID,
+		SuggestFileSystemExtensionInstallation);
+		
+EndProcedure
 
 // Suggests user to attach the file system extension at the web client
 // and, in case of refuse, notifies about impossibility of action continuation.
@@ -175,13 +183,13 @@ Function FileSystemExtensionAttached(SuggestionText = Undefined, WarningText = U
 		If WarningText <> Undefined Then
 			MessageText = WarningText;
 		Else
-			MessageText = NStr("en = 'The action is not accessible because the file system extension is not attached at the Web client.'")
+			MessageText = NStr("en = 'The action is not accessible because of the file system extension is not attached at the Web client.'")
 		EndIf;
 	ElsIf Result = "UnsupportedWebClient" Then
-		MessageText = NStr("en = 'The action is not accessible in the current Web client because the file system extension cannot be attached to it.'");
+		MessageText = NStr("en = 'The action is not accessible in the current Web client because of the file system extension cannot be attached to it.'");
 	EndIf;
 	If Not IsBlankString(MessageText) Then
-		DoMessageBox(MessageText);
+		ShowMessageBox(, MessageText);
 	EndIf;
 	Return Result = "Attached";
 	
@@ -214,11 +222,11 @@ Procedure RegisterCOMConnector() Export
 		Shell.Run(BatFileName, 0, True); // launching a bat file with hidden window (0) and completion waiting (True)
 	Except
 		ErrorInfo = ErrorInfo();
-		MessageText = NStr("en = 'Error registering the comcntr component.'") + Chars.LF;
-		AddMessageForEventLog(NStr("en = 'Comcntr component registration'"), "Error", 
+		MessageText = NStr("en='Error registering the comcntr component.'") + Chars.LF;
+		AddMessageForEventLog(NStr("en='Comcntr component registration'"), "Error", 
 			MessageText + DetailErrorDescription(ErrorInfo));
 		CommonUse.WriteEventsToEventLog(MessagesForEventLog);
-		DoMessageBox(MessageText + NStr("en = 'See details in the Event log.'"));
+		ShowMessageBox(, MessageText + NStr("en='See details in the Event log.'"));
 		Return;
 	EndTry;
 	
@@ -231,35 +239,44 @@ Procedure RegisterCOMConnector() Export
 		DeleteFiles(LogFileName);
 	Except
 		ErrorInfo = ErrorInfo();
-		MessageText = NStr("en = 'Error registering the comcntr component.'") + Chars.LF;
-		AddMessageForEventLog(NStr("en = 'Comcntr component registration'"), "Error",
+		MessageText = NStr("en='Error registering the comcntr component.'") + Chars.LF;
+		AddMessageForEventLog(NStr("en='Comcntr component registration'"), "Error",
 			MessageText + DetailErrorDescription(ErrorInfo));
 		CommonUse.WriteEventsToEventLog(MessagesForEventLog);
-		DoMessageBox(MessageText + NStr("en = 'See details in the Event log.'"));
+		ShowMessageBox(, MessageText + NStr("en='See details in the Event log.'"));
 		Return;
 	EndTry;
 		
 	If TrimAll(Str) <> "0" Then
-		MessageText = NStr("en = 'Error registering the comcntr component.'") + Chars.LF;
-		AddMessageForEventLog(NStr("en = 'Comcntr component registration'"), "Error",MessageText + 
-			StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Regsvr32 error code is: %1.
-				| (Error code 5 means that you have insufficient access rights. Execute the command on behalf of a local administrator.)
-			 |
-				|Command text: 
-				|%2'"), Str, CommandText));
+		MessageText = NStr("en='Error registering the comcntr component.'") + Chars.LF;
+		AddMessageForEventLog(NStr("en='Comcntr component registration'"), "Error",MessageText + 
+			StringFunctionsClientServer.SubstituteParametersInString(NStr("en='Regsvr32 error code is: %1."
+" (Error code 5 means that you have insufficient access rights. Execute the command on behalf of a local administrator.)"
+""
+"Command text: "
+"%2'"), Str, CommandText));
 		CommonUse.WriteEventsToEventLog(MessagesForEventLog);
-		DoMessageBox(MessageText + NStr("en = '
-			|See details in the Event log.'"));
+		ShowMessageBox(, MessageText + NStr("en='"
+"See details in the Event log.'"));
 		Return;
 	EndIf;
 	
-	Response = DoQueryBox(NStr("en = 'Restart of the 1C:Enterprise session is required to finish re-registration of the comcntr component .
-		|Restart now?'"), QuestionDialogMode.YesNo);
-	If Response = DialogReturnCode.Yes Then
-		SkipExitConfirmation = True;
-		Exit(True, True);
-	EndIf;
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("RegisterCOMConnectorEnd", ThisObject), NStr("en='Restart of the 1C:Enterprise session is required to finish re-registration of the comcntr component ."
+"Restart now?'"), QuestionDialogMode.YesNo);
 	#EndIf
+
+EndProcedure
+
+Procedure RegisterCOMConnectorEnd(QuestionResult, AdditionalParameters) Export
+    
+    Response = QuestionResult;
+    If Response = DialogReturnCode.Yes Then
+        SkipExitConfirmation = True;
+        Exit(True, True);
+    EndIf;
 
 EndProcedure
 
@@ -281,7 +298,7 @@ Function ChooseTime(Form, FormInputField, Val CurrentValue, Interval = 3600) Exp
 	WorkingDayBeginning = BegOfHour(BegOfDay(CurrentValue) +
 		Hour(WorkingDayBeginning) * 3600 +
 		Minute(WorkingDayBeginning)*60);
-	WorkingDayEnd = BegOfHour(BegOfDay(CurrentValue) +
+	WorkingDayEnd = EndOfHour(BegOfDay(CurrentValue) +
 		Hour(WorkingDayEnd) * 3600 +
 		Minute(WorkingDayEnd)*60);
 	
@@ -325,30 +342,30 @@ Function ClientConnectedViaWebServer() Export
 	
 EndFunction
 
-// Asks about continuation of actions that lead to loss of changes.
-//
-// Parameters:
-// Cancel - Boolean - returned parameter. It indicates refusal of action continuation;
-// Modified - Boolean - form modify flag. It indicates if form from which this procedure is called, is modified;
-// ActionSelected - Boolean - this flag shows if a user selected an action that leads to the form closing;
-// WarningText - String - dialog text with a user.
-//
-Procedure RequestCloseFormConfirmation(Cancel, Modified = True, ActionSelected = False, WarningText = "") Export
-	
-	If ActionSelected = True or Not Modified Then 
-		Return;
-	EndIf;
-	
-	QuestionText = ?(IsBlankString(WarningText), 
-		NStr("en = 'Data has been changed, all changes will be canceled.
-		 |Cancel changes and close the form?'"),
-		WarningText);
-	Result = DoQueryBox(QuestionText, QuestionDialogMode.YesNo, , DialogReturnCode.No, 
-		NStr("en = 'Discard changes'"));
-		
-	Cancel = (Result = DialogReturnCode.No);	
-	
-EndProcedure
+//// Asks about continuation of actions that lead to loss of changes.
+////
+//// Parameters:
+//// Cancel - Boolean - returned parameter. It indicates refusal of action continuation;
+//// Modified - Boolean - form modify flag. It indicates if form from which this procedure is called, is modified;
+//// ActionSelected - Boolean - this flag shows if a user selected an action that leads to the form closing;
+//// WarningText - String - dialog text with a user.
+////
+//Procedure RequestCloseFormConfirmation(Cancel, Modified = True, ActionSelected = False, WarningText = "") Export
+//	
+//	If ActionSelected = True or Not Modified Then 
+//		Return;
+//	EndIf;
+//	
+//	QuestionText = ?(IsBlankString(WarningText), 
+//		NStr("en = 'Data has been changed, all changes will be cancelled.
+//		 |Cancel changes and close the form?'"),
+//		WarningText);
+//	Result = DoQueryBox(QuestionText, QuestionDialogMode.YesNo, , DialogReturnCode.No, 
+//		NStr("en = 'Discard changes'"));
+//		
+//	Cancel = (Result = DialogReturnCode.No);	
+//	
+//EndProcedure
 
 // Gets a style color by the style item name
 //
@@ -386,7 +403,7 @@ EndFunction
 // Data - any type- Data that is related with an event (like object reference for example);
 // Comment - String - comment for the event log;
 // ModePresentation - String - transaction mode presentation for this event;
-// EventDate - Date - accurate date of the event that is described in the message. This date will be added to the begining of comment;
+// EventDate - Date - accurate date of event that is described in the message. This date will be added to the begining of comment;
 // WriteEvents - Boolean - this flag indicates if the procedure of accumulated message direct writing should be called after this message adding.
 //
 Procedure AddMessageForEventLog(EventName, LevelPresentation = "Information", 
@@ -445,79 +462,137 @@ Procedure EventLogEnabled(CheckList = Undefined,
 		Mode = QuestionDialogMode.YesNo;
 		Default = DialogReturnCode.Yes;
 		Title = NStr("en = 'Event log'");
-		ReturnCode = DoQueryBox(QuestionText, Mode, , Default, Title);
+		ReturnCode = Undefined;
+
+		ShowQueryBox(New NotifyDescription("EventLogEnabledEnd", ThisObject, New Structure("CheckList", CheckList)), QuestionText, Mode, , Default, Title);
+        Return;
 	Else
 		ReturnCode = DialogReturnCode.Yes;
 	EndIf;
 	
 	
-	If ReturnCode = DialogReturnCode.Yes Then
-		Try 
-			CommonUse.EnableUseEventLog(CheckList);
-			Text = NStr("en = 'Settings are changed'");
-			Comment = NStr("en = 'List of registered in the Event log events is changed'");
-			ShowUserNotification(Text,,Comment);
-		Except
+	EventLogEnabledPart(CheckList, ReturnCode);
+EndProcedure
 
-			EventName = NStr("en = 'Event log setup'");
-			LevelPresentation = "Error";
-			Comment = NStr("en = Failed to set exclusive access. Event log settings are not changed'");
-			AddMessageForEventLog(EventName, LevelPresentation, Comment,, True);
-			
-			OpenForm("CommonForm.EnableEventLog",New Structure("CheckList",CheckList)); 
-			
-		EndTry;
+Procedure EventLogEnabledEnd(QuestionResult, AdditionalParameters) Export
+    
+    CheckList = AdditionalParameters.CheckList;
+    
+    
+    ReturnCode = QuestionResult;
+    
+    EventLogEnabledPart(CheckList, ReturnCode);
 
-	EndIf;
-	
+EndProcedure
+
+Procedure EventLogEnabledPart(Val CheckList, Val ReturnCode)
+    
+    Var Comment, EventName, LevelPresentation, Text;
+    
+    If ReturnCode = DialogReturnCode.Yes Then
+        Try 
+            CommonUse.EnableUseEventLog(CheckList);
+            Text = NStr("en = 'Settings are changed'");
+            Comment = NStr("en = 'List of registered in the Event log events is changed'");
+            ShowUserNotification(Text,,Comment);
+        Except
+            
+            EventName = NStr("en = 'Event log setup'");
+            LevelPresentation = "Error";
+            Comment = NStr("en = Failed to set exclusive access. Event log settings are not changed'");
+            AddMessageForEventLog(EventName, LevelPresentation, Comment,, True);
+            
+            OpenForm("CommonForm.EnableEventLog",New Structure("CheckList",CheckList)); 
+            
+        EndTry;
+        
+    EndIf;
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions for processing user actions at editing of multiline text,
 // like comments in documents.
 
-// Opens the editing form of any multiline text in modal mode.
-//
-// Parameters:
-// MultilineText - String - any text to be edited;
-// EditResult - String - edited result will be put in this parameter;
-// Modified - String - form modified flag;
-// Title - String - form title text.
-//
-Procedure OpenMultilineTextEditForm(Val MultilineText, EditResult, Modified = False, 
-		Val Title = Undefined) Export
-	
-	If Title = Undefined Then
-		TextEntered = InputString(MultilineText,,, True);
-	Else
-		TextEntered = InputString(MultilineText, Title,, True);
-	EndIf;
-	
-	If Not TextEntered Then
-		Return;
-	EndIf;
-		
-	EditResult = MultilineText;
-	If Not Modified Then
-		Modified = True;
-	EndIf;
-	
-EndProcedure
+//// Opens the editing form of any multiline text in modal mode.
+////
+//// Parameters:
+//// MultilineText - String - any text to be edited;
+//// EditResult - String - edited result will be put in this parameter;
+//// Modified - String - form modified flag;
+//// Title - String - form title text.
+////
+//Procedure OpenMultilineTextEditForm(Val MultilineText, EditResult, Modified = False, 
+//		Val Title = Undefined) Export
+//	
+//	If Title = Undefined Then
+//		TextEntered = InputString(MultilineText,,, True);
+//	Else
+//		TextEntered = InputString(MultilineText, Title,, True);
+//	EndIf;
+//	
+//	If Not TextEntered Then
+//		Return;
+//	EndIf;
+//		
+//	EditResult = MultilineText;
+//	If Not Modified Then
+//		Modified = True;
+//	EndIf;
+//	
+//EndProcedure
 
-// Opens the editing form of any multiline comment in modal mode.
-//
-// Parameters:
-// MultilineText - string - any text to be edited;
-// EditResult - String - edited result will be put in this parameter;
-// Modified - String - form modified flag;
-//
-// Example:
-// OpenCommentEditForm(Item.EditText, Object.Comment, Modified);
-//
-Procedure OpenCommentEditForm(Val MultilineText, EditResult,
-	Modified = False) Export
+//// Opens the editing form of any multiline comment in modal mode.
+////
+//// Parameters:
+//// MultilineText - string - any text to be edited;
+//// EditResult - String - edited result will be put in this parameter;
+//// Modified - String - form modified flag;
+////
+//// Example:
+//// OpenCommentEditForm(Item.EditText, Object.Comment, Modified);
+////
+//Procedure OpenCommentEditForm(Val MultilineText, EditResult,
+//	Modified = False) Export
+//	
+//	OpenMultilineTextEditForm(MultilineText, EditResult, Modified, 
+//		NStr("en='Comment'"));
+//	
+//EndProcedure
 	
-	OpenMultilineTextEditForm(MultilineText, EditResult, Modified, 
-		NStr("en='Comment'"));
+// Internal use only.
+Function EventHandlers(Event) Export
 	
-EndProcedure
+	Return StandardSubsystemsClientCached.ClientEventHandlers(Event, False);
+	
+EndFunction
+
+// Internal use only.
+Function InternalEventHandlers(Event) Export
+	
+	Return StandardSubsystemsClientCached.ClientEventHandlers(Event, True);
+	
+EndFunction
+
+// Internal use only.
+Function SubsystemExists(FullSubsystemName) Export
+	
+	SubsystemNames = StandardSubsystemsClientCached.ClientParametersOnStart().SubsystemNames;
+	Return SubsystemNames.Get(FullSubsystemName) <> Undefined;
+	
+EndFunction
+
+// Internal use only.
+Function CommonModule(Name) Export
+	
+	Module = Eval(Name);
+	
+#If Not WebClient Then
+	If TypeOf(Module) <> Type("CommonModule") Then
+		Raise StringFunctionsClientServer.SubstituteParametersInString(NStr("en='%1 common module not found.'"), Name);
+	EndIf;
+#EndIf
+	
+	Return Module;
+	
+EndFunction

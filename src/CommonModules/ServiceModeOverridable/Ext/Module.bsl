@@ -70,7 +70,7 @@ Procedure OnSetInfoBaseParameterValues(Val ParameterValues) Export
 EndProcedure
 
 // Is called on enabling separation by data area
-// at first launch with InitSeparatedInfoBase
+// at first launch with InitSeparatedInfobase
 // 
 // Specifically, you should place here the script for enabling scheduled jobs
 // that are only used when data separation is enabled

@@ -232,7 +232,7 @@ Procedure WriteAreaDataToXML(Val Writer, Val ExportSharedSuppliedData = False) E
 			|FROM
 			|	" + MetadataObjectFullName + " AS _XMLExport_Table";
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				Object = Selection.Ref.GetObject();
 				Try
@@ -283,7 +283,7 @@ Procedure WriteAreaDataToXML(Val Writer, Val ExportSharedSuppliedData = False) E
 			|FROM
 			|	" + MetadataObjectFullName + " AS _XMLExport_Table";
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				RecordSet = TypeManager.CreateRecordSet();
 				RecordSet.Filter.Recorder.Set(Selection.Recorder);
@@ -359,7 +359,7 @@ Procedure ExportCurrentAreaToTempStorage(Val StorageAddress) Export
 		DeleteFiles(ArchiveName);
 	Except
 		// If deletion failed, the system will delete the temporary file automatically
-		WriteLogEvent(NStr("en = 'Deleting the femporary file'"),
+		WriteLogEvent(NStr("en = 'Deleting the femporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,,
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;
@@ -760,7 +760,7 @@ Procedure WriteDataToXMLWithTypes(ExportDirectory, TypesForReplacement = Undefin
 			|FROM
 			|	" + ObjectMD.FullName() + " AS _XMLExport_Table";
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				Object = Selection.Ref.GetObject();
 				
@@ -801,7 +801,7 @@ Procedure WriteDataToXMLWithTypes(ExportDirectory, TypesForReplacement = Undefin
 			|FROM
 			|	" + RegisterMD.FullName() + " AS _XMLExport_Table";
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				RecordSet = TypeManager.CreateRecordSet();
 				RecordSet.Filter.Recorder.Set(Selection.Recorder);
@@ -862,7 +862,7 @@ Procedure WriteDataToXMLWithTypes(ExportDirectory, TypesForReplacement = Undefin
 			Query.SetParameter("ThisNode", ExchangePlans[ObjectMD.Name].ThisNode());
 			
 			QueryResult = Query.Execute();
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				Object = Selection.Ref.GetObject();
 				
@@ -1036,7 +1036,7 @@ Procedure ImportDataSubstitutingRefs(Val ExportDirectory, Val DebugMode)
 			
 			Query.Text = ReplacementTypeDescription.QueryText;
 			Result = Query.Execute();
-			Selection = Result.Choose();
+			Selection = Result.Select();
 			While Selection.Next() Do
 				SourceRefXML = XDTOSerializer.XMLString(Selection.SourceRef.UUID());
 				
@@ -1171,7 +1171,7 @@ Procedure ImportDataSubstitutingRefs(Val ExportDirectory, Val DebugMode)
 			Continue;
 		EndIf;
 		
-		StandardSubsystemsServerCallOverridable.FillSuppliedDataFromClassifier(ReplacementTypeDescription.SharedRefs);
+		//StandardSubsystemsServerCallOverridable.FillSuppliedDataFromClassifier(ReplacementTypeDescription.SharedRefs);
 	EndDo;
 	
 EndProcedure
@@ -1341,7 +1341,7 @@ Procedure ImportDataViaXDTOSerializer(Val ExportDirectory, Val SearchMask = Unde
 						Try
 							Data = XDTOSerializer.ReadXML(FragmentReading);
 						Except
-							WriteLogEvent("DataImportExport.ErrorReadingXML", EventLogLevel.Error, ,
+							WriteLogEvent(NStr("en = 'DataImportExport.ErrorReadingXML'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, ,
 								Fragment, DetailErrorDescription(ErrorInfo()));
 							Raise;
 						EndTry;
@@ -1371,49 +1371,13 @@ Procedure ImportDataViaXDTOSerializer(Val ExportDirectory, Val SearchMask = Unde
 					If Not IsExchangePlan Then
 						Data.DataExchange.Load = True;
 					EndIf;
-					
-					// fix error with predefined items import start
-					PredefinedObject = Undefined;
-					IsPredefined = False;
-					Try
-						If CommonUse.IsCatalog(Data.Metadata()) 
-						   Or CommonUse.IsChartOfAccounts(Data.Metadata()) 
-						   Or CommonUse.IsChartOfCharacteristicTypes(Data.Metadata()) 
-						   Or CommonUse.IsChartOfCalculationTypes(Data.Metadata()) Then
-							IsPredefined = Data.Predefined;
-							If Data.Predefined And Not IsBlankString(Data.PredefinedDataName) Then
-								PredefinedObject = PredefinedValue(Data.Metadata().FullName()+"."+Data.PredefinedDataName).GetObject();
-								For Each Attribute In Data.Metadata().Attributes Do
-									If Attribute.Name <> "Predefined" And
-									   Attribute.Name <> "PredefinedDataName" And
-									   Attribute.Name <> "Type" And
-									   Attribute.Name <> "AdditionalOrderingAttribute" And
-									   Attribute.Name <> "Ref" Then
-									    If Data[Attribute.Name] <> Null Then
-											PredefinedObject[Attribute.Name] = Data[Attribute.Name];
-										EndIf;
-									EndIf;
-								EndDo;
-							EndIf;
-						EndIf;
-					Except
-						PredefinedObject = Undefined;
-						If IsPredefined Then
-							Data.Predefined = False;
-						EndIf;
-					EndTry;
-					If PredefinedObject <> Undefined Then
-						Data = PredefinedObject;
-					EndIf;
-					// fix error with predefined items import end
-					
 					DataImportExportOverridable.BeforeDataImport(Data);
 					Data.Write();
 				EndDo;
 			EndDo;
 			
 		Except
-			WriteLogEvent("DataImportExport.ErrorReadingXML", EventLogLevel.Error, , ,
+			WriteLogEvent(NStr("en = 'DataImportExport.ErrorReadingXML'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 				DetailErrorDescription(ErrorInfo()));
 			
 			If Not DebugMode Then
@@ -1682,7 +1646,7 @@ Procedure ProcessUsersAfterImportFromOtherModel(Val IDMapping)
 	|	Users.InfoBaseUserID In(&OldIDs)";
 	Query.SetParameter("OldIDs", OldIDs);
 	Result = Query.Execute();
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	While Selection.Next() Do
 		UserObject = Selection.Ref.GetObject();
 		UserObject.ServiceUserID = Undefined;
@@ -1700,7 +1664,7 @@ Procedure RaiseWithClarifyingText(Val RecordObject, Val ErrorInfo, Val Additiona
 	If AdditionalText <> "" Then
 		ErrorText = ErrorText + AdditionalText + Chars.LF;
 	EndIf;
-	WriteLogEvent(NStr("en = 'Data export'"),
+	WriteLogEvent(NStr("en = 'Data export'", Metadata.DefaultLanguage.LanguageCode),
 		EventLogLevel.Error, , ,
 		ErrorText + DetailErrorDescription(ErrorInfo));
 	Raise(ErrorText);

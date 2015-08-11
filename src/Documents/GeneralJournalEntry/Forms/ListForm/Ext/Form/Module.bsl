@@ -5,10 +5,10 @@ Procedure Import(Command)
 	Mode = FileDialogMode.Open;
 	OpeningFileDialogue = New FileDialog(Mode);
 	OpeningFileDialogue.FullFileName = "";
-	Filter = "Excel(*.xlsx)|*.xlsx|Excel 97(*.xls)|*.xls";
+	Filter = NStr("en = 'Excel(*.xlsx)|*.xlsx|Excel 97(*.xls)|*.xls'");
 	OpeningFileDialogue.Filter = Filter;
 	OpeningFileDialogue.Multiselect = False;
-	OpeningFileDialogue.Title = "Select file";
+	OpeningFileDialogue.Title = NStr("en = 'Select file'");
 	If OpeningFileDialogue.Choose() Then
 	    FilesArray = OpeningFileDialogue.SelectedFiles;
 	    For Each FileName In FilesArray Do
@@ -16,7 +16,7 @@ Procedure Import(Command)
 		EndDo;
 		ImportGJE(Selection.FullName);
 	Else
-	    DoMessageBox("File(s) not selected!");
+	    ShowMessageBox(, NStr("en = 'File(s) not selected!'"));
 	EndIf;
 
 EndProcedure

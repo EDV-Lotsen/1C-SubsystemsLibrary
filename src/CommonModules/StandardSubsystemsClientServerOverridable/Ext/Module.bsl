@@ -16,8 +16,8 @@
 Procedure GetNumberForPrinting(ObjectNumber, StandardProcessing) Export
 	
 	// StandardSubsystems.ObjectPrefixation
-	ObjectNumber = ObjectPrefixationClientServer.GetNumberForPrinting(ObjectNumber);
-	StandardProcessing = False;
+	//ObjectNumber = ObjectPrefixationClientServer.GetNumberForPrinting(ObjectNumber);
+	//StandardProcessing = False;
 	// End StandardSubsystems.ObjectPrefixation
 	
 EndProcedure

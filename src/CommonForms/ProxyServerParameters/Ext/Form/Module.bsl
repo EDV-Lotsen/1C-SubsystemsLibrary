@@ -44,7 +44,7 @@ Procedure OnOpen(Cancel)
 	
 	If ProxySettingsAtClient Then
 #If WebClient Then
-		DoMessageBox(NStr("en = 'You have to specify proxy server parameters in your browser when running the application with the web client.'"));
+		ShowMessageBox(,NStr("en = 'You have to specify proxy server parameters in your browser when running the application with the web client.'"));
 		Cancel = True;
 		Return;
 #EndIf		

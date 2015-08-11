@@ -533,7 +533,7 @@ Procedure ErrorMessageInitialization()
 	mErrorMessages.Insert(001, NStr("en = 'Exchange messages are not detected.'"));
 	mErrorMessages.Insert(002, NStr("en = 'Error unpacking the exchange message file.'"));
 	mErrorMessages.Insert(003, NStr("en = 'Error packing the exchange message file.'"));
-	mErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory'."));
+	mErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory.'"));
 	mErrorMessages.Insert(005, NStr("en = 'The archive does not contain the exchange message file.'"));
 	mErrorMessages.Insert(006, NStr("en = 'Exchange message was not sent: the maximum allowed message size is exceeded.'"));
 	

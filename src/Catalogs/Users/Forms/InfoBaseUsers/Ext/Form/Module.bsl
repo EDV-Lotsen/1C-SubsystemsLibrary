@@ -26,7 +26,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		FilterPresentation = Items.FilterPresentation.ChoiceList[4].Presentation;
 	EndIf;
 	
-	FillInfoBaseUsers(True);
+	FillInfoBaseUserList(True);
 	
 EndProcedure
 
@@ -38,7 +38,7 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	 EventName = "InfoBaseUserDeleted" Or
 	 EventName = "NonexistentInfoBaseUserRelationCleared" Then
 		
-		FillInfoBaseUsers();
+		FillInfoBaseUserList();
 	EndIf;
 	
 EndProcedure
@@ -54,7 +54,7 @@ Procedure FilterPresentationOnChange(Item)
 		FilterPresentation = Items.FilterPresentation.ChoiceList.FindByValue(Filter).Presentation;
 	EndIf;
 	
-	FillInfoBaseUsers();
+	FillInfoBaseUserList();
 	
 EndProcedure
 
@@ -63,20 +63,33 @@ Procedure FilterPresentationStartChoice(Item, ChoiceData, StandardProcessing)
 	
 	StandardProcessing = False;
 	
-	SelectedItem = ChooseFromList(Items.FilterPresentation.ChoiceList, Item, Items.FilterPresentation.ChoiceList.FindByValue(Filter));
+	SelectedItem = Undefined;
+
 	
-	If SelectedItem <> Undefined Then
-		
-		Filter = SelectedItem.Value;
-		FilterPresentation = SelectedItem.Presentation;
-		
-		FilterPresentationOnChange(Item);
-	EndIf;
+	ShowChooseFromList(New NotifyDescription("FilterPresentationStartChoiceEnd", ThisObject, New Structure("Item", Item)), Items.FilterPresentation.ChoiceList, Item, Items.FilterPresentation.ChoiceList.FindByValue(Filter));
 	
 EndProcedure
 
+&AtClient
+Procedure FilterPresentationStartChoiceEnd(SelectedItem1, AdditionalParameters) Export
+    
+    Item = AdditionalParameters.Item;
+    
+    
+    SelectedItem = SelectedItem1;
+    
+    If SelectedItem <> Undefined Then
+        
+        Filter = SelectedItem.Value;
+        FilterPresentation = SelectedItem.Presentation;
+        
+        FilterPresentationOnChange(Item);
+    EndIf;
+
+EndProcedure
+
 ////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF InfoBaseUsers TABLE 
+// FORM TABLE EVENT HANDLERS OF InfoBaseUserList TABLE 
 
 // ProblemCode field value details:
 // 0 - InfoBaseUser is not written to the catalog,
@@ -89,17 +102,17 @@ EndProcedure
 // Codes 2 and 3 have grey highlight.
 
 &AtClient
-Procedure InfoBaseUsersChoice(Item, SelectedRow, Field, StandardProcessing)
+Procedure InfoBaseUserListChoice(Item, SelectedRow, Field, StandardProcessing)
 	
 	OpenUserByRef();
 	
 EndProcedure
 
 &AtClient
-Procedure InfoBaseUsersOnActivateRow(Item)
+Procedure InfoBaseUserListOnActivateRow(Item)
 	
-	CanDelete = Items.InfoBaseUsers.CurrentData <> Undefined And
-	 Items.InfoBaseUsers.CurrentData.ProblemCode = 0;
+	CanDelete = Items.InfoBaseUserList.CurrentData <> Undefined And
+	 Items.InfoBaseUserList.CurrentData.ProblemCode = 0;
 	
 	Items.InfoBaseUsersDelete.Enabled = CanDelete;
 	Items.ContextMenuInfoBaseUsersDelete.Enabled = CanDelete;
@@ -107,18 +120,24 @@ Procedure InfoBaseUsersOnActivateRow(Item)
 EndProcedure
 
 &AtClient
-Procedure InfoBaseUsersBeforeDelete(Item, Cancel)
+Procedure InfoBaseUserListBeforeDelete(Item, Cancel)
 	
-	If Items.InfoBaseUsers.CurrentData.ProblemCode = 0 Then
-		Response = DoQueryBox(NStr("en = 'Do you want to delete the infobase user?'"), QuestionDialogMode.YesNo);
-		If Response = DialogReturnCode.Yes Then
-			DeleteInfoBaseUser(Items.InfoBaseUsers.CurrentData.InfoBaseUserID, Cancel);
-		Else
-			Cancel = True;
-		EndIf;
-	Else
-		Cancel = True;
+	Cancel = True;
+	If Items.InfoBaseUserList.CurrentData.ProblemCode = 0 Then
+		FunctionParameters = New Structure;
+		FunctionParameters.Insert("InfoBaseUserID", Items.InfoBaseUserList.CurrentData.InfoBaseUserID);
+		ShowQueryBox(New NotifyDescription("InfoBaseUserListBeforeDeleteContinuation", ThisForm, FunctionParameters), 
+			NStr("en='Do you want to delete the infobase user?'"), QuestionDialogMode.YesNo);
 	EndIf;
+	
+EndProcedure
+
+&AtClient
+// Internal use only.
+Procedure InfoBaseUserListBeforeDeleteContinuation(QuestionResult, AdditionalParameters)
+	
+	Cancel = False;
+	DeleteInfoBaseUser(AdditionalParameters.InfoBaseUserID, Cancel);
 	
 EndProcedure
 
@@ -135,7 +154,7 @@ EndProcedure
 &AtClient
 Procedure Refresh(Command)
 	
-	FillInfoBaseUsers();
+	FillInfoBaseUserList();
 	
 EndProcedure
 
@@ -143,9 +162,9 @@ EndProcedure
 // INTERNAL PROCEDURES AND FUNCTIONS
 
 &AtServer
-Procedure FillInfoBaseUsers(FormOnCreate = False)
+Procedure FillInfoBaseUserList(FormOnCreate = False)
 	
-	InfoBaseUsers.Clear();
+	InfoBaseUserList.Clear();
 	HasIncorrect = False;
 	
 	Query = New Query(
@@ -172,13 +191,13 @@ Procedure FillInfoBaseUsers(FormOnCreate = False)
 	|	Catalog.ExternalUsers AS ExternalUsers");
 	
 	SetPrivilegedMode(True);
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		
 		InfoBaseUser = InfoBaseUsers.FindByUUID(Selection.InfoBaseUserID);
 		
-		NewRow = InfoBaseUsers.Add();
+		NewRow = InfoBaseUserList.Add();
 		
 		NewRow.ProblemCode = 4;
 		NewRow.Ref = Selection.Ref;
@@ -211,9 +230,9 @@ Procedure FillInfoBaseUsers(FormOnCreate = False)
 	
 	For Each InfoBaseUser In CurInfoBaseUsers Do
 		
-		If InfoBaseUsers.FindRows(New Structure("InfoBaseUserID", InfoBaseUser.UUID)).Count() = 0 Then
+		If InfoBaseUserList.FindRows(New Structure("InfoBaseUserID", InfoBaseUser.UUID)).Count() = 0 Then
 			// This infobase user is not written to the catalog
-			NewRow = InfoBaseUsers.Add();
+			NewRow = InfoBaseUserList.Add();
 			NewRow.ProblemCode = 0;
 			NewRow.FullName = InfoBaseUser.FullName;
 			NewRow.Name = InfoBaseUser.Name;
@@ -234,28 +253,28 @@ Procedure FillInfoBaseUsers(FormOnCreate = False)
 	
 	RowsToDelete = New Array;
 	If Filter = "Users" Then
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("IsUser", False)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("IsUser", False)));
 		
 	ElsIf Filter = "ExternalUsers" Then
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("IsExternalUser", False)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("IsExternalUser", False)));
 		
 	ElsIf Filter = "WrittenIncorrectly" Then
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("ProblemCode", 3)));
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("ProblemCode", 4)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("ProblemCode", 3)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("ProblemCode", 4)));
 		
 	ElsIf Filter = "WithoutInfoBaseUser" Then
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("ProblemCode", 0)));
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("ProblemCode", 1)));
-		RowsToDelete.Add(InfoBaseUsers.FindRows(New Structure("ProblemCode", 4)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("ProblemCode", 0)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("ProblemCode", 1)));
+		RowsToDelete.Add(InfoBaseUserList.FindRows(New Structure("ProblemCode", 4)));
 	EndIf;
 	
 	For Each Rows In RowsToDelete Do
 		For Each String In Rows Do
-			InfoBaseUsers.Delete(InfoBaseUsers.IndexOf(String));
+			InfoBaseUserList.Delete(InfoBaseUserList.IndexOf(String));
 		EndDo;
 	EndDo;
 	
-	InfoBaseUsers.Sort("DeletionMark Asc, ProblemCode Asc");
+	InfoBaseUserList.Sort("DeletionMark Asc, ProblemCode Asc");
 	
 	Items.Warning.Visible = HasIncorrect;
 	
@@ -303,14 +322,14 @@ EndProcedure
 &AtClient
 Procedure OpenUserByRef()
 	
-	CurrentData = Items.InfoBaseUsers.CurrentData;
+	CurrentData = Items.InfoBaseUserList.CurrentData;
 	
 	If CurrentData = Undefined Then
 		Return;
 	EndIf;
 	
 	If CurrentData.ProblemCode = 0 Then
-		DoMessageBox(NStr("en = 'No catalog items mapped to this infobase user.
+		ShowMessageBox(, NStr("en = 'No catalog items mapped to this infobase user.
 		 |
 		 |If you want to create an infobase user
 		 |associated with a user or an external user, click the 
@@ -318,9 +337,9 @@ Procedure OpenUserByRef()
 		 |the item form.'"));
 		
 		Cancel = False;
-		InfoBaseUsersBeforeDelete(Items.InfoBaseUsers, Cancel);
+		InfoBaseUserListBeforeDelete(Items.InfoBaseUserList, Cancel);
 		If Not Cancel Then
-			InfoBaseUsers.Delete(CurrentData);
+			InfoBaseUserList.Delete(CurrentData);
 		EndIf;
 	Else
 		OpenForm(?(CurrentData.IsExternalUser,

@@ -46,18 +46,18 @@ Procedure ContactInformationInfoBaseUpdate() Export
 	
 	// End StandardSubsystems
 	
-	// _Demo example start
-	
-	// The Partners catalog
-	ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerAddress, Enums.ContactInformationTypes.Address, True, False, False, 1);
-	ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerPhone, Enums.ContactInformationTypes.Phone, True, False, False, 2);
-	ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 3);
-	ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerSalesDepartmentEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 4);
+	//// _Demo example start
+	//
+	//// The Partners catalog
+	//ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerAddress, Enums.ContactInformationTypes.Address, True, False, False, 1);
+	//ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerPhone, Enums.ContactInformationTypes.Phone, True, False, False, 2);
+	//ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 3);
+	//ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoPartnerSalesDepartmentEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 4);
 
-	// The Partner contacts catalog
-	ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoContactEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 1);
-	
-	// _Demo example end
+	//// The Partner contacts catalog
+	//ContactInformationManagement.UpdateCIKind(Catalogs.ContactInformationKinds._DemoContactEmail, Enums.ContactInformationTypes.EmailAddress, True, False, False, 1);
+	//
+	//// _Demo example end
 	
 EndProcedure
 

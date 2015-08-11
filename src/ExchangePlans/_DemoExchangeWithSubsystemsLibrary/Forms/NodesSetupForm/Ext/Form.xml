@@ -10,6 +10,9 @@
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
+	<Events>
+		<Event name="BeforeClose">BeforeClose</Event>
+	</Events>
 	<ChildItems>
 		<InputField name="DocumentExportStartDate" id="49">
 			<DataPath>DocumentExportStartDate</DataPath>

@@ -21,11 +21,11 @@ EndFunction
 // package.
 //
 // Parameters:
-//  PackageURL - String - URI of the XDTO package whose message types 
-//   will be retrieved.
+// PackageURL - String - URI of the XDTO package whose message types 
+// will be retrieved.
 //
 // Returns:
-//  FixedArray of XDTOObjectType - remote administration message types.
+// FixedArray of XDTOObjectType - remote administration message types.
 //
 Function GetPackageMessageTypes(Val PackageURL) Export
 	
@@ -75,12 +75,12 @@ Function GetPackageChannels(Val PackageURL) Export
 EndFunction
 
 ///////////////////////////////////////////////////////////////////////////////////
-// Functions return message types and names of packages that contain these messages. 
+// Functions returns message types and names of packages that contains these messages. 
 
 // Returns a remote administration package name.
 //
 // Returns:
-//  String.
+// String.
 //
 Function RemoteAdministrationPackage() Export
 	
@@ -91,10 +91,10 @@ EndFunction
 // Returns a remote administration control package name.
 //
 // Returns:
-//  String.
+// String.
 //
 Function RemoteAdministrationControlPackage() Export
-	
+
 	Return "http://1c-dn.com/SaaS/RemoteAdministration/Control";
 	
 EndFunction
@@ -102,7 +102,7 @@ EndFunction
 // Returns a remote administration message package name.
 //
 // Returns:
-//  String.
+// String.
 //
 Function RemoteAdministrationMessagePackage() Export
 
@@ -113,7 +113,7 @@ EndFunction
 // Returns the UpdateUser message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationServiceMode.UpdateUser
+// XDTOpackages.RemoteAdministrationServiceMode.UpdateUser
 //
 Function MessageUpdateUser() Export
 	
@@ -124,7 +124,7 @@ EndFunction
 // Returns the SetDataAreaFullAccess message type.
 //
 // Returns:
-// XDTOPackages.RemoteAdministrationServiceMode.SetDataAreaFullAccess
+// XDTOpackages.RemoteAdministrationServiceMode.SetDataAreaFullAccess
 //
 Function MessageSetDataAreaFullAccess() Export
 	
@@ -135,7 +135,7 @@ EndFunction
 // Returns the SetAccessToDataArea message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationServiceMode.SetAccessToDataArea
+// XDTOpackages.RemoteAdministrationServiceMode.SetAccessToDataArea
 //
 Function MessageSetAccessToDataArea() Export
 	
@@ -146,7 +146,7 @@ EndFunction
 // Returns the SetDefaultUserRights message type.
 //
 // Returns:
-// XDTOPackages.RemoteAdministrationServiceMode.SetDefaultUserRights
+// XDTOpackages.RemoteAdministrationServiceMode.SetDefaultUserRights
 //
 Function MessageSetDefaultUserRights() Export
 	
@@ -157,7 +157,7 @@ EndFunction
 // Returns the PrepareDataArea message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationServiceMode.PrepareDataArea
+// XDTOpackages.RemoteAdministrationServiceMode.PrepareDataArea
 //
 Function MessagePrepareDataArea() Export
 	
@@ -168,7 +168,7 @@ EndFunction
 // Returns the DeleteDataArea message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationServiceMode.DeleteDataArea
+// XDTOpackages.RemoteAdministrationServiceMode.DeleteDataArea
 //
 Function MessageDeleteDataArea() Export
 	
@@ -179,7 +179,7 @@ EndFunction
 // Returns the SetDataAreaParameters message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationServiceMode.SetDataAreaParameters
+// XDTOpackages.RemoteAdministrationServiceMode.SetDataAreaParameters
 //
 Function MessageSetDataAreaParameters() Export
 	
@@ -190,7 +190,7 @@ EndFunction
 // Returns the DataAreaPrepared message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationControl.DataAreaPrepared
+// XDTOpackages.RemoteAdministratorControl.DataAreaPrepared
 //
 Function MessageDataAreaPrepared() Export
 	
@@ -201,7 +201,7 @@ EndFunction
 // Returns the DataAreaDeleted message type.
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationControl.DataAreaDeleted
+// XDTOpackages.RemoteAdministratorControl.DataAreaDeleted
 //
 Function MessageDataAreaDeleted() Export
 	
@@ -212,7 +212,7 @@ EndFunction
 // Returns the ErrorPreparingDataArea.ErrorPreparingDataArea message type
 //
 // Returns:
-//  XDTOPackages.RemoteAdministrationControl.ErrorPreparingDataArea
+// XDTOpackages.RemoteAdministratorControl.
 //
 Function MessageErrorPreparingDataArea() Export
 	
@@ -223,7 +223,7 @@ EndFunction
 // Returns the ErrorDeletingDataArea message type.
 //
 // Returns:
-// XDTOPackages.RemoteAdministrationControl.ErrorDeletingDataArea
+// XDTOpackages.RemoteAdministratorControl.ErrorDeletingDataArea
 //
 Function MessageErrorDeletingDataArea() Export
 	
@@ -234,7 +234,7 @@ EndFunction
 // Returns the SetInfoBaseParameters message type.
 //
 // Returns:
-// XDTOPackages.RemoteAdministrationServiceMode.SetInfoBaseParameters
+// XDTOpackages.RemoteAdministrationServiceMode.SetInfoBaseParameters
 //
 Function MessageSetInfoBaseParameters() Export
 	
@@ -245,7 +245,7 @@ EndFunction
 // Returns the SetServiceManagerEndPoint message type.
 //
 // Returns:
-// XDTOPackages.RemoteAdministrationServiceMode.SetServiceManagerEndPoint
+// XDTOpackages.RemoteAdministrationServiceMode.SetServiceManagerEndPoint
 //
 Function MessageSetServiceManagerEndPoint() Export
 	

@@ -40,30 +40,60 @@
 			<ChildItems>
 				<InputField name="Description" id="6">
 					<DataPath>Description</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="DescriptionContextMenu" id="7"/>
 					<ExtendedTooltip name="DescriptionExtendedTooltip" id="8"/>
 				</InputField>
 				<InputField name="State" id="9">
 					<DataPath>State</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>State</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="StateContextMenu" id="10"/>
 					<ExtendedTooltip name="StateExtendedTooltip" id="11"/>
 				</InputField>
-				<InputField name="Start" id="12">
-					<DataPath>Start</DataPath>
+				<InputField name="Begin" id="12">
+					<DataPath>Begin</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Start date</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="StartContextMenu" id="13"/>
-					<ExtendedTooltip name="StartExtendedTooltip" id="14"/>
+					<ContextMenu name="BeginContextMenu" id="13"/>
+					<ExtendedTooltip name="BeginExtendedTooltip" id="14"/>
 				</InputField>
 				<InputField name="End" id="15">
 					<DataPath>End</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>End date</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="EndContextMenu" id="16"/>
 					<ExtendedTooltip name="EndExtendedTooltip" id="17"/>
 				</InputField>
 				<InputField name="Placement" id="18">
 					<DataPath>Placement</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Execute on</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="PlacementContextMenu" id="19"/>
 					<ExtendedTooltip name="PlacementExtendedTooltip" id="20"/>
@@ -85,18 +115,36 @@
 			<ChildItems>
 				<InputField name="ID" id="23">
 					<DataPath>ID</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>ID</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="IDContextMenu" id="24"/>
 					<ExtendedTooltip name="IDExtendedTooltip" id="25"/>
 				</InputField>
 				<InputField name="Key" id="26">
 					<DataPath>Key</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Key</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="KeyContextMenu" id="27"/>
 					<ExtendedTooltip name="KeyExtendedTooltip" id="28"/>
 				</InputField>
 				<InputField name="MethodName" id="29">
 					<DataPath>MethodName</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Metadata method name</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="MethodNameContextMenu" id="30"/>
 					<ExtendedTooltip name="MethodNameExtendedTooltip" id="31"/>
@@ -220,7 +268,7 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="Start" id="5">
+		<Attribute name="Begin" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>

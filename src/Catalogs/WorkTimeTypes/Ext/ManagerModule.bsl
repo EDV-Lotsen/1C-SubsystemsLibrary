@@ -40,7 +40,7 @@ Procedure ChoiceDataGetProcessing(ChoiceData, Parameters, StandardProcessing)
 	Result = Query.Execute();
 	If NOT Result.IsEmpty() Then
 		ChoiceData = New ValueList;
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		While Selection.Next() Do
 			ChoiceData.Add(Selection.Ref);	
 		EndDo;

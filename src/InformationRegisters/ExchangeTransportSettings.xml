@@ -156,40 +156,25 @@
 			<FullTextSearch>DontUse</FullTextSearch>
 			<EnableTotalsSliceFirst>false</EnableTotalsSliceFirst>
 			<EnableTotalsSliceLast>false</EnableTotalsSliceLast>
-			<RecordPresentation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Setup transport for node</v8:content>
-				</v8:item>
-			</RecordPresentation>
+			<RecordPresentation/>
 			<ExtendedRecordPresentation/>
-			<ListPresentation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Data exchange transport settings</v8:content>
-				</v8:item>
-			</ListPresentation>
+			<ListPresentation/>
 			<ExtendedListPresentation/>
-			<Explanation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>It is used for storing parameters of exchange message transports (network directory, exchange over FTP resource, exchange over email).</v8:content>
-				</v8:item>
-			</Explanation>
+			<Explanation/>
 		</Properties>
 		<ChildObjects>
-			<Resource uuid="783db3c5-05a7-466a-825e-65a10eb0e3d9">
+			<Resource uuid="e23c7c62-6dfd-4d02-8427-b4cf4828d8cf">
 				<Properties>
-					<Name>CombiExchangeMessageTransportKind</Name>
+					<Name>DefaultExchangeMessageTransportType</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange messages transport kind</v8:content>
+							<v8:content>Default exchange message transport type</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<Type>
-						<v8:Type>cfg:EnumRef.ExchangeMessageTransportKinds</v8:Type>
+						<v8:Type>cfg:EnumRef.ExchangeMessageTransportTypes</v8:Type>
 					</Type>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
@@ -1089,22 +1074,18 @@
 					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Resource>
-			<Resource uuid="ecaacedb-bf2d-4736-a9e1-fa89cda85ee6">
+			<Resource uuid="783db3c5-05a7-466a-825e-65a10eb0e3d9">
 				<Properties>
-					<Name>WSURL</Name>
+					<Name>CombiExchangeMessageTransportKind</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>URL</v8:content>
+							<v8:content>Exchange messages transport kind</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>0</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
+						<v8:Type>cfg:EnumRef.ExchangeMessageTransportKinds</v8:Type>
 					</Type>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
@@ -1117,7 +1098,7 @@
 					<MinValue xsi:nil="true"/>
 					<MaxValue xsi:nil="true"/>
 					<FillFromFillingValue>false</FillFromFillingValue>
-					<FillValue xsi:type="xs:string"/>
+					<FillValue xsi:nil="true"/>
 					<FillChecking>DontCheck</FillChecking>
 					<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
 					<ChoiceParameterLinks/>
@@ -1131,20 +1112,20 @@
 					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Resource>
-			<Resource uuid="599b1692-5f4e-42ef-ae1a-822ff527a415">
+			<Resource uuid="ecaacedb-bf2d-4736-a9e1-fa89cda85ee6">
 				<Properties>
-					<Name>WSUserName</Name>
+					<Name>WSURL</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>User</v8:content>
+							<v8:content>WSURL</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<Type>
 						<v8:Type>xs:string</v8:Type>
 						<v8:StringQualifiers>
-							<v8:Length>50</v8:Length>
+							<v8:Length>0</v8:Length>
 							<v8:AllowedLength>Variable</v8:AllowedLength>
 						</v8:StringQualifiers>
 					</Type>
@@ -1211,13 +1192,13 @@
 					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Resource>
-			<Resource uuid="23f70675-6a05-4b50-ad68-c55ddc93e857">
+			<Resource uuid="599b1692-5f4e-42ef-ae1a-822ff527a415">
 				<Properties>
-					<Name>WSPassword</Name>
+					<Name>WSUserName</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Password</v8:content>
+							<v8:content>WSUser name</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -1529,13 +1510,55 @@
 					<FullTextSearch>DontUse</FullTextSearch>
 				</Properties>
 			</Resource>
+			<Resource uuid="23f70675-6a05-4b50-ad68-c55ddc93e857">
+				<Properties>
+					<Name>WSPassword</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>WSPassword</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>50</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+					<PasswordMode>false</PasswordMode>
+					<Format/>
+					<EditFormat/>
+					<ToolTip/>
+					<MarkNegatives>false</MarkNegatives>
+					<Mask/>
+					<MultiLine>false</MultiLine>
+					<ExtendedEdit>false</ExtendedEdit>
+					<MinValue xsi:nil="true"/>
+					<MaxValue xsi:nil="true"/>
+					<FillFromFillingValue>false</FillFromFillingValue>
+					<FillValue xsi:type="xs:string"/>
+					<FillChecking>DontCheck</FillChecking>
+					<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+					<ChoiceParameterLinks/>
+					<ChoiceParameters/>
+					<QuickChoice>Auto</QuickChoice>
+					<CreateOnInput>Auto</CreateOnInput>
+					<ChoiceForm/>
+					<LinkByType/>
+					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
+					<Indexing>DontIndex</Indexing>
+					<FullTextSearch>Use</FullTextSearch>
+				</Properties>
+			</Resource>
 			<Dimension uuid="ad14c4d1-bc11-44b6-a32c-c00fb89a9ea5">
 				<Properties>
 					<Name>Node</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Infobase node</v8:content>
+							<v8:content>Node</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -1545,12 +1568,7 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>The exchange plan node for which transport settings are setting.</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>

@@ -16,7 +16,7 @@
 Function AuthorizedUser() Export
 	
 	SetPrivilegedMode(True);
-
+	
 	Return ?(ValueIsFilled(SessionParameters.CurrentUser), SessionParameters.CurrentUser, SessionParameters.CurrentExternalUser);
 	
 EndFunction
@@ -114,8 +114,8 @@ Function InfoBaseUserWithFullAccess(User = Undefined,
 		Else
 			// Checking the main configuration role if the infobase user is not specified: 
 			// it must be set to FullAccess or Undefined.
-			If Metadata.DefaultRole = Undefined Or
-				 Metadata.DefaultRole = Metadata.Roles.FullAccess Then
+			If Metadata.DefaultRoles.Count() = 0 
+			   Or Metadata.DefaultRoles.Contains(Metadata.Roles.FullAccess) Then
 				Return True;
 			Else
 				Return False;
@@ -430,7 +430,7 @@ Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val Includi
 		|	AND ExternalUserGroups.Description LIKE &Text";
 	EndIf;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	ChoiceData = New ValueList;
 	
@@ -729,7 +729,7 @@ Procedure FindAmbiguousInfoBaseUsers(Val User = Undefined, Val InfoBaseUserID = 
 	|			GROUP BY
 	|						UserIDs.InfoBaseUserID
 	|			HAVING
-	|				COUNT(UserIDs.User) > 1)
+	|				КОЛИЧЕСТВО(UserIDs.User) > 1)
 	|
 	|ORDER BY
 	|	UserIDs.InfoBaseUserID";
@@ -760,7 +760,7 @@ Procedure FindAmbiguousInfoBaseUsers(Val User = Undefined, Val InfoBaseUserID = 
 				EndIf;
 				ErrorDescription = ErrorDescription
 					+ StringFunctionsClientServer.SubstituteParametersInString(
-						NStr("en = 'More than one database users correspond
+						NStr("en = 'More then one database users correspond
 						          |to the infobase user %1 with ID %2:'"),
 						IBUserName,
 						CurrentAmbiguousID);
@@ -797,7 +797,7 @@ EndProcedure
 // a new user will be created in the catalog. If the user is not found and the current
 // user is not a user with full access, an exception will be raised.
 //
-Procedure SessionParametersSetting(Val ParameterName, SpecifiedParameters) Export
+Procedure SetSessionParameters(Val ParameterName, AssignedParameters) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -850,7 +850,7 @@ Procedure SessionParametersSetting(Val ParameterName, SpecifiedParameters) Expor
 		
 		If Not ResultExternalUsers.IsEmpty() Then
 			
-			Selection = ResultExternalUsers.Choose();
+			Selection = ResultExternalUsers.Select();
 			Selection.Next();
 			SessionParameters.CurrentUser         = Catalogs.Users.EmptyRef();
 			SessionParameters.CurrentExternalUser = Selection.Ref;
@@ -882,7 +882,7 @@ Procedure SessionParametersSetting(Val ParameterName, SpecifiedParameters) Expor
 					UserNotFound = True;
 				EndIf;
 			Else
-				Selection = UsersResult.Choose();
+				Selection = UsersResult.Select();
 				Selection.Next();
 				SessionParameters.CurrentUser = Selection.Ref;
 			EndIf;
@@ -926,7 +926,7 @@ Procedure SessionParametersSetting(Val ParameterName, SpecifiedParameters) Expor
 		Raise UserNotFoundInCatalogMessageText(UserName);
 	EndIf;
 	
-	SpecifiedParameters.Add(ParameterName);
+	AssignedParameters.Add(ParameterName);
 	
 EndProcedure
 
@@ -999,7 +999,7 @@ Function AuthenticateCurrentUser() Export
 				                 |customize user profiles. Use the Users list instead.'");
 			UsersOverridable.AfterWriteAdministratorOnAuthorization(Comment);
 			WriteLogEvent(
-					NStr("en = 'Users. Administrator registered in Users catalog'"),
+					NStr("en = 'Users. Administrator registered in Users catalog'", Metadata.DefaultLanguage.LanguageCode),
 					EventLogLevel.Warning,
 					Metadata.Catalogs.Users,
 					User,
@@ -1021,7 +1021,7 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 // Infobase update.
 
-// Adds update handlers required by this subsystem to the Handlers list. 
+// Adds update handlers required to this subsystem to the Handlers list. 
 // 
 // Parameters:
 // Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details.
@@ -1072,10 +1072,9 @@ Function CreateFirstAdministratorRequired(Val InfoBaseUserInfoStructure, Questio
 			Or Roles.Find(FullAdministratorRole().Name) = Undefined Then
 			
 			// Preparing a question text that will be used when writing the first administrator
-			QuestionText  = NStr("en = 'The user you want to add is the first infobase user. 
-			                           |This user will be automatically included into the
-			                           |Administrators access group. 
-			                           |Do you want to continue?'");
+			QuestionText  = NStr("en='The user you want to add is the first infobase user. "
+"This user will be automatically included into the"
+"Administrators access group. '");
 			UsersOverridable.QuestionTextBeforeWriteFirstAdministrator(QuestionText);
 			Return True;
 		EndIf;
@@ -1104,7 +1103,7 @@ Function GetEditInfoBaseUserPropertiesAccessLevel() Export
 	ElsIf IsInRole(Metadata.Roles.AddEditUsers) Then
 		Return "ListManagement";
 		
-	ElsIf IsInRole(Metadata.Roles.EditCurrentUser) Then
+	ElsIf IsInRole(Metadata.Roles.ChangingCurrentUser) Then
 		Return "ChangeCurrent";
 	Else
 		Return "AccessDenied";
@@ -1116,7 +1115,7 @@ EndFunction
 //
 Function UnspecifiedUserFullName() Export
 	
-	Return NStr("en = '<Not specified>'");
+	Return NStr("en='<Not specified>'");
 	
 EndFunction
 
@@ -1167,7 +1166,7 @@ Function UnspecifiedUserProperties() Export
 		Result = Query.Execute();
 		
 		If Not Result.IsEmpty() Then
-			Selection = Result.Choose();
+			Selection = Result.Select();
 			Selection.Next();
 			Properties.Ref = Selection.Ref;
 		EndIf;
@@ -1473,7 +1472,7 @@ Function WriteIBUser(Val ID, Val ChangedProperties, Val NewRoles, Val CreateNew 
 		EndIf;
 		ErrorDescription = NStr("en = 'Error writing the infobase user:'") + Chars.LF + ErrorDescription;
 		
-		WriteLogEvent(NStr("en = 'Users'"), EventLogLevel.Error, , ,
+		WriteLogEvent(NStr("en = 'Users'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 			DetailErrorDescription(ErrorInfo));
 		
 		Return False;
@@ -1533,14 +1532,14 @@ Procedure CheckUserRights(InfoBaseUser) Export
 					Writer = New XMLWriter;
 					Writer.SetString();
 					XDTOSerializer.WriteXML(Writer, AvailableForChangesSharedData);
-					TableString = Writer.Close();
+					TableAsString = Writer.Close();
 					
 					WriteLogEvent(
-						NStr("en = 'Users.Writing'"),
+						NStr("en = 'Users.Writing'", Metadata.DefaultLanguage.LanguageCode),
 						EventLogLevel.Error,
 						,
 						InfoBaseUser,
-						NStr("en = 'The role that provides common data editing is set for the separated user:'") + TableString);
+						NStr("en = 'The role that provides common data editing is set for the separated user:'") + TableAsString);
 				EndIf;
 					
 				For Each Right In InaccessibleRights Do
@@ -1552,7 +1551,7 @@ Procedure CheckUserRights(InfoBaseUser) Export
 						MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Right);
 						
 						WriteLogEvent(
-							NStr("en = 'Users.Writing'"),
+							NStr("en = 'Users.Writing'", Metadata.DefaultLanguage.LanguageCode),
 							EventLogLevel.Error,
 							,
 							InfoBaseUser,
@@ -1783,16 +1782,16 @@ Procedure UpdateUserGroupContent(Val UserGroup) Export
 			|	UserGroupContent.User
 			|FROM
 			|	InformationRegister.UserGroupContent AS UserGroupContent
-			|		LEFT JOIN Catalog.UserGroups.Content AS UserGroupContent
+			|		LEFT JOIN Catalog.UserGroups.Content AS UserGroupContent2
 			|			INNER JOIN ParentGroupTable AS ParentGroupTable
-			|				ON (ParentGroupTable.Ref = UserGroupContent.Ref)
+			|			ON (ParentGroupTable.Ref = UserGroupContent2.Ref)
 			|				AND (ParentGroupTable.Parent = &UserGroup)
-			|			ON (UserGroupContent.UserGroup = &UserGroup)
-			|			AND UserGroupContent.User = UserGroupContent.User
+			|		ON (UserGroupContent.UserGroup = &UserGroup)
+			|			AND (UserGroupContent2.User = UserGroupContent.User)
 			|WHERE
 			|	UserGroupContent.UserGroup = &UserGroup
-			|	AND UserGroupContent.Ref IS NULL ";
-			DeletedFromGroupUsers = Query.Execute().Choose();
+			|	AND UserGroupContent2.Ref IS NULL ";
+			DeletedFromGroupUsers = Query.Execute().Select();
 			RecordManager = InformationRegisters.UserGroupContent.CreateRecordManager();
 			While DeletedFromGroupUsers.Next() Do
 				RecordManager.UserGroup = UserGroup;
@@ -1835,11 +1834,11 @@ Procedure UpdateUserGroupContent(Val UserGroup) Export
 			|FROM
 			|	Catalog.UserGroups.Content AS UserGroupContent
 			|		INNER JOIN ParentGroupTable AS ParentGroupTable
-			|			ON (ParentGroupTable.Ref = UserGroupContent.Ref)
+			|		ON (ParentGroupTable.Ref = UserGroupContent.Ref)
 			|			AND (ParentGroupTable.Parent = &UserGroup)
-			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-			|			ON (UserGroupContent.UserGroup = &UserGroup)
-			|			AND (UserGroupContent.User = UserGroupContent.User)
+			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent2
+			|		ON (UserGroupContent2.UserGroup = &UserGroup)
+			|			AND (UserGroupContent2.User = UserGroupContent.User)
 			|WHERE
 			|	UserGroupContent.User IS NULL ";
 		EndIf;
@@ -1929,7 +1928,7 @@ Function UserRefByFullDescription(FullName)
 		Return Undefined;
 	EndIf;
 	
-	Selection = QueryResult.Choose();
+	Selection = QueryResult.Select();
 	Selection.Next();
 	
 	User = Selection.Ref;

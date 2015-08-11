@@ -12,7 +12,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Return;
 	EndIf;
 
-	LeadingEndPointSettingEventLogMessageText = MessageExchangeInternal.LeadingEndPointSettingEventLogMessageText();
+	LeadingEndPointSettingEventLogMessageText = MessageExchangeInternal.LeadingEndPointSetEventLogMessageText();
 	
 	EndPoint = Parameters.EndPoint;
 	
@@ -29,12 +29,12 @@ EndProcedure
 &AtClient
 Procedure BeforeClose(Cancel, StandardProcessing)
 	
-	CommonUseClient.RequestCloseFormConfirmation(
-		Cancel,
-		,
-		ForceCloseForm,
-		NStr("en = 'Do you want to cancel the operation?'")
-	); 
+	//Cancel = CommonUseClient.RequestCloseFormConfirmation(
+	//	Cancel,
+	//	,
+	//	ForceCloseForm,
+	//	NStr("en = 'Do you want to cancel the operation?'")
+	//); 
 	
 EndProcedure
 
@@ -59,25 +59,34 @@ Procedure Set(Command)
 		
 		NString = NStr("en = 'Error setting the leading end point.
 		|Do you want to open the event log'");
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			Filter = New Structure;
-			Filter.Insert("EventLogMessageText", LeadingEndPointSettingEventLogMessageText);
-			OpenFormModal("DataProcessor.EventLogMonitor.Form", Filter, ThisForm);
-			
-		EndIf;
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("SetEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		Return;
 	EndIf;
 	
 	Notify(MessageExchangeClient.EventNameLeadingEndPointSet());
 	
-	DoMessageBox(NStr("en = 'The end point was set successfully.'"));
+	ShowMessageBox(,NStr("en = 'The end point was set successfully.'"));
 	
 	ForceCloseForm = True;
 	
 	Close();
 	
+EndProcedure
+
+&AtClient
+Procedure SetEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		Filter = New Structure;
+		Filter.Insert("EventLogMessageText", LeadingEndPointSettingEventLogMessageText);
+		OpenForm("DataProcessor.EventLogMonitor.Form", Filter, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+		
+	EndIf;
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////

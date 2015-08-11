@@ -145,7 +145,7 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 		UpdateMappingStatisticsDataAtServer(Cancel, Parameter);
 		
 		If Cancel Then
-			DoMessageBox(NStr("en = 'Error gathering statistic data.'"));
+			ShowMessageBox(,NStr("en = 'Error gathering statistic data.'"));
 		Else
 			
 			ExpandStatisticsTree(Parameter.UniqueKey);
@@ -219,16 +219,30 @@ Procedure DoneCommand(Command)
 		
 		FormParameters = New Structure("InfoBaseNode", Object.InfoBaseNode);
 		
-		OpenFormModal("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm);
+		OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm,,,, New NotifyDescription("DoneCommandEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+        Return;
 		
 	EndIf;
 	
 	// Update all opened dynamic lists
+	DoneCommandPart();
+EndProcedure
+
+&AtClient
+Procedure DoneCommandEnd(Result, AdditionalParameters) Export
+	
+	DoneCommandPart();
+
+EndProcedure
+
+&AtClient
+Procedure DoneCommandPart()
+	
 	DataExchangeClient.RefreshAllOpenDynamicLists();
 	
 	ForceCloseForm = True;
 	Close();
-	
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -241,12 +255,11 @@ Procedure OpenDataExchangeDirectory(Command)
 	DirectoryName = GetDirectoryNameAtServer(Object.ExchangeMessageTransportKind, Object.InfoBaseNode);
 	
 	If IsBlankString(DirectoryName) Then
-		DoMessageBox(NStr("en = 'The data exchange directory is not specified.'"));
+		ShowMessageBox(,NStr("en = 'The data exchange directory is not specified.'"));
 		Return;
 	EndIf;
 	
-	// Opening the directory with Explorer
-	RunApp(DirectoryName);
+	BeginRunningApplication(Undefined, DirectoryName);
 	
 EndProcedure
 
@@ -290,7 +303,7 @@ Procedure UpdateMappingInfoForRow(Command)
 	UpdateMappingByRowDetailsAtServer(Cancel, RowKeys);
 	
 	If Cancel Then
-		DoMessageBox(NStr("en = 'Error gathering statistic data.'"));
+		ShowMessageBox(,NStr("en = 'Error gathering statistic data.'"));
 	Else
 		
 		ExpandStatisticsTree(RowKeys[RowKeys.UBound()]);
@@ -327,7 +340,7 @@ Procedure UpdateMappingInfoFully(Command)
 	EndIf;
 	
 	If Cancel Then
-		DoMessageBox(NStr("en = 'Error gathering statistic data.'"));
+		ShowMessageBox(,NStr("en = 'Error gathering statistic data.'"));
 	Else
 		
 		ExpandStatisticsTree(CurrentRowKey);
@@ -341,7 +354,16 @@ EndProcedure
 Procedure ExecuteDefaultAutomaticMapping(Command)
 	
 	NString = NStr("en = 'Automatic mapping may take a long time. Do you want to continue?'");
-	Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+	Response = Undefined;
+
+	ShowQueryBox(New NotifyDescription("ExecuteDefaultAutomaticMappingEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+	
+EndProcedure
+
+&AtClient
+Procedure ExecuteDefaultAutomaticMappingEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.No Then
 		Return;
 	EndIf;
@@ -370,7 +392,7 @@ Procedure ExecuteDefaultAutomaticMapping(Command)
 	
 	If Cancel Then
 		
-		DoMessageBox(NStr("en = 'Error executing automatic mapping.'"));
+		ShowMessageBox(,NStr("en = 'Error executing automatic mapping.'"));
 		
 	Else
 		
@@ -379,14 +401,25 @@ Procedure ExecuteDefaultAutomaticMapping(Command)
 		Status(NStr("en = 'Automatic mapping completed.'"));
 		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure ExecuteAllTableDataImport(Command)
 	
 	NString = NStr("en = 'Do you want to import all data into the infobase?'");
-	Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+	Response = Undefined;
+
+	ShowQueryBox(New NotifyDescription("ExecuteAllTableDataImportEnd2", ThisObject, New Structure("NString", NString)), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.Yes);
+EndProcedure
+
+&AtClient
+Procedure ExecuteAllTableDataImportEnd2(QuestionResult, AdditionalParameters) Export
+	
+	NString = AdditionalParameters.NString;
+	
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.No Then
 		Return;
 	EndIf;
@@ -394,14 +427,37 @@ Procedure ExecuteAllTableDataImport(Command)
 	If Items.AdditionalInfoGroup.Visible Then
 		
 		NString = NStr("en = 'There are unmapped objects in the exchange plan.
-					|Unmapped objects will be duplicated when importing data. Do you want to continue?'");
+		|Unmapped objects will be duplicated when importing data. Do you want to continue?'");
 		
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.No Then
-			Return;
-		EndIf;
+		ShowQueryBox(New NotifyDescription("ExecuteAllTableDataImportEnd1", ThisObject, New Structure("NString", NString)), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
+		Return;
 		
 	EndIf;
+	
+	ExecuteAllTableDataImportPart();
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteAllTableDataImportEnd1(QuestionResult, AdditionalParameters) Export
+	
+	NString = AdditionalParameters.NString;
+	
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.No Then
+		Return;
+	EndIf;
+	
+	
+	ExecuteAllTableDataImportPart();
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteAllTableDataImportPart()
+	
+	Var Cancel, CurrentData, CurrentRowKey, NString, RowKeys;
 	
 	CurrentData = Items.StatisticsTree.CurrentData;
 	
@@ -428,21 +484,28 @@ Procedure ExecuteAllTableDataImport(Command)
 	If Cancel Then
 		
 		NString = NStr("en = 'Error importing data.
-							|Do you want to open the event log?'");
+		|Do you want to open the event log?'");
 		
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
-			
-		EndIf;
+		ShowQueryBox(New NotifyDescription("ExecuteAllTableDataImportEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		
 	Else
 		ExpandStatisticsTree(CurrentRowKey);
 		
 		Status(NStr("en = 'Data import has been completed.'"));
 	EndIf;
+
+EndProcedure
+
+&AtClient
+Procedure ExecuteAllTableDataImportEnd(QuestionResult, AdditionalParameters) Export
 	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -479,12 +542,10 @@ Procedure ExecuteDataImportForRow(Command)
 		NString = NStr("en = 'Error importing data.
 							|Do you want to open the event log?'");
 		
-		Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		If Response = DialogReturnCode.Yes Then
-			
-			DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
-			
-		EndIf;
+		Response = Undefined;
+
+		
+		ShowQueryBox(New NotifyDescription("ExecuteDataImportForRowEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 		
 	Else
 		
@@ -494,6 +555,18 @@ Procedure ExecuteDataImportForRow(Command)
 		
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure ExecuteDataImportForRowEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		DataExchangeClient.GoToDataEventLogModally(Object.InfoBaseNode, ThisForm, "DataImport");
+		
+	EndIf;
+
 EndProcedure
 
 &AtClient
@@ -510,7 +583,7 @@ Procedure OpenMappingForm(Command)
 	EndIf;
 	
 	If Not CurrentData.UsePreview Then
-		DoMessageBox(NStr("en = 'Object mapping cannot be performed for the data type.'"));
+		ShowMessageBox(,NStr("en = 'Object mapping cannot be performed for the data type.'"));
 		Return;
 	EndIf;
 	

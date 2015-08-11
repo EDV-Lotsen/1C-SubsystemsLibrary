@@ -68,7 +68,7 @@ Procedure UpdateCatalogData(HasChanges = True, HasDeleted = True) Export
 		|
 		|ORDER BY
 		|	Predefined DESC";
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		While Selection.Next() Do
 			// Checking and updating collection ID properties 
@@ -188,19 +188,21 @@ Procedure UpdateCatalogData(HasChanges = True, HasDeleted = True) Export
 				If Selection.Predefined Then
 					MetadataObject = Metadata.FindByFullName(FullName);
 				Else
-					MetadataObjectProperties = MetadataObjectProperties.Find(Selection.Ref, "ID");
-					If MetadataObjectProperties = Undefined Then
+					//PrevMetadataObjectProperties = MetadataObjectProperties;
+					Row = MetadataObjectProperties.Find(Selection.Ref, "ID");
+					If Row = Undefined Then
 						MetadataObject = Undefined;
+						//MetadataObjectProperties = PrevMetadataObjectProperties;
 					Else
-						MetadataObject = Metadata.FindByFullName(MetadataObjectProperties.FullName);
+						MetadataObject = Metadata.FindByFullName(Row.FullName);
 					EndIf;
 				EndIf;
 			Else
 				MetadataObject = MetadataObjectByKey(MetadataObjectKey);
 			EndIf;
 			
-			// If metadata object is found by the key or by the name of predefined item,
-			// a metadata object property row must be prepared
+			// If metadata object is found by the key or by name of predefined item,
+			// then a metadata object property row should be prepared
 			If MetadataObject <> Undefined Then
 				Row = MetadataObjectProperties.Find(MetadataObject.FullName(), "FullName");
 				If ValueIsFilled(Row.ParentFullName) Then
@@ -448,7 +450,7 @@ Procedure UnloadCatalogData(Val ExportDirectory) Export
 	|	MetadataObjectIDs.Ref AS Ref
 	|FROM
 	|	Catalog.MetadataObjectIDs AS MetadataObjectIDs";
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	While Selection.Next() Do
 		XDTOSerializer.WriteXML(Writer, Selection.Ref.GetObject(), XMLTypeAssignment.Explicit);
@@ -463,7 +465,7 @@ EndProcedure
 // For internal use only
 Procedure SupplementReplacementDictionaryReferencesCurrentIdentifiersAndDownloadables(Val ReplacementDictionary, Val ExportDirectory) Export
 	
-	ReferenceMap = New Map;
+	LinkMap = New Map;
 	
 	Reader= New XMLReader;
 	Reader.OpenFile(ExportDirectory + "MetadataObjectIDs.xml");
@@ -495,9 +497,8 @@ Procedure SupplementReplacementDictionaryReferencesCurrentIdentifiersAndDownload
 	While Reader.NodeType = XMLNodeType.StartElement Do
 		Data = XDTOSerializer.ReadXML(Reader);
 		
-		CurIDProperties = IDProperties.Find(Data.Ref, "Ref");
-		If CurIDProperties = Undefined
-		 or Not CurIDProperties.Used Then
+		IDProperty = IDProperties.Find(Data.Ref, "Ref");
+		If IDProperty = Undefined Or Not IDProperty.Used Then
 			
 			MetadataObject = MetadataObjectByKey(Data.MetadataObjectKey);
 			If MetadataObject = Undefined Then
@@ -509,7 +510,7 @@ Procedure SupplementReplacementDictionaryReferencesCurrentIdentifiersAndDownload
 				If Data.Ref <> ID Then
 					// Key is the existent reference
 					// Value is the downloadable reference.
-					ReferenceMap.Insert(ID, Data.Ref);
+					LinkMap.Insert(ID, Data.Ref);
 				EndIf;
 			EndIf;
 		EndIf;
@@ -517,7 +518,7 @@ Procedure SupplementReplacementDictionaryReferencesCurrentIdentifiersAndDownload
 	
 	FragmentRow = ReplacementDictionary.Add();
 	FragmentRow.Type = Type("CatalogRef.MetadataObjectIDs");
-	FragmentRow.ReferenceMap = ReferenceMap;
+	FragmentRow.ReferenceMap = LinkMap;
 	
 EndProcedure
 
@@ -1434,7 +1435,7 @@ Procedure ReportError(Val Details)
 	EndIf;
 	
 	WriteLogEvent(
-		NStr("en = 'Metadata object IDs. ID replacement'"),
+		NStr("en = 'Metadata object IDs. ID replacement'", Metadata.DefaultLanguage.LanguageCode),
 		EventLogLevel.Error,
 		,
 		,

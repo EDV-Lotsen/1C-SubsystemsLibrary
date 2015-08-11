@@ -27,7 +27,7 @@ Function SelectChanges(Val Node, Val MessageNo) Export
 		Query.SetParameter("Node", Node);
 		Query.Text = QueryText;
 		
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		If Selection.Next() Then
 			

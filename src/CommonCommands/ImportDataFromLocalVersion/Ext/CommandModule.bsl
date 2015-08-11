@@ -6,14 +6,24 @@
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
 	AddressInStorage = Undefined;
-	If Not PutFile(AddressInStorage, "*.zip") Then
+	BeginPutFile(New NotifyDescription("CommandProcessingEnd", ThisObject, New Structure("AddressInStorage", AddressInStorage)), AddressInStorage, "*.zip",,);
+	
+EndProcedure
+
+&AtClient
+Procedure CommandProcessingEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	AddressInStorage = AdditionalParameters.AddressInStorage;
+	
+	
+	If Not Result Then
 		Return;
 	EndIf;
 	
 	ImportDataAtServer(AddressInStorage);
 	
 	RefreshInterface();
-	
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////

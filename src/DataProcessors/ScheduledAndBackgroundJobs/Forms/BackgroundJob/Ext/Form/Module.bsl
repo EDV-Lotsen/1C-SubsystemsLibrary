@@ -50,7 +50,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		|Description, 
 		|Begin, 
 		|End, 
-		|Location, 
+		|Placement, 
 		|State, 
 		|MethodName");
 	

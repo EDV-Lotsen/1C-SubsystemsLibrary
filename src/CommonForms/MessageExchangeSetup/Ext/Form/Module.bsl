@@ -85,7 +85,7 @@ Procedure ChangeEndPoint(Command)
 		Return;
 	EndIf;
 	
-	OpenValue(CurrentData.InfoBaseNode);
+	ShowValue(Undefined, CurrentData.InfoBaseNode);
 	
 EndProcedure
 

@@ -8,6 +8,11 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
+		<InputField name="PathToFilePrintDirectory" id="73">
+			<DataPath>PathToFilePrintDirectory</DataPath>
+			<ContextMenu name="PathToFilePrintDirectoryContextMenu" id="74"/>
+			<ExtendedTooltip name="PathToFilePrintDirectoryExtendedTooltip" id="75"/>
+		</InputField>
 		<Table name="TemplatesList" id="1">
 			<Representation>Tree</Representation>
 			<SkipOnInput>false</SkipOnInput>

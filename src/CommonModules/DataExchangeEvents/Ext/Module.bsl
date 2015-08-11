@@ -461,7 +461,7 @@ Procedure CanChangeDataExchangeSettings(Source, Cancel) Export
 		
 		CommonUseClientServer.MessageToUser(DetailErrorDescription,,,, Cancel);
 		
-		WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,, Source.Ref, DetailErrorDescription);
+		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,, Source.Ref, DetailErrorDescription);
 		
 	EndIf;
 	
@@ -1515,7 +1515,7 @@ Procedure GetConstantAlgorithmValues(ORR, ValueTree)
 					
 					MessageString = StrReplace(MessageString, "[ExchangePlanName]",      ORR.ExchangePlanName);
 					MessageString = StrReplace(MessageString, "[MetadataObjectName]", ORR.MetadataObjectName);
-					MessageString = StrReplace(MessageString, "[Details]",            ErrorInfo().Details);
+					MessageString = StrReplace(MessageString, "[Details]",            ErrorInfo().Description);
 					MessageString = StrReplace(MessageString, "[ConstantValue]",   String(TreeRow.ConstantValue));
 					
 					WriteEventLogORR(MessageString);
@@ -1703,7 +1703,7 @@ EndFunction
 //
 Procedure WriteEventLogORR(Comment, MetadataObject = Undefined) Export
 	
-	WriteLogEvent(NStr("en = 'Data exchange. Object registration rules.'"), EventLogLevel.Error, MetadataObject, , Comment);
+	WriteLogEvent(NStr("en = 'Data exchange. Object registration rules.'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, MetadataObject, , Comment);
 	
 EndProcedure
 

@@ -1,27 +1,30 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="FormOK" id="2">
+			<Button name="SaveConnectionParameters" id="21">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
-				<CommandName>Form.Command.OK</CommandName>
-				<ExtendedTooltip name="FormOKExtendedTooltip" id="3"/>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Write</CommandName>
+				<ExtendedTooltip name="SaveConnectionParametersExtendedTooltip" id="26"/>
 			</Button>
-			<Button name="FormCancel" id="4">
+			<Button name="Close" id="22">
 				<Type>CommandBarButton</Type>
-				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="FormCancelExtendedTooltip" id="5"/>
+				<Representation>Text</Representation>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Close</CommandName>
+				<ExtendedTooltip name="CloseExtendedTooltip" id="27"/>
 			</Button>
-			<Button name="Help" id="6">
+			<Button name="Help" id="23">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.StandardCommand.Help</CommandName>
-				<ExtendedTooltip name="HelpExtendedTooltip" id="7"/>
+				<ExtendedTooltip name="HelpExtendedTooltip" id="28"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -30,188 +33,189 @@
 		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="AdministrationGroup" id="8">
+		<UsualGroup name="GroupConnectionToServer" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Choose the infobase administrator:</v8:content>
+					<v8:content>Connection to server</v8:content>
 				</v8:item>
 			</Title>
 			<Group>Vertical</Group>
-			<Representation>NormalSeparation</Representation>
-			<ExtendedTooltip name="AdministrationGroupExtendedTooltip" id="9"/>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupConnectionToServerExtendedTooltip" id="29"/>
 			<ChildItems>
-				<Pages name="RunMode" id="10">
-					<PagesRepresentation>None</PagesRepresentation>
-					<ExtendedTooltip name="RunModeExtendedTooltip" id="11"/>
+				<UsualGroup name="GroupAdministration" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Specify administrator of the information base:</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Vertical</Group>
+					<Representation>NormalSeparation</Representation>
+					<ExtendedTooltip name="GroupAdministrationExtendedTooltip" id="30"/>
 					<ChildItems>
-						<Page name="DataSeparation" id="12">
+						<InputField name="InfoBaseAdministrator" id="24">
+							<DataPath>InfoBaseAdministrator</DataPath>
+							<ContextMenu name="InfoBaseAdministratorContextMenu" id="25"/>
+							<ExtendedTooltip name="InfoBaseAdministratorExtendedTooltip" id="31"/>
+						</InputField>
+						<InputField name="IBAdministrator" id="3">
+							<DataPath>SharedInfoBaseAdministrator</DataPath>
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Data separation</v8:content>
+									<v8:content>Administrator</v8:content>
 								</v8:item>
 							</Title>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Data separation</v8:content>
+									<v8:content>Database administrator, whose name uses for forced disable of sessions</v8:content>
 								</v8:item>
 							</ToolTip>
-							<ExtendedTooltip name="DataSeparationExtendedTooltip" id="13"/>
-							<ChildItems>
-								<InputField name="SharedInfoBaseAdministrator" id="14">
-									<DataPath>SharedInfoBaseAdministrator</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>User name</v8:content>
-										</v8:item>
-									</Title>
-									<ClearButton>true</ClearButton>
-									<ListChoiceMode>true</ListChoiceMode>
-									<ChooseType>false</ChooseType>
-									<ContextMenu name="SharedInfoBaseAdministratorContextMenu" id="15"/>
-									<ExtendedTooltip name="SharedInfoBaseAdministratorExtendedTooltip" id="16"/>
-								</InputField>
-							</ChildItems>
-						</Page>
-						<Page name="NoDataSeparation" id="17">
+							<Wrap>false</Wrap>
+							<ChoiceButton>true</ChoiceButton>
+							<ClearButton>true</ClearButton>
+							<ContextMenu name="IBAdministratorContextMenu" id="4"/>
+							<ExtendedTooltip name="IBAdministratorExtendedTooltip" id="32"/>
+						</InputField>
+						<InputField name="IBAdministratorPassword" id="5">
+							<DataPath>InfoBaseAdministratorPassword</DataPath>
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>No data separation</v8:content>
+									<v8:content>Password</v8:content>
 								</v8:item>
 							</Title>
-							<ExtendedTooltip name="NoDataSeparationExtendedTooltip" id="18"/>
-							<ChildItems>
-								<InputField name="InfoBaseAdministrator" id="19">
-									<DataPath>InfoBaseAdministrator</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>User name</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>Infobase administrator on behalf of which the sessions are terminated</v8:content>
-										</v8:item>
-									</ToolTip>
-									<Width>22</Width>
-									<HorizontalStretch>false</HorizontalStretch>
-									<Wrap>false</Wrap>
-									<ContextMenu name="InfoBaseAdministratorContextMenu" id="20"/>
-									<ExtendedTooltip name="InfoBaseAdministratorExtendedTooltip" id="21"/>
-								</InputField>
-							</ChildItems>
-						</Page>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Password of the information base administrator in the name of whom forced turn off is done</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Width>15</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<Wrap>false</Wrap>
+							<PasswordMode>true</PasswordMode>
+							<ContextMenu name="IBAdministratorPasswordContextMenu" id="6"/>
+							<ExtendedTooltip name="IBAdministratorPasswordExtendedTooltip" id="33"/>
+						</InputField>
 					</ChildItems>
-				</Pages>
-				<InputField name="InfoBaseAdministratorPassword" id="22">
-					<DataPath>InfoBaseAdministratorPassword</DataPath>
+				</UsualGroup>
+				<CheckBoxField name="ClusterRequiresAuthorization" id="7">
+					<DataPath>ClusterRequiresAuthorization</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ClusterRequiresAuthorizationContextMenu" id="8"/>
+					<ExtendedTooltip name="ClusterRequiresAuthorizationExtendedTooltip" id="34"/>
+					<Events>
+						<Event name="OnChange">ClusterRequiresAuthorizationOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<UsualGroup name="GroupAuthorizationCluster" id="9">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Password</v8:content>
+							<v8:content>Server cluster authorization parameters</v8:content>
 						</v8:item>
 					</Title>
-					<ToolTip>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="GroupAuthorizationClusterExtendedTooltip" id="35"/>
+					<ChildItems>
+						<InputField name="ClusterAdministratorName" id="10">
+							<DataPath>ClusterAdministratorName</DataPath>
+							<Width>15</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<Wrap>false</Wrap>
+							<ContextMenu name="ClusterAdministratorNameContextMenu" id="11"/>
+							<ExtendedTooltip name="ClusterAdministratorNameExtendedTooltip" id="36"/>
+						</InputField>
+						<InputField name="ClusterAdministratorPassword" id="12">
+							<DataPath>ClusterAdministratorPassword</DataPath>
+							<Width>15</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<Wrap>false</Wrap>
+							<PasswordMode>true</PasswordMode>
+							<ContextMenu name="ClusterAdministratorPasswordContextMenu" id="13"/>
+							<ExtendedTooltip name="ClusterAdministratorPasswordExtendedTooltip" id="37"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<CheckBoxField name="NonstandardPorts" id="14">
+					<DataPath>NonstandardPorts</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="NonstandardPortsContextMenu" id="15"/>
+					<ExtendedTooltip name="NonstandardPortsExtendedTooltip" id="38"/>
+					<Events>
+						<Event name="OnChange">NonstandardPortsOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<UsualGroup name="GroupPorts" id="16">
+					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Infobase administrator password on behalf of which the sessions are terminated</v8:content>
+							<v8:content>Ports</v8:content>
 						</v8:item>
-					</ToolTip>
-					<Width>15</Width>
-					<HorizontalStretch>false</HorizontalStretch>
-					<Wrap>false</Wrap>
-					<PasswordMode>true</PasswordMode>
-					<ContextMenu name="InfoBaseAdministratorPasswordContextMenu" id="23"/>
-					<ExtendedTooltip name="InfoBaseAdministratorPasswordExtendedTooltip" id="24"/>
-				</InputField>
-			</ChildItems>
-		</UsualGroup>
-		<CheckBoxField name="ClusterRequiresAuthorization" id="25">
-			<DataPath>ClusterRequiresAuthorization</DataPath>
-			<TitleLocation>Right</TitleLocation>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="ClusterRequiresAuthorizationContextMenu" id="26"/>
-			<ExtendedTooltip name="ClusterRequiresAuthorizationExtendedTooltip" id="27"/>
-			<Events>
-				<Event name="OnChange">ClusterRequiresAuthorizationOnChange</Event>
-			</Events>
-		</CheckBoxField>
-		<UsualGroup name="ClusterAuthorizationGroup" id="28">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Server cluster authorization parameters</v8:content>
-				</v8:item>
-			</Title>
-			<Group>Vertical</Group>
-			<Representation>None</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ClusterAuthorizationGroupExtendedTooltip" id="29"/>
-			<ChildItems>
-				<InputField name="ClusterAdministratorName" id="30">
-					<DataPath>ClusterAdministratorName</DataPath>
-					<Width>15</Width>
-					<HorizontalStretch>false</HorizontalStretch>
-					<Wrap>false</Wrap>
-					<ContextMenu name="ClusterAdministratorNameContextMenu" id="31"/>
-					<ExtendedTooltip name="ClusterAdministratorNameExtendedTooltip" id="32"/>
-				</InputField>
-				<InputField name="ClusterAdministratorPassword" id="33">
-					<DataPath>ClusterAdministratorPassword</DataPath>
-					<Width>15</Width>
-					<HorizontalStretch>false</HorizontalStretch>
-					<Wrap>false</Wrap>
-					<PasswordMode>true</PasswordMode>
-					<ContextMenu name="ClusterAdministratorPasswordContextMenu" id="34"/>
-					<ExtendedTooltip name="ClusterAdministratorPasswordExtendedTooltip" id="35"/>
-				</InputField>
-			</ChildItems>
-		</UsualGroup>
-		<CheckBoxField name="NonstandardPorts" id="36">
-			<DataPath>NonstandardPorts</DataPath>
-			<TitleLocation>Right</TitleLocation>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="NonstandardPortsContextMenu" id="37"/>
-			<ExtendedTooltip name="NonstandardPortsExtendedTooltip" id="38"/>
-			<Events>
-				<Event name="OnChange">NonstandardPortsOnChange</Event>
-			</Events>
-		</CheckBoxField>
-		<UsualGroup name="PortsGroup" id="39">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Ports</v8:content>
-				</v8:item>
-			</Title>
-			<Group>Vertical</Group>
-			<Representation>None</Representation>
-			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupPortsExtendedTooltip" id="40"/>
-			<ChildItems>
-				<InputField name="ServerClusterPort" id="41">
-					<DataPath>ServerClusterPort</DataPath>
-					<Wrap>false</Wrap>
-					<ContextMenu name="ServerClusterPortContextMenu" id="42"/>
-					<ExtendedTooltip name="ServerClusterPortExtendedTooltip" id="43"/>
-				</InputField>
-				<InputField name="ServerAgentPort" id="44">
-					<DataPath>ServerAgentPort</DataPath>
-					<Wrap>false</Wrap>
-					<ContextMenu name="ServerAgentPortContextMenu" id="45"/>
-					<ExtendedTooltip name="ServerAgentPortExtendedTooltip" id="46"/>
-				</InputField>
+					</Title>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="GroupPortsExtendedTooltip" id="39"/>
+					<ChildItems>
+						<InputField name="ServersClusterPort" id="17">
+							<DataPath>ServerClusterPort</DataPath>
+							<Wrap>false</Wrap>
+							<ContextMenu name="ServersClusterPortContextMenu" id="18"/>
+							<ExtendedTooltip name="ServersClusterPortExtendedTooltip" id="40"/>
+						</InputField>
+						<InputField name="ServerAgentPort" id="19">
+							<DataPath>ServerAgentPort</DataPath>
+							<Wrap>false</Wrap>
+							<ContextMenu name="ServerAgentPortContextMenu" id="20"/>
+							<ExtendedTooltip name="ServerAgentPortExtendedTooltip" id="41"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="ClusterRequiresAuthorization" id="1">
+		<Attribute name="SharedInfoBaseAdministrator" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Database administrator</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="InfoBaseAdministratorPassword" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>IB administrator password</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ClusterRequiresAuthorization" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -222,7 +226,7 @@
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="ClusterAdministratorName" id="2">
+		<Attribute name="ClusterAdministratorName" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -237,7 +241,7 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="ClusterAdministratorPassword" id="3">
+		<Attribute name="ClusterAdministratorPassword" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -252,18 +256,18 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="NonstandardPorts" id="4">
+		<Attribute name="NonstandardPorts" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Nonstandard ports are used for the connection</v8:content>
+					<v8:content>Connection is established by non standard ports</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="ServerAgentPort" id="5">
+		<Attribute name="ServerAgentPort" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -279,7 +283,7 @@
 				</v8:NumberQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="ServerClusterPort" id="6">
+		<Attribute name="ServerClusterPort" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -295,60 +299,30 @@
 				</v8:NumberQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="InfoBaseAdministrator" id="7">
+		<Attribute name="InfoBaseAdministrator" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Infobase administrator</v8:content>
+					<v8:content>Info base administrator</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>cfg:CatalogRef.Users</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="InfoBaseAdministratorPassword" id="8">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>InfoBaseAdministratorPassword</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
-		<Attribute name="SharedInfoBaseAdministrator" id="9">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>SharedInfoBaseAdministrator</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
-			</Type>
-		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="OK" id="1">
+		<Command name="Write" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>OK</v8:content>
+					<v8:content>Write</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>OK</v8:content>
+					<v8:content>Write</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>Write</Action>

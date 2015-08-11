@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="1">
-		<Autofill>false</Autofill>
-	</AutoCommandBar>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
 	<Events>
 		<Event name="AfterWrite">AfterWrite</Event>
 		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
@@ -18,37 +16,26 @@
 		<Event name="BeforeLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
 	</Events>
 	<ChildItems>
-		<CommandBar name="CommandBar" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Command bar</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Command bar</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Width>50</Width>
-			<CommandSource>Form</CommandSource>
-			<ExtendedTooltip name="CommandBarExtendedTooltip" id="3"/>
-		</CommandBar>
-		<UsualGroup name="MismatchProcessingFullName" id="4">
+		<UsualGroup name="MismatchProcessingFullName" id="164">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>Mismatch processing full name</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Mismatch processing full name</v8:content>
+				</v8:item>
+			</ToolTip>
 			<HorizontalStretch>true</HorizontalStretch>
 			<Group>Horizontal</Group>
 			<Representation>StrongSeparation</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="MismatchProcessingFullNameExtendedTooltip" id="5"/>
+			<ExtendedTooltip name="MismatchProcessingFullNameExtendedTooltip" id="198"/>
 			<ChildItems>
-				<PictureDecoration name="FullNameWarningPicture" id="6">
+				<PictureDecoration name="FullNameWarningPicture" id="165">
 					<Width>5</Width>
 					<Height>3</Height>
 					<HorizontalStretch>false</HorizontalStretch>
@@ -61,154 +48,168 @@
 					</Title>
 					<Picture>
 						<xr:Ref>CommonPicture.Warning32</xr:Ref>
-						<xr:LoadTransparent>true</xr:LoadTransparent>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
 					</Picture>
-					<ContextMenu name="FullNameWarningPictureContextMenu" id="7"/>
-					<ExtendedTooltip name="FullNameWarningPictureExtendedTooltip" id="8"/>
+					<ContextMenu name="FullNameWarningPictureContextMenu" id="166"/>
+					<ExtendedTooltip name="FullNameWarningPictureExtendedTooltip" id="199"/>
 				</PictureDecoration>
-				<UsualGroup name="FullNameCommentAndCommand" id="9">
+				<UsualGroup name="FullNameExplanationAndCommand" id="167">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Full name comment and command</v8:content>
+							<v8:content>Full name explanation and command</v8:content>
 						</v8:item>
 					</Title>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="FullNameCommentAndCommandExtendedTooltip" id="10"/>
+					<ExtendedTooltip name="FullNameExplanationAndCommandExtendedTooltip" id="200"/>
 					<ChildItems>
-						<LabelDecoration name="MismatchCommentFullName" id="11">
+						<LabelDecoration name="MismatchCommentFullName" id="168">
+							<HorizontalStretch>true</HorizontalStretch>
 							<SkipOnInput>false</SkipOnInput>
 							<Title formatted="false">
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Full infobase user name
-%1
-differs from Full name field value.</v8:content>
+									<v8:content>The full name of the info base user "%1"
+does not match with specified in the field &lt;Full name:&gt;
+</v8:content>
 								</v8:item>
 							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Warning: full name of the infobase user will be replaced with a specified one on record</v8:content>
+								</v8:item>
+							</ToolTip>
 							<VerticalAlign>Center</VerticalAlign>
-							<ContextMenu name="MismatchCommentFullNameContextMenu" id="12"/>
-							<ExtendedTooltip name="MismatchCommentFullNameExtendedTooltip" id="13"/>
+							<ContextMenu name="MismatchCommentFullNameContextMenu" id="169"/>
+							<ExtendedTooltip name="MismatchCommentFullNameExtendedTooltip" id="201"/>
 						</LabelDecoration>
-						<Button name="FullNameSynchronize" id="14">
+						<Button name="FullNameRunSynchronization" id="170">
 							<Type>UsualButton</Type>
 							<SkipOnInput>false</SkipOnInput>
-							<CommandName>Form.Command.FillFullNameByInfoBaseUser</CommandName>
-							<ExtendedTooltip name="FullNameSynchronizeExtendedTooltip" id="15"/>
+							<CommandName>Form.Command.FullNameRunSynchronization</CommandName>
+							<ExtendedTooltip name="FullNameRunSynchronizationExtendedTooltip" id="202"/>
 						</Button>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="RelationMismatchProcessing" id="16">
+		<UsualGroup name="RelationMismatchProcessing" id="171">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>Relation mismatch processing</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Relation mismatch processing</v8:content>
+				</v8:item>
+			</ToolTip>
 			<HorizontalStretch>true</HorizontalStretch>
 			<Group>Horizontal</Group>
 			<Representation>StrongSeparation</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="RelationMismatchProcessingExtendedTooltip" id="17"/>
+			<ExtendedTooltip name="RelationMismatchProcessingExtendedTooltip" id="203"/>
 			<ChildItems>
-				<PictureDecoration name="RelationWarningPicture" id="18">
+				<PictureDecoration name="LinkWarningPicture" id="172">
 					<Width>5</Width>
-					<Height>2</Height>
+					<Height>3</Height>
 					<HorizontalStretch>false</HorizontalStretch>
 					<SkipOnInput>false</SkipOnInput>
 					<Title formatted="false">
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Relation warning picture</v8:content>
+							<v8:content>Link warning picture</v8:content>
 						</v8:item>
 					</Title>
 					<Picture>
 						<xr:Ref>CommonPicture.Warning32</xr:Ref>
-						<xr:LoadTransparent>true</xr:LoadTransparent>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
 					</Picture>
-					<ContextMenu name="RelationWarningPictureContextMenu" id="19"/>
-					<ExtendedTooltip name="RelationWarningPictureExtendedTooltip" id="20"/>
+					<ContextMenu name="LinkWarningPictureContextMenu" id="173"/>
+					<ExtendedTooltip name="LinkWarningPictureExtendedTooltip" id="204"/>
 				</PictureDecoration>
-				<LabelDecoration name="RelationMismatchComment" id="21">
-					<Width>20</Width>
-					<Height>4</Height>
+				<LabelDecoration name="LinkDiscrepancyExplanation" id="175">
+					<Height>3</Height>
 					<HorizontalStretch>true</HorizontalStretch>
-					<VerticalStretch>true</VerticalStretch>
 					<SkipOnInput>false</SkipOnInput>
 					<Title formatted="false">
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>The access to the infobase is denied for this user.
-To allow access to the infobase, set "Access to information base is allowed" flag.
-Or leave this flag cleared not to display this warning any more.</v8:content>
+							<v8:content>The user is connected with non-existing user of the information Base (IB).
+To connect to new user of the information base check flag "Access to the Information Base Is Allowed".
+To clear connection leave box unchecked.</v8:content>
 						</v8:item>
 					</Title>
-					<VerticalAlign>Top</VerticalAlign>
-					<ContextMenu name="RelationMismatchCommentContextMenu" id="22"/>
-					<ExtendedTooltip name="RelationMismatchCommentExtendedTooltip" id="23"/>
+					<VerticalAlign>Center</VerticalAlign>
+					<ContextMenu name="LinkDiscrepancyExplanationContextMenu" id="176"/>
+					<ExtendedTooltip name="LinkDiscrepancyExplanationExtendedTooltip" id="205"/>
 				</LabelDecoration>
 			</ChildItems>
 		</UsualGroup>
-		<InputField name="Description" id="24">
+		<InputField name="Description" id="49">
 			<DataPath>Object.Description</DataPath>
-			<Width>22</Width>
 			<Wrap>false</Wrap>
 			<BorderColor>style:BorderColor</BorderColor>
-			<ContextMenu name="DescriptionContextMenu" id="25"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="26"/>
+			<ContextMenu name="DescriptionContextMenu" id="50"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="206"/>
 			<Events>
 				<Event name="OnChange">DescriptionOnChange</Event>
 			</Events>
 		</InputField>
-		<CheckBoxField name="NotValid" id="27">
+		<CheckBoxField name="NotValid" id="196">
 			<DataPath>Object.NotValid</DataPath>
-			<TitleLocation>Right</TitleLocation>
+			<Visible>false</Visible>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="NotValidContextMenu" id="28"/>
-			<ExtendedTooltip name="NotValidExtendedTooltip" id="29"/>
+			<ContextMenu name="NotValidContextMenu" id="197"/>
+			<ExtendedTooltip name="NotValidExtendedTooltip" id="207"/>
 			<Events>
 				<Event name="OnChange">ValidOnChange</Event>
 			</Events>
 		</CheckBoxField>
-		<CheckBoxField name="InfoBaseAccessAllowed" id="30">
+		<CheckBoxField name="InfoBaseAccessAllowed" id="99">
 			<DataPath>InfoBaseAccessAllowed</DataPath>
 			<TitleLocation>Right</TitleLocation>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="InfoBaseAccessAllowedContextMenu" id="31"/>
-			<ExtendedTooltip name="InfoBaseAccessAllowedExtendedTooltip" id="32"/>
+			<ContextMenu name="InfoBaseAccessAllowedContextMenu" id="100"/>
+			<ExtendedTooltip name="InfoBaseAccessAllowedExtendedTooltip" id="208"/>
 			<Events>
 				<Event name="OnChange">InfoBaseAccessAllowedOnChange</Event>
 			</Events>
 		</CheckBoxField>
-		<Pages name="Pages" id="33">
+		<Pages name="Pages" id="70">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>Pages</v8:content>
 				</v8:item>
 			</Title>
-			<HorizontalStretch>true</HorizontalStretch>
-			<VerticalStretch>true</VerticalStretch>
-			<ExtendedTooltip name="PagesExtendedTooltip" id="34"/>
+			<ExtendedTooltip name="PagesExtendedTooltip" id="209"/>
 			<ChildItems>
-				<Page name="InfoBaseUserProperties" id="35">
+				<Page name="InfoBaseUserProperties" id="65">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Main properties</v8:content>
+							<v8:content>Info base user properties</v8:content>
 						</v8:item>
 					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Info base user properties</v8:content>
+						</v8:item>
+					</ToolTip>
 					<Group>Horizontal</Group>
-					<ExtendedTooltip name="InfoBaseUserPropertiesExtendedTooltip" id="36"/>
+					<ExtendedTooltip name="InfoBaseUserPropertiesExtendedTooltip" id="210"/>
 					<ChildItems>
-						<UsualGroup name="MainProperties" id="37">
+						<UsualGroup name="MainProperties" id="75">
 							<UserVisible>
 								<xr:Common>true</xr:Common>
-								<xr:Value name="Role.FullAccess">true</xr:Value>
+								<xr:Value name="">true</xr:Value>
 							</UserVisible>
 							<Title>
 								<v8:item>
@@ -216,183 +217,224 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 									<v8:content>Main properties</v8:content>
 								</v8:item>
 							</Title>
+							<VerticalStretch>true</VerticalStretch>
 							<Group>Vertical</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="MainPropertiesExtendedTooltip" id="38"/>
+							<ExtendedTooltip name="MainPropertiesExtendedTooltip" id="211"/>
 							<ChildItems>
-								<InputField name="InfoBaseUserName" id="39">
+								<InputField name="InfoBaseUserName" id="95">
 									<DataPath>InfoBaseUserName</DataPath>
 									<Width>26</Width>
-									<HorizontalStretch>true</HorizontalStretch>
-									<ContextMenu name="InfoBaseUserNameContextMenu" id="40"/>
-									<ExtendedTooltip name="InfoBaseUserNameExtendedTooltip" id="41"/>
+									<HorizontalStretch>false</HorizontalStretch>
+									<ContextMenu name="InfoBaseUserNameContextMenu" id="96"/>
+									<ExtendedTooltip name="InfoBaseUserNameExtendedTooltip" id="212"/>
 								</InputField>
-								<UsualGroup name="PlatformAuthenticationProperties" id="42">
+								<UsualGroup name="PlatformAuthenticationProperties" id="10">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Authentication of 1C:Enteprise</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Platform authentication properties</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>32</Width>
+									<HorizontalStretch>false</HorizontalStretch>
 									<Group>Vertical</Group>
-									<Representation>None</Representation>
+									<Representation>NormalSeparation</Representation>
 									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="PlatformAuthenticationPropertiesExtendedTooltip" id="43"/>
+									<ExtendedTooltip name="PlatformAuthenticationPropertiesExtendedTooltip" id="213"/>
 									<ChildItems>
-										<CheckBoxField name="InfoBaseUserStandardAuthentication" id="44">
+										<CheckBoxField name="InfoBaseUserStandardAuthentication" id="19">
 											<DataPath>InfoBaseUserStandardAuthentication</DataPath>
 											<TitleLocation>Right</TitleLocation>
 											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
 											<CheckBoxType>Auto</CheckBoxType>
-											<ContextMenu name="InfoBaseUserStandardAuthenticationContextMenu" id="45"/>
-											<ExtendedTooltip name="InfoBaseUserStandardAuthenticationExtendedTooltip" id="46"/>
+											<ContextMenu name="InfoBaseUserStandardAuthenticationContextMenu" id="20"/>
+											<ExtendedTooltip name="InfoBaseUserStandardAuthenticationExtendedTooltip" id="214"/>
 											<Events>
 												<Event name="OnChange">InfoBaseUserStandardAuthenticationOnChange</Event>
 											</Events>
 										</CheckBoxField>
-										<UsualGroup name="PropertiesPlatformAuthenticationParameters" id="47">
-											<Title>
-												<v8:item>
-													<v8:lang>en</v8:lang>
-													<v8:content>1C:Enterprise authentication</v8:content>
-												</v8:item>
-											</Title>
-											<HorizontalStretch>true</HorizontalStretch>
-											<Group>Vertical</Group>
-											<Representation>StrongSeparation</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="PropertiesPlatformAuthenticationParametersExtendedTooltip" id="48"/>
-											<ChildItems>
-												<InputField name="PasswordConfirmation" id="49">
-													<DataPath>PasswordConfirmation</DataPath>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<Width>14</Width>
-													<HorizontalStretch>false</HorizontalStretch>
-													<Wrap>false</Wrap>
-													<PasswordMode>true</PasswordMode>
-													<BorderColor>style:BorderColor</BorderColor>
-													<ContextMenu name="PasswordConfirmationContextMenu" id="50"/>
-													<ExtendedTooltip name="PasswordConfirmationExtendedTooltip" id="51"/>
-													<Events>
-														<Event name="OnChange">PasswordOnChange</Event>
-													</Events>
-												</InputField>
-												<InputField name="Password" id="52">
-													<DataPath>Password</DataPath>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<Width>14</Width>
-													<HorizontalStretch>false</HorizontalStretch>
-													<Wrap>false</Wrap>
-													<PasswordMode>true</PasswordMode>
-													<BorderColor>style:BorderColor</BorderColor>
-													<ContextMenu name="PasswordContextMenu" id="53"/>
-													<ExtendedTooltip name="PasswordExtendedTooltip" id="54"/>
-													<Events>
-														<Event name="OnChange">PasswordOnChange</Event>
-													</Events>
-												</InputField>
-												<CheckBoxField name="InfoBaseUserShowInList" id="55">
-													<DataPath>InfoBaseUserShowInList</DataPath>
-													<TitleLocation>Right</TitleLocation>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="InfoBaseUserShowInListContextMenu" id="56"/>
-													<ExtendedTooltip name="InfoBaseUserShowInListExtendedTooltip" id="57"/>
-												</CheckBoxField>
-												<CheckBoxField name="InfoBaseUserCannotChangePassword" id="58">
-													<DataPath>InfoBaseUserCannotChangePassword</DataPath>
-													<TitleLocation>Right</TitleLocation>
-													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="InfoBaseUserCannotChangePasswordContextMenu" id="59"/>
-													<ExtendedTooltip name="InfoBaseUserCannotChangePasswordExtendedTooltip" id="60"/>
-												</CheckBoxField>
-											</ChildItems>
-										</UsualGroup>
+										<InputField name="Password" id="21">
+											<DataPath>Password</DataPath>
+											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+											<Width>14</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Wrap>false</Wrap>
+											<PasswordMode>true</PasswordMode>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="PasswordContextMenu" id="22"/>
+											<ExtendedTooltip name="PasswordExtendedTooltip" id="215"/>
+											<Events>
+												<Event name="OnChange">PasswordOnChange</Event>
+											</Events>
+										</InputField>
+										<InputField name="PasswordConfirmation" id="23">
+											<DataPath>PasswordConfirmation</DataPath>
+											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+											<Width>14</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Wrap>false</Wrap>
+											<PasswordMode>true</PasswordMode>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="PasswordConfirmationContextMenu" id="24"/>
+											<ExtendedTooltip name="PasswordConfirmationExtendedTooltip" id="216"/>
+											<Events>
+												<Event name="OnChange">PasswordOnChange</Event>
+											</Events>
+										</InputField>
+										<CheckBoxField name="InfoBaseUserCannotChangePassword" id="51">
+											<DataPath>InfoBaseUserCannotChangePassword</DataPath>
+											<TitleLocation>Left</TitleLocation>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="InfoBaseUserCannotChangePasswordContextMenu" id="52"/>
+											<ExtendedTooltip name="InfoBaseUserCannotChangePasswordExtendedTooltip" id="217"/>
+										</CheckBoxField>
+										<CheckBoxField name="InfoBaseUserShowInList" id="25">
+											<DataPath>InfoBaseUserShowInList</DataPath>
+											<TitleLocation>Left</TitleLocation>
+											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="InfoBaseUserShowInListContextMenu" id="26"/>
+											<ExtendedTooltip name="InfoBaseUserShowInListExtendedTooltip" id="218"/>
+										</CheckBoxField>
 									</ChildItems>
 								</UsualGroup>
-								<UsualGroup name="OSAuthenticationProperties" id="61">
+								<UsualGroup name="OSAuthenticationProperties" id="11">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>OS authentication</v8:content>
+											<v8:content>OS Authentication</v8:content>
 										</v8:item>
 									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>OSAuthentication properties</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>32</Width>
+									<HorizontalStretch>false</HorizontalStretch>
 									<Group>Vertical</Group>
 									<Representation>NormalSeparation</Representation>
 									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="OSAuthenticationPropertiesExtendedTooltip" id="62"/>
+									<ExtendedTooltip name="OSAuthenticationPropertiesExtendedTooltip" id="219"/>
 									<ChildItems>
-										<CheckBoxField name="InfoBaseUserOSAuthentication" id="63">
+										<InputField name="InfoBaseUserOSUser" id="29">
+											<DataPath>InfoBaseUserOSUser</DataPath>
+											<TitleLocation>Left</TitleLocation>
+											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+											<Width>20</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Wrap>false</Wrap>
+											<ChoiceButton>true</ChoiceButton>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="InfoBaseUserOSUserContextMenu" id="30"/>
+											<ExtendedTooltip name="InfoBaseUserOSUserExtendedTooltip" id="220"/>
+											<Events>
+												<Event name="StartChoice">InfoBaseUserOSUserStartChoice</Event>
+											</Events>
+										</InputField>
+										<CheckBoxField name="InfoBaseUserOSAuthentication" id="194">
 											<DataPath>InfoBaseUserOSAuthentication</DataPath>
 											<TitleLocation>Right</TitleLocation>
-											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
 											<CheckBoxType>Auto</CheckBoxType>
-											<ContextMenu name="InfoBaseUserOSAuthenticationContextMenu" id="64"/>
-											<ExtendedTooltip name="InfoBaseUserOSAuthenticationExtendedTooltip" id="65"/>
+											<ContextMenu name="InfoBaseUserOSAuthenticationContextMenu" id="195"/>
+											<ExtendedTooltip name="InfoBaseUserOSAuthenticationExtendedTooltip" id="221"/>
 											<Events>
 												<Event name="OnChange">InfoBaseUserOSAuthenticationOnChange</Event>
 											</Events>
 										</CheckBoxField>
-										<UsualGroup name="OSAuthenticationParameterProperties" id="66">
-											<Title>
-												<v8:item>
-													<v8:lang>en</v8:lang>
-													<v8:content>OS authentication parameters</v8:content>
-												</v8:item>
-											</Title>
-											<Group>Horizontal</Group>
-											<Representation>None</Representation>
-											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="OSAuthenticationParameterPropertiesExtendedTooltip" id="67"/>
-											<ChildItems>
-												<LabelDecoration name="IndentDecoration" id="68">
-													<Width>1</Width>
-													<ContextMenu name="IndentDecorationContextMenu" id="69"/>
-													<ExtendedTooltip name="IndentDecorationExtendedTooltip" id="70"/>
-												</LabelDecoration>
-												<InputField name="InfoBaseUserOSUser" id="71">
-													<DataPath>InfoBaseUserOSUser</DataPath>
-													<TitleLocation>Left</TitleLocation>
-													<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-													<Wrap>false</Wrap>
-													<ChoiceButton>true</ChoiceButton>
-													<BorderColor>style:BorderColor</BorderColor>
-													<ContextMenu name="InfoBaseUserOSUserContextMenu" id="72"/>
-													<ExtendedTooltip name="InfoBaseUserOSUserExtendedTooltip" id="73"/>
-													<Events>
-														<Event name="StartChoice">InfoBaseUserOSUserStartChoice</Event>
-													</Events>
-												</InputField>
-											</ChildItems>
-										</UsualGroup>
 									</ChildItems>
 								</UsualGroup>
-								<UsualGroup name="AdditionalProperties" id="74">
+								<UsualGroup name="PropertiesAdditional" id="91">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
 											<v8:content>Additional properties</v8:content>
 										</v8:item>
 									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Properties additional</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>32</Width>
 									<HorizontalStretch>false</HorizontalStretch>
 									<Group>Vertical</Group>
-									<Representation>NormalSeparation</Representation>
+									<Representation>None</Representation>
 									<ChildItemsWidth>Equal</ChildItemsWidth>
 									<ShowTitle>false</ShowTitle>
-									<ExtendedTooltip name="AdditionalPropertiesExtendedTooltip" id="75"/>
+									<ExtendedTooltip name="PropertiesAdditionalExtendedTooltip" id="222"/>
 									<ChildItems>
-										<InputField name="InfoBaseUserLanguage" id="76">
+										<InputField name="InfoBaseUserLanguage" id="33">
 											<DataPath>InfoBaseUserLanguage</DataPath>
 											<FooterHorizontalAlign>Left</FooterHorizontalAlign>
-											<Width>20</Width>
+											<Width>19</Width>
+											<HorizontalStretch>false</HorizontalStretch>
 											<Wrap>false</Wrap>
-											<ClearButton>true</ClearButton>
-											<ListChoiceMode>true</ListChoiceMode>
+											<TextEdit>false</TextEdit>
+											<ChoiceListButton>true</ChoiceListButton>
 											<BorderColor>style:BorderColor</BorderColor>
-											<ContextMenu name="InfoBaseUserLanguageContextMenu" id="77"/>
-											<ExtendedTooltip name="InfoBaseUserLanguageExtendedTooltip" id="78"/>
+											<ContextMenu name="InfoBaseUserLanguageContextMenu" id="34"/>
+											<ExtendedTooltip name="InfoBaseUserLanguageExtendedTooltip" id="223"/>
 										</InputField>
-										<InputField name="InfoBaseUserRunMode" id="79">
+										<InputField name="InfoBaseUserRunMode" id="89">
 											<DataPath>InfoBaseUserRunMode</DataPath>
-											<Width>20</Width>
-											<ListChoiceMode>true</ListChoiceMode>
-											<ContextMenu name="InfoBaseUserRunModeContextMenu" id="80"/>
-											<ExtendedTooltip name="InfoBaseUserRunModeExtendedTooltip" id="81"/>
+											<Width>19</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<TextEdit>false</TextEdit>
+											<ChoiceList>
+												<xr:Item>
+													<xr:Presentation/>
+													<xr:CheckState>0</xr:CheckState>
+													<xr:Value xsi:type="FormChoiceListDesTimeValue">
+														<Presentation>
+															<v8:item>
+																<v8:lang>en</v8:lang>
+																<v8:content>Auto</v8:content>
+															</v8:item>
+														</Presentation>
+														<Value xsi:type="xs:string">Auto</Value>
+													</xr:Value>
+												</xr:Item>
+												<xr:Item>
+													<xr:Presentation/>
+													<xr:CheckState>0</xr:CheckState>
+													<xr:Value xsi:type="FormChoiceListDesTimeValue">
+														<Presentation>
+															<v8:item>
+																<v8:lang>en</v8:lang>
+																<v8:content>Common application</v8:content>
+															</v8:item>
+														</Presentation>
+														<Value xsi:type="xs:string">Common application</Value>
+													</xr:Value>
+												</xr:Item>
+												<xr:Item>
+													<xr:Presentation/>
+													<xr:CheckState>0</xr:CheckState>
+													<xr:Value xsi:type="FormChoiceListDesTimeValue">
+														<Presentation>
+															<v8:item>
+																<v8:lang>en</v8:lang>
+																<v8:content>Managed application</v8:content>
+															</v8:item>
+														</Presentation>
+														<Value xsi:type="xs:string">Managed application</Value>
+													</xr:Value>
+												</xr:Item>
+											</ChoiceList>
+											<ChoiceListButton>true</ChoiceListButton>
+											<ContextMenu name="InfoBaseUserRunModeContextMenu" id="90"/>
+											<ExtendedTooltip name="InfoBaseUserRunModeExtendedTooltip" id="224"/>
 											<Events>
 												<Event name="Clearing">InfoBaseUserRunModeClearing</Event>
 											</Events>
@@ -401,139 +443,145 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 								</UsualGroup>
 							</ChildItems>
 						</UsualGroup>
-						<UsualGroup name="RoleRepresentation" id="82">
+						<UsualGroup name="RoleRepresentation" id="192">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Allowed actions (roles)</v8:content>
+									<v8:content>Role representation</v8:content>
 								</v8:item>
 							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Role representation</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Width>48</Width>
 							<Group>Vertical</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="RoleRepresentationExtendedTooltip" id="83"/>
+							<ExtendedTooltip name="RoleRepresentationExtendedTooltip" id="225"/>
 							<ChildItems>
-								<Table name="Roles" id="84">
+								<Table name="Roles" id="177">
 									<Representation>Tree</Representation>
-									<TitleLocation>Top</TitleLocation>
 									<SkipOnInput>false</SkipOnInput>
 									<ChangeRowSet>false</ChangeRowSet>
 									<ChangeRowOrder>false</ChangeRowOrder>
 									<SelectionMode>SingleRow</SelectionMode>
-									<Header>false</Header>
-									<UseAlternationRowColor>true</UseAlternationRowColor>
 									<AutoInsertNewRow>true</AutoInsertNewRow>
 									<InitialTreeView>ExpandAllLevels</InitialTreeView>
 									<EnableStartDrag>true</EnableStartDrag>
 									<EnableDrag>true</EnableDrag>
 									<DataPath>Roles</DataPath>
 									<RowPictureDataPath>Roles.PictureNumber</RowPictureDataPath>
-									<RowsPicture>
-										<xr:Ref>CommonPicture.ItemIcons</xr:Ref>
-										<xr:LoadTransparent>true</xr:LoadTransparent>
-									</RowsPicture>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>Allowed actions (roles)</v8:content>
-										</v8:item>
-									</Title>
 									<CommandSet>
+										<ExcludedCommand>HierarchicalList</ExcludedCommand>
+										<ExcludedCommand>Tree</ExcludedCommand>
+										<ExcludedCommand>Copy</ExcludedCommand>
+										<ExcludedCommand>List</ExcludedCommand>
+										<ExcludedCommand>SortListAsc</ExcludedCommand>
+										<ExcludedCommand>MoveUp</ExcludedCommand>
+										<ExcludedCommand>OutputList</ExcludedCommand>
+										<ExcludedCommand>SortListDesc</ExcludedCommand>
+										<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+										<ExcludedCommand>Delete</ExcludedCommand>
+										<ExcludedCommand>EndEdit</ExcludedCommand>
 										<ExcludedCommand>Add</ExcludedCommand>
+										<ExcludedCommand>MoveDown</ExcludedCommand>
 									</CommandSet>
 									<SearchStringLocation>None</SearchStringLocation>
 									<ViewStatusLocation>None</ViewStatusLocation>
 									<SearchControlLocation>None</SearchControlLocation>
-									<ContextMenu name="RolesContextMenu" id="85">
+									<ContextMenu name="RolesContextMenu" id="178">
 										<Autofill>false</Autofill>
 									</ContextMenu>
-									<AutoCommandBar name="RolesCommandBar" id="86">
+									<AutoCommandBar name="RolesCommandBar" id="179">
 										<Autofill>false</Autofill>
 										<ChildItems>
-											<Button name="RolesCheckAll" id="87">
+											<Button name="RolesCheckAll" id="185">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
-												<CommandName>Form.Command.EnableRoles</CommandName>
-												<ExtendedTooltip name="RolesCheckAllExtendedTooltip" id="88"/>
+												<CommandName>Form.Command.CheckAll</CommandName>
+												<ExtendedTooltip name="RolesCheckAllExtendedTooltip" id="226"/>
 											</Button>
-											<Button name="RolesUncheckAll" id="89">
+											<Button name="RolesUncheckAll" id="186">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
-												<CommandName>Form.Command.ExcludeRoles</CommandName>
-												<ExtendedTooltip name="RolesUncheckAllExtendedTooltip" id="90"/>
+												<CommandName>Form.Command.UncheckAll</CommandName>
+												<ExtendedTooltip name="RolesUncheckAllExtendedTooltip" id="227"/>
 											</Button>
-											<Button name="RolesShowSelectedRolesOnly" id="91">
+											<Button name="RolesShowSelectedRolesOnly" id="187">
 												<Type>CommandBarButton</Type>
 												<SkipOnInput>false</SkipOnInput>
-												<CommandName>Form.Command.SelectedRolesOnly</CommandName>
-												<ExtendedTooltip name="RolesShowSelectedRolesOnlyExtendedTooltip" id="92"/>
+												<CommandName>Form.Command.ShowOnlySelectedRoles</CommandName>
+												<ExtendedTooltip name="RolesShowSelectedRolesOnlyExtendedTooltip" id="228"/>
 											</Button>
-											<Button name="RolesShowRoleSubsystems" id="93">
+											<Button name="RolesShowRoleSubsystems" id="193">
 												<Type>CommandBarButton</Type>
-												<CommandName>Form.Command.GroupBySubsystems</CommandName>
-												<ExtendedTooltip name="RolesShowRoleSubsystemsExtendedTooltip" id="94"/>
+												<CommandName>Form.Command.ShowRolesSubsystems</CommandName>
+												<ExtendedTooltip name="RolesShowRoleSubsystemsExtendedTooltip" id="229"/>
 											</Button>
 										</ChildItems>
 									</AutoCommandBar>
-									<ExtendedTooltip name="RolesExtendedTooltip" id="95"/>
-									<SearchStringAddition name="RolesSearchString" id="106">
+									<ExtendedTooltip name="RolesExtendedTooltip" id="230"/>
+									<SearchStringAddition name="RolesSearchString" id="235">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>SearchStringRepresentation</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesSearchStringContextMenu" id="107"/>
-										<ExtendedTooltip name="RolesSearchStringExtendedTooltip" id="108"/>
+										<ContextMenu name="RolesSearchStringContextMenu" id="236"/>
+										<ExtendedTooltip name="RolesSearchStringExtendedTooltip" id="237"/>
 									</SearchStringAddition>
-									<ViewStatusAddition name="RolesViewStatus" id="109">
+									<ViewStatusAddition name="RolesViewStatus" id="238">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>ViewStatusRepresentation</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesViewStatusContextMenu" id="110"/>
-										<ExtendedTooltip name="RolesViewStatusExtendedTooltip" id="111"/>
+										<ContextMenu name="RolesViewStatusContextMenu" id="239"/>
+										<ExtendedTooltip name="RolesViewStatusExtendedTooltip" id="240"/>
 									</ViewStatusAddition>
-									<SearchControlAddition name="RolesSearchControl" id="112">
+									<SearchControlAddition name="RolesSearchControl" id="241">
 										<AdditionSource>
 											<Item>Roles</Item>
 											<Type>SearchControl</Type>
 										</AdditionSource>
-										<ContextMenu name="RolesSearchControlContextMenu" id="113"/>
-										<ExtendedTooltip name="RolesSearchControlExtendedTooltip" id="114"/>
+										<ContextMenu name="RolesSearchControlContextMenu" id="242"/>
+										<ExtendedTooltip name="RolesSearchControlExtendedTooltip" id="243"/>
 									</SearchControlAddition>
 									<ChildItems>
-										<ColumnGroup name="RolesGroup" id="96">
+										<ColumnGroup name="ColumnsRoles" id="180">
 											<Title>
 												<v8:item>
 													<v8:lang>en</v8:lang>
-													<v8:content>Column roles</v8:content>
+													<v8:content>Columns roles</v8:content>
 												</v8:item>
 											</Title>
 											<ToolTip>
 												<v8:item>
 													<v8:lang>en</v8:lang>
-													<v8:content>Column roles.</v8:content>
+													<v8:content>Columns roles</v8:content>
 												</v8:item>
 											</ToolTip>
 											<Group>InCell</Group>
-											<ExtendedTooltip name="RolesGroupExtendedTooltip" id="97"/>
+											<ExtendedTooltip name="ColumnsRolesExtendedTooltip" id="231"/>
 											<ChildItems>
-												<CheckBoxField name="RolesCheck" id="98">
+												<CheckBoxField name="RolesCheck" id="188">
 													<DataPath>Roles.Check</DataPath>
 													<EditMode>Directly</EditMode>
 													<ShowInHeader>false</ShowInHeader>
 													<CheckBoxType>Auto</CheckBoxType>
-													<ContextMenu name="RolesCheckContextMenu" id="99"/>
-													<ExtendedTooltip name="RolesCheckExtendedTooltip" id="100"/>
+													<ContextMenu name="RolesCheckContextMenu" id="189"/>
+													<ExtendedTooltip name="RolesCheckExtendedTooltip" id="232"/>
 													<Events>
 														<Event name="OnChange">RolesCheckOnChange</Event>
 													</Events>
 												</CheckBoxField>
-												<InputField name="RolesSynonym" id="101">
+												<InputField name="RolesSynonym" id="190">
 													<DataPath>Roles.Synonym</DataPath>
 													<ReadOnly>true</ReadOnly>
 													<EditMode>EnterOnInput</EditMode>
-													<ContextMenu name="RolesSynonymContextMenu" id="102"/>
-													<ExtendedTooltip name="RolesSynonymExtendedTooltip" id="103"/>
+													<ContextMenu name="RolesSynonymContextMenu" id="191"/>
+													<ExtendedTooltip name="RolesSynonymExtendedTooltip" id="233"/>
 												</InputField>
 											</ChildItems>
 										</ColumnGroup>
@@ -543,14 +591,14 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 						</UsualGroup>
 					</ChildItems>
 				</Page>
-				<Page name="ContactInformation" id="104">
+				<Page name="ContactInformation" id="71">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Addresses, phones</v8:content>
+							<v8:content>Addresses, phone numbers</v8:content>
 						</v8:item>
 					</Title>
-					<ExtendedTooltip name="ContactInformationExtendedTooltip" id="105"/>
+					<ExtendedTooltip name="ContactInformationExtendedTooltip" id="234"/>
 				</Page>
 			</ChildItems>
 		</Pages>
@@ -567,7 +615,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>1C:Enterprise authentication</v8:content>
+					<v8:content>Authentication 1C:Enterprise</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -611,7 +659,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Infobase user password</v8:content>
+					<v8:content>Inf base user password</v8:content>
 				</v8:item>
 			</Title>
 			<Type/>
@@ -621,19 +669,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Show in list</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="InfoBaseUserOSAuthentication" id="7">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>OS authentication</v8:content>
+					<v8:content>Show in the choice list</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -657,23 +693,11 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="InfoBaseUserCannotChangePassword" id="9">
+		<Attribute name="InfoBaseUserLanguage" id="10">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>User cannot change password</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="InfoBaseUserName" id="10">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Name (for login)</v8:content>
+					<v8:content>Language</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -685,11 +709,59 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="InfoBaseAccessAllowed" id="11">
+		<Attribute name="InfoBaseUserCannotChangePassword" id="13">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Access to infobase is allowed</v8:content>
+					<v8:content>User is prohibited to change password</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Edit>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="">false</xr:Value>
+			</Edit>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="InfoBaseUserRunMode" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Start mode</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="InfoBaseUserName" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="InfoBaseAccessAllowed" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infobase access allowed</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -697,21 +769,21 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="InfoBaseUserFullName" id="12">
+		<Attribute name="InfoBaseUserFullName" id="14">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Infobase user full name</v8:content>
+					<v8:content>Inf base user full name</v8:content>
 				</v8:item>
 			</Title>
 			<Type/>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="InfoBaseUserExists" id="13">
+		<Attribute name="InfoBaseUserExists" id="23">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Infobase user exists</v8:content>
+					<v8:content>IB user exists</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -719,7 +791,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="ShowSelectedRolesOnly" id="14">
+		<Attribute name="ShowSelectedRolesOnly" id="26">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -730,7 +802,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="NewUserGroup" id="15">
+		<Attribute name="NewUserGroup" id="21">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -738,10 +810,14 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>cfg:CatalogRef.UserGroups</v8:Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="ActionsOnForm" id="16">
+		<Attribute name="ActionsOnForm" id="22">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -750,18 +826,18 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Title>
 			<Type/>
 		</Attribute>
-		<Attribute name="OldInfoBaseUserID" id="17">
+		<Attribute name="OldInfoBaseUserID" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>OldInfoBaseUserID</v8:content>
+					<v8:content>Old IBUser ID</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>v8:UUID</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="CurrentDescription" id="18">
+		<Attribute name="CurrentDescription" id="20">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -776,18 +852,18 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="HasRelationToNonexistentInfoBaseUser" id="19">
+		<Attribute name="HasRelationToNonexistentInfoBaseUser" id="18">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>There is a relation to a non existent infobase user.</v8:content>
+					<v8:content>Exist connection with non existent IBUser</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="Roles" id="20">
+		<Attribute name="Roles" id="11">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -813,7 +889,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Allowed action (role)</v8:content>
+							<v8:content>Allowed Actions (role)</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -868,11 +944,11 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 				</Column>
 			</Columns>
 		</Attribute>
-		<Attribute name="InfoBaseUserRoles" id="21">
+		<Attribute name="InfoBaseUserRoles" id="12">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Infobase user roles</v8:content>
+					<v8:content>Inf base user roles</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -896,7 +972,7 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 				</Column>
 			</Columns>
 		</Attribute>
-		<Attribute name="ShowRoleSubsystems" id="22">
+		<Attribute name="ShowRoleSubsystems" id="19">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -906,51 +982,45 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<Save>
+				<Field>ShowRoleSubsystems</Field>
+			</Save>
 		</Attribute>
-		<Attribute name="FullAccessUserAuthorized" id="23">
+		<Attribute name="FullAccessUserAuthorized" id="24">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>The user with full access is authorized</v8:content>
+					<v8:content>Full access user authorized</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="InfoBaseUserRunMode" id="24">
+		<Attribute name="HideRoleFullRights" id="25">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Run mode</v8:content>
+					<v8:content>Hide role full rights</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
-			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="InfoBaseUserLanguage" id="25">
+		<Attribute name="InfoBaseUserOSAuthentication" id="27">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Application interface language</v8:content>
+					<v8:content>Operation System Authentification</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="CreateServiceUser" id="26">
+		<Attribute name="CreateServiceUser" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -963,82 +1033,90 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="SelectedRolesOnly" id="1">
+		<Command name="ShowOnlySelectedRoles" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Selected roles only</v8:content>
+					<v8:content>Show only selected roles</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Show selected roles only</v8:content>
+					<v8:content>Show only selected roles</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>ShowSelectedRolesOnly</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="ExcludeRoles" id="2">
+		<Command name="UncheckAll" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Exclude roles</v8:content>
+					<v8:content>Uncheck all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Exclude roles.</v8:content>
+					<v8:content>Uncheck all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>ExcludeRoles</Action>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="EnableRoles" id="3">
+		<Command name="CheckAll" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Enable roles</v8:content>
+					<v8:content>Check all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Enable roles.</v8:content>
+					<v8:content>Check all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>EnableRoles</Action>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="FillFullNameByInfoBaseUser" id="4">
+		<Command name="FullNameRunSynchronization" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fill full name by infobase user</v8:content>
+					<v8:content>Print full name, the same as infobase user</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fill full name by name of infobase user.</v8:content>
+					<v8:content>Warning: when recording a full name data base is updated given</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>FillFullNameByInfoBaseUser</Action>
 			<Representation>TextPicture</Representation>
 			<ModifiesSavedData>true</ModifiesSavedData>
 		</Command>
-		<Command name="GroupBySubsystems" id="5">
+		<Command name="ShowRolesSubsystems" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>By subsystems</v8:content>
+					<v8:content>Grouping by subsystems</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group role list by subsystems.</v8:content>
+					<v8:content>Display grouping by subsystems</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>GroupBySubsystems</Action>
@@ -1048,7 +1126,11 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 	<Parameters>
 		<Parameter name="NewUserGroup">
 			<Type>
-				<v8:Type>cfg:CatalogRef.UserGroups</v8:Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
 			</Type>
 		</Parameter>
 		<Parameter name="InfoBaseUserID">
@@ -1057,4 +1139,16 @@ Or leave this flag cleared not to display this warning any more.</v8:content>
 			</Type>
 		</Parameter>
 	</Parameters>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>4</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+				<Visible>
+					<xr:Common>false</xr:Common>
+				</Visible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
 </Form>

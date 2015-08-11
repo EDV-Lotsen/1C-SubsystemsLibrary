@@ -463,7 +463,7 @@ Function ExecuteScheduledJobManually(Val Job,
 			BackgroundJobDescription = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Started manually: "), ScheduledJobPresentation(Job));
 			BackgroundJob = BackgroundJobs.Execute(Job.Metadata.MethodName, Job.Parameters, String(Job.UUID), BackgroundJobDescription);
 			BackgroundJobID = String(BackgroundJob.UUID);
-			StartedAt = BackgroundJobs.FindByUUID(BackgroundJob.UUID).Start;
+			StartedAt = BackgroundJobs.FindByUUID(BackgroundJob.UUID).Begin;
 			Start = True;
 		EndIf;
 	EndIf;
@@ -1267,18 +1267,3 @@ Procedure ConvertScheduledJobExecutionSettings_1_2_2_2() Export
 	CommonSettingsStorage.Delete("ScheduledJobExecutionSettings", Undefined, "");
 	
 EndProcedure
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

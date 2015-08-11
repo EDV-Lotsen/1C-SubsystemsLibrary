@@ -106,7 +106,7 @@ Procedure DeliverMessages() Export
 	|	Catalog.SystemMessages.Changes AS SystemMessagesChanges
 	|WHERE
 	|	SystemMessagesChanges.Ref.IsInstantMessage
-	|	AND SystemMessagesChanges.MessageNo IS NULL 
+	|	AND SystemMessagesChanges.MessageNumber IS NULL 
 	|	AND NOT SystemMessagesChanges.Node IN (&UnavailableEndPoints)
 	|
 	|ORDER BY
@@ -201,6 +201,7 @@ Procedure ConnectEndPoint(Cancel,
 									RecipientEndPointDescription = "",
 									SenderEndPointDescription = "") Export
 	
+
 	SenderConnectionSettings = DataExchangeServer.WSParameterStructure();
 	SenderConnectionSettings.WSURL = RecipientWebServiceURL;
 	SenderConnectionSettings.WSUserName = RecipientUserName;
@@ -405,20 +406,20 @@ Function StartSendingInstantMessages()
 	BeginTransaction();
 	Try
 		Lock = New DataLock;
-		LockItem = Lock.Add("Constant.InstantMessageSendingLocked");
+		LockItem = Lock.Add("Constant.SendingInstantMessagesLocked");
 		LockItem.Mode = DataLockMode.Exclusive;
 		Lock.Lock();
 		
-		InstantMessageSendingLocked = Constants.InstantMessageSendingLocked.Get();
+		SendingInstantMessagesLocked = Constants.SendingInstantMessagesLocked.Get();
 		
 		// The CurrentSessionDate method cannot be used.
 		// In this case, the current server date is used as a key of uniqueness.
-		If InstantMessageSendingLocked >= CurrentDate() Then
+		If SendingInstantMessagesLocked >= CurrentDate() Then
 			CommitTransaction();
 			Return False;
 		EndIf;
 		
-		Constants.InstantMessageSendingLocked.Set(CurrentDate() + 60 * 5);
+		Constants.SendingInstantMessagesLocked.Set(CurrentDate() + 60 * 5);
 		
 		CommitTransaction();
 	Except
@@ -434,11 +435,11 @@ Procedure FinishSendingInstantMessages()
 	BeginTransaction();
 	Try
 		Lock = New DataLock;
-		LockItem = Lock.Add("Constant.InstantMessageSendingLocked");
+		LockItem = Lock.Add("Constant.SendingInstantMessagesLocked");
 		LockItem.Mode = DataLockMode.Exclusive;
 		Lock.Lock();
 		
-		Constants.InstantMessageSendingLocked.Set(Date('00010101'));
+		Constants.SendingInstantMessagesLocked.Set(Date('00010101'));
 		
 		CommitTransaction();
 	Except
@@ -474,3 +475,21 @@ Procedure DeliverMessagesToRecipient(EndPoint, Val Messages)
 	
 EndProcedure
 
+// Internal use only.
+Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+	
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode.MessageExchange\OnGetMessageHandlerChannels");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode.MessageExchange\OnGetMessageRecipients");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode.MessageExchange\OnSendMessage");
+	ServerEvents.Add(
+		"StandardSubsystems.ServiceMode.MessageExchange\OnReceiveMessage");
+	
+EndProcedure
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

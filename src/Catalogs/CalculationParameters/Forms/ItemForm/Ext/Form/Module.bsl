@@ -351,7 +351,7 @@ Function CheckForIDDuplication(Cancellation)
 	Query.SetParameter("Id", Object.Id);
 	Query.SetParameter("Ref", Object.Ref);
 	 
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Cancellation = Selection.Count() > 0;
 	 
 	If Cancellation Then
@@ -885,23 +885,33 @@ Procedure SourceStartChoice(Item, ChoiceData, StandardProcessing)
 	
 	StandardProcessing = False;
 	
-    ChoiceSturcutre = OpenFormModal("Catalog.CalculationParameters.Form.SourceChoiceForm");
+    ChoiceSturcutre = Undefined;
 
+	
+    OpenForm("Catalog.CalculationParameters.Form.SourceChoiceForm",,,,,, New NotifyDescription("SourceStartChoiceEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+    
+EndProcedure
+
+&AtClient
+Procedure SourceStartChoiceEnd(Result, AdditionalParameters) Export
+	
+	ChoiceSturcutre = Result;
+	
 	If ChoiceSturcutre = Undefined Then 
-    	Return;
+		Return;
 	EndIf;
-
-    Object.SourceName = ChoiceSturcutre.Source;
-    Object.SourcePresentation = ChoiceSturcutre.FieldPresentation;
-         
-    Object.Indicators.Clear();
-    Object.DataFilterPeriods.Clear();
-    Object.QueryParameters.Clear();
+	
+	Object.SourceName = ChoiceSturcutre.Source;
+	Object.SourcePresentation = ChoiceSturcutre.FieldPresentation;
+	
+	Object.Indicators.Clear();
+	Object.DataFilterPeriods.Clear();
+	Object.QueryParameters.Clear();
 	Object.Query = "";
-    	
+	
 	FillIndicatorsAndSourceDataFilterPeriods();
 	GenerateQueryFillParameters();
-    
+
 EndProcedure // SourceStartChoice()
 
 &AtClient
@@ -922,10 +932,10 @@ Procedure EditQuery(Command)
 	
 		If EditQuery Then
 	        If NOT QueryCorrect() Then
-                Response = DoQueryBox(NStr("en = 'The query contains errors! Clear and return to the original query?'"), QuestionDialogMode.YesNo, 0);
-				If Response = DialogReturnCode.Yes Then
-			    	Object.Query = QueryText;
-                EndIf;
+                Response = Undefined;
+
+                ShowQueryBox(New NotifyDescription("EditQueryEnd", ThisObject), NStr("en = 'The query contains errors! Clear and return to the original query?'"), QuestionDialogMode.YesNo, 0);
+                Return;
             Else
                 FillParametersByQuery();
 			EndIf; 
@@ -933,12 +943,32 @@ Procedure EditQuery(Command)
 			QueryText = Object.Query;
 	    EndIf; 
 
-		EditQuery = NOT EditQuery;
-		Items.EditQuery.Check = EditQuery;
-		Items.Pages.CurrentPage = Items.GroupQuery;
-		Items.Query.Enabled = EditQuery;
+		EditQueryPart();
+
 	
 	EndIf; 
+
+EndProcedure
+
+&AtClient
+Procedure EditQueryEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		Object.Query = QueryText;
+	EndIf;
+	
+	EditQueryPart();
+
+EndProcedure
+
+&AtClient
+Procedure EditQueryPart()
+	
+	EditQuery = NOT EditQuery;
+	Items.EditQuery.Check = EditQuery;
+	Items.Pages.CurrentPage = Items.GroupQuery;
+	Items.Query.Enabled = EditQuery;
 
 EndProcedure // EditQueryExecute()
  	
@@ -964,7 +994,16 @@ Procedure SetValueDuringPayrollCalculationOnChange(Item)
 	EndIf; 
 	
 	TextOfMessage = NStr("en = 'After checking the flag all attributes will be cleared. Do you want to continue?'");
-	QuestionResult = DoQueryBox(TextOfMessage, QuestionDialogMode.YesNo);
+	QuestionResult = Undefined;
+
+	ShowQueryBox(New NotifyDescription("SetValueDuringPayrollCalculationOnChangeEnd", ThisObject), TextOfMessage, QuestionDialogMode.YesNo);
+	
+EndProcedure
+
+&AtClient
+Procedure SetValueDuringPayrollCalculationOnChangeEnd(QuestionResult1, AdditionalParameters) Export
+	
+	QuestionResult = QuestionResult1;
 	If QuestionResult <> DialogReturnCode.Yes Then
 		Object.SetValueDuringPayrollCalculation = NOT Object.SetValueDuringPayrollCalculation;
 		Return;
@@ -981,7 +1020,7 @@ Procedure SetValueDuringPayrollCalculationOnChange(Item)
 	Items.Source.Visible = NOT Object.SetValueDuringPayrollCalculation;
 	Items.CustomQuery.Visible = NOT Object.SetValueDuringPayrollCalculation;
 	Items.Pages.Visible = NOT Object.SetValueDuringPayrollCalculation;
-	
+
 EndProcedure
 
 &AtClient
@@ -1131,61 +1170,122 @@ EndProcedure
 &AtClient
 Procedure CreateFixedAmount(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreateFixedAmountEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreateFixedAmountEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("FixedAmount");		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure CreateNormOfDays(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreateNormOfDaysEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreateNormOfDaysEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("PlannedWorkDays");		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure CreateNormOfHours(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreateNormOfHoursEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreateNormOfHoursEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("PlannedWorkHours");		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure CreateDaysWorked(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreateDaysWorkedEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreateDaysWorkedEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("DaysWorked");		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure CreateHoursWorked(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreateHoursWorkedEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreateHoursWorkedEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("HoursWorked");		
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure CreatePayRate(Command)
 	
-	Response = DoQueryBox(NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CreatePayRateEnd", ThisObject), NStr("en = 'Calculation parameter will be completely re-filled. Do you want to continue?'"), QuestionDialogMode.YesNo, 0);
+	
+EndProcedure
+
+&AtClient
+Procedure CreatePayRateEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Yes Then
 		FillByTemplate("PayRate");		
 	EndIf;
 	
 EndProcedure
+
  
 

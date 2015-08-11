@@ -3,34 +3,33 @@
 	<Title>
 		<v8:item>
 			<v8:lang>en</v8:lang>
-			<v8:content>Installing the File system extension</v8:content>
+			<v8:content>Set work with files extension</v8:content>
 		</v8:item>
 	</Title>
 	<AutoTitle>false</AutoTitle>
 	<Customizable>false</Customizable>
 	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<ChildItems>
-			<Button name="SetNow" id="2">
+			<Button name="SetNow" id="8">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.SetNow</CommandName>
-				<ExtendedTooltip name="SetNowExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="SetNowExtendedTooltip" id="11"/>
 			</Button>
-			<Button name="SetLater" id="4">
+			<Button name="SetLater" id="9">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.SetLater</CommandName>
-				<ExtendedTooltip name="SetLaterExtendedTooltip" id="5"/>
+				<ExtendedTooltip name="SetLaterExtendedTooltip" id="12"/>
 			</Button>
-			<Button name="DontInstall" id="6">
+			<Button name="DoNotInstall" id="10">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.DontInstall</CommandName>
-				<ExtendedTooltip name="DontInstallExtendedTooltip" id="7"/>
+				<CommandName>Form.Command.DoNotInstall</CommandName>
+				<ExtendedTooltip name="DoNotInstallExtendedTooltip" id="13"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -38,27 +37,27 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<LabelDecoration name="CommentDecoration" id="8">
+		<LabelDecoration name="DecorationExplanation" id="6">
 			<Height>2</Height>
 			<VerticalStretch>false</VerticalStretch>
 			<SkipOnInput>false</SkipOnInput>
 			<Title formatted="false">
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>It is recommended to install the File system extension for more convenient work with file functions. 
-Install and attach?</v8:content>
+					<v8:content>For the comfortable work with file functions it is strongly recommended to install extension of work with files.
+Do you want to install it?</v8:content>
 				</v8:item>
 			</Title>
-			<ContextMenu name="CommentDecorationContextMenu" id="9"/>
-			<ExtendedTooltip name="CommentDecorationExtendedTooltip" id="10"/>
+			<ContextMenu name="DecorationExplanationContextMenu" id="7"/>
+			<ExtendedTooltip name="DecorationExplanationExtendedTooltip" id="14"/>
 		</LabelDecoration>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="Comment" id="1">
+		<Attribute name="ExplanationNotice" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Comment</v8:content>
+					<v8:content>Explanation</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -101,11 +100,11 @@ Install and attach?</v8:content>
 			</ToolTip>
 			<Action>SetLater</Action>
 		</Command>
-		<Command name="DontInstall" id="3">
+		<Command name="DoNotInstall" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Do not remind again</v8:content>
+					<v8:content>No, do not remind anymore</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -126,7 +125,7 @@ Install and attach?</v8:content>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Close</v8:content>
+					<v8:content>Close form</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>CloseForm</Action>

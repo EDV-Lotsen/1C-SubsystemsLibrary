@@ -106,12 +106,7 @@
 					<xr:FillFromFillingValue>false</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
 					<xr:MaxValue xsi:nil="true"/>
-					<xr:ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Additional external ID of matadata object table</v8:content>
-						</v8:item>
-					</xr:ToolTip>
+					<xr:ToolTip/>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
 					<xr:Format/>
 					<xr:ChoiceForm/>
@@ -121,12 +116,7 @@
 					<xr:PasswordMode>false</xr:PasswordMode>
 					<xr:MarkNegatives>false</xr:MarkNegatives>
 					<xr:MinValue xsi:nil="true"/>
-					<xr:Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>ID</v8:content>
-						</v8:item>
-					</xr:Synonym>
+					<xr:Synonym/>
 					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
@@ -241,12 +231,7 @@
 					<xr:FillFromFillingValue>false</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
 					<xr:MaxValue xsi:nil="true"/>
-					<xr:ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Metadata object presentation</v8:content>
-						</v8:item>
-					</xr:ToolTip>
+					<xr:ToolTip/>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
 					<xr:Format/>
 					<xr:ChoiceForm/>
@@ -256,12 +241,7 @@
 					<xr:PasswordMode>false</xr:PasswordMode>
 					<xr:MarkNegatives>false</xr:MarkNegatives>
 					<xr:MinValue xsi:nil="true"/>
-					<xr:Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Presentation</v8:content>
-						</v8:item>
-					</xr:Synonym>
+					<xr:Synonym/>
 					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
@@ -306,10 +286,10 @@
 			<SearchStringModeOnInputByString>Begin</SearchStringModeOnInputByString>
 			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
 			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
-			<DefaultObjectForm>Catalog.MetadataObjectIDs.Form.ItemForm</DefaultObjectForm>
+			<DefaultObjectForm/>
 			<DefaultFolderForm/>
-			<DefaultListForm>Catalog.MetadataObjectIDs.Form.ListForm</DefaultListForm>
-			<DefaultChoiceForm>Catalog.MetadataObjectIDs.Form.ChoiceForm</DefaultChoiceForm>
+			<DefaultListForm/>
+			<DefaultChoiceForm/>
 			<DefaultFolderChoiceForm/>
 			<AuxiliaryObjectForm/>
 			<AuxiliaryFolderForm/>
@@ -321,21 +301,11 @@
 			<DataLockFields/>
 			<DataLockControlMode>Managed</DataLockControlMode>
 			<FullTextSearch>DontUse</FullTextSearch>
-			<ObjectPresentation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Metadata object ID</v8:content>
-				</v8:item>
-			</ObjectPresentation>
+			<ObjectPresentation/>
 			<ExtendedObjectPresentation/>
 			<ListPresentation/>
 			<ExtendedListPresentation/>
-			<Explanation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Metadata object IDs for use in a database.</v8:content>
-				</v8:item>
-			</Explanation>
+			<Explanation/>
 			<CreateOnInput>Use</CreateOnInput>
 			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 		</Properties>
@@ -355,21 +325,13 @@
 						<v8:NumberQualifiers>
 							<v8:Digits>2</v8:Digits>
 							<v8:FractionDigits>0</v8:FractionDigits>
-							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+							<v8:AllowedSign>Any</v8:AllowedSign>
 						</v8:NumberQualifiers>
 					</Type>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>The metadata object collection order
-which is used for sorting in reports,
-for example: Catalogs collection
-will be output above the Documents collection</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -412,13 +374,7 @@ will be output above the Documents collection</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Metadata object name,
-for example "TaskAddressingObjects"</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -461,13 +417,7 @@ for example "TaskAddressingObjects"</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Metadata object synonym,
-for example: "Task addressing objects"</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -510,13 +460,7 @@ for example: "Task addressing objects"</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Full metadata object name,
-for example: "ChartOfCharacteristicTypes.TaskAddressingObjects"</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -535,8 +479,8 @@ for example: "ChartOfCharacteristicTypes.TaskAddressingObjects"</v8:content>
 					<LinkByType/>
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
-					<Indexing>Index</Indexing>
-					<FullTextSearch>Use</FullTextSearch>
+					<Indexing>DontIndex</Indexing>
+					<FullTextSearch>DontUse</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="e819aaf6-3dfb-492a-8a4a-50a7c6854790">
@@ -559,13 +503,7 @@ for example: "ChartOfCharacteristicTypes.TaskAddressingObjects"</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Full synonym of metadata object,
-for example, "Charts of characteristic types. Task addressing objects"</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -585,7 +523,7 @@ for example, "Charts of characteristic types. Task addressing objects"</v8:conte
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>Use</FullTextSearch>
+					<FullTextSearch>DontUse</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="62b95ba1-f213-42fb-90f3-a03e8094bc9e">
@@ -594,7 +532,7 @@ for example, "Charts of characteristic types. Task addressing objects"</v8:conte
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Without of data</v8:content>
+							<v8:content>Without data</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -604,12 +542,7 @@ for example, "Charts of characteristic types. Task addressing objects"</v8:conte
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Metadata object has no data tables</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -629,7 +562,7 @@ for example, "Charts of characteristic types. Task addressing objects"</v8:conte
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="619b534d-5605-40d3-9b8c-4443a21d7795">
@@ -648,16 +581,7 @@ for example, "Charts of characteristic types. Task addressing objects"</v8:conte
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>For reference types Objects metadata 
-contains Blank link its type,
-For TheRestOfThe - Undefined
-(In form Viewed Presentation
-type Values IsEmpty References)</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -696,12 +620,7 @@ type Values IsEmpty References)</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Storage of the key by which the metadata object is defined without of using full name of metadata object</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -740,12 +659,7 @@ type Values IsEmpty References)</v8:content>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>There is a corresponding metadata object to this ID</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -765,7 +679,7 @@ type Values IsEmpty References)</v8:content>
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>Use</FullTextSearch>
+					<FullTextSearch>DontUse</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Form>ListForm</Form>

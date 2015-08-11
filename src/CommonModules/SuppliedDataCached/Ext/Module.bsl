@@ -31,7 +31,7 @@ Function GetDataAreaNode(DataArea) Export
 	SetPrivilegedMode(False);
 	
 	If Result.IsEmpty() Then
-		MessagePattern = NStr("en = 'The node that corresponds the %1 data area is not found.");
+		MessagePattern = NStr("en = 'The node that corresponds the %1 data area is not found.'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, DataArea);
 		Raise(MessageText);
 	EndIf;
@@ -104,7 +104,7 @@ Function GetSharedDataTypeByKind(SuppliedDataKind) Export
 	
 	FoundRow = MapTable.Find(SuppliedDataKind, "SuppliedDataKind");
 	If FoundRow = Undefined Then
-		MessagePattern = NStr("en = 'The supplied data type that corresponds to the %1 data kind is not found.");
+		MessagePattern = NStr("en = 'The supplied data type that corresponds to the %1 data kind is not found.'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, SuppliedDataKind);
 		Raise(MessageText);
 	EndIf;

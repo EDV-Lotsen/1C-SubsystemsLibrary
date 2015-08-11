@@ -157,19 +157,28 @@ Procedure ScheduledJobTableBeforeDelete(Item, Cancel)
 	Cancel = True;
 	
 	If Items.ScheduledJobTable.SelectedRows.Count() > 1 Then
-		DoMessageBox(NStr("en = 'Select one scheduled job.'"));
+		ShowMessageBox(,NStr("en = 'Select one scheduled job.'"));
 		
 	ElsIf Item.CurrentData.Predefined Then
-		DoMessageBox(NStr("en = 'Predefined scheduled job cannot be deleted.'") );
+		ShowMessageBox(,NStr("en = 'Predefined scheduled job cannot be deleted.'") );
 	Else
-		Response = DoQueryBox(NStr("en = 'Do you want to delete the scheduled job?'"), QuestionDialogMode.YesNo);
-		If Response = DialogReturnCode.Yes Then
-			
-			DeleteScheduledJobExecuteAtServer(
-				Items.ScheduledJobTable.CurrentData.ID);
-		EndIf;
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("ScheduledJobTableBeforeDeleteEnd", ThisObject), NStr("en = 'Do you want to delete the scheduled job?'"), QuestionDialogMode.YesNo);
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure ScheduledJobTableBeforeDeleteEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = DialogReturnCode.Yes Then
+		
+		DeleteScheduledJobExecuteAtServer(
+		Items.ScheduledJobTable.CurrentData.ID);
+	EndIf;
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +188,7 @@ EndProcedure
 Procedure ExecuteScheduledJobManually(Command)
 
 	If Items.ScheduledJobTable.CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select the scheduled job.'") );
+		ShowMessageBox(, NStr("en = 'Select the scheduled job.'") );
 	Else
 		SelectedRows = Items.ScheduledJobTable.SelectedRows;
 		SelectedRows = New Array;
@@ -309,9 +318,9 @@ Procedure ScheduledJobExecutionSetup(Command)
 	
 	FormParameters = New Structure("HideSeparateSessionStartCommand", True);
 	
-	OpenFormModal(
+	OpenForm(
 		"DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecutionSetup",
-		FormParameters);
+		FormParameters,,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -328,21 +337,31 @@ Procedure OpenJobScheduleExecute(Command)
 	CurrentData = Items.ScheduledJobTable.CurrentData;
 	
 	If CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select the scheduled job.'") );
+		ShowMessageBox(, NStr("en='Select the scheduled job.'") );
 	Else
 		Dialog = New ScheduledJobDialog(
 			ScheduledJobsClient.GetJobSchedule(CurrentData.ID));
 		
-		If Dialog.DoModal() Then
-			
-			ScheduledJobsClient.SetJobSchedule(
-				CurrentData.ID,
-				Dialog.Schedule);
-			
-			UpdateScheduledJobTable(CurrentData.ID);
-		EndIf;
+		Dialog.Show(New NotifyDescription("OpenJobScheduleExecuteEnd", ThisForm));
 	EndIf;
 	
+EndProcedure
+
+&AtClient
+Procedure OpenJobScheduleExecuteEnd(Schedule, AdditionalParameters) Export
+	
+	CurrentData = Items.ScheduledJobTable.CurrentData;
+	
+	If Schedule <> Undefined And CurrentData <> Undefined Then
+		
+		ScheduledJobsClient.SetJobSchedule(
+			CurrentData.ID,
+			Schedule);
+		
+		UpdateScheduledJobTable(CurrentData.ID);
+		
+	EndIf;
+		
 EndProcedure
 
 &AtClient
@@ -356,13 +375,13 @@ EndProcedure
 Procedure CancelBackgroundJobExecute(Command)
 	
 	If Items.BackgroundJobTable.CurrentData = Undefined Then
-		DoMessageBox( NStr("en = 'Select the background job.'") );
+		ShowMessageBox(, NStr("en='Select the background job.'") );
 		
 	Else
 		CancelBackgroundJobAtServer(Items.BackgroundJobTable.CurrentData.ID);
 		
-		DoMessageBox(NStr("en = 'The job is canceled but the state will be updated in 
-		                        |a few seconds, perhaps you will need to update data manually.'"));
+		ShowMessageBox(,NStr("en='The job is canceled but the state will be updated in "
+"a few seconds, perhaps you will need to update data manually.'"));
 	EndIf;
 	
 EndProcedure
@@ -430,7 +449,7 @@ EndProcedure
 Procedure OpenBackgroundJob()
 	
 	If Items.BackgroundJobTable.CurrentData = Undefined Then
-		DoMessageBox (NStr("en = 'Select the background job.'"));
+		ShowMessageBox(Undefined, NStr("en='Select the background job.'"));
 	Else
 		PassedPropertyList =
 		"ID,
@@ -438,9 +457,9 @@ Procedure OpenBackgroundJob()
 		|Description,
 		|MethodName,
 		|State,
-		|Start,
+		|Begin,
 		|End,
-		|Location,
+		|Placement,
 		|UserMessagesAndErrorDetails,
 		|ScheduledJobID,
 		|ScheduledJobDescription";
@@ -451,7 +470,7 @@ Procedure OpenBackgroundJob()
 		FormParameters.Insert("ID", Items.BackgroundJobTable.CurrentData.ID);
 		FormParameters.Insert("BackgroundJobProperties", CurrentDataValues);
 		
-		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.BackgroundJob", FormParameters);
+		OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.BackgroundJob", FormParameters,,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	EndIf;
 	
 EndProcedure
@@ -630,18 +649,18 @@ EndProcedure
 Procedure EditScheduledJob(Val Action)
 	
 	If Items.ScheduledJobTable.CurrentData = Undefined Then
-		DoMessageBox ( NStr("en = 'Select the scheduled job.'") );
+		ShowMessageBox(Undefined,  NStr("en = 'Select the scheduled job.'") );
 		
 	ElsIf Action = "Change"
 	        And Items.ScheduledJobTable.SelectedRows.Count() > 1 Then
 		
-		DoMessageBox(NStr("en = 'Select one scheduled job.'"));
+		ShowMessageBox(,NStr("en = 'Select one scheduled job.'"));
 	Else
 		FormParameters = New Structure;
 		FormParameters.Insert("ID", Items.ScheduledJobTable.CurrentData.ID);
 		FormParameters.Insert("Action",      Action);
 		
-		OpenFormModal("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJob", FormParameters);
+		OpenForm("DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJob", FormParameters,,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	EndIf;
 	
 EndProcedure

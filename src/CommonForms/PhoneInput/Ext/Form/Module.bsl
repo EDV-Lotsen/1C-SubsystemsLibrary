@@ -25,7 +25,7 @@ EndProcedure
 &AtClient
 Procedure BeforeClose(Cancel, StandardProcessing)
 	
-	CommonUseClient.RequestCloseFormConfirmation(Cancel, Modified, CloseButtonPressed); 
+	//CommonUseClient.RequestCloseFormConfirmation(Cancel, Modified, CloseButtonPressed); 
 	
 EndProcedure
 

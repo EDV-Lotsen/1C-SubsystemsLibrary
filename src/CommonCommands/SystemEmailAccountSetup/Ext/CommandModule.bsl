@@ -4,7 +4,7 @@
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
-	OpenFormModal("Catalog.EmailAccounts.ObjectForm", 
-						New Structure("Key", EmailOperations.GetSystemAccount()));
+	OpenForm("Catalog.EmailAccounts.ObjectForm", 
+						New Structure("Key", EmailOperations.GetSystemAccount()),,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure

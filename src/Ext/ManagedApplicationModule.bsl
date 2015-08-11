@@ -10,6 +10,8 @@ Var MessagesForEventLog Export;
 Var SuggestFileSystemExtensionInstallation Export;
 // Flag that shows whether the standard exit confirmation required in the current session.
 Var SkipExitConfirmation Export;
+// Start and exit parameters that are passed to internal event handlers.
+Var ParametersOnApplicationStartAndExit Export; 
 
 // End StandardSubsystems.BaseFunctionality
 
@@ -55,7 +57,7 @@ Var PerformanceEstimationTimeMeasurement Export;
 Procedure BeforeStart(Cancel)
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsBeforeStart(Cancel);
+	StandardSubsystemsClient.BeforeStart();
 	// End StandardSubsystems
 	
 EndProcedure
@@ -63,7 +65,7 @@ EndProcedure
 Procedure OnStart()
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsOnStart(True);
+	StandardSubsystemsClient.OnStart();
 	// End StandardSubsystems
 	
 EndProcedure
@@ -71,7 +73,7 @@ EndProcedure
 Procedure BeforeExit(Cancel)
 	
 	// StandardSubsystems
-	StandardSubsystemsClient.ActionsBeforeExit(Cancel);
+	StandardSubsystemsClient.BeforeExit(Cancel);
 	// End StandardSubsystems
 	
 EndProcedure

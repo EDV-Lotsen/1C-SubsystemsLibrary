@@ -27,7 +27,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Object.Parent = Catalogs.ExternalUserGroups.EmptyRef();
 	EndIf;
 	
-	SetActionsOnForm();
+	DefineActionsOnForm();
 	
 	//** Setting permanent property availability
 	
@@ -136,17 +136,30 @@ Procedure AuthorizationObjectTypePresentationStartChoice(Item, ChoiceData, Stand
 	
 	StandardProcessing = False;
 	
-	SelectedItem = ChooseFromList(AuthorizationObjectTypes, Item, AuthorizationObjectTypes.FindByValue(Object.AuthorizationObjectType));
+	SelectedItem = Undefined;
+
 	
-	If SelectedItem <> Undefined Then
-		
-		Modified = True;
-		Object.AuthorizationObjectType = SelectedItem.Value;
-		AuthorizationObjectTypePresentation = SelectedItem.Presentation;
-		
-		AuthorizationObjectTypePresentationOnChange(Item);
-	EndIf;
+	ShowChooseFromList(New NotifyDescription("AuthorizationObjectTypePresentationStartChoiceEnd", ThisObject, New Structure("Item", Item)), AuthorizationObjectTypes, Item, AuthorizationObjectTypes.FindByValue(Object.AuthorizationObjectType));
 	
+EndProcedure
+
+&AtClient
+Procedure AuthorizationObjectTypePresentationStartChoiceEnd(SelectedItem1, AdditionalParameters) Export
+    
+    Item = AdditionalParameters.Item;
+    
+    
+    SelectedItem = SelectedItem1;
+    
+    If SelectedItem <> Undefined Then
+        
+        Modified = True;
+        Object.AuthorizationObjectType = SelectedItem.Value;
+        AuthorizationObjectTypePresentation = SelectedItem.Presentation;
+        
+        AuthorizationObjectTypePresentationOnChange(Item);
+    EndIf;
+
 EndProcedure
 
 &AtClient
@@ -265,7 +278,7 @@ Procedure FormInitialization()
 EndProcedure
 
 &AtServer
-Procedure SetActionsOnForm()
+Procedure DefineActionsOnForm()
 	
 	ActionsOnForm = New Structure;
 	ActionsOnForm.Insert("Roles", ""); // "", "View", "Edit"
@@ -357,7 +370,7 @@ Procedure DeleteNotTypicalExternalUsers()
 	Query.SetParameter("SelectedExternalUsers", Object.Content.Unload().UnloadColumn("ExternalUser"));
 	Query.SetParameter("AuthorizationObjectType", TypeOf(Object.AuthorizationObjectType));
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		FoundRows = Object.Content.FindRows(New Structure("ExternalUser", Selection.Ref));
 		For Each FoundRow In FoundRows Do

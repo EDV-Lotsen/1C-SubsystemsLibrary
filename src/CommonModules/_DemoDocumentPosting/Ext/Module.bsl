@@ -80,7 +80,7 @@ Function GetArrayOfRegistersHavingDocumentPostings(DocumentRef, RegisterRecords,
 				Result = Query.Execute().Unload().UnloadColumn("RegisterName");
 			Else
 				// Add query result to an array
-				Selection = Query.Execute().Choose();
+				Selection = Query.Execute().Select();
 				While Selection.Next() Do
 					Result.Add(Selection.RegisterName);
 				EndDo;

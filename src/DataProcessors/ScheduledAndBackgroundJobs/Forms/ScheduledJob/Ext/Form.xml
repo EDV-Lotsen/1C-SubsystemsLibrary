@@ -51,6 +51,12 @@
 			<ChildItems>
 				<InputField name="Description" id="10">
 					<DataPath>Description</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="DescriptionContextMenu" id="11"/>
 					<ExtendedTooltip name="DescriptionExtendedTooltip" id="12"/>
@@ -60,18 +66,36 @@
 				</InputField>
 				<CheckBoxField name="Use" id="13">
 					<DataPath>Use</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Use</v8:content>
+						</v8:item>
+					</Title>
 					<CheckBoxType>Auto</CheckBoxType>
 					<ContextMenu name="UseContextMenu" id="14"/>
 					<ExtendedTooltip name="UseExtendedTooltip" id="15"/>
 				</CheckBoxField>
 				<InputField name="RestartCountOnFailure" id="16">
 					<DataPath>RestartCountOnFailure</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Repeat if error occured, times</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="RestartCountOnFailureContextMenu" id="17"/>
 					<ExtendedTooltip name="RestartCountOnFailureExtendedTooltip" id="18"/>
 				</InputField>
 				<InputField name="RestartIntervalOnFailure" id="19">
 					<DataPath>RestartIntervalOnFailure</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Repeat if error occured after, sec</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="RestartIntervalOnFailureContextMenu" id="20"/>
 					<ExtendedTooltip name="RestartIntervalOnFailureExtendedTooltip" id="21"/>
@@ -94,18 +118,36 @@
 					<DataPath>ID</DataPath>
 					<ReadOnly>true</ReadOnly>
 					<SkipOnInput>true</SkipOnInput>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>ID</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="IDContextMenu" id="25"/>
 					<ExtendedTooltip name="IDExtendedTooltip" id="26"/>
 				</InputField>
 				<InputField name="Key" id="27">
 					<DataPath>Key</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Key</v8:content>
+						</v8:item>
+					</Title>
 					<Wrap>false</Wrap>
 					<ContextMenu name="KeyContextMenu" id="28"/>
 					<ExtendedTooltip name="KeyExtendedTooltip" id="29"/>
 				</InputField>
 				<InputField name="UserName" id="30">
 					<DataPath>UserName</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>User name</v8:content>
+						</v8:item>
+					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>

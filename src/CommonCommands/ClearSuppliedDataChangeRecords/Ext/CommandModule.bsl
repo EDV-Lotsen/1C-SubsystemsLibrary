@@ -30,7 +30,7 @@ Procedure ClearSuppliedDataChangeRecords()
 		Return;
 	EndIf;
 	
-	Selection = QueryResult.Choose();
+	Selection = QueryResult.Select();
 	While Selection.Next() Do
 		ExchangePlans.DeleteChangeRecords(Selection.Ref);
 	EndDo;

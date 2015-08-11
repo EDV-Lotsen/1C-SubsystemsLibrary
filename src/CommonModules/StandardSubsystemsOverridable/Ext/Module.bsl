@@ -24,7 +24,7 @@ Function IsBaseConfigurationVersion() Export
 
 EndFunction
 
-// Returns a map of session parameter names to their initialization handlers.
+// Returns a map of session parameter names and their initialization handlers.
 //
 Function SubsystemsLibrarySessionParameterInitHandlers() Export
 	
@@ -39,26 +39,26 @@ Function SubsystemsLibrarySessionParameterInitHandlers() Export
 	Handlers = New Map;
 	
 	// StandardSubsystems.DataExchange
-	Handlers.Insert("ORMCachedValueRefreshDate", "DataExchangeServer.SessionParametersSetting");
-	Handlers.Insert("DataExchangeEnabled", "DataExchangeServer.SessionParametersSetting");
-	Handlers.Insert("UsedExchangePlans", "DataExchangeServer.SessionParametersSetting");
-	Handlers.Insert("SelectiveObjectChangeRecordRules", "DataExchangeServer.SessionParametersSetting");
-	Handlers.Insert("ObjectChangeRecordRules", "DataExchangeServer.SessionParametersSetting");
+	Handlers.Insert("ORMCachedValueRefreshDate", "DataExchangeServer.SetSessionParameters");
+	Handlers.Insert("DataExchangeEnabled", "DataExchangeServer.SetSessionParameters");
+	Handlers.Insert("UsedExchangePlans", "DataExchangeServer.SetSessionParameters");
+	Handlers.Insert("SelectiveObjectRegistrationRules", "DataExchangeServer.SetSessionParameters");
+	Handlers.Insert("ObjectRegistrationRules", "DataExchangeServer.SetSessionParameters");
 	// End StandardSubsystems.DataExchange
 	
 	// StandardSubsystems.AccessManagement
-	Handlers.Insert("RestrictAccessByType*", "AccessManagement.SessionParametersSetting");
-	Handlers.Insert("AccessTypes*", "AccessManagement.SessionParametersSetting");
-	Handlers.Insert("AddSubordinatesAccessToHeads", "AccessManagement.SessionParametersSetting");
+	Handlers.Insert("RestrictAccessByType*", "AccessManagement.SetSessionParameters");
+	Handlers.Insert("AccessTypes*", "AccessManagement.SetSessionParameters");
+	Handlers.Insert("AddHeadsAccessOfSubordinates", "AccessManagement.SetSessionParameters");
 	// End StandardSubsystems.AccessManagement
 	
 	// StandardSubsystems.Users
-	Handlers.Insert("CurrentUser", "Users.SessionParametersSetting");
-	Handlers.Insert("CurrentExternalUser", "Users.SessionParametersSetting");
+	Handlers.Insert("CurrentUser", "Users.SetSessionParameters");
+	Handlers.Insert("CurrentExternalUser", "Users.SetSessionParameters");
 	// End StandardSubsystems.Users
 	
 	// StandardSubsystems.PerformanceEstimation
-	Handlers.Insert("CurrentTimeMeasurement", "PerformanceEstimationServerCall.SessionParametersSetting");
+	Handlers.Insert("CurrentTimeMeasurement", "PerformanceEstimationServerCall.SetSessionParameters");
 	// End StandardSubsystems.PerformanceEstimation
 	
 	Return Handlers;
@@ -69,15 +69,62 @@ EndFunction
 // that do not affect application business logic.
 //
 // Returns:
-// Array - Array of String, for example, "InformationRegister.ObjectVersions".
+// Array - Array of strings, for example, "InformationRegister.ObjectVersions".
 //
 Function RefSearchExclusions() Export
 	
 	Array = New Array;
 	
+	//// StandardSubsystems.BusinessProcessesAndTasks
+	//Array.Add(Metadata.InformationRegisters.TaskPerformers.FullName());
+	//Array.Add(Metadata.InformationRegisters.BusinessProcessData.FullName());
+	//// End StandardSubsystems.BusinessProcessesAndTasks
+	
+	//// StandardSubsystems.Currencies
+	//Array.Add(Metadata.InformationRegisters.CurrencyRates.FullName());
+	//// End StandardSubsystems.Currencies
+	
+	//// StandardSubsystems.ObjectVersioning
+	//Array.Add(Metadata.InformationRegisters.ObjectVersions.FullName());
+	//// End StandardSubsystems.ObjectVersioning
+	
+	//// StandardSubsystems.ExternalBusinessProcessesAndTasks
+	//Array.Add(Metadata.InformationRegisters.ExternalTaskSources.FullName());
+	//// End StandardSubsystems.ExternalBusinessProcessesAndTasks
+	
 	// StandardSubsystems.Users
 	Array.Add(Metadata.InformationRegisters.UserGroupContent.FullName());
 	// End StandardSubsystems.Users
+	
+	//// StandardSubsystems.AttachedFiles
+	//Array.Add(Metadata.InformationRegisters.AttachmentExistence.FullName());
+	//// End StandardSubsystems.AttachedFiles
+	
+	// StandardSubsystems.ServiceMode.SuppliedData
+	Array.Add(Metadata.InformationRegisters.SuppliedDataRelations.FullName());
+	// End StandardSubsystems.ServiceMode.SuppliedData
+	
+	// StandardSubsystems.FileOperations
+	//Array.Add(Metadata.InformationRegisters.FilesInWorkingDirectory.FullName());
+	// End StandardSubsystems.FileOperations
+	
+	//// StandardSubsystems.Properties
+	//Array.Add(Metadata.InformationRegisters.AdditionalData.FullName());
+	//// End StandardSubsystems.Properties
+	
+	//// StandardSubsystems.AccessManagement
+	//Array.Add(Metadata.InformationRegisters.AccessValueGroups.FullName());
+	//Array.Add(Metadata.InformationRegisters.AccessRightDependencies.FullName());
+	//Array.Add(Metadata.InformationRegisters.AccessGroupValues.FullName());
+	//Array.Add(Metadata.InformationRegisters.AccessValueSets.FullName());
+	//Array.Add(Metadata.InformationRegisters.SubordinateUsers.FullName());
+	//Array.Add(Metadata.InformationRegisters.RightsByAccessValues.FullName());
+	//Array.Add(Metadata.InformationRegisters.AccessGroupTables.FullName());
+	//// End StandardSubsystems.AccessManagement
+	
+	//// StandardSubsystems.Individuals
+	//Array.Add(Metadata.InformationRegisters.IndividualDocuments.FullName());
+	//// End StandardSubsystems.Individuals
 	
 	Return Array;
 	
@@ -86,7 +133,7 @@ EndFunction
 // Generates a name list of shared information registers that store separated data.
 // 
 // Parameters:
-// SharedRegisters - Array of String.
+// SharedRegisters - Array - array of strings.
 
 Procedure GetSharedInformationRegistersWithSeparatedData(Val SharedRegisters) Export
 	
@@ -108,7 +155,7 @@ EndProcedure
 // Generates a list of data types that cannot be copied between areas.
 // 
 // Parameters:
-// SharedRegisters - Array of Type.
+// SharedRegisters - Array - array of types.
 //
 Procedure GetNonImportableToDataAreaTypes(Val Types) Export
 	
@@ -121,6 +168,7 @@ Procedure GetNonImportableToDataAreaTypes(Val Types) Export
 			Types.Add(Type("InformationRegisterRecordSet." + TypeMetadata.Name));
 		EndIf;
 	EndDo;
+
 	
 	Types.Add(Type("InformationRegisterRecordSet.SuppliedDataRelations"));
 	Types.Add(Type("InformationRegisterRecordSet.DataAreasForSuppliedDataUpdate"));
@@ -134,15 +182,25 @@ Procedure GetNonImportableToDataAreaTypes(Val Types) Export
 	Types.Add(Type("InformationRegisterRecordSet.JobQueue"));
 	// End StandardSubsystems.ServiceMode.JobQueue
 	
+	//// StandardSubsystems.ServiceMode.AdditionalReportsAndDataProcessorsServiceMode
+	//Types.Add(Type("CatalogObject.AdditionalReportsAndDataProcessors"));
+	//// End StandardSubsystems.ServiceMode.AdditionalReportsAndDataProcessorsServiceMode
+	
 EndProcedure
 
 // Generates a list of data types that should not be exchanged between
 // infobases.
 // 
 // Parameters:
-// SharedRegisters - Array of Type.
+// SharedRegisters - Array - array of types.
 //
 Procedure GetNonExportableFromInfoBaseTypes(Val Types) Export
+	
+	//// StandardSubsystems.AddressClassifier
+	//Types.Add(Type("InformationRegisterRecordSet.AddressAbbreviations"));
+	//Types.Add(Type("InformationRegisterRecordSet.AddressClassifier"));
+	//// End StandardSubsystems.AddressClassifier
+
 	
 	// StandardSubsystems.ServiceMode.SuppliedData
 	Types.Add(Type("InformationRegisterRecordSet.SuppliedDataRelations"));
@@ -332,6 +390,23 @@ Procedure OnEnableSeparationByDataAreas() Export
 	
 	// StandardSubsystems.ServiceMode.JobQueue
 	JobQueue.UpdateSeparatedScheduledJobs();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	If Constants.MaxActiveBackgroundJobExecutionTime.Get() = 0 Then
 		Constants.MaxActiveBackgroundJobExecutionTime.Set(600);
@@ -356,7 +431,14 @@ EndProcedure
 // to service data area or vice versa.
 //
 Procedure AfterDataImportFromOtherMode() Export
-		
+	
+	// StandardSubsystems.ServiceMode.AccessManagementServiceMode
+	//AccessManagement.UpdateSuppliedProfilesAndAccessGroups();
+	//AccessManagement.UpdateProfileAccessGroupRoleTables();
+	//AccessManagement.RefreshAccessRightDependencies();
+	//AccessManagement.UpdateRightTablesByAccessValues();
+	// End StandardSubsystems.ServiceMode.AccessManagementServiceMode
+	
 EndProcedure
 
 // Locks the current area by starting a transaction and setting an exclusive lock
@@ -371,8 +453,8 @@ Procedure LockCurrentDataArea() Export
 	Return;
 	// End StandardSubsystems.ServiceMode
 	
-	Raise(NStr("en = 'Service mode subsystem is not available'"));
-	
+
+
 EndProcedure
 
 // Unlocks the current area by committing (or, in case of errors, rolling back) a transaction.
@@ -390,8 +472,8 @@ Procedure UnlockCurrentDataArea() Export
 	Return;
 	// End StandardSubsystems.ServiceMode
 	
-	Raise(NStr("en = 'Service mode subsystem is not available'"));
-	
+
+
 EndProcedure
 
 // Additional actions to be executed at the session separation.
@@ -431,8 +513,8 @@ Function SessionSeparatorValue() Export
 	Return ServiceMode.SessionSeparatorValue();
 	// End StandardSubsystems.ServiceMode
 	
-	Raise(NStr("en = 'Service mode subsystem is not available'"));
-	
+
+
 EndFunction
 
 // Returns a flag that shows whether the DataArea separator is used for the current session.
@@ -446,8 +528,8 @@ Function UseSessionSeparator() Export
 	Return ServiceMode.UseSessionSeparator();
 	// End StandardSubsystems.ServiceMode
 	
-	Raise(NStr("en = 'Service mode subsystem is not available'"));
-	
+
+
 EndFunction
 
 // The overridable handler that is called before writing a user.
@@ -503,6 +585,10 @@ EndProcedure
 // Use - Boolean - flag that shows whether the job is enabled.
 
 Procedure OnWriteAdditionalHandlerJob(ScheduledJob, Use) Export
+
+	//// StandardSubsystems.ServiceMode.AdditionalReportsAndDataProcessorsServiceMode
+	//AdditionalReportsAndDataProcessorsServiceMode.AdjustQueueJobParameter(ScheduledJob, Use);
+	//// End StandardSubsystems.ServiceMode.AdditionalReportsAndDataProcessorsServiceMode
 	
 EndProcedure
 
@@ -512,6 +598,10 @@ EndProcedure
 // Use - Boolean - True if the job is enabled, otherwise is False.
 //
 Procedure SetUseFillAccessManagementDataScheduledJob(Val Use) Export
+	
+	//// StandardSubsystems.ServiceMode.AccessManagementServiceMode
+	//AccessManagementServiceMode.SetUseFillDataJob(Use);
+	//// End StandardSubsystems.ServiceMode.AccessManagementServiceMode
 	
 EndProcedure
 
@@ -549,9 +639,41 @@ Function StandardSubsystemsUpdateHandlers() Export
 	
 	// Attaching library update handlers
 	
+	//// StandardSubsystems.AddressClassifier
+	//AddressClassifier.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.AddressClassifier
+	
 	// StandardSubsystems.BaseFunctionality
 	StandardSubsystemsServer.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.BaseFunctionality
+	
+	//// StandardSubsystems.BusinessProcessesAndTasks
+	//BusinessProcessesAndTasksServer.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.BusinessProcessesAndTasks
+	//
+	//// StandardSubsystems.ReportVariants
+	//ReportVariants.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.ReportVariants
+	//
+	//// StandardSubsystems.Interactions
+	//Interactions.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.Interactions
+	//
+	//// StandardSubsystems.Currencies
+	//ExchangeRateOperations.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.Currencies
+	//
+	//// StandardSubsystems.EditProhibitionDates
+	//EditProhibitionDatesService.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.EditProhibitionDates
+	//
+	//// StandardSubsystems.AdditionalReportsAndDataProcessors
+	//AdditionalReportsAndDataProcessors.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.AdditionalReportsAndDataProcessors
+	//
+	//// StandardSubsystems.CalendarSchedules
+	//CalendarSchedules.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.CalendarSchedules
 	
 	// StandardSubsystems.ContactInformation
 	ContactInformationManagement.RegisterUpdateHandlers(Handlers);
@@ -560,20 +682,37 @@ Function StandardSubsystemsUpdateHandlers() Export
 	// StandardSubsystems.DataExchange
 	DataExchangeServer.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.DataExchange
-	
+
+
+
 	// StandardSubsystems.ServiceMode.DataExchangeServiceMode
 	DataExchangeServiceMode.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.ServiceMode.DataExchangeServiceMode
+
 	
 	// StandardSubsystems.ServiceMode.MessageExchange
 	MessageExchangeInternal.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.ServiceMode.MessageExchange
+
+	
+	//// StandardSubsystems.ConfigurationUpdate
+	//ConfigurationUpdate.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.ConfigurationUpdate
+
 	
 	// StandardSubsystems.ServiceMode.InfoBaseVersionUpdateServiceMode
 	InfobaseUpdateServiceMode.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.ServiceMode.InfoBaseVersionUpdateServiceMode
-	
 
+	
+	//// StandardSubsystems.FullTextSearch
+	//FullTextSearchServer.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.FullTextSearch
+
+
+
+
+	
 	// StandardSubsystems.GetFilesFromInternet
 	GetFilesFromInternet.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.GetFilesFromInternet
@@ -582,21 +721,51 @@ Function StandardSubsystemsUpdateHandlers() Export
 	Users.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.Users
 	
-	// StandardSubsystems.ServiceMode.UsersServiceMode
+	// StandardSubsystems.ServiceMode.UsersInServiceMode
 	UsersServiceMode.RegisterUpdateHandlers(Handlers);
-	// End StandardSubsystems.ServiceMode.UsersServiceMode
+	// End StandardSubsystems.ServiceMode.UsersInServiceMode
+
 	
 	// StandardSubsystems.EmailOperations
 	Email.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.EmailOperations
+
+	
+	//// StandardSubsystems.FileOperations
+	//FileOperationsServerCall.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.FileOperations
+
 	
 	// StandardSubsystems.ScheduledJobs
 	ScheduledJobsServer.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.ScheduledJobs
+
 	
 	// StandardSubsystems.JobQueue
 	JobQueue.RegisterUpdateHandlers(Handlers);
 	// End StandardSubsystems.JobQueue
+
+	
+	//// StandardSubsystems.Properties
+	//PropertyManagement.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.Properties
+	
+	// StandardSubsystems.AccessManagement
+	//AccessManagement.RegisterUpdateHandlers(Handlers);
+	// End StandardSubsystems.AccessManagement
+	
+	//// StandardSubsystems.ServiceMode.AccessManagementServiceMode
+	//AccessManagementServiceMode.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.ServiceMode.AccessManagementServiceMode
+	//
+	//// StandardSubsystems.Individuals
+	//Individuals.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.Individuals
+	//
+	//// StandardSubsystems.DigitalSignature
+	//DigitalSignature.RegisterUpdateHandlers(Handlers);
+	//// End StandardSubsystems.DigitalSignature
+
 	
 	// StandardSubsystems.ServiceMode.SuppliedData
 	SuppliedData.RegisterUpdateHandlers(Handlers);
@@ -614,10 +783,10 @@ EndFunction
 //
 Function IsSharedInfoBaseUser(Val InfoBaseUserID) Export
 	
-	// StandardSubsystems.ServiceMode.UsersServiceMode
+	// StandardSubsystems.ServiceMode.UsersInServiceMode
 	Return UsersServiceMode.IsSharedInfoBaseUser(InfoBaseUserID);
-	// End StandardSubsystems.ServiceMode.UsersServiceMode
-	Return False;
+	// End StandardSubsystems.ServiceMode.UsersInServiceMode
+
 	
 EndFunction
 
@@ -626,9 +795,9 @@ EndFunction
 //
 Procedure RegisterSharedUser() Export
 	
-	// StandardSubsystems.ServiceMode.UsersServiceMode 
+	// StandardSubsystems.ServiceMode.UsersInServiceMode 
 	UsersServiceMode.RegisterSharedUser();
-	// End StandardSubsystems.ServiceMode.UsersServiceMode
+	// End StandardSubsystems.ServiceMode.UsersInServiceMode
 	
 EndProcedure
 
@@ -639,10 +808,10 @@ EndProcedure
 //
 Function CanChangeUsers() Export
 	
-	// StandardSubsystems.ServiceMode.UsersServiceMode
+	// StandardSubsystems.ServiceMode.UsersInServiceMode
 	Return UsersServiceMode.CanChangeUsers();
-	// End StandardSubsystems.ServiceMode.UsersServiceMode
-	Return True;
+	// End StandardSubsystems.ServiceMode.UsersInServiceMode
+
 	
 EndFunction
 
@@ -665,7 +834,7 @@ EndProcedure
 // Parameters:
 // URL - String - file URL in the following format:
 // [Protocol://]<Server>/<A path to the file on the HTTP or FTP server>;
-// ReceivingParameters - structure with the following properties:
+// ReceptionParameters - structure with the following properties:
 // PathForSaving - String - path on the 1C:Enterprise server (including a file name) for saving the downloaded file;
 // User - String - account used for connecting to the HTTP or FTP server;
 // Password - String - password used for connecting to the HTTP or FTP server;
@@ -680,12 +849,12 @@ EndProcedure
 // False - function execution failed;
 // Path - String - path to the file on the 1C:Enterprise server. This key is used only 
 // if State is True.
-// ErrorMessage - String - error message if State is False.
+// ErrorMessage - String - error message if State is False
 //
-Procedure DownloadFileAtServer(Val Address, Val ReceivingParameters, ReturnValue) Export
+Procedure DownloadFileAtServer(Val Address, Val ReceptionParameters, ReturnValue) Export
 	
 	// StandardSubsystems.GetFilesFromInternet
-	ReturnValue = GetFilesFromInternet.DownloadFileAtServer(Address, ReceivingParameters);
+	ReturnValue = GetFilesFromInternet.DownloadFileAtServer(Address, ReceptionParameters);
 	// End StandardSubsystems.GetFilesFromInternet
 	
 EndProcedure
@@ -726,13 +895,51 @@ EndFunction
 Procedure GetSeparatedAndSharedDataMapTable(MapTable) Export
 	
 	// StandardSubsystems.ServiceMode.SuppliedData
-		
+	
+	//// StandardSubsystems.ServiceMode.CurrenciesServiceMode
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.Catalog_Currencies;
+	//NewRow.SharedDataType = Type("CatalogRef.CurrencyClassifier");
+	//NewRow.SeparatedDataType = Type("CatalogRef.Currencies");
+	//NewRow.CopyToAllDataAreas = False;
+	//
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.InformationRegister_CurrencyRates;
+	//NewRow.SharedDataType = Type("InformationRegisterRecordKey.CurrencyRatesByClassifier");
+	//NewRow.SeparatedDataType = Type("InformationRegisterRecordKey.CurrencyRates");
+	//NewRow.CopyToAllDataAreas = Undefined;
+	//// End StandardSubsystems.ServiceMode.CurrenciesServiceMode
+	
 	// StandardSubsystems.ContactInformation
 	NewRow = MapTable.Add();
 	NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.Catalog_WorldCountries;
 	NewRow.SharedDataType = Type("CatalogRef.WorldCountries");
 	NewRow.CopyToAllDataAreas = False;
 	// End StandardSubsystems.ContactInformation
+	
+	//// StandardSubsystems.AddressClassifier
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.InformationRegister_AddressClassifier;
+	//NewRow.SharedDataType = Type("InformationRegisterRecordSet.AddressClassifier");
+	//
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.InformationRegister_AddressAbbreviations;
+	//NewRow.SharedDataType = Type("InformationRegisterRecordSet.AddressAbbreviations");
+	//// End StandardSubsystems.AddressClassifier
+	
+	//// StandardSubsystems.CalendarSchedules
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.Catalog_BusinessCalendars;
+	//NewRow.SharedDataType = Type("CatalogRef.BusinessCalendars");
+	//NewRow.SeparatedDataType = Type("CatalogRef.Calendars");
+	//NewRow.CopyToAllDataAreas = False;
+	//
+	//NewRow = MapTable.Add();
+	//NewRow.SuppliedDataKind = Enums.SuppliedDataTypes.InformationRegister_BusinessCalendarData;
+	//NewRow.SharedDataType = Type("InformationRegisterRecordKey.BusinessCalendarData");
+	//NewRow.SeparatedDataType = Type("InformationRegisterRecordKey.CalendarSchedules");
+	//NewRow.CopyToAllDataAreas = Undefined;
+	//// End StandardSubsystems.CalendarSchedules
 	
 	// End StandardSubsystems.ServiceMode.SuppliedData
 	
@@ -744,7 +951,21 @@ EndProcedure
 // SharedDataRef - Ref - supplied data reference
 //
 Procedure OnFillDataAreaWithSuppliedData(SharedDataRef) Export
-		
+	
+	//// StandardSubsystems.ServiceMode.SuppliedData
+	//// StandardSubsystems.ServiceMode.CurrenciesServiceMode
+	//If TypeOf(SharedDataRef) = Type("CatalogRef.CurrencyClassifier") Then
+	//	SuppliedData.RegisterInformationRegisterDataChanges(SharedDataRef, "CurrencyRatesByClassifier", "Currency", "Period,Currency");
+	//EndIf;
+	//// End StandardSubsystems.ServiceMode.CurrenciesServiceMode
+	//
+	//// StandardSubsystems.CalendarSchedules
+	//If TypeOf(SharedDataRef) = Type("CatalogRef.BusinessCalendars") Then
+	//	SuppliedData.RegisterInformationRegisterDataChanges(SharedDataRef, "BusinessCalendarData", "BusinessCalendar", "BusinessCalendar,Date,Year");
+	//EndIf;
+	//// End StandardSubsystems.CalendarSchedules
+	//// End StandardSubsystems.ServiceMode.SuppliedData
+	
 EndProcedure
 
 // Updates a separated record set with data from a shared one. 
@@ -755,14 +976,60 @@ EndProcedure
 // MDObject - MetadataObject - shared information register metadata;
 // Manager - InformationRegisterManager - separated information register manager;
 // SourceType - Type - shared register record key type;
-// TargetType - Type - separated register record key type;
-// TargetObject - InformationRegisterRecordSet - if standard update processing is 
+// DestinationType - Type - separated register record key type;
+// DestinationObject - InformationRegisterRecordSet - if standard update processing is 
 // overridden in this procedure, the record set that is not written must be assigned to this parameter;
 // StandardProcessing - Boolean - if standard update processing is 
 // overridden in this procedure, False must be recorded to this parameter.
 //
 Procedure BeforeCopyRecordSetFromPrototype(Prototype, ObjectMetadata, Manager, SourceType, 
-	TargetType, TargetObject, StandardProcessing) Export
+	DestinationType, DestinationObject, StandardHandler) Export
+	
+	//// StandardSubsystems.ServiceMode.SuppliedData
+	//// StandardSubsystems.CalendarSchedules
+	//If ObjectMetadata.Name = "BusinessCalendarData" Then
+	//	
+	//	StandardHandler = False;
+	//	
+	//	AttributeNameMap = New Map;
+	//	AttributeNameMap.Insert("BusinessCalendar", "Calendar");
+	//	AttributeNameMap.Insert("Date",	"ScheduleDate");
+	//	
+	//	IncludedDayKinds = New Array;
+	//	IncludedDayKinds.Add(Enums.BusinessCalendarDayKinds.Working);
+	//	IncludedDayKinds.Add(Enums.BusinessCalendarDayKinds.Preholiday);
+	//	
+	//	Result = Manager.CreateRecordSet();
+	//	
+	//	For Each FilterItem In Prototype.Filter Do
+	//		If Not FilterItem.Use Then
+	//			Continue;
+	//		EndIf;
+	//		
+	//		If AttributeNameMap[FilterItem.Name] <> Undefined Then
+	//			Result.Filter[AttributeNameMap[FilterItem.Name]].Set(SuppliedData.ConvertSharedValueToSeparated(FilterItem.Value));	
+	//		Else 
+	//			Result.Filter[FilterItem.Name].Set(SuppliedData.ConvertSharedValueToSeparated(FilterItem.Value));
+	//		EndIf;
+	//	EndDo;
+	//	
+	//	Result.DataExchange.Load = True;
+	//	
+	//	DestinationMetadata = Result.Metadata();
+	//	
+	//	For Each PrototypeRow In Prototype Do
+	//		ResultRow = Result.Add();
+	//		ResultRow.Calendar		= SuppliedData.ConvertSharedValueToSeparated(PrototypeRow.BusinessCalendar);
+	//		ResultRow.Year			= PrototypeRow.Year;
+	//		ResultRow.ScheduleDate	= PrototypeRow.Date;
+	//		ResultRow.DayAddedToSchedule	= IncludedDayKinds.Find(PrototypeRow.DayKind) <> Undefined;
+	//	EndDo;
+	//		
+	//	DestinationObject = Result;
+	//	
+	//EndIf;
+	//// End StandardSubsystems.CalendarSchedules
+	//// End StandardSubsystems.ServiceMode.SuppliedData
 	
 EndProcedure
 	
@@ -774,14 +1041,53 @@ EndProcedure
 // MDObject - MetadataObject - shared catalog metadata;
 // Manager - CatalogManager - separated catalog manager;
 // SourceType - Type - shared catalog reference type;
-// TargetType - Type - separated catalog reference type;
-// TargetObject - CatalogObject - if standard update processing was 
+// DestinationType - Type - separated catalog reference type;
+// DestinationObject - CatalogObject - if standard update processing was 
 // overridden in this procedure, the object that is not written must be recorded to this parameter;
 // StandardProcessing - Boolean - if standard update processing is 
 // overridden in this procedure, False must be recorded to this parameter.
 //
 Procedure BeforeCopyObjectFromPrototype(Prototype, SourceMetadata, Manager, SourceType, 
-	TargetType, TargetObject, StandardProcessing) Export
+	DestinationType, DestinationObject, StandardHandler) Export
+	
+	//// StandardSubsystems.ServiceMode.SuppliedData
+	//// StandardSubsystems.CalendarSchedules
+	//If SourceMetadata.Name = "BusinessCalendars" Then
+	//	
+	//	AttributeNameMap = New Map;
+	//	AttributeNameMap.Insert("BusinessCalendar", "Ref");
+	//	
+	//	StandardHandler = False;
+	//	
+	//	ResultRef = SuppliedData.SeparatedByCommonRef(Prototype.Ref);
+	//	
+	//	DestinationMetadata = ResultRef.Metadata();
+	//	
+	//	HierarchicalCatalog = DestinationMetadata.Hierarchical And SourceMetadata.Hierarchical;
+	//	
+	//	Result = ResultRef.GetObject();
+	//	If Result = Undefined Then
+	//		Result = Manager.CreateItem();
+	//		Result.SetNewObjectRef(ResultRef);
+	//	EndIf;
+	//	Result.DataExchange.Load = True;
+	//	
+	//	Result.Description = Prototype.Description;
+	//	
+	//	If HierarchicalCatalog Then
+	//		Result.Parent = SuppliedData.ConvertSharedValueToSeparated(Prototype.Parent);
+	//	EndIf;
+	//	
+	//	GroupHierarchy = DestinationMetadata.HierarchyType = Metadata.ObjectProperties.HierarchyType.HierarchyFoldersAndItems;
+	//	
+	//	Result["BusinessCalendar"] 	= Prototype["Ref"];
+	//	Result["CalendarType"] 				= Enums.CalendarTypes.FiveDays;
+	//	
+	//	DestinationObject = Result;
+	//	
+	//EndIf;
+	//// End StandardSubsystems.CalendarSchedules
+	//// End StandardSubsystems.ServiceMode.SuppliedData
 	
 EndProcedure
 
@@ -872,13 +1178,13 @@ Procedure FillSeparatedScheduledJobList(SeparatedScheduledJobList) Export
 	// End StandardSubsystems.FileFunctions
 	
 	// StandardSubsystems.BusinessProcessesAndTasks
-	SeparatedScheduledJobList.Add("TaskMonitoring");
+	SeparatedScheduledJobList.Add("TasksMonitoring");
 	SeparatedScheduledJobList.Add("NewPerformerTaskNotifications");
 	// End StandardSubsystems.BusinessProcessesAndTasks
 	
 	// StandardSubsystems.TotalAndAggregateManagement
-	SeparatedScheduledJobList.Add("UpdateAggregates");
-	SeparatedScheduledJobList.Add("RebuildAggregates");
+	SeparatedScheduledJobList.Add("RefreshAggregates");
+	SeparatedScheduledJobList.Add("AggregatesRebuilding");
 	SeparatedScheduledJobList.Add("TotalsPeriodSetup");
 	// End StandardSubsystems.TotalAndAggregateManagement
 	
@@ -916,7 +1222,35 @@ EndProcedure
 // Presentation	- String - text presentation.
 //
 Procedure SetSubjectPresentation(SubjectRef, Presentation) Export
-		
+	
+	//// StandardSubsystems.BusinessProcessesAndTasks
+	//If TypeOf(SubjectRef) = Type("TaskRef.PerformerTask") Then
+	//	ObjectPresentation = SubjectRef.Metadata().ObjectPresentation;
+	//	If IsBlankString(ObjectPresentation) Then
+	//		ObjectPresentation = SubjectRef.Metadata().Presentation();
+	//	EndIf;
+	//	Presentation = StringFunctionsClientServer.SubstituteParametersInString(
+	//	"%1 (%2)", SubjectRef.Description, ObjectPresentation);
+	//EndIf;
+	//// End StandardSubsystems.BusinessProcessesAndTasks
+	
+	//// StandardSubsystems.Interactions
+	//If TypeOf(SubjectRef) = Type("DocumentRef.IncomingEmail") Or
+	//	TypeOf(SubjectRef) = Type("DocumentRef.OutgoingEmail") Or
+	//	TypeOf(SubjectRef) = Type("DocumentRef.PhoneCall") Or 
+	//	TypeOf(SubjectRef) = Type("DocumentRef.Meeting") Or 
+	//	TypeOf(SubjectRef) = Type("DocumentRef.PlannedInteraction") Then
+	//	
+	//	ObjectPresentation = SubjectRef.Metadata().ObjectPresentation;
+	//	If IsBlankString(ObjectPresentation) Then
+	//		ObjectPresentation = SubjectRef.Metadata().Presentation();
+	//	EndIf;
+	//	Presentation = StringFunctionsClientServer.SubstituteParametersInString(
+	//		"%1 (%2)", SubjectRef.Subject, ObjectPresentation);
+	//	
+	//EndIf;
+	//// End StandardSubsystems.Interactions
+	
 EndProcedure
 
 // Generates a list of available methods for processing the job queue 
@@ -930,8 +1264,8 @@ Procedure GetJobQueueAllowedMethods(Val AllowedMethods) Export
 	// StandardSubsystems.ServiceMode.DataExchangeServiceMode
 	AllowedMethods.Add("DataExchangeServiceMode.SetDataChangeFlag");
 	AllowedMethods.Add("DataExchangeServiceMode.ExecuteDataExchange");
-	AllowedMethods.Add("DataExchangeServiceMode.ExecuteDataExchangeScenarioActionInFirstInfoBase");
-	AllowedMethods.Add("DataExchangeServiceMode.ExecuteDataExchangeScenarioActionInSecondInfoBase");
+	AllowedMethods.Add("DataExchangeServiceMode.ExecuteDataExchangeScriptActionInFirstInfoBase");
+	AllowedMethods.Add("DataExchangeServiceMode.ExecuteDataExchangeScriptActionInSecondInfoBase");
 	// End StandardSubsystems.ServiceMode.DataExchangeServiceMode
 	
 	// StandardSubsystems.ServiceMode.InfoBaseVersionUpdateServiceMode
@@ -965,7 +1299,21 @@ EndProcedure
 // AttributeArray - Array - array of attribute names (as they are named in metadata), that contain dates
 //
 Procedure OnFillSourceAttributeListWithReminderDates(Source, AttributeArray) Export
-		
+	
+	//// StandardSubsystems.BusinessProcessesAndTasks
+	//If TypeOf(Source) = Type("TaskRef.PerformerTask") Then
+	//	AttributeArray.Clear();
+	//	AttributeArray.Add("CompletionDeadline"); 
+	//	AttributeArray.Add("StartDate"); 
+	//EndIf;
+	//// End StandardSubsystems.BusinessProcessesAndTasks
+	//	
+	//// StandardSubsystems.UserNotes
+	//If TypeOf(Source) = Type("CatalogRef.Notes") Then
+	//	AttributeArray.Clear();
+	//EndIf;
+	//// End StandardSubsystems.UserNotes
+	
 EndProcedure
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -980,7 +1328,7 @@ EndProcedure
 // SessionNumber - Number - session number.
 // Result - Boolean – result of closing the session.
 // ErrorMessage - String - error message text is returned to this parameter in case of function execution failure.
-// StandardProcessing - Boolean - pass False to this parameter to disable standard processing of session closing.
+// StandardProcessing - Boolean - pass False to this parameter to desable standard processing of session closing.
 //
 Procedure OnCloseSession(SessionNumber, Result, ErrorMessage, StandardProcessing) Export
 	
@@ -1058,8 +1406,8 @@ EndProcedure
 
 // Fills a structure with arrays of supported versions of all subsystems to be versioned,
 // The procedure uses subsystem names as keys.
-// It provides functionality of the InterfaceVersioning web service.
-// At the embedding stage you have to change the procedure body so that it returns actual version sets (see the following example).
+// It provides functionality of the InterfaceVersion web service.
+// At the implementation stage you have to change the procedure body so that it returns actual version sets (see the following example).
 //
 // Parameters:
 // SupportedVersionStructure - structure with the following parameters: 

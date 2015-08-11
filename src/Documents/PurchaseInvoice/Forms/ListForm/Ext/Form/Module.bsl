@@ -23,7 +23,7 @@ Procedure Import(Command)
 		EndDo;
 		ImportPI(Selection.FullName);
 	Else
-	    DoMessageBox("File(s) not selected!");
+	    ShowMessageBox(, "File(s) not selected!");
 	EndIf;
 
 EndProcedure

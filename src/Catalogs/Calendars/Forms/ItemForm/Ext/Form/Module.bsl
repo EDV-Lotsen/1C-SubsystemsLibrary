@@ -126,14 +126,30 @@ Procedure CurrentYearNumberOnChange(Item)
 	If Modified Then
 		TextOfMessage = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Write modified data for %1 year?'"), Format(PreviousYearNumber, "NG=0"));
 		
-		If DoQueryBox(TextOfMessage, QuestionDialogMode.YesNo) = DialogReturnCode.Yes Then
-			If Object.Ref.IsEmpty() Then
-				Write(New Structure("YearNumber", PreviousYearNumber));
-			Else
-				WriteCalendarSchedule(PreviousYearNumber);
-			EndIf;
+		ShowQueryBox(New NotifyDescription("CurrentYearNumberOnChangeEnd", ThisObject), TextOfMessage, QuestionDialogMode.YesNo);
+        Return;
+	EndIf;
+	
+	CurrentYearNumberOnChangePart();
+EndProcedure
+
+&AtClient
+Procedure CurrentYearNumberOnChangeEnd(QuestionResult, AdditionalParameters) Export
+	
+	If QuestionResult = DialogReturnCode.Yes Then
+		If Object.Ref.IsEmpty() Then
+			Write(New Structure("YearNumber", PreviousYearNumber));
+		Else
+			WriteCalendarSchedule(PreviousYearNumber);
 		EndIf;
 	EndIf;
+	
+	CurrentYearNumberOnChangePart();
+
+EndProcedure
+
+&AtClient
+Procedure CurrentYearNumberOnChangePart()
 	
 	PreviousYearNumber = CurrentYearNumber;
 	
@@ -145,7 +161,7 @@ Procedure CurrentYearNumberOnChange(Item)
 	Modified = False;
 	
 	Items.Calendar.Refresh();
-	
+
 EndProcedure
 
 // Procedure - handler of event "OnPeriodOutput" of form item "Calendar"

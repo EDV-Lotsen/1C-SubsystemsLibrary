@@ -36,7 +36,7 @@ Procedure FillTree()
 	|	IsFolder HIERARCHY,
 	|	Settings.Description";
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	AddedGroupsArray = New Array;
 	

@@ -17,11 +17,22 @@
 //
 Procedure OnUpdateDetailDocumentHyperlinkClick(Val Area) Export
 	
-	// _Demo Start Example
-	If Area.Name = "_DemoHyperlinkSample" Then
-		DoMessageBox(NStr("en = 'The hyperlink was clicked.'"));
-	EndIf;
-		
-	// _Demo End Example
+	//// _Demo Start Example
+	//If Area.Name = "_DemoHyperlinkSample" Then
+	//	ShowMessageBox(,NStr("en = 'The hyperlink was clicked.'"));
+	//EndIf;
+	//
+	//
+	//// StandardSubsystems.AccessManagement
+	//If Area.Name = "_DemoUpdateDataAccessRestrictions" Then
+	//	If AccessManagement.RestrictAccessOnRecordLevel() Then
+	//		OpenFormModal("Catalog.AccessGroups.Form.RefreshEnabledAccessRestrictions");
+	//	Else
+	//		ShowMessageBox(,NStr("en = 'Access restriction on record level is not used.'"));
+	//	EndIf;
+	//EndIf;
+	//// End StandardSubsystems.AccessManagement
+	//
+	//// _Demo End Example
 	
 EndProcedure

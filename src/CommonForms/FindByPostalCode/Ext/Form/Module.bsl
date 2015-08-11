@@ -122,18 +122,38 @@ Procedure ProcessSelection()
 		ButtonList = New ValueList;
 		ButtonList.Add("Select");
 		ButtonList.Add("Cancel");
-		Response = DoQueryBox(NStr("en = '" + Items.FoundByPostalCodeRecords.CurrentData.Street 
+		Response = Undefined;
+
+		ShowQueryBox(New NotifyDescription("ProcessSelectionEnd", ThisObject), NStr("en = '" + Items.FoundByPostalCodeRecords.CurrentData.Street 
 		+ ", " + Items.FoundByPostalCodeRecords.CurrentData.Details + " is obsolete."	
 		+ Chars.LF + "Are you sure you want to select it?'"), ButtonList);
-		If Response = "Cancel" Then
-			Return;
-		EndIf;
+        Return;
 	EndIf;
+	
+	ProcessSelectionPart();
+EndProcedure
+
+&AtClient
+Procedure ProcessSelectionEnd(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
+	If Response = "Cancel" Then
+		Return;
+	EndIf;
+	
+	ProcessSelectionPart();
+
+EndProcedure
+
+&AtClient
+Procedure ProcessSelectionPart()
+	
+	Var AddressItemCode, Result;
 	
 	AddressItemCode = Items.FoundByPostalCodeRecords.CurrentData.Code;
 	Result = ProcessSearchByPostalCodeResult(AddressItemCode);
 	Close(Result);
-	
+
 EndProcedure
 
 &AtServer

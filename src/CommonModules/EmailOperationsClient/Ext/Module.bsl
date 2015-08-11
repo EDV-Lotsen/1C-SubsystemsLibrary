@@ -64,16 +64,16 @@ EndProcedure
 Procedure OpenSimpleSendEmailForm(Sender,
 			Recipient, Subject, Text, FileList, DeleteFilesAfterSending) Export
 	
-	EmailParameters = New Structure;
-	
-	EmailParameters.Insert("Account", Sender);
-	EmailParameters.Insert("Recipient", Recipient);
-	EmailParameters.Insert("Subject", Subject);
-	EmailParameters.Insert("Body", Text);
-	EmailParameters.Insert("Attachments", FileList);
-	EmailParameters.Insert("DeleteFilesAfterSending", DeleteFilesAfterSending);
-	
-	OpenForm("CommonForm.EditNewEmailMessage", EmailParameters);
+	//EmailParameters = New Structure;
+	//
+	//EmailParameters.Insert("Account", Sender);
+	//EmailParameters.Insert("Recipient", Recipient);
+	//EmailParameters.Insert("Subject", Subject);
+	//EmailParameters.Insert("Body", Text);
+	//EmailParameters.Insert("Attachments", FileList);
+	//EmailParameters.Insert("DeleteFilesAfterSending", DeleteFilesAfterSending);
+	//
+	//OpenForm("CommonForm.EditNewEmailMessage", EmailParameters);
 	
 EndProcedure
 
@@ -91,28 +91,48 @@ Procedure CheckAccount(Val Account) Export
 	If Email.PasswordSpecified(Account) Then
 		PasswordParameter = Undefined;
 	Else
-		AccountParameter = New Structure("Account", Account);
-		PasswordParameter = OpenFormModal("CommonForm.AccountPasswordConfirmation", AccountParameter);
-		If TypeOf(PasswordParameter) <> Type("String") Then
-			Return
-		EndIf;
+		//AccountParameter = New Structure("Account", Account);
+		//OpenForm("CommonForm.AccountPasswordConfirmation", AccountParameter,,,,, New NotifyDescription("CheckAccountEnd", ThisObject, New Structure("Account", Account)), FormWindowOpeningMode.LockWholeInterface);
+        Return;
 	EndIf;
+	
+	CheckAccountPart(Account, PasswordParameter);
+EndProcedure
+
+Procedure CheckAccountEnd(Result, AdditionalParameters) Export
+	
+	Account = AdditionalParameters.Account;
+	
+	
+	PasswordParameter = Result;
+	If TypeOf(PasswordParameter) <> Type("String") Then
+		Return
+	EndIf;
+	
+	CheckAccountPart(Account, PasswordParameter);
+
+EndProcedure
+
+Procedure CheckAccountPart(Val Account, Val PasswordParameter)
+	
+	Var AdditionalMessage, ErrorMessage;
 	
 	ErrorMessage = "";
 	AdditionalMessage = "";
 	Email.CheckSendReceiveEmailPossibility(Account, PasswordParameter, ErrorMessage, AdditionalMessage);
 	
 	If ValueIsFilled(ErrorMessage) Then
-		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
-						NStr("en = 'During verification of account parameters, the following errors were found:
-								   |%1'"), ErrorMessage ),,
-						NStr("en = 'Verifying account'"));
+		ShowMessageBox(,StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en = 'During verification of account parameters, the following errors were found:
+		|%1'"), ErrorMessage ),,
+		NStr("en = 'Verifying account'"));
 	Else
-		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
-						NStr("en = 'Account parameter verifying completed successfully. %1'"),
-						AdditionalMessage ),,
-						NStr("en = 'Verifying account'"));
+		ShowMessageBox(,StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en = 'Account parameter verifying completed successfully. %1'"),
+		AdditionalMessage ),,
+		NStr("en = 'Verifying account'"));
 	EndIf;
 	
-EndProcedure // CheckAccount()
+EndProcedure
+ // CheckAccount()
 

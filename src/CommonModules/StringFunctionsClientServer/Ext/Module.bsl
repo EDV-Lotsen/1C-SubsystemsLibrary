@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // INTERFACE
 
-// Splits the string into several strings by the separator. The separator can be any length.
+// Splits the string on several strings by the separator. The separator can be any length.
 //
 // Parameters:
 // String - String - text with separators;
@@ -283,7 +283,7 @@ Function SubstituteParametersInStringFromArray(Val SubstitutionString, Val Param
 	While Index > 0 Do
 		Value = ParameterArray[Index - 1];
 		If Not IsBlankString(Value) Then
-			ResultString = StrReplace(ResultString, "%" + Format(Index, "NG="), Value);
+			ResultString = StrReplace(ResultString, "%" + Format(Index, "NG=0"), Value);
 		EndIf;
 		Index = Index - 1;
 	EndDo;
@@ -751,21 +751,22 @@ Function ConvertNumberIntoArabNotation(RomanNumber) Export
 	
 EndFunction 
 
-// CHECK ON TEST
-// Returns a text presentation of the number with a unit of measurement in the correct form (singular or plural).
+// Returns a text presentation of a number with a unit of measurement in the correct form (singular or plural).
 //
 // Parameters:
-//  Number                        - Number - Any integer number.
+// Number - Number - Any integer number.
 //	UnitOfMeasureInWordParameters - String - different spelling of a unit of measurement, separated by comma.
 //
 // Returns:
 // String - text presentation of a unit of measurement and a number writen in digits.
 //
 // Examples:
-//  NumberInDigitsUnitOfMeasurementInWords(23, "Hour,Hours") = "23 Hours";
-// 	NumberInDigitsUnitOfMeasurementInWords(1, "Minute,Minutes") = "1 Minute".
+// NumberInDigitsUnitOfMeasurementInWords(23, "Hours,Minutes,Seconds") = "23 Minutes";
+// 	NumberInDigitsUnitOfMeasurementInWords(15, "Hours,Minutes,Seconds") = "15 Minutes".
 //
 Function NumberInDigitsUnitOfMeasurementInWords(Val Number, Val UnitOfMeasureInWordParameters) Export
+
+	Raise("CHECK ON TEST");
 
 	Result = Format(Number,"NZ=0");
 	
@@ -784,10 +785,20 @@ Function NumberInDigitsUnitOfMeasurementInWords(Val Number, Val UnitOfMeasureInW
 		PresentationArray.Add(Value);
 	EndIf;	
 	
+	If Number >= 100 Then
+		Number = Number - Int(Number / 100)*100;
+	EndIf;
+	
+	If Number > 20 Then
+		Number = Number - Int(Number/10)*10;
+	EndIf;
+	
 	If Number = 1 Then
 		Result = Result + " " + PresentationArray[0];
-	ElsIf Number > 1 Then
+	ElsIf Number > 1 And Number < 5 Then
 		Result = Result + " " + PresentationArray[1];
+	Else
+		Result = Result + " " + PresentationArray[2];
 	EndIf;
 	
 	Return Result;	
@@ -907,5 +918,32 @@ Function ConvertDigitIntoRomanNotation(Digit, RomanOne, RomanFive, RomanTen)
 		RomanDigit = RomanOne + RomanTen;
 	EndIf;
 	Return RomanDigit;
+	
+EndFunction
+
+// Internal use only.
+Function StringFromSubstringArray(Array, Separator = ",", TrimNotPrintableChars = False) Export
+	
+	Result = "";
+	
+	For Index = 0 To Array.UBound() Do
+		Substring = Array[Index];
+		
+		If TrimNotPrintableChars Then
+			Substring = TrimAll(Substring);
+		EndIf;
+		
+		If TypeOf(Substring) <> Type("String") Then
+			Substring = String(Substring);
+		EndIf;
+		
+		If Index > 0 Then
+			Result = Result + Separator;
+		EndIf;
+		
+		Result = Result + Substring;
+	EndDo;
+	
+	Return Result;
 	
 EndFunction

@@ -44,16 +44,22 @@ Procedure PresentationStartChoice(Form, Item, Modified, StandardProcessing) Expo
 	FormParameters.Insert("EditInDialogOnly", Not Item.TextEdit);
 	FormParameters.Insert("HomeCountryAddressOnly", RowData.HomeCountryOnly);
 	
-	Result = OpenFormModal(EditFormName, FormParameters);
-	
-	If TypeOf(Result) = Type("Structure") Then
-		Form[Item.Name] = Result.Presentation;
-		RowData.FieldValues = Result.FieldValues;
-		Modified = True;
-	EndIf;
+	FunctionParameters = New Structure;
+	FunctionParameters.Insert("Item", Item);
+	FunctionParameters.Insert("Form", Form);
+	FunctionParameters.Insert("RowData", RowData);
+	OpenForm(EditFormName, FormParameters, , , , , New NotifyDescription("PresentationStartChoiceSave", ThisObject, FunctionParameters));
 	
 EndProcedure
 
+// The PresentationStartChoice continuation
+Procedure PresentationStartChoiceSave(Result, AdditionalParameters)
+	If TypeOf(Result) = Type("Structure") Then
+		AdditionalParameters.Form[AdditionalParameters.Item.Name] = Result.Presentation;
+		AdditionalParameters.RowData.FieldValues = Result.FieldValues;
+		Modified = True;
+	EndIf;	
+EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
 // INTERNAL PROCEDURES AND FUNCTIONS
@@ -70,7 +76,7 @@ EndProcedure
 Function GetAdditionalValueString(Form, Item)
 	
 	Filter = New Structure("AttributeName", Item.Name);
-	Rows = Form.ContactInformationAdditionalAttributeInfo.FindRows(Filter);
+	Rows = Form.ContactInformationAdditionalAttributesInfo.FindRows(Filter);
 	
 	Return ?(Rows.Count() = 0, Undefined, Rows[0]);
 	
@@ -84,6 +90,8 @@ EndFunction
 //
 Procedure FillPhoneRecordFieldsByPresentation(Presentation, FieldList)
 	
+	Raise("CHECK ON TEST");
+
 	PhoneString = TrimAll(Presentation);
 	FieldList.Clear();
 	CountryCode = "";
@@ -163,6 +171,7 @@ EndProcedure
 //
 Function GeneratePhonePresentation(CountryCode, CityCode, PhoneNumber, Extension, Comment) Export
 
+	Raise("CHECK ON TEST");
 	
 	Presentation = TrimAll(CountryCode);
 	

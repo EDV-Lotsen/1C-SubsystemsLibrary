@@ -52,7 +52,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Query.SetParameter("InDeposits", False);
 
 					 
-		Result = Query.Execute().Choose();
+		Result = Query.Execute().Select();
 		
 		While Result.Next() Do
 			

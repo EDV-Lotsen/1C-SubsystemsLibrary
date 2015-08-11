@@ -23,7 +23,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	EndIf;
 	
 	If CommonUseCached.DataSeparationEnabled() Then
-		Items.RunMode.CurrentPage = Items.DataSeparation;
+		Items.OperatingMode.CurrentPage = Items.DataSeparation;
 		SharedInfoBaseAdministrator = String(InfoBaseAdministratorID);
 		ChoiceList = Items.SharedInfoBaseAdministrator.ChoiceList;
 		ChoiceList.Clear();
@@ -32,7 +32,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 			ChoiceList.Add(String(ListItem.Value), ListItem.Presentation);
 		EndDo;
 	Else
-		Items.RunMode.CurrentPage = Items.NoDataSeparation;
+		Items.OperatingMode.CurrentPage = Items.NoDataSeparation;
 		Users.FindAmbiguousInfoBaseUsers(, InfoBaseAdministratorID);
 		InfoBaseAdministrator	= Catalogs.Users.FindByAttribute("InfoBaseUserID", InfoBaseAdministratorID);
 	EndIf;

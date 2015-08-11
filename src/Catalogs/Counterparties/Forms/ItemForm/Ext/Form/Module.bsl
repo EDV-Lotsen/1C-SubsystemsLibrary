@@ -166,7 +166,7 @@ Procedure FillCheckProcessingAtServer(Cancel, CheckedAttributes)
 		QueryResult = Query.Execute();
 		If QueryResult.IsEmpty() Then		
 		Else
-			Selection = QueryResult.Choose();
+			Selection = QueryResult.Select();
 			While Selection.Next() Do
 				
 				If Selection.DefaultShipping = True

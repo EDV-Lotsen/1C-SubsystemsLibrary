@@ -287,7 +287,7 @@ Function ReleaseFile(TransferId)
 	Try
 		DeleteFiles(TemporaryExportDirectory(TransferId));
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+		WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
 		);
 	EndTry;
@@ -350,7 +350,7 @@ Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 		Try
 			DeleteFiles(TemporaryDirectory);
 		Except
-			WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+			WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
 			);
 		EndTry;
@@ -369,7 +369,7 @@ Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 	Try
 		DeleteFiles(TemporaryDirectory);
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary file'"),
+		WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	

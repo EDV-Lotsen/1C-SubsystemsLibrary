@@ -209,7 +209,7 @@
 					<xr:ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Parent group.</v8:content>
+							<v8:content>Parent group hierarchy</v8:content>
 						</v8:item>
 					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
@@ -224,7 +224,7 @@
 					<xr:Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Is in group</v8:content>
+							<v8:content>Belongs to Group</v8:content>
 						</v8:item>
 					</xr:Synonym>
 					<xr:Comment/>
@@ -244,7 +244,7 @@
 					<xr:ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>External user group description.</v8:content>
+							<v8:content>External users group name</v8:content>
 						</v8:item>
 					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
@@ -319,7 +319,7 @@
 			<ObjectPresentation>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>External user group</v8:content>
+					<v8:content>External User Group</v8:content>
 				</v8:item>
 			</ObjectPresentation>
 			<ExtendedObjectPresentation/>
@@ -328,7 +328,7 @@
 			<Explanation>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Groups of external users, that have the same access to data.</v8:content>
+					<v8:content>External user groups, that have the same access to the system</v8:content>
 				</v8:item>
 			</Explanation>
 			<CreateOnInput>Use</CreateOnInput>
@@ -358,7 +358,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Arbitrary string.</v8:content>
+							<v8:content>Arbitrary string</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -389,18 +389,24 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group members</v8:content>
+							<v8:content>Group Members</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment>Empty ref is used as type.</Comment>
-					<Type/>
+					<Comment>Empty Ref is used as a type</Comment>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>10</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Infobase object type</v8:content>
+							<v8:content>Object type of Database</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -444,7 +450,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Automatic group, containing all infobase objects of specific type</v8:content>
+							<v8:content>Auto group all the objects in the database of the specified type</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -492,7 +498,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>External users of this group.</v8:content>
+							<v8:content>External users group</v8:content>
 						</v8:item>
 					</ToolTip>
 					<FillChecking>DontCheck</FillChecking>
@@ -532,7 +538,7 @@
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>External user</v8:content>
+									<v8:content>External User</v8:content>
 								</v8:item>
 							</Synonym>
 							<Comment/>
@@ -545,7 +551,7 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>External user, that is added to the group.</v8:content>
+									<v8:content>External user, included in the group</v8:content>
 								</v8:item>
 							</ToolTip>
 							<MarkNegatives>false</MarkNegatives>
@@ -558,8 +564,8 @@
 							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
 							<ChoiceParameterLinks/>
 							<ChoiceParameters/>
-							<QuickChoice>DontUse</QuickChoice>
-							<CreateOnInput>Use</CreateOnInput>
+							<QuickChoice>Auto</QuickChoice>
+							<CreateOnInput>Auto</CreateOnInput>
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
@@ -585,7 +591,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Allowed actions (roles)</v8:content>
+							<v8:content>Permitted actions (roles)</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -627,7 +633,7 @@
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Allowed action (role).</v8:content>
+									<v8:content>Permitted Action (Role)</v8:content>
 								</v8:item>
 							</Synonym>
 							<Comment/>
@@ -641,12 +647,7 @@
 							<PasswordMode>false</PasswordMode>
 							<Format/>
 							<EditFormat/>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Allowed action (role) specified for the external user group.</v8:content>
-								</v8:item>
-							</ToolTip>
+							<ToolTip/>
 							<MarkNegatives>false</MarkNegatives>
 							<Mask/>
 							<MultiLine>false</MultiLine>

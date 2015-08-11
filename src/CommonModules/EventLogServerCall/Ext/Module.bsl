@@ -135,13 +135,13 @@ Procedure ReadEventLogEvents(ReportParameters, StorageAddress) Export
 		SetPrivilegedMode(True);
 		// Processing special user name values
 		If LogEvent.User = New UUID("00000000-0000-0000-0000-000000000000") Then
-			LogEvent.UserName = NStr("en = '<Undefined>'");
+			LogEvent.UserName = NStr("en='<Undefined>'");
 			
 		ElsIf LogEvent.UserName = "" Then
 			LogEvent.UserName = Users.UnspecifiedUserFullName();
 			
 		ElsIf InfoBaseUsers.FindByUUID(LogEvent.User) = Undefined Then
-			LogEvent.UserName = LogEvent.UserName + " " + NStr("en = '<Deleted>'");
+			LogEvent.UserName = LogEvent.UserName + " " + NStr("en='<Deleted>'");
 			
 		EndIf;
 		// Conversion of the UUID into a name. Further this name will be used in filter settings.
@@ -271,10 +271,10 @@ Procedure FilterItemConversion(Filter, FilterItem)
 	For Each ValueFromList In FilterItem.Value Do
 		If Upper(FilterItem.Key) = Upper("Level") Then
 			// Message text level is a string, it mast be converted into an enum
-			NewValue.Add(DataProcessors.EventLogMonitor.EventLogLevelValueByName(ValueFromList.Value));
+			NewValue.Add(DataProcessors.EventLog.EventLogLevelValueByName(ValueFromList.Value));
 		ElsIf Upper(FilterItem.Key) = Upper("TransactionStatus") Then
 			// Transaction status is a string, it mast be converted into an enum
-			NewValue.Add(DataProcessors.EventLogMonitor.EventLogEntryTransactionStatusValueByName(ValueFromList.Value));
+			NewValue.Add(DataProcessors.EventLog.EventLogEntryTransactionStatusValueByName(ValueFromList.Value));
 		Else
 			NewValue.Add(ValueFromList.Value);
 		EndIf;

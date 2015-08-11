@@ -57,7 +57,7 @@ EndFunction
 //
 Function EstablishExternalConnection(ExternalConnectionParameters, ErrorMessageString = "") Export
 	
-	Return CommonUse.EstablishExternalConnection(ExternalConnectionParameters, ErrorMessageString);
+	//Return CommonUse.EstablishExternalConnection(ExternalConnectionParameters, ErrorMessageString);
 	
 EndFunction
 
@@ -114,7 +114,7 @@ Function FindExchangePlanNodeByCode(ExchangePlanName, NodeCode) Export
 		
 	EndIf;
 	
-	Selection = QueryResult.Choose();
+	Selection = QueryResult.Select();
 	Selection.Next();
 	
 	Return Selection.Ref;

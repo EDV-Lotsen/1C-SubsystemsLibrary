@@ -250,7 +250,7 @@ Function GetNewAdditionalOrderingAttributeValue(Information, Parent, Owner) Expo
 	
 	Query.Text = QueryText;
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	Return ?(Not ValueIsFilled(Selection.AdditionalOrderingAttribute), 1, Selection.AdditionalOrderingAttribute + 1);

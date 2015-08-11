@@ -21,7 +21,10 @@ Function UpdateHandlers() Export
 	
 	// Attaching configuration update handlers
 	//
-
+	// Translator
+	SystemSettings.RegisterUpdateHandlers(Handlers);
+	// End Translator
+	
 	Return Handlers;
 	
 EndFunction
@@ -67,10 +70,4 @@ EndProcedure
 Procedure OnPrepareUpdateDetailsTemplate(Val Template) Export
 	
 EndProcedure	
-
-	
-
-	
-
-	
 

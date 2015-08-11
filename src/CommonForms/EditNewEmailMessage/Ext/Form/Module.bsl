@@ -412,7 +412,7 @@ Procedure SendEmailExecute()
 	EndTry;
 	
 	SaveReplyTo(ReplyTo);
-	DoMessageBox(NStr("en = 'The message was sent successfully.'"));
+	ShowMessageBox(, NStr("en = 'The message was sent successfully.'"));
 	
 	SetSentMessageState();
 	
@@ -529,7 +529,7 @@ Procedure AddingFileToAttachments()
 			RefreshAttachmentPresentation();
 		EndIf;
 	Else
-		DoMessageBox(NStr("en = 'The file cannot be added because the file system extension is not installed at your web client.'"));
+		ShowMessageBox(, NStr("en = 'The file cannot be added because the file system extension is not installed at your web client.'"));
 	EndIf;
 	
 EndProcedure

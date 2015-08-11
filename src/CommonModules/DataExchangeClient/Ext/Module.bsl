@@ -104,33 +104,33 @@ Procedure CorrespondentInfoBaseItemChoiceHandlerStartChoice(AttributeName,
 																ExternalConnectionParameters
 	) Export
 	
-	ChoiceInitialValue = "";
-	
-	If TypeOf(Owner) = Type("FormTable") Then
-		
-		CurrentData = Owner.CurrentData;
-		
-		If CurrentData <> Undefined Then
-			
-			ChoiceInitialValue = CurrentData[AttributeName + "_Key"];
-			
-		EndIf;
-		
-	ElsIf TypeOf(Owner) = Type("ManagedForm") Then
-		
-		ChoiceInitialValue = Owner[AttributeName + "_Key"];
-		
-	EndIf;
-	
-	StandardProcessing = False;
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("ExternalConnectionParameters",        ExternalConnectionParameters);
-	FormParameters.Insert("CorrespondentInfoBaseTableFullName", TableName);
-	FormParameters.Insert("ChoiceInitialValue", ChoiceInitialValue);
-	FormParameters.Insert("AttributeName", AttributeName);
-	
-	OpenFormModal("CommonForm.CorrespondentInfoBaseItemChoice", FormParameters, Owner);
+	//ChoiceInitialValue = "";
+	//
+	//If TypeOf(Owner) = Type("FormTable") Then
+	//	
+	//	CurrentData = Owner.CurrentData;
+	//	
+	//	If CurrentData <> Undefined Then
+	//		
+	//		ChoiceInitialValue = CurrentData[AttributeName + "_Key"];
+	//		
+	//	EndIf;
+	//	
+	//ElsIf TypeOf(Owner) = Type("ManagedForm") Then
+	//	
+	//	ChoiceInitialValue = Owner[AttributeName + "_Key"];
+	//	
+	//EndIf;
+	//
+	//StandardProcessing = False;
+	//
+	//FormParameters = New Structure;
+	//FormParameters.Insert("ExternalConnectionParameters",        ExternalConnectionParameters);
+	//FormParameters.Insert("CorrespondentInfoBaseTableFullName", TableName);
+	//FormParameters.Insert("ChoiceInitialValue", ChoiceInitialValue);
+	//FormParameters.Insert("AttributeName", AttributeName);
+	//
+	//OpenForm("CommonForm.CorrespondentInfoBaseItemChoice", FormParameters, Owner,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -143,26 +143,26 @@ Procedure CorrespondentInfoBaseItemChoiceHandlerFill(AttributeName,
 														ExternalConnectionParameters
 	) Export
 	
-	ChoiceInitialValue = "";
-	
-	CurrentData = Owner.CurrentData;
-	
-	If CurrentData <> Undefined Then
-		
-		ChoiceInitialValue = CurrentData[AttributeName + "_Key"];
-		
-	EndIf;
-	
-	StandardProcessing = False;
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("ExternalConnectionParameters",        ExternalConnectionParameters);
-	FormParameters.Insert("CorrespondentInfoBaseTableFullName", TableName);
-	FormParameters.Insert("ChoiceInitialValue", ChoiceInitialValue);
-	FormParameters.Insert("CloseOnChoice", False);
-	FormParameters.Insert("AttributeName", AttributeName);
-	
-	OpenFormModal("CommonForm.CorrespondentInfoBaseItemChoice", FormParameters, Owner);
+	//ChoiceInitialValue = "";
+	//
+	//CurrentData = Owner.CurrentData;
+	//
+	//If CurrentData <> Undefined Then
+	//	
+	//	ChoiceInitialValue = CurrentData[AttributeName + "_Key"];
+	//	
+	//EndIf;
+	//
+	//StandardProcessing = False;
+	//
+	//FormParameters = New Structure;
+	//FormParameters.Insert("ExternalConnectionParameters",        ExternalConnectionParameters);
+	//FormParameters.Insert("CorrespondentInfoBaseTableFullName", TableName);
+	//FormParameters.Insert("ChoiceInitialValue", ChoiceInitialValue);
+	//FormParameters.Insert("CloseOnChoice", False);
+	//FormParameters.Insert("AttributeName", AttributeName);
+	//
+	//OpenForm("CommonForm.CorrespondentInfoBaseItemChoice", FormParameters, Owner,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -332,9 +332,7 @@ Procedure FileOrDirectoryOpenHandler(Object, PropertyName, StandardProcessing) E
 		Return;
 	EndIf;
 	
-	// Opening the directory using Windows Explorer.
-	// Opening the file using the associated application.
-	RunApp(FullFileName);
+	BeginRunningApplication(Undefined, FullFileName);
 	
 EndProcedure
 
@@ -344,8 +342,18 @@ Procedure FileDirectoryChoiceHandler(Object, PropertyName, StandardProcessing) E
 	
 	StandardProcessing = False;
 	
-	If Not AttachFileSystemExtension() Then
-		DoMessageBox(NStr("en = 'This action requires the file system extension to be installed.'"));  
+	BeginAttachingFileSystemExtension(New NotifyDescription("FileDirectoryChoiceHandlerEnd", ThisObject, New Structure("Object, PropertyName", Object, PropertyName)));
+	
+EndProcedure
+
+Procedure FileDirectoryChoiceHandlerEnd(Attached, AdditionalParameters) Export
+	
+	Object = AdditionalParameters.Object;
+	PropertyName = AdditionalParameters.PropertyName;
+	
+	
+	If Not Attached Then
+		ShowMessageBox(,NStr("en = 'This action requires the file system extension to be installed.'"));  
 		Return;
 	EndIf;
 	
@@ -359,7 +367,7 @@ Procedure FileDirectoryChoiceHandler(Object, PropertyName, StandardProcessing) E
 		Object[PropertyName] = Dialog.Directory;
 		
 	EndIf;
-	
+
 EndProcedure
 
 // Opens dialog for selecting a file directory.
@@ -372,8 +380,20 @@ Procedure FileChoiceHandler(Object,
 	
 	StandardProcessing = False;
 	
-	If Not AttachFileSystemExtension() Then
-		DoMessageBox(NStr("en = 'This action requires the file system extension to be installed.'"));
+	BeginAttachingFileSystemExtension(New NotifyDescription("FileChoiceHandlerEnd", ThisObject, New Structure("CheckFileExist, Filter, Object, PropertyName", CheckFileExist, Filter, Object, PropertyName)));
+	
+EndProcedure
+
+Procedure FileChoiceHandlerEnd(Attached, AdditionalParameters) Export
+	
+	CheckFileExist = AdditionalParameters.CheckFileExist;
+	Filter = AdditionalParameters.Filter;
+	Object = AdditionalParameters.Object;
+	PropertyName = AdditionalParameters.PropertyName;
+	
+	
+	If Not Attached Then
+		ShowMessageBox(,NStr("en = 'This action requires the file system extension to be installed.'"));
 		Return;
 	EndIf;
 	
@@ -391,7 +411,7 @@ Procedure FileChoiceHandler(Object,
 		Object[PropertyName] = Dialog.FullFileName;
 		
 	EndIf;
-	
+
 EndProcedure
 
 // Opens the information register record form by the specified filter.
@@ -445,7 +465,11 @@ Procedure GetRuleInformation(UUID) Export
 		
 		// If the file has been selected, putting it into a store for importing data from it on the server in future
 		If FileDialog.Choose() Then
-			PutFile(TempStorageAddress, FileDialog.FullFileName, , False, UUID);
+			BeginPutFile(
+				New NotifyDescription("GetRuleInformationEnd", ThisObject, 
+					New Structure("Cancel, RuleInformationString, TempStorageAddress", Cancel, RuleInformationString, TempStorageAddress)), 
+				TempStorageAddress, FileDialog.FullFileName, False, UUID);
+            Return;
 		Else
 			Return;
 		EndIf; 
@@ -453,6 +477,24 @@ Procedure GetRuleInformation(UUID) Export
 	Else
 		Return;
 	EndIf;
+	
+	GetRuleInformationPart(Cancel, RuleInformationString, TempStorageAddress);
+EndProcedure
+
+Procedure GetRuleInformationEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	Cancel = AdditionalParameters.Cancel;
+	RuleInformationString = AdditionalParameters.RuleInformationString;
+	TempStorageAddress = AdditionalParameters.TempStorageAddress;
+	
+	
+	GetRuleInformationPart(Cancel, RuleInformationString, TempStorageAddress);
+
+EndProcedure
+
+Procedure GetRuleInformationPart(Cancel, RuleInformationString, Val TempStorageAddress)
+	
+	Var NString, WindowTitle;
 	
 	NString = NStr("en = 'Importing rule info...'");
 	Status(NString);
@@ -464,16 +506,16 @@ Procedure GetRuleInformation(UUID) Export
 		
 		NString = NStr("en = 'Error retrieving rule info.'");
 		
-		DoMessageBox(NString);
+		ShowMessageBox(,NString);
 		
 	Else
 		
 		WindowTitle = NStr("en = 'Rule info'");
 		
-		DoMessageBox(RuleInformationString,, WindowTitle);
+		ShowMessageBox(,RuleInformationString,, WindowTitle);
 		
 	EndIf;
-	
+
 EndProcedure
 
 // Opens the event log with the filter by import and export events for the specified
@@ -498,7 +540,7 @@ Procedure GoToDataEventLogModally(InfoBaseNode, Owner, ActionOnExchange) Export
 	// Calling the server
 	FormParameters = DataExchangeServer.GetEventLogFilterDataStructure(InfoBaseNode, ActionOnExchange);
 	
-	OpenFormModal("DataProcessor.EventLogMonitor.Form", FormParameters, Owner);
+	OpenForm("DataProcessor.EventLogMonitor.Form", FormParameters, Owner,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 
@@ -513,7 +555,20 @@ Procedure ExecuteDataExchangeCommandProcessing(InfoBaseNode, Owner) Export
 	QuestionText = NStr("en = 'Do you want to execute the data exchange with [InfoBaseNode]?'");
 	QuestionText = StrReplace(QuestionText, "[InfoBaseNode]", String(InfoBaseNode));
 	
-	Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("ExecuteDataExchangeCommandProcessingEnd", ThisObject, New Structure("InfoBaseNode, Owner", InfoBaseNode, Owner)), QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
+	
+EndProcedure
+
+Procedure ExecuteDataExchangeCommandProcessingEnd(QuestionResult, AdditionalParameters) Export
+	
+	InfoBaseNode = AdditionalParameters.InfoBaseNode;
+	Owner = AdditionalParameters.Owner;
+	
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.No Then
 		Return;
 	EndIf;
@@ -522,7 +577,7 @@ Procedure ExecuteDataExchangeCommandProcessing(InfoBaseNode, Owner) Export
 	FormParameters.Insert("InfoBaseNode", InfoBaseNode);
 	
 	OpenForm("CommonForm.DataExchangeExecution", FormParameters, Owner, InfoBaseNode);
-	
+
 EndProcedure
 
 // Opens the form of the interactive data exchange execution for the specified exchange
@@ -656,7 +711,7 @@ Procedure RunPlatformAppAndExecuteInteractiveDataImport(ConnectionParameters, Ex
 	
 #If WebClient Then
 	
-	DoMessageBox(NStr("en = 'The operation is not supported in the web client.'"));
+	ShowMessageBox(,NStr("en = 'The operation is not supported in the web client.'"));
 	
 #Else
 	
@@ -693,7 +748,7 @@ Procedure RunPlatformAppAndExecuteInteractiveDataImport(ConnectionParameters, Ex
 		
 	EndIf;
 	
-	RunApp(CommandString,, True);
+	BeginRunningApplication(Undefined, CommandString,, True);
 	
 #EndIf
 	
@@ -801,9 +856,16 @@ Procedure OnCloseExchangePlanNodeSettingsForm(Form, FormAttributeName)
 	
 EndProcedure
 
-
-
-
-
-
-
+// Internal use only.
+Procedure BeforeStart(Parameters) Export
+	
+	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
+	
+	If Not ClientParameters.Property("RetryDataExchangeMessageImportBeforeStart") Then
+		Return;
+	EndIf;
+	
+	Parameters.InteractiveProcessing = New NotifyDescription(
+		"RetryDataExchangeMessageImportBeforeStartInteractiveProcessing", ThisObject);
+	
+EndProcedure

@@ -54,7 +54,7 @@ Procedure OnWrite(Cancel)
 		|	ExternalUserGroups.AllAuthorizationObjects
 		|	AND VALUETYPE(ExternalUserGroups.AuthorizationObjectType) = &AuthorizationObjectType");
 		Query.SetParameter("AuthorizationObjectType", TypeOf(AuthorizationObject));
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		
 		If Selection.Next() Then
 			ExternalUsers.UpdateExternalUserGroupContent(Selection.Ref, ModifiedExternalUsers);
@@ -88,3 +88,4 @@ Procedure BeforeDelete(Cancel)
 	// The DataExchange.Load check must be placed here.
 	
 EndProcedure
+

@@ -206,12 +206,7 @@
 					<xr:FillFromFillingValue>true</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
 					<xr:MaxValue xsi:nil="true"/>
-					<xr:ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Contact information kind group.</v8:content>
-						</v8:item>
-					</xr:ToolTip>
+					<xr:ToolTip/>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
 					<xr:Format/>
 					<xr:ChoiceForm/>
@@ -224,7 +219,7 @@
 					<xr:Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group</v8:content>
+							<v8:content>Folder</v8:content>
 						</v8:item>
 					</xr:Synonym>
 					<xr:Comment/>
@@ -244,7 +239,7 @@
 					<xr:ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Contact information kind description.</v8:content>
+							<v8:content>Description of kinds of contact information</v8:content>
 						</v8:item>
 					</xr:ToolTip>
 					<xr:ExtendedEdit>false</xr:ExtendedEdit>
@@ -302,10 +297,10 @@
 			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
 			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
 			<DefaultObjectForm>Catalog.ContactInformationKinds.Form.ItemForm</DefaultObjectForm>
-			<DefaultFolderForm>Catalog.ContactInformationKinds.Form.FolderForm</DefaultFolderForm>
+			<DefaultFolderForm>Catalog.ContactInformationKinds.Form.GroupForm</DefaultFolderForm>
 			<DefaultListForm>Catalog.ContactInformationKinds.Form.ListForm</DefaultListForm>
 			<DefaultChoiceForm/>
-			<DefaultFolderChoiceForm>Catalog.ContactInformationKinds.Form.FolderChoiceForm</DefaultFolderChoiceForm>
+			<DefaultFolderChoiceForm>Catalog.ContactInformationKinds.Form.GroupChoiceForm</DefaultFolderChoiceForm>
 			<AuxiliaryObjectForm/>
 			<AuxiliaryFolderForm/>
 			<AuxiliaryListForm/>
@@ -316,12 +311,7 @@
 			<DataLockFields/>
 			<DataLockControlMode>Managed</DataLockControlMode>
 			<FullTextSearch>Use</FullTextSearch>
-			<ObjectPresentation>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Contact information kind</v8:content>
-				</v8:item>
-			</ObjectPresentation>
+			<ObjectPresentation/>
 			<ExtendedObjectPresentation/>
 			<ListPresentation/>
 			<ExtendedListPresentation/>
@@ -380,7 +370,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>order</v8:content>
+							<v8:content>Order</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -395,12 +385,7 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Used for ordering (system)</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -429,7 +414,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Edit in dialog only</v8:content>
+							<v8:content>Editing in Dialog Only</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -439,12 +424,7 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Edit contact information in dialog only (manual data entry is impossible).</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -473,7 +453,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Can change edit mode</v8:content>
+							<v8:content>Edit Method Editable</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -486,7 +466,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Edit mode change is allowed.</v8:content>
+							<v8:content>Allowed to change the way of editing</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -527,12 +507,7 @@
 					<PasswordMode>false</PasswordMode>
 					<Format/>
 					<EditFormat/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Only home country addresses are allowed.</v8:content>
-						</v8:item>
-					</ToolTip>
+					<ToolTip/>
 					<MarkNegatives>false</MarkNegatives>
 					<Mask/>
 					<MultiLine>false</MultiLine>
@@ -559,6 +534,8 @@
 			<Form>ItemForm</Form>
 			<Form>FolderForm</Form>
 			<Form>FolderChoiceForm</Form>
+			<Form>GroupForm</Form>
+			<Form>GroupChoiceForm</Form>
 		</ChildObjects>
 	</Catalog>
 </MetaDataObject>

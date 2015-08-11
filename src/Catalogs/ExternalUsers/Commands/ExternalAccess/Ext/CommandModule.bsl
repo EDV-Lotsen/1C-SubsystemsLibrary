@@ -11,10 +11,11 @@ Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	ElsIf CanAddExternalUser Then
 		FormParameters.Insert("NewExternalUserAuthorizationObject", CommandParameter);
 	Else
-		DoMessageBox(NStr("en = 'Access to the infobase is denied.'"));
+		ShowMessageBox(, NStr("en='Access to the infobase is denied.'"));
 		Return;
 	EndIf;
 	
 	OpenForm("Catalog.ExternalUsers.ObjectForm", FormParameters, CommandExecuteParameters.Source, CommandExecuteParameters.Uniqueness, CommandExecuteParameters.Window);
 	
 EndProcedure
+ 

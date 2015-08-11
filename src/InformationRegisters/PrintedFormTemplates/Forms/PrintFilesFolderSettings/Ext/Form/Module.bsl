@@ -1,15 +1,15 @@
 ﻿
-&AtServer
-Procedure OnCreateAtServer(Cancellation, StandardProcessing)
+&AtClient
+Procedure PathToDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	DirrectoryForPrintDataSave = _DemoPrintManagement.GetPrintFilesLocalDirectory();
+	BeginAttachingFileSystemExtension(New NotifyDescription("PathToDirectoryStartChoiceEnd", ThisObject));
 	
 EndProcedure
 
 &AtClient
-Procedure PathToDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
+Procedure PathToDirectoryStartChoiceEnd(Attached, AdditionalParameters) Export
 	
-	If AttachFileSystemExtension() Then
+	If Attached Then
 		FileOpenDialog = New FileDialog(FileDialogMode.ChooseDirectory);
 		FileOpenDialog.FullFileName = "";
 		FileOpenDialog.Directory = DirrectoryForPrintDataSave;
@@ -19,15 +19,14 @@ Procedure PathToDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
 			DirrectoryForPrintDataSave = FileOpenDialog.Directory + "\";
 		EndIf;
 	Else
-		DoMessageBox(NStr("en = 'To select the directory it is necessary to attach file system extension to work in the Web Client.'"));
+		ShowMessageBox(,NStr("en = 'To select the directory it is necessary to attach file system extension to work in the Web Client.'"));
 	EndIf;
-	
+
 EndProcedure
 
 &AtClient
 Procedure OK(Command)
 	
-	_DemoPrintManagement.SaveLocalDirectoryOfPrintFiles(DirrectoryForPrintDataSave);
 	Close(DirrectoryForPrintDataSave);
 	
 EndProcedure

@@ -62,7 +62,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	SetPrivilegedMode(False);
 	
-	SetActionsOnForm();
+	DefineActionsOnForm();
 	
 	FindUserAndInfoBaseUserInconsistencies();
 	
@@ -102,11 +102,9 @@ Procedure BeforeWrite(Cancel)
 	
 	If ActionsOnForm.Roles = "Edit" And Object.SetRolesDirectly And InfoBaseUserRoles.Count() = 0 Then
 		
-		Response = DoQueryBox(NStr("en = 'No role specified for the infobase user. Do you want to continue?'"),
-		            QuestionDialogMode.YesNo, , , NStr("en = 'Writing infobase user'"));
-		If Response = DialogReturnCode.No Then
-			Cancel = True;
-		EndIf;
+		ShowMessageBox(, NStr("en='No role specified for the infobase user. Select at least one role.'"),
+		            , NStr("en='Writing infobase user'"));
+		Cancel = True;
 	EndIf;
 	
 EndProcedure
@@ -368,7 +366,7 @@ Function CreateFirstAdministratorRequired()
 EndFunction
 
 &AtServer
-Procedure SetActionsOnForm()
+Procedure DefineActionsOnForm()
 	
 	ActionsOnForm = New Structure;
 	ActionsOnForm.Insert("Roles",                  ""); // "", "View",    "Edit"
@@ -509,7 +507,7 @@ EndProcedure
 Procedure WriteIBUser(CurrentObject, Cancel)
 	
 	// Restoring actions on the form if they have been changed on a client
-	SetActionsOnForm();
+	DefineActionsOnForm();
 	
 	If Not (ActionsOnForm.InfoBaseUserProperties = "EditAll" Or
 	         ActionsOnForm.InfoBaseUserProperties = "EditOwn")Then

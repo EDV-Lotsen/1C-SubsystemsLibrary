@@ -226,12 +226,12 @@ EndProcedure
 //
 Procedure InitialDataExportChangeRecord(Val Recipient, StandardProcessing, Filter) Export
 	
-	If TypeOf(Recipient) = Type("ExchangePlanRef._DemoExchangeWithSubsystemsLibrary")  Then
-		StandardProcessing = False;
-		AttributeValues = CommonUse.GetAttributeValues(Recipient, "UseFilterByCompanies, DocumentExportStartDate, Companies");
-		Companies = ?(AttributeValues.UseFilterByCompanies, AttributeValues.Companies.Unload().UnloadColumn("Company"), Undefined);
-		DataExchangeServer.RegisterDataByExportStartDateAndCompany(Recipient, AttributeValues.DocumentExportStartDate, Companies, Filter);
-	EndIf;
+	//If TypeOf(Recipient) = Type("ExchangePlanRef._DemoExchangeWithSubsystemsLibrary")  Then
+	//	StandardProcessing = False;
+	//	AttributeValues = CommonUse.GetAttributeValues(Recipient, "UseFilterByCompanies, DocumentExportStartDate, Companies");
+	//	Companies = ?(AttributeValues.UseFilterByCompanies, AttributeValues.Companies.Unload().UnloadColumn("Company"), Undefined);
+	//	DataExchangeServer.RegisterDataByExportStartDateAndCompany(Recipient, AttributeValues.DocumentExportStartDate, Companies, Filter);
+	//EndIf;
 	
 EndProcedure
 

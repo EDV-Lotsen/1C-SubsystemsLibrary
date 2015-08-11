@@ -229,7 +229,7 @@ Procedure UndoPosting(Cancel)
 	                  |GROUP BY
 	                  |	PurchaseInvoiceLineItems.Item");
 	Query.SetParameter("Ref", Ref);
-	Dataset = Query.Execute().Choose();
+	Dataset = Query.Execute().Select();
 	
 	While Dataset.Next() Do
 	
@@ -257,7 +257,7 @@ Procedure UndoPosting(Cancel)
 		If Dataset.Quantity > CurrentBalance Then
 			Cancel = True;
 			Message = New UserMessage();
-			Message.Text=NStr("en='Insufficient balance';de='Nicht ausreichende Bilanz'");
+			Message.Text=NStr("en='Insufficient balance'");
 			Message.Message();
 			Return;
 		EndIf;

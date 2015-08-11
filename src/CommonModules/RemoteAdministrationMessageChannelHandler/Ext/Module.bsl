@@ -33,7 +33,7 @@ EndProcedure
 // Body - Arbitrary - message body to be handled;
 // Sender - ExchangePlanRef.MessageExchange - end point that is a sender.
 //
-Procedure ProcessMessage(Val MessageChannel, Val Body, Val Sender) Export
+Procedure HandleMessage(Val MessageChannel, Val Body, Val Sender) Export
 	
 	MessageType = RemoteAdministrationMessages.MessageTypeByChannelName(MessageChannel);
 	
@@ -133,7 +133,7 @@ Procedure UpdateUser(Content, Sender)
 				InfoBaseUserID = Undefined;
 				DataAreaUser = Undefined;
 			Else
-				Selection = Result.Choose();
+				Selection = Result.Select();
 				Selection.Next();
 				InfoBaseUserID = Selection.InfoBaseUserID;
 				DataAreaUser = Selection.Ref;
@@ -176,7 +176,7 @@ Procedure UpdateUser(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'User update'"), 
+		WriteLogEvent(NStr("en = 'User update'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -193,7 +193,7 @@ Function GetEmailAddressStructure(Val EmailAddress)
 			MessagePattern = NStr("en = 'Email is specified incorrectly: %1
 				|Error: %2'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern,
-				EmailAddress, ErrorInfo().Details);
+				EmailAddress, ErrorInfo().Description);
 			Raise(MessageText);
 		EndTry;
 		
@@ -266,7 +266,7 @@ Procedure SetDataAreaFullAccess(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Setting data area full rights'"), 
+		WriteLogEvent(NStr("en = 'Setting data area full rights'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -291,13 +291,13 @@ Function GetAreaUserByServiceUserID(Val ServiceUserID)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Receiving data area user'"), 
+		WriteLogEvent(NStr("en = 'Receiving data area user'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
 	
 	If Result.IsEmpty() Then
-		MessagePattern = NStr("en = 'The user with %1 ID is not found.");
+		MessagePattern = NStr("en = 'The user with %1 ID is not found.'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, ServiceUserID);
 		Raise(MessageText);
 	EndIf;
@@ -399,7 +399,7 @@ Procedure SetAccessToDataArea(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Setting access to the data area'"), 
+		WriteLogEvent(NStr("en = 'Setting access to the data area'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -418,7 +418,7 @@ Procedure SetDefaultUserRights(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Setting user rights'"), 
+		WriteLogEvent(NStr("en = 'Setting user rights'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -450,6 +450,7 @@ Procedure PrepareDataArea(Content, Sender)
 		
 		RecordManager = InformationRegisters.DataAreas.CreateRecordManager();
 		RecordManager.DataArea = Content.DataArea;
+		RecordManager.DataAreaAuxiliaryData = Content.DataArea;
 		RecordManager.Read();
 		If RecordManager.Selected() Then
 			If RecordManager.State = Enums.DataAreaStates.Deleted Then
@@ -457,7 +458,7 @@ Procedure PrepareDataArea(Content, Sender)
 				MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Content.DataArea);
 				Raise(MessageText);
 			ElsIf RecordManager.State = Enums.DataAreaStates.ToDelete Then
-				MessagePattern = NStr("en = 'The data area %1 is being deleted.");
+				MessagePattern = NStr("en = 'The data area %1 is being deleted.'");
 				MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Content.DataArea);
 				Raise(MessageText);
 			ElsIf RecordManager.State = Enums.DataAreaStates.New Then
@@ -472,6 +473,7 @@ Procedure PrepareDataArea(Content, Sender)
 		EndIf;
 		
 		RecordManager.DataArea = Content.DataArea;
+		RecordManager.DataAreaAuxiliaryData = Content.DataArea;
 		RecordManager.State = Enums.DataAreaStates.New;
 		If ValueIsFilled(Content.DataFileIdentifier) Then
 			RecordManager.ExportID = Content.DataFileIdentifier;
@@ -483,7 +485,7 @@ Procedure PrepareDataArea(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Preparing data area'"), 
+		WriteLogEvent(NStr("en = 'Preparing data area'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -532,7 +534,7 @@ Procedure DeleteDataArea(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Deleting data area'"), 
+		WriteLogEvent(NStr("en = 'Deleting data area'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -574,22 +576,26 @@ Procedure SetDataAreaParameters(Content, Sender)
 		
 		CommonUse.SetSessionSeparation(True, Content.DataArea);
 		
-		If ValueIsFilled(Content.TimeZone) Then
-			SetInfoBaseTimeZone(Content.TimeZone);
-		Else
-			SetInfoBaseTimeZone();
-		EndIf;
-		
 		RecordManager.TimeZone = Content.TimeZone;
 		RecordManager.Write();
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Setting data area parameters'"), 
+		WriteLogEvent(NStr("en = 'Setting data area parameters'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
+	
+	SetExclusiveMode(True);
+	
+	If ValueIsFilled(Content.TimeZone) Then
+		SetInfoBaseTimeZone(Content.TimeZone);
+	Else
+		SetInfoBaseTimeZone();
+	EndIf;
+	
+	SetExclusiveMode(False);
 	
 	If Not IsBlankString(Content.Description) Then
 		
@@ -661,7 +667,7 @@ Procedure SetInfoBaseParameters(Content, Sender)
 			If CurParameterString = Undefined Then
 				MessagePattern = NStr("en = 'Unknown parameter name %1.'");
 				MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, KeyAndValue.Key);
-				WriteLogEvent("RemoteAdministration.SetInfoBaseParameters",
+				WriteLogEvent(NStr("en = 'RemoteAdministration.SetInfoBaseParameters'", Metadata.DefaultLanguage.LanguageCode),
 					EventLogLevel.Warning, , , MessageText);
 				Continue;
 			ElsIf CurParameterString.WriteProhibition Then
@@ -686,7 +692,7 @@ Procedure SetInfoBaseParameters(Content, Sender)
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Setting infobase parameters'"), 
+		WriteLogEvent(NStr("en = 'Setting infobase parameters'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -696,5 +702,6 @@ EndProcedure
 Procedure SetServiceManagerEndPoint(Content, Sender)
 	
 	Constants.ServiceManagerEndPoint.Set(Sender);
+	CommonUse.SetInfoBaseSeparationParameters(True);
 	
 EndProcedure

@@ -288,7 +288,7 @@ Function GetChoiceList(RestrictionsArray)
 	                      |	WorkTimeTypes.Description");
 						  
 	Query.SetParameter("RestrictionsArray", RestrictionsArray);					  
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	ChoiceList = New ValueList;
 	

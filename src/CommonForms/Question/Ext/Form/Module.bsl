@@ -52,9 +52,8 @@ EndProcedure
 &AtClient
 Procedure Attachable_CommandHandler(Command)
 	
-	Close(New Structure("DontAskAgain, Value",
-DontAskAgain,
-DialogReturnCodeByValue(ButtonAndReturnValueMap.Get(Command.Name))));
+	Close(New Structure("DontAskAgain, Value", DontAskAgain,
+		  DialogReturnCodeByValue(ButtonAndReturnValueMap.Get(Command.Name))));
 	
 EndProcedure
 
@@ -108,9 +107,7 @@ EndProcedure
 Procedure Timer()
 	
 	If Timeout = 0 Then
-		Close(New Structure("DontAskAgain, Value",
-		 False,
-		 DialogReturnCode.Timeout) );
+		Close(New Structure("DontAskAgain, Value", False, DialogReturnCode.Timeout) );
 	Else
 		Timeout = Timeout - 1;
 		If TimeoutCommand <> "" Then

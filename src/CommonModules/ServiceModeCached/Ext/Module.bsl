@@ -9,7 +9,7 @@
 // Returns the end point for sending messages to the service manager.
 //
 // Returns:
-//  ExchangePlanRef.MessageExchange - Node which corresponds to the service manager
+// LinkExchangePlan.MessageExchange - Node which corresponds to the service manager
 //
 Function ServiceManagerEndPoint() Export
 	
@@ -20,7 +20,7 @@ EndFunction
 // Returns an array of currently supported serializable structural types.
 //
 // Returns:
-//  FixedArray of Type
+// FixedArray of Type
 // 
 Function StructuralTypesToSerialize() Export
 	

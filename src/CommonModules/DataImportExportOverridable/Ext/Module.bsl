@@ -13,6 +13,11 @@
 //
 Procedure BeforeDataExport(DataItem) Export
 	
+	//// StandardSubsystems.FileFunctions
+	//ItemSending = DataItemSend.Auto;
+	//FileExchangeEvents.OnSendFileData(DataItem, ItemSending, False);
+	//// End StandardSubsystems.FileFunctions
+	
 EndProcedure
 
 // Is called before writing data to the infobase during data import.
@@ -21,6 +26,11 @@ EndProcedure
 // DataItem - ConstantManager.<Name>; CatalogObject.<Name>; <Kind>RegisterRecordSet.<Name>.
 //
 Procedure BeforeDataImport(DataItem) Export
+	
+	//// StandardSubsystems.FileFunctions
+	//ItemReceive = DataItemReceive.Auto;
+	//FileExchangeEvents.OnFileDataReceive(DataItem, ItemReceive);
+	//// End StandardSubsystems.FileFunctions
 	
 EndProcedure
 
@@ -59,7 +69,7 @@ EndProcedure
 // Parameters:
 // ReplacementDictionary - Value table with the following columns:
 // Type - Type - value type of a reference to be replace;
-// ReferenceMap - Map - map a new reference to the original one:
+// ReferenceMap - Map - map of a new reference and original one:
 // Key - new reference to be substituted;
 // Value - original reference to be removed;
 // SharedDataFileName - String - name of a current shared data export file.

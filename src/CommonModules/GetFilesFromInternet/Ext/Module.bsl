@@ -231,7 +231,7 @@ EndFunction
 Procedure WriteErrorToEventLog(Val ErrorMessage) Export
 	
 	WriteLogEvent(
-		NStr("en = 'Get files from internet'"),
+		NStr("en = 'Get files from Internet'", Metadata.DefaultLanguage.LanguageCode),
 		EventLogLevel.Error, , ,
 		ErrorMessage
 	);
@@ -306,3 +306,7 @@ Procedure RefreshStoredProxySettings() Export
 	
 EndProcedure
 
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

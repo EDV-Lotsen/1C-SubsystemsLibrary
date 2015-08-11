@@ -32,7 +32,7 @@ Function GenerateAddressPresentation(AddressStructure, Presentation, KindDescrip
 	SupplementAddressPresentation(TrimAll(ValueByStructureKey("City", AddressStructure)), ", ", Presentation);
 	SupplementAddressPresentation(TrimAll(ValueByStructureKey("Settlement", AddressStructure)), ", ", Presentation);
 	SupplementAddressPresentation(TrimAll(ValueByStructureKey("Street", AddressStructure)), ", ", Presentation);
-	SupplementAddressPresentation(TrimAll(ValueByStructureKey("Building", AddressStructure)), ", " + " # ", Presentation);
+	SupplementAddressPresentation(TrimAll(ValueByStructureKey("Building", AddressStructure)), ", " + ValueByStructureKey("BuildingType", AddressStructure) + " # ", Presentation);
 	SupplementAddressPresentation(TrimAll(ValueByStructureKey("Appartment", AddressStructure)), ", " + ValueByStructureKey("AppartmentType", AddressStructure) + " ",	Presentation);
 	
 	If StrLen(Presentation) > 2 Then

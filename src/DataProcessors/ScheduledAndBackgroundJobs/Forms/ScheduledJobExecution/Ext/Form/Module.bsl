@@ -32,9 +32,9 @@ Procedure ScheduledJobExecutionSetup(Command)
 	
 	FormParameters = New Structure("HideSeparateSessionStartCommand", True);
 	
-	OpenFormModal(
+	OpenForm(
 		"DataProcessor.ScheduledAndBackgroundJobs.Form.ScheduledJobExecutionSetup",
-		FormParameters);
+		FormParameters,,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
 	
 EndProcedure
 

@@ -37,10 +37,10 @@ Function ObjectDateOrCompanyChanged(Ref, Val DateAfterChange, Val CompanyAfterCh
 	
 	SetPrivilegedMode(True);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
-	CompanyPrefixAfterChange = GetFunctionalOption("CompanyPrefixes", New Structure("Company", CompanyAfterChange));
+	CompanyPrefixAfterChange = False;//GetFunctionalOption("CompanyPrefixes", New Structure("Company", CompanyAfterChange));
 	
 	// If the company reference is empty
 	CompanyPrefixAfterChange = ?(CompanyPrefixAfterChange = False, "", CompanyPrefixAfterChange);
@@ -75,10 +75,10 @@ Function ObjectCompanyChanged(Ref, Val CompanyAfterChange, FullTableName) Export
 	
 	SetPrivilegedMode(True);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
-	CompanyPrefixAfterChange = GetFunctionalOption("CompanyPrefixes", New Structure("Company", CompanyAfterChange));
+	CompanyPrefixAfterChange = False;//GetFunctionalOption("CompanyPrefixes", New Structure("Company", CompanyAfterChange));
 	
 	// If the company reference is empty
 	CompanyPrefixAfterChange = ?(CompanyPrefixAfterChange = False, "", CompanyPrefixAfterChange);

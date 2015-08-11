@@ -382,7 +382,7 @@ EndFunction
 //
 Function EventLogMessageText()
 	
-	Return NStr("en= 'User sessions'");
+	Return NStr("en = 'User sessions'", CommonUseClientServer.DefaultLanguageCode());
 	
 EndFunction
 

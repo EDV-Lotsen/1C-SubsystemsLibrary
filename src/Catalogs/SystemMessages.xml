@@ -42,7 +42,7 @@
 			<SubordinationUse>ToItems</SubordinationUse>
 			<CodeLength>30</CodeLength>
 			<DescriptionLength>150</DescriptionLength>
-			<CodeType>Number</CodeType>
+			<CodeType>String</CodeType>
 			<CodeAllowedLength>Variable</CodeAllowedLength>
 			<CodeSeries>WholeCatalog</CodeSeries>
 			<CheckUnique>true</CheckUnique>
@@ -241,12 +241,7 @@
 					<xr:PasswordMode>false</xr:PasswordMode>
 					<xr:MarkNegatives>false</xr:MarkNegatives>
 					<xr:MinValue xsi:nil="true"/>
-					<xr:Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Message channel</v8:content>
-						</v8:item>
-					</xr:Synonym>
+					<xr:Synonym/>
 					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
@@ -256,7 +251,7 @@
 				</xr:StandardAttribute>
 				<xr:StandardAttribute name="Code">
 					<xr:LinkByType/>
-					<xr:FillChecking>ShowError</xr:FillChecking>
+					<xr:FillChecking>DontCheck</xr:FillChecking>
 					<xr:MultiLine>false</xr:MultiLine>
 					<xr:FillFromFillingValue>false</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
@@ -271,13 +266,8 @@
 					<xr:PasswordMode>false</xr:PasswordMode>
 					<xr:MarkNegatives>false</xr:MarkNegatives>
 					<xr:MinValue xsi:nil="true"/>
-					<xr:Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Incoming number</v8:content>
-						</v8:item>
-					</xr:Synonym>
-					<xr:Comment>Incoming message number in the message queue. It is assigned when the message is added to the message queue. The message can be added to the queue during sending or receiving (downloading).</xr:Comment>
+					<xr:Synonym/>
+					<xr:Comment/>
 					<xr:FullTextSearch>Use</xr:FullTextSearch>
 					<xr:ChoiceParameterLinks/>
 					<xr:FillValue xsi:nil="true"/>
@@ -292,13 +282,14 @@
 			<ChoiceMode>BothWays</ChoiceMode>
 			<InputByString>
 				<xr:Field>Catalog.SystemMessages.StandardAttribute.Description</xr:Field>
+				<xr:Field>Catalog.SystemMessages.StandardAttribute.Code</xr:Field>
 			</InputByString>
 			<SearchStringModeOnInputByString>Begin</SearchStringModeOnInputByString>
 			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
 			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
-			<DefaultObjectForm>Catalog.SystemMessages.Form.ItemForm</DefaultObjectForm>
+			<DefaultObjectForm/>
 			<DefaultFolderForm/>
-			<DefaultListForm>Catalog.SystemMessages.Form.ListForm</DefaultListForm>
+			<DefaultListForm/>
 			<DefaultChoiceForm/>
 			<DefaultFolderChoiceForm/>
 			<AuxiliaryObjectForm/>
@@ -356,7 +347,7 @@
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="de0a39e0-d37d-47c6-a019-e44836edc8d1">
@@ -395,7 +386,7 @@
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="1fdcc1e7-ad53-409e-ba13-84c6429740cd">
@@ -434,7 +425,7 @@
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
 					<Indexing>Index</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="71d544bf-15c1-4581-8baa-ac126308425c">
@@ -472,8 +463,8 @@
 					<LinkByType/>
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
-					<Indexing>Index</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<Indexing>DontIndex</Indexing>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Attribute uuid="1bd0b688-d0fb-4ca2-85aa-4bd82b72ccc2">
@@ -482,7 +473,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Number of attempts to process message</v8:content>
+							<v8:content>Process message retry count</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -491,7 +482,7 @@
 						<v8:NumberQualifiers>
 							<v8:Digits>2</v8:Digits>
 							<v8:FractionDigits>0</v8:FractionDigits>
-							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+							<v8:AllowedSign>Any</v8:AllowedSign>
 						</v8:NumberQualifiers>
 					</Type>
 					<PasswordMode>false</PasswordMode>
@@ -572,7 +563,7 @@
 							<v8:content>Is instant message</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment>Defines that the message must be delivered as soon as possible, out of a public queue.</Comment>
+					<Comment/>
 					<Type>
 						<v8:Type>xs:boolean</v8:Type>
 					</Type>
@@ -598,8 +589,8 @@
 					<LinkByType/>
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 					<Use>ForItem</Use>
-					<Indexing>Index</Indexing>
-					<FullTextSearch>DontUse</FullTextSearch>
+					<Indexing>DontIndex</Indexing>
+					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
 			<Form>ListForm</Form>

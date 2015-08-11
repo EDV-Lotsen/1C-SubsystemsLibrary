@@ -58,7 +58,7 @@ Procedure Posting(Cancel, Mode)
 				
 			If CurRowLineItems.Quantity > CurrentBalance Then					
 				Message = New UserMessage();
-				Message.Text=NStr("en='Insufficient balance';de='Nicht ausreichende Bilanz'");
+				Message.Text=NStr("en='Insufficient balance'");
 				Message.Message();
 				Cancel = True;
 				Return;
@@ -120,7 +120,7 @@ Procedure Posting(Cancel, Mode)
 				                  |	LayerDate " + Sorting + "");
 				Query.SetParameter("Item", CurRowLineItems.Item);
 				Query.SetParameter("Location", Location);
-				Selection = Query.Execute().Choose();
+				Selection = Query.Execute().Select();
 				
 				While Selection.Next() Do
 					If ItemQty > 0 Then

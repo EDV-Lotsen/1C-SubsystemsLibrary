@@ -5,21 +5,42 @@
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
-	Response = DoQueryBox(NStr("en = 'Do you want to import details for all users?'"), QuestionDialogMode.YesNoCancel, ,
+	Response = Undefined;
+
+	
+	ShowQueryBox(New NotifyDescription("CommandProcessingEnd1", ThisObject), NStr("en = 'Do you want to import details for all users?'"), QuestionDialogMode.YesNoCancel, ,
 		DialogReturnCode.Yes);
+	
+EndProcedure
+
+&AtClient
+Procedure CommandProcessingEnd1(QuestionResult, AdditionalParameters) Export
+	
+	Response = QuestionResult;
 	If Response = DialogReturnCode.Cancel Then
 		Return;
 	EndIf;
 	
 	AddressInStorage = Undefined;
-	If Not PutFile(AddressInStorage, "*.zip") Then
+	BeginPutFile(New NotifyDescription("CommandProcessingEnd", ThisObject, New Structure("AddressInStorage, Response", AddressInStorage, Response)), AddressInStorage, "*.zip",,);
+
+EndProcedure
+
+&AtClient
+Procedure CommandProcessingEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
+	
+	AddressInStorage = AdditionalParameters.AddressInStorage;
+	Response = AdditionalParameters.Response;
+	
+	
+	If Not Result Then
 		Return;
 	EndIf;
 	
 	ImportDataAtServer(AddressInStorage, Response = DialogReturnCode.Yes);
 	
 	RefreshInterface();
-	
+
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////

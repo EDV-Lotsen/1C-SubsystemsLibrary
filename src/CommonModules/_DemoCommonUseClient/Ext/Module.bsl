@@ -16,30 +16,50 @@
 // Parameters
 //  Message  - String - message text. If not specified, then default text being shown.
 //
-Procedure SuggestWorkWithFilesExtensionInstallationNow(Message = Undefined) Export
+Procedure SuggestWorkWithFilesExtensionInstallationNow(Val Notification1, Val Notification, Message = Undefined) Export
 	
 #If Not WebClient Then
+	ExecuteNotifyProcessing(Notification);
+	ExecuteNotifyProcessing(Notification1);
 	Return;  // works only in web-client
 #EndIf
 
 	IsExtensionAttached = AttachFileSystemExtension();
 	If IsExtensionAttached Then
+		ExecuteNotifyProcessing(Notification);
+		ExecuteNotifyProcessing(Notification1);
 		Return; // if extension already installed - no reason to ask about it
 	EndIf;	
 
 	If _DemoCommonUseClientCashed.ThisIsWebClientWithoutSupportOfWorkWithFilesExtension() Then
+		ExecuteNotifyProcessing(Notification);
+		ExecuteNotifyProcessing(Notification1);
 		Return;
 	EndIf;	
 	
 	SuggestInstallation = _DemoCommonUseClientCashed.GetOfferInstallationOfExtensionOfWorkWithFiles();
 	
 	If SuggestInstallation = False Then
+		ExecuteNotifyProcessing(Notification);
+		ExecuteNotifyProcessing(Notification1);
 		Return;
 	EndIf;
 	
 	// show dialog here
 	FormParameters  = New Structure("Message", Message);
-	ReturnCode 		= OpenFormModal("CommonForm.FileSystemExtensionInstallationQuestion", FormParameters);
+	ReturnCode = Undefined;
+
+	OpenForm("CommonForm.FileSystemExtensionInstallationQuestion", FormParameters,,,,, New NotifyDescription("SuggestWorkWithFilesExtensionInstallationNowEnd", ThisObject, New Structure("Notification, Notification1", Notification, Notification1)), FormWindowOpeningMode.LockWholeInterface);
+
+EndProcedure
+
+Procedure SuggestWorkWithFilesExtensionInstallationNowEnd(Result, AdditionalParameters) Export
+	
+	Notification = AdditionalParameters.Notification;
+	Notification1 = AdditionalParameters.Notification1;
+	
+	
+	ReturnCode 		= Result;
 	If ReturnCode 	= Undefined Then
 		ReturnCode  = True;
 	EndIf;
@@ -47,6 +67,11 @@ Procedure SuggestWorkWithFilesExtensionInstallationNow(Message = Undefined) Expo
 	SuggestInstallation = ReturnCode;
 	_DemoCommonUse.SaveSuggestWorkWithFilesExtensionInstallation(SuggestInstallation);
 	RefreshReusableValues();
-
-EndProcedure 
+	
+	ExecuteNotifyProcessing(Notification);
+	
+	ExecuteNotifyProcessing(Notification1);
+	
+EndProcedure
+ 
 

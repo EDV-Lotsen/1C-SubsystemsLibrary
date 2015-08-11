@@ -131,7 +131,7 @@ Function DataExchangeStates(Val InfoBaseNode, ActionOnExchange) Export
 	Query.SetParameter("InfoBaseNode",     InfoBaseNode);
 	Query.SetParameter("ActionOnExchange", ActionOnExchange);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	
 	If Selection.Next() Then
 		

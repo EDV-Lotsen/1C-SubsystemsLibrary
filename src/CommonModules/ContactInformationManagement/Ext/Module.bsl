@@ -34,7 +34,7 @@ Function GetObjectContactInformation(Ref, ContactInformationKind) Export
 	Query.SetParameter("Ref", Ref);
 	Query.SetParameter("Kind", ContactInformationKind);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	If Selection.Next() Then
 		Return Selection.Presentation;
 	Else
@@ -322,7 +322,7 @@ Function RemoveSeparatorsFromPhoneNumber(Val PhoneNumber)
 	EndIf;
 	
 	PhoneNumber = StrReplace(PhoneNumber, "-", "");
-	PhoneNumber = StrReplace(PhoneNumber, "", "");
+	PhoneNumber = StrReplace(PhoneNumber, " ", "");
 	PhoneNumber = StrReplace(PhoneNumber, "+", "");
 	PhoneNumber = StrReplace(PhoneNumber, "(", "");
 	PhoneNumber = StrReplace(PhoneNumber, ")", "");
@@ -354,7 +354,7 @@ Procedure FillTabularSectionAttributesForWebPage(TabularSectionRow)
 		WebPageURL = Mid(WebPageURL, 5);
 	EndIf;
 	
-	CharPosition = Find(WebPageURL, "");
+	CharPosition = Find(WebPageURL, "/");
 	TabularSectionRow.ServerDomainName = ?(CharPosition = 0, WebPageURL, Left(WebPageURL, CharPosition - 1));
 	
 EndProcedure
@@ -482,7 +482,7 @@ Procedure DeleteWorldCountriesCatalogItems() Export
 	
 	If Not QueryResult.IsEmpty() Then
 		
-		Selection = QueryResult.Choose();
+		Selection = QueryResult.Select();
 		While Selection.Next() Do
 			
 			Deletion = New ObjectDeletion(Selection.Ref);
@@ -497,7 +497,7 @@ EndProcedure
 ////////////////////////////////////////////////////////////////////////////////
 // Procedures and functions for the infobase update.
 
-// Adds update handlers required by this subsystem to the Handlers list. 
+// Adds update handlers required for this subsystem to the Handlers list. 
 // 
 // Parameters:
 // Handlers - ValueTable - see the InfoBaseUpdate.NewUpdateHandlerTable function for details. 
@@ -518,7 +518,7 @@ EndProcedure
 //
 // Parameters:
 // CIKind - Catalog.ContactInformationKinds - contact information kind.
-// Type - Enum.ContactInformationTypes - contact information type.
+// Type - Enumeration.ContactInformationTypes - contact information type.
 // CanChangeEditMode - Boolean - flag that shows whether the edit mode can be changed in
 // the enterprise mode.
 // For example, editing addresses that are used in tax reports must be prohibited.
@@ -576,7 +576,7 @@ Procedure ImportWorldCountries() Export
 		
 		If FoundItem = Undefined Then
 			Item 					= Catalogs.WorldCountries.CreateItem();
-			Item.Code				= CurrentCountry.Code;
+			Item.Code					= CurrentCountry.Code;
 			Item.Description		= CurrentCountry.ShortName;
 			Item.AlphaCode2			= CurrentCountry.Alpha2;
 			Item.AlphaCode3			= CurrentCountry.Alpha3;
@@ -704,3 +704,8 @@ Function GetContactInformationValue(FieldValueString, FieldName) Export
 	Return Value;
 
 EndFunction
+
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

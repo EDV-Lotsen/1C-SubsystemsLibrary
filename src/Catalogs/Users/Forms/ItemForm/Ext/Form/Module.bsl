@@ -86,7 +86,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	SetPrivilegedMode(False);
 	
-	SetActionsOnForm();
+	DefineActionsOnForm();
 	
 	FindUserAndInfoBaseUserInconsistencies();
 	
@@ -130,11 +130,8 @@ Procedure BeforeWrite(Cancel)
 	
 	If InfoBaseAccessAllowed Then
 		If ActionsOnForm.Roles = "Edit" And InfoBaseUserRoles.Count() = 0 Then
-			Response = DoQueryBox(NStr("en = 'No roles are specified for the infobase user. Do you want to continue?'"),
-				QuestionDialogMode.YesNo, , , QuestionTitle);
-			If Response = DialogReturnCode.No Then
-				Cancel = True;
-			EndIf;
+			ShowMessageBox(, NStr("en='No roles are specified for the infobase user. Please select at least one role.'"), , QuestionTitle);
+			Cancel = True;
 		EndIf;
 	
 		// Processing first administrator write
@@ -142,10 +139,7 @@ Procedure BeforeWrite(Cancel)
 		If Users.CreateFirstAdministratorRequired(GetInfoBaseUserInfoStructure(), 
 			QuestionText) Then
 			
-			Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNo, , , QuestionTitle);
-			If Response = DialogReturnCode.No Then
-				Cancel = True;
-			EndIf;
+			ShowMessageBox(, QuestionText, , QuestionTitle);
 		EndIf;
 	EndIf;
 	
@@ -356,13 +350,22 @@ EndProcedure
 Procedure InfoBaseUserOSUserStartChoice(Item, ChoiceData, StandardProcessing)
 	
 	#If Not WebClient Then
-		Result = OpenFormModal("Catalog.Users.Form.OSUserChoiceForm");
-		
-		If TypeOf(Result) = Type("String") Then
-			InfoBaseUserOSUser = Result;
-		EndIf;
+		Result = Undefined;
+
+		OpenForm("Catalog.Users.Form.OSUserChoiceForm",,,,,, New NotifyDescription("InfoBaseUserOSUserStartChoiceEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
 	#EndIf
 	
+EndProcedure
+
+&AtClient
+Procedure InfoBaseUserOSUserStartChoiceEnd(Result1, AdditionalParameters) Export
+    
+    Result = Result1;
+    
+    If TypeOf(Result) = Type("String") Then
+        InfoBaseUserOSUser = Result;
+    EndIf;
+
 EndProcedure
 
 &AtClient
@@ -458,7 +461,7 @@ EndProcedure
 // INTERNAL PROCEDURES AND FUNCTIONS
 
 &AtServer
-Procedure SetActionsOnForm()
+Procedure DefineActionsOnForm()
 	
 	ActionsOnForm = New Structure;
 	ActionsOnForm.Insert("Roles",                   ""); // "", "View",    "Edit"
@@ -522,7 +525,7 @@ EndProcedure
 Function GetInfoBaseUserInfoStructure()
 	
 	// Restoring actions on the form if they have been changed on the client
-	SetActionsOnForm();
+	DefineActionsOnForm();
 	
 	If ActionsOnForm.InfoBaseUserProperties <> "EditAll"
 		And ActionsOnForm.InfoBaseUserProperties <> "EditOwn" Then
@@ -753,8 +756,8 @@ Procedure SetPermanentEnabledProperty()
 	Items.InfoBaseUserProperties.ReadOnly               = ActionsOnForm.InfoBaseUserProperties =  "ViewAll";
 	Items.InfoBaseUserName.ReadOnly                     = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
 	Items.InfoBaseUserStandardAuthentication.ReadOnly   = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
-	Items.InfoBaseUserCannotChangePassword.ReadOnly = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
-	Items.InfoBaseUserShowInList.ReadOnly         = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
+	Items.InfoBaseUserCannotChangePassword.ReadOnly 	= ActionsOnForm.InfoBaseUserProperties <> "EditAll";
+	Items.InfoBaseUserShowInList.ReadOnly         		= ActionsOnForm.InfoBaseUserProperties <> "EditAll";
 	Items.InfoBaseUserOSAuthentication.ReadOnly         = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
 	Items.InfoBaseUserOSUser.ReadOnly                   = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
 	Items.InfoBaseUserRunMode.ReadOnly                  = ActionsOnForm.InfoBaseUserProperties <> "EditAll";

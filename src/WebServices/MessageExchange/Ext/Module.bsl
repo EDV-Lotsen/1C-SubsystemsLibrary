@@ -27,14 +27,14 @@ Function DeliverMessages(SenderCode, StreamStorage)
 	// Handling the message queue
 	If CommonUse.FileInfoBase() Then
 		
-		MessageExchangeInternal.ProcessSystemMessageQueue();
+		MessageExchangeInternal.HandleSystemMessageQueue();
 		
 	Else
 		
 		BackgroundJobParameters = New Array;
 		BackgroundJobParameters.Add(ImportedMessages);
 		
-		BackgroundJobs.Execute("MessageExchangeInternal.ProcessSystemMessageQueue", BackgroundJobParameters);
+		BackgroundJobs.Execute("MessageExchangeInternal.HandleSystemMessageQueue", BackgroundJobParameters);
 		
 	EndIf;
 	
@@ -125,7 +125,7 @@ EndFunction
 //
 Function SetLeadingEndPoint(ThisEndPointCode, LeadingEndPointCode)
 	
-	MessageExchangeInternal.SetLeadingEndPointAtRecipient(ThisEndPointCode, LeadingEndPointCode);
+	//MessageExchangeInternal.SetLeadingEndPointAtRecipient(ThisEndPointCode, LeadingEndPointCode);
 	
 EndFunction
 

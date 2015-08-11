@@ -184,7 +184,7 @@ Function GetReadObjectConversionRules(Val ExchangePlanName) Export
 	
 	If Not Result.IsEmpty() Then
 		
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		
 		ReadRulesAlready = Selection.ReadRulesAlready;

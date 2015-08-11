@@ -24,7 +24,7 @@ Function GetValueByDefaultUser(User, Options) Export
 	             |	RegisterValueRight.User = &User
 	             |	AND RegisterValueRight.Options = &Options";
 
-	Selection  = Query.Execute().Choose();
+	Selection  = Query.Execute().Select();
 
 	EmptyValue = ChartsOfCharacteristicTypes.UsersSettings[Options].ValueType.AdjustValue();
 

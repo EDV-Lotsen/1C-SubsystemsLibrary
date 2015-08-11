@@ -2,7 +2,7 @@
 // EVENT HANDLERS
 
 Procedure BeforeWrite(Cancel, Replacing)
-	
+	                    
 	// Disabling standard object registration mechanism
 	AdditionalProperties.Insert("DisableObjectChangeRecordMechanism", True);
 	
@@ -29,7 +29,7 @@ Procedure BeforeWrite(Cancel, Replacing)
 	
 	// The record set must be registered only in the node that is specified in the filter
 	DataExchange.Recipients.Add(Filter.InfoBaseNode.Value);
-	
+	      
 EndProcedure
 
 

@@ -178,7 +178,7 @@ Procedure ExecuteDataExchangeWithAllSubscriberInfoBases() Export
 		Try
 			WSServiceProxy.GetExchangeScenario(CommonUse.SessionSeparatorValue(), DataExchangeScenarioXDTO);
 		Except
-			WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+			WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 			Return;
 		EndTry;
 		
@@ -194,7 +194,7 @@ Procedure ExecuteDataExchangeWithAllSubscriberInfoBases() Export
 		Try
 			WSServiceProxy.GetExchangeScenario(CommonUse.SessionSeparatorValue(), DataExchangeScenarioString);
 		Except
-			WriteLogEvent(NStr("en = 'Data exchange'"), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+			WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 			Return;
 		EndTry;
 		
@@ -406,7 +406,7 @@ Function LastSuccessfulImportForAllInfoBaseNodesDate() Export
 	Query.Text = QueryText;
 	Query.SetParameter("DataArea", ServiceMode.SessionSeparatorValue());
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 	
 	Return ?(ValueIsFilled(Selection.EndDate), Selection.EndDate, Undefined);
@@ -529,9 +529,7 @@ Function ServiceManagerVersions()
 	Return CommonUse.GetInterfaceVersions(ConnectionParameters, "ManagementApplicationDataExchange");
 EndFunction
 
-
-
-
-
-
-
+// Internal use only.
+Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
+	
+EndProcedure

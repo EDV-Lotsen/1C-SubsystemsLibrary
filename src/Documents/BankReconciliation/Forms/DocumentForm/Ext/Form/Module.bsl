@@ -84,7 +84,7 @@ Procedure FillReconciliationSpec(StatementToDate, BankAccount)
 	Query.SetParameter("StatementToDate", EndOfDay(StatementToDate));
 	Query.SetParameter("BankAccount", BankAccount);
 	
-	Result = Query.Execute().Choose();
+	Result = Query.Execute().Select();
 	
 	While Result.Next() Do
 		
@@ -196,7 +196,7 @@ Procedure BankAccountOnChange(Item)
 	Items.BankAccountLabel.Title =
 		CommonUse.GetAttributeValue(Object.BankAccount, "Description");
 		
-	DoMessageBox("Update the Statement To date to recalculate the reconciliation");
+	ShowMessageBox(, NStr("en = 'Update the Statement To date to recalculate the reconciliation'"));
 
 EndProcedure
 

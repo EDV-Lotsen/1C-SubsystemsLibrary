@@ -497,7 +497,7 @@ EndFunction
 //
 Function CopyRecursive(Source) Export
 	
-	Var Target;
+	Var Receiver;
 	
 	SourceType = TypeOf(Source);
 	If SourceType = Type("Structure") Then
@@ -516,7 +516,7 @@ Function CopyRecursive(Source) Export
 		Destination = Source;
 	EndIf;
 	
-	Return Target;
+	Return Receiver;
 	
 EndFunction
 
@@ -788,7 +788,7 @@ Procedure DeleteDirectoryWithFiles(Path) Export
 	Directory = New File(Path);
 	
 	If Directory.Exist() Then
-		DeleteFiles(Path);
+		BeginDeletingFiles(Undefined, Path);
 	EndIf;
 	
 EndProcedure // DeleteDirectoryWithFiles()
@@ -1646,7 +1646,7 @@ EndFunction
 
 // Returns a parameter structure template for establishing an external connection.
 // Parameters have to be filled with required values and be passed
-// to the CommonUse.EstablishExternalConnection() method.
+// to the CommonUse.SetExternalConnection() method.
 //
 Function ExternalConnectionParameterStructure() Export
 	
@@ -1840,6 +1840,94 @@ Function FormItemPropertyValue(FormItems, ItemName, PropertyName) Export
 
 EndFunction 
 
+// Raises an exception with Message text if Condition is not true.
+// This procedure is designed to be used in the script selftests.
+//
+// Parameters:
+//   Condition            - Boolean - if not True, an exception is raised.
+//   Message              - String - the message text. If this parameter value is not set, the default message text is used.
+//   ValidationContext    - String - for example, name of procedure or function where the validation is executed.
+//
+Procedure Validate(Val Condition, Val Message = "", Val ValidationContext = "") Export
+	
+	If Condition <> True Then
+		If IsBlankString(Message) Then
+			ExceptionText = NStr("en='Invalid condition'"); // Assertion failed
+		Else
+			ExceptionText = Message;
+		EndIf;
+		If Not IsBlankString(ValidationContext) Then
+			ExceptionText = ExceptionText + " " +
+				StringFunctionsClientServer.SubstituteParametersInString(NStr("en='in %1'"), ValidationContext);
+		EndIf;
+		Raise ExceptionText;
+	EndIf;
+	
+EndProcedure
+
+// Raises an exception if type of ParameterName parameter value differs from the expected one.
+// This procedure is designed to check parameters of the application interface functions.
+//
+// Parameters:
+//   ProcedureFunctionName   - String            - the name of procedure or function that is checked.
+//   ParameterName           - String            - name of the parameter that is checked.
+//   ParameterValue     	 - Arbitrary       	 - the current value of the parameter.
+//   ExpectedTypes           - TypeDescription, Type - type(s) of procedure or function parameter.
+//   ExpectedPropertyTypes   - Structure         - if the expected type is a structure, this parameter
+//                                                 allows to specify its property types.
+//
+Procedure ValidateParameter(Val ProcedureFunctionName, Val ParameterName, Val ParameterValue, 
+	Val ExpectedTypes, Val ExpectedPropertyTypes = Undefined) Export
+	
+	Context = "CommonUseClientServer.ValidateParameter";
+	Validate(TypeOf(ProcedureFunctionName) = Type("String"), 
+		NStr("en='Invalid value of ProcedureFunctionName parameter'"), Context);
+	Validate(TypeOf(ParameterName) = Type("String"), 
+		NStr("en='Invalid value of ParameterName parameter'"), Context);
+		
+	IsTypeDescription = TypeOf(ExpectedTypes) = Type("TypeDescription");
+	Validate(IsTypeDescription Or TypeOf(ExpectedTypes) = Type("Type"), 
+		NStr("en='Invalid value of EpectedTypes parameter'"), Context);
+		
+	InvalidParameter = NStr("en='Invalid value of %1 parameter in %2."
+"Expected: %3; received value %4 of %5 type.'");
+	Validate((IsTypeDescription And ExpectedTypes.ContainsType(TypeOf(ParameterValue)))
+		Or (Not IsTypeDescription And ExpectedTypes = TypeOf(ParameterValue)), 
+		StringFunctionsClientServer.SubstituteParametersInString(InvalidParameter, 
+			ParameterName, ProcedureFunctionName, ExpectedTypes, 
+			?(ParameterValue <> Undefined, ParameterValue, NStr("en='Undefined'")), TypeOf(ParameterValue)));
+			
+	If TypeOf(ParameterValue) = Type("Structure") And ExpectedPropertyTypes <> Undefined Then
+		
+		Validate(TypeOf(ExpectedPropertyTypes) = Type("Structure"), 
+			NStr("en='Invalid value of ProcedureFunctionName parameter'"), Context);
+			
+		NoProperty = NStr("en='Invalid value of %1 parameter (Structure) in %2."
+"Expected %3 property of %4 type In structure.'");
+		InvalidProperty = NStr("en='Invalid value of %1 property in %2 parameter (Structure) in %3."
+"Expected: %4; received value: %5 of %6 type.'");
+		For Each Property In ExpectedPropertyTypes Do
+			
+			ExpectedPropertyName = Property.Key;
+			ExpectedPropertyType = Property.Value;
+			PropertyValue = Undefined;
+			
+			Validate(ParameterValue.Property(ExpectedPropertyName, PropertyValue), 
+				StringFunctionsClientServer.SubstituteParametersInString(NoProperty, 
+					ParameterName, ProcedureFunctionName, ExpectedPropertyName, ExpectedPropertyType));
+					
+			IsTypeDescription = TypeOf(ExpectedPropertyType) = Type("TypeDescription");
+			Validate((IsTypeDescription And ExpectedPropertyType.ContainsType(TypeOf(PropertyValue)))
+				Or (Not IsTypeDescription And ExpectedPropertyType = TypeOf(PropertyValue)), 
+				StringFunctionsClientServer.SubstituteParametersInString(InvalidProperty, 
+					ExpectedPropertyName, ParameterName, ProcedureFunctionName, ExpectedPropertyType, 
+					?(PropertyValue <> Undefined, PropertyValue, NStr("en='Undefined'")), TypeOf(PropertyValue)));
+					
+		EndDo;	
+	EndIf;		
+	
+EndProcedure
+
 ////////////////////////////////////////////////////////////////////////////////
 // INTERNAL PROCEDURES AND FUNCTIONS
 
@@ -2008,4 +2096,43 @@ Function StringContainsAllowedCharsOnly(String, AllowedChars)
 	EndDo;
 	
 	Return True;
+EndFunction
+
+// Internal use only
+Function MainLanguageCode() Export
+	#If Not ThinClient And Not WebClient Then
+		Return Metadata.DefaultLanguage.LanguageCode;
+	#Else
+		Return StandardSubsystemsClientCached.ClientParameters().MainLanguageCode;
+	#EndIf
+EndFunction
+
+// Internal use only
+Procedure SupplementStructure(TargetStructure, SourceStructure, Replace = Undefined) Export
+	
+	SearchKey = (Replace = False Or Replace = Undefined);
+	For Each KeyAndValue In SourceStructure Do
+		If SearchKey And TargetStructure.Property(KeyAndValue.Key) Then
+			If Replace = False Then
+				Continue;
+			Else
+				Raise StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en='Source and target structures intersect on %1 key.'"),
+					KeyAndValue.Key);
+			EndIf
+		EndIf;
+		TargetStructure.Insert(KeyAndValue.Key, KeyAndValue.Value);
+	EndDo;
+	
+EndProcedure
+
+// Internal use only.
+Function DefaultLanguageCode() Export
+	
+	#If Client Then
+		Return CommonUseClientCached.DefaultLanguageCode();
+	#Else
+		Return CommonUse.DefaultLanguageCode();
+	#EndIf
+	
 EndFunction

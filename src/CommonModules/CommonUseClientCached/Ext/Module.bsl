@@ -45,3 +45,10 @@ Function ClientPlatformType() Export
 	SystemInfo = New SystemInfo;
 	Return SystemInfo.PlatformType;
 EndFunction
+
+// Internal use only
+Function DefaultLanguageCode() Export
+	
+	Return CommonUse.DefaultLanguageCode();
+	
+EndFunction

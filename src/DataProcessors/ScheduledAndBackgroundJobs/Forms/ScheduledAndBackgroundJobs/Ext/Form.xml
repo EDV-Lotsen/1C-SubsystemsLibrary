@@ -85,6 +85,12 @@
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.RefreshData</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Update</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableRefreshDataExtendedTooltip" id="24"/>
 									</Button>
 									<Button name="ScheduledJobTableAdd" id="25">
@@ -96,16 +102,34 @@
 									<Button name="ScheduledJobTableEditScheduledJob" id="27">
 										<Type>CommandBarButton</Type>
 										<CommandName>Form.Command.EditScheduledJob</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Edit</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableEditScheduledJobExtendedTooltip" id="28"/>
 									</Button>
 									<Button name="ScheduledJobTableCopy" id="29">
 										<Type>CommandBarButton</Type>
 										<CommandName>Form.Item.ScheduledJobTable.StandardCommand.Copy</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Copy</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableCopyExtendedTooltip" id="30"/>
 									</Button>
 									<Button name="ScheduledJobTableDelete" id="31">
 										<Type>CommandBarButton</Type>
 										<CommandName>Form.Item.ScheduledJobTable.StandardCommand.Delete</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Delete</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableDeleteExtendedTooltip" id="32"/>
 									</Button>
 									<Button name="ScheduledJobTableOpenSchedule" id="33">
@@ -125,19 +149,37 @@
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.ExecuteScheduledJobManually</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Execute now</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableExecuteNowExtendedTooltip" id="36"/>
 									</Button>
 									<Button name="ScheduledJobTableExecutionSettings" id="37">
 										<Type>CommandBarButton</Type>
 										<Visible>false</Visible>
+										<UserVisible>
+											<xr:Common>false</xr:Common>
+										</UserVisible>
 										<Representation>Picture</Representation>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.ScheduledJobExecutionSetup</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Execution settings</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="ScheduledJobTableExecutionSettingsExtendedTooltip" id="38"/>
 									</Button>
 									<Button name="ScheduledJobTableStartSeparateSession" id="39">
 										<Type>CommandBarButton</Type>
 										<Visible>false</Visible>
+										<UserVisible>
+											<xr:Common>false</xr:Common>
+										</UserVisible>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.StartSeparateSession</CommandName>
 										<ExtendedTooltip name="ScheduledJobTableStartSeparateSessionExtendedTooltip" id="40"/>
@@ -235,6 +277,12 @@
 								<InputField name="UserName" id="53">
 									<DataPath>ScheduledJobTable.UserName</DataPath>
 									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>User name</v8:content>
+										</v8:item>
+									</Title>
 									<ToolTip>
 										<v8:item>
 											<v8:lang>en</v8:lang>
@@ -267,6 +315,12 @@
 								<InputField name="EndDate" id="59">
 									<DataPath>ScheduledJobTable.EndDate</DataPath>
 									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>End date</v8:content>
+										</v8:item>
+									</Title>
 									<ToolTip>
 										<v8:item>
 											<v8:lang>en</v8:lang>
@@ -346,6 +400,12 @@
 													<ChildItems>
 														<CheckBoxField name="FilterByCompletedState" id="72">
 															<DataPath>FilterByCompletedState</DataPath>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Completed</v8:content>
+																</v8:item>
+															</Title>
 															<TitleLocation>Right</TitleLocation>
 															<ToolTip>
 																<v8:item>
@@ -359,6 +419,12 @@
 														</CheckBoxField>
 														<CheckBoxField name="FilterByFailedState" id="75">
 															<DataPath>FilterByFailedState</DataPath>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Completed with errors</v8:content>
+																</v8:item>
+															</Title>
 															<TitleLocation>Right</TitleLocation>
 															<ToolTip>
 																<v8:item>
@@ -372,6 +438,12 @@
 														</CheckBoxField>
 														<CheckBoxField name="FilterByCanceledState" id="78">
 															<DataPath>FilterByCanceledState</DataPath>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Canceled by user</v8:content>
+																</v8:item>
+															</Title>
 															<TitleLocation>Right</TitleLocation>
 															<ToolTip>
 																<v8:item>
@@ -385,6 +457,12 @@
 														</CheckBoxField>
 														<CheckBoxField name="FilterByActiveState" id="81">
 															<DataPath>FilterByActiveState</DataPath>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Executing</v8:content>
+																</v8:item>
+															</Title>
 															<TitleLocation>Right</TitleLocation>
 															<ToolTip>
 																<v8:item>
@@ -442,7 +520,7 @@
 																				<Presentation>
 																					<v8:item>
 																						<v8:lang>en</v8:lang>
-																						<v8:content>Without of filter</v8:content>
+																						<v8:content>Without filter</v8:content>
 																					</v8:item>
 																				</Presentation>
 																				<Value xsi:type="xs:decimal">0</Value>
@@ -506,12 +584,24 @@
 															<ChildItems>
 																<InputField name="FilterPeriodFrom" id="93">
 																	<DataPath>FilterPeriodFrom</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>from</v8:content>
+																		</v8:item>
+																	</Title>
 																	<Wrap>false</Wrap>
 																	<ContextMenu name="FilterPeriodFromContextMenu" id="94"/>
 																	<ExtendedTooltip name="FilterPeriodFromExtendedTooltip" id="95"/>
 																</InputField>
 																<InputField name="FilterPeriodTill" id="96">
 																	<DataPath>FilterPeriodTill</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>till</v8:content>
+																		</v8:item>
+																	</Title>
 																	<Wrap>false</Wrap>
 																	<ContextMenu name="FilterPeriodTillContextMenu" id="97"/>
 																	<ExtendedTooltip name="FilterPeriodTillExtendedTooltip" id="98"/>
@@ -602,6 +692,12 @@
 										<Type>CommandBarButton</Type>
 										<SkipOnInput>false</SkipOnInput>
 										<CommandName>Form.Command.RefreshData</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Update</v8:content>
+											</v8:item>
+										</Title>
 										<ExtendedTooltip name="BackgroundJobTableRefreshDataExtendedTooltip" id="111"/>
 									</Button>
 									<Button name="BackgroundJobTableOpen" id="112">
@@ -669,18 +765,36 @@
 							<ChildItems>
 								<InputField name="BackgroundJobDescription" id="119">
 									<DataPath>BackgroundJobTable.Description</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Description</v8:content>
+										</v8:item>
+									</Title>
 									<Wrap>false</Wrap>
 									<ContextMenu name="BackgroundJobDescriptionContextMenu" id="120"/>
 									<ExtendedTooltip name="BackgroundJobDescriptionExtendedTooltip" id="121"/>
 								</InputField>
 								<InputField name="State" id="122">
 									<DataPath>BackgroundJobTable.State</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>State</v8:content>
+										</v8:item>
+									</Title>
 									<Wrap>false</Wrap>
 									<ContextMenu name="StateContextMenu" id="123"/>
 									<ExtendedTooltip name="StateExtendedTooltip" id="124"/>
 								</InputField>
 								<InputField name="Start" id="125">
 									<DataPath>BackgroundJobTable.Start</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Start</v8:content>
+										</v8:item>
+									</Title>
 									<Wrap>false</Wrap>
 									<ContextMenu name="StartContextMenu" id="126"/>
 									<ExtendedTooltip name="StartExtendedTooltip" id="127"/>
@@ -722,7 +836,7 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Selected job count</v8:content>
+											<v8:content>Selected job number</v8:content>
 										</v8:item>
 									</Title>
 									<TitleLocation>Top</TitleLocation>
@@ -736,7 +850,7 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Total count of background jobs</v8:content>
+											<v8:content>Total number of background jobs</v8:content>
 										</v8:item>
 									</Title>
 									<TitleLocation>Top</TitleLocation>

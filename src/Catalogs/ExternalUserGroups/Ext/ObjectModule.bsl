@@ -66,7 +66,7 @@ Procedure BeforeWrite(Cancel)
 			|	AND ExternalUserGroups.AllAuthorizationObjects");
 			Query.SetParameter("Ref", Ref);
 			Query.SetParameter("AuthorizationObjectType", AuthorizationObjectType);
-			Selection = Query.Execute().Choose();
+			Selection = Query.Execute().Select();
 			If Selection.Next() Then
 				CommonUseClientServer.MessageToUser(
 					StringFunctionsClientServer.SubstituteParametersInString(
@@ -106,7 +106,7 @@ Procedure BeforeWrite(Cancel)
 			|	AND ExternalUserGroups.AuthorizationObjectType <> &AuthorizationObjectType");
 			Query.SetParameter("Ref", Ref);
 			Query.SetParameter("AuthorizationObjectType", AuthorizationObjectType);
-			Selection = Query.Execute().Choose();
+			Selection = Query.Execute().Select();
 			If Selection.Next() Then
 				If Selection.AuthorizationObjectType = Undefined Then
 					OtherAuthorizationObjectTypePresentation = NStr("en = '<Any type>'");

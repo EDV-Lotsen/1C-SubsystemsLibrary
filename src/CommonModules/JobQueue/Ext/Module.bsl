@@ -49,14 +49,14 @@ Procedure JobProcessingPlanning() Export
 		Except
 			TryCount = TryCount + 1;
 			If TryCount = 5 Then
-				WriteLogEvent(NStr("en = 'Job queue. Planning to handle jobs'"), EventLogLevel.Error, , ,
+				WriteLogEvent(NStr("en = 'Job queue. Planning to handle jobs.'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 					DetailErrorDescription(ErrorInfo()));
 				Raise;
 			EndIf;
 		EndTry;
 	EndDo;
 	
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	
 	MapScheduledJobs = New Map;
 	
@@ -198,8 +198,8 @@ Procedure ProcessJobQueue(BackgroundJobKey) Export
 		|	AND JobQueue.JobState = VALUE(Enum.JobStates.Scheduled)
 		|	AND (JobQueue.ExclusiveExecution
 		|			OR SessionLocks.DataArea IS NULL 
-		|			OR SessionLocks.LockPeriodStart > &CurrentUniversalDate
-		|			OR SessionLocks.LockPeriodEnd < &CurrentUniversalDate)
+		|			OR SessionLocks.BeginLock > &CurrentUniversalDate
+		|			OR SessionLocks.EndLock < &CurrentUniversalDate)
 		|
 		|ORDER BY
 		|	ExclusiveExecution DESC,
@@ -214,12 +214,12 @@ Procedure ProcessJobQueue(BackgroundJobKey) Export
 		Selection = Undefined;
 		While TryCount < 5 Do
 			Try
-				Selection = Query.Execute().Choose();
+				Selection = Query.Execute().Select();
 				Break;
 			Except
 				TryCount = TryCount + 1;
 				If TryCount = 5 Then
-					WriteLogEvent(NStr("Job queue. Job execution"), EventLogLevel.Error, , ,
+					WriteLogEvent(NStr("en = 'Job queue. Job execution.'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 						DetailErrorDescription(ErrorInfo()));
 					Raise;
 				EndIf;
@@ -280,7 +280,7 @@ Procedure ProcessJobQueue(BackgroundJobKey) Export
 			Query.SetParameter("Job" , Job);
 			Query.SetParameter("CurrentUniversalDate", CurrentUniversalDate());
 			
-			Selection = Query.Execute().Choose();
+			Selection = Query.Execute().Select();
 			If Selection.Next() Then 
 				RecordSet = InformationRegisters.JobQueue.CreateRecordSet();
 				RecordSet.Filter.DataArea.Set(DataArea);
@@ -300,7 +300,7 @@ Procedure ProcessJobQueue(BackgroundJobKey) Export
 			CommitTransaction();
 		Except
 			RollbackTransaction();
-			WriteLogEvent(NStr("en = 'Handling job queue'"), 
+			WriteLogEvent(NStr("en = 'Handling job queue'", Metadata.DefaultLanguage.LanguageCode), 
 				EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 			Raise;
 		EndTry;
@@ -321,7 +321,7 @@ Procedure ProcessJobQueue(BackgroundJobKey) Export
 		Except
 			WriteExecutionControlEventLog("ScheduledJobQueue.CompletedWithErrors", RecordSet[0]);
 			
-			WriteLogEvent(NStr("en = 'Background job. Error'"), EventLogLevel.Error, ,
+			WriteLogEvent(NStr("en = 'Background job. Error'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, ,
 				ActiveBackgroundJob, DetailErrorDescription(ErrorInfo())); 
 				
 			While TransactionActive() Do
@@ -426,7 +426,7 @@ Procedure UpdateSeparatedScheduledJobs() Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Updating separated scheduled jobs'"), 
+		WriteLogEvent(NStr("en = 'Updating separated scheduled jobs'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -477,7 +477,7 @@ Procedure UpdateJobQueue(DataArea = Undefined) Export
 	|FROM
 	|	InformationRegister.SeparatedScheduledJobs AS SeparatedScheduledJobs";
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		ScheduledJob = ScheduledJobs.FindByUUID(Selection.ScheduledJob);
 		If ScheduledJob <> Undefined Then
@@ -507,7 +507,7 @@ Procedure UpdateJobQueue(DataArea = Undefined) Export
 		Query.SetParameter("DataArea" , DataArea);
 		
 		Result = Query.Execute();
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		RecordManager = InformationRegisters.JobQueue.CreateRecordManager();
 		
 		While Selection.Next() Do
@@ -572,7 +572,7 @@ Procedure UpdateJobQueue(DataArea = Undefined) Export
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(NStr("en = 'Updating job queue'"), 
+		WriteLogEvent(NStr("en = 'Updating job queue'", Metadata.DefaultLanguage.LanguageCode), 
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise;
 	EndTry;
@@ -948,7 +948,7 @@ Function FindByUUID(ID) Export
 		Query.SetParameter("DataArea" , DataArea);
 		Result = Query.Execute();
 		If Not Result.IsEmpty() Then
-			Selection = Result.Choose();
+			Selection = Result.Select();
 			Selection.Next();
 			
 			ScheduledJob = New Structure;
@@ -1079,7 +1079,7 @@ Function GetScheduledJobs(Filter) Export
 				EndIf;
 			EndDo;
 		EndIf;
-		Selection = Query.Execute().Choose();
+		Selection = Query.Execute().Select();
 		While Selection.Next() Do
 			ScheduledJob = New Structure;
 			ScheduledJob.Insert("Job" , Selection.Job);
@@ -1200,7 +1200,7 @@ Function ScheduleJobExecution(MethodName, Parameters = Undefined, Key = "", Excl
 	
 EndFunction
 
-// Adds update handlers required by this subsystem to the Handlers list. 
+// Adds update handlers required to this subsystem to the Handlers list. 
 // 
 // Parameters:
 // Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details.
@@ -1260,7 +1260,7 @@ Function GetDataAreaTimeZone(DataArea)
 	
 	TimeZone = "";
 	If Not QueryResult.IsEmpty() Then 
-		Selection = QueryResult.Choose();
+		Selection = QueryResult.Select();
 		Selection.Next();
 		TimeZone = Selection.TimeZone;
 	EndIf;

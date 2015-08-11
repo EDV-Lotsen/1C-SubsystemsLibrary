@@ -72,7 +72,7 @@ Function GetAttributeValues(Ref, AttributeNames) Export
 		|	AliasForSpecifiedTable.Ref = &Ref
 		|");
 	Query.SetParameter("Ref", Ref);
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	Selection.Next();
 
 	Result = New Structure;
@@ -140,7 +140,7 @@ Function ObjectAttributeValues(RefArray, AttributeNames) Export
 		|	Table.Ref IN (&RefArray)";
 	Query.SetParameter("RefArray", RefArray);
 	
-	Selection = Query.Execute().Choose();
+	Selection = Query.Execute().Select();
 	While Selection.Next() Do
 		Result = New Structure(AttributeNames);
 		FillPropertyValues(Result, Selection);
@@ -252,7 +252,7 @@ Function PostDocuments(Documents) Export
 		
 		CompletedSuccessfully = False;
 		DocumentObject = DocumentRef.GetObject();
-		If DocumentObject.CheckFilling() Then
+		If DocumentObject.FillCheck() Then
 			Try
 				DocumentObject.Write(DocumentWriteMode.Posting);
 				CompletedSuccessfully = True;
@@ -260,7 +260,7 @@ Function PostDocuments(Documents) Export
 				ErrorPresentation = BriefErrorDescription(ErrorInfo());
 				ErrorMessageText = NStr("en = 'Error posting the document: %1.'");
 				ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageText, ErrorPresentation);
-				WriteLogEvent(NStr("en = 'Posting documents before printing.'"),
+				WriteLogEvent(NStr("en = 'Posting documents before printing.'", Metadata.DefaultLanguage.LanguageCode),
 					EventLogLevel.Information, DocumentObject.Metadata(), DocumentRef, 
 					DetailErrorDescription(ErrorInfo()));
 			EndTry;
@@ -411,17 +411,17 @@ EndProcedure
 Function ValueTableToArray(ValueTable) Export
 	
 	Array = New Array();
-	StructureString = "";
+	StructureAsString = "";
 	CommaRequired = False;
 	For Each Column In ValueTable.Columns Do
 		If CommaRequired Then
-			StructureString = StructureString + ",";
+			StructureAsString = StructureAsString + ",";
 		EndIf;
-		StructureString = StructureString + Column.Name;
+		StructureAsString = StructureAsString + Column.Name;
 		CommaRequired = True;
 	EndDo;
 	For Each String In ValueTable Do
-		NewRow = New Structure(StructureString);
+		NewRow = New Structure(StructureAsString);
 		FillPropertyValues(NewRow, String);
 		Array.Add(NewRow);
 	EndDo;
@@ -451,7 +451,7 @@ Function ValueTableRowToStructure(ValueTableRow) Export
 	
 EndFunction
 
-Function GetStructureKeyString(Structure, Separator = ",") Export
+Function GetStructureKeysAsString(Structure, Separator = ",") Export
 	
 	Result = "";
 	
@@ -930,7 +930,7 @@ EndFunction
 // COM object - if the external connection has been established successfully;
 // Undefined - if the external connection has not been established.
 // 
-Function EstablishExternalConnection(Parameters, ErrorMessageString = "", ErrorAttachingAddIn = False) Export
+Function SetExternalConnection(Parameters, ErrorMessageString = "", ErrorAttachingAddIn = False) Export
 	
 	// The return value (COM object)
 	Connection = Undefined;
@@ -1078,7 +1078,7 @@ Procedure ExecuteSafely(ExportProcedureName, Parameters = Undefined, DataArea = 
 	Try
 		TempStructure.Insert(MethodName);
 	Except
-		WriteLogEvent(NStr("en = 'Safe method execution.'"), EventLogLevel.Error, , ,
+		WriteLogEvent(NStr("en = 'Safe method execution.'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
 			DetailErrorDescription(ErrorInfo()));
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Invalid format of the ExportProcedureName parameter %1.'"),
@@ -1221,7 +1221,7 @@ Function SubjectString(SubjectRef) Export
 	CommonUseOverridable.SetSubjectPresentation(SubjectRef, Result); 
 	
 	If IsBlankString(Result) Then
-		If SubjectRef = Undefined Or SubjectRef.IsEmpty() Then
+		If SubjectRef = Undefined Or SubjectRef.Empty() Then
 			Result = NStr("en = 'not specified");
 		ElsIf Metadata.Documents.Contains(SubjectRef.Metadata()) Then
 			Result = String(SubjectRef);
@@ -3119,7 +3119,7 @@ EndProcedure
 // Parameters:
 // StructureArray - Array - Array of Structure with the following fields:
 // Object, Setting, Value;
-// NeedToRefreshCachedValues - Boolean - flag that shows whether cached values will be updated.
+// NeedToRefreshCachedValues - Boolean - flag that shows whether reusable values will be updated.
 //
 Procedure CommonSettingsStorageSaveArray(StructureArray,
 	NeedToRefreshCachedValues = False) Export
@@ -3139,7 +3139,7 @@ Procedure CommonSettingsStorageSaveArray(StructureArray,
 EndProcedure
 
 // Saves the StructureArray user settings array and updates 
-// cached values. Can be called on client.
+// reusable values. Can be called on client.
 // 
 // Parameters:
 // StructureArray - Array - Array of Structure with the following fields:
@@ -3152,7 +3152,7 @@ Procedure CommonSettingsStorageSaveArrayAndRefreshCachedValues(StructureArray) E
 EndProcedure
 
 // Saves settings to the common settings storage and updates 
-// cached values.
+// reusable values.
 // 
 // Parameters:
 // Corresponds to the CommonSettingsStorage.Save method. 
@@ -3558,6 +3558,7 @@ EndFunction
 Procedure SetInfoBaseSeparationParameters(Val TurnOnDataSeparation = False) Export
 	
 	SetPrivilegedMode(True);
+
 	Constants.UseSeparationByDataAreas.Set(TurnOnDataSeparation);
 	
 EndProcedure
@@ -3622,14 +3623,14 @@ Function GetInterfaceVersions(Val ConnectionParameters, Val InterfaceName) Expor
 		Raise(NStr("en = 'Service URL is not specified.'"));
 	EndIf;
 	
-	ReceivingParameters = New Array;
-	ReceivingParameters.Add(ConnectionParameters);
-	ReceivingParameters.Add(InterfaceName);
+	ReceptionParameters = New Array;
+	ReceptionParameters.Add(ConnectionParameters);
+	ReceptionParameters.Add(InterfaceName);
 	
 	Return CommonUseCached.GetVersionCacheData(
 		VersionCacheRecordID(ConnectionParameters.URL, InterfaceName), 
 		Enums.ProgramInterfaceCacheDataTypes.InterfaceVersions, 
-		ValueToXMLString(ReceivingParameters),
+		ValueToXMLString(ReceptionParameters),
 		True);
 	
 EndFunction
@@ -3645,7 +3646,7 @@ EndFunction
 //
 // Example:
 // Parameters = ...
-// ExternalConnection = CommonUse.EstablishExternalConnection(Parameters);
+// ExternalConnection = CommonUse.SetExternalConnection(Parameters);
 // VersionArray = CommonUse.GetInterfaceVersionsViaExternalConnection(ExternalConnection, "DataExchange");
 //
 Function GetInterfaceVersionsViaExternalConnection(ExternalConnection, Val InterfaceName) Export
@@ -3657,7 +3658,7 @@ Function GetInterfaceVersionsViaExternalConnection(ExternalConnection, Val Inter
 			|Error details: %1'"
 		);
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, DetailErrorDescription(ErrorInfo()));
-		WriteLogEvent(NStr("en = 'Getting interface versions'"), EventLogLevel.Error,,, MessageString);
+		WriteLogEvent(NStr("en = 'Getting interface versions'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, MessageString);
 		
 		Return New FixedArray(New Array);
 	EndTry;
@@ -3692,7 +3693,7 @@ Procedure VersionCacheRecordDeletion(Val IDSearchSubstring) Export
 	|	ProgramInterfaceCache.ID LIKE ""%" + GenerateSearchQueryString(IDSearchSubstring) + "%""
 	|		ESCAPE ""~""";
 	Result = Query.Execute();
-	Selection = Result.Choose();
+	Selection = Result.Select();
 	While Selection.Next() Do
 		Record = InformationRegisters.ProgramInterfaceCache.CreateRecordManager();
 		Record.ID = Selection.ID;
@@ -3738,7 +3739,7 @@ Procedure NewMetadataObjectCollectionRow(Name, Synonym, Picture, ObjectPicture, 
 	
 EndProcedure
 
-Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceivingParameters) Export
+Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceptionParameters) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -3769,7 +3770,7 @@ Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceivingParameters)
 	
 	// Making sure that the data requires to be updated
 	If Not Result.IsEmpty() Then
-		Selection = Result.Choose();
+		Selection = Result.Select();
 		Selection.Next();
 		If Not VersionCacheRecordObsolete(Selection) Then
 			// The data is relevant
@@ -3779,9 +3780,9 @@ Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceivingParameters)
 	EndIf;
 	
 	If DataType = Enums.ProgramInterfaceCacheDataTypes.InterfaceVersions Then
-		Data = GetInterfaceVersionsToCache(ReceivingParameters[0], ReceivingParameters[1]);
+		Data = GetInterfaceVersionsToCache(ReceptionParameters[0], ReceptionParameters[1]);
 	ElsIf DataType = Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails Then
-		Data = GetWSDL(ReceivingParameters[0], ReceivingParameters[1], ReceivingParameters[2]);
+		Data = GetWSDL(ReceptionParameters[0], ReceptionParameters[1], ReceptionParameters[2]);
 	Else
 		TextTemplate = NStr("en = 'Unknown version cache data type: %1'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(TextTemplate, DataType);
@@ -3841,10 +3842,10 @@ Function GetInterfaceVersionsToCache(Val ConnectionParameters, Val InterfaceName
 		UserPassword = Undefined;
 	EndIf;
 	
-	ServiceAddress = ConnectionParameters.URL + "/ws/InterfaceVersioninging?wsdl";
+	ServiceAddress = ConnectionParameters.URL + "/ws/InterfaceVersioning?wsdl";
 	
 	VersioningProxy = CommonUseCached.GetWSProxy(ServiceAddress, "http://1c-dn.com/SaaS/1.0/WS",
-		"InterfaceVersioninging", , UserName, UserPassword);
+		"InterfaceVersioning", , UserName, UserPassword);
 		
 	XDTOArray = VersioningProxy.GetVersions(InterfaceName);
 	If XDTOArray = Undefined Then
@@ -3858,14 +3859,14 @@ EndFunction
 
 Function GetWSDL(Val Address, Val UserName, Val Password)
 	
-	ReceivingParameters = New Structure;
+	ReceptionParameters = New Structure;
 	If Not IsBlankString(UserName) Then
-		ReceivingParameters.Insert("User", UserName);
-		ReceivingParameters.Insert("Password", Password);
+		ReceptionParameters.Insert("User", UserName);
+		ReceptionParameters.Insert("Password", Password);
 	EndIf;
 	
 	FileDetails = Undefined;
-	StandardSubsystemsOverridable.DownloadFileAtServer(Address, ReceivingParameters, FileDetails);
+	StandardSubsystemsOverridable.DownloadFileAtServer(Address, ReceptionParameters, FileDetails);
 	
 	If Not FileDetails.State Then
 		Raise(NStr("en = 'Error getting the Web service description file:'") + Chars.LF + FileDetails.ErrorMessage)
@@ -3889,10 +3890,421 @@ Function GetWSDL(Val Address, Val UserName, Val Password)
 	Try
 		DeleteFiles(FileDetails.Path);
 	Except
-		WriteLogEvent("TempFileDeletion", EventLogLevel.Error, , , 
+		WriteLogEvent(NStr("en = 'TempFileDeletion'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , 
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	
 	Return FileData;
+	
+EndFunction
+
+// Internal use only.
+Function SubsystemExists(FullSubsystemName) Export
+	
+	SubsystemNames = StandardSubsystemsCached.SubsystemNames();
+	Return SubsystemNames.Get(FullSubsystemName) <> Undefined;
+	
+EndFunction
+
+// Internal use only.
+Function IsSubordinateDIBNode() Export
+	
+	SetPrivilegedMode(True);
+	
+	Return ExchangePlans.MasterNode() <> Undefined;
+	
+EndFunction
+
+// Internal use only.
+Function SubordinateDIBNodeConfigurationUpdateRequired() Export
+	
+	Return IsSubordinateDIBNode() And ConfigurationChanged();
+	
+EndFunction
+
+// Internal use only.
+Function CommonModule(Name) Export
+	
+	If Metadata.CommonModules.Find(Name) <> Undefined Then
+		Module = SafeMode.EvaluateInSafeMode(Name);
+	ElsIf StrOccurrenceCount(Name, ".") = 1 Then
+		Return ManagerServerModule(Name);
+	Else
+		Module = Undefined;
+	EndIf;
+	
+	If TypeOf(Module) <> Type("CommonModule") Then
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en='%1 common module not found.'"), Name);
+	EndIf;
+	
+	Return Module;
+	
+EndFunction
+
+// Internal use only.
+Function ManagerServerModule(Name)
+	ObjectFound = False;
+	                  
+	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(Name, ".");
+	If NameParts.Count() = 2 Then
+		
+		TypeName = Upper(NameParts[0]);
+		ObjectName = NameParts[1];
+		
+		If TypeName = Upper(TypeNameConstants()) Then
+			If Metadata.Constants.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameInformationRegisters()) Then
+			If Metadata.InformationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameAccumulationRegisters()) Then
+			If Metadata.AccumulationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameAccountingRegisters()) Then
+			If Metadata.AccountingRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameCalculationRegisters()) Then
+			If Metadata.CalculationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameCatalogs()) Then
+			If Metadata.Catalogs.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameDocuments()) Then
+			If Metadata.Documents.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameReports()) Then
+			If Metadata.Reports.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameDataProcessors()) Then
+			If Metadata.DataProcessors.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameBusinessProcesses()) Then
+			If Metadata.BusinessProcesses.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameDocumentJournals()) Then
+			If Metadata.DocumentJournals.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameTasks()) Then
+			If Metadata.Tasks.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameChartsOfAccounts()) Then
+			If Metadata.ChartsOfAccounts.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameExchangePlans()) Then
+			If Metadata.ExchangePlans.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameChartsOfCharacteristicTypes()) Then
+			If Metadata.ChartsOfCharacteristicTypes.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf TypeName = Upper(TypeNameChartsOfCalculationTypes()) Then
+			If Metadata.ChartsOfCalculationTypes.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		EndIf;
+		
+	EndIf;
+	
+	If Not ObjectFound Then
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en='The %1 metadata object is not found"
+"or obtaining of the manager module for this object is not supported.'"), Name);
+	EndIf;
+	
+	Module = SafeMode.EvaluateInSafeMode(Name);
+	
+	Return Module;
+EndFunction
+
+// Internal use only.
+Function CommonBaseFunctionalityParameters() Export
+	
+	CommonParameters = New Structure;
+	CommonParameters.Insert("PersonalSettingsFormName", "");
+	CommonParameters.Insert("LowestPlatformVersion", "8.3.4.365");
+	CommonParameters.Insert("MustExit", True);
+	CommonParameters.Insert("AskConfirmationOnExit", True);
+	CommonParameters.Insert("DisableMetadataObjectIDsCatalog", False);
+	
+	CommonUseOverridable.BasicFunctionalityCommonParametersOnDefine(CommonParameters);
+	
+	CommonUseOverridable.PersonalSettingsFormName(CommonParameters.PersonalSettingsFormName);
+	CommonUseOverridable.GetMinRequiredPlatformVersion(CommonParameters);
+	
+	Return CommonParameters;
+	
+EndFunction
+
+// Internal use only.
+Function IsEqualData(Data1, Data2) Export
+	
+	If TypeOf(Data1) <> TypeOf(Data2) Then
+		Return False;
+	EndIf;
+	
+	If TypeOf(Data1) = Type("Structure")
+	 Or TypeOf(Data1) = Type("FixedStructure") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		For Each KeyAndValue In Data1 Do
+			OldValue = Undefined;
+			
+			If Not Data2.Property(KeyAndValue.Key, OldValue)
+			 Or Not IsEqualData(KeyAndValue.Value, OldValue) Then
+			
+				Return False;
+			EndIf;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("Map")
+	      Or TypeOf(Data1) = Type("FixedMap") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		NewMapKeys = New Map;
+		
+		For Each KeyAndValue In Data1 Do
+			NewMapKeys.Insert(KeyAndValue.Key, True);
+			OldValue = Data2.Get(KeyAndValue.Key);
+			
+			If Not IsEqualData(KeyAndValue.Value, OldValue) Then
+				Return False;
+			EndIf;
+		EndDo;
+		
+		For Each KeyAndValue In Data2 Do
+			If NewMapKeys[KeyAndValue.Key] = Undefined Then
+				Return False;
+			EndIf;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("Array")
+	      Or TypeOf(Data1) = Type("FixedArray") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		Index = Data1.Count()-1;
+		While Index >= 0 Do
+			If Not IsEqualData(Data1.Get(Index), Data2.Get(Index)) Then
+				Return False;
+			EndIf;
+			Index = Index - 1;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("ValueTable") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		If Data1.Columns.Count() <> Data2.Columns.Count() Then
+			Return False;
+		EndIf;
+		
+		For Each Column In Data1.Columns Do
+			If Data2.Columns.Find(Column.Name) = Undefined Then
+				Return False;
+			EndIf;
+			
+			Index = Data1.Count()-1;
+			While Index >= 0 Do
+				If Not IsEqualData(Data1[Index][Column.Name], Data2[Index][Column.Name]) Then
+					Return False;
+				EndIf;
+				Index = Index - 1;
+			EndDo;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("ValueStorage") Then
+	
+		If Not IsEqualData(Data1.Get(), Data2.Get()) Then
+			Return False;
+		EndIf;
+		
+		Return True;
+	EndIf;
+	
+	Return Data1 = Data2;
+	
+EndFunction
+
+// Internal use only.
+Function EventHandlers(Event) Export
+	
+	Return StandardSubsystemsCached.ServerEventHandlers(Event, False);
+	
+EndFunction
+
+// Internal use only.
+Function InternalEventHandlers(Event) Export
+	
+	Return StandardSubsystemsCached.ServerEventHandlers(Event, True);
+	
+EndFunction
+
+// Internal use only.
+Function FixedData(Data, RaiseException = True) Export
+	
+	If TypeOf(Data) = Type("Array") Then
+		Array = New Array;
+		
+		Index = Data.Count() - 1;
+		
+		For Each Value In Data Do
+			
+			If TypeOf(Value) = Type("Structure")
+			 Or TypeOf(Value) = Type("Map")
+			 Or TypeOf(Value) = Type("Array") Then
+				
+				Array.Add(FixedData(Value, RaiseException));
+			Else
+				If RaiseException Then
+					CheckDataIsFixed(Value, True);
+				EndIf;
+				Array.Add(Value);
+			EndIf;
+		EndDo;
+		
+		Return New FixedArray(Array);
+		
+	ElsIf TypeOf(Data) = Type("Structure")
+	      Or TypeOf(Data) = Type("Map") Then
+		
+		If TypeOf(Data) = Type("Structure") Then
+			Collection = New Structure;
+		Else
+			Collection = New Map;
+		EndIf;
+		
+		For Each KeyAndValue In Data Do
+			Value = KeyAndValue.Value;
+			
+			If TypeOf(Value) = Type("Structure")
+			 Or TypeOf(Value) = Type("Map")
+			 Or TypeOf(Value) = Type("Array") Then
+				
+				Collection.Insert(
+					KeyAndValue.Key, FixedData(Value, RaiseException));
+			Else
+				If RaiseException Then
+					CheckDataIsFixed(Value, True);
+				EndIf;
+				Collection.Insert(KeyAndValue.Key, Value);
+			EndIf;
+		EndDo;
+		
+		If TypeOf(Data) = Type("Structure") Then
+			Return New FixedStructure(Collection);
+		Else
+			Return New FixedMap(Collection);
+		EndIf;
+		
+	ElsIf RaiseException Then
+		CheckDataIsFixed(Data);
+	EndIf;
+	
+	Return Data;
+	
+EndFunction
+
+// Internal use only.
+Procedure CheckDataIsFixed(Data, DataInFixedTypeValue = False)
+	
+	DataType = TypeOf(Data);
+	
+	If DataType = Type("ValueStorage")
+	 Or DataType = Type("FixedArray")
+	 Or DataType = Type("FixedStructure")
+	 Or DataType = Type("FixedMap") Then
+		
+		Return;
+	EndIf;
+	
+	If DataInFixedTypeValue Then
+		
+		If DataType = Type("Boolean")
+		 Or DataType = Type("String")
+		 Or DataType = Type("Number")
+		 Or DataType = Type("Date")
+		 Or DataType = Type("Undefined")
+		 Or DataType = Type("UUID")
+		 Or DataType = Type("Null")
+		 Or DataType = Type("Type")
+		 Or DataType = Type("ValueStorage")
+		 Or DataType = Type("CommonModule")
+		 Or DataType = Type("MetadataObject")
+		 Or DataType = Type("XDTOValueType")
+		 Or DataType = Type("XDTOObjectType")
+		 Or IsReference(DataType) Then
+			
+			Return;
+		EndIf;
+	EndIf;
+	
+	Raise StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en='Error in FixedData function of CommonUse module."
+"Data of %1 type can not be fixed.'"),
+		String(DataType) );
+	
+EndProcedure
+
+// Internal use only.
+Function OnCreateAtServer(Form, Cancel, StandardProcessing) Export
+	
+	If CommonUseCached.DataSeparationEnabled()
+		And Not CommonUseCached.CanUseSeparatedData() Then
+		Cancel = True;
+		Return False;
+	EndIf;
+	
+	If Form.Parameters.Property("AutoTest") Then
+		Return False;
+	EndIf;
+	
+	SetPrivilegedMode(True);
+	If SessionParameters.ClientParametersAtServer.Get("HideDesktopOnStart") <> Undefined Then
+		Cancel = True;
+		Return False;
+	EndIf;
+	SetPrivilegedMode(False);
+	
+	Return True;
+	
+EndFunction
+
+// Internal use only.
+Function DefaultLanguageCode() Export
+	
+	Return Metadata.DefaultLanguage.LanguageCode;
 	
 EndFunction
