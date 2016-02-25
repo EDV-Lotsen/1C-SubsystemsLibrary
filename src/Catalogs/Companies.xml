@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Catalog uuid="b8a966ba-3452-44df-91d0-7040ecd3e4c2">
+	<Catalog uuid="8fa0d9d7-c555-441a-a39b-5720ba0b9cfa">
 		<InternalInfo>
 			<xr:GeneratedType name="CatalogObject.Companies" category="Object">
-				<xr:TypeId>717ef294-5cd4-4b3b-a237-d5bebd51ab2d</xr:TypeId>
-				<xr:ValueId>0a42b7cf-a6cb-4b4e-ac2d-ca025fe89cfa</xr:ValueId>
+				<xr:TypeId>8090b894-e815-458b-98d2-069e00c85751</xr:TypeId>
+				<xr:ValueId>ff5978ef-17b6-4d69-8352-171c01b214f4</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogRef.Companies" category="Ref">
-				<xr:TypeId>c66b2ec0-5fb7-4a32-ba46-673aebc6b37a</xr:TypeId>
-				<xr:ValueId>bc5b2719-a3bf-49a8-b9b3-f69cdcadb553</xr:ValueId>
+				<xr:TypeId>edaad0d4-95dd-44d2-8d2b-663fef16dcc6</xr:TypeId>
+				<xr:ValueId>0e861bf1-08b5-424a-ba14-4b55eeaa80a1</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogSelection.Companies" category="Selection">
-				<xr:TypeId>2101c292-8539-4dd6-b360-956a08cba02c</xr:TypeId>
-				<xr:ValueId>48264996-c5af-49c4-9039-3c862776bf3a</xr:ValueId>
+				<xr:TypeId>b473be3f-f23a-4703-b53b-d1a980a852b5</xr:TypeId>
+				<xr:ValueId>454a2389-e795-4e9c-9f71-e0b49a956b14</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogList.Companies" category="List">
-				<xr:TypeId>63076410-b5e1-4398-bb5e-849270aacf1e</xr:TypeId>
-				<xr:ValueId>41cf9e1b-808a-42b8-8dc7-370a8404decd</xr:ValueId>
+				<xr:TypeId>066fa4f2-70e8-48c5-826c-22b5f4def318</xr:TypeId>
+				<xr:ValueId>0a67196d-ab82-4ecd-ac2c-f7892889adfc</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogManager.Companies" category="Manager">
-				<xr:TypeId>f43400e4-a03e-421e-b83a-a63c1bce6260</xr:TypeId>
-				<xr:ValueId>6b29f0a4-04b2-43d9-a832-f0962a661cd9</xr:ValueId>
+				<xr:TypeId>58985bc4-d22d-4ff9-9226-f44e1bfd83ad</xr:TypeId>
+				<xr:ValueId>dd8c7a04-8ecc-452d-96a1-0b7fda36a093</xr:ValueId>
 			</xr:GeneratedType>
 		</InternalInfo>
 		<Properties>
@@ -37,7 +37,7 @@
 			<LimitLevelCount>false</LimitLevelCount>
 			<LevelCount>2</LevelCount>
 			<FoldersOnTop>true</FoldersOnTop>
-			<UseStandardCommands>true</UseStandardCommands>
+			<UseStandardCommands>false</UseStandardCommands>
 			<Owners/>
 			<SubordinationUse>ToItems</SubordinationUse>
 			<CodeLength>9</CodeLength>
@@ -326,7 +326,46 @@
 			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 		</Properties>
 		<ChildObjects>
-			<Attribute uuid="fd9495d7-b410-465a-bb72-dde9ef6fc793">
+			<Attribute uuid="e57f3802-68d0-441d-bde8-353230b7bdc2">
+				<Properties>
+					<Name>Multicurrency</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Multicurrency</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+					<PasswordMode>false</PasswordMode>
+					<Format/>
+					<EditFormat/>
+					<ToolTip/>
+					<MarkNegatives>false</MarkNegatives>
+					<Mask/>
+					<MultiLine>false</MultiLine>
+					<ExtendedEdit>false</ExtendedEdit>
+					<MinValue xsi:nil="true"/>
+					<MaxValue xsi:nil="true"/>
+					<FillFromFillingValue>false</FillFromFillingValue>
+					<FillValue xsi:type="xs:boolean">false</FillValue>
+					<FillChecking>DontCheck</FillChecking>
+					<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+					<ChoiceParameterLinks/>
+					<ChoiceParameters/>
+					<QuickChoice>DontUse</QuickChoice>
+					<CreateOnInput>Use</CreateOnInput>
+					<ChoiceForm/>
+					<LinkByType/>
+					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
+					<Use>ForItem</Use>
+					<Indexing>DontIndex</Indexing>
+					<FullTextSearch>Use</FullTextSearch>
+				</Properties>
+			</Attribute>
+			<Attribute uuid="80d6883d-c608-4fe5-acae-78bc45e40e5f">
 				<Properties>
 					<Name>Prefix</Name>
 					<Synonym>
@@ -349,7 +388,7 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Used for document numbering. Two characters of prefix will be added to the beginning of each document number for documents, created for this company.</v8:content>
+							<v8:content>Used for document numbering. Two prefix characters will be added at the beginning of each document number, for documents created for this company.</v8:content>
 						</v8:item>
 					</ToolTip>
 					<MarkNegatives>false</MarkNegatives>
@@ -374,15 +413,15 @@
 					<FullTextSearch>Use</FullTextSearch>
 				</Properties>
 			</Attribute>
-			<TabularSection uuid="39dff1de-84f9-4f32-a466-3d5def14436c">
+			<TabularSection uuid="213b173a-c3b7-449c-a618-d479c4dc38e8">
 				<InternalInfo>
 					<xr:GeneratedType name="CatalogTabularSection.Companies.ContactInformation" category="TabularSection">
-						<xr:TypeId>63569223-a572-4864-ad85-cbdc279e3cfa</xr:TypeId>
-						<xr:ValueId>2e18039d-fb72-4d09-a53c-cac2293594fe</xr:ValueId>
+						<xr:TypeId>d6c31478-579c-4b77-815c-56e2125cfcf9</xr:TypeId>
+						<xr:ValueId>0e89dde3-a6e9-4f72-b1e6-2fa02829b646</xr:ValueId>
 					</xr:GeneratedType>
 					<xr:GeneratedType name="CatalogTabularSectionRow.Companies.ContactInformation" category="TabularSectionRow">
-						<xr:TypeId>874a675a-e1f8-4ce8-a39f-e46ccae49afc</xr:TypeId>
-						<xr:ValueId>67140ee9-075a-40a0-a6e6-e98f289c6688</xr:ValueId>
+						<xr:TypeId>c99b2db6-6924-4fab-a4e3-49e02a159642</xr:TypeId>
+						<xr:ValueId>1f9f5c68-4ca5-41d0-abe7-f0fc72cc10b2</xr:ValueId>
 					</xr:GeneratedType>
 				</InternalInfo>
 				<Properties>
@@ -431,7 +470,7 @@
 					<Use>ForItem</Use>
 				</Properties>
 				<ChildObjects>
-					<Attribute uuid="f3c8305b-a292-45bd-b79b-5155638afa04">
+					<Attribute uuid="7a64dffc-5cfe-41e2-bd55-fbf4957559a4">
 						<Properties>
 							<Name>Type</Name>
 							<Synonym>
@@ -450,7 +489,7 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Contact information type (address, phone, etc.)</v8:content>
+									<v8:content>Contact information type (phone, address, etc.)</v8:content>
 								</v8:item>
 							</ToolTip>
 							<MarkNegatives>false</MarkNegatives>
@@ -468,11 +507,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>DontIndex</Indexing>
+							<Indexing>Index</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="48670627-82d9-4397-9dbf-8eed6816fde2">
+					<Attribute uuid="a78249aa-ca9f-4bee-b00d-68ff59ea81a4">
 						<Properties>
 							<Name>Kind</Name>
 							<Synonym>
@@ -509,11 +548,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>DontIndex</Indexing>
+							<Indexing>Index</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="58f34bde-7c02-4080-922e-b905099cc168">
+					<Attribute uuid="7534148d-0124-49a2-a446-c6205d153153">
 						<Properties>
 							<Name>Presentation</Name>
 							<Synonym>
@@ -558,7 +597,7 @@
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="428b3f97-f16e-4f61-939f-6307efdadea6">
+					<Attribute uuid="32ed8a10-7177-4e45-866e-04a1b6831570">
 						<Properties>
 							<Name>FieldValues</Name>
 							<Synonym>
@@ -581,7 +620,7 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Auxiliary attribute for storing contact information.</v8:content>
+									<v8:content>Auxiliary field for storing contact information.</v8:content>
 								</v8:item>
 							</ToolTip>
 							<MarkNegatives>false</MarkNegatives>
@@ -603,7 +642,7 @@
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="3030d812-8d97-4c35-8bd1-3ca40a6c0d77">
+					<Attribute uuid="e2a90d7a-5480-47cd-b296-8d60d8baf7f9">
 						<Properties>
 							<Name>Country</Name>
 							<Synonym>
@@ -644,17 +683,17 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="7cac40bc-7697-4b49-81ed-d2b74e532224">
+					<Attribute uuid="8190a432-1037-4334-b2c7-bae39f7f9442">
 						<Properties>
-							<Name>State</Name>
+							<Name>Region</Name>
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>State</v8:content>
+									<v8:content>Region</v8:content>
 								</v8:item>
 							</Synonym>
 							<Comment/>
@@ -671,7 +710,7 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>State (filled for address)</v8:content>
+									<v8:content>Region (filled for address)</v8:content>
 								</v8:item>
 							</ToolTip>
 							<MarkNegatives>false</MarkNegatives>
@@ -689,11 +728,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="eb280c86-eec8-492c-9cea-a6ed480a2f61">
+					<Attribute uuid="4733e5c1-8198-408b-8903-866d3b0fdc43">
 						<Properties>
 							<Name>City</Name>
 							<Synonym>
@@ -734,11 +773,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="a6f9fb53-ceed-417c-8f39-dba036943bf1">
+					<Attribute uuid="e1fc5146-37c5-4207-af05-7250976bd406">
 						<Properties>
 							<Name>EmailAddress</Name>
 							<Synonym>
@@ -779,11 +818,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="21934b71-1b6a-4a75-b393-3a508202522a">
+					<Attribute uuid="60038cd9-8d01-44b1-9d3f-f3a31e59e5db">
 						<Properties>
 							<Name>ServerDomainName</Name>
 							<Synonym>
@@ -824,11 +863,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="269f4ee9-cb83-40ea-9a72-cb86006d4c88">
+					<Attribute uuid="f0bfb98b-cc43-4b6c-8166-9b81b4c22cb0">
 						<Properties>
 							<Name>PhoneNumber</Name>
 							<Synonym>
@@ -869,11 +908,11 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
-					<Attribute uuid="85c9ee0f-3620-42b7-b124-b98a81f9be75">
+					<Attribute uuid="f5e27159-789a-4d34-ac51-fd99d753b83a">
 						<Properties>
 							<Name>PhoneNumberWithoutCodes</Name>
 							<Synonym>
@@ -914,13 +953,73 @@
 							<ChoiceForm/>
 							<LinkByType/>
 							<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-							<Indexing>Index</Indexing>
+							<Indexing>DontIndex</Indexing>
 							<FullTextSearch>Use</FullTextSearch>
 						</Properties>
 					</Attribute>
 				</ChildObjects>
 			</TabularSection>
 			<Form>ItemForm</Form>
+			<Command uuid="981a74f4-cdc2-4016-b462-9b5fd0d6de4d">
+				<Properties>
+					<Name>CompanyDetails</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Company details</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>NavigationPanelOrdinary</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
+			<Command uuid="1d89e2b7-8f66-4210-8ab4-29efde5e5295">
+				<Properties>
+					<Name>AddCompany</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Add company</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>NavigationPanelOrdinary</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
+			<Command uuid="fafff964-8daa-4921-9d53-fd6be3878d94">
+				<Properties>
+					<Name>Companies</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Companies</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment/>
+					<Group>NavigationPanelOrdinary</Group>
+					<CommandParameterType/>
+					<ParameterUseMode>Single</ParameterUseMode>
+					<ModifiesData>false</ModifiesData>
+					<Representation>Auto</Representation>
+					<ToolTip/>
+					<Picture/>
+					<Shortcut/>
+				</Properties>
+			</Command>
 		</ChildObjects>
 	</Catalog>
 </MetaDataObject>

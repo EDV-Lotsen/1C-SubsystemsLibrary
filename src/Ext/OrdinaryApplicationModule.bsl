@@ -10,11 +10,17 @@ Var MessagesForEventLog Export;
 Var SuggestFileSystemExtensionInstallation Export;
 // Flag that shows whether the standard exit confirmation required in the current session.
 Var SkipExitConfirmation Export;
-
+// Parameter structure used when starting and exiting the application.
+Var ParametersOnApplicationStartAndExit Export;
+// Form closure confirmation parameter structure.
+Var FormClosingConfirmationParameters Export;
+// External resource request confirmation notification.
+Var NotificationOnExternalResourceRequestApply Export;
+ 
 // End StandardSubsystems.BaseFunctionality
 
 // StandardSubsystems.UserSessions
-Var SessionTerminationInProgress Export;
+Var UserSessionTerminationParameters Export;
 // End StandardSubsystems.UserSessions
 		
 // StandardSubsystems.ConfigurationUpdate
@@ -23,7 +29,8 @@ Var SessionTerminationInProgress Export;
 Var AvailableConfigurationUpdate Export;
 // Structure with configuration update wizard parameters
 Var ConfigurationUpdateSettings Export; 
-
+// Flag that shows whether the infobase configuration must be updated when exiting the session.
+Var SuggestInfobaseUpdateOnExitSession Export;
 // End StandardSubsystems.ConfigurationUpdate
 
 // StandardSubsystems.FileOperations
@@ -35,24 +42,23 @@ Var TwainAddIn Export; // Twain component for working with scanners
 Var AccessToWorkingDirectoryCheckExecuted Export;
 // End StandardSubsystems.FileFunctions
 
-// StandardSubsystems.InfoBaseBackup
+// StandardSubsystems.InfobaseBackup
 
 // Parameters for backups
-Var InfoBaseBackupParameters Export;
-// Flag that shows whether a backup is performed once the session is terminated
-Var NotifyAboutBackupOnExit Export;
-// Date of the deferred backup 
-Var DeferredBackupDate Export;
+Var InfobaseBackupParameters Export;
+// End StandardSubsystems.InfobaseBackup
 
-// End StandardSubsystems.InfoBaseBackup
-
-// StandardSubsystems.PerformanceEstimation
-Var PerformanceEstimationTimeMeasurement Export;
-// End StandardSubsystems.PerformanceEstimation
+// StandardSubsystems.PerformanceMonitor
+Var PerformanceMonitorTimeMeasurement Export;
+// End StandardSubsystems.PerformanceMonitor
+ 
+// StandardSubsystems.SaaSOperations.DataExchangeSaaS
+Var SuggestDataSynchronizationWithWebApplicationOnExit Export;
+// End StandardSubsystems.SaaSOperations.DataExchangeSaaS
 
 // End StandardSubsystems
 
-Procedure BeforeStart(Cancel)
+Procedure BeforeStart()
 	
 	// StandardSubsystems
 	StandardSubsystemsClient.BeforeStart();

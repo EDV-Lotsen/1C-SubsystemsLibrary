@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This list is used to set up sets of additional properties.</p>
+<p>You can set up additional property sets for specific applied objects. </p>
+<p>Placement of each additional property in the applied object window and its storage method depend on the property type: </p>
+<ul><li><strong>Additional attributes - </strong>stored directly in the catalog item or document (sometimes in a dedicated section or on a dedicated tab). The additional attributes are created to implement properties that are considered to be an integral part of the object. They are filled in when the object is edited, and can be edited by any user that can access the object with properties. 
+</li><li><strong>Additional data - </strong>used to store data on catalog items or documents that is not considered to be an integral part of the object. Generally, can be viewed and edited even by users not allowed to access the object itself. The additional data is edited in a separate window accessible from the object window.</li></ul><p>Additional attributes and data can be used in different combinations for different applied objects: additional attributes only, additional data only, or both.</p>
+<p>To start using additional properties, select the <strong>Common additional attributes (data)</strong> check box in the <strong>Administration - Common settings</strong> section. This will give you access to the related commands.</p>
+<p>All operations with additional attributes (data) are performed in the lists accessible via <strong>Additional attributes</strong> or <strong>Additional data</strong> commands in <strong>Administration</strong> - <strong>Common settings</strong> or <strong>Integrated subsystems (part 2)</strong> sections. </p>
+<p>The list of additional attribute sets can also be accessed from applied objects with additional attributes set up, via the <strong>All actions</strong> (or <strong>More, </strong>in Taxi interface) - <strong>Change additional data content</strong><strong> </strong>command. </p>
+<p>The list of additional data sets can also be accessed via the <strong>All actions</strong> (or <strong>More</strong>, in Taxi interface) - <strong>Change additional data content</strong> command from the <a href="CommonForm.AdditionalDataEditing/Help">Additional data</a> window of applied object. </p>
+<p>The <strong>Additional attributes (data)</strong> list is a table consisting of two sections: </p>
+<ul><li>The left section contains <strong>Additional attribute (data) sets </strong>assigned to catalogs or documents displayed as groups. If a catalog includes groups, <strong>Additional attribute (data) sets </strong>will correspond to the catalog groups. 
+</li><li>The right section contains a list of additional attributes (data) included in the selected set, displayed as a table. Mandatory attributes (data) in the list of additional attributes (data) will be displayed in bold. The table contains:  
+<ul><li><strong>Additional attribute (data) - </strong>contains list of descriptions of additional attributes (data); 
+</li><li><strong>Value type - </strong>specifies type and number of values for additional attributes (data).</li></ul></li></ul><p>Predefined additional attribute (data) sets correspond to the applied objects (catalogs or documentss) where additional attributes and data can be used. New sets cannot be added in this list. Sets are created automatically when you create groups in corresponding catalogs. </p>
+<p>You can create additional attribute (data) sets both for all catalog items and for specific catalog items. In this case, the catalog will be considered a group, and catalog attributes or catalog attribute values will be used as group items (the number of group items will be equal to the number of attribute values).</p>
+<h3>Assigning new additional attributes (data) to catalogs or documents</h3>
+<p>Depending on the settings, one or the other command may be available for new attribute (data) creation:</p>
+<ul><li>Select a set that corresponds to this catalog or document, and click <img src="StdPicture.CreateListItem" width="16" height="16"></img> <strong>Create</strong>. By default, an additional attribute (data) can only be added to a single set. Fill in the required <a href="ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Form.ItemForm/Help">fields</a>. 
+</li><li>Select a set that corresponds to this catalog or document, and<strong> </strong>click <strong>Add</strong> - <strong>New</strong> (identical to the <strong>Create</strong> command). Using this command, an additional attribute (data) can only be added to a single set. Fill in the required fields.</li></ul><h3>Common sets of additional attributes (data)</h3>
+<p>Predefined <strong>Common</strong> sets are available for specific catalogs.<strong> </strong>By default, additional attributes and data added to such sets will become common for all items of these catalogs.</p>
+<ul><li>
+<div>Select a <strong>Common</strong> set. </div>
+</li><li>
+<div>Click <img src="StdPicture.CreateListItem" width="16" height="16"></img> <strong>Create</strong> or<strong> Add - New</strong>. Fill in the required fields.</div></li></ul><h3>Adding values by sample</h3>
+<p>To gain access to this functionality, select the <strong>Attributes and data with common value list </strong>check box in<strong> </strong>the <strong>Administration - Common settings </strong>section. </p>
+<p>You can reuse existing attributes and data from other sets, or add attributes with a common value list for multiple attributes of the same type (example: <strong>Door color</strong> attribute based<strong> </strong>on <strong>Color</strong> attribute by sample). In<strong> </strong>this case, value list of the sample attribute will be used. Preparing value lists for multiple attributes of the same type with a single action saves time and efforts.</p>
+<ul><li>
+<div>Select a set from the list.</div>
+</li><li>
+<div>Click <img src="StdPicture.CreateListItem"></img> <strong>Add - By sample</strong>. </div>
+</li><li>
+<div>Select an additional attribute (data) from the available <a href="ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Form.ChoiceForm/Help">list</a>. Type and all values of the additional attribute (data) set as sample will be copied to the new item. Fill in the required fields. By default, the selected attribute will become common with the sample set. Entering new values will not be allowed in this case. You will be notified that this value list is common with another attribute.</div></li></ul><h3>Adding common additional attributes (data)</h3>
+<ul><li>To gain access to this functionality, select the <strong>Common additional attributes (data)</strong> check box in the <strong>Administration - Common settings </strong>section. 
+</li><li>An attribute is considered "common" when it is included in multiple sets. This option is used when it is necessary to share both an attribute and its value list. In lists and reports of catalog/document items, the common attributes are grouped together and displayed as a single aggregated attribute in a separate column or field. Example: the <strong>Color</strong> common attribute can be used<strong> </strong>to display all clothes and shoes items of yellow color. 
+</li><li>
+<div>Select a set from the list. </div>
+</li><li>
+<div>Click <img src="StdPicture.CreateListItem" width="16" height="16"></img><strong>Add - Common</strong>. </div>
+</li><li>
+<div>Select a common additional attribute (data) from the list. If the required attribute is not available in the <a href="ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Form.ChoiceForm/Help">list</a>, click <strong>Create</strong>. Fill in the required fields.</div>
+</li><li>
+<div>To add a common attribute to multiple sets, repeat these actions for each set.</div></li></ul><h3>Notes on deleting common additional attributes (data)</h3>
+<ul dir="ltr"><li>
+<div>
+<p>To delete a common additional attribute (data), you need to delete it from each set that includes it. It may be also necessary to clear values of the additional attribute before it can be deleted.</p></div>
+</li><li>
+<div>
+<p>After a property is marked for deletion from a set, the property values will be stored in objects until cleared. The property marked for deletion from a set will be distinctly displayed in the object window or additional data window.</p></div>
+</li><li>
+<div>Deletion marks can be removed if necessary.</div></li></ul><h3>See also:</h3>
+<ul><li><a href="ChartOfCharacteristicTypes.AdditionalDataAndAttributes/Help">Additional data and attributes</a>; 
+</li><li><a href="v8help://frame/form_common">Working with forms</a>.</li></ul></body></html>

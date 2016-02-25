@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="Group_Step_1" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>1. Select mode of algorithm script debugging</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Step 1 group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="Step_1_GroupExtendedTooltip" id="29"/>
+			<ChildItems>
+				<UsualGroup name="AlgorithmDebugGroup" id="7">
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="AlgorithmDebugGroupExtendedTooltip" id="30"/>
+					<ChildItems>
+						<RadioButtonField name="AlgorithmDebug" id="5">
+							<DataPath>Object.AlgorithmDebugMode</DataPath>
+							<RadioButtonType>Auto</RadioButtonType>
+							<ColumnsCount>1</ColumnsCount>
+							<ChoiceList>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Without algorithm debug;</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">0</Value>
+									</xr:Value>
+								</xr:Item>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Call algorithms as procedures</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">1</Value>
+									</xr:Value>
+								</xr:Item>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Substitute algorithm script to the place where it is called</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">2</Value>
+									</xr:Value>
+								</xr:Item>
+							</ChoiceList>
+							<ContextMenu name="AlgorithmDebugContextMenu" id="6"/>
+							<ExtendedTooltip name="AlgorithmDebugExtendedTooltip" id="31"/>
+							<Events>
+								<Event name="OnChange">AlgorithmDebugOnChange</Event>
+							</Events>
+						</RadioButtonField>
+						<Pages name="AlgorithmDebugTooltip" id="20">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Algorithm debugging tooltip</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Algorithm debugging tooltip</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Height>1</Height>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="AlgorithmDebugTooltipExtendedTooltip" id="32"/>
+							<ChildItems>
+								<Page name="Group_0" id="21">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 0</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 0</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="Group_0ExtendedTooltip" id="33"/>
+									<ChildItems>
+										<LabelDecoration name="WithoutDebugDecoration" id="8">
+											<Width>34</Width>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Algorithm are not exported. Use this mode when you don't need to perform algorithm debugging. Algorithms are executed but their script is inaccessible for debugging.</v8:content>
+												</v8:item>
+											</Title>
+											<TitleHeight>6</TitleHeight>
+											<ContextMenu name="WithoutDebugDecorationContextMenu" id="9"/>
+											<ExtendedTooltip name="WithoutDebugDecorationExtendedTooltip" id="34"/>
+										</LabelDecoration>
+									</ChildItems>
+								</Page>
+								<Page name="Group_1" id="22">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 1</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 1</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="Group_1ExtendedTooltip" id="35"/>
+									<ChildItems>
+										<LabelDecoration name="CallAsProceduresDecoration" id="24">
+											<Width>34</Width>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Algorithms are exported as separate procedures. The appropriate processing procedure is called when you call the algorithm. See Help to find out using mode restrictions.</v8:content>
+												</v8:item>
+											</Title>
+											<TitleHeight>6</TitleHeight>
+											<ContextMenu name="CallAsProceduresDecorationContextMenu" id="25"/>
+											<ExtendedTooltip name="CallAsProceduresDecorationExtendedTooltip" id="36"/>
+										</LabelDecoration>
+									</ChildItems>
+								</Page>
+								<Page name="Group_2" id="23">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 2</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Group 2</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="Group_2ExtendedTooltip" id="37"/>
+									<ChildItems>
+										<LabelDecoration name="SubstituteByCallScriptDecoration" id="26">
+											<Width>34</Width>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Algorithms are exported as an integrated script of handlers. It means that instead of algorithm calling line, complete algorithm script (with nested algorithms) is inserted. See Help to find out using mode restrictions.</v8:content>
+												</v8:item>
+											</Title>
+											<TitleHeight>6</TitleHeight>
+											<ContextMenu name="SubstituteByCallScriptDecorationContextMenu" id="27"/>
+											<ExtendedTooltip name="SubstituteByCallScriptDecorationExtendedTooltip" id="38"/>
+										</LabelDecoration>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="Group_Step_2" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>2. Export handler script</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Step 2 group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="Step_2_GroupExtendedTooltip" id="39"/>
+			<ChildItems>
+				<UsualGroup name="HandlerExportGroup" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Handler export group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Handler export group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="HandlerExportGroupExtendedTooltip" id="40"/>
+					<ChildItems>
+						<Button name="ExportHandlerScript" id="10">
+							<Type>UsualButton</Type>
+							<CommandName>Form.Command.ExportHandlerScript</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Generate export debug module</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="ExportHandlerScriptExtendedTooltip" id="41"/>
+						</Button>
+						<Button name="OpenFile" id="12">
+							<Type>UsualButton</Type>
+							<Width>3</Width>
+							<CommandName>Form.Command.OpenFile</CommandName>
+							<ExtendedTooltip name="OpenFileExtendedTooltip" id="42"/>
+						</Button>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="Group_Step_3" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>3. Explanations for creation of data processor file</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Step 3 group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="Step_3_GroupExtendedTooltip" id="43"/>
+			<ChildItems>
+				<LabelDecoration name="ExplanationDecoration" id="13">
+					<Width>67</Width>
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>1. You have to copy handler script to the clipboard after it is created.
+2. Open Designer and create new external data processor. Paste the handler script in the module of this data processor from the clipboard. Save data processor.
+3. On the last fourth step you have to specify created data processor as a data processor with export handler procedures.
+</v8:content>
+						</v8:item>
+					</Title>
+					<TitleHeight>6</TitleHeight>
+					<ContextMenu name="ExplanationDecorationContextMenu" id="14"/>
+					<ExtendedTooltip name="ExplanationDecorationExtendedTooltip" id="44"/>
+				</LabelDecoration>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="Group_Step_4" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>4. Create (update) file of external data processor</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Step 4 group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="Step_4_GroupExtendedTooltip" id="45"/>
+			<ChildItems>
+				<InputField name="EventHandlerExternalDataProcessorFileName" id="15">
+					<DataPath>Object.EventHandlerExternalDataProcessorFileName</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>File name of the external data processor with debug mode on the server</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Top</TitleLocation>
+					<ChoiceButton>true</ChoiceButton>
+					<ContextMenu name="EventHandlerExternalDataProcessorFileNameContextMenu" id="16"/>
+					<ExtendedTooltip name="EventHandlerExternalDataProcessorFileNameExtendedTooltip" id="46"/>
+					<Events>
+						<Event name="OnChange">EventHandlerExternalDataProcessorFileNameOnChange</Event>
+						<Event name="StartChoice">EventHandlerExternalDataProcessorFileNameStartChoice</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<CommandBar name="BottomCommandBar" id="17">
+			<HorizontalLocation>Center</HorizontalLocation>
+			<ExtendedTooltip name="BottomCommandBarExtendedTooltip" id="47"/>
+			<ChildItems>
+				<Button name="Done" id="18">
+					<Type>CommandBarButton</Type>
+					<DefaultButton>true</DefaultButton>
+					<CommandName>Form.Command.Done</CommandName>
+					<ExtendedTooltip name="DoneExtendedTooltip" id="48"/>
+				</Button>
+				<Button name="Cancel" id="28">
+					<Type>CommandBarButton</Type>
+					<Representation>Text</Representation>
+					<CommandName>Form.StandardCommand.Close</CommandName>
+					<ExtendedTooltip name="CancelExtendedTooltip" id="49"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.UniversalDataExchangeXML</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ExportHandlerScript" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export handler script</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export handler script</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExportHandlerScript</Action>
+		</Command>
+		<Command name="OpenFile" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>OpenFile</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>OpenFile</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.ShowData</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenFile</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="Done" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Done</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Done</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Done</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="DataProcessorName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="EventHandlerExternalDataProcessorFileName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="AlgorithmDebugMode">
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="ExchangeRuleFileName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="ExchangeFileName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="ReadEventHandlersFromExchangeRuleFile">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

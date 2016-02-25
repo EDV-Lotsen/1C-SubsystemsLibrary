@@ -1,13 +1,16 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or  ThickClientOrdinaryApplication Or ExternalConnection  Then
 
-// Returns the enum value corresponding to the event status string name.
+
+#Region InternalProceduresAndFunctions
+
+// Returns the enumeration value corresponding to the string name of the event 
+// status.
 //
 // Parameters:
-//	Name - String - Entry transaction status.
+// Name - String - Entry transaction status.
 //
 // Returns:
-//	EventLogEntryTransactionStatus - Transaction status value.
+// EventLogEntryTransactionStatus - Transaction status value.
 //
 Function EventLogEntryTransactionStatusValueByName(Name) Export
 	
@@ -25,13 +28,13 @@ Function EventLogEntryTransactionStatusValueByName(Name) Export
 	
 EndFunction
 
-// Returns the enum value corresponding to the event log string level.
+// Returns the enumeration value corresponding to the string level of the event log.
 //
 // Parameters:
-//	Name - String - event log level.
+// Name - String - event log level.
 //
 // Returns:
-//	EventLogLevel - event log level value.
+// EventLogLevel - event log level value.
 //
 Function EventLogLevelValueByName(Name) Export
 	
@@ -49,10 +52,10 @@ Function EventLogLevelValueByName(Name) Export
 	
 EndFunction
 
-// Sets the picture number in the log event row
+// Sets the picture number in the row of the event log.
 //
 // Parameters:
-//	LogEvent - value table row - event log string.
+// LogEvent - value table row - event log row.
 //
 Procedure SetPictureNumber(LogEvent) Export
 	
@@ -73,4 +76,9 @@ Procedure SetPictureNumber(LogEvent) Export
 		LogEvent.PictureNumber = LogEvent.PictureNumber + 4;
 	EndIf;
 	
-EndProcedure
+EndProcedure 
+
+ 
+#EndRegion
+ 
+ #EndIf

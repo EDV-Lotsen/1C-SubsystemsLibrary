@@ -1,0 +1,2630 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Record changes for data exchange</v8:content>
+		</v8:item>
+	</Title>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<SaveDataInSettings>UseList</SaveDataInSettings>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnSaveDataInSettingsAtServer">OnSaveDataInSettingsAtServer</Event>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnClose">OnClose</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="Group2" id="35">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Quick filters</v8:content>
+				</v8:item>
+			</Title>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="Group2ExtendedTooltip" id="200"/>
+			<ChildItems>
+				<InputField name="ExchangeNodeRef" id="1">
+					<DataPath>ExchangeNodeRef</DataPath>
+					<HorizontalStretch>false</HorizontalStretch>
+					<DropListButton>false</DropListButton>
+					<ChoiceButton>true</ChoiceButton>
+					<ChoiceButtonRepresentation>ShowInInputField</ChoiceButtonRepresentation>
+					<ClearButton>false</ClearButton>
+					<SpinButton>false</SpinButton>
+					<OpenButton>false</OpenButton>
+					<CreateButton>false</CreateButton>
+					<ContextMenu name="ExchangeNodeRefContextMenu" id="2"/>
+					<ExtendedTooltip name="ExchangeNodeRefExtendedTooltip" id="201"/>
+					<Events>
+						<Event name="OnChange">ExchangeNodeRefOnChange</Event>
+						<Event name="StartChoice">ExchangeNodeRefStartChoice</Event>
+						<Event name="Clearing">ExchangeNodeRefClear</Event>
+						<Event name="ChoiceProcessing">ExchangeNodeRefChoiceProcessing</Event>
+					</Events>
+				</InputField>
+				<Button name="FormEditMessageNumbers" id="85">
+					<Type>Hyperlink</Type>
+					<CommandName>Form.Command.EditMessageNumbers</CommandName>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Sent No. &lt;no&gt;, received No. &lt;no&gt;</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="FormEditMessageNumbersExtendedTooltip" id="202"/>
+				</Button>
+				<InputField name="FilterVariantByMessageNo" id="172">
+					<DataPath>FilterVariantByMessageNo</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Show</v8:content>
+						</v8:item>
+					</Title>
+					<Width>18</Width>
+					<ListChoiceMode>true</ListChoiceMode>
+					<ChooseType>false</ChooseType>
+					<TextEdit>false</TextEdit>
+					<ChoiceList>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>All</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:decimal">0</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Only exported items </v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:decimal">1</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Only not exported items</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:decimal">2</Value>
+							</xr:Value>
+						</xr:Item>
+					</ChoiceList>
+					<ContextMenu name="FilterVariantByMessageNoContextMenu" id="173"/>
+					<ExtendedTooltip name="FilterVariantByMessageNoExtendedTooltip" id="203"/>
+					<Events>
+						<Event name="OnChange">FilterVariantByMessageNoOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="Group1" id="5">
+			<EnableContentChange>true</EnableContentChange>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Registration data</v8:content>
+				</v8:item>
+			</Title>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="Group1ExtendedTooltip" id="204"/>
+			<ChildItems>
+				<CommandBar name="CommonCommandBar" id="95">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Command bar </v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Common command bar</v8:content>
+						</v8:item>
+					</ToolTip>
+					<CommandSource>Form</CommandSource>
+					<ExtendedTooltip name="CommonCommandBarExtendedTooltip" id="205"/>
+					<ChildItems>
+						<Popup name="MetadataTreeAddGroup" id="39">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Register</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Register objects of selected types</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Picture>
+								<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</Picture>
+							<ExtendedTooltip name="MetadataTreeAddGroupExtendedTooltip" id="206"/>
+							<ChildItems>
+								<Button name="MetadataTreeAddAllObjectRegistration" id="40">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.AddAllObjectRegistration</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>All objects of selected types</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeAddAllObjectRegistrationExtendedTooltip" id="207"/>
+								</Button>
+								<Button name="MetadataTreeAddAutoObjectRegistration" id="41">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.AddAutoObjectRegistration</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Objects of selected types with autorecord</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeAddAutoObjectRegistrationExtendedTooltip" id="208"/>
+								</Button>
+								<ButtonGroup name="AddCommandGroup" id="183">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Registration</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Add command group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="AddCommandGroupExtendedTooltip" id="209"/>
+									<ChildItems>
+										<Button name="FormAddSingleObjectRegistration" id="184">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.AddSingleObjectRegistration</CommandName>
+											<Picture>
+												<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Single object</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="FormAddSingleObjectRegistrationExtendedTooltip" id="210"/>
+										</Button>
+										<Button name="FormAddRegistrationFilter" id="185">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.AddRegistrationFilter</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Objects using filter</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="FormAddRegistrationFilterExtendedTooltip" id="211"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<ButtonGroup name="MetadataTreeGroup3" id="60">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Query result registration</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeGroup3ExtendedTooltip" id="212"/>
+									<ChildItems>
+										<Button name="MetadataTreeAddQueryResultRegistration" id="59">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.AddQueryResultRegistration</CommandName>
+											<Picture>
+												<xr:Abs>Picture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Query results</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="MetadataTreeAddQueryResultRegistrationExtendedTooltip" id="213"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+							</ChildItems>
+						</Popup>
+						<Popup name="MetadataTreeDeleteGroup" id="42">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Cancel registration</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Cancel registration for objects of selected types</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Picture>
+								<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</Picture>
+							<ExtendedTooltip name="MetadataTreeDeleteGroupExtendedTooltip" id="214"/>
+							<ChildItems>
+								<Button name="MetadataTreeDeleteAllObjectRegistration" id="43">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.DeleteAllObjectRegistration</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>For all objects of selected types</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeDeleteAllObjectRegistrationExtendedTooltip" id="215"/>
+								</Button>
+								<Button name="MetadataTreeDeleteAutoObjectRegistration" id="44">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.DeleteAutoObjectRegistration</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>For objects of selected types with autorecord</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeDeleteAutoObjectRegistrationExtendedTooltip" id="216"/>
+								</Button>
+								<ButtonGroup name="DeleteCommandGroup" id="186">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Canceling registration</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Delete command group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="DeleteCommandGroupExtendedTooltip" id="217"/>
+									<ChildItems>
+										<Button name="FormDeleteSingleObjectRegistration" id="187">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DeleteSingleObjectRegistration</CommandName>
+											<Picture>
+												<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+												<xr:LoadTransparent>true</xr:LoadTransparent>
+											</Picture>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Single object</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="FormDeleteSingleObjectRegistrationExtendedTooltip" id="218"/>
+										</Button>
+										<Button name="FormDeleteRegistrationFilter" id="188">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DeleteRegistrationFilter</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Objects using filter</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="FormDeleteRegistrationFilterExtendedTooltip" id="219"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<ButtonGroup name="MetadataTreeGroup4" id="61">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Cancellation of query result registration</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="MetadataTreeGroup4ExtendedTooltip" id="220"/>
+									<ChildItems>
+										<Button name="MetadataTreeDeleteQueryResultRegistration" id="62">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DeleteQueryResultRegistration</CommandName>
+											<Picture>
+												<xr:Abs>Picture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Query results</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="MetadataTreeDeleteQueryResultRegistrationExtendedTooltip" id="221"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+							</ChildItems>
+						</Popup>
+						<Button name="UpdateAllData" id="97">
+							<Type>CommandBarButton</Type>
+							<Representation>PictureAndText</Representation>
+							<CommandName>Form.Command.UpdateAllData</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Refresh</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="UpdateAllDataExtendedTooltip" id="222"/>
+						</Button>
+						<Button name="FormOpenSettingsForm" id="145">
+							<Type>CommandBarButton</Type>
+							<Representation>PictureAndText</Representation>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.OpenSettingsForm</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Settings</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="FormOpenSettingsFormExtendedTooltip" id="223"/>
+						</Button>
+						<Button name="FormOpenNodeRegistrationForm" id="182">
+							<Type>CommandBarButton</Type>
+							<Representation>Picture</Representation>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.OpenNodeRegistrationForm</CommandName>
+							<Picture>
+								<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</Picture>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Object registration for all nodes</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="FormOpenNodeRegistrationFormExtendedTooltip" id="225"/>
+						</Button>
+						<ButtonGroup name="FormDIBButtonGroup" id="316">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Form DIB button group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>DIB button group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ExtendedTooltip name="FormButtonGroupDIBExtendedTooltip" id="317"/>
+							<ChildItems>
+								<Button name="ShowExportResults" id="133">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.ShowExportResults</CommandName>
+									<Picture>
+										<xr:Abs>Picture.png</xr:Abs>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ExtendedTooltip name="ShowExportResultsExtendedTooltip" id="224"/>
+								</Button>
+								<Button name="FormRegisterMOIDAndPredefinedItems" id="314">
+									<Type>CommandBarButton</Type>
+									<OnlyInAllActions>false</OnlyInAllActions>
+									<CommandName>Form.Command.RegisterMOIDAndPredefinedItems</CommandName>
+									<ExtendedTooltip name="FormRegisterMOIDAndPredefinedItemsExtendedTooltip" id="315"/>
+								</Button>
+							</ChildItems>
+						</ButtonGroup>
+					</ChildItems>
+				</CommandBar>
+				<UsualGroup name="Group5" id="96">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Objects to register</v8:content>
+						</v8:item>
+					</Title>
+					<Height>10</Height>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="Group5ExtendedTooltip" id="226"/>
+					<ChildItems>
+						<Table name="MetadataTree" id="6">
+							<Representation>Tree</Representation>
+							<ChangeRowSet>false</ChangeRowSet>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<Width>32</Width>
+							<SelectionMode>SingleRow</SelectionMode>
+							<HorizontalLines>false</HorizontalLines>
+							<VerticalLines>false</VerticalLines>
+							<InitialTreeView>ExpandTopLevel</InitialTreeView>
+							<DataPath>MetadataTree</DataPath>
+							<RowPictureDataPath>MetadataTree.PictureIndex</RowPictureDataPath>
+							<RowsPicture>
+								<xr:Abs>RowsPicture.png</xr:Abs>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
+							</RowsPicture>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Registration object kind</v8:content>
+								</v8:item>
+							</Title>
+							<CommandSet>
+								<ExcludedCommand>HierarchicalList</ExcludedCommand>
+								<ExcludedCommand>Tree</ExcludedCommand>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>List</ExcludedCommand>
+								<ExcludedCommand>SortListAsc</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>SortListDesc</ExcludedCommand>
+								<ExcludedCommand>Delete</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<ContextMenu name="MetadataTreeContextMenu" id="7">
+								<ChildItems>
+									<ButtonGroup name="MetadataTreeContextMenuGroup1" id="114">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Adding by object kind</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="MetadataTreeContextMenuGroup1ExtendedTooltip" id="227"/>
+										<ChildItems>
+											<Button name="MetadataTreeContextMenuAddAllObjectRegistration" id="115">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.AddAllObjectRegistration</CommandName>
+												<Picture>
+													<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+													<xr:LoadTransparent>true</xr:LoadTransparent>
+												</Picture>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Register changes for all objects of selected types</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuAddAllObjectRegistrationExtendedTooltip" id="228"/>
+											</Button>
+											<Button name="MetadataTreeContextMenuAddAutoObjectRegistration" id="116">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.AddAutoObjectRegistration</CommandName>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Register changes for objects of selected types with auto record</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuAddAutoObjectRegistrationExtendedTooltip" id="229"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="AddCommandGroup1" id="190">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Object adding</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Add command group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="AddCommandGroup1ExtendedTooltip" id="230"/>
+										<ChildItems>
+											<Button name="MetadataTreeContextMenuAddSingleObjectRegistration" id="191">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.AddSingleObjectRegistration</CommandName>
+												<Picture>
+													<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+													<xr:LoadTransparent>true</xr:LoadTransparent>
+												</Picture>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Register changes of single object</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuAddSingleObjectRegistrationExtendedTooltip" id="231"/>
+											</Button>
+											<Button name="MetadataTreeContextMenuAddRegistrationFilter" id="192">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.AddRegistrationFilter</CommandName>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Register object changes using the filter</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuAddRegistrationFilterExtendedTooltip" id="232"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="MetadataTreeContextMenuGroup2" id="142">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Registration cancellation by object kind</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="MetadataTreeContextMenuGroup2ExtendedTooltip" id="233"/>
+										<ChildItems>
+											<Button name="MetadataTreeContextMenuDeleteAllObjectRegistration" id="143">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.DeleteAllObjectRegistration</CommandName>
+												<Picture>
+													<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+													<xr:LoadTransparent>true</xr:LoadTransparent>
+												</Picture>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Cancel change registration for all objects of selected types</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuDeleteAllObjectRegistrationExtendedTooltip" id="234"/>
+											</Button>
+											<Button name="MetadataTreeContextMenuDeleteAutoObjectRegistration" id="144">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.DeleteAutoObjectRegistration</CommandName>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Cancel change registration for objects of selected types with autorecord</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuDeleteAutoObjectRegistrationExtendedTooltip" id="235"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="DeleteCommandGroup1" id="193">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Canceling registration</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Delete command group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DeleteCommandGroup1ExtendedTooltip" id="236"/>
+										<ChildItems>
+											<Button name="MetadataTreeContextMenuDeleteSingleObjectRegistration" id="194">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.DeleteSingleObjectRegistration</CommandName>
+												<Picture>
+													<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+													<xr:LoadTransparent>true</xr:LoadTransparent>
+												</Picture>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Cancel change registration for single object</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuDeleteSingleObjectRegistrationExtendedTooltip" id="237"/>
+											</Button>
+											<Button name="MetadataTreeContextMenuDeleteRegistrationFilter" id="195">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.DeleteRegistrationFilter</CommandName>
+												<Title>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Cancel object registration using the filter</v8:content>
+													</v8:item>
+												</Title>
+												<ExtendedTooltip name="MetadataTreeContextMenuDeleteRegistrationFilterExtendedTooltip" id="238"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="MetadataTreeContextMenuGroup3" id="149">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>System menu</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="MetadataTreeContextMenuGroup3ExtendedTooltip" id="239"/>
+										<ChildItems>
+											<Button name="MetadataTreeContextMenuOutputList" id="150">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.MetadataTree.StandardCommand.OutputList</CommandName>
+												<ExtendedTooltip name="MetadataTreeContextMenuOutputListExtendedTooltip" id="240"/>
+											</Button>
+											<Button name="MetadataTreeContextMenuCopyToClipboard" id="151">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.MetadataTree.StandardCommand.CopyToClipboard</CommandName>
+												<ExtendedTooltip name="MetadataTreeContextMenuCopyToClipboardExtendedTooltip" id="241"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="FormOpenNodeRegistrationFromContext" id="324">
+										<Type>CommandBarButton</Type>
+										<Representation>Picture</Representation>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.OpenNodeRegistrationForm</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Object registration for all nodes</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="FormOpenNodeRegistrationFromContextExtendedTooltip" id="325"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="MetadataTreeCommandBar" id="8">
+								<Autofill>false</Autofill>
+							</AutoCommandBar>
+							<ExtendedTooltip name="MetadataTreeExtendedTooltip" id="242"/>
+							<SearchStringAddition name="MetadataTreeSearchString" id="326">
+								<AdditionSource>
+									<Item>MetadataTree</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="MetadataTreeSearchStringContextMenu" id="327"/>
+								<ExtendedTooltip name="MetadataTreeSearchStringExtendedTooltip" id="328"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="MetadataTreeViewStatus" id="329">
+								<AdditionSource>
+									<Item>MetadataTree</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="MetadataTreeViewStatusContextMenu" id="330"/>
+								<ExtendedTooltip name="MetadataTreeViewStatusExtendedTooltip" id="331"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="MetadataTreeSearchControl" id="332">
+								<AdditionSource>
+									<Item>MetadataTree</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="MetadataTreeSearchControlContextMenu" id="333"/>
+								<ExtendedTooltip name="MetadataTreeSearchControlExtendedTooltip" id="334"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="OnActivateRow">MetadataTreeOnActivateRow</Event>
+							</Events>
+							<ChildItems>
+								<ColumnGroup name="MetadataTreeGroup1" id="9">
+									<EnableContentChange>true</EnableContentChange>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Registration objects</v8:content>
+										</v8:item>
+									</Title>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="MetadataTreeGroup1ExtendedTooltip" id="243"/>
+									<ChildItems>
+										<CheckBoxField name="MetadataTreeCheck" id="16">
+											<DataPath>MetadataTree.Check</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<EditMode>Directly</EditMode>
+											<ThreeState>true</ThreeState>
+											<ContextMenu name="MetadataCheckTreeContextMenu" id="17"/>
+											<ExtendedTooltip name="MetadataTreeCheckExtendedTooltip" id="244"/>
+											<Events>
+												<Event name="OnChange">MetadataTreeMarkOnChange</Event>
+											</Events>
+										</CheckBoxField>
+										<LabelField name="MetadataTreeDescription" id="10">
+											<DataPath>MetadataTree.Description</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Configuration object</v8:content>
+												</v8:item>
+											</Title>
+											<EditMode>EnterOnInput</EditMode>
+											<Width>17</Width>
+											<ContextMenu name="MetadataTreeDescriptionContextMenu" id="11"/>
+											<ExtendedTooltip name="MetadataTreeDescriptionExtendedTooltip" id="245"/>
+										</LabelField>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="MetadataTreeGroup2" id="26">
+									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Registration information</v8:content>
+										</v8:item>
+									</Title>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="MetadataTreeGroup2ExtendedTooltip" id="246"/>
+									<ChildItems>
+										<PictureField name="MetadataTreeAutoRecord" id="27">
+											<DataPath>MetadataTree.AutoRecord</DataPath>
+											<UserVisible>
+												<xr:Common>false</xr:Common>
+											</UserVisible>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>AutoRecord</v8:content>
+												</v8:item>
+											</Title>
+											<TitleLocation>None</TitleLocation>
+											<HorizontalAlign>Left</HorizontalAlign>
+											<EditMode>EnterOnInput</EditMode>
+											<Width>2</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<VerticalStretch>false</VerticalStretch>
+											<ValuesPicture>
+												<xr:Abs>ValuesPicture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</ValuesPicture>
+											<ContextMenu name="MetadataTreeAutoRecordContextMenu" id="28"/>
+											<ExtendedTooltip name="MetadataTreeAutoRecordExtendedTooltip" id="247"/>
+										</PictureField>
+										<LabelField name="MetadataTreeChangeCountString" id="29">
+											<DataPath>MetadataTree.ChangeCountString</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Number</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Registered / not exported items</v8:content>
+												</v8:item>
+											</ToolTip>
+											<HorizontalAlign>Left</HorizontalAlign>
+											<EditMode>EnterOnInput</EditMode>
+											<Width>10</Width>
+											<Height>1</Height>
+											<HorizontalStretch>false</HorizontalStretch>
+											<ContextMenu name="MetadataTreeChangeCountStringContextMenu" id="30"/>
+											<ExtendedTooltip name="MetadataTreeChangeCountStringExtendedTooltip" id="248"/>
+										</LabelField>
+									</ChildItems>
+								</ColumnGroup>
+							</ChildItems>
+						</Table>
+						<Pages name="ObjectListVariants" id="45">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Object registration</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Object list options</v8:content>
+								</v8:item>
+							</ToolTip>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="ObjectListVariantsExtendedTooltip" id="249"/>
+							<Events>
+								<Event name="OnCurrentPageChange">ObjectListVariantsOnCurrentPageChange</Event>
+							</Events>
+							<ChildItems>
+								<Page name="ConstantPage" id="49">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Constants</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Constant page</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ConstantPageExtendedTooltip" id="250"/>
+									<ChildItems>
+										<UsualGroup name="ConstantsUserSettingsGroup" id="318">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Constants user settings group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Constants user settings group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="ConstantsUserSettingsGroupExtendedTooltip" id="319"/>
+										</UsualGroup>
+										<Table name="ConstantList" id="63">
+											<Representation>List</Representation>
+											<ChangeRowSet>false</ChangeRowSet>
+											<ChangeRowOrder>false</ChangeRowOrder>
+											<HorizontalLines>false</HorizontalLines>
+											<VerticalLines>false</VerticalLines>
+											<UseAlternationRowColor>true</UseAlternationRowColor>
+											<InitialListView>Beginning</InitialListView>
+											<EnableStartDrag>true</EnableStartDrag>
+											<DataPath>ConstantList</DataPath>
+											<RowPictureDataPath>ConstantList.PictureIndex</RowPictureDataPath>
+											<RowsPicture>
+												<xr:Abs>RowsPicture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</RowsPicture>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Constant list</v8:content>
+												</v8:item>
+											</Title>
+											<CommandSet>
+												<ExcludedCommand>Choose</ExcludedCommand>
+											</CommandSet>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<AutoRefresh>false</AutoRefresh>
+											<AutoRefreshPeriod>60</AutoRefreshPeriod>
+											<Period>
+												<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+												<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+												<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+											</Period>
+											<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+											<RestoreCurrentRow>false</RestoreCurrentRow>
+											<TopLevelParent xsi:nil="true"/>
+											<ShowRoot>true</ShowRoot>
+											<AllowRootChoice>false</AllowRootChoice>
+											<UpdateOnDataChange>Auto</UpdateOnDataChange>
+											<UserSettingsGroup>ConstantsUserSettingsGroup</UserSettingsGroup>
+											<ContextMenu name="ConstantListContextMenu" id="64">
+												<Autofill>false</Autofill>
+												<ChildItems>
+													<ButtonGroup name="ConstantListContextMenuGroup1" id="101">
+														<HorizontalStretch>true</HorizontalStretch>
+														<ExtendedTooltip name="ConstantListContextMenuGroup1ExtendedTooltip" id="251"/>
+														<ChildItems>
+															<Button name="ConstantListContextMenuAddConstantRegistration" id="98">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.AddConstantRegistration</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Register constant changes</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ConstantListContextMenuAddConstantRegistrationExtendedTooltip" id="252"/>
+															</Button>
+															<Button name="ConstantListContextMenuDeleteConstantRegistration" id="99">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.DeleteConstantRegistration</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Cancel constant change registration</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ConstantListContextMenuDeleteConstantRegistrationExtendedTooltip" id="253"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="ConstantListContextMenuGroup3" id="177">
+														<ExtendedTooltip name="ConstantListContextMenuGroup3ExtendedTooltip" id="254"/>
+														<ChildItems>
+															<Button name="ConstantListContextMenuShowExportResults" id="100">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.ShowExportResults</CommandName>
+																<Picture>
+																	<xr:Abs>Picture.png</xr:Abs>
+																	<xr:LoadTransparent>false</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Export result (in DIB mode)</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ConstantListContextMenuShowExportResultsExtendedTooltip" id="255"/>
+															</Button>
+															<Button name="ConstantListContextMenuOpenNodeRegistrationForm" id="178">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.OpenNodeRegistrationForm</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<ExtendedTooltip name="ConstantListContextMenuOpenNodeRegistrationFormExtendedTooltip" id="256"/>
+															</Button>
+															<Button name="ConstantListContextMenuEditObjectMessageNo" id="197">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.EditObjectMessageNo</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuEditObjectMessageNoExtendedTooltip" id="257"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="ConstantListContextMenuGroup2" id="152">
+														<ExtendedTooltip name="ConstantListContextMenuGroup2ExtendedTooltip" id="258"/>
+														<ChildItems>
+															<Button name="ConstantListContextMenuFind" id="153">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ConstantList.StandardCommand.Find</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuFindExtendedTooltip" id="259"/>
+															</Button>
+															<Button name="ConstantListContextMenuCancelSearch" id="154">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ConstantList.StandardCommand.CancelSearch</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuCancelSearchExtendedTooltip" id="260"/>
+															</Button>
+															<Button name="ConstantListContextMenuListSettings" id="155">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ConstantList.StandardCommand.ListSettings</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuListSettingsExtendedTooltip" id="261"/>
+															</Button>
+															<Button name="ConstantListContextMenuOutputList" id="156">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ConstantList.StandardCommand.OutputList</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuOutputListExtendedTooltip" id="262"/>
+															</Button>
+															<Button name="ConstantListContextMenuRefresh" id="157">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ConstantList.StandardCommand.Refresh</CommandName>
+																<ExtendedTooltip name="ConstantListContextMenuRefreshExtendedTooltip" id="263"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+												</ChildItems>
+											</ContextMenu>
+											<AutoCommandBar name="ConstantListCommandBar" id="65">
+												<Autofill>false</Autofill>
+											</AutoCommandBar>
+											<ExtendedTooltip name="ConstantListExtendedTooltip" id="264"/>
+											<SearchStringAddition name="ConstantListSearchString" id="335">
+												<AdditionSource>
+													<Item>ConstantList</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ConstantListSearchStringContextMenu" id="336"/>
+												<ExtendedTooltip name="ConstantListSearchStringExtendedTooltip" id="337"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="ConstantListViewStatus" id="338">
+												<AdditionSource>
+													<Item>ConstantList</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ConstantListViewStatusContextMenu" id="339"/>
+												<ExtendedTooltip name="ConstantListViewStatusExtendedTooltip" id="340"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="ConstantListSearchControl" id="341">
+												<AdditionSource>
+													<Item>ConstantList</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="ConstantListSearchControlContextMenu" id="342"/>
+												<ExtendedTooltip name="ConstantListSearchControlExtendedTooltip" id="343"/>
+											</SearchControlAddition>
+											<Events>
+												<Event name="ChoiceProcessing">ConstantListChoiceProcessing</Event>
+											</Events>
+											<ChildItems>
+												<LabelField name="ConstantListDescription" id="66">
+													<DataPath>ConstantList.Description</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Constant</v8:content>
+														</v8:item>
+													</Title>
+													<HorizontalStretch>true</HorizontalStretch>
+													<ContextMenu name="ConstantListDescriptionContextMenu" id="67"/>
+													<ExtendedTooltip name="ConstantListDescriptionExtendedTooltip" id="265"/>
+												</LabelField>
+												<ColumnGroup name="ConstantListGroup1" id="148">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Registration information</v8:content>
+														</v8:item>
+													</Title>
+													<Group>InCell</Group>
+													<ExtendedTooltip name="ConstantListGroup1ExtendedTooltip" id="266"/>
+													<ChildItems>
+														<PictureField name="ConstantListAutoRecord" id="146">
+															<DataPath>ConstantList.AutoRecordPictureIndex</DataPath>
+															<UserVisible>
+																<xr:Common>false</xr:Common>
+															</UserVisible>
+															<ReadOnly>true</ReadOnly>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>AutoRecord</v8:content>
+																</v8:item>
+															</Title>
+															<TitleLocation>None</TitleLocation>
+															<EditMode>Directly</EditMode>
+															<ValuesPicture>
+																<xr:Abs>ValuesPicture.png</xr:Abs>
+																<xr:LoadTransparent>false</xr:LoadTransparent>
+															</ValuesPicture>
+															<ContextMenu name="ConstantListAutoRecordContextMenu" id="147"/>
+															<ExtendedTooltip name="ConstantListAutoRecordExtendedTooltip" id="267"/>
+														</PictureField>
+														<LabelField name="ConstantListMessageNo" id="68">
+															<DataPath>ConstantList.MessageNo</DataPath>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Sent No.</v8:content>
+																</v8:item>
+															</Title>
+															<HorizontalAlign>Left</HorizontalAlign>
+															<EditMode>Directly</EditMode>
+															<Width>7</Width>
+															<HorizontalStretch>false</HorizontalStretch>
+															<ContextMenu name="ConstantListMessageNoContextMenu" id="69"/>
+															<ExtendedTooltip name="ConstantListMessageNoExtendedTooltip" id="268"/>
+														</LabelField>
+													</ChildItems>
+												</ColumnGroup>
+											</ChildItems>
+										</Table>
+									</ChildItems>
+								</Page>
+								<Page name="RefListPage" id="48">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>References</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Reference list page</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="RefListPageExtendedTooltip" id="269"/>
+									<ChildItems>
+										<UsualGroup name="ReferencesUserSettingsGroup" id="320">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>References user settings group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Constants user settings group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="ReferencesUserSettingsGroupExtendedTooltip" id="321"/>
+										</UsualGroup>
+										<Table name="ReferenceList" id="18">
+											<Representation>List</Representation>
+											<TitleLocation>Auto</TitleLocation>
+											<ReadOnly>true</ReadOnly>
+											<ChangeRowSet>false</ChangeRowSet>
+											<ChangeRowOrder>false</ChangeRowOrder>
+											<UseAlternationRowColor>true</UseAlternationRowColor>
+											<InitialListView>Beginning</InitialListView>
+											<EnableStartDrag>true</EnableStartDrag>
+											<DataPath>ReferenceList</DataPath>
+											<RowPictureDataPath>ReferenceList.DefaultPicture</RowPictureDataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Reference list</v8:content>
+												</v8:item>
+											</Title>
+											<CommandSet>
+												<ExcludedCommand>Choose</ExcludedCommand>
+											</CommandSet>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<AutoRefresh>false</AutoRefresh>
+											<AutoRefreshPeriod>60</AutoRefreshPeriod>
+											<Period>
+												<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+												<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+												<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+											</Period>
+											<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+											<RestoreCurrentRow>true</RestoreCurrentRow>
+											<TopLevelParent xsi:nil="true"/>
+											<ShowRoot>true</ShowRoot>
+											<AllowRootChoice>false</AllowRootChoice>
+											<UpdateOnDataChange>Auto</UpdateOnDataChange>
+											<UserSettingsGroup>ReferencesUserSettingsGroup</UserSettingsGroup>
+											<ContextMenu name="ReferenceListContextMenu" id="19">
+												<Autofill>false</Autofill>
+												<ChildItems>
+													<ButtonGroup name="ReferenceListContextMenuGroup1" id="102">
+														<HorizontalStretch>true</HorizontalStretch>
+														<ExtendedTooltip name="ReferenceListContextMenuGroup1ExtendedTooltip" id="270"/>
+														<ChildItems>
+															<Button name="ReferenceListContextMenuAddRefRegistrationPick" id="134">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.AddRefRegistrationPick</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Register object change</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuAddRefRegistrationPickExtendedTooltip" id="271"/>
+															</Button>
+															<Button name="ReferenceListContextMenuAddRefRegistrationFilter" id="135">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.AddRefRegistrationFilter</CommandName>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Register object changes using the filter</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuAddRefRegistrationFilterExtendedTooltip" id="272"/>
+															</Button>
+															<Button name="ReferenceListContextMenuAddObjectDeletionRegistration" id="196">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.AddObjectDeletionRegistration</CommandName>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Register object deletion</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuAddObjectDeletionRegistrationExtendedTooltip" id="273"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="ReferenceListContextMenuGroup3" id="158">
+														<ExtendedTooltip name="ReferenceListContextMenuGroup3ExtendedTooltip" id="274"/>
+														<ChildItems>
+															<Button name="ReferenceListContextMenuDeleteRefRegistration" id="105">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.DeleteRefRegistration</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Cancel object change registration</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuDeleteRefRegistrationExtendedTooltip" id="275"/>
+															</Button>
+															<Button name="ReferenceListContextMenuDeleteRefRegistrationFilter" id="189">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.DeleteRefRegistrationFilter</CommandName>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Cancel object registration using the filter</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuDeleteRefRegistrationFilterExtendedTooltip" id="276"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="ReferenceListContextMenuGroup4" id="181">
+														<ExtendedTooltip name="ReferenceListContextMenuGroup4ExtendedTooltip" id="277"/>
+														<ChildItems>
+															<Button name="ReferenceListContextMenuShowExportResults" id="106">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.ShowExportResults</CommandName>
+																<Picture>
+																	<xr:Abs>Picture.png</xr:Abs>
+																	<xr:LoadTransparent>false</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Show export result</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuShowExportResultsExtendedTooltip" id="278"/>
+															</Button>
+															<Button name="ReferenceListContextMenuOpenNodeRegistrationForm" id="137">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.OpenNodeRegistrationForm</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Registration on other nodes</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="ReferenceListContextMenuOpenNodeRegistrationFormExtendedTooltip" id="279"/>
+															</Button>
+															<Button name="ReferenceListContextMenuEditObjectMessageNo" id="198">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.EditObjectMessageNo</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuEditObjectMessageNoExtendedTooltip" id="280"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="ReferenceListContextMenuGroup2" id="136">
+														<HorizontalStretch>true</HorizontalStretch>
+														<ExtendedTooltip name="ReferenceListContextMenuGroup2ExtendedTooltip" id="281"/>
+														<ChildItems>
+															<Button name="ReferenceListContextMenuFind" id="159">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ReferenceList.StandardCommand.Find</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuFindExtendedTooltip" id="282"/>
+															</Button>
+															<Button name="ReferenceListContextMenuCancelSearch" id="160">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ReferenceList.StandardCommand.CancelSearch</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuCancelSearchExtendedTooltip" id="283"/>
+															</Button>
+															<Button name="ReferenceListContextMenuListSettings" id="161">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ReferenceList.StandardCommand.ListSettings</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuListSettingsExtendedTooltip" id="284"/>
+															</Button>
+															<Button name="ReferenceListContextMenuOutputList" id="162">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ReferenceList.StandardCommand.OutputList</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuOutputListExtendedTooltip" id="285"/>
+															</Button>
+															<Button name="ReferenceListContextMenuRefresh" id="163">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.ReferenceList.StandardCommand.Refresh</CommandName>
+																<ExtendedTooltip name="ReferenceListContextMenuRefreshExtendedTooltip" id="286"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+												</ChildItems>
+											</ContextMenu>
+											<AutoCommandBar name="ReferenceListCommandBar" id="20">
+												<Autofill>false</Autofill>
+											</AutoCommandBar>
+											<ExtendedTooltip name="ReferenceListExtendedTooltip" id="287"/>
+											<SearchStringAddition name="ReferenceListSearchString" id="344">
+												<AdditionSource>
+													<Item>ReferenceList</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ReferenceListSearchStringContextMenu" id="345"/>
+												<ExtendedTooltip name="ReferenceListSearchStringExtendedTooltip" id="346"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="ReferenceListViewStatus" id="347">
+												<AdditionSource>
+													<Item>ReferenceList</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ReferenceListViewStatusContextMenu" id="348"/>
+												<ExtendedTooltip name="ReferenceListViewStatusExtendedTooltip" id="349"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="ReferenceListSearchControl" id="350">
+												<AdditionSource>
+													<Item>ReferenceList</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="ReferenceListSearchControlContextMenu" id="351"/>
+												<ExtendedTooltip name="ReferenceListSearchControlExtendedTooltip" id="352"/>
+											</SearchControlAddition>
+											<Events>
+												<Event name="ChoiceProcessing">ReferenceListChoiceProcessing</Event>
+											</Events>
+											<ChildItems>
+												<LabelField name="ReferenceListRefPresentation" id="21">
+													<DataPath>ReferenceList.Ref</DataPath>
+													<HorizontalStretch>true</HorizontalStretch>
+													<ContextMenu name="ReferenceListRefPresentationContextMenu" id="22"/>
+													<ExtendedTooltip name="ReferenceListRefPresentationExtendedTooltip" id="288"/>
+												</LabelField>
+												<LabelField name="ReferenceListMessageNo" id="52">
+													<DataPath>ReferenceList.MessageNo</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Sent No.</v8:content>
+														</v8:item>
+													</Title>
+													<Width>7</Width>
+													<HorizontalStretch>false</HorizontalStretch>
+													<ContextMenu name="ReferenceListMessageNoContextMenu" id="53"/>
+													<ExtendedTooltip name="ReferenceListMessageNoExtendedTooltip" id="289"/>
+												</LabelField>
+											</ChildItems>
+										</Table>
+									</ChildItems>
+								</Page>
+								<Page name="RecordSetPage" id="50">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Record sets</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Record set page</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="RecordSetPageExtendedTooltip" id="290"/>
+									<ChildItems>
+										<UsualGroup name="RecordSetUserSettingsGroup" id="322">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Record set user settings group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Constants user settings group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="RecordSetUserSettingsGroupExtendedTooltip" id="323"/>
+										</UsualGroup>
+										<Table name="RecordSetList" id="78">
+											<RowInputMode>AfterCurrentRow</RowInputMode>
+											<HorizontalLines>false</HorizontalLines>
+											<UseAlternationRowColor>true</UseAlternationRowColor>
+											<InitialListView>Beginning</InitialListView>
+											<EnableStartDrag>true</EnableStartDrag>
+											<DataPath>RecordSetList</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Record set</v8:content>
+												</v8:item>
+											</Title>
+											<CommandSet>
+												<ExcludedCommand>Choose</ExcludedCommand>
+											</CommandSet>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<AutoRefresh>false</AutoRefresh>
+											<AutoRefreshPeriod>60</AutoRefreshPeriod>
+											<Period>
+												<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+												<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+												<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+											</Period>
+											<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+											<RestoreCurrentRow>true</RestoreCurrentRow>
+											<TopLevelParent xsi:nil="true"/>
+											<ShowRoot>true</ShowRoot>
+											<AllowRootChoice>false</AllowRootChoice>
+											<UpdateOnDataChange>Auto</UpdateOnDataChange>
+											<UserSettingsGroup>RecordSetUserSettingsGroup</UserSettingsGroup>
+											<ContextMenu name="RecordSetListContextMenu" id="79">
+												<Autofill>false</Autofill>
+												<ChildItems>
+													<ButtonGroup name="RecordSetListContextMenuGroup1" id="164">
+														<ExtendedTooltip name="RecordSetListContextMenuGroup1ExtendedTooltip" id="291"/>
+														<ChildItems>
+															<Button name="RecordSetListContextMenuAddRecordSetRegistrationFilter" id="138">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.AddRecordSetRegistrationFilter</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Register record set change</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="RecordSetListContextMenuAddRecordSetRegistrationFilterExtendedTooltip" id="292"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="RecordSetListContextMenuGroup2" id="165">
+														<ExtendedTooltip name="RecordSetListContextMenuGroup2ExtendedTooltip" id="293"/>
+														<ChildItems>
+															<Button name="RecordSetListContextMenuDeleteRecordSetRegistration" id="139">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.DeleteRecordSetRegistration</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Cancel change registration for selected row</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="RecordSetListContextMenuDeleteRecordSetRegistrationExtendedTooltip" id="294"/>
+															</Button>
+															<Button name="RecordSetListContextMenuDeleteRecordSetRegistrationFilter" id="140">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.DeleteRecordSetRegistrationFilter</CommandName>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Cancel change registration using filter</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="RecordSetListContextMenuDeleteRecordSetRegistrationFilterExtendedTooltip" id="295"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="RecordSetListContextMenuGroup4" id="179">
+														<ExtendedTooltip name="RecordSetListContextMenuGroup4ExtendedTooltip" id="296"/>
+														<ChildItems>
+															<Button name="RecordSetListContextMenuShowExportResults" id="141">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.ShowExportResults</CommandName>
+																<Picture>
+																	<xr:Abs>Picture.png</xr:Abs>
+																	<xr:LoadTransparent>false</xr:LoadTransparent>
+																</Picture>
+																<Title>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Show export result</v8:content>
+																	</v8:item>
+																</Title>
+																<ExtendedTooltip name="RecordSetListContextMenuShowExportResultsExtendedTooltip" id="297"/>
+															</Button>
+															<Button name="RecordSetListContextMenuOpenNodeRegistrationForm" id="180">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.OpenNodeRegistrationForm</CommandName>
+																<Picture>
+																	<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+																	<xr:LoadTransparent>true</xr:LoadTransparent>
+																</Picture>
+																<ExtendedTooltip name="RecordSetListContextMenuOpenNodeRegistrationFormExtendedTooltip" id="298"/>
+															</Button>
+															<Button name="RecordSetListContextMenuEditObjectMessageNo" id="199">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.EditObjectMessageNo</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuEditObjectMessageNoExtendedTooltip" id="299"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+													<ButtonGroup name="RecordSetListContextMenuGroup3" id="166">
+														<ExtendedTooltip name="RecordSetListContextMenuGroup3ExtendedTooltip" id="300"/>
+														<ChildItems>
+															<Button name="RecordSetListContextMenuFind" id="167">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.RecordSetList.StandardCommand.Find</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuFindExtendedTooltip" id="301"/>
+															</Button>
+															<Button name="RecordSetListContextMenuRefresh" id="168">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.RecordSetList.StandardCommand.Refresh</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuRefreshExtendedTooltip" id="302"/>
+															</Button>
+															<Button name="RecordSetListContextMenuCancelSearch" id="169">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.RecordSetList.StandardCommand.CancelSearch</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuCancelSearchExtendedTooltip" id="303"/>
+															</Button>
+															<Button name="RecordSetListContextMenuListSettings" id="170">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.RecordSetList.StandardCommand.ListSettings</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuListSettingsExtendedTooltip" id="304"/>
+															</Button>
+															<Button name="RecordSetListtContextMenuOutputLis" id="171">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Item.RecordSetList.StandardCommand.OutputList</CommandName>
+																<ExtendedTooltip name="RecordSetListContextMenuOutputListExtendedTooltip" id="305"/>
+															</Button>
+														</ChildItems>
+													</ButtonGroup>
+												</ChildItems>
+											</ContextMenu>
+											<AutoCommandBar name="RecordSetListCommandBar" id="80">
+												<Autofill>false</Autofill>
+											</AutoCommandBar>
+											<ExtendedTooltip name="RecordSetListExtendedTooltip" id="306"/>
+											<SearchStringAddition name="RecordSetListSearchString" id="353">
+												<AdditionSource>
+													<Item>RecordSetList</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="RecordSetListSearchStringContextMenu" id="354"/>
+												<ExtendedTooltip name="RecordSetListSearchStringExtendedTooltip" id="355"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="RecordSetListViewStatus" id="356">
+												<AdditionSource>
+													<Item>RecordSetList</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="RecordSetListViewStatusContextMenu" id="357"/>
+												<ExtendedTooltip name="RecordSetListViewStatusExtendedTooltip" id="358"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="RecordSetListSearchControl" id="359">
+												<AdditionSource>
+													<Item>RecordSetList</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="RecordSetListSearchControlContextMenu" id="360"/>
+												<ExtendedTooltip name="RecordSetListSearchControlExtendedTooltip" id="361"/>
+											</SearchControlAddition>
+											<Events>
+												<Event name="Selection">RecordSetListSelection</Event>
+												<Event name="ChoiceProcessing">RecordSetListChoiceProcessing</Event>
+											</Events>
+											<ChildItems>
+												<ColumnGroup name="RecordSetListGroupDimensionGroup" id="86">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Dimensions</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Record set dimensions</v8:content>
+														</v8:item>
+													</ToolTip>
+													<Group>InCell</Group>
+													<ExtendedTooltip name="RecordSetListChangeGroupExtendedTooltip" id="307"/>
+												</ColumnGroup>
+												<LabelField name="RecordSetListMessageNo" id="83">
+													<DataPath>RecordSetList.MessageNo</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Sent No.</v8:content>
+														</v8:item>
+													</Title>
+													<Width>7</Width>
+													<HorizontalStretch>false</HorizontalStretch>
+													<ContextMenu name="RecordSetListMessageNoContextMenu" id="84"/>
+													<ExtendedTooltip name="RecordSetListMessageNoExtendedTooltip" id="308"/>
+												</LabelField>
+											</ChildItems>
+										</Table>
+									</ChildItems>
+								</Page>
+								<Page name="EmptyPage" id="74">
+									<EnableContentChange>true</EnableContentChange>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Totals by object kind</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Totals page</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="EmptyPageExtendedTooltip" id="309"/>
+									<ChildItems>
+										<UsualGroup name="Group4" id="77">
+											<EnableContentChange>true</EnableContentChange>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Description</v8:content>
+												</v8:item>
+											</Title>
+											<Group>Vertical</Group>
+											<Representation>NormalSeparation</Representation>
+											<ExtendedTooltip name="Group4ExtendedTooltip" id="310"/>
+											<ChildItems>
+												<LabelDecoration name="EmptyPageDecoration" id="75">
+													<HorizontalStretch>true</HorizontalStretch>
+													<VerticalStretch>true</VerticalStretch>
+													<VerticalAlign>Top</VerticalAlign>
+													<ContextMenu name="EmptyPageDecorationContextMenu" id="76"/>
+													<ExtendedTooltip name="EmptyPageDecorationExtendedTooltip" id="311"/>
+												</LabelDecoration>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="HiddenDataGroup" id="174">
+			<Visible>false</Visible>
+			<Enabled>false</Enabled>
+			<EnableContentChange>true</EnableContentChange>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hidden data group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hidden data group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ExtendedTooltip name="HiddenDataGroupExtendedTooltip" id="312"/>
+			<ChildItems>
+				<PictureDecoration name="HiddenPictureInformation32" id="175">
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Hidden picture information32</v8:content>
+						</v8:item>
+					</Title>
+					<Picture>
+						<xr:Abs>Picture.png</xr:Abs>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</Picture>
+					<ContextMenu name="HiddenPictureInformation32ContextMenu" id="176"/>
+					<ExtendedTooltip name="HiddenPictureInformation32ExtendedTooltip" id="313"/>
+				</PictureDecoration>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.RecordChangesForDataExchange</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="ExchangeNodeRef" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange node</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+			</Type>
+			<Save>
+				<Field>ExchangeNodeRef</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="MetadataTree" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Metadata</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Description" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="MetaFullName" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Meta full name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="PictureIndex" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture index</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Check" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Check</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="AutoRecord" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>AutoRecord</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ChangeCount" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Change number</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ExportedCount" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Number of exported items</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="NotExportedCount" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Number of not exported items</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ChangeCountString" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Change number as string</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ReferenceList" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Reference list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>ReferenceList.Ref</Field>
+				<Field>ReferenceList.NotExported</Field>
+				<Field>ReferenceList.MessageNo</Field>
+				<Field>4/17</Field>
+				<Field>4/15</Field>
+				<Field>4/12</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>SELECT
+	NULL AS Ref,
+	NULL AS MessageNo,
+	FALSE AS NotExported</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>MessageNo</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">NotExported</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">web:LightGray</dcscor:value>
+								</dcscor:item>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Text</dcscor:parameter>
+									<dcscor:value xsi:type="xs:string">Not exported</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="ConstantList" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Constant list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>ConstantList.Registered</Field>
+				<Field>ConstantList.PictureIndex</Field>
+				<Field>ConstantList.NotExported</Field>
+				<Field>ConstantList.MetaFullName</Field>
+				<Field>ConstantList.MessageNo</Field>
+				<Field>ConstantList.AutoRecordPictureIndex</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>SELECT
+	0	 AS PictureIndex,
+	0	 AS AutoRecordPictureIndex,
+	NULL AS Description,
+	NULL AS MetaFullName,
+	NULL AS MessageNo,
+	FALSE AS NotExported,
+	FALSE AS Registered</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="MetadataNameStructure" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Metadata name structure</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="MetadataPresentationStructure" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Metadata presentation structure</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="RecordSetList" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Record set list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>RecordSetList.NotExported</Field>
+				<Field>RecordSetList.MessageNo</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>SELECT
+	NULL AS MessageNo,
+	FALSE AS NotExported</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="RecordSetListTableName" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Record set list table name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="MetadataAutoRecordStructure" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Metadata autorecord structure</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="FilterVariantByMessageNo" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Filter variant by message number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<Save>
+				<Field>FilterVariantByMessageNo</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="RegistrationObjectParameter" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Registration object parameter</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="RegistrationTableParameter" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Registration table parameter</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="SelectExchangeNodeProhibited" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange node selection is prohibited</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="NamesOfMetadataToHide" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Names of metadata to hide</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="AddRefRegistration" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>AddRefRegistration</Action>
+		</Command>
+		<Command name="DeleteRefRegistration" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete reference registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteRefRegistration</Action>
+		</Command>
+		<Command name="UpdateAllData" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh all data</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh all data</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>UpdateAllData</Action>
+		</Command>
+		<Command name="AddAllObjectRegistration" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register all objects of selected types</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register all objects of selected types</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddAllObjectRegistration</Action>
+		</Command>
+		<Command name="AddAutoObjectRegistration" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register only for objects of selected types with autorecord</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register only for objects of selected types with autorecord</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddAutoObjectRegistration</Action>
+		</Command>
+		<Command name="DeleteAllObjectRegistration" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration for all object of selected types</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration of all objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteAllObjectRegistration</Action>
+		</Command>
+		<Command name="DeleteAutoObjectRegistration" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration only for objects of selected types with autorecord</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete auto object registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteAutoObjectRegistration</Action>
+		</Command>
+		<Command name="AddRefRegistrationPick" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add registration of picking result</v8:content>
+				</v8:item>
+			</Title>
+			<Action>AddRefRegistrationPick</Action>
+		</Command>
+		<Command name="AddQueryResultRegistration" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add by query result</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add by query result</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddQueryResultRegistration</Action>
+		</Command>
+		<Command name="DeleteQueryResultRegistration" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete by query result</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete by query result</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteQueryResultRegistration</Action>
+		</Command>
+		<Command name="AddConstantRegistration" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add constant registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add constant registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddConstantRegistration</Action>
+		</Command>
+		<Command name="DeleteConstantRegistration" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete constant registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete constant registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteConstantRegistration</Action>
+		</Command>
+		<Command name="EditMessageNumbers" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit message numbers</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit message numbers</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>EditMessageNumbers</Action>
+		</Command>
+		<Command name="ShowExportResults" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export result (in DIB mode)</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show export result</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowExportResults</Action>
+		</Command>
+		<Command name="AddRefRegistrationFilter" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add filter result registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add filter result registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddRefRegistrationFilter</Action>
+		</Command>
+		<Command name="DeleteRefRegistrationFilter" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete filter result registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete filter result registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteRefRegistrationFilter</Action>
+		</Command>
+		<Command name="AddRecordSetRegistrationFilter" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add filter result registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add filter result registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddRecordSetRegistrationFilter</Action>
+		</Command>
+		<Command name="DeleteRecordSetRegistrationFilter" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration by filter</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete record set registration filter</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteRecordSetRegistrationFilter</Action>
+		</Command>
+		<Command name="DeleteRecordSetRegistration" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete record set registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete record set registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteRecordSetRegistration</Action>
+		</Command>
+		<Command name="OpenNodeRegistrationForm" id="20">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open registration form on nodes</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Object registration for all nodes</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenNodeRegistrationForm</Action>
+		</Command>
+		<Command name="OpenSettingsForm" id="21">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open settings form</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.ReportSettings</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenSettingsForm</Action>
+		</Command>
+		<Command name="AddSingleObjectRegistration" id="22">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add single object registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add single object registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddSingleObjectRegistration</Action>
+		</Command>
+		<Command name="AddRegistrationFilter" id="23">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add registration filter</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add registration filter</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddRegistrationFilter</Action>
+		</Command>
+		<Command name="DeleteSingleObjectRegistration" id="24">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete single object registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete single object registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteSingleObjectRegistration</Action>
+		</Command>
+		<Command name="DeleteRegistrationFilter" id="25">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration filter</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete registration filter</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteRegistrationFilter</Action>
+		</Command>
+		<Command name="AddObjectDeletionRegistration" id="26">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add object deletion registration</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add object deletion registration</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddObjectDeletionRegistration</Action>
+		</Command>
+		<Command name="EditObjectMessageNo" id="27">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit object message number</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit object message number</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Change</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>EditObjectMessageNo</Action>
+		</Command>
+		<Command name="RegisterMOIDAndPredefinedItems" id="28">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register data for the subordinate DIB node restoring</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Register data for the subordinate DIB node restoring</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>RegisterMOIDAndPredefinedItems</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="AdditionalDataProcessorRef">
+			<Type/>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+		<Parameter name="TargetObjects">
+			<Type/>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+		<Parameter name="ExchangeNode">
+			<Type>
+				<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+			</Type>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+		<Parameter name="SelectExchangeNodeProhibited">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+	</Parameters>
+</Form>

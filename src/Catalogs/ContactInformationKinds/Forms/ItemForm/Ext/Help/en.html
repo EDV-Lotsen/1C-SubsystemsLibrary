@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>Description of contact information field properties.</p>
+<p>The application is distributed with a predefined list of contact information fields for specific documents and lists. For these predefined contact information fields, only the settings are available for editing; all other attributes are filled in automatically by default and cannot be edited.</p>
+<h3>Contact information types</h3>
+<p>This application allows to keep the following contact information types:</p>
+<ul><li>
+<div><strong>Address</strong> - an attribute with this contact information kind is intended to store an address as an arbitrary string or as an address template. Allows to fill an address using <a href="InformationRegister.AddressClassifier/Help">Address classifier</a> in address input form. If the address is filled using Address classifier then ZIP/Postal code is filled automatically from Address classifier after the address input is finished. Predefined actual and legal addresses are used in print forms of documents.</div>
+</li><li>
+<div><strong>Phone</strong> - an attribute with this contact information kind is intended to store phone numbers as an arbitrary string or as phone number input template. The predefined phone is used in print forms of documents.</div>
+</li><li>
+<div><strong>Email</strong> - an attribute with this contact information kind is intended to store email addresses. This attribute is used during sending emails from the application.</div>
+</li><li>
+<div><strong>URL </strong>- an attribute with this contact information kind is intended to store web page URLs.</div>
+</li><li>
+<div><strong>Fax</strong> - an attribute with this contact information kind is intended to store fax numbers as an arbitrary string or as fax number input template. This attribute values are used in print forms of documents.</div>
+</li><li>
+<div><strong>Other</strong> - an attribute with this contact information kind is intended to store an arbitrary text of contact information, for example information how to find the office of the company. This field can contain up to 1024 text characters.</div></li></ul><h3>Adding contact information fields to lists or documents</h3>
+<p>Fill in the required information:</p>
+<ul><li>
+<div>Select сontact information<strong> Type</strong> from list.</div>
+</li><li>
+<div>Enter<strong> Name</strong> to represent this contact information field in the list or document.</div>
+</li><li>
+<div>Enter <strong>Tooltip</strong> text to be displayed when hovering mouse pointer over the contact information field.</div>
+</li><li>
+<div>Select<strong> Group</strong> if not selected by default. Each group corresponds to a specific application document or list where you want to add a new contact information field.</div></li></ul><h3>Setting up contact information fields</h3>
+<ul><li>
+<div>Select the <strong>Mandatory </strong>check box to ensure that the contact information field is not left blank when entering documents or lists. If this check box is selected, users will be prohibited from saving their data until the contact information field is filled.</div>
+</li><li>
+<div>Select the <strong>Allow multiple value input </strong>to enable multiple value input option. For example, you may need to add multiple email addresses, phone numbers, etc, for a specific organization or individual.</div>
+</li><li>
+<div>The <strong>Edit in dialog box only </strong>check box is available for the following contact information types: <strong>Address, Phone, Fax</strong>. Select this check box to force the application users to create or edit addresses, phone or fax numbers by template only (address classifier will still be available for address selection). Clear this check box to allow free-format address input. This is reserved for emergencies when you may need to knowingly enter an invalid address (for example, an address on an incoming document is invalid and cannot be used, but you still have to enter it). Such address will be stored as a free-format address, and its usage will be limited accordingly. Later, you will be able to make corrections to the invalid address by editing it by template.</div></li></ul><h3>Notes on the Address field setup </h3>
+<ul><li> Select the <strong>Home country only</strong> check box to prohibit selecting any foreign countries during address input. We recommend that you select this check box if none of your employees have foreign addresses; this will expedite the address input procedure. Selecting this check box makes additional check boxes available: 
+<ul><li><strong>Prohibit invalid address input</strong> - if this check box is selected, you will not be able to save the address data until the address is validated. We recommend that you only use this option when input templates and address classifier are implemented. To enable this option, select the <strong>Edit in dialog box only</strong> check box. 
+</li><li><strong>Hide obsolete addresses</strong> - select this check box if you want to view the lists without the addresses considered obsolete on the latest address classifier load date. These addresses are identified with icon in the lists <img src="CommonPicture.ContactInformationObsolete"></img>. The check box is cleared by default. 
+</li><li><strong>Include country in presentation</strong> - select this check box if you want the country name to be displayed when full address presentation is generated automatically.</li></ul></li></ul><h3>Notes on the Email address field setup</h3>
+<p>For fields of <strong>Email address</strong> type, the entered email address data can be validated automatically. Select the <strong>Prohibit incorrect address input</strong> check box to ensure that only valid email addresses are entered.</p>
+<h3>See also: </h3>
+<ul><li><a href="Catalog.ContactInformationKinds/Help">Contact information kinds; </a>
+</li><li><a href="DataProcessor.ContactInformationInput/Help">Contact information input; </a>
+</li><li><a href="v8help://frame/form_common">Working with forms.</a></li></ul></body></html>

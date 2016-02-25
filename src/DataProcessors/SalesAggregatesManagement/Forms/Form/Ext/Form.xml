@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<CommandBarLocation>None</CommandBarLocation>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<CheckBoxField name="AggregatesMode" id="1">
+			<DataPath>AggregatesMode</DataPath>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="AggregatesModeContextMenu" id="2"/>
+			<ExtendedTooltip name="AggregatesModeExtendedTooltip" id="22"/>
+			<Events>
+				<Event name="OnChange">AggregatesModeOnChange</Event>
+			</Events>
+		</CheckBoxField>
+		<UsualGroup name="UpdatesGroup" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Upgrade group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Upgrade group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UpdatesGroupExtendedTooltip" id="23"/>
+			<ChildItems>
+				<CheckBoxField name="ScheduledUpdate" id="7">
+					<DataPath>ScheduledUpdate</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ScheduledUpdateContextMenu" id="8"/>
+					<ExtendedTooltip name="ScheduledUpdateExtendedTooltip" id="24"/>
+					<Events>
+						<Event name="OnChange">ScheduledUpdateOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<Button name="Refresh" id="19">
+					<Type>UsualButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<Width>12</Width>
+					<CommandName>Form.Command.Refresh</CommandName>
+					<ExtendedTooltip name="RefreshExtendedTooltip" id="25"/>
+				</Button>
+				<LabelField name="Updated" id="20">
+					<DataPath>Updated</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<ContextMenu name="UpdatedContextMenu" id="21"/>
+					<ExtendedTooltip name="UpdatedExtendedTooltip" id="26"/>
+				</LabelField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="GroupRebuilding" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuilding group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuilding group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupRebuildingExtendedTooltip" id="27"/>
+			<ChildItems>
+				<CheckBoxField name="ScheduledRebuilding" id="5">
+					<DataPath>ScheduledRebuilding</DataPath>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ScheduledRebuildingContextMenu" id="6"/>
+					<ExtendedTooltip name="ScheduledRebuildingExtendedTooltip" id="28"/>
+					<Events>
+						<Event name="OnChange">ScheduledRebuildingOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<Button name="RebuildAggregatesUsing" id="18">
+					<Type>UsualButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<Width>12</Width>
+					<CommandName>Form.Command.Rebuild</CommandName>
+					<ExtendedTooltip name="RebuildAggregatesUsingExtendedTooltip" id="29"/>
+				</Button>
+				<LabelField name="Rebuilding" id="16">
+					<DataPath>Rebuilding</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<Height>2</Height>
+					<VerticalStretch>false</VerticalStretch>
+					<ContextMenu name="RebuildingContextMenu" id="17"/>
+					<ExtendedTooltip name="RebuildingExtendedTooltip" id="30"/>
+				</LabelField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="OptimalityGroup" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Optimality group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Optimality group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="OptimalityGroupExtendedTooltip" id="31"/>
+			<ChildItems>
+				<Button name="DetermineOptimal" id="15">
+					<Type>UsualButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.Command.DetermineOptimal</CommandName>
+					<ExtendedTooltip name="DetermineOptimalExtendedTooltip" id="32"/>
+				</Button>
+				<LabelField name="Optimality" id="13">
+					<DataPath>Optimality</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<Height>2</Height>
+					<VerticalStretch>false</VerticalStretch>
+					<ContextMenu name="OptimalityContextMenu" id="14"/>
+					<ExtendedTooltip name="OptimalityExtendedTooltip" id="33"/>
+				</LabelField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.SalesAggregatesManagement</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="AggregatesMode" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Aggregates mode</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ScheduledRebuilding" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuild automatically</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ScheduledUpdate" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update automatically</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Optimality" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Optimality</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Rebuilding" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuilding</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Updated" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Updated</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Refresh" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>UpdateClick</Action>
+		</Command>
+		<Command name="Rebuild" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuild</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rebuild</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Rebuild</Action>
+		</Command>
+		<Command name="DetermineOptimal" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Determine optimal</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Determine optimal</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DetermineOptimal</Action>
+		</Command>
+	</Commands>
+</Form>

@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>80</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="CommandBar" id="43">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content> </v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content> </v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="46"/>
+			<ChildItems>
+				<CommandBar name="CommandBarLeft" id="42">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content> </v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content> </v8:content>
+						</v8:item>
+					</ToolTip>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ExtendedTooltip name="CommandBarLeftExtendedTooltip" id="47"/>
+					<ChildItems>
+						<Button name="ImportCurrencyRatesForm" id="32">
+							<Type>CommandBarButton</Type>
+							<DefaultButton>true</DefaultButton>
+							<CommandName>Form.Command.ImportCurrencyRates</CommandName>
+							<ExtendedTooltip name="FormImportCurrencyRatesExtendedTooltip" id="48"/>
+						</Button>
+					</ChildItems>
+				</CommandBar>
+				<InputField name="BeginOfPeriod" id="2">
+					<DataPath>Object.ImportPeriodBegin</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Width>10</Width>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="BeginOfPeriodContextMenu" id="18"/>
+					<ExtendedTooltip name="BeginOfPeriodExtendedTooltip" id="49"/>
+				</InputField>
+				<InputField name="EndOfPeriod" id="3">
+					<DataPath>Object.ImportPeriodEnd</DataPath>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Width>10</Width>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="EndOfPeriodContextMenu" id="19"/>
+					<ExtendedTooltip name="EndOfPeriodExtendedTooltip" id="50"/>
+				</InputField>
+				<CommandBar name="CommandBarRight" id="44">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content> </v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content> </v8:content>
+						</v8:item>
+					</ToolTip>
+					<CommandSource>Form</CommandSource>
+					<ExtendedTooltip name="CommandBarRightExtendedTooltip" id="51"/>
+					<ChildItems>
+						<Button name="FormChooseAllCurrencies" id="35">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.ChooseAllCurrencies</CommandName>
+							<ExtendedTooltip name="FormChooseAllCurrenciesExtendedTooltip" id="52"/>
+						</Button>
+						<Button name="FormRemoveSelection" id="36">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.RemoveSelection</CommandName>
+							<ExtendedTooltip name="FormRemoveSelectionExtendedTooltip" id="53"/>
+						</Button>
+					</ChildItems>
+				</CommandBar>
+			</ChildItems>
+		</UsualGroup>
+		<Pages name="Pages" id="63">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pages</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pages</v8:content>
+				</v8:item>
+			</ToolTip>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="PagesExtendedTooltip" id="64"/>
+			<ChildItems>
+				<Page name="PageCurrencyList" id="65">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page currency list</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page currency list</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="PageCurrencyListExtendedTooltip" id="66"/>
+					<ChildItems>
+						<Table name="CurrencyList" id="7">
+							<CommandBarLocation>None</CommandBarLocation>
+							<SkipOnInput>false</SkipOnInput>
+							<ChangeRowSet>false</ChangeRowSet>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<Width>40</Width>
+							<HeightInTableRows>10</HeightInTableRows>
+							<SelectionMode>SingleRow</SelectionMode>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<DataPath>Object.CurrencyList</DataPath>
+							<BorderColor>style:BorderColor</BorderColor>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>SortListAsc</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>CancelSearch</ExcludedCommand>
+								<ExcludedCommand>SortListDesc</ExcludedCommand>
+								<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+								<ExcludedCommand>Delete</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>Find</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="CurrencyListContextMenu" id="20">
+								<ChildItems>
+									<Button name="CurrencyListContextMenuDisableImportFromInternet" id="45">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.DisableCurrencyRateImportFromInternet</CommandName>
+										<ExtendedTooltip name="CurrencyListContextMenuDisableImportFromInternetExtendedTooltip" id="54"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="CurrencyListCommandBar" id="26"/>
+							<ExtendedTooltip name="CurrencyListExtendedTooltip" id="55"/>
+							<SearchStringAddition name="CurrencyListSearchString" id="75">
+								<AdditionSource>
+									<Item>CurrencyList</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="CurrencyListSearchStringContextMenu" id="76"/>
+								<ExtendedTooltip name="CurrencyListSearchStringExtendedTooltip" id="77"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="CurrencyListViewStatus" id="78">
+								<AdditionSource>
+									<Item>CurrencyList</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="CurrencyListViewStatusContextMenu" id="79"/>
+								<ExtendedTooltip name="CurrencyListViewStatusExtendedTooltip" id="80"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="CurrencyListSearchControl" id="81">
+								<AdditionSource>
+									<Item>CurrencyList</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="CurrencyListSearchControlContextMenu" id="82"/>
+								<ExtendedTooltip name="CurrencyListSearchControlExtendedTooltip" id="83"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">CurrencyListChoice</Event>
+							</Events>
+							<ChildItems>
+								<CheckBoxField name="Import" id="33">
+									<DataPath>Object.CurrencyList.Import</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Import rates for the currency</v8:content>
+										</v8:item>
+									</ToolTip>
+									<EditMode>Directly</EditMode>
+									<HeaderPicture>
+										<xr:Ref>StdPicture.Refresh</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</HeaderPicture>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="ImportContextMenu" id="34"/>
+									<ExtendedTooltip name="ImportExtendedTooltip" id="56"/>
+									<Events>
+										<Event name="OnChange">ImportOnChange</Event>
+									</Events>
+								</CheckBoxField>
+								<LabelField name="CurrencyCode" id="9">
+									<DataPath>Object.CurrencyList.NumericCode</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="CurrencyCodeContextMenu" id="22"/>
+									<ExtendedTooltip name="CurrencyCodeExtendedTooltip" id="57"/>
+								</LabelField>
+								<LabelField name="CurrencyListAlphabeticCode" id="40">
+									<DataPath>Object.CurrencyList.AlphabeticCode</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="CurrencyListAlphabeticCodeContextMenu" id="41"/>
+									<ExtendedTooltip name="CurrencyListAlphabeticCodeExtendedTooltip" id="58"/>
+								</LabelField>
+								<InputField name="CurrencyListPresentation" id="38">
+									<DataPath>Object.CurrencyList.Presentation</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<Width>20</Width>
+									<ContextMenu name="CurrencyListPresentationContextMenu" id="39"/>
+									<ExtendedTooltip name="CurrencyListPresentationExtendedTooltip" id="59"/>
+								</InputField>
+								<LabelField name="RateDate" id="11">
+									<DataPath>Object.CurrencyList.RateDate</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="RateDateContextMenu" id="23"/>
+									<ExtendedTooltip name="RateDateExtendedTooltip" id="60"/>
+								</LabelField>
+								<LabelField name="Rate" id="12">
+									<DataPath>Object.CurrencyList.Rate</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="RateContextMenu" id="24"/>
+									<ExtendedTooltip name="RateExtendedTooltip" id="61"/>
+								</LabelField>
+								<LabelField name="UnitConversionFactor" id="13">
+									<DataPath>Object.CurrencyList.UnitConversionFactor</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="UnitConversionFactorContextMenu" id="25"/>
+									<ExtendedTooltip name="UnitConversionFactorExtendedTooltip" id="62"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</Page>
+				<Page name="PageRateImportBeingExecuted" id="67">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page rate import is being executed</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page rate import is being executed</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<ExtendedTooltip name="PageRateImportBeingExecutedExtendedTooltip" id="68"/>
+					<ChildItems>
+						<PictureDecoration name="LongActionPicture" id="69">
+							<Width>5</Width>
+							<Height>3</Height>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Long action picture</v8:content>
+								</v8:item>
+							</Title>
+							<Picture>
+								<xr:Ref>CommonPicture.LongAction48</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</Picture>
+							<ContextMenu name="LongActionPictureContextMenu" id="70"/>
+							<ExtendedTooltip name="LongActionPictureExtendedTooltip" id="71"/>
+						</PictureDecoration>
+						<LabelDecoration name="LabelCurrencyRateImportBeingExecuted" id="72">
+							<Height>3</Height>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Currency rate import is being executed...</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="LabelCurrencyRateImportBeingExecutedContextMenu" id="73"/>
+							<ExtendedTooltip name="LabelCurrencyRateImportBeingExecutedExtendedTooltip" id="74"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.CurrencyRateImport</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="MessageRatesRelevant" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Message saying that the rates are relevant</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="BackgroundJobID" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Background job ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:UUID</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ResultAddress" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Result address</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ImportCurrencyRates" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import the selected currency rates from the Internet</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ImportCurrencyRates</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ChooseAllCurrencies" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select all currencies</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select all currencies</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ChooseAllCurrencies</Action>
+		</Command>
+		<Command name="RemoveSelection" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Remove selection</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Remove selection</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>RemoveSelection</Action>
+		</Command>
+		<Command name="DisableCurrencyRateImportFromInternet" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Disable the currency rate import from the Internet</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Disable the selected currency rate import from the Internet. Disable or enable import from the Internet or from the currency card.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Delete</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>DisableImportSelectedCurrencyRateFromInternet</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+</Form>

@@ -1,17 +1,41 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	GroupVariant = "ByRecipient";
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
 	
-	//SetListGrouping();
+	IsSessionWithSpecifiedSeparatorValues = CommonUseCached.DataSeparationEnabled() 
+		And CommonUseCached.CanUseSeparatedData();
+	
+	// Initial group setup.
+	DataGroup = List.SettingsComposer.Settings.Structure.Add(Type("DataCompositionGroup"));
+	DataGroup.UserSettingID = "MainGroup";
+	DataGroup.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
+	
+	GroupFields = DataGroup.GroupFields;
+	
+	DataGroupItem = GroupFields.Items.Add(Type("DataCompositionGroupField"));
+	DataGroupItem.Field = New DataCompositionField("Recipient");
+	DataGroupItem.Use = True;
+	
+	DataGroupItem = GroupFields.Items.Add(Type("DataCompositionGroupField"));
+	DataGroupItem.Field = New DataCompositionField("Sender");
+	DataGroupItem.Use = False;
+	
+	// Conditional group setup.
+	GroupVariant = "ByRecipient";
+	SetListGrouping();
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure GroupVariantOnChange(Item)
@@ -20,22 +44,28 @@ Procedure GroupVariantOnChange(Item)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure SendAndReceiveMessages(Command)
 	
+	If IsSessionWithSpecifiedSeparatorValues Then
+		MessageText = NStr("en = 'Message handling is available only during a shared session of the SaaS administrator.'");
+		CommonUseClientServer.MessageToUser(MessageText);
+		Return;
+	EndIf;
+
 	MessageExchangeClient.SendAndReceiveMessages();
-	
 	Items.List.Refresh();
 	
 EndProcedure
 
 &AtClient
-Procedure Setup(Command)
+Procedure Settings(Command)
 	
-	OpenForm("CommonForm.MessageExchangeSetup",, ThisForm);
+	OpenForm("CommonForm.MessageExchangeSetup",, ThisObject);
 	
 EndProcedure
 
@@ -45,9 +75,9 @@ Procedure Delete(Command)
 	If Items.List.CurrentData <> Undefined Then
 		
 		If Items.List.CurrentData.Property("RowGroup")
-			And TypeOf(Items.List.CurrentData.RowGroup) = Type("DynamicalListGroupRow") Then
+			And TypeOf(Items.List.CurrentData.RowGroup) = Type("DynamicListGroupRow") Then
 			
-			ShowMessageBox(, NStr("en = 'A list group row cannot be deleted.'"));
+			ShowMessageBox(, NStr("en = 'The action cannot be performed for a list group row.'"));
 			
 		Else
 			
@@ -57,18 +87,13 @@ Procedure Delete(Command)
 				
 			Else
 				
-				QuestionString = NStr("en = 'Do you want to delete the message [Message]?'");
+				QuestionString = NStr("en = 'Do you want to delete the [Message] message?'");
 				QuestionString = StrReplace(QuestionString, "[Message]", Items.List.CurrentData.Description);
 				
 			EndIf;
 			
-			Response = DoQueryBox(QuestionString, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
-			
-			If Response = DialogReturnCode.Yes Then
-				
-				DeleteMessageDirectly(Items.List.SelectedRows);
-				
-			EndIf;
+			NotifyDescription = New NotifyDescription("DeleteCompletion", ThisObject);
+			ShowQueryBox(NotifyDescription, QuestionString, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
 			
 		EndIf;
 		
@@ -76,28 +101,43 @@ Procedure Delete(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+&AtClient
+Procedure DeleteCompletion(Answer, AdditionalParameters) Export
+	
+	If Answer = DialogReturnCode.Yes Then
+		
+		DeleteMessageDirectly(Items.List.SelectedRows);
+		
+	EndIf;
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 &AtServer
 Procedure SetListGrouping()
 	
+	RecipientGroup  = List.SettingsComposer.Settings.Structure[0].GroupFields.Items[0];
+	SenderGroup = List.SettingsComposer.Settings.Structure[0].GroupFields.Items[1];
+	
 	If GroupVariant = "WithoutGrouping" Then
 		
-		List.Group.Items[0].Use = False;
-		List.Group.Items[1].Use = False;
+		RecipientGroup.Use = False;
+		SenderGroup.Use = False;
 		
-		Items.Sender.Visible = True;
+		Items.Sender.Visible      = True;
 		Items.Recipient.Visible = True;
 		
 	Else
 		
 		Use = (GroupVariant = "ByRecipient");
 		
-		List.Group.Items[0].Use = Use;
-		List.Group.Items[1].Use = Not Use;
+		RecipientGroup.Use = Use;
+		SenderGroup.Use = Not Use;
 		
-		Items.Sender.Visible = Use;
+		Items.Sender.Visible      = Use;
 		Items.Recipient.Visible = Not Use;
 		
 	EndIf;
@@ -108,6 +148,10 @@ EndProcedure
 Procedure DeleteMessageDirectly(Val Messages)
 	
 	For Each Message In Messages Do
+		
+		If TypeOf(Message) <> Type("CatalogRef.SystemMessages") Then
+			Continue;
+		EndIf;
 		
 		MessageObject = Message.GetObject();
 		
@@ -123,8 +167,7 @@ Procedure DeleteMessageDirectly(Val Messages)
 				
 			EndIf;
 			
-			// Existence of catalog references should not interfere with catalog item deletion.
-			MessageObject.DataExchange.Load = True; 
+			MessageObject.DataExchange.Load = True; // Presence of catalog references should not impede or retard deletion of catalog items
 			MessageObject.Delete();
 			
 		EndIf;
@@ -135,9 +178,4 @@ Procedure DeleteMessageDirectly(Val Messages)
 	
 EndProcedure
 
-
-
-
-
-
-
+#EndRegion

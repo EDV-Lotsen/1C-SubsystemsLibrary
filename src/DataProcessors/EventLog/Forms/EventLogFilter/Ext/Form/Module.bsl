@@ -1,15 +1,24 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
+   // Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
 	If Parameters.Property("SelfTest") Then
 		Return;
 	EndIf;
 	
 	FillImportanceAndStatus();
 	FillFilterParameters();
+ 
+	DefaultEvents = Parameters.DefaultEvents;
+	If Not  CommonUseClientServer.ValueListsEqual(DefaultEvents, Events) Then
+		EventsToDisplay = Events.Copy();
+	EndIf;
+	
+	StandardSubsystemsServer.SetGroupTitleRepresentation(ThisObject, "DataGroup, TransactionIDGroup, OthersGroup");
+	
+	Items.SessionDataSeparation.Visible = Not CommonUseCached.CanUseSeparatedData();
 	
 EndProcedure
 
@@ -19,7 +28,7 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	Var ListToEdit, ParametersToSelect, StandardProcessing;
 	
 	If EventName = "EventLogFilterItemValueChoice"
-	 And Source = ThisForm Then
+	 And Source = ThisObject Then
 		If PropertyContentEditorItemName = Items.Users.Name Then
 			UserList = Parameter;
 		ElsIf PropertyContentEditorItemName = Items.Events.Name Then
@@ -36,17 +45,30 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 			MainIPPorts = Parameter;
 		ElsIf PropertyContentEditorItemName = Items.SyncPorts.Name Then
 			SyncPorts= Parameter;
+		ElsIf PropertyContentEditorItemName  = Items.SessionDataSeparation.Name Then
+			SessionDataSeparation = Parameter;
 		EndIf;
+	EndIf;
+	
+	EventsToDisplay.Clear();
+	
+	If Events.Count() = 0 Then
+		Events = DefaultEvents;
+		Return;
+	EndIf;
+	
+	If Not  CommonUseClientServer.ValueListsEqual(DefaultEvents, Events) Then
+		EventsToDisplay = Events.Copy();
 	EndIf;
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
-
+#Region FormHeaderItemEventHandlers
+ 
 &AtClient
-Procedure StartChoice(Item, ChoiceData, StandardProcessing)
+Procedure ChoiceCompletion(Item, ChoiceData, StandardProcessing)
 	
 	Var ListToEdit, ParametersToSelect;
 	
@@ -78,6 +100,12 @@ Procedure StartChoice(Item, ChoiceData, StandardProcessing)
 	ElsIf PropertyContentEditorItemName = Items.SyncPorts.Name Then
 		ListToEdit = SyncPorts;
 		ParametersToSelect = "SyncPort";
+ 	ElsIf PropertyContentEditorItemName  = Items.SessionDataSeparation.Name Then
+
+		FormParameters = New  Structure;
+		FormParameters.Insert("SetFilter", SessionDataSeparation);
+		OpenForm("DataProcessor.EventLog.Form.SessionDataSeparation",  FormParameters, ThisObject);
+		Return;
 	Else
 		StandardProcessing = True;
 		Return;
@@ -91,7 +119,15 @@ Procedure StartChoice(Item, ChoiceData, StandardProcessing)
 	// Opening the property editor
 	OpenForm("DataProcessor.EventLog.Form.PropertyContentEditor",
 	 FormParameters,
-	 ThisForm);
+	 ThisObject);
+	
+EndProcedure
+ 
+&AtClient
+
+Procedure EventsClearing(Item, StandardProcessing)
+	
+	Events = DefaultEvents;
 	
 EndProcedure
 
@@ -112,9 +148,10 @@ Procedure FilterIntervalDateOnChange(Item)
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure SetFilterAndCloseForm(Command)
@@ -122,25 +159,53 @@ Procedure SetFilterAndCloseForm(Command)
 	NotifyChoice(
 		New Structure("Event, Filter", 
 			"EventLogFilterSet", 
-			GetEventLogFilter()
-		)
-	);
+			GetEventLogFilter()));
 	
 EndProcedure
 
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+&AtClient
 
+Procedure SelectImportanceCheckBoxes(Command)
+	For Each ListItem In Importance Do
+		ListItem.Check = True;
+	EndDo;
+EndProcedure
+
+&AtClient
+Procedure ClearImportanceCheckBoxes(Command)
+	For Each ListItem  In Importance Do
+		ListItem.Check = False;
+	EndDo;
+EndProcedure
+
+&AtClient
+Procedure SelectTransactionStatusCheckBoxes(Command)
+	For Each ListItem  In TransactionStatus Do
+		ListItem.Check = True;
+	EndDo;
+EndProcedure
+
+&AtClient
+Procedure ClearTransactionStatusCheckBoxes(Command)
+	For Each ListItem  In TransactionStatus Do
+		ListItem.Check = False;
+	EndDo;
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+ 
 &AtServer
 Procedure FillImportanceAndStatus()
-	// Filling Importance form item
+	// Filling the Importance form item
 	Importance.Add("Error", String(EventLogLevel.Error));
 	Importance.Add("Warning", String(EventLogLevel.Warning));
 	Importance.Add("Information", String(EventLogLevel.Information));
 	Importance.Add("Note", String(EventLogLevel.Note));
 	
-	// Filling Transaction Status form item
+	// Filling the TransactionStatus form item
 	TransactionStatus.Add("NotApplicable", String(EventLogEntryTransactionStatus.NotApplicable));
 	TransactionStatus.Add("Committed", String(EventLogEntryTransactionStatus.Committed));
 	TransactionStatus.Add("Unfinished", String(EventLogEntryTransactionStatus.Unfinished));
@@ -242,6 +307,13 @@ Procedure FillFilterParameters()
 					ValueListItem.Check = True;
 				EndIf;
 			EndDo;
+ 
+ 		ElsIf Upper(ParameterName) = Upper("SessionDataSeparation") Then
+
+			
+			If TypeOf(Value) =  Type("ValueList") Then
+				SessionDataSeparation = Value.Copy();
+			EndIf;
 			
 		EndIf;
 		
@@ -362,6 +434,12 @@ Function GetEventLogFilter()
 	If SyncPorts.Count() > 0 Then 
 		Filter.Add(SyncPorts, "SyncPort");
 	EndIf;
+ 
+ 	// SessionDataSeparation
+
+	If SessionDataSeparation.Count() > 0 Then  
+		Filter.Add(SessionDataSeparation, "SessionDataSeparation");
+	EndIf;
 	
 	// Level
 	LevelList = New ValueList;
@@ -388,3 +466,5 @@ Function GetEventLogFilter()
 	Return Filter;
 	
 EndFunction
+ 
+#EndRegion

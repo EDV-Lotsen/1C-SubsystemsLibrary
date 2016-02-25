@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<ChildItems>
+		<Table name="List" id="1">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<DefaultItem>true</DefaultItem>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<InitialTreeView>ExpandTopLevel</InitialTreeView>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ListExtendedTooltip" id="34"/>
+			<SearchStringAddition name="ListSearchString" id="52">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="53"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="54"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="55">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="56"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="57"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="58">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="59"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="60"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<LabelField name="DataAreaAuxiliaryData" id="6">
+					<DataPath>List.DataAreaAuxiliaryData</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data area</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="DataAreaAuxiliaryDataContextMenu" id="7"/>
+					<ExtendedTooltip name="DataAreaAuxiliaryDataExtendedTooltip" id="35"/>
+				</LabelField>
+				<CheckBoxField name="Use" id="8">
+					<DataPath>List.Use</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="UseContextMenu" id="9"/>
+					<ExtendedTooltip name="UseExtendedTooltip" id="36"/>
+				</CheckBoxField>
+				<LabelField name="ScheduledStartTime" id="10">
+					<DataPath>List.ScheduledStartTime</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="ScheduledStartTimeContextMenu" id="11"/>
+					<ExtendedTooltip name="ScheduledStartTimeExtendedTooltip" id="37"/>
+				</LabelField>
+				<LabelField name="JobState" id="12">
+					<DataPath>List.JobState</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="JobStateContextMenu" id="13"/>
+					<ExtendedTooltip name="JobStateExtendedTooltip" id="38"/>
+				</LabelField>
+				<LabelField name="ActiveBackgroundJob" id="14">
+					<DataPath>List.ActiveBackgroundJob</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="ActiveBackgroundJobContextMenu" id="15"/>
+					<ExtendedTooltip name="ActiveBackgroundJobExtendedTooltip" id="39"/>
+				</LabelField>
+				<CheckBoxField name="ExclusiveExecution" id="16">
+					<DataPath>List.ExclusiveExecution</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ExclusiveExecutionContextMenu" id="17"/>
+					<ExtendedTooltip name="ExclusiveExecutionExtendedTooltip" id="40"/>
+				</CheckBoxField>
+				<LabelField name="Template" id="18">
+					<DataPath>List.Template</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="TemplateContextMenu" id="19"/>
+					<ExtendedTooltip name="TemplateExtendedTooltip" id="41"/>
+				</LabelField>
+				<LabelField name="AttemptNumber" id="20">
+					<DataPath>List.AttemptNumber</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="AttemptNumberContextMenu" id="21"/>
+					<ExtendedTooltip name="AttemptNumberExtendedTooltip" id="42"/>
+				</LabelField>
+				<LabelField name="MethodName" id="22">
+					<DataPath>List.MethodName</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="MethodNameContextMenu" id="23"/>
+					<ExtendedTooltip name="MethodNameExtendedTooltip" id="43"/>
+				</LabelField>
+				<LabelField name="BeginDateOfLastStart" id="24">
+					<DataPath>List.BeginDateOfLastStart</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="BeginDateOfLastStartContextMenu" id="25"/>
+					<ExtendedTooltip name="BeginDateOfLastStartExtendedTooltip" id="44"/>
+				</LabelField>
+				<LabelField name="EndDateOfLastStart" id="26">
+					<DataPath>List.EndDateOfLastStart</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="EndDateOfLastStartContextMenu" id="27"/>
+					<ExtendedTooltip name="EndDateOfLastStartExtendedTooltip" id="45"/>
+				</LabelField>
+				<LabelField name="Key" id="28">
+					<DataPath>List.Key</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="KeyContextMenu" id="29"/>
+					<ExtendedTooltip name="KeyExtendedTooltip" id="46"/>
+				</LabelField>
+				<LabelField name="RestartIntervalOnFailure" id="30">
+					<DataPath>List.RestartIntervalOnFailure</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="RestartIntervalOnFailureContextMenu" id="31"/>
+					<ExtendedTooltip name="RestartIntervalOnFailureExtendedTooltip" id="47"/>
+				</LabelField>
+				<LabelField name="RestartCountOnFailure" id="32">
+					<DataPath>List.RestartCountOnFailure</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="RestartCountOnFailureContextMenu" id="33"/>
+					<ExtendedTooltip name="RestartCountOnFailureExtendedTooltip" id="48"/>
+				</LabelField>
+				<LabelField name="Ref" id="49">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="50"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="51"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>false</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<MainTable>Catalog.DataAreaJobQueue</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+</Form>

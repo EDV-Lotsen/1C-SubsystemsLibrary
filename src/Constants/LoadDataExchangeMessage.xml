@@ -1,19 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Constant uuid="1eec7baf-4149-4e17-94bc-f3d1f83416b2">
+	<Constant uuid="59123b12-6052-4480-9c86-f4de1b5cdc04">
 		<InternalInfo>
 			<xr:GeneratedType name="ConstantManager.LoadDataExchangeMessage" category="Manager">
-				<xr:TypeId>7eb3b4ab-8f80-4255-8c89-1defe45b94ad</xr:TypeId>
-				<xr:ValueId>5ced1447-b7e1-4bcc-b127-04fb95db5a4a</xr:ValueId>
+				<xr:TypeId>254cabfe-e465-43a5-b1df-410f1a8bb9b1</xr:TypeId>
+				<xr:ValueId>53fa5f49-bb8b-4bab-be92-0fe2177d2555</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="ConstantValueManager.LoadDataExchangeMessage" category="ValueManager">
-				<xr:TypeId>22cf9f86-2f8e-4b8a-82ab-a4256a6cfcdb</xr:TypeId>
-				<xr:ValueId>3bb48b79-8794-45b7-ad91-33ad8f6798c2</xr:ValueId>
+				<xr:TypeId>ed469db1-1658-47f7-a5e0-c1420e4fae24</xr:TypeId>
+				<xr:ValueId>b34ce38b-71ca-4b7d-8805-67a7bbe61a30</xr:ValueId>
 			</xr:GeneratedType>
 		</InternalInfo>
 		<Properties>
 			<Name>LoadDataExchangeMessage</Name>
-			<Synonym/>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load data exchange message</v8:content>
+				</v8:item>
+			</Synonym>
 			<Comment/>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
@@ -25,7 +30,12 @@
 			<PasswordMode>false</PasswordMode>
 			<Format/>
 			<EditFormat/>
-			<ToolTip/>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>If this constant value is True in a subordinate node, an exchange message must be imported after configuration changes are received, but before infobase updating.</v8:content>
+				</v8:item>
+			</ToolTip>
 			<MarkNegatives>false</MarkNegatives>
 			<Mask/>
 			<MultiLine>false</MultiLine>

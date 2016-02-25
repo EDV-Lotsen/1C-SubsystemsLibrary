@@ -1,218 +1,151 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-////////////////////////////////////////////////////////////////////////////////
-// Export internal procedure and function
-
-// Gets the common form list and fills the following fields:
-//  Value        - form name, this name identifies the form;
-//  Presentation - form synonym;
-//  Picture      - picture corresponds to the object that form is related to.
+﻿ 
+// This procedure gets the list of saved settings for the passed forms
+//
 // Parameters:
-//  List         - ValueList - form discription will be added to this list.
-//
-Procedure GetFormList(List) Export
+//  User - the user name, forms settings for which to Get
+//  FormsWithSavedParametersList - the list of values in which the forms settings will be added to.
+Procedure GetSavedSettingsList(User, FormsWithSavedSettingsList) Export
 	
-	For Each Form In Metadata.CommonForms Do
+	Var Presentation;
+	Var Picture;
+	
+	SettingType = "/FormSettings";
+	SettingTypeStringLength = StrLen(SettingType);
+	FilterCriterion = New Structure("User", User);
+	SettingsSelection = SystemSettingsStorage.Select(FilterCriterion);
+	
+	While SettingsSelection.Next() Do
 		
-		List.Add("CommonForm." + Form.Name, "Common Form." + Form.Synonym, False, PictureLib.Form);
+		If Right(SettingsSelection.ObjectKey, SettingTypeStringLength) = SettingType Then
 		
-	EndDo;
-
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("FolderForm", "Folder form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	StandardFormNames.Add("FolderChoiceForm", "Folder choise form");
-	GetMetadataObjectFormList(Metadata.Catalogs, "Catalog", "Catalog", StandardFormNames, PictureLib.Catalog, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("Form", "Form");
-	GetMetadataObjectFormList(Metadata.FilterCriteria, "FilterCriterion", "Filter criterion", StandardFormNames, PictureLib.FilterCriterion, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("SaveForm", "Save form");
-	StandardFormNames.Add("LoadForm", "Load form");
-	GetMetadataObjectFormList(Metadata.SettingsStorages, "SettingsStorage", "Settings storage", StandardFormNames, PictureLib.SettingsStorage, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.Documents, "Document", "Document", StandardFormNames, PictureLib.Document, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("Form", "Form");
-	GetMetadataObjectFormList(Metadata.DocumentJournals, "DocumentJournal", "Document journal", StandardFormNames, PictureLib.DocumentJournal, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.Enums, "Enumeration", "Enumeration", StandardFormNames, PictureLib.Enum, List);
-
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("Form", "Form");
-	StandardFormNames.Add("SettingsForm", "Settings form");
-	StandardFormNames.Add("VariantForm", "Variant form");
-	GetMetadataObjectFormList(Metadata.Reports, "Report", "Report", StandardFormNames, PictureLib.Report, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("Form", "Form");
-	GetMetadataObjectFormList(Metadata.DataProcessors, "DataProcessor", "Data processor", StandardFormNames, PictureLib.DataProcessor, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("RecordForm", "Record form");
-	StandardFormNames.Add("ListForm", "List form");
-	GetMetadataObjectFormList(Metadata.InformationRegisters, "InformationRegister", "Information register", StandardFormNames, PictureLib.InformationRegister, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ListForm", "List form");
-	GetMetadataObjectFormList(Metadata.AccumulationRegisters, "AccumulationRegister", "Accumulation register", StandardFormNames, PictureLib.AccumulationRegister, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("FolderForm", "Folder form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	StandardFormNames.Add("FolderChoiceForm", "Folder choice form");
-	GetMetadataObjectFormList(Metadata.ChartsOfCharacteristicTypes, "ChartOfCharacteristicTypes", "Chart of characteristic types", StandardFormNames, PictureLib.ChartOfCharacteristicTypes, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.ChartsOfAccounts, "ChartOfAccounts", "Plan Accounts", StandardFormNames, PictureLib.ChartOfAccounts, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ListForm", "List form");
-	GetMetadataObjectFormList(Metadata.AccountingRegisters, "AccountingRegister", "Accounting register", StandardFormNames, PictureLib.AccountingRegister, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.ChartsOfCalculationTypes, "ChartOfCalculationTypes", "Chart of calculation types", StandardFormNames, PictureLib.ChartOfCalculationTypes, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ListForm", "List form");
-	GetMetadataObjectFormList(Metadata.CalculationRegisters, "CalculationRegister", "Calculation register", StandardFormNames, PictureLib.CalculationRegister, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.BusinessProcesses, "BusinessProcess", "Business process", StandardFormNames, PictureLib.BusinessProcess, List);
-	
-	StandardFormNames = New ValueList;
-	StandardFormNames.Add("ObjectForm", "Object form");
-	StandardFormNames.Add("ListForm", "List form");
-	StandardFormNames.Add("ChoiceForm", "Choice form");
-	GetMetadataObjectFormList(Metadata.Tasks, "Task", "Task", StandardFormNames, PictureLib.Task, List);
-	
-EndProcedure
-
-// Gets forms that have saved settings for a user passed to the User parameter.
-// The selected forms are recorded to the FormsWithSavedSettingsList parameter.
-//
-//
-Procedure GetSavedSettingsList(FormsList, User, FormsWithSavedSettingsList) Export
-	
-	For Each Item In FormsList Do
-		
-		Added = False;
-		
-		Details = SystemSettingsStorage.GetDescription(Item.Value + "/FormSettings", , User);
-		
-		If Details <> Undefined Then
-			FormsWithSavedSettingsList.Add(Item.Value, Item.Presentation, Item.Check, Item.Picture);
-			Added = True;
-		EndIf;
-		
-		Details = SystemSettingsStorage.GetDescription(Item.Value + "/WindowSettings", , User);
-		If Details <> Undefined And Not Added Then
-			FormsWithSavedSettingsList.Add(Item.Value, Item.Presentation, Item.Check, Item.Picture);
+			Presentation = "";
+			Picture = Undefined;
+			
+			FirstSlash = Find(SettingsSelection.ObjectKey, "/");
+			MetadataNameForm = Left(SettingsSelection.ObjectKey, FirstSlash - 1);			
+			
+			FormMetadataNameParts = StrReplace(MetadataNameForm, ".", Chars.LF);
+			NamePartsLength = StrLineCount(FormMetadataNameParts);
+			
+			If NamePartsLength > 1 Then
+				
+				MetadataClassName = StrGetLine(FormMetadataNameParts, 1);
+				MetadataObjectName = StrGetLine(FormMetadataNameParts, 2);
+				Picture = GetMetadataClassPicture(MetadataClassName);
+				
+				MetadataObjectName = MetadataClassName + "." + MetadataObjectName;
+				MetadataObject = Metadata.FindByFullName(MetadataObjectName);
+				
+				If MetadataObject <> Undefined Then
+					Presentation = MetadataClassName + ". " + MetadataObject.Presentation() + ". ";
+				Else
+					Presentation = MetadataClassName + ". " + MetadataObjectName + ". ";
+				EndIf;
+			
+				MetadataObjectForm = Metadata.FindByFullName(MetadataNameForm);
+				
+				If MetadataObjectForm <> Undefined Then
+					Presentation = Presentation + MetadataObjectForm.Presentation();
+				Else
+					Presentation = Presentation + StrGetLine(FormMetadataNameParts, NamePartsLength);
+				EndIf;
+				
+			Else
+				
+				Presentation = MetadataNameForm;
+				
+			EndIf;
+			
+			FormsWithSavedSettingsList.Add(MetadataNameForm, Presentation, False, Picture);
+			
 		EndIf;
 		
 	EndDo;
 	
 EndProcedure
 
-// Copies settings of one user to another.
-// Parameters
-// UserSource          - String - Infobase user name. This user settings will be copied.
-// UsersTarget         - String - Infobase user name. Settings will be copied to this user.
-// SettingsToCopyArray - Array of String. Each string is a full form name.
+// This function gets picture for the metadata class
 //
-Procedure CopyFormSettings(UserSource, UsersTarget, SettingsToCopyArray) Export
+// Parameters:
+//  MetadataClassName - the name of metadata class, for which the picture is requested
+// Returns:
+//  Picture of the metadata class
+Function GetMetadataClassPicture(MetadataClassName)
 	
-	For Each Item In SettingsToCopyArray Do
-		Setting = SystemSettingsStorage.Load(Item + "/FormSettings", "", , UserSource);
-		If Setting <> Undefined Then
-			For Each UserTarget In UsersTarget Do
-				SystemSettingsStorage.Save(Item + "/FormSettings", "", Setting, , UserTarget);
-			EndDo;
-		EndIf;
-		Setting = SystemSettingsStorage.Load(Item + "/WindowSettings", "", , UserSource);
-		If Setting <> Undefined Then
-			For Each UserTarget In UsersTarget Do
-				SystemSettingsStorage.Save(Item + "/WindowSettings", "", Setting, , UserTarget);
-			EndDo;
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-// Clears all user settings that are related to forms
-// User                - String - Infobase user name
-// SettingsToCopyArray - Array of String. Each string is a full form name.
-//
-Procedure DeleteFormSettings(User, SettingsForDeletionArray) Export
-	
-	For Each Item In SettingsForDeletionArray Do
-		SystemSettingsStorage.Delete(Item + "/FormSettings", "", User);
-		SystemSettingsStorage.Delete(Item + "/WindowSettings", "", User);
-	EndDo;
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// Local internal procedures and functions
-
-Procedure GetFormListFromFormMetadataList(Prefix, PresentationPrefix, FormMetadata, Picture, List)
-	
-	For Each Form In FormMetadata Do
-		
-		List.Add(Prefix + ".Form." + Form.Name, PresentationPrefix + "." + Form.Synonym, False, Picture);
-		
-	EndDo;
-	
-EndProcedure
-
-Procedure AddStandardForm(Prefix, PresentationPrefix, MetadataObject, FormName, FormPresentation, Picture, List)
-	
-	If MetadataObject["Default" + FormName] = Undefined Then
-		
-		List.Add(Prefix + "." + FormName, PresentationPrefix + "." + FormPresentation, False, Picture);
-		
+	If MetadataClassName = "Catalog" Then
+		Return PictureLib.Catalog;
+	ElsIf MetadataClassName = "FilterCriterion" Then
+		Return PictureLib.FilterCriterion;
+	ElsIf MetadataClassName = "SettingsStorage" Then
+		Return PictureLib.SettingsStorage;
+	ElsIf MetadataClassName = "Document" Then
+		Return PictureLib.Document;
+	ElsIf MetadataClassName = "DocumentJournal" Then
+		Return PictureLib.DocumentJournal;
+	ElsIf MetadataClassName = "Enum" Then
+		Return PictureLib.Enum;
+	ElsIf MetadataClassName = "Report" Then
+		Return PictureLib.Report;
+	ElsIf MetadataClassName = "DataProcessor" Then
+		Return PictureLib.DataProcessor;
+	ElsIf MetadataClassName = "InformationRegister" Then
+		Return PictureLib.InformationRegister;
+	ElsIf MetadataClassName = "AccumulationRegister" Then
+		Return PictureLib.AccumulationRegister;
+	ElsIf MetadataClassName = "ChartOfCharacteristicTypes" Then
+		Return PictureLib.ChartOfCharacteristicTypes;
+	ElsIf MetadataClassName = "ChartOfAccounts" Then
+		Return PictureLib.ChartOfAccounts;
+	ElsIf MetadataClassName = "AccountingRegister" Then
+		Return PictureLib.AccountingRegister;
+	ElsIf MetadataClassName = "ChartOfCalculationTypes" Then
+		Return PictureLib.ChartOfCalculationTypes;
+	ElsIf MetadataClassName = "CalculationRegister" Then
+		Return PictureLib.CalculationRegister;
+	ElsIf MetadataClassName = "BusinessProcess" Then
+		Return PictureLib.BusinessProcess;
+	ElsIf MetadataClassName = "Task" Then
+		Return PictureLib.Task;
 	EndIf;
 	
+EndFunction
+ 
+// This procedure allows to forms settings from one user to another
+//
+// Parameters:
+//  UserSource - the user name, whos forms settings are copied
+//  UsersReceiver - the user name, which to copy the forms settings
+//  ParametersArrayToCopy - form names, which settings to copy
+Procedure CopyFormSettings(UserSource, UsersReceiver, SettingsArrayToCopy) Export
+	
+	For Each Element In SettingsArrayToCopy Do
+		
+		Settings = SystemSettingsStorage.Load(Element + "/FormSettings", "", , UserSource);
+		
+		If Settings <> Undefined Then
+			
+			For Each UserReceiver In UsersReceiver Do
+				
+				SystemSettingsStorage.Save(Element + "/FormSettings", "", Settings, , UserReceiver);
+				
+			EndDo;
+			
+		EndIf;
+		
+	EndDo;
+	
 EndProcedure
 
-Procedure GetMetadataObjectFormList(MetadataObjectList, MetadataObjectName, MetadataObjectPresentation, StandardFormNames, Picture, List)
+// This procedure allows you to delete forms settings
+//
+// Parameters:
+//  User - the user name the forms settings for which to delete
+//  ParametersForDeletionArray - form names, settings for which to delete
+Procedure DeleteFormSettings(User, SettingsForDeletionArray) Export
 	
-	For Each Object In MetadataObjectList Do
+	For Each Element In SettingsForDeletionArray Do
 		
-		Prefix = MetadataObjectName + "." + Object.Name;
-		PresentationPrefix = MetadataObjectPresentation + "." + Object.Synonym;
-		
-		GetFormListFromFormMetadataList(Prefix, PresentationPrefix, Object.Forms, Picture, List);
-		
-		For Each StandardFormName In StandardFormNames Do
-			
-			AddStandardForm(Prefix, PresentationPrefix, Object, StandardFormName.Value, StandardFormName.Presentation, Picture, List);
-			
-		EndDo;
+		SystemSettingsStorage.Delete(Element + "/FormSettings", "", User);
 		
 	EndDo;
 	

@@ -1,21 +1,29 @@
 ﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-Procedure Refresh(HasChanges = Undefined, OnlyCheck = False) Export
+#Region InternalInterface
+
+// Updates software event parameters when the configuration is changed.
+// 
+// Parameters:
+//  HasChanges - Boolean (return value) - is set to True if changes saved, otherwise
+//               is False.
+//
+Procedure Update(HasChanges = Undefined, CheckOnly = False) Export
 	
-	SetExclusiveMode(True);
+	SetPrivilegedMode(True);
 	
-	If OnlyCheck Or ExclusiveMode() Then
-		UnsetExclusiveMode = False;
+	If CheckOnly Or ExclusiveMode() Then
+		DisableExclusiveMode = False;
 	Else
-		UnsetExclusiveMode = True;
+		DisableExclusiveMode = True;
 		SetExclusiveMode(True);
 	EndIf;
 	
 	EventHandlers = StandardSubsystemsServer.EventHandlers();
 	
 	DataLock = New DataLock;
-	DataLockElement = DataLock.Add("Constant.InternalEventParameters");
-	DataLockElement.Mode = DataLockMode.Exclusive;
+	LockItem = DataLock.Add("Constant.InternalEventParameters");
+	LockItem.Mode = DataLockMode.Exclusive;
 	
 	BeginTransaction();
 	Try
@@ -36,7 +44,7 @@ Procedure Refresh(HasChanges = Undefined, OnlyCheck = False) Export
 		
 		If Saved = Undefined Then
 			HasChanges = True;
-			If OnlyCheck Then
+			If CheckOnly Then
 				CommitTransaction();
 				Return;
 			EndIf;
@@ -44,22 +52,24 @@ Procedure Refresh(HasChanges = Undefined, OnlyCheck = False) Export
 				"InternalEventParameters", "EventHandlers", EventHandlers);
 		EndIf;
 		
-		StandardSubsystemsServer.ConfirmApplicationParameterUpdate(
+		StandardSubsystemsServer.ConfirmApplicationParametersUpdate(
 			"InternalEventParameters", "EventHandlers");
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		If UnsetExclusiveMode Then
+		If DisableExclusiveMode Then
 			SetExclusiveMode(False);
 		EndIf;
 		Raise;
 	EndTry;
 	
-	If UnsetExclusiveMode Then
+	If DisableExclusiveMode Then
 		SetExclusiveMode(False);
 	EndIf;
 	
 EndProcedure
+
+#EndRegion
 
 #EndIf

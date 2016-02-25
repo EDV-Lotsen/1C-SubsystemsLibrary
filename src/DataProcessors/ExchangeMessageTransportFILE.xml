@@ -21,7 +21,7 @@
 			</Synonym>
 			<Comment/>
 			<UseStandardCommands>false</UseStandardCommands>
-			<DefaultForm/>
+			<DefaultForm>DataProcessor.ExchangeMessageTransportFILE.Form.Form</DefaultForm>
 			<AuxiliaryForm/>
 			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<ExtendedPresentation/>
@@ -185,7 +185,7 @@
 							<v8:content>Use temporary directory for sending and receiving messages</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment>True - Sending and receiving of exchange messages will be executed over the temporary directory; False – sending and receiving will be executed directly over the exchange directory.</Comment>
+					<Comment>True - Sending and receiving exchange messages will be executed over the temporary directory; False – sending and receiving will be executed directly over the exchange directory.</Comment>
 					<Type>
 						<v8:Type>xs:boolean</v8:Type>
 					</Type>
@@ -210,6 +210,7 @@
 					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 				</Properties>
 			</Attribute>
+			<Form>Form</Form>
 		</ChildObjects>
 	</DataProcessor>
 </MetaDataObject>

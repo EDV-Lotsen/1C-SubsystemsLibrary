@@ -1,27 +1,26 @@
 ﻿//------------------------------------------------------------------------------
-// PASSED TO THE FORM PARAMETERS
+// PARAMETERS PASSED TO THE FORM
 //
 // Account*  - CatalogRef.EmailAccounts
 //
 // RETURNS
 //
 // Undefined - if the user refused to enter the password.
-// Structure - State key        - Boolean - flag that shows whether the password was  
-//                                entered correctly.
-//           - Password key     - string - contains the password if State is True.
-//           - ErrorMessage key - contains the error message if State is False.
+// Structure - 
+//           State key, boolean - true or false depending on the call success.
+//           Password key, string - if the True state contains a password.
+//           ErrorMessage key - if the True state contains an error message.
 //
 //------------------------------------------------------------------------------
 // HOW THE FORM WORKS
 //
-//   If the passed account list contains more than one item, the email account to be
-// a sender is chosen from the list on the form.
+//   If the passed account list contains more than one item, the email account to
+// be a sender is chosen from the list on the form.
 //
 //------------------------------------------------------------------------------
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
-
+#Region FormEventHandlers
+ 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
@@ -29,7 +28,9 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	If Parameters.Property("SelfTest") Then
 		Return;
 	EndIf;
-	
+		
+	Parameters.Property("CheckCanSendReceiveEmailMessage", CheckCanSendReceiveEmailMessage);
+ 
 	If Parameters.Account.IsEmpty() Then
 		Cancel = True;
 		Return;
@@ -41,43 +42,51 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	If ValueIsFilled(Result) Then
 		Password = Result;
 		PasswordConfirmation = Result;
-		StorePassword = True;
+		SavePassword = True;
 	Else
 		Password = "";
 		PasswordConfirmation = "";
-		StorePassword = False;
+		SavePassword = False;
 	EndIf;
 	
 	If Not AccessRight("SaveUserData", Metadata) Then
-		Items.StorePassword.Visible = False;
+		Items.SavePassword.Visible = False;
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
 
+#Region FormCommandHandlers
 &AtClient
 Procedure SavePasswordAndContinueExecute()
 	
 	If Password <> PasswordConfirmation Then
 		CommonUseClientServer.MessageToUser(
-			NStr("en = 'The password and password confirmation do not match.'"), , "Password");
+			NStr("en = 'The password and password confirmation do not match'"), , "Password");
 		Return;
 	EndIf;
 	
-	If StorePassword Then
+	If SavePassword Then
 		SavePassword(Password);
 	Else
 		SavePassword(Undefined);
 	EndIf;
 	
-	Close(Password);
 	
+	If CheckCanSendReceiveEmailMessage Then
+		NotifyDescription = New NotifyDescription("SavePasswordAndContinueExecuteEnd", ThisObject, Password);		
+		EmailOperationsClient.CheckCanSendReceiveEmail(NotifyDescription, Account, Password);
+		Return;
+	EndIf;
+	
+	SavePasswordAndContinueExecuteEnd(Password);
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
 
 &AtServer
 Procedure SavePassword(Value)
@@ -85,8 +94,7 @@ Procedure SavePassword(Value)
 	CommonUse.CommonSettingsStorageSave(
 		"AccountPasswordConfirmationForm",
 		Account,
-		Value
-	);
+		Value);
 	
 EndProcedure
 
@@ -96,3 +104,12 @@ Function LoadPassword()
 	Return CommonUse.CommonSettingsStorageLoad("AccountPasswordConfirmationForm", Account);
 	
 EndFunction
+
+&AtClient
+Procedure SavePasswordAndContinueExecuteEnd(Password) Export
+	
+	NotifyChoice(Password);
+	
+EndProcedure
+
+#EndRegion

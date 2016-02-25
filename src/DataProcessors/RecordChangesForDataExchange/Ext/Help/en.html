@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This list is used to record application data changes. All data changes must be recorded before the data is sent to other application for synchronization purposes.</p>
+<p>To access the list, use the <strong>All actions - Sent data </strong>command in the <a href="CommonForm.DataExchanges/Help">Data synchronization</a> list. </p>
+<p>All message numbers are recorded. To view or edit a message, click a hyperlink displaying its number. </p>
+<p>You can apply filters to the data change list. Select from list:</p>
+<ul><li><strong>All; </strong>
+</li><li><strong>Only exported; </strong>
+</li><li><strong>Only not exported.</strong></li></ul><p>The list consists of two sections: </p>
+<ul><li>The left section includes two columns: 
+<ul><li><strong>Configuration object</strong> - this column lists applied objects (dictionaries, documents, etc) as a tree; 
+</li><li><strong>Recorded/not exported</strong> - this column displays the number of items in these objects that were changed (or recently created) but not yet exported.</li></ul></li><li>Content of the right section varies depending on the object currently selected in the left section: 
+<ul><li>If multiple objects are selected, the <strong>Details</strong> column will contain detailed statistics for the selected objects. 
+</li><li>If a single object is selected, the right section will be divided into two columns: 
+<ul><li>Object description (for example, <strong>Currency</strong>) - this column displays all list items that were changed but not yet exported; 
+</li><li><strong>Sent No</strong> - number of the sent message containing the changed list items (this column displays a message number or <strong>Has not exported</strong> message).</li></ul></li></ul></li></ul><h3>Recording changes, canceling recording</h3>
+<p>All changed and created objects are recorded automatically. To record an object manually, select the object in the tree by using its check box, and click <strong>Record changes</strong>: </p>
+<ul><li>- <strong>all objects of selected types</strong> - you can select the object itself and all objects subordinate to it; 
+</li><li>- <strong>objects of selected types with auto-recording</strong>; 
+</li><li>- <strong>single object</strong> (create the object, or select an object from list); 
+</li><li>- <strong>filtered objects</strong> (set a filter and select the required items); 
+</li><li>- <strong>query results</strong>.</li></ul><p>To cancel sending all data prepared for other applications, select the object tree root (Infobase) and click <strong>Cancel change recording - All objects of selected types</strong>. In this case, the settings are identical to the above.</p>
+<h3>Other available actions:</h3>
+<ul><li>To set up data change recording parameters, click <strong>Setup</strong>. This allows you to set up auto-recording parameters, assign message number for recording purposes, or specify path to the query console directory. 
+</li><li>To view the export results, select the object with recorded changes in the left section. In the right section, a list of object items will be displayed. Select a required item and click <strong>Show export results</strong>, or use the <strong>All actions - Standard export results </strong>command.</li></ul></body></html>

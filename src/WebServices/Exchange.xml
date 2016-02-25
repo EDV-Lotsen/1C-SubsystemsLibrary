@@ -10,7 +10,7 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<Namespace>http://1c-dn.com/SL/Exchange</Namespace>
+			<Namespace>http://www.1c.ru/SSL/Exchange</Namespace>
 			<XDTOPackages/>
 			<DescriptorFileName>exchange.1cws</DescriptorFileName>
 			<ReuseSessions>DontUse</ReuseSessions>
@@ -19,11 +19,11 @@
 		<ChildObjects>
 			<Operation uuid="339c9220-fd5b-45d3-b300-cdcc8788f87e">
 				<Properties>
-					<Name>ExportSmallData</Name>
+					<Name>Upload</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export small data</v8:content>
+							<v8:content>Upload</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment>Exports not large data</Comment>
@@ -83,11 +83,11 @@
 			</Operation>
 			<Operation uuid="d047caa8-7bcf-41ac-a18e-97877d6e0a2a">
 				<Properties>
-					<Name>ImportSmallData</Name>
+					<Name>Download</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Import small data</v8:content>
+							<v8:content>Download</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment>Import not large data</Comment>
@@ -147,11 +147,11 @@
 			</Operation>
 			<Operation uuid="110121eb-a0eb-4662-8911-3dcc3d341a73">
 				<Properties>
-					<Name>ExportLargeData</Name>
+					<Name>UploadData</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export large data</v8:content>
+							<v8:content>Upload data</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment>Exports large data</Comment>
@@ -256,11 +256,11 @@
 			</Operation>
 			<Operation uuid="49dbe467-8832-4ede-9a05-494248619aeb">
 				<Properties>
-					<Name>ImportLargeData</Name>
+					<Name>DownloadData</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Import large data</v8:content>
+							<v8:content>Download data</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment>Imports large data</Comment>
@@ -365,18 +365,18 @@
 			</Operation>
 			<Operation uuid="c675db75-d0c3-4026-b97c-6b23ecbb336a">
 				<Properties>
-					<Name>GetInfoBaseParameters</Name>
+					<Name>GetIBParameters</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Get infobase parameters</v8:content>
+							<v8:content>Get IBParameters</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>false</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>GetInfoBaseParameters</ProcedureName>
+					<ProcedureName>GetInfobaseParameters</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
@@ -429,18 +429,18 @@
 			</Operation>
 			<Operation uuid="3a716aad-9b2c-48a7-b802-80732066391b">
 				<Properties>
-					<Name>GetInfoBaseData</Name>
+					<Name>GetIBData</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Get infobase data</v8:content>
+							<v8:content>Get IBData</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>false</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>GetInfoBaseData</ProcedureName>
+					<ProcedureName>GetInfobaseData</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
@@ -463,11 +463,11 @@
 			</Operation>
 			<Operation uuid="496e5de8-d75c-4536-9993-75374f070b40">
 				<Properties>
-					<Name>GetCommonNodeData</Name>
+					<Name>GetCommonNodsData</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Get common node data</v8:content>
+							<v8:content>Get common nods data</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
@@ -497,7 +497,7 @@
 			</Operation>
 			<Operation uuid="48febdbd-a085-4113-8511-ed7ff6be7d3c">
 				<Properties>
-					<Name>CreateDataExchange</Name>
+					<Name>CreateExchange</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -576,7 +576,7 @@
 			</Operation>
 			<Operation uuid="789514e5-8ea3-4a5e-88c5-ed89c4135866">
 				<Properties>
-					<Name>UpdateDataExchangeSettings</Name>
+					<Name>UpdateExchange</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -640,7 +640,7 @@
 			</Operation>
 			<Operation uuid="e0619d14-c658-4eb5-841a-3a029de28be4">
 				<Properties>
-					<Name>RecordCatalogChangesOnly</Name>
+					<Name>RegisterOnlyCatalogData</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -719,7 +719,7 @@
 			</Operation>
 			<Operation uuid="e58233ec-6cfc-4a8b-9929-689fa69cdb07">
 				<Properties>
-					<Name>RecordAllChangesExceptCatalogs</Name>
+					<Name>RegisterAllDataExceptCatalogs</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -798,7 +798,7 @@
 			</Operation>
 			<Operation uuid="1c722dfd-2b07-4985-9188-17353de24771">
 				<Properties>
-					<Name>GetLongActionState</Name>
+					<Name>GetContinuousOperationStatus</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>

@@ -1,24 +1,18 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// MessageExchangeOverridable: message exchange engine.
+// MessageExchangeOverridable: message exchange mechanism.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// SOFTWARE INTERFACE
+#Region Interface
 
-// Retrieves a handler list of messages that the current infobase handles.
+// Retrieves a list of handlers used for messages processed by the current infobase.
 // 
 // Parameters:
-// Handlers - ValueTable - see MessageExchange.NewMessageHandlerTable
-// for details.
+//  Handlers - ValueTable - see the field structure in MessageExchange.NewMessageHandlerTable.
 // 
 Procedure GetMessageChannelHandlers(Handlers) Export
 	
-	// StandardSubsystems.ServiceMode.DataExchangeServiceMode
-	DataExchangeMessageChannelHandlerServiceMode.GetMessageChannelHandlers(Handlers);
-	// End StandardSubsystems.ServiceMode.DataExchangeServiceMode
-	
-	//// _Demo Start Example
+	// _Demo begin example
 	//Handler = Handlers.Add();
 	//Handler.Channel = "ProjectManagement\CreatingProject";
 	//Handler.Handler = _DemoMessagesProjectManagement;
@@ -28,7 +22,7 @@ Procedure GetMessageChannelHandlers(Handlers) Export
 	//Handler.Handler = _DemoMessagesProjectManagement;
 	//
 	//Handler = Handlers.Add();
-	//Handler.Channel = "ProjectManagement\Response\ProjectList";
+	//Handler.Channel = "ProjectManagement\Answer\ProjectList";
 	//Handler.Handler = _DemoMessagesProjectManagement;
 	//
 	//Handler = Handlers.Add();
@@ -36,32 +30,27 @@ Procedure GetMessageChannelHandlers(Handlers) Export
 	//Handler.Handler = _DemoMessagesProjectManagement;
 	//
 	//Handler = Handlers.Add();
-	//Handler.Channel = "ProjectManagement\Response\Test";
+	//Handler.Channel = "ProjectManagement\Answer\Test";
 	//Handler.Handler = _DemoMessagesProjectManagement;
 	//
 	//Handler = Handlers.Add();
 	//Handler.Channel = "CommonMessages\TextMessages";
 	//Handler.Handler = _DemoMessagesBroadcastChannel;
-	//// _Demo End Example
-	
-	// StandardSubsystems.ServiceMode.RemoteAdministration
-	RemoteAdministrationMessageChannelHandler.GetMessageChannelHandlers(Handlers);
-	// End StandardSubsystems.ServiceMode.RemoteAdministration
+	// _Demo end example
 	
 EndProcedure
 
-// Retrieves message end point dynamic list. 
+// Gets a dynamic list of message endpoints.
 //
 // Parameters:
-// MessageChannel – String - ID of the message channel whose end points will be
-// identified;
-// Recipients – Array of ExchangePlanRef.MessageExchange - array of end points where
-// a message will be sent; 
-// This parameter must be defined in a body of a caller.
+//  MessageChannel - String - message channel ID.
+//  Recipients     - Array  - array of endpoints assigned as message recipients.
+//                            Contains items of ExchangePlanRef.MessageExchange type.
+//                            This parameter must be defined in the handler body.
 //
 Procedure MessageRecipients(Val MessageChannel, Recipients) Export
 	
-	// _Demo Start Example
+	// _Demo begin example
 	If MessageChannel = "CommonMessages\TextMessages" Then
 		
 		QueryText =
@@ -70,7 +59,7 @@ Procedure MessageRecipients(Val MessageChannel, Recipients) Export
 		|FROM
 		|	ExchangePlan.MessageExchange AS MessageExchange
 		|WHERE
-		|	(NOT MessageExchange.DeletionMark)";
+		|	(Not MessageExchange.DeletionMark)";
 		
 		Query = New Query;
 		Query.Text = QueryText;
@@ -78,6 +67,37 @@ Procedure MessageRecipients(Val MessageChannel, Recipients) Export
 		Recipients = Query.Execute().Unload().UnloadColumn("Ref");
 		
 	EndIf;
-	// _Demo End Example
+	// _Demo end example
 	
 EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// Message sending/receiving event handlers
+
+// "On send message" event handler.
+// This event handler is called before a message is sent to an XML data stream.
+// The handler is called separately for each message to be sent.
+//
+// Parameters:
+//  MessageChannel - String    - ID of the message channel used to send the message.
+//  Body           - Arbitrary - body of the message to be sent. In this event handler,
+//                               message body can be modified (for example, new data added).
+//
+Procedure OnSendMessage(MessageChannel, Body) Export
+	
+EndProcedure
+
+// "On receive message" event handler.
+// This event handler is called after a message is received from an XML data stream.
+// The handler is called separately for each received message.
+//
+// Parameters:
+//  MessageChannel - String    - ID of the message channel that delivered a message.
+//  Body           - Arbitrary - body of the received message. In this event handler,
+//                               message body can be modified (for example, new data added).
+//
+Procedure OnReceiveMessage(MessageChannel, Body) Export
+	
+EndProcedure
+
+#EndRegion

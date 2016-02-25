@@ -1,11 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<AutoCommandBar name="FormCommandBar" id="-1"/>
-	<Events>
-		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
-	</Events>
 	<ChildItems>
+		<UsualGroup name="Settings" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="SettingsExtendedTooltip" id="33"/>
+		</UsualGroup>
 		<Table name="List" id="1">
 			<Representation>List</Representation>
 			<CommandBarLocation>None</CommandBarLocation>
@@ -15,9 +28,6 @@
 			<EnableStartDrag>true</EnableStartDrag>
 			<DataPath>List</DataPath>
 			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
-			<SearchStringLocation>None</SearchStringLocation>
-			<ViewStatusLocation>None</ViewStatusLocation>
-			<SearchControlLocation>None</SearchControlLocation>
 			<AutoRefresh>false</AutoRefresh>
 			<AutoRefreshPeriod>60</AutoRefreshPeriod>
 			<Period>
@@ -31,78 +41,85 @@
 			<ShowRoot>true</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>Settings</UserSettingsGroup>
 			<ContextMenu name="ListContextMenu" id="2"/>
 			<AutoCommandBar name="ListCommandBar" id="3">
 				<Autofill>false</Autofill>
 			</AutoCommandBar>
-			<ExtendedTooltip name="ListExtendedTooltip" id="20"/>
-			<SearchStringAddition name="ListSearchString" id="29">
+			<ExtendedTooltip name="ListExtendedTooltip" id="4"/>
+			<SearchStringAddition name="ListSearchString" id="34">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="30"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="31"/>
+				<ContextMenu name="ListSearchStringContextMenu" id="35"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="36"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="32">
+			<ViewStatusAddition name="ListViewStatus" id="37">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="33"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="34"/>
+				<ContextMenu name="ListViewStatusContextMenu" id="38"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="39"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="35">
+			<SearchControlAddition name="ListSearchControl" id="40">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="36"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="37"/>
+				<ContextMenu name="ListSearchControlContextMenu" id="41"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="42"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<LabelField name="Date" id="4">
+				<LabelField name="Date" id="5">
 					<DataPath>List.Date</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<HorizontalAlign>Right</HorizontalAlign>
-					<ContextMenu name="DateContextMenu" id="5"/>
-					<ExtendedTooltip name="DateExtendedTooltip" id="21"/>
+					<FixingInTable>Left</FixingInTable>
+					<ContextMenu name="DateContextMenu" id="6"/>
+					<ExtendedTooltip name="DateExtendedTooltip" id="7"/>
 				</LabelField>
-				<LabelField name="PromisedDate" id="16">
-					<DataPath>List.PromisedDate</DataPath>
-					<ContextMenu name="PromisedDateContextMenu" id="17"/>
-					<ExtendedTooltip name="PromisedDateExtendedTooltip" id="22"/>
-				</LabelField>
-				<LabelField name="OrderStatus" id="18">
-					<DataPath>List.OrderStatus</DataPath>
-					<Width>10</Width>
-					<ContextMenu name="OrderStatusContextMenu" id="19"/>
-					<ExtendedTooltip name="OrderStatusExtendedTooltip" id="23"/>
-				</LabelField>
-				<LabelField name="Number" id="6">
+				<LabelField name="Number" id="8">
 					<DataPath>List.Number</DataPath>
-					<ContextMenu name="NumberContextMenu" id="7"/>
-					<ExtendedTooltip name="NumberExtendedTooltip" id="24"/>
+					<FixingInTable>Left</FixingInTable>
+					<ContextMenu name="NumberContextMenu" id="9"/>
+					<ExtendedTooltip name="NumberExtendedTooltip" id="10"/>
 				</LabelField>
-				<LabelField name="Counterparty" id="8">
-					<DataPath>List.Counterparty</DataPath>
-					<ContextMenu name="CounterpartyContextMenu" id="9"/>
-					<ExtendedTooltip name="CounterpartyExtendedTooltip" id="25"/>
+				<LabelField name="Company" id="11">
+					<DataPath>List.Company</DataPath>
+					<ContextMenu name="CompanyContextMenu" id="12"/>
+					<ExtendedTooltip name="CompanyExtendedTooltip" id="13"/>
 				</LabelField>
-				<LabelField name="CounterpartyCode" id="14">
-					<DataPath>List.CounterpartyCode</DataPath>
-					<ContextMenu name="CounterpartyCodeContextMenu" id="15"/>
-					<ExtendedTooltip name="CounterpartyCodeExtendedTooltip" id="26"/>
+				<LabelField name="Customer" id="14">
+					<DataPath>List.Customer</DataPath>
+					<FixingInTable>Left</FixingInTable>
+					<ContextMenu name="CustomerContextMenu" id="15"/>
+					<ExtendedTooltip name="CustomerExtendedTooltip" id="16"/>
 				</LabelField>
-				<LabelField name="DocumentTotal" id="10">
-					<DataPath>List.DocumentTotal</DataPath>
-					<ContextMenu name="DocumentTotalContextMenu" id="11"/>
-					<ExtendedTooltip name="DocumentTotalExtendedTooltip" id="27"/>
+				<LabelField name="Warehouse" id="17">
+					<DataPath>List.Warehouse</DataPath>
+					<FixingInTable>Left</FixingInTable>
+					<ContextMenu name="WarehouseContextMenu" id="18"/>
+					<ExtendedTooltip name="WarehouseExtendedTooltip" id="19"/>
 				</LabelField>
-				<LabelField name="DocumentTotalRC" id="12">
-					<DataPath>List.DocumentTotalRC</DataPath>
-					<ContextMenu name="DocumentTotalRCContextMenu" id="13"/>
-					<ExtendedTooltip name="DocumentTotalRCExtendedTooltip" id="28"/>
+				<LabelField name="Currency" id="20">
+					<DataPath>List.Currency</DataPath>
+					<ContextMenu name="CurrencyContextMenu" id="21"/>
+					<ExtendedTooltip name="CurrencyExtendedTooltip" id="22"/>
+				</LabelField>
+				<LabelField name="PriceKind" id="23">
+					<DataPath>List.PriceKind</DataPath>
+					<ContextMenu name="PriceKindContextMenu" id="24"/>
+					<ExtendedTooltip name="PriceKindExtendedTooltip" id="25"/>
+				</LabelField>
+				<LabelField name="SalesOrderStatus" id="26">
+					<ContextMenu name="SalesOrderStatusContextMenu" id="27"/>
+					<ExtendedTooltip name="SalesOrderStatusExtendedTooltip" id="28"/>
+				</LabelField>
+				<LabelField name="Author" id="29">
+					<DataPath>List.Author</DataPath>
+					<ContextMenu name="AuthorContextMenu" id="30"/>
+					<ExtendedTooltip name="AuthorEnhancedTooltip" id="31"/>
 				</LabelField>
 			</ChildItems>
 		</Table>
@@ -114,47 +131,8 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>true</ManualQuery>
+				<ManualQuery>false</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
-				<QueryText>SELECT
-	DocumentSalesOrder.Ref,
-	DocumentSalesOrder.DataVersion,
-	DocumentSalesOrder.DeletionMark,
-	DocumentSalesOrder.Number,
-	DocumentSalesOrder.Date,
-	DocumentSalesOrder.Posted,
-	DocumentSalesOrder.Counterparty,
-	DocumentSalesOrder.CounterpartyCode,
-	DocumentSalesOrder.SalesTax,
-	DocumentSalesOrder.DocumentTotal,
-	DocumentSalesOrder.Currency,
-	DocumentSalesOrder.ExchangeRate,
-	DocumentSalesOrder.DocumentTotalRC,
-	DocumentSalesOrder.Location,
-	DocumentSalesOrder.Memo,
-	DocumentSalesOrder.VATTotal,
-	DocumentSalesOrder.PriceIncludesVAT,
-	DocumentSalesOrder.ShipTo,
-	DocumentSalesOrder.PromisedDate,
-	DocumentSalesOrder.ConfirmTo,
-	DocumentSalesOrder.ManualAdjustment,
-	DocumentSalesOrder.PointInTime,
-	CASE
-		WHEN DocumentSalesOrder.DeletionMark THEN
-			 VALUE(Enum.OrderStatuses.Deleted)
-		WHEN NOT DocumentSalesOrder.Posted THEN
-			 VALUE(Enum.OrderStatuses.Draft)
-		WHEN OrdersStatuses.Status IS NULL THEN
-			 VALUE(Enum.OrderStatuses.Open)
-		WHEN OrdersStatuses.Status = VALUE(Enum.OrderStatuses.EmptyRef) THEN
-			 VALUE(Enum.OrderStatuses.Open)
-		ELSE
-			 OrdersStatuses.Status
-	END AS OrderStatus
-FROM
-	Document.SalesOrder AS DocumentSalesOrder
-		LEFT JOIN InformationRegister.OrdersStatuses.SliceLast AS OrdersStatuses
-		ON DocumentSalesOrder.Ref = OrdersStatuses.Order</QueryText>
 				<MainTable>Document.SalesOrder</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -175,13 +153,4 @@ FROM
 			</Settings>
 		</Attribute>
 	</Attributes>
-	<CommandInterface>
-		<CommandBar>
-			<Item>
-				<Command>0:d51c9da7-9597-4c87-8248-3ffa95e22ea8</Command>
-				<Type>Auto</Type>
-				<DefaultVisible>false</DefaultVisible>
-			</Item>
-		</CommandBar>
-	</CommandInterface>
 </Form>

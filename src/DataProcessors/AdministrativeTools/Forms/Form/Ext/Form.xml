@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<AutoCommandBar name="Form_CommandBar" id="-1"/>
+	<ChildItems>
+		<Button name="FormSettingsManagement" id="3">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>DataProcessor.FormSettingsManagement.StandardCommand.Open</CommandName>
+			<TextColor>style:ButtonTextColor</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="FormSettingsManagementExtendedTooltip" id="7"/>
+		</Button>
+		<Button name="FullTextSearchManagement" id="4">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>0:8e755ce0-c571-4ed5-b0bb-9470edcb7c73</CommandName>
+			<TextColor>style:ButtonTextColor</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="FullTextSearchManagementExtendedTooltip" id="8"/>
+		</Button>
+		<Button name="MarkedObjectDeletion" id="5">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>DataProcessor.MarkedObjectDeletion.StandardCommand.Open</CommandName>
+			<TextColor>style:ButtonTextColor</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="MarkedObjectDeletionExtendedTooltip" id="9"/>
+		</Button>
+		<Button name="SalesAggregatesManagement" id="6">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>DataProcessor.SalesAggregatesManagement.StandardCommand.Open</CommandName>
+			<ExtendedTooltip name="SalesAggregatesManagementExtendedTooltip" id="10"/>
+		</Button>
+		<Button name="ClearHistory" id="1">
+			<Type>UsualButton</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>Form.Command.ClearHistory</CommandName>
+			<TextColor>style:ButtonTextColor</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="ClearHistoryExtendedTooltip" id="11"/>
+		</Button>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.AdministrativeTools</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ClearHistory" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear user history</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear history</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ClearHistoryExecute</Action>
+		</Command>
+	</Commands>
+</Form>

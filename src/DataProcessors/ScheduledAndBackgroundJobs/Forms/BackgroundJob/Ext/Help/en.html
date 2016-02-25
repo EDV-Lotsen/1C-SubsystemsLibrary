@@ -1,27 +1,27 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
 <p>Background job properties can be viewed in this form.</p>
-<h3>1. Main property group</h3>
+<h3>1. The Main property group</h3>
 <p></p>
-<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<table width="100%" border="1"><tbody><tr><td><strong>Property description</strong></td>
 <td><strong>Property purpose</strong></td></tr><tr><td>Description</td>
-<td>This is a copy of Description field of scheduled job and usually is blank. If Execute now command on command bar of scheduled job is executed, the description of scheduled job will have a value: "Start manually: &lt;Scheduled job presentation&gt;".</td></tr><tr><td>State</td>
-<td>Possible values: Completed, Completed with errors, Canceled by user, Executing.</td></tr><tr><td>Start date</td>
-<td>Date and time when a background job is started.</td></tr><tr><td>End date</td>
-<td>Date and time when a background job if finished (if job is still executing then date and time is: &lt;&gt;).</td></tr><tr><td>Execute on</td>
-<td>Name of a computer inside a network without domain on which the background job was executed. It either is a server name in client/server mode or a user computer name in file mode.</td></tr></tbody></table><h3>2. Advanced property group</h3>
-<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<td>This is a copy of the <strong>Description</strong> field of the scheduled job and usually is blank. If the <strong>Run now</strong> command on the command bar of the scheduled job is executed, the description of the scheduled job will have following value: "&lt;Scheduled job presentation&gt; started manually".</td></tr><tr><td>State</td>
+<td>Possible values: <strong>Completed</strong>, <strong>Completed with errors</strong>, <strong>Canceled by user</strong>, <strong>Executing</strong>.</td></tr><tr><td>Start date</td>
+<td>Date and time when the background job is started.</td></tr><tr><td>End date</td>
+<td>Date and time when the background job is finished. If the background job is still executing the date and time is: &lt;&gt;).</td></tr><tr><td>Execute on</td>
+<td>The name without domain of the computer inside a network where the background job was executed. It either is a server name in client/server mode or a user computer name in file mode.</td></tr></tbody></table><h3>2. The Advanced property group</h3>
+<table width="100%" border="1"><tbody><tr><td><strong>Property </strong><strong>description</strong></td>
 <td><strong>Property purpose</strong></td></tr><tr><td>ID</td>
 <td>
 <p>It can be used only by experienced administrator who knows 1C:Script. It is required to investigate problems in scheduled job execution, if any.</p></td></tr><tr><td>Key</td>
 <td>
-<p>The value of Key property that was specified in scheduled job properties (at the moment when the background job was created) or another value that was specified if background job was created programmatically, but not a server scheduler.</p></td></tr><tr><td>Method name</td>
-<td>Name of procedure in the configuration that is or was executed in this background. It usually is the same value as value of Method name property of the corresponding scheduled job.</td></tr></tbody></table><h3> </h3>
-<h3>3. Scheduled job property group</h3>
-<table border="1" width="100%"><tbody><tr><td><strong>Property name</strong></td>
+<p>The value of the Key property that was specified in scheduled job properties (at the moment when the background job was created) or another value that was specified explicitly if the background job was created from 1C:Enterprise script (i.e. not by server scheduler).</p></td></tr><tr><td>Method name</td>
+<td>The procedure name in the configuration that executed in this background job. It usually is the same value as value of the <strong>Method name</strong> property of the corresponding scheduled job.</td></tr></tbody></table><h3> </h3>
+<h3>3. The Scheduled job property group</h3>
+<table width="100%" border="1"><tbody><tr><td><strong>Property </strong><strong>description</strong></td>
 <td><strong>Property purpose</strong></td></tr><tr><td>Description</td>
 <td>
-<p>Value of one of properties (in order of searching for first filled property):<br>1. Description.<br>2. Synonym.<br>3. Name.</p></td></tr><tr><td>ID</td>
-<td>ID of scheduled job that corresponds to the background job.</td></tr></tbody></table><h3> </h3>
+<p>Contains one of following values (in order of searching for first filled property):<br>1. <strong>Description</strong>.<br>2. <strong>Synonym</strong>.<br>3. <strong>Name</strong>.</p></td></tr><tr><td>ID</td>
+<td>The ID of scheduled job that corresponds to the background job.</td></tr></tbody></table><h3> </h3>
 <h3>4. Warnings and error details</h3>
 <p>This field contains warning texts and error details if warnings and/or errors occured during the background job execution.</p>
 <p> </p></body></html>

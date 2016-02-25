@@ -3,89 +3,89 @@
 	<Title>
 		<v8:item>
 			<v8:lang>en</v8:lang>
-			<v8:content>Message exchange</v8:content>
+			<v8:content>System messages</v8:content>
 		</v8:item>
 	</Title>
 	<AutoTitle>false</AutoTitle>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<Autofill>false</Autofill>
 		<ChildItems>
-			<ButtonGroup name="FormGroup2" id="2">
-				<ExtendedTooltip name="FormGroup2ExtendedTooltip" id="3"/>
+			<ButtonGroup name="FormGroup2" id="28">
+				<ExtendedTooltip name="FormGroup2ExtendedTooltip" id="35"/>
 				<ChildItems>
-					<Button name="FormChange" id="4">
+					<Button name="FormChange" id="20">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>false</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.Change</CommandName>
-						<ExtendedTooltip name="FormChangeExtendedTooltip" id="5"/>
+						<ExtendedTooltip name="FormChangeExtendedTooltip" id="36"/>
 					</Button>
-					<Button name="FormDelete" id="6">
+					<Button name="FormDelete" id="19">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>false</OnlyInAllActions>
 						<CommandName>Form.Command.Delete</CommandName>
-						<ExtendedTooltip name="FormDeleteExtendedTooltip" id="7"/>
+						<ExtendedTooltip name="FormDeleteExtendedTooltip" id="37"/>
 					</Button>
 				</ChildItems>
 			</ButtonGroup>
-			<ButtonGroup name="FormGroup1" id="8">
-				<ExtendedTooltip name="FormGroup1ExtendedTooltip" id="9"/>
+			<ButtonGroup name="FormGroup1" id="27">
+				<ExtendedTooltip name="FormGroup1ExtendedTooltip" id="38"/>
 				<ChildItems>
-					<Button name="SendAndReceiveMessagesForm" id="10">
+					<Button name="SendAndReceiveMessagesForm" id="17">
 						<Type>CommandBarButton</Type>
 						<CommandName>Form.Command.SendAndReceiveMessages</CommandName>
-						<ExtendedTooltip name="SendAndReceiveMessagesFormExtendedTooltip" id="11"/>
+						<ExtendedTooltip name="SendAndReceiveMessagesFormExtendedTooltip" id="39"/>
 					</Button>
-					<Button name="FormSettings" id="12">
+					<Button name="FormSettings" id="18">
 						<Type>CommandBarButton</Type>
-						<CommandName>Form.Command.Setup</CommandName>
-						<ExtendedTooltip name="FormSettingsExtendedTooltip" id="13"/>
+						<CommandName>Form.Command.Settings</CommandName>
+						<ExtendedTooltip name="FormSettingsExtendedTooltip" id="40"/>
 					</Button>
 				</ChildItems>
 			</ButtonGroup>
-			<ButtonGroup name="FormGroup3" id="14">
-				<ExtendedTooltip name="FormGroup3ExtendedTooltip" id="15"/>
+			<ButtonGroup name="FormGroup3" id="29">
+				<ExtendedTooltip name="FormGroup3ExtendedTooltip" id="41"/>
 				<ChildItems>
-					<Button name="FormFind" id="16">
+					<Button name="FormFind" id="21">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>true</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.Find</CommandName>
-						<ExtendedTooltip name="FormFindExtendedTooltip" id="17"/>
+						<ExtendedTooltip name="FormFindExtendedTooltip" id="42"/>
 					</Button>
-					<Button name="FormCancelSearch" id="18">
+					<Button name="FormCancelSearch" id="22">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>true</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.CancelSearch</CommandName>
-						<ExtendedTooltip name="FormCancelSearchExtendedTooltip" id="19"/>
+						<ExtendedTooltip name="FormCancelSearchExtendedTooltip" id="43"/>
 					</Button>
 				</ChildItems>
 			</ButtonGroup>
-			<Button name="FormRefresh" id="20">
+			<Button name="FormRefresh" id="25">
 				<Type>CommandBarButton</Type>
 				<OnlyInAllActions>false</OnlyInAllActions>
 				<CommandName>Form.Item.List.StandardCommand.Refresh</CommandName>
-				<ExtendedTooltip name="FormRefreshExtendedTooltip" id="21"/>
+				<ExtendedTooltip name="FormRefreshExtendedTooltip" id="44"/>
 			</Button>
-			<ButtonGroup name="FormGroup4" id="22">
-				<ExtendedTooltip name="FormGroup4ExtendedTooltip" id="23"/>
+			<ButtonGroup name="FormGroup4" id="30">
+				<ExtendedTooltip name="FormGroup4ExtendedTooltip" id="45"/>
 				<ChildItems>
-					<Button name="FormListSettings" id="24">
+					<Button name="FormListSettings" id="23">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>false</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.ListSettings</CommandName>
-						<ExtendedTooltip name="FormListSettingsExtendedTooltip" id="25"/>
+						<ExtendedTooltip name="FormListSettingsExtendedTooltip" id="46"/>
 					</Button>
-					<Button name="FormOutputList" id="26">
+					<Button name="FormOutputList" id="24">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>false</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.OutputList</CommandName>
-						<ExtendedTooltip name="FormPutListExtendedTooltip" id="27"/>
+						<ExtendedTooltip name="FormPutListExtendedTooltip" id="47"/>
 					</Button>
-					<Button name="FormCopyToClipboard" id="28">
+					<Button name="FormCopyToClipboard" id="26">
 						<Type>CommandBarButton</Type>
 						<OnlyInAllActions>false</OnlyInAllActions>
 						<CommandName>Form.Item.List.StandardCommand.CopyToClipboard</CommandName>
-						<ExtendedTooltip name="FormCopyToClipboardExtendedTooltip" id="29"/>
+						<ExtendedTooltip name="FormCopyToClipboardExtendedTooltip" id="48"/>
 					</Button>
 				</ChildItems>
 			</ButtonGroup>
@@ -95,7 +95,7 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="GroupVariant" id="30">
+		<InputField name="GroupVariant" id="14">
 			<DataPath>GroupVariant</DataPath>
 			<Width>30</Width>
 			<HorizontalStretch>false</HorizontalStretch>
@@ -109,7 +109,7 @@
 						<Presentation>
 							<v8:item>
 								<v8:lang>en</v8:lang>
-								<v8:content>do not group</v8:content>
+								<v8:content>no groups</v8:content>
 							</v8:item>
 						</Presentation>
 						<Value xsi:type="xs:string">WithoutGrouping</Value>
@@ -142,13 +142,13 @@
 					</xr:Value>
 				</xr:Item>
 			</ChoiceList>
-			<ContextMenu name="GroupVariantContextMenu" id="31"/>
-			<ExtendedTooltip name="GroupVariantExtendedTooltip" id="32"/>
+			<ContextMenu name="GroupVariantContextMenu" id="15"/>
+			<ExtendedTooltip name="GroupVariantExtendedTooltip" id="49"/>
 			<Events>
 				<Event name="OnChange">GroupVariantOnChange</Event>
 			</Events>
 		</InputField>
-		<Table name="List" id="33">
+		<Table name="List" id="1">
 			<CommandBarLocation>None</CommandBarLocation>
 			<ChangeRowSet>false</ChangeRowSet>
 			<ChangeRowOrder>false</ChangeRowOrder>
@@ -157,6 +157,12 @@
 			<EnableStartDrag>true</EnableStartDrag>
 			<DataPath>List</DataPath>
 			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>Create</ExcludedCommand>
+				<ExcludedCommand>SetDeletionMark</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+			</CommandSet>
 			<SearchStringLocation>None</SearchStringLocation>
 			<ViewStatusLocation>None</ViewStatusLocation>
 			<SearchControlLocation>None</SearchControlLocation>
@@ -173,72 +179,80 @@
 			<ShowRoot>true</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="34">
+			<ContextMenu name="ListContextMenu" id="2">
 				<Autofill>false</Autofill>
 				<ChildItems>
-					<ButtonGroup name="ListGroup1" id="35">
-						<ExtendedTooltip name="ListGroup1ExtendedTooltip" id="36"/>
+					<ButtonGroup name="ListGroup1" id="34">
+						<ExtendedTooltip name="ListGroup1ExtendedTooltip" id="50"/>
 						<ChildItems>
-							<Button name="ListChange" id="37">
+							<Button name="ListChange" id="32">
 								<Type>CommandBarButton</Type>
 								<CommandName>Form.Item.List.StandardCommand.Change</CommandName>
-								<ExtendedTooltip name="ListChangeExtendedTooltip" id="38"/>
+								<ExtendedTooltip name="ListChangeExtendedTooltip" id="51"/>
 							</Button>
-							<Button name="ListDelete" id="39">
+							<Button name="ListDelete" id="31">
 								<Type>CommandBarButton</Type>
 								<CommandName>Form.Command.Delete</CommandName>
-								<ExtendedTooltip name="ListDeleteExtendedTooltip" id="40"/>
+								<ExtendedTooltip name="ListDeleteExtendedTooltip" id="52"/>
 							</Button>
 						</ChildItems>
 					</ButtonGroup>
-					<Button name="ListCopyToClipboard" id="41">
+					<Button name="ListCopyToClipboard" id="33">
 						<Type>CommandBarButton</Type>
 						<CommandName>Form.Item.List.StandardCommand.CopyToClipboard</CommandName>
-						<ExtendedTooltip name="ListCopyToClipboardExtendedTooltip" id="42"/>
+						<ExtendedTooltip name="ListCopyToClipboardExtendedTooltip" id="53"/>
 					</Button>
 				</ChildItems>
 			</ContextMenu>
-			<AutoCommandBar name="ListCommandBar" id="43"/>
-			<ExtendedTooltip name="ListExtendedTooltip" id="44"/>
-			<SearchStringAddition name="ListSearchString" id="54">
+			<AutoCommandBar name="ListCommandBar" id="3"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="54"/>
+			<SearchStringAddition name="ListSearchString" id="61">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="55"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="56"/>
+				<ContextMenu name="ListSearchStringContextMenu" id="62"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="63"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="57">
+			<ViewStatusAddition name="ListViewStatus" id="64">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="58"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="59"/>
+				<ContextMenu name="ListViewStatusContextMenu" id="65"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="66"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="60">
+			<SearchControlAddition name="ListSearchControl" id="67">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="61"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="62"/>
+				<ContextMenu name="ListSearchControlContextMenu" id="68"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="69"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<LabelField name="Description" id="45">
+				<LabelField name="Description" id="4">
 					<DataPath>List.Description</DataPath>
-					<ContextMenu name="DescriptionContextMenu" id="46"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="47"/>
+					<ContextMenu name="DescriptionContextMenu" id="5"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="55"/>
 				</LabelField>
-				<LabelField name="Sender" id="48">
+				<LabelField name="Sender" id="10">
 					<DataPath>List.Sender</DataPath>
-					<ContextMenu name="SenderContextMenu" id="49"/>
-					<ExtendedTooltip name="SenderExtendedTooltip" id="50"/>
+					<ContextMenu name="SenderContextMenu" id="11"/>
+					<ExtendedTooltip name="SenderExtendedTooltip" id="56"/>
 				</LabelField>
-				<LabelField name="Recipient" id="51">
+				<LabelField name="Recipient" id="12">
 					<DataPath>List.Recipient</DataPath>
-					<ContextMenu name="RecipientContextMenu" id="52"/>
-					<ExtendedTooltip name="RecipientExtendedTooltip" id="53"/>
+					<ContextMenu name="RecipientContextMenu" id="13"/>
+					<ExtendedTooltip name="RecipientExtendedTooltip" id="57"/>
+				</LabelField>
+				<LabelField name="Ref" id="58">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="59"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="60"/>
 				</LabelField>
 			</ChildItems>
 		</Table>
@@ -324,30 +338,8 @@ FROM
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
-					<dcsset:item xsi:type="dcsset:StructureItemGroup">
-						<dcsset:groupItems>
-							<dcsset:item xsi:type="dcsset:GroupItemField">
-								<dcsset:field>Recipient</dcsset:field>
-								<dcsset:groupType>Items</dcsset:groupType>
-								<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-								<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
-								<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
-							</dcsset:item>
-						</dcsset:groupItems>
-						<dcsset:item xsi:type="dcsset:StructureItemGroup">
-							<dcsset:groupItems>
-								<dcsset:item xsi:type="dcsset:GroupItemField">
-									<dcsset:use>false</dcsset:use>
-									<dcsset:field>Sender</dcsset:field>
-									<dcsset:groupType>Items</dcsset:groupType>
-									<dcsset:periodAdditionType>None</dcsset:periodAdditionType>
-									<dcsset:periodAdditionBegin xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionBegin>
-									<dcsset:periodAdditionEnd xsi:type="xs:dateTime">0001-01-01T00:00:00</dcsset:periodAdditionEnd>
-								</dcsset:item>
-							</dcsset:groupItems>
-						</dcsset:item>
-					</dcsset:item>
 					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
 				</ListSettings>
 			</Settings>
 		</Attribute>
@@ -355,7 +347,7 @@ FROM
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group</v8:content>
+					<v8:content>Grouping</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -364,6 +356,17 @@ FROM
 					<v8:Length>20</v8:Length>
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="IsSessionWithSpecifiedSeparatorValues" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>It is a session with specified separator values</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
@@ -381,23 +384,32 @@ FROM
 					<v8:content>Send and receive messages now</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationExecution</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:TransparentPixel x="7" y="5"/>
+			</Picture>
 			<Action>SendAndReceiveMessages</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="Setup" id="2">
+		<Command name="Settings" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Setup...</v8:content>
+					<v8:content>Settings...</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Message exchange subsystem setup.</v8:content>
+					<v8:content>Message exchange subsystem setup</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>Setup</Action>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationSetup</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Settings</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
 		<Command name="Delete" id="3">
@@ -414,6 +426,10 @@ FROM
 				</v8:item>
 			</ToolTip>
 			<Shortcut>F8</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.DeleteDirectly</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>Delete</Action>
 		</Command>
 	</Commands>

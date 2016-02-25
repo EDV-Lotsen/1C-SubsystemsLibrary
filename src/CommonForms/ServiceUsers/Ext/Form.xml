@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>None</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
 	<Events>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<Table name="ServiceUsers" id="2">
+		<Table name="ServiceUsers" id="1">
 			<Representation>List</Representation>
 			<ChangeRowOrder>false</ChangeRowOrder>
 			<AutoInsertNewRow>true</AutoInsertNewRow>
@@ -15,28 +17,37 @@
 			<EnableDrag>true</EnableDrag>
 			<DataPath>ServiceUsers</DataPath>
 			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>SelectAll</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
 				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
 			</CommandSet>
 			<SearchStringLocation>None</SearchStringLocation>
 			<ViewStatusLocation>None</ViewStatusLocation>
 			<SearchControlLocation>None</SearchControlLocation>
 			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="ServiceUsersContextMenu" id="3"/>
-			<AutoCommandBar name="ServiceUsersCommandBar" id="4">
+			<ContextMenu name="ServiceUsersContextMenu" id="2"/>
+			<AutoCommandBar name="ServiceUsersCommandBar" id="3">
 				<ChildItems>
-					<Button name="ServiceUsersCheckAll" id="5">
+					<Button name="ServiceUsersCheckAll" id="18">
 						<Type>CommandBarButton</Type>
 						<CommandName>Form.Command.CheckAll</CommandName>
-						<ExtendedTooltip name="ServiceUsersCheckAllExtendedTooltip" id="6"/>
+						<ExtendedTooltip name="ServiceUsersCheckAllExtendedTooltip" id="23"/>
 					</Button>
-					<Button name="ServiceUsersUncheckAll" id="7">
+					<Button name="ServiceUsersUncheckAll" id="19">
 						<Type>CommandBarButton</Type>
 						<CommandName>Form.Command.UncheckAll</CommandName>
-						<ExtendedTooltip name="ServiceUsersUncheckAllExtendedTooltip" id="8"/>
+						<ExtendedTooltip name="ServiceUsersUncheckAllExtendedTooltip" id="24"/>
 					</Button>
 				</ChildItems>
 			</AutoCommandBar>
-			<ExtendedTooltip name="ServiceUsersExtendedTooltip" id="9"/>
+			<ExtendedTooltip name="ServiceUsersExtendedTooltip" id="25"/>
 			<SearchStringAddition name="ServiceUsersSearchString" id="34">
 				<AdditionSource>
 					<Item>ServiceUsers</Item>
@@ -62,50 +73,44 @@
 				<ExtendedTooltip name="ServiceUsersSearchControlExtendedTooltip" id="42"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<CheckBoxField name="ServiceUsersAdd" id="10">
+				<CheckBoxField name="ServiceUsersAdd" id="16">
 					<DataPath>ServiceUsers.Add</DataPath>
 					<TitleLocation>None</TitleLocation>
 					<EditMode>EnterOnInput</EditMode>
 					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="ServiceUsersAddContextMenu" id="11"/>
-					<ExtendedTooltip name="ServiceUsersAddExtendedTooltip" id="12"/>
+					<ContextMenu name="ServiceUsersAddContextMenu" id="17"/>
+					<ExtendedTooltip name="ServiceUsersAddExtendedTooltip" id="26"/>
 				</CheckBoxField>
-				<LabelField name="ServiceUsersName" id="13">
+				<LabelField name="ServiceUsersName" id="4">
 					<DataPath>ServiceUsers.Name</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ServiceUsersNameContextMenu" id="14"/>
-					<ExtendedTooltip name="ServiceUsersNameExtendedTooltip" id="15"/>
+					<ContextMenu name="ServiceUsersNameContextMenu" id="5"/>
+					<ExtendedTooltip name="ServiceUsersNameExtendedTooltip" id="27"/>
 				</LabelField>
-				<LabelField name="ServiceUsersFullName" id="16">
+				<LabelField name="ServiceUsersFullName" id="6">
 					<DataPath>ServiceUsers.FullName</DataPath>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ServiceUsersFullNameContextMenu" id="17"/>
-					<ExtendedTooltip name="ServiceUsersFullNameExtendedTooltip" id="18"/>
+					<ContextMenu name="ServiceUsersFullNameContextMenu" id="7"/>
+					<ExtendedTooltip name="ServiceUsersFullNameExtendedTooltip" id="28"/>
 				</LabelField>
-				<LabelField name="ServiceUsersComment" id="19">
-					<DataPath>ServiceUsers.Comment</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ServiceUsersCommentContextMenu" id="20"/>
-					<ExtendedTooltip name="ServiceUsersCommentExtendedTooltip" id="21"/>
-				</LabelField>
-				<LabelField name="ServiceUsersID" id="22">
+				<LabelField name="ServiceUsersID" id="12">
 					<DataPath>ServiceUsers.ID</DataPath>
 					<Visible>false</Visible>
 					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="ServiceUsersIDContextMenu" id="23"/>
-					<ExtendedTooltip name="ServiceUsersIDExtendedTooltip" id="24"/>
+					<ContextMenu name="ServiceUsersIDContextMenu" id="13"/>
+					<ExtendedTooltip name="ServiceUsersIDExtendedTooltip" id="29"/>
 				</LabelField>
-				<CheckBoxField name="ServiceUsersHasAccess" id="25">
-					<DataPath>ServiceUsers.HasAccess</DataPath>
+				<CheckBoxField name="ServiceUsersAccess" id="14">
+					<DataPath>ServiceUsers.Access</DataPath>
 					<ReadOnly>true</ReadOnly>
 					<EditMode>EnterOnInput</EditMode>
 					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="ServiceUsersHasAccessContextMenu" id="26"/>
-					<ExtendedTooltip name="ServiceUsersHasAccessExtendedTooltip" id="27"/>
+					<ContextMenu name="ServiceUsersAccessContextMenu" id="15"/>
+					<ExtendedTooltip name="ServiceUsersAccessExtendedTooltip" id="30"/>
 				</CheckBoxField>
 			</ChildItems>
 		</Table>
-		<CommandBar name="ActionsButtonGroup" id="28">
+		<CommandBar name="ActionsButtonGroup" id="20">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -119,15 +124,15 @@
 				</v8:item>
 			</ToolTip>
 			<HorizontalLocation>Right</HorizontalLocation>
-			<ExtendedTooltip name="ActionsButtonGroupExtendedTooltip" id="29"/>
+			<ExtendedTooltip name="ActionsButtonGroupExtendedTooltip" id="31"/>
 			<ChildItems>
-				<Button name="AddSelectedUsers" id="30">
+				<Button name="AddSelectedUsers" id="21">
 					<Type>CommandBarButton</Type>
 					<DefaultButton>true</DefaultButton>
 					<CommandName>Form.Command.AddSelectedUsers</CommandName>
-					<ExtendedTooltip name="AddSelectedUsersExtendedTooltip" id="31"/>
+					<ExtendedTooltip name="AddSelectedUsersExtendedTooltip" id="32"/>
 				</Button>
-				<Button name="Cancel" id="32">
+				<Button name="Cancel" id="22">
 					<Type>CommandBarButton</Type>
 					<Representation>Text</Representation>
 					<CommandName>Form.StandardCommand.Close</CommandName>
@@ -189,26 +194,11 @@
 						<v8:Type>v8:UUID</v8:Type>
 					</Type>
 				</Column>
-				<Column name="Comment" id="4">
+				<Column name="Access" id="5">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Comment</v8:content>
-						</v8:item>
-					</Title>
-					<Type>
-						<v8:Type>xs:string</v8:Type>
-						<v8:StringQualifiers>
-							<v8:Length>500</v8:Length>
-							<v8:AllowedLength>Variable</v8:AllowedLength>
-						</v8:StringQualifiers>
-					</Type>
-				</Column>
-				<Column name="HasAccess" id="5">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Has access</v8:content>
+							<v8:content>Access</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -228,36 +218,53 @@
 				</Column>
 			</Columns>
 		</Attribute>
+		<Attribute name="ServiceUserPassword" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Service user password</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
 	</Attributes>
 	<Commands>
 		<Command name="CheckAll" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check all</v8:content>
+					<v8:content>Select all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check all</v8:content>
+					<v8:content>Select all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>CheckAll</Action>
 		</Command>
 		<Command name="UncheckAll" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Uncheck all</v8:content>
+					<v8:content>Clear all</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Uncheck all</v8:content>
+					<v8:content>Clear all</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>UncheckAll</Action>
 		</Command>
 		<Command name="AddSelectedUsers" id="3">

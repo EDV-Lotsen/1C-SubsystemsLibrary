@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">This form is used to specify file mode or client/server mode infobase parameters when creating initial images for distributed infobases (DIB). When setting up DIB synchronization (external files), you need to specify the location where the initial DIB image will be created. In case of <a href="Catalog.FileStorageVolumes/Help">volume</a>-based file storage, you will also need to specify path to the archive (.zip) file containing the compressed files stored in volumes. </p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">It is accessible via <img src="StdPicture.CreateInitialImage" width="16" height="16"></img> <strong>Create initial image</strong> command located in <a href="DataProcessor.DataExchangeCreationWizard/Help">Data synchronization creation wizard</a> during DIB synchronization setup (external files). Alternately, click <img src="StdPicture.Change"></img> in the <a href="CommonForm.DataExchanges/Help"><font color="#0066cc">Data synchronization</font></a> list to open DIB synchronization setup (external files), and click  <img src="StdPicture.CreateInitialImage"></img> <strong>Create initial image of subordinate DIB node</strong>. </p>
+<h3 style="MARGIN-RIGHT: 0px" dir="ltr">Infobase parameters</h3>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">Select the location for the initial infobase image via radio button: </p>
+<ul style="MARGIN-RIGHT: 0px" dir="ltr"><li>
+<div style="MARGIN-RIGHT: 0px"><strong>On this computer or on a computer in the local network. </strong>
+<ul><li>
+<div style="MARGIN-RIGHT: 0px">Specify <strong>Infobase parameters</strong>: </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px"><strong>Language (Country)</strong> - for this field, select a value from list. By default, parameters specified during data synchronization creation are used. </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Specify <strong>Full name of file infobase</strong>: 
+<ul><li>
+<div style="MARGIN-RIGHT: 0px"><strong>For 1C:Enterprise servers under Microsoft Windows</strong> - click <img src="StdPicture.Select" width="12" height="12"></img> to specify path to the directory where the file will be stored.</div></li></ul></div></li></ul></div></li></ul><blockquote style="MARGIN-RIGHT: 0px" dir="ltr">
+<p style="MARGIN-RIGHT: 0px" dir="ltr">or</p></blockquote>
+<ul dir="ltr"><ul><ul><li>
+<div style="MARGIN-RIGHT: 0px"><strong>For 1C:Enterprise servers under Linux</strong> - specify path to the directory where the initial image file will be stored.</div></li></ul></ul><li>
+<div style="MARGIN-RIGHT: 0px"><strong>On 1C:Enterprise server. </strong>
+<ul><li>
+<div style="MARGIN-RIGHT: 0px">Specify <strong>Infobase parameters</strong>: 
+<ul dir="ltr"><li>
+<div style="MARGIN-RIGHT: 0px">Specify <strong>1C:Enterprise server cluster</strong>; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Type in <strong>Name of infobase in cluster</strong>; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">In the <strong>Secure connection</strong> field  select a value from list (<strong>Off, Establishing connection, Always on</strong>); </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Select <strong>DBMS type</strong> from list (<strong>Microsoft SQL </strong>Server, PostgreSQL, IBM DB2, Oracle Database); </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Specify <strong>Database server</strong>; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Type in <strong>Database name</strong>; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Type in <strong>Database user</strong> name and <strong>User password</strong>; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Select <strong>Date offset</strong> (0 by default);</div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px"><strong>Language (Country)</strong> - select field value from list. By default, parameters specified during data synchronization creation are used; </div>
+</li><li>
+<div style="MARGIN-RIGHT: 0px">Select the <strong>Set scheduled job lock</strong> check box if necessary (off by default).</div></li></ul></div></li></ul></div></li></ul><h3 style="MARGIN-RIGHT: 0px" dir="ltr">Path to volume file archives</h3>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">Specify <strong>Full name of volume file archive</strong>: </p>
+<ul><li>
+<div style="MARGIN-RIGHT: 0px"><strong>For 1C:Enterprise servers under Microsoft Windows</strong> - click <img src="StdPicture.Select" width="12" height="12"></img> to specify directory path</div></li></ul><p style="MARGIN-RIGHT: 0px">or</p>
+<ul><li>
+<div style="MARGIN-RIGHT: 0px"><strong>For 1C:Enterprise servers under Linux</strong> - specify path to the directory where the volume file archive will be stored. </div></li></ul><p style="MARGIN-RIGHT: 0px" dir="ltr">Click <strong>Create initial image</strong> to proceed. </p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">After a pause, you will be informed that initial image of subordinate DIB node was created successfully. Click <strong>OK</strong> to go back to the application.</p>
+<p style="MARGIN-RIGHT: 0px" dir="ltr">To load the volume files to local branch infobase when starting the application for the first time, you will need to execute the <strong>Store initial image files</strong> command located on actions panel of the <strong>Organizer</strong> section and specify the path to the volume file archive.</p>
+<h3 style="MARGIN-RIGHT: 0px" dir="ltr">See also:</h3>
+<p style="MARGIN-RIGHT: 0px" dir="ltr"><a href="Catalog.Files/Help">General information on files</a>.</p></body></html>

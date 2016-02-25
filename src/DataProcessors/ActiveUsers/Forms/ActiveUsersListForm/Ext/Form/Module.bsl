@@ -1,108 +1,162 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿&AtClient
+Var AdministrationParameters, PromptForInfobaseAdministrationParameters;
+
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
+
+	SetConditionalAppearance();
 	
-	InfoBaseSessionNumber = InfoBaseSessionNumber();
-	ConditionalAppearance.Items[0].Filter.Items[0].RightValue = InfoBaseSessionNumber;
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
 	
-	If CommonUse.FileInfoBase() Then
-		If Items.Find("TerminateSession") <> Undefined Then
-			Items.TerminateSession.Visible = False;
-			Items.TerminateSessionContext.Visible = False;
-		EndIf;
-		If Items.Find("InfoBaseAdministrationParameters") <> Undefined Then
-			Items.InfoBaseAdministrationParameters.Visible = False;
-		EndIf;
-	Else
-		If Not Users.InfoBaseUserWithFullAccess(, True) Then
-			Items.InfoBaseAdministrationParameters.Visible = False;
-		EndIf;
+	If Not CommonUse.OnCreateAtServer(ThisObject, Cancel, StandardProcessing) Then
+		Return;
+	EndIf;
+	
+	Parameters.Property("NotifyOnClose", NotifyOnClose);
+	
+	InfobaseSessionNumber = InfobaseSessionNumber();
+	ConditionalAppearance.Items[0].Filter.Items[0].RightValue = InfobaseSessionNumber;
+	
+	If CommonUse.FileInfobase()
+		Or Not ((Not CommonUseCached.SessionWithoutSeparators() And Users.InfobaseUserWithFullAccess())
+		Or Users.InfobaseUserWithFullAccess(, True)) Then
+		
+		Items.TerminateSession.Visible = False;
+		Items.TerminateSessionContext.Visible = False;
+		
+	EndIf;
+	
+	If CommonUseCached.CanUseSeparatedData() Then
+		Items.UserListDataSeparation.Visible = False;
 	EndIf;
 	
 	SortingColumnName = "SessionStarted";
 	SortDirection = "Asc";
+	
+	FillConnectionFilterSelectionList();
+	If Parameters.Property("ApplicationNameFilter") Then
+		If Items.ApplicationNameFilter.ChoiceList.FindByValue(Parameters.ApplicationNameFilter) <> Undefined Then
+			ApplicationNameFilter = Parameters.ApplicationNameFilter;
+		EndIf;
+	EndIf;
+	
 	FillUserList();
 	
 EndProcedure
 
+&AtClient
+Procedure OnOpen(Cancel)
+	PromptForInfobaseAdministrationParameters = True;
+EndProcedure
+
+&AtClient
+Procedure OnClose()
+	If NotifyOnClose Then
+		NotifyOnClose = False;
+		NotifyChoice(Undefined);
+	EndIf;
+EndProcedure
+
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
+
+&AtClient
+Procedure ApplicationNameFilterOnChange(Item)
+	FillList();
+EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF UserList TABLE
+// UserList table item event handlers
 
 &AtClient
 Procedure UserListChoice(Item, SelectedRow, Field, StandardProcessing)
 	OpenUserFromList();
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
- 
+#EndRegion
+
+#Region FormCommandHandlers
+
 &AtClient
 Procedure TerminateSession(Command)
 	
-	Message = "";
+	SessionToTerminate = Items.UserList.CurrentData.Session;
 	
-	SessionNumberToTerminate = Items.UserList.CurrentData.Session;
-	
-	If SessionNumberToTerminate = InfoBaseSessionNumber Then
-		ShowMessageBox(, NStr("en = 'The current session cannot be terminated. You should close the main application window if you want exit the application.'"));
+	If SessionToTerminate = InfobaseSessionNumber Then
+		ShowMessageBox(,NStr("en = 'Cannot terminate the current session. To exit the application, close the main application window.'"));
 		Return;
 	EndIf;
 	
-	Terminated = InfoBaseConnectionsClientServer.TerminateSessionWithMessage(SessionNumberToTerminate, Message);
-	If Not IsBlankString(Message) And Not Terminated Then
-		ShowMessageBox(, Message);
+	StandardProcessing = True;
+	
+	EventHandlers = CommonUseClient.InternalEventHandlers(
+		"StandardSubsystems.UserSessions\OnTerminateSession");
+	
+	For Each Handler In EventHandlers Do
+		Handler.Module.OnTerminateSession(ThisObject, SessionToTerminate, StandardProcessing);
+	EndDo;
+	
+	If StandardProcessing Then
+		
+		If PromptForInfobaseAdministrationParameters Then
+			
+			NotifyDescription = New NotifyDescription("TerminateSessionContinuation", ThisObject);
+			FormTitle = NStr("en = 'Terminate session'");
+			CommentLabel = NStr("en = 'For session termination, enter the
+				|server cluster administration parameters'");
+			InfobaseConnectionsClient.ShowAdministrationParameters(NotifyDescription, False,, AdministrationParameters, FormTitle, CommentLabel);
+			
+		Else
+			
+			TerminateSessionContinuation(AdministrationParameters);
+			
+		EndIf;
+		
 	EndIf;
 	
-	If Terminated Then
-		ShowMessageBox(, NStr("en = 'The session was terminated.'"));
-	EndIf;
+EndProcedure
+
+&AtClient
+Procedure RefreshExecute()
 	
 	FillList();
 	
 EndProcedure
 
 &AtClient
-Procedure RefreshExecute(Command)
-	
-	FillList();
-	
-EndProcedure
-
-&AtClient
-Procedure OpenEventLog(Command)
+Procedure OpenEventLog()
 	
 	If Items.UserList.SelectedRows.Count() > 1 Then
-		ShowMessageBox(, NStr("en = 'You have to choose only one user from the list if you want to view the event log.'"));
+		ShowMessageBox(,NStr("en = 'To access the event log, select a user from the list.'"));
 		Return;
 	EndIf;
 		
 	CurrentData = Items.UserList.CurrentData;
 	If CurrentData = Undefined Then
-		ShowMessageBox(, NStr("en = 'The event log cannot be opened for the chosen user.'"));
+		ShowMessageBox(,NStr("en = 'Cannot open the event log for the selected user.'"));
 		Return;
 	EndIf;
 	
-	UserName = CurrentData.UserName;
-	
+	UserName  = CurrentData.UserName;
 	OpenForm("DataProcessor.EventLog.Form", New Structure("User", UserName));
 	
 EndProcedure
 
 &AtClient
-Procedure SortAsc(Command)
+Procedure SortAsc()
 	
 	SortByColumn("Asc");
 	
 EndProcedure
 
 &AtClient
-Procedure SortDesc(Command)
+Procedure SortDesc()
 	
 	SortByColumn("Desc");
 	
@@ -113,20 +167,33 @@ Procedure OpenUser(Command)
 	OpenUserFromList();
 EndProcedure
 
-&AtClient
-Procedure InfoBaseAdministrationParameters(Command)
-	
-	OpenForm("CommonForm.ServerInfoBaseAdministrationSettings");
-	
-EndProcedure
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure SetConditionalAppearance()
+
+	ConditionalAppearance.Items.Clear();
+
+	Item = ConditionalAppearance.Items.Add();
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.UserList.Name);
+
+	ItemFilter = Item.Filter.Items.Add(Type("DataCompositionFilterItem"));
+	ItemFilter.LeftValue = New DataCompositionField("UserList.Session");
+	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
+	ItemFilter.RightValue = 0;
+
+	Item.Appearance.SetParameterValue("Font", New Font(WindowsFonts.DefaultGUIFont, , , True, False, False, False, ));
+
+EndProcedure
 
 &AtClient
 Procedure FillList()
 	
-	// Storing the current session to determine the selected row after filling the user list
+	// Saving the current session data that will be used to restore the row position
 	CurrentSession = Undefined;
 	CurrentData = Items.UserList.CurrentData;
 	
@@ -136,11 +203,11 @@ Procedure FillList()
 	
 	FillUserList();
 	
-	// Restoring the selected row by the stored session
+	// Restoring the current row position based on the saved session data
 	If CurrentSession <> Undefined Then
-		SearchStructure = New Structure;
-		SearchStructure.Insert("Session", CurrentSession);
-		FoundSessions = UserList.FindRows(SearchStructure);
+		TheStructureOfTheSearch = New Structure;
+		TheStructureOfTheSearch.Insert("Session", CurrentSession);
+		FoundSessions = UserList.FindRows(TheStructureOfTheSearch);
 		If FoundSessions.Count() = 1 Then
 			Items.UserList.CurrentRow = FoundSessions[0].GetID();
 			Items.UserList.SelectedRows.Clear();
@@ -166,42 +233,86 @@ Procedure SortByColumn(Direction)
 EndProcedure
 
 &AtServer
+Procedure FillConnectionFilterSelectionList()
+	ApplicationNames = New Array;
+	ApplicationNames.Add("1CV8");
+	ApplicationNames.Add("1CV8C");
+	ApplicationNames.Add("WebClient");
+	ApplicationNames.Add("Designer");
+	ApplicationNames.Add("COMConnection");
+	ApplicationNames.Add("WSConnection");
+	ApplicationNames.Add("BackgroundJob");
+	ApplicationNames.Add("SystemBackgroundJob");
+	ApplicationNames.Add("SrvrConsole");
+	ApplicationNames.Add("COMConsole");
+	ApplicationNames.Add("JobScheduler");
+	ApplicationNames.Add("Debugger");
+	ApplicationNames.Add("OpenIDProvider");
+	ApplicationNames.Add("RAS");
+	
+	ChoiceList = Items.ApplicationNameFilter.ChoiceList;
+	For Each ApplicationName In ApplicationNames Do
+		ChoiceList.Add(ApplicationName, ApplicationPresentation(ApplicationName));
+	EndDo;
+EndProcedure
+
+&AtServer
 Procedure FillUserList()
 	
 	UserList.Clear();
 	
-	Users.FindAmbiguousInfoBaseUsers();
+	If Not CommonUseCached.DataSeparationEnabled()
+	 Or CommonUseCached.CanUseSeparatedData() Then
+		
+		Users.FindAmbiguousInfobaseUsers();
+	EndIf;
 	
-	InfoBaseSessions = GetInfoBaseSessions();
+	InfobaseSessions = GetInfobaseSessions();
+	ActiveUserCount = InfobaseSessions.Count();
 	
-	For Each InfoBaseSession In InfoBaseSessions Do
+	FilterApplicationNames = ValueIsFilled(ApplicationNameFilter);
+	If FilterApplicationNames Then
+		ApplicationNames = StringFunctionsClientServer.SplitStringIntoSubstringArray(ApplicationNameFilter, ",");
+	EndIf;
+	
+	For Each InfobaseSession In InfobaseSessions Do
+		If FilterApplicationNames
+			And ApplicationNames.Find(InfobaseSession.ApplicationName) = Undefined Then
+			ActiveUserCount = ActiveUserCount - 1;
+			Continue;
+		EndIf;
+		
 		UserRow = UserList.Add();
 		
-		UserRow.Application = ApplicationPresentation(InfoBaseSession.ApplicationName);
-		UserRow.SessionStarted = InfoBaseSession.SessionStarted;
-		UserRow.Computer = InfoBaseSession.ComputerName;
-		UserRow.Session = InfoBaseSession.SessionNumber;
-		UserRow.Connection = InfoBaseSession.ConnectionNumber;
-
-		If InfoBaseSession.User <> Undefined Then
+		UserRow.Application    = ApplicationPresentation(InfobaseSession.ApplicationName);
+		UserRow.SessionStarted = InfobaseSession.SessionStarted;
+		UserRow.Computer       = InfobaseSession.ComputerName;
+		UserRow.Session        = InfobaseSession.SessionNumber;
+		UserRow.Connection     = InfobaseSession.ConnectionNumber;
+		
+		If TypeOf(InfobaseSession.User) = Type("InfobaseUser")
+		   And ValueIsFilled(InfobaseSession.User.Name) Then
 			
-			UserRow.User		= InfoBaseSession.User.Name;
-			UserRow.UserName		= InfoBaseSession.User.FullName;
-			UserRow.UserRef	= 
-				FindRefByUserID(InfoBaseSession.User.UUID);
+			UserRow.User     = InfobaseSession.User.Name;
+			UserRow.UserName = InfobaseSession.User.Name;
+			UserRow.UserRef  = FindRefByUserID(
+				InfobaseSession.User.UUID);
 			
 			If CommonUseCached.DataSeparationEnabled() 
-				And Users.InfoBaseUserWithFullAccess(, True) Then
+				And Users.InfobaseUserWithFullAccess(, True) Then
 				
-				UserRow.DataSeparation = DataSeparationValuesToString(InfoBaseSession.User.DataSeparation);
-			EndIf;	
+				UserRow.DataSeparation = DataSeparationValuesToString(
+					InfobaseSession.User.DataSeparation);
+			EndIf;
 			
 		Else
-			UserRow.User = "";
-			UserRow.UserName = "";
+			UnspecifiedProperties = UsersInternal.UnspecifiedUserProperties();
+			UserRow.User          = UnspecifiedProperties.FullName;
+			UserRow.UserName      = "";
+			UserRow.UserRef       = UnspecifiedProperties.Ref;
 		EndIf;
 
-		If InfoBaseSession.SessionNumber = InfoBaseSessionNumber Then
+		If InfobaseSession.SessionNumber = InfobaseSessionNumber Then
 			UserRow.UserPictureNumber = 0;
 		Else
 			UserRow.UserPictureNumber = 1;
@@ -209,7 +320,6 @@ Procedure FillUserList()
 		
 	EndDo;
 	
-	ActiveUserCount = InfoBaseSessions.Count();
 	UserList.Sort(SortingColumnName + " " + SortDirection);
 	
 EndProcedure
@@ -247,7 +357,7 @@ EndFunction
 &AtServer
 Function FindRefByUserID(ID)
 	
-	// If the separated catalog is not accessed from the shared session
+	// Cannot access the separated catalog from a shared session
 	If CommonUseCached.DataSeparationEnabled() 
 		And Not CommonUseCached.CanUseSeparatedData() Then
 		Return Undefined;
@@ -256,18 +366,18 @@ Function FindRefByUserID(ID)
 	Query = New Query;
 	
 	QueryTextPattern = "SELECT
-					|	Ref
+					|	Ref AS Ref
 					|FROM
 					|	%1
 					|WHERE
-					|	InfoBaseUserID = &ID";
+					|	InfobaseUserID = &ID";
 					
 	QueryByUsersText = 
 			StringFunctionsClientServer.SubstituteParametersInString(
 					QueryTextPattern,
 					"Catalog.Users");
 	
-	QueryByExternalUsersText = 
+	ExternalUserQueryText = 
 			StringFunctionsClientServer.SubstituteParametersInString(
 					QueryTextPattern,
 					"Catalog.ExternalUsers");
@@ -282,7 +392,7 @@ Function FindRefByUserID(ID)
 		Return Selection.Ref;
 	EndIf;
 	
-	Query.Text = QueryByExternalUsersText;
+	Query.Text = ExternalUserQueryText;
 	Result = Query.Execute();
 	
 	If Not Result.IsEmpty() Then
@@ -313,3 +423,47 @@ Procedure OpenUserFromList()
 	EndIf;
 	
 EndProcedure
+
+&AtClient
+Procedure TerminateSessionContinuation(Result, AdditionalParameters = Undefined) Export
+	
+	If Result = Undefined Then
+		Return;
+	EndIf;
+	
+	AdministrationParameters = Result;
+	
+	Message = "";
+	SessionNumberToTerminate = Items.UserList.CurrentData.Session;
+	
+	Filter = New Structure("Number", SessionNumberToTerminate);
+	ClientConnectedViaWebServer = CommonUseClient.ClientConnectedViaWebServer();
+	
+	Try
+		If ClientConnectedViaWebServer Then
+			DeleteInfobaseSessionsAtServer(AdministrationParameters, Filter)
+		Else
+			ClusterAdministrationClientServer.DeleteInfobaseSessions(AdministrationParameters,, Filter);
+		EndIf;
+	Except
+		PromptForInfobaseAdministrationParameters = True;
+		Raise;
+	EndTry;
+	
+	PromptForInfobaseAdministrationParameters = False;
+	NotificationText = NStr("en = 'Session %1 is terminated.'");
+	NotificationText = StringFunctionsClientServer.SubstituteParametersInString(NotificationText, SessionNumberToTerminate);
+	ShowUserNotification(NStr("en = 'Terminating session'"),, NotificationText);
+	
+	FillList();
+	
+EndProcedure
+
+&AtServer
+Procedure DeleteInfobaseSessionsAtServer(AdministrationParameters, Filter)
+	
+	ClusterAdministrationClientServer.DeleteInfobaseSessions(AdministrationParameters,, Filter);
+	
+EndProcedure
+
+#EndRegion

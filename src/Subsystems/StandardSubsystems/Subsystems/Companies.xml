@@ -15,9 +15,15 @@
 			<Explanation/>
 			<Picture/>
 			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Companies</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.CompanyPrefixes</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOptionsParameter.Company</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Companies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.CompaniesInternal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.UseSeveralCompanies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.UseSeveralCompanies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DontUseSeveralCompanies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.DontUseSeveralCompanies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.CheckUseSeveralCompaniesOptionValue</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

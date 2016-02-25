@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnReadAtServer">OnReadAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="DataAreaAuxiliaryData" id="1">
+			<DataPath>Object.DataAreaAuxiliaryData</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaAuxiliaryDataContextMenu" id="2"/>
+			<ExtendedTooltip name="DataAreaAuxiliaryDataExtendedTooltip" id="40"/>
+		</InputField>
+		<Pages name="GroupPages" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pages group</v8:content>
+				</v8:item>
+			</Title>
+			<ExtendedTooltip name="PagesGroupExtendedTooltip" id="41"/>
+			<ChildItems>
+				<Page name="MainGroup" id="33">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Main</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="MainGroupExtendedTooltip" id="42"/>
+					<ChildItems>
+						<LabelField name="ID" id="29">
+							<DataPath>ID</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<ContextMenu name="IDContextMenu" id="30"/>
+							<ExtendedTooltip name="IDExtendedTooltip" id="43"/>
+						</LabelField>
+						<InputField name="Template" id="13">
+							<DataPath>Object.Template</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="TemplateContextMenu" id="14"/>
+							<ExtendedTooltip name="TemplateExtendedTooltip" id="44"/>
+						</InputField>
+						<InputField name="SchedulePresentation" id="38">
+							<DataPath>SchedulePresentation</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<ChoiceButton>true</ChoiceButton>
+							<ClearButton>true</ClearButton>
+							<TextEdit>false</TextEdit>
+							<ContextMenu name="SchedulePresentationContextMenu" id="39"/>
+							<ExtendedTooltip name="SchedulePresentationExtendedTooltip" id="45"/>
+							<Events>
+								<Event name="StartChoice">SchedulePresentationStartChoice</Event>
+								<Event name="Clearing">SchedulePresentationClearing</Event>
+							</Events>
+						</InputField>
+						<InputField name="MethodName" id="17">
+							<DataPath>Object.MethodName</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="MethodNameContextMenu" id="18"/>
+							<ExtendedTooltip name="MethodNameExtendedTooltip" id="46"/>
+						</InputField>
+						<InputField name="Key" id="23">
+							<DataPath>Object.Key</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="KeyContextMenu" id="24"/>
+							<ExtendedTooltip name="KeyExtendedTooltip" id="47"/>
+						</InputField>
+						<CheckBoxField name="Use" id="3">
+							<DataPath>Object.Use</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="UseContextMenu" id="4"/>
+							<ExtendedTooltip name="UseExtendedTooltip" id="48"/>
+						</CheckBoxField>
+						<CheckBoxField name="ExclusiveExecution" id="11">
+							<DataPath>Object.ExclusiveExecution</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="ExclusiveExecutionContextMenu" id="12"/>
+							<ExtendedTooltip name="ExclusiveExecutionExtendedTooltip" id="49"/>
+						</CheckBoxField>
+					</ChildItems>
+				</Page>
+				<Page name="ExecutionStateGroup" id="34">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>State</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="ExecutionStateGroupExtendedTooltip" id="50"/>
+					<ChildItems>
+						<InputField name="JobState" id="7">
+							<DataPath>Object.JobState</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="JobStateContextMenu" id="8"/>
+							<ExtendedTooltip name="JobStateExtendedTooltip" id="51"/>
+						</InputField>
+						<InputField name="ScheduledStartTime" id="5">
+							<DataPath>Object.ScheduledStartTime</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="ScheduledStartTimeContextMenu" id="6"/>
+							<ExtendedTooltip name="ScheduledStartTimeExtendedTooltip" id="52"/>
+						</InputField>
+						<InputField name="AttemptNumber" id="15">
+							<DataPath>Object.AttemptNumber</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="AttemptNumberContextMenu" id="16"/>
+							<ExtendedTooltip name="AttemptNumberExtendedTooltip" id="53"/>
+						</InputField>
+						<InputField name="RestartCountOnFailure" id="27">
+							<DataPath>Object.RestartCountOnFailure</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="RestartCountOnFailureContextMenu" id="28"/>
+							<ExtendedTooltip name="RestartCountOnFailureExtendedTooltip" id="54"/>
+						</InputField>
+						<InputField name="RestartIntervalOnFailure" id="25">
+							<DataPath>Object.RestartIntervalOnFailure</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="RestartIntervalOnFailureContextMenu" id="26"/>
+							<ExtendedTooltip name="RestartIntervalOnFailureExtendedTooltip" id="55"/>
+						</InputField>
+						<InputField name="BeginDateOfLastStart" id="19">
+							<DataPath>Object.BeginDateOfLastStart</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="BeginDateOfLastStartContextMenu" id="20"/>
+							<ExtendedTooltip name="BeginDateOfLastStartExtendedTooltip" id="56"/>
+						</InputField>
+						<InputField name="EndDateOfLastStart" id="21">
+							<DataPath>Object.EndDateOfLastStart</DataPath>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="EndDateOfLastStartContextMenu" id="22"/>
+							<ExtendedTooltip name="EndDateOfLastStartExtendedTooltip" id="57"/>
+						</InputField>
+						<LabelField name="ActiveBackgroundJob" id="9">
+							<DataPath>Object.ActiveBackgroundJob</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="ActiveBackgroundJobContextMenu" id="10"/>
+							<ExtendedTooltip name="ActiveBackgroundJobExtendedTooltip" id="58"/>
+						</LabelField>
+					</ChildItems>
+				</Page>
+				<Page name="ParametersGroup" id="35">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Parameters</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="ParametersGroupExtendedTooltip" id="59"/>
+					<ChildItems>
+						<InputField name="MethodParameters" id="36">
+							<DataPath>MethodParameters</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+							<MultiLine>true</MultiLine>
+							<ContextMenu name="MethodParametersContextMenu" id="37"/>
+							<ExtendedTooltip name="MethodParametersExtendedTooltip" id="60"/>
+						</InputField>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.DataAreaJobQueue</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="ID" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>36</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Schedule" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Schedule</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="MethodParameters" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Method parameters</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="SchedulePresentation" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Schedule</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+</Form>

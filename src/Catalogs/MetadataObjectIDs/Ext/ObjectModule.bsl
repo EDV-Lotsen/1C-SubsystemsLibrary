@@ -1,12 +1,21 @@
-﻿
-// BeforeWrite event handler prevents metadata object identifiers editing 
-// in case of this identifiers can be updated only 
-// by means of the special procedure based on 
-// configuration metadata:
-//
-// Catalogs.MetadataObjectIDs.UpdateCatalogData()
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region EventHandlers
+
+// Prevents metadata object IDs editing.
+// Handles duplicates of the distributed infobase subordinate node.
 //
 Procedure BeforeWrite(Cancel)
+	
+	StandardSubsystemsCached.CatalogMetadataObjectIDsUsageCheck();
+	
+	// Disabling the object change record mechanism.
+	AdditionalProperties.Insert("DisableObjectChangeRecordMechanism");
+	
+	// Recording object changes in all nodes DIB.
+	For Each ExchangePlan In StandardSubsystemsCached.DIBExchangePlans() Do
+		StandardSubsystemsServer.RecordObjectChangesInAllNodes(ThisObject, ExchangePlan);
+	EndDo;
 	
 	If DataExchange.Load Then
 		Return;
@@ -14,40 +23,91 @@ Procedure BeforeWrite(Cancel)
 	
 	If Not AdditionalProperties.Property("ExecutingAutomaticCatalogDataUpdate") Then
 		
-		Raise(NStr("en = 'Error working with Metadata object IDs catalog.
-		 |
-		 |Metadata object identifiers can be edited
-		 |- automatically by means of the special procedure
-		 | Catalogs.MetadataObjectIDs.UpdateCatalogData(),
-		 |- manually in Designer mode (predefined items adding/deleting).
-		 |
-		 |One could delete marked for deletion unused items.'"));
+		If IsNew() Then
+		
+			RaiseByError(StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'Metadata object ID can be only created automatically
+				           |during a catalog data update.'"),
+				FullName));
+				
+		ElsIf Catalogs.MetadataObjectIDs.CannotChangeFullName(ThisObject) Then
+			
+			RaiseByError(StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'During metadata object ID change the full name 
+				           |is specified as ""%1"". This name can only be
+				           |set automatically during a catalog data update.'"),
+				FullName));
+		
+		ElsIf Catalogs.MetadataObjectIDs.FullNameUsed(FullName, Ref) Then
+			
+			RaiseByError(StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'During metadata object ID change the full name 
+				           |is specified as ""%1"". One of the catalog items 
+ 				          |already has this name.'"),
+				FullName));
+		
+		EndIf;
+		
+		Catalogs.MetadataObjectIDs.UpdateIDProperties(ThisObject);
+	EndIf;
+	
+	If CommonUse.IsSubordinateDIBNode() Then
+		
+		If IsNew()
+		   And Not Catalogs.MetadataObjectIDs.IsCollection(GetNewObjectRef()) Then
+			
+			RaiseByError(
+				NStr("en = 'Items can be added in the master node 
+				           |of a distributed infobase only.'"));
+		EndIf;
+		
+		If Not DeletionMark
+		   And Not Catalogs.MetadataObjectIDs.IsCollection(Ref) Then
+			
+			If Upper(FullName) <> Upper(CommonUse.ObjectAttributeValue(Ref, "FullName")) Then
+				RaiseByError(
+					NStr("en = 'The full name can be changed in the master node 
+				             |of a distributed infobase only.'"));
+			EndIf;
+		EndIf;
 	EndIf;
 	
 EndProcedure
 
-
-
-// BeforeDelete event handler prevents metadata object identifiers deletion
-// in case of Used value is True
-// or DeletionMark value is False.
-//
+// Prevents deletion of metadata object IDs that are not marked for deletion.
 Procedure BeforeDelete(Cancel)
+	
+	StandardSubsystemsCached.CatalogMetadataObjectIDsUsageCheck();
+	
+	// Disabling the  object change record mechanism.
+	// ID references are deleted independently in all nodes
+	// through the mechanisms of marking for deletion and marked object deletion.
+	AdditionalProperties.Insert("DisableObjectChangeRecordMechanism");
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
-	If Used Then
-		Raise(NStr("en = 'Error working with Metadata object IDs catalog.
-		 |
-		 |Deletion of metadata object identifiers with Used attribute set to True 
-		 |is not allowed.'"));
-	ElsIf Not DeletionMark Then
-		Raise(NStr("en = 'Error working with Metadata object IDs catalog.
-		 |
-		 |Deletion of metadata оbject identifiers with DeletionMark attribute set to False 
-		 | is not allowed.'"));
+	If Not DeletionMark Then
+		RaiseByError(
+			NStr("en = 'Cannot delete IDs of metadata objects whose ""Deletion mark""
+                |attribute is set to False.'"));
 	EndIf;
 	
 EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// AUXILIARY PROCEDURES AND FUNCTIONS
+
+Procedure RaiseByError(ErrorText);
+	
+	Raise
+		NStr("en = '""Metadata object IDs"" catalog error.'") + "
+		           |
+		           |" + ErrorText;
+	
+EndProcedure
+
+#EndRegion
+
+#EndIf

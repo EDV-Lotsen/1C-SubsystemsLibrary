@@ -6,27 +6,36 @@
 			<v8:content>Exit</v8:content>
 		</v8:item>
 	</Title>
-	<Width>45</Width>
-	<Height>5</Height>
+	<Width>60</Width>
+	<WindowOpeningMode>LockWholeInterface</WindowOpeningMode>
 	<AutoTitle>false</AutoTitle>
 	<CommandBarLocation>Bottom</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<CommandSet>
+		<ExcludedCommand>CustomizeForm</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
 		<ExcludedCommand>Help</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Cancel</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
 	</CommandSet>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<ChildItems>
-			<Button name="FormYes" id="2">
+			<Button name="FormYes" id="27">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
-				<CommandName>Form.Command.Exit</CommandName>
-				<ExtendedTooltip name="FormYesExtendedTooltip" id="3"/>
+				<CommandName>Form.Command.ExitApp</CommandName>
+				<ExtendedTooltip name="FormYesExtendedTooltip" id="31"/>
 			</Button>
-			<Button name="FormNo" id="4">
+			<Button name="FormCancel" id="28">
 				<Type>CommandBarButton</Type>
-				<CommandName>Form.Command.DontExit</CommandName>
-				<ExtendedTooltip name="FormNoExtendedTooltip" id="5"/>
+				<CommandName>Form.Command.Cancel</CommandName>
+				<ExtendedTooltip name="FormCancelExtendedTooltip" id="32"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -34,7 +43,7 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="ParentGroup" id="6">
+		<UsualGroup name="ParentGroup" id="17">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -50,9 +59,9 @@
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ParentGroupExtendedTooltip" id="7"/>
+			<ExtendedTooltip name="ParentGroupExtendedTooltip" id="33"/>
 			<ChildItems>
-				<PictureDecoration name="WarningPicture" id="8">
+				<PictureDecoration name="WarningPicture" id="18">
 					<Width>5</Width>
 					<Height>2</Height>
 					<VerticalStretch>false</VerticalStretch>
@@ -64,28 +73,23 @@
 					</Title>
 					<Picture>
 						<xr:Ref>CommonPicture.Question32</xr:Ref>
-						<xr:LoadTransparent>true</xr:LoadTransparent>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
 					</Picture>
-					<ContextMenu name="WarningPictureContextMenu" id="9"/>
-					<ExtendedTooltip name="WarningPictureExtendedTooltip" id="10"/>
+					<ContextMenu name="WarningPictureContextMenu" id="19"/>
+					<ExtendedTooltip name="WarningPictureExtendedTooltip" id="34"/>
 				</PictureDecoration>
-				<UsualGroup name="MainGroup" id="11">
+				<UsualGroup name="MainGroup" id="3">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Main group</v8:content>
+							<v8:content>Additional action during the exit</v8:content>
 						</v8:item>
 					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Main group</v8:content>
-						</v8:item>
-					</ToolTip>
+					<Shortcut>Ctrl+S</Shortcut>
+					<VerticalStretch>true</VerticalStretch>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
-					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="MainGroupExtendedTooltip" id="12"/>
+					<ExtendedTooltip name="MainGroupExtendedTooltip" id="35"/>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
@@ -95,7 +99,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Array with mapping between items and parameters</v8:content>
+					<v8:content>Array of maps of items and parameters</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -106,7 +110,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Array of tasks to be executed after the form is closed</v8:content>
+					<v8:content>Array of tasks to be executed after the exit</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -115,7 +119,7 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="Exit" id="1">
+		<Command name="ExitApp" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -125,25 +129,25 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Exit</v8:content>
+					<v8:content>ExitApp</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>ExitApplication</Action>
+			<Action>ExitApp</Action>
 		</Command>
-		<Command name="DontExit" id="2">
+		<Command name="Cancel" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Do not exit</v8:content>
+					<v8:content>Cancel</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Do not exit</v8:content>
+					<v8:content>Cancel</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>DontExit</Action>
+			<Action>Cancel</Action>
 		</Command>
 	</Commands>
 </Form>

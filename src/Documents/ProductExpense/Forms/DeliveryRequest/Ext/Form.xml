@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<CommandBar name="DeliveryFormCommands" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delivery form commands</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delivery form commands</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="DeliveryFormCommandsExtendedTooltip" id="9"/>
+			<ChildItems>
+				<Button name="Print" id="6">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Item.SpreadsheetDocument.StandardCommand.Print</CommandName>
+					<ExtendedTooltip name="PrintExtendedTooltip" id="10"/>
+				</Button>
+				<Button name="PrintImmediately" id="5">
+					<Type>CommandBarButton</Type>
+					<OnlyInAllActions>true</OnlyInAllActions>
+					<CommandName>Form.Item.SpreadsheetDocument.StandardCommand.PrintImmediately</CommandName>
+					<ExtendedTooltip name="PrintImmediatelyExtendedTooltip" id="11"/>
+				</Button>
+				<Button name="Preview" id="7">
+					<Type>CommandBarButton</Type>
+					<OnlyInAllActions>true</OnlyInAllActions>
+					<CommandName>Form.Item.SpreadsheetDocument.StandardCommand.Preview</CommandName>
+					<ExtendedTooltip name="PreviewExtendedTooltip" id="12"/>
+				</Button>
+				<Button name="PageSetup" id="8">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Item.SpreadsheetDocument.StandardCommand.PageSetup</CommandName>
+					<ExtendedTooltip name="PageSetupExtendedTooltip" id="13"/>
+				</Button>
+				<Button name="DocumentBatchPrint" id="15">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Command.DocumentBatchPrint</CommandName>
+					<ExtendedTooltip name="DocumentBatchPrintExtendedTooltip" id="16"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<SpreadSheetDocumentField name="SpreadsheetDocument" id="1">
+			<DataPath>SpreadsheetDocument</DataPath>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delivery request</v8:content>
+				</v8:item>
+			</Title>
+			<TitleLocation>None</TitleLocation>
+			<CommandSet>
+				<ExcludedCommand>ExpandAllGroups</ExcludedCommand>
+				<ExcludedCommand>ShowGroups</ExcludedCommand>
+				<ExcludedCommand>CollapseAllGroups</ExcludedCommand>
+			</CommandSet>
+			<Width>80</Width>
+			<Height>20</Height>
+			<SelectionShowMode>WhenActive</SelectionShowMode>
+			<EnableStartDrag>false</EnableStartDrag>
+			<EnableDrag>false</EnableDrag>
+			<ContextMenu name="SpreadsheetDocumentContextMenu" id="2"/>
+			<ExtendedTooltip name="SpreadsheetDocumentExtendedTooltip" id="14"/>
+			<Events>
+				<Event name="OnChangeAreaContent">SpreadsheetDocumentOnChangeAreaContent</Event>
+			</Events>
+		</SpreadSheetDocumentField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="SpreadsheetDocument" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type xmlns:mxl="http://v8.1c.ru/8.2/data/spreadsheet">mxl:SpreadsheetDocument</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DocumentDate" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Document" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DocumentRef.ProductExpense</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="DocumentBatchPrint" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document batch print</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document batch print</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DocumentBatchPrint</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="DocumentDate">
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="Document">
+			<Type>
+				<v8:Type>cfg:DocumentRef.ProductExpense</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

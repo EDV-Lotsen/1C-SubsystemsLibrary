@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>Copy</ExcludedCommand>
+		<ExcludedCommand>Delete</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="DefaultExchangeMessageTransportKind" id="1">
+			<DataPath>Record.DefaultExchangeMessageTransportKind</DataPath>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Default transport</v8:content>
+				</v8:item>
+			</Title>
+			<Width>50</Width>
+			<HorizontalStretch>false</HorizontalStretch>
+			<ListChoiceMode>true</ListChoiceMode>
+			<ContextMenu name="DefaultExchangeMessageTransportKindContextMenu" id="2"/>
+			<ExtendedTooltip name="DefaultExchangeMessageTransportKindExtendedTooltip" id="104"/>
+		</InputField>
+		<Pages name="TransportKindPages" id="47">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Transport kind pages</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Transport kind pages</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="TransportKindPagesExtendedTooltip" id="105"/>
+			<ChildItems>
+				<Page name="TransportSettingsFILE" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Performing exchange using a network directory</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>FILE transport settings</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="TransportSettingsFILEExtendedTooltip" id="106"/>
+					<ChildItems>
+						<InputField name="FILEDataExchangeDirectory" id="8">
+							<DataPath>Record.FILEDataExchangeDirectory</DataPath>
+							<ChoiceButton>true</ChoiceButton>
+							<OpenButton>true</OpenButton>
+							<ContextMenu name="FILEDataExchangeDirectoryContextMenu" id="9"/>
+							<ExtendedTooltip name="FILEDataExchangeDirectoryExtendedTooltip" id="107"/>
+							<Events>
+								<Event name="StartChoice">FILEDataExchangeDirectoryStartChoice</Event>
+								<Event name="Opening">FILEDataExchangeDirectoryOpen</Event>
+							</Events>
+						</InputField>
+						<Button name="TestFILEConnection" id="42">
+							<Type>UsualButton</Type>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.TestFILEConnection</CommandName>
+							<ExtendedTooltip name="TestFILEConnectionExtendedTooltip" id="108"/>
+						</Button>
+						<UsualGroup name="Group1" id="100">
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group1ExtendedTooltip" id="109"/>
+							<ChildItems>
+								<CheckBoxField name="FILECompressOutgoingMessageFile" id="10">
+									<DataPath>Record.FILECompressOutgoingMessageFile</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="FILECompressOutgoingMessageFileContextMenu" id="11"/>
+									<ExtendedTooltip name="FILECompressOutgoingMessageFileExtendedTooltip" id="110"/>
+								</CheckBoxField>
+								<InputField name="ExchangeMessageArchivePassword1" id="101">
+									<DataPath>Record.ExchangeMessageArchivePassword</DataPath>
+									<Width>20</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<PasswordMode>true</PasswordMode>
+									<ContextMenu name="ExchangeMessageArchivePassword1ContextMenu" id="102"/>
+									<ExtendedTooltip name="ExchangeMessageArchivePassword1ExtendedTooltip" id="111"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="TransportSettingsFTP" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Exchange over FTP</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>FILE transport settings</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="TransportSettingsFTPExtendedTooltip" id="112"/>
+					<ChildItems>
+						<UsualGroup name="ServerPortGroup" id="37">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Server port group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Server port group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ServerPortGroupExtendedTooltip" id="113"/>
+							<ChildItems>
+								<InputField name="FTPConnectionPath" id="14">
+									<DataPath>Record.FTPConnectionPath</DataPath>
+									<ContextMenu name="FTPConnectionPathContextMenu" id="15"/>
+									<ExtendedTooltip name="FTPConnectionPathExtendedTooltip" id="114"/>
+								</InputField>
+								<InputField name="FTPConnectionPort" id="16">
+									<DataPath>Record.FTPConnectionPort</DataPath>
+									<EditFormat>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>NG=0</v8:content>
+										</v8:item>
+									</EditFormat>
+									<ContextMenu name="FTPConnectionPortContextMenu" id="17"/>
+									<ExtendedTooltip name="FTPConnectionPortExtendedTooltip" id="115"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="UserPasswordGroup" id="38">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>User password group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>User password group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="116"/>
+							<ChildItems>
+								<InputField name="FTPConnectionUser" id="18">
+									<DataPath>Record.FTPConnectionUser</DataPath>
+									<ContextMenu name="FTPConnectionUserContextMenu" id="19"/>
+									<ExtendedTooltip name="FTPConnectionUserExtendedTooltip" id="117"/>
+								</InputField>
+								<InputField name="FTPConnectionPassword" id="22">
+									<DataPath>Record.FTPConnectionPassword</DataPath>
+									<PasswordMode>true</PasswordMode>
+									<ContextMenu name="FTPConnectionPasswordContextMenu" id="23"/>
+									<ExtendedTooltip name="FTPConnectionPasswordExtendedTooltip" id="118"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<InputField name="FTPConnectionMaxMessageSize" id="39">
+							<DataPath>Record.FTPConnectionMaxMessageSize</DataPath>
+							<ChoiceButton>true</ChoiceButton>
+							<ContextMenu name="FTPConnectionMaxMessageSizeContextMenu" id="40"/>
+							<ExtendedTooltip name="FTPConnectionMaxMessageSizeExtendedTooltip" id="119"/>
+						</InputField>
+						<CheckBoxField name="FTPConnectionPassiveConnection" id="20">
+							<DataPath>Record.FTPConnectionPassiveConnection</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="FTPConnectionPassiveConnectionContextMenu" id="21"/>
+							<ExtendedTooltip name="FTPConnectionPassiveConnectionExtendedTooltip" id="120"/>
+						</CheckBoxField>
+						<Button name="TestFTPConnection" id="41">
+							<Type>UsualButton</Type>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.TestFTPConnection</CommandName>
+							<ExtendedTooltip name="TestFTPConnectionExtendedTooltip" id="121"/>
+						</Button>
+						<UsualGroup name="Group3" id="103">
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group3ExtendedTooltip" id="122"/>
+							<ChildItems>
+								<CheckBoxField name="FTPCompressOutgoingMessageFile" id="12">
+									<DataPath>Record.FTPCompressOutgoingMessageFile</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="FTPCompressOutgoingMessageFileContextMenu" id="13"/>
+									<ExtendedTooltip name="FTPCompressOutgoingMessageFileExtendedTooltip" id="123"/>
+								</CheckBoxField>
+								<InputField name="ExchangeMessageArchivePassword" id="34">
+									<DataPath>Record.ExchangeMessageArchivePassword</DataPath>
+									<Width>20</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<PasswordMode>true</PasswordMode>
+									<ContextMenu name="ExchangeMessageArchivePasswordContextMenu" id="35"/>
+									<ExtendedTooltip name="ExchangeMessageArchivePasswordExtendedTooltip" id="124"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Record" id="1">
+			<Type>
+				<v8:Type>cfg:InformationRegisterRecordManager.DataAreasExchangeTransportSettings</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="TestFTPConnection" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Test connection</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Test connection over FTP source</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>TestFTPConnection</Action>
+		</Command>
+		<Command name="TestFILEConnection" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Test connection</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Test connection to the network directory</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>TestFILEConnection</Action>
+		</Command>
+	</Commands>
+</Form>

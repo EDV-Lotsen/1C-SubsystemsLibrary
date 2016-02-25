@@ -14,12 +14,12 @@
 // Returns the internal description of the permission to use the file system directory.
 //
 // Parameters:
-//  Address       - String - file system resource address,
-//  DataReading   - Boolean - flag that shows whether permissions to read data from the file
-//                  system directory must be granted.
-//  DataRecording - Boolean - flag that shows whether permissions to write data from the file
-//                  system directory must be granted.
-//  Details       - String - details on the reasons to grant the permission.
+//  Address     - String - file system resource address,
+//  DataReading - Boolean - flag that shows whether permissions to read data from the file
+//                system directory must be granted.
+//  DataWriting - Boolean - flag that shows whether permissions to write data from the file
+//                system directory must be granted.
+//  Details     - String - details on the reasons to grant the permission.
 //
 // Returns:
 //  XDTODataObject - internal description of the requested permissions.
@@ -28,7 +28,7 @@
 //  SafeMode.RequestForCancelingPermissionsForExternalResources(), and
 //  SafeMode.RequestForClearingPermissionsForExternalResources() functions.
 //
-Function PermissionToUseFileSystemDirectory(Val Address, Val DataReading = False, Val DataRecording = False, Val Details = "") Export
+Function PermissionToUseFileSystemDirectory(Val Address, Val DataReading = False, Val DataWriting = False, Val Details = "") Export
 	
 	Package = SafeModeInternal.PermissionPresentationXDTOPackage();
 	Result = XDTOFactory.Create(XDTOFactory.Type(Package, "FileSystemAccess"));
@@ -40,7 +40,7 @@ Function PermissionToUseFileSystemDirectory(Val Address, Val DataReading = False
 	
 	Result.Path = Address;
 	Result.AllowedRead = DataReading;
-	Result.AllowedWrite = DataRecording;
+	Result.AllowedWrite = DataWriting;
 	
 	Return Result;
 	
@@ -49,12 +49,12 @@ EndFunction
 // Returns the internal description of the permission to use the temporary directory.
 //
 // Parameters:
-//  Address      - String - file system resource address,
-//  DataReading  - Boolean - flag that shows whether permissions to read data from the temporary
-//                 directory must be granted.
-// DataRecording - Boolean - flag that shows whether permissions to write data from the 
-//                 temporary directory must be granted.
-// Details       - String - details on the reasons to grant the permission.
+//  Address     - String - file system resource address,
+//  DataReading - Boolean - flag that shows whether permissions to read data from the temporary
+//                directory must be granted.
+// DataWriting  - Boolean - flag that shows whether permissions to write data from the 
+//                temporary directory must be granted.
+// Details      - String - details on the reasons to grant the permission.
 //
 // Returns:
 //  XDTODataObject - internal description of the requested permissions.
@@ -63,21 +63,21 @@ EndFunction
 //  SafeMode.RequestForCancelingPermissionsForExternalResources(), and
 //  SafeMode.RequestForClearingPermissionsForExternalResources() functions.
 //
-Function PermissionToUseTempDirectory(Val DataReading = False, Val DataRecording = False, Val Details = "") Export
+Function PermissionToUseTempDirectory(Val DataReading = False, Val DataWriting = False, Val Details = "") Export
 	
-	Return PermissionToUseFileSystemDirectory(TempDirectoryAlias(), DataReading, DataRecording);
+	Return PermissionToUseFileSystemDirectory(TempDirectoryAlias(), DataReading, DataWriting);
 	
 EndFunction
 
 // Returns the internal description of the permission to use the application directory.
 //
 // Parameters:
-//  Address      - String - file system resource address,
-//  DataReading  - Boolean - flag that shows whether permissions to read data from the 
-//                 application directory must be granted.
-// DataRecording - Boolean - flag that shows whether permissions to write data from the
-//                 application directory must be granted.
-// Details       - String - details on the reasons to grant the permission.
+//  Address     - String - file system resource address,
+//  DataReading - Boolean - flag that shows whether permissions to read data from the 
+//                application directory must be granted.
+// DataWriting  - Boolean - flag that shows whether permissions to write data from the
+//                application directory must be granted.
+// Details      - String - details on the reasons to grant the permission.
 //
 // Returns:
 //  XDTODataObject - internal description of the requested permissions.
@@ -86,9 +86,9 @@ EndFunction
 //  SafeMode.RequestForCancelingPermissionsForExternalResources(), and
 //  SafeMode.RequestForClearingPermissionsForExternalResources() functions.
 //
-Function PermissionToUseApplicationDirectory(Val DataReading = False, Val DataRecording = False, Val Details = "") Export
+Function PermissionToUseApplicationDirectory(Val DataReading = False, Val DataWriting = False, Val Details = "") Export
 	
-	Return PermissionToUseFileSystemDirectory(ApplicationDirectoryAlias(), DataReading, DataRecording);
+	Return PermissionToUseFileSystemDirectory(ApplicationDirectoryAlias(), DataReading, DataWriting);
 	
 EndFunction
 
@@ -138,7 +138,7 @@ EndFunction
 //  SafeMode.RequestForCancelingPermissionsForExternalResources(), and
 //  SafeMode.RequestForClearingPermissionsForExternalResources() functions.
 //
-Function PermissionToUseExternalComponent(Val TemplateName, Val Details = "") Export
+Function PermissionToUseAddIn(Val TemplateName, Val Details = "") Export
 	
 	Package = SafeModeInternal.PermissionPresentationXDTOPackage();
 	Result = XDTOFactory.Create(XDTOFactory.Type(Package, "AttachAddin"));
@@ -547,7 +547,7 @@ EndProcedure
 
 // Checks whether the passed name is a name of an export procedure of the configuration.
 // Can be used for checking whether the passed string does not content an arbitrary algorithm
-// in the 1C:Enterprise script before one use this script in the Execute() and Evaluate()
+// in the 1C:Enterprise script before one use this script in the Execute() and Eval()
 // operators.
 //
 // If the passed string does not correspond to the configuration method name an exception is 
@@ -608,7 +608,7 @@ Procedure ValidateConfigurationMethodName(Val ExportProcedureName) Export
 		// For example: MyProcedure.
 		TempStructure.Insert(MethodName);
 	Except
-		WriteLogEvent(NStr("en = 'Executing method in safe mode'", Metadata.DefaultLanguage.LanguageCode),
+		WriteLogEvent(NStr("en = 'Executing method in safe mode'", CommonUseClientServer.DefaultLanguageCode()),
 			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en='Incorrect ExportProcedureName parameter format: (%1).
@@ -627,7 +627,7 @@ EndProcedure
 //
 Procedure CanExecuteSessionParameterSettingHandlers() Export
 	
-	If CommonUse.FileInfoBase(InfoBaseConnectionString()) Then
+	If CommonUse.FileInfobase(InfobaseConnectionString()) Then
 		Return;
 	EndIf;
 	
@@ -708,7 +708,7 @@ Function ProfileWithConfigurationPrivileges()
 	
 	SetPrivilegedMode(True);
 	
-	//Return Constants.InfobaseSecurityProfile.Get();
+	Return Constants.InfobaseSecurityProfile.Get();
 	
 EndFunction
 
@@ -760,4 +760,3 @@ Function StandardInternetProtocolPorts()
 EndFunction
 
 #EndRegion
-

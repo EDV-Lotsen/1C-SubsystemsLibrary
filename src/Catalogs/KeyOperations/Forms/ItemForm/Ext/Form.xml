@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Name" id="15">
+			<DataPath>Object.Name</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<ContextMenu name="NameContextMenu" id="16"/>
+			<ExtendedTooltip name="NameExtendedTooltip" id="17"/>
+		</InputField>
+		<InputField name="Description" id="3">
+			<DataPath>Object.Description</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DescriptionContextMenu" id="4"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="11"/>
+		</InputField>
+		<InputField name="Priority" id="7">
+			<DataPath>Object.Priority</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<SpinButton>true</SpinButton>
+			<ContextMenu name="PriorityContextMenu" id="8"/>
+			<ExtendedTooltip name="PriorityExtendedTooltip" id="12"/>
+		</InputField>
+		<InputField name="TargetTime" id="9">
+			<DataPath>Object.TargetTime</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="TargetTimeContextMenu" id="10"/>
+			<ExtendedTooltip name="TargetTimeExtendedTooltip" id="13"/>
+		</InputField>
+		<InputField name="MinimumValidLevel" id="5">
+			<DataPath>Object.MinimumValidLevel</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MinimumValidLevelContextMenu" id="6"/>
+			<ExtendedTooltip name="MinimumValidLevelExtendedTooltip" id="14"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.KeyOperations</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>3:b6c94efd-5994-4c4c-a641-b062ecc38b65</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+				<Visible>
+					<xr:Common>false</xr:Common>
+				</Visible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
+</Form>

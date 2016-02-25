@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This list is used to perform data mapping between two applications.</p>
+<p>You can access the list via the <strong>Execute mapping </strong>command on the <strong>Data mapping</strong> page of the <a href="DataProcessor.InteractiveDataExchangeWizard/Help">Interactive data synchronization wizard</a>, or by double-clicking any row with data mapping problems.</p>
+<p>The list contains two columns, each one dedicated to an infobase participating in data exchange. The list data is grouped by applied object (documents, lists). Infobar at the bottom of the list displays the number of mapped items and the number of not mapped items.</p>
+<p>The <strong>Output</strong> field is used to control which data is displayed in the list. The <strong>Unmapped data</strong> is displayed by default. </p>
+<h3>Object mapping</h3>
+<ul><li>Click<strong> Map automatically</strong> (recommended) and select the fields for mapping via check boxes. Some of the fields are selected by default. Click <strong>Execute mapping</strong> to confirm. The application will perform mapping and then display the list of mapped data. Click <strong>Apply</strong> to confirm. 
+</li><li>Now you can perform manual mapping for objects that failed automated mapping, or edit the automated mapping results. To create a mapping between two objects manually, select the objects and click <strong>Set mapping</strong>. To remove a mapping between two objects, select the objects and click <strong>Cancel mapping</strong>. 
+</li><li>Click <strong>Save and close</strong> to confirm.</li></ul><h3>Setting up fields for mapping tables</h3>
+<p>Click <strong>Columns</strong> to add fields to the list columns. Select the additional fields via check boxes and click <strong>Apply</strong>. </p>
+<h3>Importing data from target application</h3>
+<p>To import data from a target application, click <strong>All actions -  Import data from another application</strong>. </p>
+<h3>Object mapping procedure</h3>
+<p>We recommend that you consider reference links when performing data mapping and data import. This recommendation is crucial for fields used for object mapping.</p>
+<p>For example, a configuration includes a counterparty contract catalog subordinate to the counterparty catalog. The counterparty contracts are mapped based on the owner catalog, this being the counterparty catalog. Therefore, to avoid mapping errors, you first need to map and import the counterparty catalog, followed by the counterparty contract catalog.</p>
+<p>If this order is not followed, a risk arises that the mapping table fields might contain dummy references:<br>&lt;Object not found&gt; (26:a0b9001b24e002fe11dfba347dd41412).</p>
+<p>Dummy references point to the current infobase objects that are not yet imported from data exchange messages. </p></body></html>

@@ -3,228 +3,157 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// Disables the standard method of setting infobase user roles.
-// If this function returns True, role editing becomes prohibited (for all users 
-// including an administrator).
-//
-// Returns:
-//  Boolean.
-//
-Function RoleEditProhibition() Export
-	
-	//// StandardSubsystems.AccessManagement
-	//
-	//// Roles are set automatically by access group data,
-	//// using the following relation: UsersAccessGroups -> Profile -> ProfileRoles
-	//Return True;
-	//
-	//// End StandardSubsystems.AccessManagement
-	
-	Return False;
-	
-EndFunction
-
-// Overrides the role that provides infobase administrator rights.
+// Overrides the standard method of assigning roles to infobase users.
 //
 // Parameters:
-//  Role         - MetadataObject: Role.
+//  Prohibition - Boolean - if True, prohibits role modification for veryone (including administrator).
 //
-Procedure ChangeFullAdministratorRole(Role) Export
-	
-	
+Procedure ChangeRoleEditProhibition(Prohibition) Export
 	
 EndProcedure
 
-// Overrides actions of a user, external user, and external user group form. 
-// Is used when creating the form.          
+// Overrides behavior of the following forms: user form, external user form, and external user group form.
+//
+// Parameters:
+//  Ref - CatalogRef.Users,
+//        CatalogRef.ExternalUsers,
+//        CatalogRef.ExternalUserGroups - reference to user, external user or external user group.
+//                                        It is used when the form is created.
+//
+//  ActionsOnForm - Structure - with the following properties:
+//         * Roles                  - String - "", "View", "Edit".
+//         * ContactInformation     - String - "", "View", "Edit".
+//         * InfobaseUserProperties - String - "", "View", "Edit".
+//         * ItemProperties         - String - "", "View", "Edit".
 //           
-//  Ref           - CatalogRef.Users,
-//                  CatalogRef.ExternalUsers,
-//                  CatalogRef.ExternalUserGroups -
-//                  reference to a user, external user, or external user group.
-//           
-//  ActionsOnForm - Structure with the following fields of String:
-//                  Roles                  = "", "View",    "Edit"
-//                  ContactInformation     = "", "View",    "Edit"
-//                  InfoBaseUserProperties = "", "ViewAll", "EditAll", EditOwn"
-//                  ItemProperties         = "", "View",    "Edit"
-//           
-//                  ContactInformation and InfoBaseUserProperties does not exist for 
-//                  external user groups.
+//  ContactInformation and InfobaseUserProperties do not exist for external user groups.
 //
-Procedure ChangeActionsOnForm(Val Ref = Undefined, Val ActionsOnForm) Export
-	
-	//// StandardSubsystems.AccessManagement
-	//ActionsOnForm.Roles = "";
-	//// End StandardSubsystems.AccessManagement
+Procedure ChangeActionsOnForm(Val Ref, Val ActionsOnForm) Export
 	
 EndProcedure
 
-// Defines extra actions when writing an infobase user.
-// Is called from the WriteIBUser procedure if the user has been modified.
+// Extends the definition of the operation performed when writing a user to the infobase.
+//  The procedure is called from the WriteInfobaseUser() procedure if the user was modified.
 //
 // Parameters:
-//  OldProperties - Structure - see Users.ReadInfoBaseUser function return parameters for details.
-//  NewProperties - Structure - see Users.WriteIBUser function return parameters for details.
+//  OldProperties - Structure - see parameters returned by the Users.ReadInfobaseUser() function.
+//  NewProperties - Structure - see parameters returned by the Users.WriteInfobaseUser() function.
 //
-Procedure OnWriteInfoBaseUser(Val OldProperties, Val NewProperties) Export
-	
-	// StandardSubsystems.FileFunctions
-	If ValueIsFilled(OldProperties.InfoBaseUserName) And
-	     Upper(OldProperties.InfoBaseUserName) <> Upper(NewProperties.InfoBaseUserName) Then
-		
-		//FileFunctions.MoveSettingsOnChangeUserName(
-		//	OldProperties.InfoBaseUserName, NewProperties.InfoBaseUserName);
-	EndIf;
-	// End StandardSubsystems.FileFunctions
+Procedure OnWriteInfobaseUser(Val OldProperties, Val NewProperties) Export
 	
 EndProcedure
 
-// Defines extra actions to be done after deleting infobase users.
-//  Is called from the DeleteInfoBaseUser procedure if a user has been deleted.
+// Extends the definition of the operation performed after deleting an infobase user.
+//  The procedure is called from the DeleteInfobaseUser() procedure if the user has been deleted.
 //
 // Parameters:
-// OldProperties - Structure - see Users.ReadInfoBaseUser function return parameters for details.
+//  OldProperties - Structure - see parameters returned by the Users.ReadInfobaseUser() function.
 //
-Procedure AfterInfoBaseUserDelete(Val OldProperties) Export
-	
-	
+Procedure AfterInfobaseUserDelete(Val OldProperties) Export
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// Handlers for writing the first administrator
-
-// Overrides question text to be displayed before writing the first administrator.
-// Is called from the user form BeforeWrite handler if RoleEditProhibition() is True 
-// and infobase user number is 0.
-// 
-Procedure QuestionTextBeforeWriteFirstAdministrator(QuestionText) Export
-	
-	// StandardSubsystems.AccessManagement
-	QuestionText = NStr("en = 'The user you want to add is the first infobase user, 
-		|this user will be automatically included into the Administrators access group. 
-		|Do you want to continue?'")
-	// End StandardSubsystems.AccessManagement
-	
-EndProcedure
-
-// Defines extra actions when writing an administrator.
-// Is called when writing an administrator in the authorization procedure.
-// Usually it happens when writing the first administrator, but it also can occur when 
-// relating an infobase user with a Users catalog item.
-// 
-// Parameters:
-//  User - CatalogRef.Users (object change is prohibited).
-//
-Procedure OnWriteFirstAdministrator(User) Export
-	
-	// StandardSubsystems.AccessManagement
-	
-	// First administrator is added into the Administrators access group automatically
-	Object = Catalogs.AccessGroups.Administrators.GetObject();
-	If Object.Users.Find(User, "User") = Undefined Then
-		Object.Users.Add().User = User;
-		Object.DataExchange.Load = True;
-		Object.Write();
-	EndIf;
-	
-	// End StandardSubsystems.AccessManagement
-	
-EndProcedure
-
-// Overrides the comment text when authorizing an infobase user that has been created
-// in the designer mode with administrative rights.
-// Is called from Users.AuthenticateCurrentUser
-// Comment are logged in the event log.
-// 
-// Parameters:
-//  Comment - String - initial value has been set.
-//
-Procedure AfterWriteAdministratorOnAuthorization(Comment) Export
-	
-	// StandardSubsystems.AccessManagement
-	Comment = NStr("en = 'An infobase user with the Full rights role
-	                     |was created in the designer mode:
-	                     |
-	                     |- the user was not found in the Users catalog,
-	                     |- the user has been registered in the Users catalog,
-	                     |- the user has been added to the Administrators access group.
-	                     |
-	                     |It is recommended you to create infobase users in the enterprise mode.'");
-	// End StandardSubsystems.AccessManagement
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// Service mode.
-
-// Sets default user rights.
-// Is called when working in the service mode in case of updating rights of a not administrative user in the service manager.
+// Overrides interface settings for new users.
 //
 // Parameters:
-//  User - CatalogRef.Users - user whose rights will be set by default.
+//  InitialSettings - Structure - default settings:
+//   * ClientSettings    - ClientSettings - client application settings.
+//   * InterfaceSettings - CommandInterfaceSettings - command interface settings (for
+//                         selections panel, navigation panel, and actions panel).
+//   * TaxiSettings      - ClientApplicationInterfaceSettings - client application interface
+//                         settings (panel contents and positions).
 //
-Procedure SetDefaultRights(User) Export
-	
-	// _Demo Start Example
-	NewAccessGroups = New Array;
-	NewAccessGroups.Add(Catalogs.AccessGroups.FindByDescription("Users"));
-	
-	BeginTransaction();
-	
-	Query = New Query;
-	Query.Text =
-	"SELECT
-	|	AccessGroupsUsers.Ref
-	|FROM
-	|	Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|WHERE
-	|	AccessGroupsUsers.User = &User
-	|	AND (NOT AccessGroupsUsers.Ref IN (&NewGroups))
-	|;
-	|
-	|////////////////////////////////////////////////////////////////////////////////
-	|SELECT
-	|	AccessGroups.Ref
-	|FROM
-	|	Catalog.AccessGroups AS  AccessGroups
-	|		LEFT JOIN Catalog.AccessGroups.Users AS  AccessGroupsUsers
-	|			ON AccessGroups.Ref =  AccessGroupsUsers.Ref
-	|			AND (AccessGroupsUsers.User = &User)
-	|WHERE
-	|	AccessGroups.Ref IN(&NewGroups)
-	|	AND  AccessGroupsUsers.Ref IS NULL";
-	Query.SetParameter("User", User);
-	Query.SetParameter("NewGroups", NewAccessGroups);
-	Results = Query.ExecuteBatch();
-	
-	SelectionExclude = Results[0].Select();
-	While SelectionExclude.Next() Do
-		ObjectGroup = SelectionExclude.Ref.GetObject();
-		ObjectGroup.Users.Delete(ObjectGroup.Users.Find(User, "User"));
-		ObjectGroup.Write();
-	EndDo;
-	
-	SelectionAdd = Results[1].Select();
-	While SelectionAdd.Next() Do
-		ObjectGroup = SelectionAdd.Ref.GetObject();
-		UserRow = ObjectGroup.Users.Add();
-		UserRow.User = User;
-		ObjectGroup.Write();
-	EndDo;
-	
-	CommitTransaction();
-	// _Demo End Example
-	
-EndProcedure
-
-// Internal use only.
 Procedure OnSetInitialSettings(InitialSettings) Export
 	
+	// _Demo begin example
 	InitialSettings.InterfaceSettings.SectionsPanelRepresentation = SectionsPanelRepresentation.PictureAndText;
+	// _Demo end example
 	
 EndProcedure
+
+// Extends the list of settings on the "Other" tab of AppUserSettings data processor for the user passed to the procedure.
+//
+// Parameters:
+//  UserInfo - Structure - a string presentation and a reference presentation of the user.
+//       * UserRef          - CatalogRef.Users - user whose settings are retrieved.
+//       * InfobaseUserName - String - infobase user whose settings are retrieved.
+//  Settings - Structure - other user settings.
+//       * Key  - String - string ID of the setting. It is used for copying and clearing the setting.
+//       * Value - Structure - setting details.
+//              ** SettingName    - String - name to be displayed in the settings tree.
+//              ** SettingPicture - Picture - picture to be displayed in the settings tree.
+//              ** SettingsList   - ValueList - list of retrieved settings.
+//
+Procedure OnGetOtherSettings(UserInfo, Settings) Export
+	
+	// _Demo begin example
+	
+	// Getting the value of the AskConfirmationOnExit setting.
+	SettingValue = CommonUse.CommonSettingsStorageLoad(
+		"UserCommonSettings", "AskConfirmationOnExit",,,
+			UserInfo.InfobaseUserName);
+	If SettingValue <> Undefined Then
+		
+		ValueListSettings = New ValueList;
+		ValueListSettings.Add(SettingValue);
+		
+		SettingDetails    = New Structure;
+		SettingDetails.Insert("SettingName", NStr("en = 'Confirmation on exit'"));
+		SettingDetails.Insert("SettingPicture", "");
+		SettingDetails.Insert("SettingsList", ValueListSettings);
+		
+		Settings.Insert("AskConfirmationOnClose", SettingDetails);
+	EndIf;
+	
+	// _Demo end example
+	
+EndProcedure
+
+// Saves settings for the user passed to the procedure.
+//
+// Parameters:
+//  Settings - ValueList - list of settings values to be saved.
+//  UserInfo - Structure - a string presentation and a reference presentation of the user.
+//       * UserRef          - CatalogRef.Users - user whose settings are saved.
+//       * InfobaseUserName - String - infobase user whose settings are saved.
+//
+Procedure OnSaveOtherSetings(UserInfo, Settings) Export
+	
+	// _Demo begin example
+	
+	If Settings.SettingID = "AskConfirmationOnClose" Then
+		SettingValue = Settings.SettingValue[0];
+		CommonUse.CommonSettingsStorageSave(
+			"UserCommonSettings", "AskConfirmationOnExit",
+			SettingValue.Value,, UserInfo.InfobaseUserName);
+	EndIf;
+	
+	// _Demo end example
+	
+EndProcedure
+
+// Clears settings for the user passed to the procedure.
+//
+// Parameters:
+//  Settings - ValueList - list of settings values to be cleared. 
+//  UserInfo - Structure - a string presentation and a reference presentation of the user.
+//       * UserRef          - CatalogRef.Users - user whose settings are cleared.
+//       * InfobaseUserName - String - infobase user whose settings are cleared.
+//
+Procedure OnDeleteOtherSettings(UserInfo, Settings) Export
+	
+	// _Demo begin example
+	
+	If Settings.SettingID = "AskConfirmationOnClose" Then
+		CommonUse.CommonSettingsStorageDelete(
+			"UserCommonSettings", "AskConfirmationOnExit",
+			UserInfo.InfobaseUserName);
+	EndIf;
+	
+	// _Demo end example
+	
+EndProcedure
+
+#EndRegion

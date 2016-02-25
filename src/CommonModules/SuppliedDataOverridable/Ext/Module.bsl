@@ -1,77 +1,38 @@
 ﻿///////////////////////////////////////////////////////////////////////////////////
-// SuppliedDataOverridable: the supplied data service mechanism.
+// SuppliedDataOverridable: The mechanism of supplied data service.
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// Generates a map table of separated and shared data.
-// It is recommended that you call this procedure through the function with the same name from the SuppliedData module.
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions for the SuppliedData subsystem
+// the SuppliedDataOverridable common module
 //
-// Parameters:
-//  MapTable - ValueTable - table to be filled with type maps.
+
+// Registers supplied data handlers
 //
-Procedure GetSeparatedAndSharedDataMapTable(MapTable) Export
+// When a new shared data notification is received, NewDataAvailable
+// procedures from modules registered with GetSuppliedDataHandlers are called.
+// The descriptor passed to the procedure is XDTODataObject Descriptor.
+// 
+// If NewDataAvailable sets Import to True, the data is imported, and the descriptor and 
+// the path to the data file are passed to ProcessNewData() procedure. The file is 
+// automatically deleted once the procedure is executed.
+// If the file is not specified in Service Manager, the parameter value is Undefined.
+//
+// Parameters: 
+//   Handlers - ValueTable - table for adding handlers. 
+//     Columns:
+//       DataKind - String - code of the data kind processed by the handler.
+//       HandlerCode - Sting(20) - used for recovery after a data processing error. 
+//       Handler - CommonModule - module that contains the following procedures:
+//         NewDataAvailable(Descriptor, Import) 
+//         Export ProcessNewData(Descriptor, Import) 
+//         Export DataProcessingCanceled(Descriptor) Export
+//
+Procedure GetSuppliedDataHandlers(Handlers) Export
 	
 EndProcedure
 
-// Overrides actions to be done when filling the data area with supplied data.
-//
-// Parameters:
-// SharedDataRef - Ref - reference to the supplied data item.
-//
-Procedure OnFillDataAreaWithSuppliedData(SharedDataRef) Export
-
-EndProcedure
-
-// Overrides actions to be done when registering the new supplied data item.
-//
-// Parameters:
-//  SharedDataRef - Ref - reference to the supplied data item.
-//
-Procedure OnRecordNewSuppliedDataObjectChange(SharedDataItem) Export
-
-EndProcedure
-
-// Is called before updating the separated record set with data from the shared one. 
-//
-// Parameters:
-//  Prototype          - InformationRegisterRecordSet - shared record set that will be 
-//                       a prototype to the separated one.
-//  MDObject           - MetadataObject - shared information register metadata.
-//  Manager            - InformationRegisterManager - separated information register
-//                       manager.
-//  SourceType         - Type - shared register record key type.
-//  TargetType         - Type - separated register record key type.
-//  TargetObject       - InformationRegisterRecordSet - if standard update processing  
-//                       is overridden in this procedure, the record set that is not
-//                       written must be passed to this parameter.
-//  StandardProcessing - Boolean - if standard update processing is overridden in this
-//                       procedure, False must be passed to this parameter.
-//
-Procedure BeforeCopyRecordSetFromPrototype(Prototype, MDObject, Manager, SourceType, 
-		TargetType, TargetObject, StandardProcessing) Export
-		
-EndProcedure
-	
-	
-// Is called before updating the separated object with data from the shared one.
-//
-// Parameters:
-//  Prototype          - CatalogObject - shared object that will be a prototype to the
-//                       separated one.
-//  MDObject           - MetadataObject - shared catalog metadata.
-//  Manager            - CatalogManager - separated catalog manager.
-//  SourceType         - Type - shared catalog reference type.
-//  TargetType         - Type - separated catalog reference type.
-//  TargetObject       - CatalogObject - if standard update processing was overridden
-//                       in this procedure, the object that is not written must be
-//                       passed to this parameter.
-//  StandardProcessing - Boolean - if standard update processing is overridden in this
-//                                 procedure, False must be passed to this parameter.
-//
-Procedure BeforeCopyObjectFromPrototype(Prototype, MDObject, Manager, SourceType, 
-		TargetType, TargetObject, StandardProcessing) Export
-		
-EndProcedure
+#EndRegion

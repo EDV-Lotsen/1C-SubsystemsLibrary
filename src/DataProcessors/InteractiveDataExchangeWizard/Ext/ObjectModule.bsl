@@ -1,5 +1,6 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
 // Export internal procedures and functions.
@@ -7,12 +8,11 @@
 // Gets object mapping statistics for the Statistics table rows.
 //
 // Parameters:
-//  Cancel     – Boolean – cancel flag. It is set to True if errors occur during the
-//               procedure execution.
-//  RowIndexes – Array (optional) – indexes of Statistics table rows for which mapping
-//               statistic data will be retrieved.
-//               If the parameter is not specified, starictic data for all table rows 
-//               will be retrieved.
+//      Cancel     - Boolean - cancellation flag. It is set to True if errors occur during the
+//                   procedure execution. 
+//      RowIndexes - Array - indexes of Statistics table rows. Mapping 
+//                   statistics data is retrieved for these rows.
+//                   If the parameter is not specified, statistics data is retrieved for all table rows.
 // 
 Procedure GetObjectMappingByRowStats(Cancel, RowIndexes = Undefined) Export
 	
@@ -37,38 +37,38 @@ Procedure GetObjectMappingByRowStats(Cancel, RowIndexes = Undefined) Export
 		Return;
 	EndIf;
 	
-	InfoBaseObjectMapping = DataProcessors.InfoBaseObjectMapping.Create();
+	InfobaseObjectMapping = DataProcessors.InfobaseObjectMapping.Create();
 	
 	// Getting mapping digest data separately for each table
-	For Each RowIndex In RowIndexes Do
+	For Each LineIndex In RowIndexes Do
 		
-		TableRow = Statistics[RowIndex];
+		TableRow = Statistics[LineIndex];
 		
 		If Not TableRow.SynchronizeByID Then
 			Continue;
 		EndIf;
 		
 		// Initializing data processor properties
-		InfoBaseObjectMapping.TargetTableName           = TableRow.TargetTableName;
-		InfoBaseObjectMapping.SourceTableObjectTypeName = TableRow.ObjectTypeString;
-		InfoBaseObjectMapping.InfoBaseNode              = InfoBaseNode;
-		InfoBaseObjectMapping.ExchangeMessageFileName   = ExchangeMessageFileName;
+		InfobaseObjectMapping.TargetTableName           = TableRow.TargetTableName;
+		InfobaseObjectMapping.SourceTableObjectTypeName = TableRow.ObjectTypeString;
+		InfobaseObjectMapping.InfobaseNode              = InfobaseNode;
+		InfobaseObjectMapping.ExchangeMessageFileName   = ExchangeMessageFileName;
 		
-		InfoBaseObjectMapping.SourceTypeString = TableRow.SourceTypeString;
-		InfoBaseObjectMapping.TargetTypeString = TableRow.TargetTypeString;
+		InfobaseObjectMapping.SourceTypeString = TableRow.SourceTypeString;
+		InfobaseObjectMapping.TargetTypeString = TableRow.TargetTypeString;
 		
-		// Constructor
-		InfoBaseObjectMapping.Constructor();
+		// constructor
+		InfobaseObjectMapping.Constructor();
 		
 		// Getting mapping digest data
-		InfoBaseObjectMapping.GetObjectMappingDigestInfo(Cancel);
+		InfobaseObjectMapping.GetObjectMappingDigestInfo(Cancel);
 		
-		// Mapping digest information 
-		TableRow.ObjectCountInSource = InfoBaseObjectMapping.ObjectCountInSource();
-		TableRow.ObjectCountInTarget = InfoBaseObjectMapping.ObjectCountInTarget();
-		TableRow.MappedObjectCount   = InfoBaseObjectMapping.MappedObjectCount();
-		TableRow.UnmappedObjectCount = InfoBaseObjectMapping.UnmappedObjectCount();
-		TableRow.MappedObjectPercent = InfoBaseObjectMapping.MappedObjectPercent();
+		// Mapping digest information
+		TableRow.ObjectCountInSource = InfobaseObjectMapping.ObjectCountInSource();
+		TableRow.ObjectCountInTarget = InfobaseObjectMapping.ObjectCountInTarget();
+		TableRow.MappedObjectCount   = InfobaseObjectMapping.MappedObjectCount();
+		TableRow.UnmappedObjectCount = InfobaseObjectMapping.UnmappedObjectCount();
+		TableRow.MappedObjectPercent = InfobaseObjectMapping.MappedObjectPercent();
 		TableRow.PictureIndex        = DataExchangeServer.StatisticsTablePictureIndex(TableRow.UnmappedObjectCount, TableRow.DataImportedSuccessfully);
 		
 	EndDo;
@@ -79,12 +79,10 @@ EndProcedure
 // retrieves object mapping statistics.
 //
 // Parameters:
-//  Cancel     – Boolean – cancel flag. It is set to True if errors occur during the
-//               procedure execution.
-//  RowIndexes – Array (optional) – indexes of Statistics table rows for which mapping
-//               statistic data will be retrieved.
-//               If the parameter is not specified, starictic data for all table rows 
-//               will be retrieved.
+//      Cancel     - Boolean - cancellation flag. It is set to True if errors occur during the
+//                   procedure execution. 
+//      RowIndexes - Array - indexes of Statistics table rows. Mapping statistics data is retrieved for these rows.
+//                   If the parameter is not specified, statictics data is retrieved for all table rows.
 // 
 Procedure ExecuteDefaultAutomaticMappingAndGetMappingStatistics(Cancel, RowIndexes = Undefined) Export
 	
@@ -109,44 +107,44 @@ Procedure ExecuteDefaultAutomaticMappingAndGetMappingStatistics(Cancel, RowIndex
 		Return;
 	EndIf;
 	
-	InfoBaseObjectMapping = DataProcessors.InfoBaseObjectMapping.Create();
+	InfobaseObjectMapping = DataProcessors.InfobaseObjectMapping.Create();
 	
 	// Performing automatic mapping.
 	// Getting mapping digest data.
-	For Each RowIndex In RowIndexes Do
+	For Each LineIndex In RowIndexes Do
 		
-		TableRow = Statistics[RowIndex];
+		TableRow = Statistics[LineIndex];
 		
 		If Not TableRow.SynchronizeByID Then
 			Continue;
 		EndIf;
 		
 		// Initializing data processor properties
-		InfoBaseObjectMapping.TargetTableName           = TableRow.TargetTableName;
-		InfoBaseObjectMapping.SourceTableObjectTypeName = TableRow.ObjectTypeString;
-		InfoBaseObjectMapping.TargetTableFields         = TableRow.TableFields;
-		InfoBaseObjectMapping.TargetTableSearchFields   = TableRow.SearchFields;
-		InfoBaseObjectMapping.InfoBaseNode              = InfoBaseNode;
-		InfoBaseObjectMapping.ExchangeMessageFileName   = ExchangeMessageFileName;
+		InfobaseObjectMapping.TargetTableName           = TableRow.TargetTableName;
+		InfobaseObjectMapping.SourceTableObjectTypeName = TableRow.ObjectTypeString;
+		InfobaseObjectMapping.TargetTableFields         = TableRow.TableFields;
+		InfobaseObjectMapping.TargetTableSearchFields   = TableRow.SearchFields;
+		InfobaseObjectMapping.InfobaseNode              = InfobaseNode;
+		InfobaseObjectMapping.ExchangeMessageFileName   = ExchangeMessageFileName;
 		
-		InfoBaseObjectMapping.SourceTypeString = TableRow.SourceTypeString;
-		InfoBaseObjectMapping.TargetTypeString = TableRow.TargetTypeString;
+		InfobaseObjectMapping.SourceTypeString = TableRow.SourceTypeString;
+		InfobaseObjectMapping.TargetTypeString = TableRow.TargetTypeString;
 		
 		// Constructor
-		InfoBaseObjectMapping.Constructor();
+		InfobaseObjectMapping.Constructor();
 		
-		// Performing default automatic object mapping  
-		InfoBaseObjectMapping.ExecuteDefaultAutomaticMapping(Cancel);
+		// Performing default automatic object mapping
+		InfobaseObjectMapping.ExecuteDefaultAutomaticMapping(Cancel);
 		
 		// Getting mapping digest data
-		InfoBaseObjectMapping.GetObjectMappingDigestInfo(Cancel);
+		InfobaseObjectMapping.GetObjectMappingDigestInfo(Cancel);
 		
 		// Mapping digest data
-		TableRow.ObjectCountInSource = InfoBaseObjectMapping.ObjectCountInSource();
-		TableRow.ObjectCountInTarget = InfoBaseObjectMapping.ObjectCountInTarget();
-		TableRow.MappedObjectCount   = InfoBaseObjectMapping.MappedObjectCount();
-		TableRow.UnmappedObjectCount = InfoBaseObjectMapping.UnmappedObjectCount();
-		TableRow.MappedObjectPercent = InfoBaseObjectMapping.MappedObjectPercent();
+		TableRow.ObjectCountInSource = InfobaseObjectMapping.ObjectCountInSource();
+		TableRow.ObjectCountInTarget = InfobaseObjectMapping.ObjectCountInTarget();
+		TableRow.MappedObjectCount   = InfobaseObjectMapping.MappedObjectCount();
+		TableRow.UnmappedObjectCount = InfobaseObjectMapping.UnmappedObjectCount();
+		TableRow.MappedObjectPercent = InfobaseObjectMapping.MappedObjectPercent();
 		TableRow.PictureIndex        = DataExchangeServer.StatisticsTablePictureIndex(TableRow.UnmappedObjectCount, TableRow.DataImportedSuccessfully);
 		
 	EndDo;
@@ -154,18 +152,16 @@ Procedure ExecuteDefaultAutomaticMappingAndGetMappingStatistics(Cancel, RowIndex
 EndProcedure
 
 // Imports data into the infobase for Statistics table rows.
-// If all exchange message data is imported, the incoming exchange message number is 
-// stored in the exchange node.
-// The repeat import of this message will be canceled.
+//  If all exchange message data is imported, the incoming exchange message number is 
+//  stored in the exchange node.
+//  It implies that all data is imported to the infobase.
+//  The repeat import of this message will be canceled.
 //
 // Parameters:
-//  Cancel     – Boolean – cancel flag. It is set to True if errors occur during the
-//               procedure execution.
-//  RowIndexes – Array (optional) – indexes of Statistics table rows for which mapping
-//               statistic information will be retrieved.
-
-//               If the parameter is not specified, starictic data for all table rows 
-//               will be retrieved.
+//       Cancel     - Boolean - cancellation flag. It is set to True if errors occur during the 
+//                    procedure execution. 
+//       RowIndexes - Array - indexes of Statistics table rows. Data is imported to these rows.
+//                    If the parameter is not specified, statistics data is retrieved for all table rows
 // 
 Procedure ExecuteDataImport(Cancel, RowIndexes = Undefined) Export
 	
@@ -185,9 +181,9 @@ Procedure ExecuteDataImport(Cancel, RowIndexes = Undefined) Export
 	
 	TableToImport = New Array;
 	
-	For Each RowIndex In RowIndexes Do
+	For Each LineIndex In RowIndexes Do
 		
-		TableRow = Statistics[RowIndex];
+		TableRow = Statistics[LineIndex];
 		
 		DataTableKey = DataExchangeServer.DataTableKey(TableRow.SourceTypeString, TableRow.TargetTypeString, TableRow.IsObjectDeletion);
 		
@@ -196,48 +192,41 @@ Procedure ExecuteDataImport(Cancel, RowIndexes = Undefined) Export
 	EndDo;
 	
 	// Initializing data processor properties
-	InfoBaseObjectMapping = DataProcessors.InfoBaseObjectMapping.Create();
-	InfoBaseObjectMapping.ExchangeMessageFileName = ExchangeMessageFileName;
-	InfoBaseObjectMapping.InfoBaseNode = InfoBaseNode;
+	InfobaseObjectMapping = DataProcessors.InfobaseObjectMapping.Create();
+	InfobaseObjectMapping.ExchangeMessageFileName = ExchangeMessageFileName;
+	InfobaseObjectMapping.InfobaseNode  = InfobaseNode;
 	
 	// Importing data
-	InfoBaseObjectMapping.ExecuteDataImportForInfoBase(Cancel, TableToImport);
+	InfobaseObjectMapping.ExecuteDataImportForInfobase(Cancel, TableToImport);
 	
 	DataImportedSuccessfully = Not Cancel;
 	
-	For Each RowIndex In RowIndexes Do
+	For Each LineIndex In RowIndexes Do
 		
-		TableRow = Statistics[RowIndex];
+		TableRow = Statistics[LineIndex];
 		
 		TableRow.DataImportedSuccessfully = DataImportedSuccessfully;
 		TableRow.PictureIndex = DataExchangeServer.StatisticsTablePictureIndex(TableRow.UnmappedObjectCount, TableRow.DataImportedSuccessfully);
 	
 	EndDo;
 	
-	// If all exchange message data is imported, the incoming exchange message number is 
-	// stored in the exchange node.
-	If DataPackageFullyImported() Then
-		
-		SetIncomingInfoBaseNodeMessageNumber(Cancel);
-		
-	EndIf;
-	
 EndProcedure
 
-// Downloads the exchange message from an external source (FTP, email, or network directory) into the temporary operating system user directory.
+// Downloads the exchange message from an external source 
+// (FTP, email, or network directory) into the temporary operating system user directory.
 //
-// Parameters: 
-//  Cancel            – Boolean – cancel flag. It is set to True if errors occur during 
-//                      the procedure execution.
-//  DataPackageFileID – DateTime – exchange message change date. Is used as a file ID
-//                      for the data exchange subsystem.
+// Parameters:
+//      Cancel            - Boolean - cancellation flag. It is set to True if errors occur during
+//                          the procedure execution.
+//      DataPackageFileID - Date - exchange message change date. It is used as a file ID for the data exchange subsystem.
 // 
 Procedure GetExchangeMessageToTemporaryDirectory(
-	Cancel,
-	DataPackageFileID = Undefined,
-	FileID = "",
-	LongAction = False,
-	ActionID = ""
+		Cancel,
+		DataPackageFileID = Undefined,
+		FileID = "",
+		LongAction = False,
+		ActionID = "",
+		Password = ""
 	) Export
 	
 	SetPrivilegedMode(True);
@@ -247,21 +236,21 @@ Procedure GetExchangeMessageToTemporaryDirectory(
 	
 	If ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.COM Then
 		
-		DataStructure = DataExchangeServer.GetExchangeMessageFromCorrespondentInfoBaseToTempDirectory(Cancel, InfoBaseNode);
+		DataStructure = DataExchangeServer.GetExchangeMessageFromCorrespondentInfobaseToTempDirectory(Cancel, InfobaseNode, False);
 		
 	ElsIf ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.WS Then
 		
-		DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfoBaseOverWebService(
-		Cancel,
-		InfoBaseNode,
-		FileID,
-		LongAction,
-		ActionID
-		);
+		DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfobaseOverWebService(
+				Cancel,
+				InfobaseNode,
+				FileID,
+				LongAction,
+				ActionID,
+				Password);
 		
-	Else // file, FTP, email
+	Else // FILE, FTP, EMAIL
 		
-		DataStructure = DataExchangeServer.GetExchangeMessageToTemporaryDirectory(Cancel, InfoBaseNode, ExchangeMessageTransportKind);
+		DataStructure = DataExchangeServer.GetExchangeMessageToTemporaryDirectory(Cancel, InfobaseNode, ExchangeMessageTransportKind, False);
 		
 	EndIf;
 	
@@ -271,13 +260,14 @@ Procedure GetExchangeMessageToTemporaryDirectory(
 	
 EndProcedure
 
-// Downloads the exchange message from the file transfer service into the temporary 
+// Downloads the exchange message from the file transfer service into the temporary
 // operating system user directory.
 //
 Procedure GetExchangeMessageToTempDirectoryLongActionEnd(
-	Cancel,
-	DataPackageFileID,
-	FileID
+			Cancel,
+			DataPackageFileID,
+			FileID,
+			Val Password = ""
 	) Export
 	
 	SetPrivilegedMode(True);
@@ -285,11 +275,11 @@ Procedure GetExchangeMessageToTempDirectoryLongActionEnd(
 	// Deleting previous temporary exchange message directory with all nested files
 	DeleteTempExchangeMessageDirectory(TempExchangeMessageDirectory);
 	
-	DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfoBaseOverWebServiceFinishLongAction(
-	Cancel,
-	InfoBaseNode,
-	FileID
-	);
+	DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfobaseOverWebServiceFinishLongAction(
+		Cancel,
+		InfobaseNode,
+		FileID,
+		Password);
 	
 	TempExchangeMessageDirectory = DataStructure.TempExchangeMessageDirectory;
 	DataPackageFileID            = DataStructure.DataPackageFileID;
@@ -297,30 +287,23 @@ Procedure GetExchangeMessageToTempDirectoryLongActionEnd(
 	
 EndProcedure
 
-// Analyses the incoming exchange message. Fills the Statistics table. 
+// Analyses the incoming exchange message. Fills the Statistics table.
 //
 // Parameters:
-//  Cancel         – Boolean – cancel flag. It is set to True if errors occur during 
-//                   the procedure execution.
-//  ReceiveMessage - Boolean - exchange message is considered as received if all message
-//                   data was imported.
-//                   If it is True, the incoming exchange message number is stored in
-//                   the exchange, otherwise the message number is not stored even if 
-//                   all message data was successfully imported.
+//      Cancel - Boolean - cancellation flag. It is set to True if errors occur during
+//               the procedure execution.
 //
-Procedure ExecuteExchangeMessagAnalysis(Cancel, ReceiveMessage = True) Export
+Procedure ExecuteExchangeMessagAnalysis(Cancel) Export
 	
 	If IsBlankString(TempExchangeMessageDirectory) Then
-		
-		NString = NStr("en = 'Data cannot be read because the exchange message transport error occurs.'");
-		CommonUseClientServer.MessageToUser(NString,,,, Cancel);
-		
+		// Data from the correspondent infobase cannot be received
+		Cancel = True;
 		Return;
 	EndIf;
 	
 	SetPrivilegedMode(True);
 	
-	DataExchangeDataProcessor = DataExchangeCached.DataImportDataProcessor(Cancel, InfoBaseNode, ExchangeMessageFileName);
+	DataExchangeDataProcessor = DataExchangeServer.DataImportDataProcessor(Cancel, InfobaseNode, ExchangeMessageFileName);
 	
 	If Cancel Then
 		Return;
@@ -329,14 +312,9 @@ Procedure ExecuteExchangeMessagAnalysis(Cancel, ReceiveMessage = True) Export
 	DataExchangeDataProcessor.ExecuteExchangeMessagAnalysis();
 	
 	If DataExchangeDataProcessor.ErrorFlag() Then
-		
-		NString = NStr("en = 'Error: %1'");
-		NString = StringFunctionsClientServer.SubstituteParametersInString(NString, DataExchangeDataProcessor.ErrorMessageString());
-		CommonUseClientServer.MessageToUser(NString,,,, Cancel);
+		Cancel = True;
 		Return;
 	EndIf;
-	
-	IncomingMessageNumber = DataExchangeDataProcessor.MessageNumber();
 	
 	Statistics.Load(DataExchangeDataProcessor.PackageHeaderDataTable());
 	
@@ -348,7 +326,7 @@ Procedure ExecuteExchangeMessagAnalysis(Cancel, ReceiveMessage = True) Export
 	
 	AddColumnWithValueToTable(TempStatistics, 1, "Iterator");
 	
-	TempStatistics.GroupBy("TargetTableName, IsObjectDeletion", "Iterator");
+	TempStatistics.Collapse("TargetTableName, IsObjectDeletion", "Iterator");
 	
 	For Each TableRow In TempStatistics Do
 		
@@ -367,28 +345,24 @@ Procedure ExecuteExchangeMessagAnalysis(Cancel, ReceiveMessage = True) Export
 		
 	EndDo;
 	
-	// If all exchange message data was imported, the incoming exchange message number is 
-	// stored in the exchange node.
-	If ReceiveMessage And DataPackageFullyImported() Then
-		
-		SetIncomingInfoBaseNodeMessageNumber(Cancel);
-		
-	EndIf;
-	
 EndProcedure
 
 ///////////////////////////////////////////////////////////////////////////////
-// Local internal procedures and functions.
+// Local internal procedures and functions
 
 // Imports data tables from the exchange message into the cache.
 // Only tables that were not imported previously is imported.
 // The DataExchangeDataProcessor variable contains (caches) previously imported tables.
-
+//
+// Parameters:
+//       Cancel     - Boolean - cancellation flag. It is set to True if errors occur during
+//                    the procedure execution. 
+//       RowIndexes - Array - indexes of Statistics table rows. Data is imported to these rows.
+//                    If the parameter is not specified, statictics data is retrieved for all table rows. 
 // 
-
 Procedure ExecuteDataImportFromExchangeMessagesIntoCache(Cancel, RowIndexes)
 	
-	DataExchangeDataProcessor = DataExchangeCached.DataImportDataProcessor(Cancel, InfoBaseNode, ExchangeMessageFileName);
+	DataExchangeDataProcessor = DataExchangeServer.DataImportDataProcessor(Cancel, InfobaseNode, ExchangeMessageFileName);
 	
 	If Cancel Then
 		Return;
@@ -397,9 +371,9 @@ Procedure ExecuteDataImportFromExchangeMessagesIntoCache(Cancel, RowIndexes)
 	// Getting the array of tables to be batchly imported into the platform cache
 	TableToImport = New Array;
 	
-	For Each RowIndex In RowIndexes Do
+	For Each LineIndex In RowIndexes Do
 		
-		TableRow = Statistics[RowIndex];
+		TableRow = Statistics[LineIndex];
 		
 		If Not TableRow.SynchronizeByID Then
 			Continue;
@@ -407,8 +381,8 @@ Procedure ExecuteDataImportFromExchangeMessagesIntoCache(Cancel, RowIndexes)
 		
 		DataTableKey = DataExchangeServer.DataTableKey(TableRow.SourceTypeString, TableRow.TargetTypeString, TableRow.IsObjectDeletion);
 		
-		// Perhaps, the data table is already imported and is placed in the
-   // DataExchangeDataProcessor data processor cache. 
+		// Perhaps the data table is already imported and is placed 
+   // in the DataExchangeDataProcessor data processor cache.
 		DataTable = DataExchangeDataProcessor.ExchangeMessageDataTable().Get(DataTableKey);
 		
 		If DataTable = Undefined Then
@@ -433,20 +407,6 @@ Procedure ExecuteDataImportFromExchangeMessagesIntoCache(Cancel, RowIndexes)
 		EndIf;
 		
 	EndIf;
-	
-EndProcedure
-
-Procedure SetIncomingInfoBaseNodeMessageNumber(Cancel)
-	
-	InfoBaseNodeObject = InfoBaseNode.GetObject();
-	InfoBaseNodeObject.ReceivedNo = IncomingMessageNumber;
-	InfoBaseNodeObject.AdditionalProperties.Insert("GettingExchangeMessage");
-	
-	Try
-		InfoBaseNodeObject.Write();
-	Except
-		CommonUseClientServer.MessageToUser(BriefErrorDescription(ErrorInfo()),,,, Cancel);
-	EndTry;
 	
 EndProcedure
 
@@ -479,7 +439,11 @@ Procedure SupplementStatisticTable(Cancel)
 			
 		EndTry;
 		
-		TableRow.TargetTableName = GetTableNameByType(Type);
+		ObjectMetadata = Metadata.FindByType(Type);
+		
+		TableRow.TargetTableName = ObjectMetadata.FullName();
+		TableRow.Presentation       = ObjectMetadata.Presentation();
+		
 		TableRow.Key = String(New UUID());
 		
 	EndDo;
@@ -494,30 +458,20 @@ Procedure AddColumnWithValueToTable(Table, IteratorValue, IteratorFieldName)
 	
 EndProcedure
 
-Function GetTableNameByType(Type)
-	
-	Return Metadata.FindByType(Type).FullName();
-	
-EndFunction
-
-Function DataPackageFullyImported()
-	
-	SuccessfulImportTable = Statistics.Unload(New Structure("DataImportedSuccessfully", True) ,"DataImportedSuccessfully");
-	
-	Return SuccessfulImportTable.Count() = Statistics.Count();
-	
-EndFunction
-
 ////////////////////////////////////////////////////////////////////////////////
 // Functions for retrieving properties.
 
 // Retrieves Statistics tabular section data.
 //
 // Returns:
-//  ValueTable.
+//  ValueTable - Statistics tabular section data.
 //
 Function StatisticsTable() Export
 	
 	Return Statistics.Unload();
 	
 EndFunction
+
+#EndRegion
+
+#EndIf

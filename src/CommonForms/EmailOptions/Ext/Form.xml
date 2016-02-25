@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockWholeInterface</WindowOpeningMode>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<ChildItems>
+		<InputField name="SenderName" id="54">
+			<ContextMenu name="SenderNameContextMenu" id="55"/>
+			<ExtendedTooltip name="SenderNameExtendedTooltip" id="89"/>
+		</InputField>
+		<Pages name="Group1" id="124">
+			<ExtendedTooltip name="Group1ExtendedTooltip" id="125"/>
+			<ChildItems>
+				<Page name="SMTPServerSetupGroup" id="27">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>SMTP server setup</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>SMTP server setup group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="SMTPServerSetupGroupExtendedTooltip" id="90"/>
+					<ChildItems>
+						<InputField name="SMTPServerAddress" id="58">
+							<DataPath>Object.SMTPServerAddress</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SMTP server address</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="SMTPServerAddressContextMenu" id="59"/>
+							<ExtendedTooltip name="SMTPServerAddressExtendedTooltip" id="91"/>
+						</InputField>
+						<InputField name="SMTPPort" id="60">
+							<DataPath>Object.SMTPPort</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>0 - set the port automatically</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ToolTipRepresentation>ShowRight</ToolTipRepresentation>
+							<ContextMenu name="SMTPPortContextMenu" id="61"/>
+							<ExtendedTooltip name="SMTPPortExtendedTooltip" id="92"/>
+						</InputField>
+						<CheckBoxField name="SMTPSSL" id="109">
+							<DataPath>Object.SSLSMTP</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SSL</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="SMTPSSLContextMenu" id="110"/>
+							<ExtendedTooltip name="SMTPSSLExtendedTooltip" id="111"/>
+						</CheckBoxField>
+						<InputField name="SMTPUser" id="64">
+							<DataPath>Object.SMTPUser</DataPath>
+							<ContextMenu name="SMTPUserContextMenu" id="65"/>
+							<ExtendedTooltip name="SMTPUserExtendedTooltip" id="94"/>
+						</InputField>
+						<InputField name="SMTPPassword" id="66">
+							<DataPath>Object.SMTPPassword</DataPath>
+							<ContextMenu name="SMTPPasswordContextMenu" id="67"/>
+							<ExtendedTooltip name="SMTPPasswordExtendedTooltip" id="95"/>
+						</InputField>
+						<CheckBoxField name="SMTPSecureAuthenticationOnly" id="115">
+							<DataPath>Object.SMTPSecureAuthenticationOnly</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Secure authentication only</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="SMTPSecureAuthenticationOnlyContextMenu" id="116"/>
+							<ExtendedTooltip name="SMTPSecureAuthenticationOnlyExtendedToolTip" id="117"/>
+						</CheckBoxField>
+					</ChildItems>
+				</Page>
+				<Page name="ServerPOP3SetupGroup" id="28">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>POP3 server settings</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>POP3 server settings group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="ServerPOP3SetupGroupExtendedTooltip" id="96"/>
+					<ChildItems>
+						<InputField name="POP3ServerAddress" id="68">
+							<DataPath>Object.POP3ServerAddress</DataPath>
+							<ContextMenu name="POP3ServerAddressContextMenu" id="69"/>
+							<ExtendedTooltip name="POP3ServerAddressExtendedTooltip" id="97"/>
+						</InputField>
+						<InputField name="POP3Port" id="70">
+							<DataPath>Object.POP3Port</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>0 - set the port automatically</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ToolTipRepresentation>ShowRight</ToolTipRepresentation>
+							<ContextMenu name="POP3PortContextMenu" id="71"/>
+							<ExtendedTooltip name="POP3PortExtendedTooltip" id="98"/>
+						</InputField>
+						<CheckBoxField name="POP3SSL" id="112">
+							<DataPath>Object.SSLPOP3</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SSL</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="POP3SSLContextMenu" id="113"/>
+							<ExtendedTooltip name="POP3SSLExtendedTooltip" id="114"/>
+						</CheckBoxField>
+						<InputField name="POP3User" id="72">
+							<DataPath>Object.POP3User</DataPath>
+							<ContextMenu name="POP3UserContextMenu" id="73"/>
+							<ExtendedTooltip name="POP3UserExtendedTooltip" id="99"/>
+						</InputField>
+						<InputField name="POP3Password" id="74">
+							<DataPath>Object.POP3Password</DataPath>
+							<ContextMenu name="POP3PasswordContextMenu" id="75"/>
+							<ExtendedTooltip name="POP3PasswordExtendedTooltip" id="100"/>
+						</InputField>
+						<CheckBoxField name="POP3SecureAuthenticationOnly" id="118">
+							<DataPath>Object.POP3SecureAuthenticationOnly</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Secure authentication only</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="POP3SecureAuthenticationOnlyContextMenu" id="119"/>
+							<ExtendedTooltip name="POP3SecureAuthenticationOnlyExtendedToolTip" id="120"/>
+						</CheckBoxField>
+					</ChildItems>
+				</Page>
+				<Page name="ServerIMAPSetupGroup" id="76">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>IMAP server port</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>IMAP server settings group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="ServerIMAPSetupGroupExtendedTooltip" id="101"/>
+					<ChildItems>
+						<InputField name="IMAPServerAddress" id="81">
+							<DataPath>Object.IMAPServerAddress</DataPath>
+							<ContextMenu name="IMAPServerAddressContextMenu" id="82"/>
+							<ExtendedTooltip name="IMAPServerAddressExtendedTooltip" id="102"/>
+						</InputField>
+						<InputField name="IMAPPort" id="83">
+							<DataPath>Object.IMAPPort</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>0 - set the port automatically</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ToolTipRepresentation>ShowRight</ToolTipRepresentation>
+							<ContextMenu name="IMAPPortContextMenu" id="84"/>
+							<ExtendedTooltip name="IMAPPortExtendedTooltip" id="103"/>
+						</InputField>
+						<CheckBoxField name="IMAPSSL" id="85">
+							<DataPath>Object.SSLIMAP</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>SSL</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="IMAPSSLContextMenu" id="86"/>
+							<ExtendedTooltip name="IMAPSSLExtendedTooltip" id="106"/>
+						</CheckBoxField>
+						<InputField name="IMAPUser" id="77">
+							<DataPath>Object.IMAPUser</DataPath>
+							<ContextMenu name="IMAPUserContextMenu" id="78"/>
+							<ExtendedTooltip name="IMAPUserExtendedTooltip" id="104"/>
+						</InputField>
+						<InputField name="IMAPPassword" id="79">
+							<DataPath>Object.IMAPPassword</DataPath>
+							<ContextMenu name="IMAPPasswordContextMenu" id="80"/>
+							<ExtendedTooltip name="IMAPPasswordExtendedTooltip" id="105"/>
+						</InputField>
+						<CheckBoxField name="IMAPSecureAuthenticationOnly" id="121">
+							<DataPath>Object.IMAPSecureAuthenticationOnly</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Secure authentication only</v8:content>
+								</v8:item>
+							</Title>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="IMAPSecureAuthenticationOnlyContextMenu" id="122"/>
+							<ExtendedTooltip name="IMAPSecureAuthenticationOnlyExtendedToolTip" id="123"/>
+						</CheckBoxField>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<CheckBoxField name="UseIMAP" id="87">
+			<DataPath>Object.UseIMAP</DataPath>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseIMAPContextMenu" id="88"/>
+			<ExtendedTooltip name="UseIMAPExtendedTooltip" id="107"/>
+		</CheckBoxField>
+		<InputField name="Timeout" id="56">
+			<DataPath>Object.InternetMailTimeout</DataPath>
+			<ContextMenu name="TimeoutContextMenu" id="57"/>
+			<ExtendedTooltip name="TimeoutExtendedTooltip" id="108"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:ConstantsSet</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+			<UseAlways>
+				<Field>Object.InfobaseUsageMode.Ref</Field>
+			</UseAlways>
+		</Attribute>
+	</Attributes>
+	<Parameters>
+		<Parameter name="CurrentUser">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

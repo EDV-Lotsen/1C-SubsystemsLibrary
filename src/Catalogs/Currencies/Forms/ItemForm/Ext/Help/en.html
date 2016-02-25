@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>Currency properties description.</p>
+<p>Currencies are commonly used in routine corporate activities: all documents related to finances (invoices, money orders, agreements, bills, and more) contain the <strong>Currency</strong> field, explicitly or by default. The <strong>Currency</strong> field stores amounts in a variety of currencies (US dollars, foreign currencies, or unspecified "currency units"), depending on the financial geography of your company.</p>
+<p>To convert amounts in foreign currencies to US dollars, <a href="InformationRegister.CurrencyRates/Help">exchange rates</a> are used. </p>
+<h3>General currency information</h3>
+<div>When adding a currency from the <a href="Catalog.Currencies.Form.PickCurrenciesFromClassifier/Help">Currency classifier</a>, the following fields are filled in automatically: </div>
+<ul><li>
+<div><strong>Currency name - </strong>full name of the currency.</div>
+</li><li>
+<div><strong>Numeric code - </strong>a unique numeric ID compliant with international standards. It is used to identify currencies when downloading exchange rate data from the Internet sources.</div>
+</li><li>
+<div><strong>Alphabetic code</strong> - a brief currency name compliant with international standards.</div>
+</li><li>
+<div><strong>Download from Internet </strong>- select this check box to allow downloading currency data from Internet sources. When adding a currency from the Currency classifier, this check box will be selected automatically.</div></li></ul><h3>Currency-in-words parameters</h3>
+<p>To ensure that currency amounts expressed in words are correctly displayed in print forms, it is necessary to specify the "currency-in-words" parameters for both integer and fractional parts of the number. </p>
+<ul><li><strong>Integer part</strong> - specify declension parameters for the<strong> </strong>integer part: singular and plural forms of the currency name. 
+</li><li><strong>Fractional part</strong> - specify declension parameters for the fractional part: singular and plural forms of the fractional currency name. 
+</li><li><strong>Fraction digits count</strong> - if the fractional part is displayed on print forms as number, you can set the number of digits to be displayed on document print forms. For example, if <strong>Fraction digits count </strong>is set to 1, the amount will be displayed as 150.2 Euro. If set to 2, the amount will be displayed as 150.20 Euro. 
+</li><li><strong>Amount in words test </strong>- the <strong>Amount</strong> field value will be displayed in this field using the currency-in-words parameters. Use this option to check if your currency-in-words parameters work correctly.</li></ul><p>The default currency-in-words prarameters are filled for the following currencies<strong>: </strong>Dollar and Euro. You can fill it for other currencies as needed.</p>
+<h3>Interdependencies between currency rates</h3>
+<p>This functionality can be useful, for example, when you need to calculate an internal currency rate for your company.</p>
+<ul><li>
+<div>To calculate interdependent rates, clear the <strong>Download from Internet</strong> check box.</div></li></ul><ul><li>
+<div>Select the <strong>Currency rate depends on other currency rates</strong> check box. </div>
+</li><li>
+<div>Select <strong>Primary currency</strong> from list, or type it in. Primary currency is the currency used to calculate exchange rates for dependent currencies. </div>
+</li><li>
+<div>Specify <strong>Margin, %</strong>. This is the ratio between exchange rate of the primary currency and exchange rate of the dependent currency.</div></li></ul><h3>Viewing exchange rates</h3>
+<p>Click <strong>Currency rates</strong> on the currency navigation panel. For your viewing convenience, the date interval is adjustable.</p>
+<h3>Entering currency rates manually</h3>
+<p>The primary currency rates are available for <a href="DataProcessor.CurrencyRateImport/Help">download</a> from online sources of financial data. If data for a currency is unavailable for download, the <strong>Download from Internet</strong> check box will be disabled. In this case, exchange rate data must be filled in manually.</p>
+<ul><li>Click <strong>Currency rates</strong> on the currency navigation panel. 
+</li><li>Click <strong>Create</strong> and fill in the exchange rate for the selected date (today by default).</li></ul><h3>See also: </h3>
+<ul><li><a href="Catalog.Currencies/Help">Currencies</a>  
+</li><li><a href="v8help://frame/form_common">Working with forms.</a></li></ul></body></html>

@@ -1,60 +1,41 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Title>
-		<v8:item>
-			<v8:lang>en</v8:lang>
-			<v8:content>Full Text Search Management</v8:content>
-		</v8:item>
-	</Title>
 	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
-	<AutoTitle>false</AutoTitle>
 	<Customizable>false</Customizable>
-	<CommandBarLocation>Top</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<AutoCommandBar name="FormCommandBar" id="-1">
-		<HorizontalAlign>Right</HorizontalAlign>
+		<ChildItems>
+			<Button name="FormUpdateIndex" id="11">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<CommandName>Form.Command.UpdateIndex</CommandName>
+				<ExtendedTooltip name="FormUpdateIndexExtendedTooltip" id="13"/>
+			</Button>
+			<Button name="FormClearIndex" id="12">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ClearIndex</CommandName>
+				<ExtendedTooltip name="FormClearIndexExtendedTooltip" id="14"/>
+			</Button>
+		</ChildItems>
 	</AutoCommandBar>
 	<Events>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<CheckBoxField name="EnableFullTextSearch" id="1">
-			<DataPath>EnableFullTextSearch</DataPath>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="EnableFullTextSearchContextMenu" id="2"/>
-			<ExtendedTooltip name="EnableFullTextSearchExtendedTooltip" id="9"/>
-			<Events>
-				<Event name="OnChange">AllowFullTextSearchOnChange</Event>
-			</Events>
-		</CheckBoxField>
-		<LabelField name="IndexState" id="3">
-			<DataPath>IndexState</DataPath>
-			<TitleLocation>None</TitleLocation>
-			<ContextMenu name="IndexStateContextMenu" id="4"/>
-			<ExtendedTooltip name="IndexStateExtendedTooltip" id="10"/>
+		<LabelField name="IndexUpdateDate" id="5">
+			<DataPath>IndexUpdateDate</DataPath>
+			<SkipOnInput>true</SkipOnInput>
+			<HorizontalStretch>false</HorizontalStretch>
+			<ContextMenu name="IndexUpdateDateContextMenu" id="6"/>
+			<ExtendedTooltip name="IndexUpdateDateExtendedTooltip" id="15"/>
 		</LabelField>
-		<LabelField name="IndexRelevanceDate" id="5">
-			<DataPath>IndexRelevanceDate</DataPath>
-			<ContextMenu name="IndexRelevanceDateContextMenu" id="6"/>
-			<ExtendedTooltip name="IndexRelevanceDateExtendedTooltip" id="11"/>
+		<LabelField name="IndexStatus" id="3">
+			<DataPath>IndexStatus</DataPath>
+			<SkipOnInput>true</SkipOnInput>
+			<HorizontalStretch>true</HorizontalStretch>
+			<ContextMenu name="IndexStatusContextMenu" id="4"/>
+			<ExtendedTooltip name="IndexStatusExtendedTooltip" id="16"/>
 		</LabelField>
-		<Button name="UpdateIndex" id="7">
-			<Type>UsualButton</Type>
-			<SkipOnInput>false</SkipOnInput>
-			<CommandName>Form.Command.UpdateIndex</CommandName>
-			<TextColor>style:ButtonTextColor</TextColor>
-			<BackColor>style:ButtonBackColor</BackColor>
-			<BorderColor>style:BorderColor</BorderColor>
-			<ExtendedTooltip name="UpdateIndexExtendedTooltip" id="12"/>
-		</Button>
-		<Button name="ClearIndex" id="8">
-			<Type>UsualButton</Type>
-			<SkipOnInput>false</SkipOnInput>
-			<CommandName>Form.Command.ClearIndex</CommandName>
-			<TextColor>style:ButtonTextColor</TextColor>
-			<BackColor>style:ButtonBackColor</BackColor>
-			<BorderColor>style:BorderColor</BorderColor>
-			<ExtendedTooltip name="ClearIndexExtendedTooltip" id="13"/>
-		</Button>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Object" id="1">
@@ -62,23 +43,13 @@
 				<v8:Type>cfg:DataProcessorObject.FullTextSearchManagement</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="EnableFullTextSearch" id="2">
+		<Attribute name="IndexStatus" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Enable Full Text Search</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>xs:boolean</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="IndexState" id="3">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Index State</v8:content>
+					<v8:content>Status</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -89,11 +60,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="IndexRelevanceDate" id="4">
+		<Attribute name="IndexUpdateDate" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Index Relevance Date</v8:content>
+					<v8:content>Index updated on</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -103,37 +74,53 @@
 				</v8:DateQualifiers>
 			</Type>
 		</Attribute>
+		<Attribute name="IndexTrue" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Index is true</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="IndexAllowed" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Index is allowed</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
 	</Attributes>
 	<Commands>
 		<Command name="UpdateIndex" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Update Index</v8:content>
+					<v8:content>Update index</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Update Index</v8:content>
+					<v8:content>Update index</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>UpdateIndexExecute</Action>
+			<Action>UpdateIndex</Action>
 		</Command>
 		<Command name="ClearIndex" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Clear Index</v8:content>
+					<v8:content>Clear index</v8:content>
 				</v8:item>
 			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Clear Index</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Action>ClearIndexExecute</Action>
+			<Action>ClearIndex</Action>
 		</Command>
 	</Commands>
 </Form>

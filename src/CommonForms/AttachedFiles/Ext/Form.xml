@@ -1,0 +1,1210 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Attached files</v8:content>
+		</v8:item>
+	</Title>
+	<Width>70</Width>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="240">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<VerticalStretch>false</VerticalStretch>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="241"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="242">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="243"/>
+			<ChildItems>
+				<Button name="FormChoose" id="220">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.StandardCommand.Choose</CommandName>
+					<ExtendedTooltip name="FormChooseExtendedTooltip" id="221"/>
+				</Button>
+				<Button name="FormCreate" id="1">
+					<Type>CommandBarButton</Type>
+					<Representation>Text</Representation>
+					<CommandName>Form.Command.Create</CommandName>
+					<ExtendedTooltip name="FormCreateExtendedTooltip" id="103"/>
+				</Button>
+				<Button name="FormChange" id="102">
+					<Type>CommandBarButton</Type>
+					<OnlyInAllActions>false</OnlyInAllActions>
+					<CommandName>Form.Command.OpenFileProperties</CommandName>
+					<ExtendedTooltip name="FormChangeExtendedTooltip" id="122"/>
+				</Button>
+				<ButtonGroup name="FormMainCommandGroup" id="33">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form main command group</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="FormMainCommandGroupExtendedTooltip" id="106"/>
+					<ChildItems>
+						<Button name="FormOpen" id="3">
+							<Type>CommandBarButton</Type>
+							<Representation>Text</Representation>
+							<CommandName>Form.Command.OpenFileForViewing</CommandName>
+							<ExtendedTooltip name="FormOpenExtendedTooltip" id="105"/>
+						</Button>
+						<Button name="FormEdit" id="34">
+							<Type>CommandBarButton</Type>
+							<Representation>Text</Representation>
+							<CommandName>Form.Command.Edit</CommandName>
+							<ExtendedTooltip name="FormEditExtendedTooltip" id="107"/>
+						</Button>
+						<Button name="FormEndEdit" id="43">
+							<Type>CommandBarButton</Type>
+							<Representation>Picture</Representation>
+							<CommandName>Form.Command.EndEdit</CommandName>
+							<ExtendedTooltip name="FormEndEditExtendedTooltip" id="108"/>
+						</Button>
+						<Button name="FormUnlock" id="49">
+							<Type>CommandBarButton</Type>
+							<Representation>Text</Representation>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.Unlock</CommandName>
+							<ExtendedTooltip name="FormUnlockExtendedTooltip" id="109"/>
+						</Button>
+					</ChildItems>
+				</ButtonGroup>
+				<ButtonGroup name="FormGlobalCommands" id="218">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form global commands</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form global commands</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ToolTipRepresentation>None</ToolTipRepresentation>
+					<CommandSource>FormCommandPanelGlobalCommands</CommandSource>
+					<ExtendedTooltip name="FormGlobalCommandsExtendedTooltip" id="219"/>
+				</ButtonGroup>
+				<Popup name="FormCommandGroupDigitalSignatureAndEncryption" id="72">
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+						<xr:Value name="Role.FullAccess">true</xr:Value>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Digital signature and encryption</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Digital signature and encryption</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Ref>CommonPicture.SignedEncryptedTitle</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<Representation>Picture</Representation>
+					<ExtendedTooltip name="FormCommandGroupDigitalSignatureAndEncryptionExtendedTooltip" id="110"/>
+					<ChildItems>
+						<Button name="FormDigitalSignatureSign" id="75">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.DigitalSignatureSign</CommandName>
+							<ExtendedTooltip name="FormDigitalSignatureSignExtendedTooltip" id="111"/>
+						</Button>
+						<Button name="FormSaveWithDigitalSignature" id="73">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.SaveWithDigitalSignature</CommandName>
+							<ExtendedTooltip name="FormSaveWithDigitalSignatureExtendedTooltip" id="112"/>
+						</Button>
+						<Button name="AddDigitalSignatureFormFromFile" id="74">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.AddDigitalSignatureFromFile</CommandName>
+							<ExtendedTooltip name="FormAddDigitalSignatureFromFileExtendedTooltip" id="113"/>
+						</Button>
+						<ButtonGroup name="FormEncryptionCommandGroup" id="78">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Form encryption command group</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="FormEncryptionCommandGroupExtendedTooltip" id="114"/>
+							<ChildItems>
+								<Button name="FormEncrypt" id="76">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.Encrypt</CommandName>
+									<ExtendedTooltip name="FormEncryptExtendedTooltip" id="115"/>
+								</Button>
+								<Button name="FormDecrypt" id="77">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.Decrypt</CommandName>
+									<ExtendedTooltip name="FormDecryptExtendedTooltip" id="116"/>
+								</Button>
+							</ChildItems>
+						</ButtonGroup>
+					</ChildItems>
+				</Popup>
+				<ButtonGroup name="FormAdditionalCommandGroup" id="18">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form additional command group</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="FormAdditionalCommandGroupExtendedTooltip" id="117"/>
+					<ChildItems>
+						<Button name="FormChange82" id="238">
+							<Type>CommandBarButton</Type>
+							<Visible>false</Visible>
+							<CommandName>Form.Command.OpenFileProperties</CommandName>
+							<ExtendedTooltip name="FormChange82ExtendedTooltip" id="239"/>
+						</Button>
+						<Button name="FormCopy" id="19">
+							<Type>CommandBarButton</Type>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.Copy</CommandName>
+							<ExtendedTooltip name="FormCopyExtendedTooltip" id="118"/>
+						</Button>
+						<Button name="FormSetDeletionMark" id="21">
+							<Type>CommandBarButton</Type>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.SetDeletionMark</CommandName>
+							<ExtendedTooltip name="FormSetDeletionMarkExtendedTooltip" id="119"/>
+						</Button>
+						<Button name="FormSaveAs" id="4">
+							<Type>CommandBarButton</Type>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.SaveAs</CommandName>
+							<ExtendedTooltip name="FormSaveAsExtendedTooltip" id="120"/>
+						</Button>
+						<Button name="FormUpdateFromFileOnHardDisk" id="51">
+							<Type>CommandBarButton</Type>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.UpdateFromFileOnHardDisk</CommandName>
+							<Picture>
+								<xr:Ref>CommonPicture.UpdateFileFromFileOnHardDisk</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+							</Picture>
+							<ExtendedTooltip name="FormUpdateFromFileOnHardDiskExtendedTooltip" id="121"/>
+						</Button>
+						<Button name="FormOpenFileDirectory" id="2">
+							<Type>CommandBarButton</Type>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.Command.OpenFileDirectory</CommandName>
+							<ExtendedTooltip name="FormOpenFileDirectoryExtendedTooltip" id="123"/>
+						</Button>
+					</ChildItems>
+				</ButtonGroup>
+				<ButtonGroup name="FormSearchCommandGroup" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form search command group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Form search command group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="FormSearchCommandGroupExtendedTooltip" id="124"/>
+					<ChildItems>
+						<Button name="FormFind" id="10">
+							<Type>CommandBarButton</Type>
+							<Visible>false</Visible>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.StandardCommand.Find</CommandName>
+							<ExtendedTooltip name="FormFindExtendedTooltip" id="125"/>
+						</Button>
+						<Button name="FormCancelSearch" id="11">
+							<Type>CommandBarButton</Type>
+							<Visible>false</Visible>
+							<OnlyInAllActions>false</OnlyInAllActions>
+							<CommandName>Form.StandardCommand.CancelSearch</CommandName>
+							<ExtendedTooltip name="FormCancelSearchExtendedTooltip" id="126"/>
+						</Button>
+					</ChildItems>
+				</ButtonGroup>
+				<Popup name="FormAdvancedGroup" id="216">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Advanced</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTipRepresentation>None</ToolTipRepresentation>
+					<ExtendedTooltip name="FormAdvancedGroupExtendedTooltip" id="217"/>
+					<ChildItems>
+						<Button name="FormRefresh" id="222">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.StandardCommand.Refresh</CommandName>
+							<ExtendedTooltip name="FormRefreshExtendedTooltip" id="223"/>
+						</Button>
+						<ButtonGroup name="FormGroupListSettings" id="236">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Form list setup group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Form list setup group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ExtendedTooltip name="FormGroupListSettingsExtendedTooltip" id="237"/>
+							<ChildItems>
+								<Button name="FormListSettings" id="234">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.StandardCommand.ListSettings</CommandName>
+									<ExtendedTooltip name="FormListSettingsExtendedTooltip" id="235"/>
+								</Button>
+								<Button name="FormImportDynamicListSettings" id="224">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.StandardCommand.LoadDynamicListSettings</CommandName>
+									<ExtendedTooltip name="FormImportDynamicListSettingsExtendedTooltip" id="225"/>
+								</Button>
+								<Button name="FormSaveDynamicListSettings" id="226">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.StandardCommand.SaveDynamicListSettings</CommandName>
+									<ExtendedTooltip name="FormSaveDynamicListSettingsExtendedTooltip" id="227"/>
+								</Button>
+								<Button name="FormDynamicListStandardSettings" id="228">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.StandardCommand.DynamicListStandardSettings</CommandName>
+									<ExtendedTooltip name="FormDynamicListStandardSettingsExtendedTooltip" id="229"/>
+								</Button>
+							</ChildItems>
+						</ButtonGroup>
+						<Button name="FormOutputList" id="230">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.StandardCommand.OutputList</CommandName>
+							<ExtendedTooltip name="FormOutputListExtendedTooltip" id="231"/>
+						</Button>
+						<Button name="FormChangeForm" id="232">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+							<ExtendedTooltip name="FormCustomizeFormExtendedTooltip" id="233"/>
+						</Button>
+					</ChildItems>
+				</Popup>
+				<Button name="FormHelp" id="9">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.StandardCommand.Help</CommandName>
+					<ExtendedTooltip name="FormHelpExtendedTooltip" id="131"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="List" id="6">
+			<CommandBarLocation>None</CommandBarLocation>
+			<Height>8</Height>
+			<ChoiceMode>true</ChoiceMode>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.PictureIndex</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.FileIconCollection</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</RowsPicture>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="7">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="ListContextMenuCreate" id="54">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Create</CommandName>
+						<ExtendedTooltip name="ListContextMenuCreateExtendedTooltip" id="132"/>
+					</Button>
+					<Button name="ListContextMenuChange" id="202">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.OpenFileProperties</CommandName>
+						<ExtendedTooltip name="ListContextMenuChangeExtendedTooltip" id="203"/>
+					</Button>
+					<ButtonGroup name="ListContextMenuMainCommandGroup" id="55">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List context menu main command group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List context menu main command group</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ListContextMenuMainCommandGroupExtendedTooltip" id="133"/>
+						<ChildItems>
+							<Button name="ListContextMenuOpen" id="56">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.OpenFileForViewing</CommandName>
+								<ExtendedTooltip name="ListContextMenuOpenExtendedTooltip" id="134"/>
+							</Button>
+							<Button name="ListContextMenuEdit" id="58">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.Edit</CommandName>
+								<ExtendedTooltip name="ListContextMenuEditExtendedTooltip" id="136"/>
+							</Button>
+							<Button name="ListContextMenuEndEdit" id="59">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.EndEdit</CommandName>
+								<ExtendedTooltip name="ListContextMenuEndEditExtendedTooltip" id="137"/>
+							</Button>
+							<Button name="ListContextMenuUnlock" id="60">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.Unlock</CommandName>
+								<ExtendedTooltip name="ListContextMenuUnlockExtendedTooltip" id="138"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Popup name="ListContextMenuCommandGroupDigitalSignatureAndEncryption" id="79">
+						<UserVisible>
+							<xr:Common>false</xr:Common>
+							<xr:Value name="Role.FullAccess">true</xr:Value>
+						</UserVisible>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Digital signature and encryption</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Digital signature and encryption</v8:content>
+							</v8:item>
+						</ToolTip>
+						<Picture>
+							<xr:Ref>CommonPicture.SignedEncryptedTitle</xr:Ref>
+							<xr:LoadTransparent>true</xr:LoadTransparent>
+						</Picture>
+						<ExtendedTooltip name="ListContextMenuCommandGroupDigitalSignatureAndEncryptionExtendedTooltip" id="149"/>
+						<ChildItems>
+							<Button name="ListContextMenuDigitalSignatureSign" id="80">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.DigitalSignatureSign</CommandName>
+								<ExtendedTooltip name="ListContextMenuDigitalSignatureSignExtendedTooltip" id="150"/>
+							</Button>
+							<Button name="ListContextMenuAddDigitalSignatureFromFile" id="81">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.AddDigitalSignatureFromFile</CommandName>
+								<ExtendedTooltip name="ListContextMenuAddDigitalSignatureFromFileExtendedTooltip" id="151"/>
+							</Button>
+							<Button name="ListContextMenuSaveWithDigitalSignature" id="82">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SaveWithDigitalSignature</CommandName>
+								<ExtendedTooltip name="ListContextMenuSaveWithDigitalSignatureExtendedTooltip" id="152"/>
+							</Button>
+							<ButtonGroup name="ListContextMenuCommandGroupEncryption" id="83">
+								<Title>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>List context menu encryption command group</v8:content>
+									</v8:item>
+								</Title>
+								<ToolTip>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>List context menu encryption command group</v8:content>
+									</v8:item>
+								</ToolTip>
+								<ExtendedTooltip name="ListContextMenuEncryptionCommandGroupExtendedTooltip" id="153"/>
+								<ChildItems>
+									<Button name="ListContextMenuEncrypt" id="84">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Encrypt</CommandName>
+										<ExtendedTooltip name="ListContextMenuEncryptExtendedTooltip" id="154"/>
+									</Button>
+									<Button name="ListContextMenuDecrypt" id="85">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Decrypt</CommandName>
+										<ExtendedTooltip name="ListContextMenuDecryptExtendedTooltip" id="155"/>
+									</Button>
+								</ChildItems>
+							</ButtonGroup>
+						</ChildItems>
+					</Popup>
+					<ButtonGroup name="ListContextMenuAdditionalCommandGroup" id="61">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List context menu additional command group</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ListContextMenuAdditionalCommandGroupExtendedTooltip" id="139"/>
+						<ChildItems>
+							<Button name="ListContextMenuCopy" id="63">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.Copy</CommandName>
+								<ExtendedTooltip name="ListContextMenuCopyExtendedTooltip" id="140"/>
+							</Button>
+							<Button name="ListContextMenuSetDeletionMark" id="64">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SetDeletionMark</CommandName>
+								<ExtendedTooltip name="ListContextMenuSetDeletionMarkExtendedTooltip" id="141"/>
+							</Button>
+							<Button name="ListContextMenuSaveAs" id="65">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SaveAs</CommandName>
+								<ExtendedTooltip name="ListContextMenuSaveAsExtendedTooltip" id="142"/>
+							</Button>
+							<Button name="ListContextMenuUpdateFromFileOnHardDisk" id="66">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.UpdateFromFileOnHardDisk</CommandName>
+								<ExtendedTooltip name="ListContextMenuUpdateFromFileOnHardDiskExtendedTooltip" id="143"/>
+							</Button>
+							<Button name="ListContextMenuOpenFileDirectory" id="68">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.OpenFileDirectory</CommandName>
+								<ExtendedTooltip name="ListContextMenuOpenFileDirectoryExtendedTooltip" id="145"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<ButtonGroup name="ListContextMenuCommandGroupFromList" id="69">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List context menu list command group</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List context menu list command group</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ListContextMenuListCommandGroupExtendedTooltip" id="146"/>
+						<ChildItems>
+							<Button name="ListContextMenuFind" id="70">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.Find</CommandName>
+								<ExtendedTooltip name="ListContextMenuFindExtendedTooltip" id="147"/>
+							</Button>
+							<Button name="ListContextMenuCancelSearch" id="71">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.CancelSearch</CommandName>
+								<ExtendedTooltip name="ListContextMenuCancelSearchExtendedTooltip" id="148"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ListCommandBar" id="8"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="156"/>
+			<SearchStringAddition name="ListSearchString" id="244">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="245"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="246"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="247">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="248"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="249"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="250">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="251"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="252"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="DragCheck">ListDragCheck</Event>
+				<Event name="Selection">ListChoice</Event>
+				<Event name="BeforeAddRow">ListBeforeAddRow</Event>
+				<Event name="OnActivateRow">ListOnActivateRow</Event>
+				<Event name="Drag">ListDrag</Event>
+				<Event name="BeforeRowChange">ListBeforeRowChange</Event>
+			</Events>
+			<ChildItems>
+				<PictureField name="ListSignedEncryptedPictureNumber" id="206">
+					<DataPath>List.SignedEncryptedPictureNumber</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<TitleLocation>None</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Digital signature or encryption availability</v8:content>
+						</v8:item>
+					</ToolTip>
+					<HeaderPicture>
+						<xr:Ref>CommonPicture.SignedEncryptedTitle</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</HeaderPicture>
+					<Width>2</Width>
+					<ValuesPicture>
+						<xr:Ref>CommonPicture.SignedEncryptedStatuses</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</ValuesPicture>
+					<ContextMenu name="ListSignedEncryptedPictureNumberContextMenu" id="207"/>
+					<ExtendedTooltip name="ListSignedEncryptedPictureNumberExtendedTooltip" id="208"/>
+				</PictureField>
+				<ColumnGroup name="ListNameDetailsGroup" id="204">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>List name details group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>List name details group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ToolTipRepresentation>None</ToolTipRepresentation>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="ListNameDetailsGroupExtendedTooltip" id="205"/>
+					<ChildItems>
+						<LabelField name="ListDescription" id="86">
+							<DataPath>List.Description</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Description</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>File name (without extension)</v8:content>
+								</v8:item>
+							</ToolTip>
+							<AutoCellHeight>true</AutoCellHeight>
+							<Width>20</Width>
+							<ContextMenu name="ListDescriptionContextMenu" id="87"/>
+							<ExtendedTooltip name="ListDescriptionExtendedTooltip" id="159"/>
+						</LabelField>
+						<LabelField name="ListDetails" id="168">
+							<DataPath>List.Details</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Details</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>None</TitleLocation>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>File short info</v8:content>
+								</v8:item>
+							</ToolTip>
+							<AutoCellHeight>true</AutoCellHeight>
+							<Width>5</Width>
+							<ContextMenu name="ListDetailsContextMenu" id="169"/>
+							<ExtendedTooltip name="ListDetailsExtendedTooltip" id="170"/>
+						</LabelField>
+					</ChildItems>
+				</ColumnGroup>
+				<ColumnGroup name="ListImportantAttributes" id="214">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>List important attributes</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>List important attributes</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ToolTipRepresentation>None</ToolTipRepresentation>
+					<Group>Horizontal</Group>
+					<ExtendedTooltip name="ListImportantAttributesExtendedTooltip" id="215"/>
+					<ChildItems>
+						<LabelField name="ListAuthor" id="182">
+							<DataPath>List.Author</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Author</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>User that added the file to the list</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Width>15</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<ContextMenu name="ListAuthorContextMenu" id="183"/>
+							<ExtendedTooltip name="ListAuthorExtendedTooltip" id="184"/>
+						</LabelField>
+						<LabelField name="ListChangeDate" id="100">
+							<DataPath>List.ChangeDate</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Change date</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>File data change date (local time)</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Width>15</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<ContextMenu name="ListChangeDateContextMenu" id="101"/>
+							<ExtendedTooltip name="ListChangeDateExtendedTooltip" id="162"/>
+						</LabelField>
+					</ChildItems>
+				</ColumnGroup>
+				<LabelField name="ListSize" id="98">
+					<DataPath>List.Size</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Size (KB)</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>File size</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Width>10</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Format>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>ND=10; NZ=0</v8:content>
+						</v8:item>
+					</Format>
+					<ContextMenu name="ListSizeContextMenu" id="99"/>
+					<ExtendedTooltip name="ListSizeExtendedTooltip" id="164"/>
+				</LabelField>
+				<LabelField name="ListEdits" id="199">
+					<DataPath>List.Edits</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>User that locked the file for editing</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ContextMenu name="ListEditsPropertyContextMenu" id="200"/>
+					<ExtendedTooltip name="ListEditsExtendedTooltip" id="201"/>
+				</LabelField>
+				<LabelField name="ListCreationDate" id="179">
+					<DataPath>List.CreationDate</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ReadOnly>true</ReadOnly>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Creation date</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>File added to the list at</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Width>15</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ContextMenu name="ListCreationDateContextMenu" id="180"/>
+					<ExtendedTooltip name="ListCreationDateExtendedTooltip" id="181"/>
+				</LabelField>
+				<LabelField name="ListEdited" id="191">
+					<DataPath>List.Edited</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ReadOnly>true</ReadOnly>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Last user that edited file</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ContextMenu name="ListEditedContextMenu" id="192"/>
+					<ExtendedTooltip name="ListEditedExtendedTooltip" id="193"/>
+				</LabelField>
+				<LabelField name="ListRef" id="165">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Width>1</Width>
+					<ContextMenu name="ListRefContextMenu" id="166"/>
+					<ExtendedTooltip name="ListRefExtendedTooltip" id="167"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>List</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.SignedWithDS</Field>
+				<Field>List.Ref</Field>
+				<Field>List.PictureIndex</Field>
+				<Field>List.FileEditedByCurrentUser</Field>
+				<Field>List.FileEditedByAnotherUser</Field>
+				<Field>List.FileBeingEdited</Field>
+				<Field>List.Encrypted</Field>
+				<Field>List.DeletionMark</Field>
+				<Field>1/13</Field>
+				<Field>1/12</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>SELECT
+	VALUE(Catalog.Users.EmptyRef) AS Ref,
+	FALSE AS DeletionMark,
+	1 AS PictureIndex,
+	CAST("" AS String(150)) AS Description,
+	CAST("" AS String(500)) AS Details,
+	VALUE(Catalog.Users.EmptyRef) AS Author,
+	DATETIME(1, 1, 1, 0, 0, 0) AS CreationDate,
+	VALUE(Catalog.Users.EmptyRef) AS Edited,
+	DATETIME(1, 1, 1, 0, 0, 0) AS EditDate,
+	DATETIME(1, 1, 1, 0, 0, 0) AS ChangeDate,
+	0 AS Size,
+	FALSE AS SignedWithDS,
+	FALSE AS Encrypted,
+	-1 AS SignedEncryptedPictureNumber,
+	FALSE AS FileBeingEdited,
+	FALSE AS FileEditedByCurrentUser,
+	FALSE AS FileEditedByAnotherUser,
+	VALUE(Catalog.Users.EmptyRef) AS Edits</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="FormButtonItemNames" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form button item names</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="TypeOfCatalogWithFiles" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Type of catalog with files</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="OpenFileForViewing" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>View</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open file to view</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.OpenSelectedFile</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenFileForViewing</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SaveAs" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save as...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save file to the disk or another device</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.SaveFileAs</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>SaveAs</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="OpenFileDirectory" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open file directory</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open file directory</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenFileDirectory</Action>
+		</Command>
+		<Command name="DigitalSignatureSign" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sign...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sign file with digital signature</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>0</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>DigitalSignatureSign</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseDSInAttachedFiles</Item>
+			</FunctionalOptions>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SetDeletionMark" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select for deletion / Clear mark</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set/Remove the deletion mark</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.MarkToDelete</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetDeletionMarkCommand</Action>
+		</Command>
+		<Command name="Edit" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Lock the file and open it for editing</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F4</Shortcut>
+			<Picture>
+				<xr:Ref>CommonPicture.EditFile</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Edit</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="EndEdit" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>End edit</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save the file and unlock it in the infobase</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.EndFileEditing</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>EndEdit</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Unlock" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel edit</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unlock file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.UnlockFile</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Unlock</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="UpdateFromFileOnHardDisk" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update from file on disk...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update from file on disk</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>UpdateFromFileOnHardDisk</Action>
+			<Representation>Text</Representation>
+		</Command>
+		<Command name="SaveWithDigitalSignature" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save with digital signatures...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save the file with the digital signature</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SaveWithDigitalSignature</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseDSInAttachedFiles</Item>
+			</FunctionalOptions>
+		</Command>
+		<Command name="AddDigitalSignatureFromFile" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add digital signature from file...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add digital signature from file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddDigitalSignatureFromFile</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseDSInAttachedFiles</Item>
+			</FunctionalOptions>
+		</Command>
+		<Command name="Encrypt" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Encrypt...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Encrypt file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.Encrypted</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>Encrypt</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseDSInAttachedFiles</Item>
+			</FunctionalOptions>
+		</Command>
+		<Command name="Decrypt" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Decrypt...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Decrypt file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Decrypt</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.UseDSInAttachedFiles</Item>
+			</FunctionalOptions>
+		</Command>
+		<Command name="OpenFileProperties" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open card</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit (or open) current item</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F2</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Change</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenFileProperties</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="Create" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create from file on hard disk</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Create</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Copy" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Copy</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Copy file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F9</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.CloneListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Copy</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="FileOwner">
+			<Type/>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+	</Parameters>
+</Form>

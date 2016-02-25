@@ -1,0 +1,533 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>60</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<SaveDataInSettings>UseList</SaveDataInSettings>
+	<CommandBarLocation>Bottom</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>CustomizeForm</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
+		<ExcludedCommand>Help</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<ChildItems>
+			<Button name="PrepareButton" id="29">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Prepare</CommandName>
+				<ExtendedTooltip name="PrepareButtonExtendedTooltip" id="67"/>
+			</Button>
+			<Button name="CancelButton" id="30">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Cancel</CommandName>
+				<ExtendedTooltip name="CancelButtonExtendedTooltip" id="68"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeLoadDataFromSettingsAtServer">BeforeLoadDataFromSettingsAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="Recipients" id="43">
+			<Representation>List</Representation>
+			<TitleLocation>Top</TitleLocation>
+			<ChangeRowSet>false</ChangeRowSet>
+			<ChangeRowOrder>false</ChangeRowOrder>
+			<Height>10</Height>
+			<RowSelectionMode>Row</RowSelectionMode>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>Recipients</DataPath>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>CancelSearch</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>Find</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="RecipientsContextMenu" id="44">
+				<ChildItems>
+					<ButtonGroup name="RecipientsContextMenuSelectionManagementGroup" id="66">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Recipients context menu selection management group</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="RecipientsContextMenuSelectionManagementGroupExtendedTooltip" id="69"/>
+						<ChildItems>
+							<Button name="RecipientsContextMenuSelectAll" id="63">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.SelectAllRecipients</CommandName>
+								<ExtendedTooltip name="RecipientsContextMenuSelectAllExtendedTooltip" id="70"/>
+							</Button>
+							<Button name="RecipientsContextMenuCancelSDeselectAll" id="64">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.CancelSelectionForAll</CommandName>
+								<ExtendedTooltip name="RecipientsContextMenuDeselectAllExtendedTooltip" id="71"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Button name="RecipientsContextMenuOutputList" id="65">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Recipients.StandardCommand.OutputList</CommandName>
+						<ExtendedTooltip name="RecipientsContextMenuOutputListExtendedTooltip" id="72"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="RecipientsCommandBar" id="45">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="RecipientsExtendedTooltip" id="73"/>
+			<SearchStringAddition name="RecipientsSearchString" id="88">
+				<AdditionSource>
+					<Item>Recipients</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="RecipientsSearchStringContextMenu" id="89"/>
+				<ExtendedTooltip name="RecipientsSearchStringExtendedTooltip" id="90"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="RecipientsViewStatus" id="91">
+				<AdditionSource>
+					<Item>Recipients</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="RecipientsViewStatusContextMenu" id="92"/>
+				<ExtendedTooltip name="RecipientsViewStatusExtendedTooltip" id="93"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="RecipientsSearchControl" id="94">
+				<AdditionSource>
+					<Item>Recipients</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="RecipientsSearchControlContextMenu" id="95"/>
+				<ExtendedTooltip name="RecipientsSearchControlExtendedTooltip" id="96"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="BeforeRowChange">RecipientsBeforeRowChange</Event>
+			</Events>
+			<ChildItems>
+				<CheckBoxField name="RecipientsSelected" id="52">
+					<DataPath>Recipients.Selected</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<EditMode>EnterOnInput</EditMode>
+					<HeaderPicture>
+						<xr:Ref>CommonPicture.SendEmail</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</HeaderPicture>
+					<HeaderHorizontalAlign>Center</HeaderHorizontalAlign>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="RecipientsSelectedContextMenu" id="53"/>
+					<ExtendedTooltip name="RecipientsSelectedExtendedTooltip" id="74"/>
+				</CheckBoxField>
+				<ColumnGroup name="RecipientsGroup" id="60">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Recipients group</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="RecipientsGroupExtendedTooltip" id="75"/>
+					<ChildItems>
+						<ColumnGroup name="RecipientsPresentationGroup" id="61">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Recipients presentation group</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="RecipientsPresentationGroupExtendedTooltip" id="76"/>
+							<ChildItems>
+								<InputField name="RecipientsPresentation" id="48">
+									<DataPath>Recipients.Presentation</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="RecipientsPresentationContextMenu" id="49"/>
+									<ExtendedTooltip name="RecipientsPresentationExtendedTooltip" id="77"/>
+								</InputField>
+								<InputField name="RecipientsAddressPresentation" id="56">
+									<DataPath>Recipients.AddressPresentation</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="RecipientsAddressPresentationContextMenu" id="57"/>
+									<ExtendedTooltip name="RecipientsAddressPresentationExtendedTooltip" id="78"/>
+								</InputField>
+							</ChildItems>
+						</ColumnGroup>
+						<ColumnGroup name="RecipientsExplanationGroup" id="62">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Recipients explanation group</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="RecipientsCommentGroupExtendedTooltip" id="79"/>
+							<ChildItems>
+								<InputField name="RecipientsExplanation" id="58">
+									<DataPath>Recipients.Explanation</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<AutoCellHeight>true</AutoCellHeight>
+									<ShowInHeader>false</ShowInHeader>
+									<MultiLine>true</MultiLine>
+									<TextColor>style:InformationText</TextColor>
+									<ContextMenu name="RecipientsExplanationContextMenu" id="59"/>
+									<ExtendedTooltip name="RecipientsExplanationExtendedTooltip" id="80"/>
+								</InputField>
+							</ChildItems>
+						</ColumnGroup>
+					</ChildItems>
+				</ColumnGroup>
+			</ChildItems>
+		</Table>
+		<UsualGroup name="FormatSelectionGroup" id="31">
+			<Visible>false</Visible>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Attach print form to email and select format</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<ExtendedTooltip name="FormatSelectionGroupExtendedTooltip" id="81"/>
+			<ChildItems>
+				<Table name="SelectedStorageFormats" id="32">
+					<Representation>List</Representation>
+					<ChangeRowSet>false</ChangeRowSet>
+					<ChangeRowOrder>false</ChangeRowOrder>
+					<Height>10</Height>
+					<Header>false</Header>
+					<HorizontalLines>false</HorizontalLines>
+					<VerticalLines>false</VerticalLines>
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<DataPath>SelectedStorageFormats</DataPath>
+					<RowPictureDataPath>SelectedStorageFormats.Picture</RowPictureDataPath>
+					<CommandSet>
+						<ExcludedCommand>Copy</ExcludedCommand>
+						<ExcludedCommand>SortListAsc</ExcludedCommand>
+						<ExcludedCommand>MoveUp</ExcludedCommand>
+						<ExcludedCommand>SelectAll</ExcludedCommand>
+						<ExcludedCommand>SortListDesc</ExcludedCommand>
+						<ExcludedCommand>Pickup</ExcludedCommand>
+						<ExcludedCommand>Delete</ExcludedCommand>
+						<ExcludedCommand>EndEdit</ExcludedCommand>
+						<ExcludedCommand>Add</ExcludedCommand>
+						<ExcludedCommand>Change</ExcludedCommand>
+						<ExcludedCommand>MoveDown</ExcludedCommand>
+					</CommandSet>
+					<SearchStringLocation>None</SearchStringLocation>
+					<ViewStatusLocation>None</ViewStatusLocation>
+					<SearchControlLocation>None</SearchControlLocation>
+					<ContextMenu name="SelectedStorageFormatsContextMenu" id="33"/>
+					<AutoCommandBar name="SelectedStorageFormatsCommandBar" id="34">
+						<Autofill>false</Autofill>
+					</AutoCommandBar>
+					<ExtendedTooltip name="SelectedStorageFormatsExtendedTooltip" id="82"/>
+					<SearchStringAddition name="SelectedStorageFormatsSearchString" id="97">
+						<AdditionSource>
+							<Item>SelectedStorageFormats</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="SelectedStorageFormatsSearchStringContextMenu" id="98"/>
+						<ExtendedTooltip name="SelectedStorageFormatsSearchStringExtendedTooltip" id="99"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="SelectedStorageFormatsViewStatus" id="100">
+						<AdditionSource>
+							<Item>SelectedStorageFormats</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="SelectedStorageFormatsViewStatusContextMenu" id="101"/>
+						<ExtendedTooltip name="SelectedStorageFormatsViewStatusExtendedTooltip" id="102"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="SelectedStorageFormatsSearchControl" id="103">
+						<AdditionSource>
+							<Item>SelectedStorageFormats</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="SelectedStorageFormatsSearchControlContextMenu" id="104"/>
+						<ExtendedTooltip name="SelectedStorageFormatsSearchControlExtendedTooltip" id="105"/>
+					</SearchControlAddition>
+					<ChildItems>
+						<CheckBoxField name="SelectedStorageFormatsCheck" id="37">
+							<DataPath>SelectedStorageFormats.Check</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="SelectedStorageFormatsCheckContextMenu" id="38"/>
+							<ExtendedTooltip name="SelectedStorageFormatsCheckExtendedTooltip" id="83"/>
+						</CheckBoxField>
+						<InputField name="SelectedStorageFormatsValue" id="35">
+							<DataPath>SelectedStorageFormats.Value</DataPath>
+							<EditMode>EnterOnInput</EditMode>
+							<ContextMenu name="SelectedStorageFormatsValueContextMenu" id="36"/>
+							<ExtendedTooltip name="SelectedStorageFormatsValueExtendedTooltip" id="84"/>
+						</InputField>
+					</ChildItems>
+				</Table>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="AdditionalParametersGroup" id="39">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Additional parameters group</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="AdditionalParametersGroupExtendedTooltip" id="85"/>
+			<ChildItems>
+				<LabelField name="AttachmentFormat" id="54">
+					<DataPath>AttachmentFormat</DataPath>
+					<Hiperlink>true</Hiperlink>
+					<ContextMenu name="AttachmentFormatContextMenu" id="55"/>
+					<ExtendedTooltip name="AttachmentFormatExtendedTooltip" id="86"/>
+					<Events>
+						<Event name="Click">AttachmentFormatClick</Event>
+					</Events>
+				</LabelField>
+				<CheckBoxField name="PackToArchive" id="40">
+					<DataPath>PackToArchive</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Archive attachments (.zip)</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="PackToArchiveContextMenu" id="41"/>
+					<ExtendedTooltip name="PackToArchiveExtendedTooltip" id="87"/>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="SelectedStorageFormats" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Selected formats</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+			<Save>
+				<Field>SelectedStorageFormats</Field>
+			</Save>
+			<Settings xsi:type="v8:TypeDescription"/>
+		</Attribute>
+		<Attribute name="PackToArchive" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Archive attachments (.zip)</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>PackToArchive</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="Recipients" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Recipients</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Address" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Address</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Presentation" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Recipient</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ContactInformationSource" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Contact information source</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:CatalogRef</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="Selected" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Selected</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="MailAddressKind" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Email address type</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="AddressPresentation" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Email</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Explanation" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Comment</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="AttachmentFormat" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Attachment format</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Prepare" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>New message...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open new email message form</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Select</Action>
+		</Command>
+		<Command name="SelectAllRecipients" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select all recipients</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SelectAllRecipients</Action>
+		</Command>
+		<Command name="CancelSelectionForAll" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear all recipients</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>CancelSelectionForAll</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="Recipients">
+			<Type/>
+		</Parameter>
+	</Parameters>
+</Form>

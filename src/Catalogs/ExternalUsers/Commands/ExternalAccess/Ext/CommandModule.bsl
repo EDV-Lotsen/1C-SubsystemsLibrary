@@ -2,20 +2,25 @@
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
-	FoundExternalUser = Undefined;
 	FormParameters = New Structure;
-	CanAddExternalUser = False;
+	FormParameters.Insert("AuthorizationObject", CommandParameter);
 	
-	If ExternalUsers.AuthorizationObjectUsed(CommandParameter, , FoundExternalUser, CanAddExternalUser) Then
-		FormParameters.Insert("Key", FoundExternalUser);
-	ElsIf CanAddExternalUser Then
-		FormParameters.Insert("NewExternalUserAuthorizationObject", CommandParameter);
-	Else
-		ShowMessageBox(, NStr("en='Access to the infobase is denied.'"));
-		Return;
-	EndIf;
-	
-	OpenForm("Catalog.ExternalUsers.ObjectForm", FormParameters, CommandExecuteParameters.Source, CommandExecuteParameters.Uniqueness, CommandExecuteParameters.Window);
+	Try
+		OpenForm(
+			"Catalog.ExternalUsers.ObjectForm",
+			FormParameters,
+			CommandExecuteParameters.Source,
+			CommandExecuteParameters.Uniqueness,
+			CommandExecuteParameters.Window);
+	Except
+		ErrorInfo = ErrorInfo();
+		If Find(DetailErrorDescription(ErrorInfo),
+		         "Raise ErrorAsWarningDescription") > 0 Then
+			
+			ShowMessageBox(, BriefErrorDescription(ErrorInfo));
+		Else
+			Raise;
+		EndIf;
+	EndTry;
 	
 EndProcedure
- 

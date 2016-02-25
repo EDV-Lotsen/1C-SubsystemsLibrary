@@ -1,16 +1,16 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-Procedure CreateScenario(InfoBaseNode, Schedule = Undefined) Export
+#Region InternalProceduresAndFunctions
+
+Procedure CreateScenario(InfobaseNode, Schedule = Undefined) Export
 	
 	Cancel = False;
 	
-	Description = NStr("en = 'Automatic data exchange with %1'");
+	Description = NStr("en = 'Automatic synchronization with %1'");
 	Description = StringFunctionsClientServer.SubstituteParametersInString(Description,
-			CommonUse.GetAttributeValue(InfoBaseNode, "Description")
-	);
+			CommonUse.ObjectAttributeValue(InfobaseNode, "Description"));
 	
-	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfoBaseNode);
+	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfobaseNode);
 	
 	DataExchangeScenario = Catalogs.DataExchangeScenarios.CreateItem();
 	
@@ -21,18 +21,16 @@ Procedure CreateScenario(InfoBaseNode, Schedule = Undefined) Export
 	// Creating a scheduled job
 	UpdateScheduledJobData(Cancel, Schedule, DataExchangeScenario);
 	
-	// Tabular section 
+	// Tabular section
 	TableRow = DataExchangeScenario.ExchangeSettings.Add();
 	TableRow.ExchangeTransportKind = ExchangeTransportKind;
 	TableRow.CurrentAction = Enums.ActionsOnExchange.DataImport;
-	TableRow.TransactionItemCount = 200;
-	TableRow.InfoBaseNode = InfoBaseNode;
+	TableRow.InfobaseNode = InfobaseNode;
 	
 	TableRow = DataExchangeScenario.ExchangeSettings.Add();
 	TableRow.ExchangeTransportKind = ExchangeTransportKind;
 	TableRow.CurrentAction = Enums.ActionsOnExchange.DataExport;
-	TableRow.TransactionItemCount = 200;
-	TableRow.InfoBaseNode = InfoBaseNode;
+	TableRow.InfobaseNode = InfobaseNode;
 	
 	DataExchangeScenario.Write();
 	
@@ -66,36 +64,37 @@ Function DefaultJobSchedule() Export
 	Schedule = New JobSchedule;
 	Schedule.WeekDays          = WeekDays;
 	Schedule.RepeatPeriodInDay = 900; // 15 minutes
-	Schedule.DaysRepeatPeriod  = 1;   // every day
+	Schedule.DaysRepeatPeriod  = 1; // every day
 	Schedule.Months            = Months;
 	
 	Return Schedule;
 EndFunction
 
-// Returns the exchange plan node reference that is specified in the first exchange 
-// execution settings row.
+// Returns the exchange plan node reference that is specified in the first row of exchange 
+// execution settings.
 //  
 // Parameters:
-//  ExchangeExecutionSettings - CatalogRef.DataExchangeScenarios - exchange settings from
-//                              which the exchange plan node will be retrieved.
+//  ExchangeExecutionSettings - CatalogRef.DataExchangeScenarios - exchange settings. The exchange plan node 
+//                              is retrieved from these settings.
 //  
-// Returns:  
-// ExchangePlanRef            - exchange plan node reference that is specified in the  
-//                              first exchange execution settings row.
-//                            - Undefined if settings contain no rows.
+// Returns:
+//  
+// ExchangePlanRef - exchange plan node reference that is specified in the 
+//                   first row of exchange execution settings.
+//                   The function returns Undefined if the settings contain no rows.
 //
-Function GetInfoBaseNodeFromFirstSettingsRow(ExchangeExecutionSettings) Export
+Function GetInfobaseNodeFromFirstSettingsRow(ExchangeExecutionSettings) Export
 	
 	// Return value
-	InfoBaseNode = Undefined;
+	InfobaseNode = Undefined;
 	
-	If ExchangeExecutionSettings.Empty() Then
-		Return InfoBaseNode;
+	If ExchangeExecutionSettings.IsEmpty() Then
+		Return InfobaseNode;
 	EndIf;
 	
 	QueryText = "
 	|SELECT TOP 1
-	|	ExchangeExecutionSettingsExchangeSettings.InfoBaseNode AS InfoBaseNode
+	|	ExchangeExecutionSettingsExchangeSettings.InfobaseNode AS InfobaseNode
 	|FROM
 	|	Catalog.DataExchangeScenarios.ExchangeSettings AS ExchangeExecutionSettingsExchangeSettings
 	|WHERE
@@ -113,18 +112,18 @@ Function GetInfoBaseNodeFromFirstSettingsRow(ExchangeExecutionSettings) Export
 		Selection = QueryResult.Select();
 		Selection.Next();
 		
-		InfoBaseNode = Selection.InfoBaseNode;
+		InfobaseNode = Selection.InfobaseNode;
 		
 	EndIf;
 	
-	Return InfoBaseNode;
+	Return InfobaseNode;
 EndFunction
 
-// Retrieves the job schedule. If the job is not specified, the procedure returns an
-// empty schedule.
+// Retrieves the job schedule. 
+// If the scheduled job is not specified, the function returns an empty schedule.
 Function GetDataExchangeExecutionSchedule(ExchangeExecutionSettings) Export
 	
-	ScheduledJobObject = DataExchangeServer.FindScheduledJobByParameter(ExchangeExecutionSettings.ScheduledJobGUID);
+	ScheduledJobObject = DataExchangeServerCall.FindScheduledJobByParameter(ExchangeExecutionSettings.ScheduledJobGUID);
 	
 	If ScheduledJobObject <> Undefined Then
 		
@@ -142,7 +141,7 @@ EndFunction
 
 Procedure UpdateScheduledJobData(Cancel, JobSchedule, CurrentObject) Export
 	
-	// Getting the scheduled job by ID. If the scheduled job is not found, a new one will be created.
+	// Getting the scheduled job by ID. If the scheduled job is not found, a new one is created.
 	ScheduledJobObject = CreateScheduledJobIfNecessary(Cancel, CurrentObject);
 	
 	If Cancel Then
@@ -152,22 +151,22 @@ Procedure UpdateScheduledJobData(Cancel, JobSchedule, CurrentObject) Export
 	// Updating scheduled job properties
 	SetScheduledJobParameters(ScheduledJobObject, JobSchedule, CurrentObject);
 	
-	// Writing the modified job
+	// Writing the modified scheduled job
 	WriteScheduledJob(Cancel, ScheduledJobObject);
 	
-	// Storing the scheduled job GUID in the object attribute.
+	// Storing the scheduled job GUID in object attributes
 	CurrentObject.ScheduledJobGUID = String(ScheduledJobObject.UUID);
 	
 EndProcedure
 
 Function CreateScheduledJobIfNecessary(Cancel, CurrentObject)
 	
-	ScheduledJobObject = DataExchangeServer.FindScheduledJobByParameter(CurrentObject.ScheduledJobGUID);
+	ScheduledJobObject = DataExchangeServerCall.FindScheduledJobByParameter(CurrentObject.ScheduledJobGUID);
 	
-	// Creating a scheduled job, if necessary 
+	// Creating a scheduled job if necessary
 	If ScheduledJobObject = Undefined Then
 		
-		ScheduledJobObject = ScheduledJobs.CreateScheduledJob("DataExchangeExecution");
+		ScheduledJobObject = ScheduledJobs.CreateScheduledJob("DataSynchronization");
 		
 	EndIf;
 	
@@ -186,12 +185,12 @@ Procedure SetScheduledJobParameters(ScheduledJobObject, JobSchedule, CurrentObje
 	ScheduledJobParameters = New Array;
 	ScheduledJobParameters.Add(CurrentObject.Code);
 	
-	ScheduledJobDescription = NStr("en = 'Executing exchange with the following script: %1'");
+	ScheduledJobDescription = NStr("en = 'Exchange with the following scenario: %1'");
 	ScheduledJobDescription = StringFunctionsClientServer.SubstituteParametersInString(ScheduledJobDescription, TrimAll(CurrentObject.Description));
 	
-	ScheduledJobObject.Description = Left(ScheduledJobDescription, 120);
-	ScheduledJobObject.Use         = CurrentObject.UseScheduledJob;
-	ScheduledJobObject.Parameters  = ScheduledJobParameters;
+	ScheduledJobObject.Description  = Left(ScheduledJobDescription, 120);
+	ScheduledJobObject.Use          = CurrentObject.UseScheduledJob;
+	ScheduledJobObject.Parameters   = ScheduledJobParameters;
 	
 	// Updating the schedule if it is modified
 	If JobSchedule <> Undefined Then
@@ -200,11 +199,11 @@ Procedure SetScheduledJobParameters(ScheduledJobObject, JobSchedule, CurrentObje
 	
 EndProcedure
 
-// Writing the scheduled job.
+// Writes a scheduled job.
 //
 // Parameters:
-//  Cancel             - Boolean – cancel flag. It is set to True if errors occur
-//                       during the procedure execution.
+//  Cancel             - Boolean - cancellation flag. 
+//                       It is set to True if errors occur during the procedure execution. 
 //  ScheduledJobObject - scheduled job object to be written.
 // 
 Procedure WriteScheduledJob(Cancel, ScheduledJobObject)
@@ -213,12 +212,12 @@ Procedure WriteScheduledJob(Cancel, ScheduledJobObject)
 	
 	Try
 		
-		// Writing the job
+		// Writing the scheduled job
 		ScheduledJobObject.Write();
 		
 	Except
 		
-		MessageString = NStr("en = 'Error writing the exchange schedule. Error details: %1'");
+		MessageString = NStr("en = 'Error writing the synchronization schedule. Error details: %1'");
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, BriefErrorDescription(ErrorInfo()));
 		DataExchangeServer.ReportError(MessageString, Cancel);
 		
@@ -226,19 +225,62 @@ Procedure WriteScheduledJob(Cancel, ScheduledJobObject)
 	
 EndProcedure
 
-Procedure DeleteExportFromDataExchangeScenario(DataExchangeScenario, InfoBaseNode) Export
+// Deletes a specific node from all synchronization scenarios.
+// If the node deletion leaves some scenario empty, the scenario is also deleted.
+//
+Procedure ClearReferencesToInfobaseNode(Val InfobaseNode) Export
 	
-	DeleteRowInDataExchangeScenario(DataExchangeScenario, InfoBaseNode, Enums.ActionsOnExchange.DataExport);
+	If CommonUseCached.DataSeparationEnabled()
+		And CommonUseCached.CanUseSeparatedData() Then
+		Return;
+	EndIf;
+	
+	QueryText = "
+	|SELECT DISTINCT
+	|	DataExchangeScenarioExchangeSettings.Ref AS DataExchangeScenario
+	|FROM
+	|	Catalog.DataExchangeScenarios.ExchangeSettings AS DataExchangeScenarioExchangeSettings
+	|WHERE
+	|	DataExchangeScenarioExchangeSettings.InfobaseNode = &InfobaseNode
+	|";
+	
+	Query = New Query;
+	Query.SetParameter("InfobaseNode", InfobaseNode);
+	Query.Text = QueryText;
+	
+	Selection = Query.Execute().Select();
+	
+	While Selection.Next() Do
+		
+		DataExchangeScenario = Selection.DataExchangeScenario.GetObject();
+		
+		DeleteExportFromDataExchangeScenario(DataExchangeScenario, InfobaseNode);
+		DeleteImportFromDataExchangeScenario(DataExchangeScenario, InfobaseNode);
+		
+		DataExchangeScenario.Write();
+		
+		If DataExchangeScenario.ExchangeSettings.Count() = 0 Then
+			DataExchangeScenario.Delete();
+		EndIf;
+		
+	EndDo;
 	
 EndProcedure
 
-Procedure DeleteImportFromDataExchangeScenario(DataExchangeScenario, InfoBaseNode) Export
+
+Procedure DeleteExportFromDataExchangeScenario(DataExchangeScenario, InfobaseNode) Export
 	
-	DeleteRowInDataExchangeScenario(DataExchangeScenario, InfoBaseNode, Enums.ActionsOnExchange.DataImport);
+	DeleteRowInDataExchangeScenario(DataExchangeScenario, InfobaseNode, Enums.ActionsOnExchange.DataExport);
 	
 EndProcedure
 
-Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) Export
+Procedure DeleteImportFromDataExchangeScenario(DataExchangeScenario, InfobaseNode) Export
+	
+	DeleteRowInDataExchangeScenario(DataExchangeScenario, InfobaseNode, Enums.ActionsOnExchange.DataImport);
+	
+EndProcedure
+
+Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfobaseNode) Export
 	
 	MustWriteObject = False;
 	
@@ -250,14 +292,14 @@ Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 		
 	EndIf;
 	
-	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfoBaseNode);
+	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfobaseNode);
 	
 	ExchangeSettings = DataExchangeScenario.ExchangeSettings;
 	
 	// Adding the data export in a loop
 	MaxIndex = ExchangeSettings.Count() - 1;
 	
-	For Index = 0 to MaxIndex Do
+	For Index = 0 To MaxIndex Do
 		
 		ReverseIndex = MaxIndex - Index;
 		
@@ -267,10 +309,9 @@ Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 			
 			NewRow = ExchangeSettings.Insert(ReverseIndex + 1);
 			
-			NewRow.InfoBaseNode = InfoBaseNode;
-			NewRow.ExchangeTransportKind    = ExchangeTransportKind;
-			NewRow.CurrentAction    = Enums.ActionsOnExchange.DataExport;
-			NewRow.TransactionItemCount = 0;
+			NewRow.InfobaseNode          = InfobaseNode;
+			NewRow.ExchangeTransportKind = ExchangeTransportKind;
+			NewRow.CurrentAction         = Enums.ActionsOnExchange.DataExport;
 			
 			Break;
 		EndIf;
@@ -278,15 +319,14 @@ Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 	EndDo;
 	
 	// If the row was not added in the loop, adding the row to the end of the table
-	Filter = New Structure("InfoBaseNode, CurrentAction", InfoBaseNode, Enums.ActionsOnExchange.DataExport);
+	Filter = New Structure("InfobaseNode, CurrentAction", InfobaseNode, Enums.ActionsOnExchange.DataExport);
 	If ExchangeSettings.FindRows(Filter).Count() = 0 Then
 		
 		NewRow = ExchangeSettings.Add();
 		
-		NewRow.InfoBaseNode = InfoBaseNode;
-		NewRow.ExchangeTransportKind = ExchangeTransportKind;
-		NewRow.CurrentAction        = Enums.ActionsOnExchange.DataExport;
-		NewRow.TransactionItemCount  = 0;
+		NewRow.InfobaseNode = InfobaseNode;
+		NewRow.ExchangeTransportKind    = ExchangeTransportKind;
+		NewRow.CurrentAction    = Enums.ActionsOnExchange.DataExport;
 		
 	EndIf;
 	
@@ -299,7 +339,7 @@ Procedure AddExportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 	
 EndProcedure
 
-Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) Export
+Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfobaseNode) Export
 	
 	MustWriteObject = False;
 	
@@ -311,7 +351,7 @@ Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 		
 	EndIf;
 	
-	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfoBaseNode);
+	ExchangeTransportKind = InformationRegisters.ExchangeTransportSettings.DefaultExchangeMessageTransportKind(InfobaseNode);
 	
 	ExchangeSettings = DataExchangeScenario.ExchangeSettings;
 	
@@ -322,10 +362,9 @@ Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 			
 			NewRow = ExchangeSettings.Insert(ExchangeSettings.IndexOf(TableRow));
 			
-			NewRow.InfoBaseNode = InfoBaseNode;
-			NewRow.ExchangeTransportKind = ExchangeTransportKind;
-			NewRow.CurrentAction        = Enums.ActionsOnExchange.DataImport;
-			NewRow.TransactionItemCount  = 0;
+			NewRow.InfobaseNode = InfobaseNode;
+			NewRow.ExchangeTransportKind    = ExchangeTransportKind;
+			NewRow.CurrentAction    = Enums.ActionsOnExchange.DataImport;
 			
 			Break;
 		EndIf;
@@ -333,15 +372,14 @@ Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 	EndDo;
 	
 	// If the row was not added in the loop, adding the row to the beginning of the table
-	Filter = New Structure("InfoBaseNode, CurrentAction", InfoBaseNode, Enums.ActionsOnExchange.DataImport);
+	Filter = New Structure("InfobaseNode, CurrentAction", InfobaseNode, Enums.ActionsOnExchange.DataImport);
 	If ExchangeSettings.FindRows(Filter).Count() = 0 Then
 		
 		NewRow = ExchangeSettings.Insert(0);
 		
-		NewRow.InfoBaseNode = InfoBaseNode;
-		NewRow.ExchangeTransportKind = ExchangeTransportKind;
-		NewRow.CurrentAction        = Enums.ActionsOnExchange.DataImport;
-		NewRow.TransactionItemCount  = 0;
+		NewRow.InfobaseNode = InfobaseNode;
+		NewRow.ExchangeTransportKind    = ExchangeTransportKind;
+		NewRow.CurrentAction    = Enums.ActionsOnExchange.DataImport;
 		
 	EndIf;
 	
@@ -354,7 +392,7 @@ Procedure AddImportToDataExchangeScenarios(DataExchangeScenario, InfoBaseNode) E
 	
 EndProcedure
 
-Procedure DeleteRowInDataExchangeScenario(DataExchangeScenario, InfoBaseNode, ActionOnExchange)
+Procedure DeleteRowInDataExchangeScenario(DataExchangeScenario, InfobaseNode, ActionOnExchange)
 	
 	MustWriteObject = False;
 	
@@ -370,13 +408,13 @@ Procedure DeleteRowInDataExchangeScenario(DataExchangeScenario, InfoBaseNode, Ac
 	
 	MaxIndex = ExchangeSettings.Count() - 1;
 	
-	For Index = 0 to MaxIndex Do
+	For Index = 0 To MaxIndex Do
 		
 		ReverseIndex = MaxIndex - Index;
 		
 		TableRow = ExchangeSettings[ReverseIndex];
 		
-		If  TableRow.InfoBaseNode = InfoBaseNode
+		If  TableRow.InfobaseNode = InfobaseNode
 			And TableRow.CurrentAction = ActionOnExchange Then
 			
 			ExchangeSettings.Delete(ReverseIndex);
@@ -393,3 +431,21 @@ Procedure DeleteRowInDataExchangeScenario(DataExchangeScenario, InfoBaseNode, Ac
 	EndIf;
 	
 EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// Batch object modification
+
+// Returns a list of attributes that are excluded from the scope of the batch object
+// modification data processor
+//
+Function AttributesToSkipOnGroupProcessing() Export
+	
+	Result = New Array;
+	Result.Add("ScheduledJobGUID");
+	Return Result;
+	
+EndFunction
+
+#EndRegion
+
+#EndIf

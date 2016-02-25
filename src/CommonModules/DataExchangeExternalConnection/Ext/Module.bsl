@@ -1,27 +1,26 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// Data exchange subsystem.
+// "Data exchange" subsystem.
 // The module is intended for working with an external connection.
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL INTERFACE
+#Region InternalInterface
 
 // Exports data for the infobase node to a temporary file.
 // (For internal use only)
 //
-Procedure ExportForInfoBaseNode(Cancel,
+Procedure ExportForInfobaseNode(Cancel,
 												ExchangePlanName,
-												InfoBaseNodeCode,
+												InfobaseNodeCode,
 												ExchangeMessageFullFileName,
 												ErrorMessageString = ""
 	) Export
 	
 	DataExchangeServer.CheckUseDataExchange();
 	
-	If CommonUse.FileInfoBase() Then
+	If CommonUse.FileInfobase() Then
 		
 		Try
-			DataExchangeServer.ExportForInfoBaseNodeViaFile(ExchangePlanName, InfoBaseNodeCode, ExchangeMessageFullFileName);
+			DataExchangeServer.ExportForInfobaseNodeViaFile(ExchangePlanName, InfobaseNodeCode, ExchangeMessageFullFileName);
 		Except
 			Cancel = True;
 			ErrorMessageString = DetailErrorDescription(ErrorInfo());
@@ -33,7 +32,7 @@ Procedure ExportForInfoBaseNode(Cancel,
 		
 		Try
 			
-			DataExchangeServer.ExportToTempStorageForInfoBaseNode(ExchangePlanName, InfoBaseNodeCode, Address);
+			DataExchangeServer.ExportToTempStorageForInfobaseNode(ExchangePlanName, InfobaseNodeCode, Address);
 			
 			GetFromTempStorage(Address).Write(ExchangeMessageFullFileName);
 			
@@ -68,11 +67,11 @@ Procedure AddExchangeFinishEventLogMessage(ExchangeSettingsStructureExternalConn
 	
 EndProcedure
 
-// Gets read object conversion rules by the exchange plan name.
+// Gets read object conversion rules by exchange plan name.
 // (For internal use only)
 //
 //  Returns:
-//   Read object conversion rules. 
+//  Read object conversion rules.
 //
 Function GetObjectConversionRules(ExchangePlanName) Export
 	
@@ -99,12 +98,25 @@ Function ExchangePlanExists(ExchangePlanName) Export
 EndFunction
 
 // Retrieves the default infobase prefix through external connection.
-// Calls the same name function from the overridable module.
+// Calls the function with the same name from the overridable module.
 // (For internal use only)
 //
-Function DefaultInfoBasePrefix() Export
+Function DefaultInfobasePrefix() Export
 	
-	Return DataExchangeOverridable.DefaultInfoBasePrefix();
+	InfobasePrefix = Undefined;
+	//InfobasePrefix = DataExchangeOverridable.DefaultInfobasePrefix();
+	DataExchangeOverridable.OnDefineDefaultInfobasePrefix(InfobasePrefix);
+	
+	Return InfobasePrefix;
+	
+EndFunction
+
+// Checks whether the check for the conversion rule version mismatch is required.
+//
+Function WarnAboutExchangeRuleVersionMismatch(ExchangePlanName) Export
+	
+	SetPrivilegedMode(True);
+	Return DataExchangeServer.ExchangePlanSettingValue(ExchangePlanName, "WarnAboutExchangeRuleVersionMismatch");
 	
 EndFunction
 
@@ -113,11 +125,11 @@ EndFunction
 //
 Function IsInRoleFullAccess() Export
 	
-	Return IsInRole(Metadata.Roles.FullAccess);
+	Return Users.InfobaseUserWithFullAccess(, True);
 	
 EndFunction
 
-// Returns the object list table of the specified metadata object.  
+// Returns the object list table of the specified metadata object.
 // (For internal use only)
 // 
 Function GetTableObjects(FullTableName) Export
@@ -135,7 +147,7 @@ Function GetTableObjects_2_0_1_6(FullTableName) Export
 	
 EndFunction
 
-// Retrieves the specified metadata object properties (Synonym, Hierarchical).  
+// Retrieves the specified metadata object properties (Synonym, Hierarchical).
 // (For internal use only)
 //
 Function MetadataObjectProperties(FullTableName) Export
@@ -153,30 +165,40 @@ Function PredefinedExchangePlanNodeDescription(ExchangePlanName) Export
 	
 EndFunction
 
+// For internal use
+//
 Function GetCommonNodeData(Val ExchangePlanName) Export
 	
 	SetPrivilegedMode(True);
 	
-	Return ValueToStringInternal(DataExchangeServer.DataForThisInfoBaseNodeTabularSections(ExchangePlanName));
+	Return ValueToStringInternal(DataExchangeServer.DataForThisInfobaseNodeTabularSections(ExchangePlanName));
 	
 EndFunction
 
-Function GetNodeCommonData_2_0_1_6(Val ExchangePlanName) Export
+// For internal use
+//
+Function GetCommonNodeData_2_0_1_6(Val ExchangePlanName) Export
 	
 	SetPrivilegedMode(True);
 	
-	Return CommonUse.ValueToXMLString(DataExchangeServer.DataForThisInfoBaseNodeTabularSections(ExchangePlanName));
+	Return CommonUse.ValueToXMLString(DataExchangeServer.DataForThisInfobaseNodeTabularSections(ExchangePlanName));
 	
 EndFunction
 
-Function GetInfoBaseParameters(Val ExchangePlanName, Val NodeCode, ErrorMessage) Export
+// For internal use
+//
+Function GetInfobaseParameters(Val ExchangePlanName, Val NodeCode, ErrorMessage) Export
 	
-	Return DataExchangeServer.GetInfoBaseParameters(ExchangePlanName, NodeCode, ErrorMessage);
+	Return DataExchangeServer.GetInfobaseParameters(ExchangePlanName, NodeCode, ErrorMessage);
 	
 EndFunction
 
-Function GetInfoBaseParameters_2_0_1_6(Val ExchangePlanName, Val NodeCode, ErrorMessage) Export
+// For internal use
+//
+Function GetInfobaseParameters_2_0_1_6(Val ExchangePlanName, Val NodeCode, ErrorMessage) Export
 	
-	Return DataExchangeServer.GetInfoBaseParameters_2_0_1_6(ExchangePlanName, NodeCode, ErrorMessage);
+	Return DataExchangeServer.GetInfobaseParameters_2_0_1_6(ExchangePlanName, NodeCode, ErrorMessage);
 	
 EndFunction
+
+#EndRegion

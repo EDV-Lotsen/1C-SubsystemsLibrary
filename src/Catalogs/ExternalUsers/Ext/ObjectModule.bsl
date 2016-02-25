@@ -1,5 +1,26 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region Interface
+
+// The object interface implementation is based on AdditionalProperties:
+//
+// InfobaseUserDescription - Structure, as in object module of Users catalog.
+
+#EndRegion
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL VARIABLES
+
+Var InfobaseUserProcessingParameters; // Parameters that are filled during infobase user processing.
+                                      // Used in OnWrite event handler.
+
+Var IsNew; // Shows whether new object was written.
+           // Used in OnWrite event handler.
+
+Var OldAuthorizationObject; // Authorization object value before changes.
+                            // Used in OnWrite event handler.
+
+#Region EventHandlers
 
 Procedure BeforeWrite(Cancel)
 	
@@ -7,26 +28,34 @@ Procedure BeforeWrite(Cancel)
 		Return;
 	EndIf;
 	
-	If InfoBaseUserID <> New UUID("00000000-0000-0000-0000-000000000000") And
-	 Users.UserByIDExists(InfoBaseUserID, Ref) Then
-		Raise NStr("en = 'Every infobase user can correspond to single user or single external user only.'");
-	EndIf;
+	IsNew = IsNew();
 	
 	If Not ValueIsFilled(AuthorizationObject) Then
-		Raise NStr("en = 'The authorization object for the external user is not specified.'");
+		Raise NStr("en = 'The external user does not have associated infobase object.'");
 	Else
-		If ExternalUsers.AuthorizationObjectUsed(AuthorizationObject, Ref) Then
-			Raise NStr("en = 'The authorization object is used for another external user.'");
+		ErrorText = "";
+		If UsersInternal.AuthorizationObjectUsed(
+		         AuthorizationObject, Ref, , , ErrorText) Then
+			
+			Raise ErrorText;
 		EndIf;
 	EndIf;
 	
-	// Checking whether the authorization object is not changed
-	If Not IsNew() Then
-		OldAuthorizationObject = CommonUse.GetAttributeValue(Ref, "AuthorizationObject");
-		If ValueIsFilled(OldAuthorizationObject) And OldAuthorizationObject <> AuthorizationObject Then
-			Raise NStr("en = 'The infobase object cannot be changed.'");
+	// Checking whether it is different authorization object.
+	If IsNew Then
+		OldAuthorizationObject = NULL;
+	Else
+		OldAuthorizationObject = CommonUse.ObjectAttributeValue(
+			Ref, "AuthorizationObject");
+		
+		If ValueIsFilled(OldAuthorizationObject)
+		   AND OldAuthorizationObject <> AuthorizationObject Then
+			
+			Raise NStr("en = 'Cannot associate the external user with another infobase object.'");
 		EndIf;
 	EndIf;
+	
+	UsersInternal.StartInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters);
 	
 EndProcedure
 
@@ -36,56 +65,89 @@ Procedure OnWrite(Cancel)
 		Return;
 	EndIf;
 	
-	// Updating the All external users group composition. This group is generated automatically
-	ModifiedExternalUsers = Undefined;
-	ExternalUsers.UpdateExternalUserGroupContent(Catalogs.ExternalUserGroups.AllExternalUsers, ModifiedExternalUsers);
-	ModifiedExternalUsers.Add(Ref);
-	ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
-	
-	// Updating the <All authorization objects of the same type> group composition. 
-	// This group is generated automatically.
-	If ValueIsFilled(AuthorizationObject) Then
-		Query = New Query(
-		"SELECT
-		|	ExternalUserGroups.Ref
-		|FROM
-		|	Catalog.ExternalUserGroups AS ExternalUserGroups
-		|WHERE
-		|	ExternalUserGroups.AllAuthorizationObjects
-		|	AND VALUETYPE(ExternalUserGroups.AuthorizationObjectType) = &AuthorizationObjectType");
-		Query.SetParameter("AuthorizationObjectType", TypeOf(AuthorizationObject));
-		Selection = Query.Execute().Select();
+	// Updating content of the group where the new external user belongs (provided 
+  //that the group is specified).
+	If AdditionalProperties.Property("NewExternalUserGroup") AND
+	     ValueIsFilled(AdditionalProperties.NewExternalUserGroup) Then
 		
-		If Selection.Next() Then
-			ExternalUsers.UpdateExternalUserGroupContent(Selection.Ref, ModifiedExternalUsers);
-			ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
-		EndIf;
-	EndIf;
-	
-	// Updating the new external user group composition if the group is specified
-	If AdditionalProperties.Property("NewExternalUserGroup") And
-	 ValueIsFilled(AdditionalProperties.NewExternalUserGroup) Then
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("Catalog.ExternalUserGroups");
+		LockItem.Mode = DataLockMode.Exclusive;
+		DataLock.Lock();
 		
 		GroupObject = AdditionalProperties.NewExternalUserGroup.GetObject();
 		GroupObject.Content.Add().ExternalUser = Ref;
 		GroupObject.Write();
-		ExternalUsers.UpdateExternalUserGroupContent(GroupObject.Ref, ModifiedExternalUsers);
-		ExternalUsers.UpdateExternalUserRoles(ModifiedExternalUsers);
 	EndIf;
+	
+	// Updating content of the "All external users" group, which is always present.
+	ItemsToChange    = New Map;
+	ModifiedGroups   = New Map;
+	
+	UsersInternal.UpdateExternalUserGroupContent(
+		Catalogs.ExternalUserGroups.AllExternalUsers,
+		Ref,
+		ItemsToChange,
+		ModifiedGroups);
+	
+	UsersInternal.RefreshContentUsingOfUserGroups(
+		Ref, ItemsToChange, ModifiedGroups);
+	
+	UsersInternal.EndInfobaseUserProcessing(
+		ThisObject, InfobaseUserProcessingParameters);
+	
+	UsersInternal.AfterUpdateExternalUserGroupContents(
+		ItemsToChange,
+		ModifiedGroups);
+	
+	If OldAuthorizationObject <> AuthorizationObject Then
+		UsersInternal.AfterChangeExternalUserAuthorizationObject(
+			Ref, OldAuthorizationObject, AuthorizationObject);
+	EndIf;
+	
+	UsersInternal.AfterAddUserOrGroupChange(Ref, IsNew);
 	
 EndProcedure
 
 Procedure BeforeDelete(Cancel)
 	
-	// The infobase user must be deleted because otherwise this user will be included into
-	// the error list of the InfoBaseUsers form, in addition, starting the infobase on 
-	// behalf of this user will raise an error.
-	If Users.InfoBaseUserExists(InfoBaseUserID) Then
-		
-		Cancel = Not Users.DeleteInfoBaseUser(InfoBaseUserID);
+	If DataExchange.Load Then
+		Return;
 	EndIf;
 	
-	// The DataExchange.Load check must be placed here.
+	CommonActionsBeforeDeleteInOrdinaryModeAndOnDataExchange();
 	
 EndProcedure
 
+Procedure OnCopy(ObjectToCopy)
+	
+	AdditionalProperties.Insert("CopyingValue", ObjectToCopy.Ref);
+	
+	InfobaseUserID = Undefined;
+	ServiceUserID = Undefined;
+	Prepared = False;
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+// For internal use only
+Procedure CommonActionsBeforeDeleteInOrdinaryModeAndOnDataExchange() Export
+	
+	// Infobase user must be deleted, otherwise it will be included in the list of errors of the InfobaseUsers form. 
+  //In addition, an attempt to log on to the infobase as this user generetes an error.
+	
+	InfobaseUserDescription = New Structure;
+	InfobaseUserDescription.Insert("Action", "Delete");
+	AdditionalProperties.Insert("InfobaseUserDescription", InfobaseUserDescription);
+	
+	UsersInternal.StartInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters, True);
+	UsersInternal.EndInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters);
+	
+EndProcedure
+
+#EndRegion
+
+#EndIf

@@ -2,51 +2,34 @@
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<EnterKeyBehavior>DefaultButton</EnterKeyBehavior>
 	<CommandBarLocation>Bottom</CommandBarLocation>
-	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
-		<HorizontalAlign>Right</HorizontalAlign>
-		<Autofill>false</Autofill>
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<ChildItems>
-			<Button name="Refresh" id="2">
+			<Button name="Refresh" id="24">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.Refresh</CommandName>
 				<TextColor>style:ButtonTextColor</TextColor>
 				<BackColor>style:ButtonBackColor</BackColor>
 				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="RefreshExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="RefreshExtendedTooltip" id="36"/>
 			</Button>
-			<Button name="Copy" id="4">
+			<Button name="Copy" id="26">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.Copy</CommandName>
 				<TextColor>style:ButtonTextColor</TextColor>
 				<BackColor>style:ButtonBackColor</BackColor>
 				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="CopyExtendedTooltip" id="5"/>
+				<ExtendedTooltip name="CopyExtendedTooltip" id="37"/>
 			</Button>
-			<Button name="Delete" id="6">
+			<Button name="Delete" id="25">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.Delete</CommandName>
 				<TextColor>style:ButtonTextColor</TextColor>
 				<BackColor>style:ButtonBackColor</BackColor>
 				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="DeleteExtendedTooltip" id="7"/>
-			</Button>
-			<Button name="Close" id="8">
-				<Type>CommandBarButton</Type>
-				<Representation>Text</Representation>
-				<DefaultButton>true</DefaultButton>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.StandardCommand.Close</CommandName>
-				<ExtendedTooltip name="CloseExtendedTooltip" id="9"/>
-			</Button>
-			<Button name="Help" id="10">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.StandardCommand.Help</CommandName>
-				<ExtendedTooltip name="HelpExtendedTooltip" id="11"/>
+				<ExtendedTooltip name="DeleteExtendedTooltip" id="38"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -54,19 +37,20 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="User" id="12">
+		<InputField name="User" id="7">
 			<DataPath>User</DataPath>
 			<Wrap>false</Wrap>
+			<ListChoiceMode>true</ListChoiceMode>
 			<TextEdit>false</TextEdit>
 			<ChoiceListButton>true</ChoiceListButton>
 			<BorderColor>style:BorderColor</BorderColor>
-			<ContextMenu name="UserContextMenu" id="13"/>
-			<ExtendedTooltip name="UserExtendedTooltip" id="14"/>
+			<ContextMenu name="UserContextMenu" id="8"/>
+			<ExtendedTooltip name="UserExtendedTooltip" id="39"/>
 			<Events>
 				<Event name="OnChange">UserOnChange</Event>
 			</Events>
 		</InputField>
-		<UsualGroup name="SearchGroup" id="15">
+		<UsualGroup name="SearchGroup" id="33">
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -76,31 +60,32 @@
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="SearchGroupExtendedTooltip" id="16"/>
+			<ExtendedTooltip name="SearchGroupExtendedTooltip" id="40"/>
 			<ChildItems>
-				<InputField name="Search" id="17">
-					<DataPath>Search</DataPath>
+				<InputField name="SearchString" id="18">
+					<DataPath>SearchString</DataPath>
 					<Wrap>false</Wrap>
 					<ClearButton>true</ClearButton>
 					<BorderColor>style:BorderColor</BorderColor>
-					<ContextMenu name="SearchContextMenu" id="18"/>
-					<ExtendedTooltip name="SearchExtendedTooltip" id="19"/>
+					<ContextMenu name="SearchContextMenu" id="19"/>
+					<ExtendedTooltip name="SearchExtendedTooltip" id="41"/>
 					<Events>
 						<Event name="OnChange">SearchOnChange</Event>
 					</Events>
 				</InputField>
-				<Button name="Search" id="17">
+				<Button name="Search" id="32">
 					<Type>UsualButton</Type>
+					<DefaultButton>true</DefaultButton>
 					<SkipOnInput>false</SkipOnInput>
 					<CommandName>Form.Command.Search</CommandName>
 					<TextColor>style:ButtonTextColor</TextColor>
 					<BackColor>style:ButtonBackColor</BackColor>
 					<BorderColor>style:BorderColor</BorderColor>
-					<ExtendedTooltip name="SearchExtendedTooltip" id="19"/>
+					<ExtendedTooltip name="SearchExtendedTooltip" id="42"/>
 				</Button>
 			</ChildItems>
 		</UsualGroup>
-		<Table name="FilteredForms" id="20">
+		<Table name="FilteredForms" id="27">
 			<Representation>List</Representation>
 			<TitleLocation>Top</TitleLocation>
 			<CommandBarLocation>None</CommandBarLocation>
@@ -114,46 +99,46 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Form settings</v8:content>
+					<v8:content>Forms settings</v8:content>
 				</v8:item>
 			</Title>
 			<SearchStringLocation>None</SearchStringLocation>
 			<ViewStatusLocation>None</ViewStatusLocation>
 			<SearchControlLocation>None</SearchControlLocation>
-			<ContextMenu name="FilteredFormsContextMenu" id="21"/>
-			<AutoCommandBar name="FilteredFormsCommandBar" id="22"/>
-			<ExtendedTooltip name="FilteredFormsExtendedTooltip" id="23"/>
-			<SearchStringAddition name="FilteredFormsSearchString" id="27">
+			<ContextMenu name="FilteredFormsContextMenu" id="28"/>
+			<AutoCommandBar name="FilteredFormsCommandBar" id="29"/>
+			<ExtendedTooltip name="FilteredFormsExtendedTooltip" id="43"/>
+			<SearchStringAddition name="FilteredFormsSearchString" id="45">
 				<AdditionSource>
 					<Item>FilteredForms</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="FilteredFormsSearchStringContextMenu" id="28"/>
-				<ExtendedTooltip name="FilteredFormsSearchStringExtendedTooltip" id="29"/>
+				<ContextMenu name="FilteredFormsSearchStringContextMenu" id="46"/>
+				<ExtendedTooltip name="FilteredFormsSearchStringExtendedTooltip" id="47"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="FilteredFormsViewStatus" id="30">
+			<ViewStatusAddition name="FilteredFormsViewStatus" id="48">
 				<AdditionSource>
 					<Item>FilteredForms</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="FilteredFormsViewStatusContextMenu" id="31"/>
-				<ExtendedTooltip name="FilteredFormsViewStatusExtendedTooltip" id="32"/>
+				<ContextMenu name="FilteredFormsViewStatusContextMenu" id="49"/>
+				<ExtendedTooltip name="FilteredFormsViewStatusExtendedTooltip" id="50"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="FilteredFormsSearchControl" id="33">
+			<SearchControlAddition name="FilteredFormsSearchControl" id="51">
 				<AdditionSource>
 					<Item>FilteredForms</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="FilteredFormsSearchControlContextMenu" id="34"/>
-				<ExtendedTooltip name="FilteredFormsSearchControlExtendedTooltip" id="35"/>
+				<ContextMenu name="FilteredFormsSearchControlContextMenu" id="52"/>
+				<ExtendedTooltip name="FilteredFormsSearchControlExtendedTooltip" id="53"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<InputField name="Value" id="24">
+				<InputField name="Value" id="34">
 					<DataPath>FilteredForms.Value</DataPath>
 					<Wrap>false</Wrap>
 					<BorderColor>style:BorderColor</BorderColor>
-					<ContextMenu name="ValueContextMenu" id="25"/>
-					<ExtendedTooltip name="ValueExtendedTooltip" id="26"/>
+					<ContextMenu name="ValueContextMenu" id="35"/>
+					<ExtendedTooltip name="ValueExtendedTooltip" id="44"/>
 				</InputField>
 			</ChildItems>
 		</Table>
@@ -191,7 +176,7 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="Search" id="4">
+		<Attribute name="SearchString" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -221,7 +206,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Previous Search</v8:content>
+					<v8:content>Previous search</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -232,11 +217,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="AfterChangeHandlersCalledCount" id="7">
+		<Attribute name="AfterChangeHandlersCalled" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Number of after change handlers that has been called</v8:content>
+					<v8:content>After change handlers are called</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -247,11 +232,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="SearchLastPending" id="8">
+		<Attribute name="SearchInLastWait" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Search in last pending</v8:content>
+					<v8:content>Search in last wait</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -262,7 +247,7 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="ActiveSearch" id="9">
+		<Attribute name="AppliedSearch" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -289,10 +274,13 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Refresh form settings list</v8:content>
+					<v8:content>RefreshFormsSettingsList</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>RefreshExecute</Action>
 		</Command>
 		<Command name="Copy" id="2">
@@ -305,7 +293,7 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Copy settings to another user</v8:content>
+					<v8:content>Copy the form settings to another user</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>CopyExecute</Action>

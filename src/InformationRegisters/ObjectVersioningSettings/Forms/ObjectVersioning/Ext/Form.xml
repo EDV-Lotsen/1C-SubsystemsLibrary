@@ -1,0 +1,746 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>70</Width>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Popup name="VersioningModeGroup" id="24">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Set versioning mode</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Set versioning mode for the selected objects</v8:content>
+					</v8:item>
+				</ToolTip>
+				<ExtendedTooltip name="VersioningModeGroupExtendedTooltip" id="36"/>
+				<ChildItems>
+					<Button name="SetVersioningModeDontVersionize" id="27">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SetVersioningModeDontVersionize</CommandName>
+						<ExtendedTooltip name="SetVersioningModeDontVersionizeExtendedTooltip" id="37"/>
+					</Button>
+					<Button name="SetVersioningModeAlways" id="26">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SetVersioningModeOnWrite</CommandName>
+						<ExtendedTooltip name="SetVersioningModeAlwaysExtendedTooltip" id="38"/>
+					</Button>
+					<Button name="SetVersioningModeOnPost" id="25">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.SetVersioningModeOnPost</CommandName>
+						<ExtendedTooltip name="SetVersioningModeOnPostExtendedTooltip" id="39"/>
+					</Button>
+					<Button name="FormVersionizeOnStart" id="97">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.VersionizeOnStart</CommandName>
+						<ExtendedTooltip name="FormVersionizeOnStartExtendedTooltip" id="98"/>
+					</Button>
+					<ButtonGroup name="CommandBarButtonGroup" id="33">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Command bar button group</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="CommandBarButtonGroupExtendedTooltip" id="40"/>
+						<ChildItems>
+							<Button name="SetDefaultSettings" id="23">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.SetDefaultSettings</CommandName>
+								<ExtendedTooltip name="SetDefaultSettingsExtendedTooltip" id="41"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+				</ChildItems>
+			</Popup>
+			<Popup name="SetVersionLifetime" id="83">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Set version lifetime</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="SetVersionLifetimeExtendedTooltip" id="84"/>
+				<ChildItems>
+					<Button name="FormLastWeek" id="85">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.LastWeek</CommandName>
+						<ExtendedTooltip name="FormLastWeekExtendedTooltip" id="86"/>
+					</Button>
+					<Button name="FormLastMonth" id="87">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.LastMonth</CommandName>
+						<ExtendedTooltip name="FormLastMonthExtendedTooltip" id="88"/>
+					</Button>
+					<Button name="FormLastThreeMonths" id="89">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.LastThreeMonths</CommandName>
+						<ExtendedTooltip name="FormLastThreeMonthsExtendedTooltip" id="90"/>
+					</Button>
+					<Button name="FormLastSixMonths" id="91">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.LastSixMonths</CommandName>
+						<ExtendedTooltip name="FormLastSixMonthsExtendedTooltip" id="92"/>
+					</Button>
+					<Button name="FormLastYear" id="93">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.LastYear</CommandName>
+						<ExtendedTooltip name="FormLastYearExtendedTooltip" id="94"/>
+					</Button>
+					<Button name="FormInfinite" id="95">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Infinite</CommandName>
+						<ExtendedTooltip name="FormInfiniteExtendedTooltip" id="96"/>
+					</Button>
+				</ChildItems>
+			</Popup>
+			<ButtonGroup name="ListCommands" id="34">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>List commands</v8:content>
+					</v8:item>
+				</Title>
+				<CommandSource>Item.MetadataObjectTree</CommandSource>
+				<ExtendedTooltip name="ListCommandsExtendedTooltip" id="42"/>
+			</ButtonGroup>
+			<Button name="MetadataObjectTreeRefresh" id="35">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.Command.Refresh</CommandName>
+				<ExtendedTooltip name="MetadataObjectTreeRefreshExtendedTooltip" id="43"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="MetadataObjectTree" id="11">
+			<Representation>Tree</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<ChangeRowSet>false</ChangeRowSet>
+			<ChangeRowOrder>false</ChangeRowOrder>
+			<InitialTreeView>ExpandAllLevels</InitialTreeView>
+			<DataPath>MetadataObjectTree</DataPath>
+			<BorderColor>style:BorderColor</BorderColor>
+			<CommandSet>
+				<ExcludedCommand>HierarchicalList</ExcludedCommand>
+				<ExcludedCommand>Tree</ExcludedCommand>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>List</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="MetadataObjectTreeContextMenu" id="12">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Popup name="SetVersioningModeSubmenu" id="111">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Set versioning mode</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="SetVersioningModeExtendedTooltipSubmenu" id="112"/>
+						<ChildItems>
+							<ButtonGroup name="MetadataObjectTreeContextMenuButtonGroup" id="32">
+								<Title>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Metadata object tree context menu button group</v8:content>
+									</v8:item>
+								</Title>
+								<ExtendedTooltip name="MetadataObjectTreeContextMenuButtonGroupExtendedTooltip" id="47"/>
+								<ChildItems>
+									<Button name="CM_SetDefaultSettings" id="31">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.SetDefaultSettings</CommandName>
+										<ExtendedTooltip name="CM_SetDefaultSettingsExtendedTooltip" id="48"/>
+									</Button>
+								</ChildItems>
+							</ButtonGroup>
+							<Button name="CM_SetVersioningModeDontVersionize" id="28">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.SetVersioningModeDontVersionize</CommandName>
+								<ExtendedTooltip name="CM_SetVersioningModeDontVersionizeExtendedTooltip" id="46"/>
+							</Button>
+							<Button name="CM_SetVersioningModeAlways" id="29">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.SetVersioningModeOnWrite</CommandName>
+								<ExtendedTooltip name="CM_SetVersioningModeAlwaysExtendedTooltip" id="45"/>
+							</Button>
+							<Button name="CM_SetVersioningModeOnPost" id="30">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>Form.Command.SetVersioningModeOnPost</CommandName>
+								<ExtendedTooltip name="CM_SetVersioningModeOnPostExtendedTooltip" id="44"/>
+							</Button>
+						</ChildItems>
+					</Popup>
+					<Popup name="SetVersionLifetimeSubmenu" id="113">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Set version lifetime</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="SetVersionLifetimeExtendedTooltipSubmenu" id="114"/>
+						<ChildItems>
+							<Button name="VersionLifetimeContextMenuLastWeek" id="99">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.LastWeek</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuLastWeekExtendedTooltip" id="100"/>
+							</Button>
+							<Button name="VersionLifetimeContextMenuLastMonth" id="101">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.LastMonth</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuLastMonthExtendedTooltip" id="102"/>
+							</Button>
+							<Button name="VersionLifetimeContextMenuLastThreeMonths" id="103">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.LastThreeMonths</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuLastThreeMonthsExtendedTooltip" id="104"/>
+							</Button>
+							<Button name="VersionLifetimeContextMenuLastSixMonths" id="105">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.LastSixMonths</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuLastSixMonthsExtendedTooltip" id="106"/>
+							</Button>
+							<Button name="VersionLifetimeContextMenuLastYear" id="107">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.LastYear</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuLastYearExtendedTooltip" id="108"/>
+							</Button>
+							<Button name="VersionLifetimeContextMenuInfinite" id="109">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.Infinite</CommandName>
+								<ExtendedTooltip name="VersionLifetimeContextMenuInfiniteExtendedTooltip" id="110"/>
+							</Button>
+						</ChildItems>
+					</Popup>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="MetadataObjectTreeCommandBar" id="13"/>
+			<ExtendedTooltip name="MetadataObjectTreeExtendedTooltip" id="49"/>
+			<SearchStringAddition name="MetadataObjectTreeSearchString" id="121">
+				<AdditionSource>
+					<Item>MetadataObjectTree</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="MetadataObjectTreeSearchStringContextMenu" id="122"/>
+				<ExtendedTooltip name="MetadataObjectTreeSearchStringExtendedTooltip" id="123"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="MetadataObjectTreeViewStatus" id="124">
+				<AdditionSource>
+					<Item>MetadataObjectTree</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="MetadataObjectTreeViewStatusContextMenu" id="125"/>
+				<ExtendedTooltip name="MetadataObjectTreeViewStatusExtendedTooltip" id="126"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="MetadataObjectTreeSearchControl" id="127">
+				<AdditionSource>
+					<Item>MetadataObjectTree</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="MetadataObjectTreeSearchControlContextMenu" id="128"/>
+				<ExtendedTooltip name="MetadataObjectTreeSearchControlExtendedTooltip" id="129"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="BeforeRowChange">MetadataObjectTreeBeforeRowChange</Event>
+			</Events>
+			<ChildItems>
+				<ColumnGroup name="PictureDescription" id="20">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture description</v8:content>
+						</v8:item>
+					</Title>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="PictureDescriptionExtendedTooltip" id="50"/>
+					<ChildItems>
+						<PictureField name="Picture" id="21">
+							<DataPath>MetadataObjectTree.PictureCode</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<TitleLocation>None</TitleLocation>
+							<Width>2</Width>
+							<Height>1</Height>
+							<Border width="1">
+								<v8ui:style xsi:type="v8ui:ControlBorderType">WithoutBorder</v8ui:style>
+							</Border>
+							<ContextMenu name="PictureContextMenu" id="22"/>
+							<ExtendedTooltip name="PictureExtendedTooltip" id="51"/>
+						</PictureField>
+						<InputField name="ObjectDescription" id="14">
+							<DataPath>MetadataObjectTree.ObjectDescriptionSynonym</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="ObjectDescriptionContextMenu" id="15"/>
+							<ExtendedTooltip name="ObjectDescriptionExtendedTooltip" id="52"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="VersioningMode" id="16">
+					<DataPath>MetadataObjectTree.VersioningMode</DataPath>
+					<Wrap>false</Wrap>
+					<ChoiceButton>true</ChoiceButton>
+					<ListChoiceMode>true</ListChoiceMode>
+					<ChooseType>false</ChooseType>
+					<TypeDomainEnabled>false</TypeDomainEnabled>
+					<TextEdit>false</TextEdit>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="VersioningModeContextMenu" id="17"/>
+					<ExtendedTooltip name="VersioningModeExtendedTooltip" id="53"/>
+					<Events>
+						<Event name="ChoiceProcessing">VersioningModeChoiceProcessing</Event>
+					</Events>
+				</InputField>
+				<InputField name="VersionLifetime" id="54">
+					<DataPath>MetadataObjectTree.VersionLifetime</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="VersionLifetimeContextMenu" id="55"/>
+					<ExtendedTooltip name="VersionLifetimeExtendedTooltip" id="56"/>
+					<Events>
+						<Event name="OnChange">VersionLifetimeOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<Button name="StoredObjectVersionsCountAndSize" id="119">
+			<Type>Hyperlink</Type>
+			<CommandName>Form.Command.StoredObjectVersionsCountAndSize</CommandName>
+			<ExtendedTooltip name="StoredObjectVersionsCountAndSizeExtendedTooltip" id="120"/>
+		</Button>
+		<UsualGroup name="ClearObsoleteVersions" id="57">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear obsolete versions</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Horizontal</Group>
+			<ExtendedTooltip name="ClearObsoleteVersionsExtendedTooltip" id="58"/>
+			<ChildItems>
+				<LabelDecoration name="ObsoleteVersionsInfo" id="59">
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Total obsolete versions: 1 234 (1.2 MB)</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="ObsoleteVersionsInfoContextMenu" id="60"/>
+					<ExtendedTooltip name="ObsoleteVersionsInfoExtendedTooltip" id="61"/>
+				</LabelDecoration>
+				<Button name="Clear" id="62">
+					<Type>UsualButton</Type>
+					<CommandName>Form.Command.Clear</CommandName>
+					<ExtendedTooltip name="ClearExtendedTooltip" id="63"/>
+				</Button>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="VersionDeletionOnSchedule" id="64">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Scheduled version deletion</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="VersionDeletionOnScheduleExtendedTooltip" id="65"/>
+			<ChildItems>
+				<UsualGroup name="DeletionSettings" id="79">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Deletion settings</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="DeletionSettingsExtendedTooltip" id="80"/>
+					<ChildItems>
+						<CheckBoxField name="AutomaticallyDeleteObsoleteVersions" id="66">
+							<DataPath>AutomaticallyDeleteObsoleteVersions</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="AutomaticallyDeleteObsoleteVersionsContextMenu" id="67"/>
+							<ExtendedTooltip name="AutomaticallyDeleteObsoleteVersionsExtendedTooltip" id="68"/>
+							<Events>
+								<Event name="OnChange">AutomaticallyDeleteObsoleteVersionsOnChange</Event>
+							</Events>
+						</CheckBoxField>
+						<Button name="SetSchedule" id="81">
+							<Type>Hyperlink</Type>
+							<CommandName>Form.Command.SetSchedule</CommandName>
+							<ExtendedTooltip name="SetScheduleExtendedTooltip" id="82"/>
+						</Button>
+					</ChildItems>
+				</UsualGroup>
+				<LabelDecoration name="Schedule" id="74">
+					<TextColor>style:InformationText</TextColor>
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>every day, weekly [Tuesday, Wednesday, Thursday, Friday, Saturday]; from 3:00 daily, stop after 7:00</v8:content>
+						</v8:item>
+					</Title>
+					<VerticalAlign>Top</VerticalAlign>
+					<ContextMenu name="ScheduleContextMenu" id="75"/>
+					<ExtendedTooltip name="ScheduleExtendedTooltip" id="76"/>
+				</LabelDecoration>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="MetadataObjectTree" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Metadata object tree</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="ObjectType" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Object</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="VersioningMode" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Versioning mode</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:EnumRef.ObjectVersioningModes</v8:Type>
+					</Type>
+				</Column>
+				<Column name="ObjectClass" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Object class</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="PictureCode" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Picture code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="ObjectDescriptionSynonym" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Object</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Posting" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Posting</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="VersionLifetime" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Version lifetime</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:EnumRef.VersionLifetimes</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ChoiceListFull" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choice list full</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ChoiceListWithoutPosting" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choice list without posting</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="AutomaticallyDeleteObsoleteVersions" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete obsolete versions automatically </v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="BackgroundJobID" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Background job ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:UUID</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="SetDefaultSettings" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Default versioning settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Restore default versioning settings for all objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetDefaultSettings</Action>
+		</Command>
+		<Command name="SetVersioningModeOnPost" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Versionize when posting</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set "versionize when posting" mode for the selected objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetVersioningModeOnPost</Action>
+		</Command>
+		<Command name="SetVersioningModeOnWrite" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Versionize when writing</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set "versionize when writing" mode for the selected objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetVersioningModeOnWrite</Action>
+		</Command>
+		<Command name="SetVersioningModeDontVersionize" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>No versioning</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set "no versioning" mode for the selected objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetVersioningModeDontVersionize</Action>
+		</Command>
+		<Command name="Refresh" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Refresh</Action>
+		</Command>
+		<Command name="Clear" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear</v8:content>
+				</v8:item>
+			</Title>
+			<Action>Clear</Action>
+		</Command>
+		<Command name="SetSchedule" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set schedule</v8:content>
+				</v8:item>
+			</Title>
+			<Action>SetSchedule</Action>
+		</Command>
+		<Command name="LastWeek" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>1 week</v8:content>
+				</v8:item>
+			</Title>
+			<Action>LastWeek</Action>
+		</Command>
+		<Command name="LastMonth" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>1 month</v8:content>
+				</v8:item>
+			</Title>
+			<Action>LastMonth</Action>
+		</Command>
+		<Command name="LastThreeMonths" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>3 months</v8:content>
+				</v8:item>
+			</Title>
+			<Action>LastThreeMonths</Action>
+		</Command>
+		<Command name="LastSixMonths" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>6 months</v8:content>
+				</v8:item>
+			</Title>
+			<Action>LastSixMonths</Action>
+		</Command>
+		<Command name="LastYear" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>1 year</v8:content>
+				</v8:item>
+			</Title>
+			<Action>LastYear</Action>
+		</Command>
+		<Command name="Infinite" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infinite</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infinite</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Infinite</Action>
+		</Command>
+		<Command name="VersionizeOnStart" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Versionize during startup</v8:content>
+				</v8:item>
+			</Title>
+			<Action>VersionizeOnStart</Action>
+		</Command>
+		<Command name="StoredObjectVersionsCountAndSize" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Number and size of stored object versions</v8:content>
+				</v8:item>
+			</Title>
+			<Action>StoredObjectVersionsCountAndSize</Action>
+		</Command>
+	</Commands>
+</Form>

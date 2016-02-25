@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>56</Width>
+	<WindowOpeningMode>LockWholeInterface</WindowOpeningMode>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="MainPanel" id="26">
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main panel</v8:content>
+				</v8:item>
+			</ToolTip>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="MainPanelExtendedTooltip" id="27"/>
+			<ChildItems>
+				<Page name="Beginning" id="28">
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Beginning</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="BeginningExtendedTooltip" id="29"/>
+					<ChildItems>
+						<LabelDecoration name="NodeNameInfoLabel" id="44">
+							<Title formatted="true">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Cannot set up application update that is received from the %1.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="NodeNameInfoLabelContextMenu" id="45"/>
+							<ExtendedTooltip name="NodeNameInfoLabelExtendedTooltip" id="46"/>
+						</LabelDecoration>
+						<LabelDecoration name="InfoLabel" id="32">
+							<Title formatted="true">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>See technical details in the &lt;link EventLog&gt;Event log&lt;/&gt;.
+
+Click &lt;b&gt;Synchronize and continue&lt;/&gt;
+to repeat application update receiving (it is recomended).
+&lt;link ConnectionParameters&gt;Change c&lt;/&gt;&lt;link ConnectionParameters&gt;onnection parameters for data synchronization&lt;/&gt;
+</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="InfoLabelContextMenu" id="33"/>
+							<ExtendedTooltip name="InfoLabelExtendedTooltip" id="34"/>
+							<Events>
+								<Event name="URLProcessing">URLProcessingInfoLabel</Event>
+							</Events>
+						</LabelDecoration>
+						<LabelDecoration name="NotSynchronizeInfoLabel" id="41">
+							<Title formatted="true">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Click &lt;b&gt;C&lt;/&gt;&lt;b&gt;ontinue&lt;/&gt; to repeat application update.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="NotSynchronizeInfoLabelContextMenu" id="42"/>
+							<ExtendedTooltip name="NotSynchronizeInfoLabelExtendedTooltip" id="43"/>
+							<Events>
+								<Event name="URLProcessing">URLProcessingInfoLabel</Event>
+							</Events>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+				<Page name="LongAction" id="30">
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<ExtendedTooltip name="LongActionExtendedTooltip" id="31"/>
+					<ChildItems>
+						<PictureDecoration name="LongActionPicture" id="35">
+							<Width>7</Width>
+							<Height>3</Height>
+							<Picture>
+								<xr:Ref>CommonPicture.DataSynchronizationLongAction48</xr:Ref>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
+							</Picture>
+							<ContextMenu name="LongActionPictureContextMenu" id="36"/>
+							<ExtendedTooltip name="LongActionPictureExtendedTooltip" id="37"/>
+						</PictureDecoration>
+						<LabelDecoration name="LongActionLabel" id="38">
+							<Height>3</Height>
+							<SkipOnInput>false</SkipOnInput>
+							<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Synchronization in progress.
+This can take several minutes.
+Please wait...</v8:content>
+								</v8:item>
+							</Title>
+							<VerticalAlign>Center</VerticalAlign>
+							<ContextMenu name="LongActionLabelContextMenu" id="39"/>
+							<ExtendedTooltip name="LongActionLabelExtendedTooltip" id="40"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<UsualGroup name="AdditionalData" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Additional data</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="AdditionalDataExtendedTooltip" id="11"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="24">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalLocation>Right</HorizontalLocation>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="25"/>
+			<ChildItems>
+				<ButtonGroup name="MainButtonGroup" id="51">
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Main button group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="MainButtonGroupExtendedTooltip" id="52"/>
+					<ChildItems>
+						<Button name="FormSynchronizeAndContinue" id="1">
+							<Type>CommandBarButton</Type>
+							<DefaultButton>true</DefaultButton>
+							<CommandName>Form.Command.SynchronizeAndContinue</CommandName>
+							<ExtendedTooltip name="FormSynchronizeAndContinueExtendedTooltip" id="2"/>
+						</Button>
+						<Button name="NotSynchronizeAndContinueForm" id="3">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.NotSynchronizeAndContinue</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Continue</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="NotSynchronizeAndContinueFormExtendedTooltip" id="4"/>
+						</Button>
+						<Button name="FormExit" id="5">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.Exit</CommandName>
+							<ExtendedTooltip name="FormExitExtendedTooltip" id="6"/>
+						</Button>
+					</ChildItems>
+				</ButtonGroup>
+				<ButtonGroup name="LongActionButtonGroup" id="53">
+					<ExtendedTooltip name="LongActionButtonGroupExtendedTooltip" id="54"/>
+					<ChildItems>
+						<Button name="Exit" id="55">
+							<Type>CommandBarButton</Type>
+							<CommandName>Form.Command.Exit</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Cancel</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="ExitExtendedTooltip" id="56"/>
+						</Button>
+					</ChildItems>
+				</ButtonGroup>
+			</ChildItems>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="LongAction" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ActionID" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Action ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="FileID" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>File ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="WarningText" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>warning text</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="UpdateStatus" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update status</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="InfobaseNode" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infobase node</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+			</Type>
+		</Attribute>
+		<Attribute name="HasErrors" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Has errors</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ActionStartDate" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Action start date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>DateTime</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LongActionAllowed" id="7">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="SynchronizeAndContinue" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Synchronize and continue</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Receive new message from the master node and continue application start</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SynchronizeAndContinue</Action>
+		</Command>
+		<Command name="Exit" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exit application</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exit application and restart later</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExitCommand</Action>
+		</Command>
+		<Command name="NotSynchronizeAndContinue" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Do not synchronize and continue</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Continue application start without receiving of new message from the master node</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>NotSynchronizeAndContinue</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="MasterNode">
+			<Type/>
+		</Parameter>
+	</Parameters>
+</Form>

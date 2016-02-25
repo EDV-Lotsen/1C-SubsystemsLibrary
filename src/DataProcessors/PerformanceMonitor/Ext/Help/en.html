@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This form is used to evaluate application performance.</p>
+<p>The application features standard tools for performance data collection and analysis in accordance with Apdex (Application Performance Index, international standard for software performance evaluation). </p>
+<p>Before you can proceed with performance evaluation, you need to fill in the <a href="Catalog.KeyOperations/Help">Key operations</a> list. </p>
+<p>Software performance evaluation based on Apdex methodology includes the following major stages:</p>
+<ul><li>Defining priorities for each <a href="Catalog.KeyOperations.Form.ItemForm/Help">key operation</a> supported by the application; 
+</li><li>Defining target execution time for each key operation; 
+</li><li>Gathering information of execution time for each key operation; 
+</li><li>Calculating the performance score based on the gathered data, and interpreting the results.</li></ul><p>To view or analyze the performance evaluation results, execute the <strong>Performance indicators</strong> command located in the <strong>Administration - Support and maintenance</strong> section. </p>
+<h3>Table</h3>
+<p>The performance indicators are displayed in a table with the following columns: </p>
+<ul><li>
+<div><strong>Key operation</strong> - key operation name. The table lists all key operations supported by the application. Key operation names are copied from the <strong>Key operations</strong> list. Plus, a predefined key operation <strong>Overall system performance</strong> is displayed in the table but not in the list by default.</div>
+<ul><li>Use buttons <img src="StdPicture.CreateListItem"></img> <strong>Add</strong> and <img src="StdPicture.Delete"></img> <strong>Delete</strong> to prepare a list of key operations to be used for performance evaluation. 
+</li><li>After a selected key operation was added to the table, it will become unavailable for further selection, thus preventing the users from adding it to the table again. </li></ul></li><li>
+<div><strong>Priority</strong> - copied from the <strong>Key operations</strong> list. 
+<ul><li>
+<div>Use buttons <img src="StdPicture.MoveUp" width="16" height="16"></img> <strong>Move up</strong> and <img src="StdPicture.MoveDown" width="16" height="16"></img> <strong>Move down</strong> to rearrange the key operations list. </div>
+</li><li>
+<div>When moving a key operation up or down, its <strong>Priority</strong> will be adjusted automatically. </div>
+</li><li>
+<div>The topmost operation in the list has the highest priority, while the bottommost operation has the lowest priority. To increase priority of a key operation, move it up the list; to decrease priority, move it down. </div>
+</li><li>
+<div>The <strong>Overall system performance</strong> record is always located at the top of the list. It has no priority; it is used to estimate overall system performance.</div></li></ul></div>
+</li><li>
+<div><strong>Target time</strong> - copied from the <strong>Key operations</strong> list. Performance estimate directly depends on this value. Chaning target time values will affect the resulting performance score. The target time is measured in seconds. </div></li></ul><h3>Period settings</h3>
+<ul><li>Before performance evaluation, you need to specify the evaluation period. 
+<ul><li>Enter <strong>Start date</strong> and <strong>End date</strong> for the evaluation period. Click <img src="StdPicture.Calendar"></img> to select a date from calendar; set time if necessary (the default time is 0:00:00).</li></ul></li><li>The <strong>Step</strong> field defines how many results are displayed per period. Example: if you set <strong>Period</strong> to 1 day and <strong>Step</strong> to 1 hour, 24 results per key operation will be displayed. The hourly results will be calculated in accordance with Apdex methodology. If a key operation was not performed during  a 1-hour step, the corresponding table cell will display zero. The <a href="InformationRegister.TimeMeasurements/Help">measurements</a> are performed during execution of each key operation (for example, during document posting). 
+</li><li>The measurement results are displayed in the <strong>Table</strong> and <strong>Chart</strong> tabs of the <strong>Performance monitor</strong> window</li></ul><h3>Updating table contents</h3>
+<p>The list is not updated in real time. To refresh the table or chart contents after making adjustments to the <strong>Period</strong> or <strong>Step</strong> field values, execute the <strong>Update performance indicators</strong> command manually. </p>
+<h3>Calculating target time</h3>
+<p>Select a key operation (with the exception of <strong>Overall system performance</strong>), and execute the <strong>Calculate Apdex target time</strong> command available via context menu accessed by right-clicking. Target time cannot be calculated until time measurements are performed for the key operation.  </p>
+<h3>Performance monitor</h3>
+<p>The performance score is normalized to a uniform scale of 0-to-1. The score fields are color-coded based on the score values. The resulting scores are interpreted as follows: </p>
+<p></p>
+<table border="1"><tbody><tr><td colspan="3">
+<p align="center">Apdex metric </p></td></tr><tr><td colspan="2">
+<p align="center">Value </p></td>
+<td rowspan="2">
+<p align="center">Estimation </p></td></tr><tr><td>
+<p align="center">from </p></td>
+<td>
+<p align="center">to </p></td></tr><tr><td>0.00</td>
+<td>0.50</td>
+<td style="BACKGROUND-COLOR: #cccccc">unacceptable</td></tr><tr><td>0.50</td>
+<td>0.70</td>
+<td style="BACKGROUND-COLOR: #ffcc66">poor</td></tr><tr><td>0.70</td>
+<td>0.85</td>
+<td style="BACKGROUND-COLOR: #ffff66">fair</td></tr><tr><td>0.85</td>
+<td>0.94</td>
+<td style="BACKGROUND-COLOR: #ccff99">good</td></tr><tr><td>0.94</td>
+<td>1.00</td>
+<td style="BACKGROUND-COLOR: #ccffff">excellent</td></tr></tbody></table><h3>Filtering performance indicators</h3>
+<p>To set a performance indicator filter, click <img src="StdPicture.FilterCriterion"></img> <strong>Set filter</strong> and use a radio button to select:</p>
+<ul><li><strong>Filter</strong> - <strong>Above</strong> or <strong>Below</strong>; 
+</li><li>select Apdex score: <strong>Good, </strong>Fair, or <strong>Poor</strong>; 
+</li><li>This will automatically set <strong>Condition</strong> to the numeric equivalent of the selected Apdex score. 
+</li><li>Click <strong>OK</strong> to enable the filter.</li></ul><h3>Key operation execution history</h3>
+<p>To view <strong>Key operation execution history</strong>, double-click a corresponding value in the table. This will display measurement period, key operation parameters copied from the key operation list, and the number of measurements. The measurement table contains <strong>Duration</strong>, <strong>End time</strong>, and <strong>User</strong> for each measurement. </p>
+<h3>Chart</h3>
+<p>To view the table data in visual form, go to the <strong>Chart</strong> tab, where data related to each key operation is displayed as a separate diagram.</p>
+<h3>Exporting performance measurement data</h3>
+<ul><li>The measured performance data can be exported to external files in background. This can be useful, for example, when you need to run performance analysis for an external application. 
+</li><li>To set up <a href="DataProcessor.PerformanceMonitor.Form.PerformanceMeasurementAutomaticExport/Help">automated export</a> of the performance data, click <strong>All actions - Settings</strong>. The generated external files, as well as files with application settings used for performance testing, are compressed to ZIP archive automatically. 
+</li><li>To perform manual export of the performance data, click <strong>All actions - Data export</strong>.</li></ul></body></html>

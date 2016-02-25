@@ -1,0 +1,69 @@
+﻿<package xmlns="http://v8.1c.ru/8.1/xdto" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="http://www.v8.1c.ru/ssl/contactinfo">
+	<objectType name="ContactInformation">
+		<property name="Presentation" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="Comment" type="xs:string" lowerBound="0" nillable="true" form="Element"/>
+		<property name="Content"/>
+	</objectType>
+	<objectType name="Address">
+		<property name="Country" type="xs:string" lowerBound="0" form="Attribute"/>
+		<property name="Content" lowerBound="0" nillable="true"/>
+		<property name="AddressLine1" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="AddressLine2" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="City" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="State" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="PostalCode" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+	<objectType name="AddressUS">
+		<property name="Region" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="CountyMunicipalEntity" lowerBound="0" nillable="true">
+			<typeDef xsi:type="ObjectType">
+				<property name="County" type="xs:string" lowerBound="0" nillable="true"/>
+				<property name="MunicipalEntity" lowerBound="0" nillable="true" form="Element">
+					<typeDef xsi:type="ObjectType">
+						<property name="MunicipalEntity1" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+						<property name="MunicipalEntity2" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+					</typeDef>
+				</property>
+			</typeDef>
+		</property>
+		<property name="City" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="Settlement" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="District" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="Street" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="AdditionalAddressItem" lowerBound="0" upperBound="-1" nillable="true">
+			<typeDef xsi:type="ObjectType">
+				<property name="AddressItemType" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+				<property name="Value" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+				<property name="Number" lowerBound="0" nillable="true">
+					<typeDef xsi:type="ObjectType">
+						<property name="Type" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+						<property name="Value" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+					</typeDef>
+				</property>
+			</typeDef>
+		</property>
+		<property name="Address_by_document" type="xs:string" lowerBound="0" nillable="true"/>
+		<property name="Location" type="xs:string" lowerBound="0" nillable="true"/>
+	</objectType>
+	<objectType name="PhoneNumber">
+		<property name="CountryCode" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="AreaCode" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="Number" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="Extension" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+	<objectType name="FaxNumber">
+		<property name="CountryCode" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="AreaCode" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="Number" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+		<property name="Extension" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+	<objectType name="Email">
+		<property name="Value" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+	<objectType name="Website">
+		<property name="Value" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+	<objectType name="Others">
+		<property name="Value" type="xs:string" lowerBound="0" nillable="true" form="Attribute"/>
+	</objectType>
+</package>

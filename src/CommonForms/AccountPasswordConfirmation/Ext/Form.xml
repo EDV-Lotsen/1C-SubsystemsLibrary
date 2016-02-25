@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>Bottom</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
 		<Autofill>false</Autofill>
 		<ChildItems>
@@ -33,6 +34,12 @@
 	<ChildItems>
 		<InputField name="Password" id="8">
 			<DataPath>Password</DataPath>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Enter the account password</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Wrap>false</Wrap>
 			<PasswordMode>true</PasswordMode>
 			<ContextMenu name="PasswordContextMenu" id="9"/>
@@ -46,17 +53,29 @@
 					<v8:content>Confirmation</v8:content>
 				</v8:item>
 			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Enter the account password again</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Wrap>false</Wrap>
 			<PasswordMode>true</PasswordMode>
 			<ContextMenu name="PasswordConfirmationContextMenu" id="12"/>
 			<ExtendedTooltip name="PasswordConfirmationExtendedTooltip" id="13"/>
 		</InputField>
-		<CheckBoxField name="StorePassword" id="14">
-			<DataPath>StorePassword</DataPath>
+		<CheckBoxField name="SavePassword" id="14">
+			<DataPath>SavePassword</DataPath>
 			<TitleLocation>Right</TitleLocation>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Store the password in the infobase</v8:content>
+				</v8:item>
+			</ToolTip>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="StorePasswordContextMenu" id="15"/>
-			<ExtendedTooltip name="StorePasswordExtendedTooltip" id="16"/>
+			<ContextMenu name="SavePasswordContextMenu" id="15"/>
+			<ExtendedTooltip name="SavePasswordExtendedTooltip" id="16"/>
 		</CheckBoxField>
 	</ChildItems>
 	<Attributes>
@@ -90,11 +109,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="StorePassword" id="3">
+		<Attribute name="SavePassword" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Store password</v8:content>
+					<v8:content>Save password</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -112,6 +131,17 @@
 				<v8:Type>cfg:CatalogRef.EmailAccounts</v8:Type>
 			</Type>
 		</Attribute>
+		<Attribute name="CheckCanSendReceiveEmailMessage" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Check whether email messages can be sent and received</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
 	</Attributes>
 	<Commands>
 		<Command name="SavePasswordAndContinue" id="1">
@@ -124,7 +154,7 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Save password in the infobase and send email.</v8:content>
+					<v8:content>Save password in the infobase and send email</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>SavePasswordAndContinueExecute</Action>

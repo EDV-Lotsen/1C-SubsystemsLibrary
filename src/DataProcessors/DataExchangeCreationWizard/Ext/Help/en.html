@@ -1,9 +1,112 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
-<p>Data exchange creation wizard is intended for creation of data exchange between two infobases. This wizard can be used both for creation of universal data exchanges and for creation of data exchanges in distributed infobase.<br>Creation of new data exchange is performed in two stages. First and second stages are performed in first (where it is started) and in second (where it is finished) infobase correspondingly. Settings are passed between infobases via file.</p>
-<h3>During creation of a new data exchange the following data exchange parameters are set:</h3>
-<ul><li>Data exchange method and transport settings, the selected method will be tested after that; 
-</li><li>Restrictions of data migration between a pair of exchanging infobases; 
-</li><li>Default values that will be used during data import; 
-</li><li>Infobase prefix, if it was not set previously.</li></ul><p><br>On the final step of the first data exchange setup stage it will be suggested to save a file with settings for the second stage. In the beginning of the second stage you should select this file to continue creating the data exchange in the second infobase.<br><br>If the universal data exchange is created then on the final step of the first stage of data exchange setup it will be suggested to export data. It is recommended to export data in order to perform object mapping in the end of the second setup stage. In that case in the end of the data exchange creation the interactive data exchange setup wizard will be opened.</p>
-<h3>Specifics of data exchange setup in client/server mode</h3>
-<p><br>Note that in client/server mode the data exchange is performed on the computer where 1C:Enterprise server is installed. For 1C:Enterprise server running on Microsoft Windows this path will look like:<br>\\servername\resource<br>for server on Linux it will look like: <br>//servername/resource.<br>This directory should be available for read an write operation to OS user on behalf of which 1C:Enterprise server is running. If this not like that, the insufficient access rights should be granted or the user should be changed for 1C:Enterprise server and access should be granted to that user. The same recommendations are applied for data exchange over FTP resource and email. Read more about 1C:Enterprise server administration in 1C:Enterprise platform documentation.</p></body></html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This wizard is used to set up <a href="CommonForm.DataExchanges/Help">data synchronization</a> between two applications. You can set up data synchronization respecting exchange rules, ignoring exchange rules, or set up user collaboration in a distributed infobase.</p>
+<h3>Stages of data synchronization setup</h3>
+<p>Data synchronization setup including communication channel selection is performed in two stages. Stage 1 of data synchronization setup is performed in this application; then, you need to log on to the other application to continue with the data synchronization setup. To transfer information between the data synchronization setup stages, a temporary file is used. In case of data synchronization using a direct infobase connection or over web service, all setup stages are performed in this application.</p>
+<p>The following parameters are defined during the setup procedure:</p>
+<ul><li>Connection parameters. The parameters provided by user are validated; 
+</li><li>Data synchronization rules; 
+</li><li>Default values for data import; 
+</li><li>Infobase prefix (if not defined earlier).</li></ul><p>If you setting up data synchronization respecting exchange rules, the first setup stage will end with data sending test. We recommend that you import data for further object mapping at the end of the second setup stage. For this, select a related check box. </p>
+<p>When entering user logon name and password, keep in mind that data synchronization success depends on this user's access rights (for example, if the user has no access to 1C:Enterprise server, data synchronization may fail).</p>
+<p>Each step is described in more details below.</p>
+<h3>Selecting data synchronization setup stage</h3>
+<p>On this page of the wizard, you choose to start the setup from Stage 1 or Stage 2. Use the radio button to select:</p>
+<ul><li><strong>Stage 1</strong> - Set up a new data synchronization. 
+<ul><li>
+<div>Click the <strong>Details </strong>hyperlink to view the detailed information on both applications participating in this data synchronization.</div></li></ul></li><li><strong>Stage 2</strong> - Resume data synchronization setup. Select this stage to continue with data synchronization setup in the target application. 
+<ul><li>
+<p>Specify name of the data synchronization settings file. If the settings file was lost, open data synchronization settings from the <strong>Data synchronization</strong> list, and click <strong>All actions - Get data synchronization settings for target application. </strong></p></li></ul></li><li>We recommend that you <a href="DataProcessor.InfobaseBackupSetup/Help">back up your infobases</a> before performing data synchronization setup. Click the hyperlink to create a <strong>backup data copy</strong> (recommended).</li></ul><p>Click<strong> Next</strong> to proceed with data synchronization setup. </p>
+<h3>Selecting connection to target application</h3>
+<p>Use the radio button to select:</p>
+<ul><li><strong>Direct connection on this computer or in a local network</strong> (in this case, both setup stages are performed in this application). 
+<ul><li>
+<p>Enter the target application connection parameters: </p>
+<ul><li>Specify location of the target application: 
+<ul><li><strong>On this computer or in a local network; </strong>
+</li><li><img src="StdPicture.Select"></img> Select <strong>Infobase directory. </strong></li></ul></li><li><strong>On 1C:Enterprise server; </strong>
+</li><li>Enter<strong> Server cluster; </strong>
+</li><li>Enter<strong> Infobase name.</strong></li></ul></li></ul></li><li>use radio button to select: 
+<ul><li><strong>1C:Enterprise authentication: </strong>
+</li><li>Enter <strong>Name</strong> and <strong>Password</strong> of the user on whose behalf data synchronization will be performed. </li></ul></li><li><strong>OS authentication.</strong></li></ul><ul></ul><li>Click<strong> Test connection</strong> to validate the provided information. 
+<ul></ul></li><li><strong>Direct connection between the applications over the Internet: </strong>
+</li><li>Enter<strong> </strong>the application <strong>URL</strong>; 
+</li><li>Enter <strong>User name</strong> and <strong>Password</strong>; 
+</li><li>select the <strong>Remember password</strong> check box. 
+</li><li>Click the <strong>Internet access parameters</strong> hyperlink and configure <a href="CommonForm.ProxyServerParameters/Help">proxy server parameters</a>, if necessary. 
+</li><li>Click<strong> Test connection</strong> to validate the provided information. 
+<ul></ul></li><li><strong>Other channels (network directories, FTP, email) </strong>
+<ul></ul><p>Click <strong>Next </strong>to proceed to the next data synchronization setup stage.</p>
+<h3>Setting up connection parameters using local or network directories</h3>
+<ul dir="ltr"><li>
+<div>Select the <strong>Set up connection using local or network directories </strong>check box. </div>
+</li><li>In the <strong>Directory </strong>field <strong>Select</strong> path to a directory located on this computer or in local network. 
+</li><li>To reduce the size of sent messages, select the <strong>Compress and archive sent data</strong> check box. Enter the <strong>Archive password</strong> if necessary. 
+</li><li>To validate the provided settings, click <strong>Test connection.</strong></li></ul><p dir="ltr">Click <strong>Next </strong>to proceed to the next data synchronization setup stage.</p>
+<h3>Setting up parameters for FTP connection</h3>
+<ul><li>Select the <strong>Set up connection through FTP</strong> check box. 
+</li><li>Enter<strong> Directory path. Port </strong>will be filled in automatically. 
+</li><li>Fill in the User name and <strong>Password</strong> fields. 
+</li><li>Enter<strong> Maximum file size</strong> if the selected FTP resource has limited storage. 
+</li><li>Select the <strong>Passive connection</strong> check box if necessary. 
+</li><li>To reduce the size of sent messages, select the <strong>Compress and archive sent data </strong>check box. Enter the <strong>Archive password</strong> if necessary. 
+</li><li>Click the <strong>Internet access parameters</strong> hyperlink and configure proxy server parameters, if necessary. 
+</li><li>To validate the provided settings, click <strong>Test connection. </strong></li></ul><p>Click<strong> Next</strong> to proceed to the next data synchronization setup stage.</p>
+<h3>Setting up parameters for email connection</h3>
+<ul><li>Select the <strong>Set up connection through email</strong> check box. 
+</li><li><strong>In the Email account </strong>field, <strong>Select </strong>an account from <a href="Catalog.EmailAccounts/Help">list</a> or click <strong>Create</strong> (press F8) to <a href="Catalog.EmailAccounts.Form.ItemForm/Help">create a new account</a>. 
+</li><li>Enter<strong> Maximum email attachment size. </strong>
+</li><li>To reduce the size of sent messages, select the <strong>Compress and archive sent data </strong>check box. Enter the <strong>Archive password</strong> if necessary. 
+</li><li>Click<strong> Test connection.</strong></li></ul><p>Click<strong> Next</strong> to proceed to the next data synchronization setup stage.</p>
+<h3>Setting up data synchronization parameters</h3>
+<ul><li>Enter<strong> Description of this infobase; </strong>
+</li><li>Enter<strong> Description </strong>and <strong>Prefix of</strong> <strong>target infobase; </strong>
+</li><li>Select<strong> Primary connection method</strong> - when multiple connection methods are available, the primary method will have priority. 
+</li><li>Specify data synchronization rules: 
+</li><li>The default <strong>Data export rules </strong>(used when sending data to the other application) are displayed. To change these, click the <strong>Change data export rules</strong> hyperlink. 
+</li><li>Specify<strong> Data import rules </strong>(used to autofill blank fields). This field is mandatory. Click the <strong>Change autofill values</strong> hyperlink and select values from the list. This field is not available when setting up data sycnhronization that ignores exchange rules.</li></ul><p>Click<strong> Next</strong> to test the provided parameters and finish data synchronization setup for this application (in case of direct connection between applications, you will need to set up and validate parameters for the other application as well).</p>
+<h3>Ready to start data synchronization</h3>
+<p>On this page of the wizard, data synchronization settings for the first application are displayed (in case of direct connection between applications, you will need to validate parameters for the other application as well). Validate the settings and click <strong>Next</strong> to proceed. </p>
+<h3>Setup stage 1 completed successfully</h3>
+<p>Now, the data synchronization settings will be saved to a file located in a directory selected earlier. In case of direct connection between the application, the data synchronization setup will end now.</p>
+<ul><li>
+<div>The file path will be displayed. Click<strong> Save.</strong> </div>
+</li><li>
+<div>The <strong>Send data to target application</strong> check box is selected by default.</div>
+</li><li>
+<div>Click <strong>Ready to end data synchronization</strong>.</div></li></ul><h3>Specifics of data synchronization setup in client/server mode</h3>
+<p>When setting up data synchronization in client/server mode infobase, keep in mind that all data will be synchronized on a computer where 1C:Enterprise server was installed.</p>
+<p>For 1C:Enterprise servers under Microsoft Windows, the path looks like this:<br><strong>\\servername\resource</strong></p>
+<p>For 1C:Enterprise servers under Linux, the path looks like this: <br><strong>//servername/resource.</strong> </p>
+<p>Make sure that the user on whose behalf the 1C:Enterprise server runs has sufficient rights to read and write in the data synchronization directory. If the user does not have the sufficient rights, you will need to grant them these rights, or select another user with sufficient rights to read and write in the data synchronization directory and run the 1C:Enterprise server on their behalf. The same recommendations apply to FTP and email access. For more information on 1C:Enterprise server administration, see the 1C:Enterprise platform documentation.</p>
+<h3>Specifics of distributed infobase node creation </h3>
+<p>During Stage 1, the initial distributed infobase (DIB) image is created. All wizard pages remain as they are. On the <strong>Setup stage 1 completed successfully</strong> page, make sure the <strong>Create initial image of subordinate DIB node</strong> check box is selected. However, you can go back to this step at any moment during the data synchronization setup procedure. </p>
+<ul><li>
+<div>After selecting the check box, click <strong>Done</strong>. You will be asked to create the initial DIB image. For this, click the <strong>Create initial image</strong> hyperlink. </div>
+</li><li>
+<div>By default, the settings file required for DIB node creation will be created in a directory selected for exchange purposes, <strong>On this computer or in local network.</strong> </div>
+</li><li>
+<div>However, you can select to create it <strong>On 1C:Enterprise server</strong> via radio button. In this case you will need to enter <strong>Infobase parameters:</strong> </div>
+</li><li>
+<div>Enter<strong> 1C:Enterprise server cluster. </strong></div>
+</li><li>
+<div>Enter<strong> Infobase name.</strong> </div>
+</li><li>
+<div><img src="StdPicture.Select" width="12" height="12"></img> Select parameters in the <strong>Secure connection</strong> field. </div>
+</li><li>
+<div><img src="StdPicture.Select" width="12" height="12"></img> Select<strong> DBMS type.</strong> </div>
+</li><li>
+<div>Enter<strong> Database name</strong> and <strong>User password.</strong> </div>
+</li><li>
+<div>Specify<strong> Date shift.</strong> </div>
+</li><li>
+<div>Select<strong> Interface language.</strong> </div>
+</li><li>
+<div>Select the <strong>Set scheduled job lock</strong> check box if necessary. </div>
+</li><li>
+<div>Click<strong> Create initial image.</strong> </div>
+</li><li>
+<div>Save the file containing the initial image of subordinate DIB node to a new directory, which will be further used as a working directory for the new infobase.</div>
+</li><li>Create a new infobase via the <strong>Add infobase to list </strong>command. Specify path to the initial image file. The selected infobase will be added to the infobase list. 
+</li><li>
+<div>Once you log on to the application,<strong> </strong>the wizard will automatically proceed from the <strong>Continue setting up data synchronization with master node </strong>page. Click <strong>Next</strong> to proceed with the setup and select a master node connection method.</div></li></ul><h3>Creating DIB nodes (external files)</h3>
+<p>If any of your files are stored in volumes, during <a href="CommonForm.CreateInitialImageWithFiles/Help">initial image creation </a>you will need to specify path to the .ZIP archive file containing all files stored in volumes. When starting the application with a local branch infobase for the first time, you will need to execute the <strong>Store initial image files</strong> command and specify the path to the archive file.</p></li></body></html>

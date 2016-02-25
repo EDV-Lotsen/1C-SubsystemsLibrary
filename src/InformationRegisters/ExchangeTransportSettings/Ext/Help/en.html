@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This form is used to set up or validate inter-application connection parameters used for data synchronization.<br>Each tab displays parameters for a specific connection method.</p>
+<p>The connection parameters are also displayed during data synchronization setup procedure in the <a href="DataProcessor.DataExchangeCreationWizard/Help">Data synchronization creation wizard</a>. The default parameters are displayed; they can be modified if necessary.</p>
+<p>To start setting up <strong>Connection parameters</strong>, use the related command in the data synchronization settings. </p>
+<p>The following parameters are common for all connection methods:</p>
+<ul><li><strong>Default connection</strong> - select a connection to be used as default during both automated and interactive <a href="CommonForm.DataExchanges/Help">data synchronization. </a>
+</li><li><strong>Test connection</strong> - click to validate the connection parameters and attempt connecting with these parameters. 
+</li><li><strong>Compress sent data</strong> - select this check box to reduce the size of sent messages. For direct infobase connections, this check box is disabled. 
+<ul><li><strong>Exchange message archive password</strong> - enter the password required to compress or decompress exchange messages. For successful data exchange, compression password in the source application and decompression password in the target application must be identical.</li></ul></li></ul><h3>Direct connection:</h3>
+<ul><li>Use the radio button to select an infobase type: 
+<ul><li><strong>Correspondent file mode infobase</strong> 
+<ul><li><img src="StdPicture.Select"></img> Select <strong>Infobase directory</strong>.</li></ul></li><li><strong>Correspondent client/server mode infobase</strong> 
+</li><li>Enter <strong>Server name</strong>; 
+</li><li>Enter <strong>Server infobase name</strong>.</li></ul></li></ul><li>Select the <strong>OS authentication</strong> check box if necessary (this check box is cleared by default). In this case, the following fields should remain blank. 
+</li><li>Enter <strong>User name</strong>; 
+</li><li>Enter <strong>User password</strong>. 
+<ul></ul><h3>Internet</h3>
+<ul><li>Enter application <strong>URL</strong>. 
+</li><li>Enter <strong>User name</strong> and <strong>Password</strong>. 
+</li><li>Select the <strong>Remember password</strong> check box if necessary. 
+</li><li>Click the <strong>Internet access parameters</strong> hyperlink and configure <a href="CommonForm.ProxyServerParameters/Help">proxy server parameters</a>.</li></ul><h3>Network directory</h3>
+<p>In the <strong>Directory</strong> field,  <strong>Specify</strong> path to a local or network directory.</p>
+<h3>FTP resource</h3>
+<ul><li>Specify <strong>Directory path</strong> and data transmission <strong>Port</strong>. 
+</li><li>Enter <strong>User name</strong> (login) and <strong>Password</strong>. 
+</li><li>Enter <strong>Maximum file size</strong> if the selected FTP resource has limited storage. 
+</li><li>Select the <strong>Passive connection</strong> check box if necessary. 
+</li><li>Click the <strong>Internet access parameters</strong> hyperlink and configure proxy server parameters.</li></ul><h3>Email messages</h3>
+<p>In the <strong>Email account</strong> field, select an <a href="Catalog.EmailAccounts/Help">email account</a> from <a href="Catalog.EmailAccounts.Form.ItemForm/Help">list</a> or create a new account.</p>
+<p>Enter <strong>Maximum email attachment size</strong> if necessary<strong>.</strong></p></li></body></html>

@@ -3,136 +3,217 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// The interface client function that supports simplified call of the new message edit form.
+// Opens a message creation form.
+//  
+// Parameters:
+//  SendingParameters - Structure - parameters for filling the sending form for that message (all optional):
+//    * From - CatalogRef.EmailAccounts - account used to send the email message.
+//                  - ValueList - list of accounts available for selection in the form:
+//                      ** Presentation - String - account description.
+//                      ** Value - CatalogRef.EmailAccounts - account.
+//    
+//    * Recipient - list of email addresses.
+//        - String - list of addresses in the following format:
+//            [RecipientPresentation1] <Address1>; [[RecipientPresentation2] <Адрес2>; ...]
+//        - ValueList - list of addresses:
+//            ** Presentation - String - recipient presentation.
+//            ** Value - String - email address.
+//    
+//    * Subject - String - message subject.
+//    
+//    * Text - String - message body.
+//    
+//    * Attachments - Array - attached files (described as structures):
+//        ** Structure - attachment description:
+//             *** Presentation - String - attachment file name.
+//             *** AddressInTempStorage - String - address of the attached binary data in a temporary storage.
+//             *** Encoding - String - attachment encoding (used if it is different from the message encoding).
+//    
+//    * DeleteFilesAfterSending - Boolean - delete temporary files after sending the message.
+//  
+//  FormClosingNotification - NotifyDescription - procedure to be executed after closing
+//                                                the message sending form.
+//
+Procedure CreateNewEmailMessage(SendingParameters = Undefined, FormClosingNotification = Undefined) Export
+	
+	If SendingParameters = Undefined Then
+		SendingParameters = New Structure;
+	EndIf;
+	SendingParameters.Insert("FormClosingNotification", FormClosingNotification);
+	
+	NotifyDescription = New NotifyDescription("CreateNewEmailMessageAccountChecked", ThisObject, SendingParameters);
+	CheckAccountForSendingEmailExists(NotifyDescription);
+	
+EndProcedure
+ 
+// If a user has no account for sending email, starts the account setup wizard or displays a notification 
+// that email cannot be sent, depending on the user rights.
+// The procedure is intended for scenarios that require account setup before requesting 
+// additional sending parameters.
+
 //
 // Parameters:
-// Sender*                 - ValueList, CatalogRef.EmailAccounts - email account 
-//                           (account list) on behalf of which the email message can be
-//                           send. If the parameter type is a value list, Value is 
-//                           an email account reference and Presentation is an email 
-//                           account description.
-// Recipient               - ValueList - 
-//                           Value fields contain email addresses. 
-//                           Presentation fields contain email account descriptions.
-//                         - String - email address list in the correct email address
-//                           format. 
-// Subject                 - String - message subject.
-// Text                    - String - message body.
-// FileList                - ValueList - where:
-//                           Presentation - string - attachment description.
-//                           Value - BinaryData - binary attachment data.
-//                                 - String - file address in the temporary store,
-//                                 - String - path to the file on the client.
-// DeleteFilesAfterSending - Boolean - flag that shows whether temporary files must be
-//                           deleted after sending the message.
-// SaveEmailMessage        - Boolean - flag that shows whether the message must be 
-//                           saved (is used only if the Interactions subsystem is
-//                           embedded).
+//   ResultHandler - NotifyDescription - procedure to be executed after the check is completed.
 //
-Procedure OpenEmailMessageSendForm(Val Sender = Undefined,
-												Val Recipient = Undefined,
-												Val Subject = "",
-												Val Text = "",
-												Val FileList = Undefined,
-												Val DeleteFilesAfterSending = False,
-												Val SaveEmailMessage = True) Export
+Procedure CheckAccountForSendingEmailExists(ResultHandler) Export
+	If EmailOperationsServerCall.HasAvailableAccountsForSending() Then
+		ExecuteNotifyProcessing(ResultHandler, True);
+	Else
+		If EmailOperationsServerCall.RightToAddAccountsAvailable() Then
+			OpenForm("Catalog.EmailAccounts.Form.AccountSetupWizard", 
+				New Structure("ContextMode", True), , , , , ResultHandler);
+		Else	
+			MessageText = NStr("en = 'To send the message, first set up an email account.'");
+			ShowMessageBox(ResultHandler, MessageText);
+		EndIf;
+	EndIf;
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// OBSOLETE PROCEDURES AND FUNCTIONS
+
+// Obsolete. Use CreateNewEmailMessage instead.
+//
+// Client interface function used for simplified call of a new email message edit form.
+// Parameters:
+//   From*       - ValueList, CatalogRef.EmailAccounts - account used to send the email message.
+//                   If the type is a value list,
+//                   then presentation is the account name, and value is reference to the account.
+//
+//   Recipient   - ValueList, String:
+//                   if the type a value list, then the presentation is recipient's name
+//                                                      and value is the email address.
+//                   If the type is a string, it contains a list of valid email addresses.*
+//
+//   Subject     - String - message subject.
+//   Text        - String - message body.
+//
+//   Attachments - ValueList:
+//                   presentation - String - attachment name.
+//                   value        - BinaryData - attachment's binary data.
+//                                - String - address of the file in a temporary storage
+//                                - String - path to the file on client.
+//
+//   DeleteFilesAfterSending - Boolean - delete temporary files after sending the message.
+//   SaveEmailMessage        - Boolean - flag specifying whether the message must be saved 
+//                                       (used only if Interactions subsystem is embedded).
+//
+Procedure OpenEmailMessageSendForm(Val From = Undefined, Val Recipient = Undefined, Val Subject = "",
+	Val Text = "", Val Attachments = Undefined, Val DeleteFilesAfterSending = False, Val SaveEmailMessage = True) Export
+ 
+	SendingParameters = New Structure;
+	SendingParameters.Insert("From", From);
+	SendingParameters.Insert("Recipient", Recipient);
+	SendingParameters.Insert("Subject", Subject);
+	SendingParameters.Insert("Text", Text);
+	SendingParameters.Insert("Attachments", Attachments);
+	SendingParameters.Insert("DeleteFilesAfterSending", DeleteFilesAfterSending);
+	SendingParameters.Insert("SaveEmailMessage", SaveEmailMessage);
 	
-	StandardProcessing = True;
+	CreateNewEmailMessage(SendingParameters);
 	
-	EmailClientOverridable.OpenEmailMessageSendForm(StandardProcessing,
-	      Sender,Recipient,Subject,Text,FileList,DeleteFilesAfterSending);
+EndProcedure
+
+#EndRegion
+ 
+#Region InternalProceduresAndFunctions
+
+// Continues the CreateNewEmailMessage procedure.
+Procedure CreateNewEmailMessageAccountChecked(AccountConfigured, SendingParameters) Export
+	Var From, Recipient, Attachments, Subject, Text, DeleteFilesAfterSending;
 	
-	If StandardProcessing Then
-		OpenSimpleSendEmailForm(Sender,
-		Recipient, Subject,Text, FileList, DeleteFilesAfterSending);
+	If AccountConfigured <> True Then
+		Возврат;
+	КонецЕсли;
+	
+	SendingParameters.Property("From", From);
+	SendingParameters.Property("Recipient", Recipient);
+	SendingParameters.Property("Subject", Subject);
+	SendingParameters.Property("Text", Text);
+	SendingParameters.Property("Attachments", Attachments);
+	SendingParameters.Property("DeleteFilesAfterSending", DeleteFilesAfterSending);
+	
+	FormClosingNotification = SendingParameters.FormClosingNotification;
+ 
+	If CommonUseClient.SubsystemExists("StandardSubsystems.Interactions") 
+		AND StandardSubsystemsClientCached.ClientParameters().UseEmailClient Then
+			ClientInteractionsModule = CommonUseClient.CommonModule("InteractionsClient");
+			ClientInteractionsModule.OpenEmailMessageSendForm(From,
+				Recipient, Subject, Text, Attachments, FormClosingNotification);
+	Else
+		OpenSimpleSendEmailMessageForm(From, Recipient,
+			Subject,Text, Attachments, DeleteFilesAfterSending, FormClosingNotification);
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-// The interface client function that supports simplified call of the new message edit
-// form. Messages are not saved in the infobase when sending them through the simple
-// message form.
+// The interface client function that supports simplified call of the new message
+// edit form. Messages are not saved in the infobase when sending them
+// through the simple message form.
 //
-// See the OpenEmailMessageSendForm for details.
+// See the CreateNewEmailMessage function for details.
 //
-Procedure OpenSimpleSendEmailForm(Sender,
-			Recipient, Subject, Text, FileList, DeleteFilesAfterSending) Export
+Procedure OpenSimpleSendEmailMessageForm(From,
+			Recipient, Subject, Text, FileList, DeleteFilesAfterSending, CloseNotificationDetails)
 	
-	//EmailParameters = New Structure;
-	//
-	//EmailParameters.Insert("Account", Sender);
-	//EmailParameters.Insert("Recipient", Recipient);
-	//EmailParameters.Insert("Subject", Subject);
-	//EmailParameters.Insert("Body", Text);
-	//EmailParameters.Insert("Attachments", FileList);
-	//EmailParameters.Insert("DeleteFilesAfterSending", DeleteFilesAfterSending);
-	//
-	//OpenForm("CommonForm.EditNewEmailMessage", EmailParameters);
+	EmailParameters = New Structure;
 	
+	EmailParameters.Insert("Account", From);
+	EmailParameters.Insert("Recipient", Recipient);
+	EmailParameters.Insert("Subject", Subject);
+	EmailParameters.Insert("Body", Text);
+	EmailParameters.Insert("Attachments", FileList);
+	EmailParameters.Insert("DeleteFilesAfterSending", DeleteFilesAfterSending);
+	
+	OpenForm("CommonForm.SendMessage", EmailParameters, , , , , CloseNotificationDetails);
 EndProcedure
 
-// Verifying the account.
+// Performs account check.
 //
 // Parameters:
-// Account - CatalogRef.EmailAccounts - account to be verified.
+//   Account - CatalogRef.EmailAccounts - account to be checked.
 //
 Procedure CheckAccount(Val Account) Export
 	
 	ClearMessages();
 	
-	Status(NStr("en = 'Verifying account'"),,NStr("en = 'Verifying the account. Please wait...'"));
+	Status(NStr("en = Checking account'"),,NStr("en = Checking the account. Please wait...'"));
 	
-	If Email.PasswordSpecified(Account) Then
-		PasswordParameter = Undefined;
+	If EmailOperationsServerCall.PasswordSpecified(Account) Then
+		CheckCanSendReceiveEmail(Undefined, Account, Undefined);
 	Else
-		//AccountParameter = New Structure("Account", Account);
-		//OpenForm("CommonForm.AccountPasswordConfirmation", AccountParameter,,,,, New NotifyDescription("CheckAccountEnd", ThisObject, New Structure("Account", Account)), FormWindowOpeningMode.LockWholeInterface);
-        Return;
+		FormParameters = New Structure;
+		FormParameters.Insert("Account", Account);
+		FormParameters.Insert("CheckCanSendReceiveEmailMessage", True);
+		OpenForm("CommonForm.AccountPasswordConfirmation", FormParameters);
 	EndIf;
 	
-	CheckAccountPart(Account, PasswordParameter);
 EndProcedure
 
-Procedure CheckAccountEnd(Result, AdditionalParameters) Export
-	
-	Account = AdditionalParameters.Account;
-	
-	
-	PasswordParameter = Result;
-	If TypeOf(PasswordParameter) <> Type("String") Then
-		Return
-	EndIf;
-	
-	CheckAccountPart(Account, PasswordParameter);
-
-EndProcedure
-
-Procedure CheckAccountPart(Val Account, Val PasswordParameter)
-	
-	Var AdditionalMessage, ErrorMessage;
+// Validates an email account.
+//
+// See the description of the EmailOperationsInternal.CheckCanSendReceiveEmailMessage procedure.
+//
+Procedure CheckCanSendReceiveEmail(ResultHandler, Account, PasswordParameter) Export
 	
 	ErrorMessage = "";
 	AdditionalMessage = "";
-	Email.CheckSendReceiveEmailPossibility(Account, PasswordParameter, ErrorMessage, AdditionalMessage);
+	EmailOperationsServerCall.CheckCanSendReceiveEmail(Account, PasswordParameter, ErrorMessage, AdditionalMessage);
 	
 	If ValueIsFilled(ErrorMessage) Then
-		ShowMessageBox(,StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en = 'During verification of account parameters, the following errors were found:
-		|%1'"), ErrorMessage ),,
-		NStr("en = 'Verifying account'"));
+		ShowMessageBox(ResultHandler, StringFunctionsClientServer.SubstituteParametersInString(
+						NStr("en = 'Account validation errors:
+								   |%1'"), ErrorMessage ),,
+						NStr("en = 'Account verification'"));
 	Else
-		ShowMessageBox(,StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en = 'Account parameter verifying completed successfully. %1'"),
-		AdditionalMessage ),,
-		NStr("en = 'Verifying account'"));
+		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
+						NStr("en = 'Account validation completed. %1'"),
+						AdditionalMessage ),,
+						NStr("en = 'Account verification'"));
 	EndIf;
 	
 EndProcedure
- // CheckAccount()
-
+ 
+#EndRegion

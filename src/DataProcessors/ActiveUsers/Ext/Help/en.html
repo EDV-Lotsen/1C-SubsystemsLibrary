@@ -1,5 +1,23 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.17801"></meta></head><body>
-<p>The list contains the list of user that currently work with the application. </p>
-<p>You can sort the list by any column. With the bold font the current session that opens the active users list is highlighted. </p>
-<p>Using commands in the <strong>All actions</strong> menu you can adjust the form and export the list content as a spreadsheet or text document. Using the <strong>Event log</strong> command you can open the event log filtered by the selected user. </p>
-<p>In the Client-server mode the Terminate session command is available. This command forces shutdown for the selected user sessions. For correct operation please specify the infobase administration parameters (the <strong>All actions</strong> menu).</p></body></html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This formdisplays the list of <a href="Catalog.Users/Help">users</a> currently working with the application. </p>
+<p>The list includes users working with the infobase via <strong>thin client</strong>, <strong>web client</strong>, or <strong>Designer mode</strong>, as well as such technical users as <strong>COM connection</strong>, <strong>WS connection</strong>, <strong>background job</strong>, etc.</p>
+<p>To open the list, execute the related command located in the <strong>Administration - Support and Maintenance</strong> section. </p>
+<p>The list includes:</p>
+<ul><li><strong>User - </strong>full name of the user. <a href="Catalog.ExternalUsers/Help">External users</a> are displayed as well; 
+</li><li><strong>Application</strong> - this field specifies <strong>Application type</strong> (<strong>thin client</strong>, etc). Connection mode is specified as well. Sessions created in other connection modes (COM connection, web services, etc) are displayed too. 
+</li><li><strong>Session started</strong> - session start date and time; 
+</li><li><strong>Computer</strong> - network name of the computer used to log on to the application; 
+</li><li><strong>Session</strong> - session ID, data separation.</li></ul><p>Total number of active users is displayed at the bottom line of the list. </p>
+<p>The line corresponding to the current session used to open the active users list is marked in bold. </p>
+<p>For your convenience, you can sort the list by any column. </p>
+<p>The active users list is not updated in real time. To view the active users that were added to the list after it was opened, click <img src="StdPicture.Refresh" width="16" height="16"></img> <strong>Refresh current list</strong> (or<strong> </strong>press <strong>F5</strong>). </p>
+<h3>Filters</h3>
+<p>The <strong>Show</strong> field can<strong> </strong>be used to <img src="StdPicture.Select"></img> <strong>Select</strong> a filter from predefined list. <strong>All sessions</strong> is selected by default. </p>
+<h3>Viewing user data</h3>
+<p>To view data on a user, select the user and click<strong> Open. </strong></p>
+<h3>Viewing event log</h3>
+<p>To review work history for a selected user, click <strong>Event log</strong> to go to the <a href="DataProcessor.EventLog/Help">event log</a> filtered by the selected user. </p>
+<h3>Terminating sessions (client/server mode)</h3>
+<p>In client/server mode, the <strong>Terminate session</strong> command is available. Use this command to terminate the selected user sessions. Prior to using this command, you need to <a href="CommonForm.ApplicationAdministrationParameters/Help">set the application administration parameters</a> via the <strong>All actions</strong> menu; otherwise, the command may not run correctly. </p>
+<h3>See also:</h3>
+<ul><li><a href="v8help://frame/form_common">Working with forms</a>.</li></ul></body></html>

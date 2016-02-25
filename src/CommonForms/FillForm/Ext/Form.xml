@@ -1,0 +1,627 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Product filling</v8:content>
+		</v8:item>
+	</Title>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>Bottom</CommandBarLocation>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="OK" id="42">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.OK</CommandName>
+				<TextColor>style:ButtonTextColor</TextColor>
+				<BackColor>style:ButtonBackColor</BackColor>
+				<BorderColor>style:BorderColor</BorderColor>
+				<ExtendedTooltip name="OKExtendedTooltip" id="53"/>
+			</Button>
+			<Button name="Cancel" id="8">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Cancel</CommandName>
+				<TextColor>style:ButtonTextColor</TextColor>
+				<BackColor>style:ButtonBackColor</BackColor>
+				<BorderColor>style:BorderColor</BorderColor>
+				<ExtendedTooltip name="CancelExtendedTooltip" id="54"/>
+			</Button>
+			<Button name="Help" id="43">
+				<Type>CommandBarButton</Type>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<TextColor>style:ButtonTextColor</TextColor>
+				<BackColor>style:ButtonBackColor</BackColor>
+				<BorderColor>style:BorderColor</BorderColor>
+				<ExtendedTooltip name="HelpExtendedTooltip" id="55"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="Header" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Parameters</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Header</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<Format>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Parameters</v8:content>
+				</v8:item>
+			</Format>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="HeaderExtendedTooltip" id="56"/>
+			<ChildItems>
+				<LabelField name="PriceKindsAndWarehouse" id="80">
+					<DataPath>PriceKindsAndWarehouse</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<HorizontalStretch>true</HorizontalStretch>
+					<VerticalStretch>false</VerticalStretch>
+					<ContextMenu name="PriceKindAndWarehouseContextMenu" id="81"/>
+					<ExtendedTooltip name="PriceKindAndWarehouseExtendedTooltip" id="82"/>
+				</LabelField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ProductListGroup" id="3">
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<Format>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Product list</v8:content>
+				</v8:item>
+			</Format>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ProductListGroupExtendedTooltip" id="64"/>
+			<ChildItems>
+				<SearchStringAddition name="SearchString" id="110">
+					<AdditionSource>
+						<Item>ProductList</Item>
+						<Type>SearchStringRepresentation</Type>
+					</AdditionSource>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Find</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="SearchStringContextMenu" id="111"/>
+					<ExtendedTooltip name="SearchStringExtendedTooltip" id="112"/>
+				</SearchStringAddition>
+				<UsualGroup name="Group1" id="50">
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="Group1ExtendedTooltip" id="66"/>
+					<ChildItems>
+						<Table name="ProductTree" id="4">
+							<Representation>Tree</Representation>
+							<CommandBarLocation>None</CommandBarLocation>
+							<SkipOnInput>false</SkipOnInput>
+							<Width>25</Width>
+							<HeightInTableRows>5</HeightInTableRows>
+							<SelectionMode>SingleRow</SelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<EnableStartDrag>true</EnableStartDrag>
+							<EnableDrag>true</EnableDrag>
+							<DataPath>ProductTree</DataPath>
+							<RowPictureDataPath>ProductTree.DefaultPicture</RowPictureDataPath>
+							<BorderColor>style:BorderColor</BorderColor>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>true</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="ProductTreeContextMenu" id="23"/>
+							<AutoCommandBar name="ProductTreeCommandBar" id="31"/>
+							<ExtendedTooltip name="ProductTreeExtendedTooltip" id="67"/>
+							<SearchStringAddition name="ProductTreeSearchString" id="83">
+								<AdditionSource>
+									<Item>ProductTree</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductTreeSearchStringContextMenu" id="84"/>
+								<ExtendedTooltip name="ProductTreeSearchStringExtendedTooltip" id="85"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="ProductTreeViewStatus" id="86">
+								<AdditionSource>
+									<Item>ProductTree</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductTreeViewStatusContextMenu" id="87"/>
+								<ExtendedTooltip name="ProductTreeViewStatusExtendedTooltip" id="88"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="ProductTreeSearchControl" id="89">
+								<AdditionSource>
+									<Item>ProductTree</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductTreeSearchControlContextMenu" id="90"/>
+								<ExtendedTooltip name="ProductTreeSearchControlExtendedTooltip" id="91"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="OnActivateRow">ProductTreeOnActivateRow</Event>
+							</Events>
+							<ChildItems>
+								<LabelField name="ProductTreeDescription" id="40">
+									<DataPath>ProductTree.Description</DataPath>
+									<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+									<ContextMenu name="ProductTreeDescriptionContextMenu" id="41"/>
+									<ExtendedTooltip name="ProductTreeDescriptionExtendedTooltip" id="68"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+						<Table name="ProductList" id="2">
+							<CommandBarLocation>None</CommandBarLocation>
+							<SkipOnInput>false</SkipOnInput>
+							<DefaultItem>true</DefaultItem>
+							<Width>50</Width>
+							<HeightInTableRows>8</HeightInTableRows>
+							<ChoiceMode>true</ChoiceMode>
+							<SelectionMode>SingleRow</SelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<EnableStartDrag>true</EnableStartDrag>
+							<EnableDrag>true</EnableDrag>
+							<DataPath>ProductList</DataPath>
+							<RowPictureDataPath>ProductList.DefaultPicture</RowPictureDataPath>
+							<BorderColor>style:BorderColor</BorderColor>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>false</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="ProductListContextMenu" id="24"/>
+							<AutoCommandBar name="ProductListCommandBar" id="32"/>
+							<ExtendedTooltip name="ProductListExtendedTooltip" id="69"/>
+							<SearchStringAddition name="ProductListSearchString" id="92">
+								<AdditionSource>
+									<Item>ProductList</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductListSearchStringContextMenu" id="93"/>
+								<ExtendedTooltip name="ProductListSearchStringExtendedTooltip" id="94"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="ProductListViewStatus" id="95">
+								<AdditionSource>
+									<Item>ProductList</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductListViewStatusContextMenu" id="96"/>
+								<ExtendedTooltip name="ProductListViewStatusExtendedTooltip" id="97"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="ProductListSearchControl" id="98">
+								<AdditionSource>
+									<Item>ProductList</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="ProductListSearchControlContextMenu" id="99"/>
+								<ExtendedTooltip name="ProductListSearchControlExtendedTooltip" id="100"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="ValueChoice">ProductListValueChoice</Event>
+								<Event name="DragStart">ProductListDragStart</Event>
+							</Events>
+							<ChildItems>
+								<LabelField name="Description" id="10">
+									<DataPath>ProductList.Description</DataPath>
+									<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="DescriptionContextMenu" id="27"/>
+									<ExtendedTooltip name="DescriptionExtendedTooltip" id="70"/>
+								</LabelField>
+								<LabelField name="Code" id="9">
+									<DataPath>ProductList.Code</DataPath>
+									<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="CodeContextMenu" id="26"/>
+									<ExtendedTooltip name="CodeExtendedTooltip" id="71"/>
+								</LabelField>
+								<LabelField name="Price" id="12">
+									<DataPath>ProductList.Price</DataPath>
+									<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Width>10</Width>
+									<ContextMenu name="PriceContextMenu" id="28"/>
+									<ExtendedTooltip name="PriceExtendedTooltip" id="72"/>
+								</LabelField>
+								<LabelField name="Count" id="13">
+									<DataPath>ProductList.Count</DataPath>
+									<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Width>14</Width>
+									<ContextMenu name="QuantityContextMenu" id="29"/>
+									<ExtendedTooltip name="CountExtendedTooltip" id="73"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="SelectedProducts" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Selected products</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<Format>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Selected products</v8:content>
+				</v8:item>
+			</Format>
+			<ExtendedTooltip name="SelectedProductsExtendedTooltip" id="74"/>
+			<ChildItems>
+				<Table name="Products" id="5">
+					<Representation>List</Representation>
+					<CommandBarLocation>None</CommandBarLocation>
+					<SkipOnInput>false</SkipOnInput>
+					<Width>40</Width>
+					<HeightInTableRows>4</HeightInTableRows>
+					<SelectionMode>SingleRow</SelectionMode>
+					<UseAlternationRowColor>true</UseAlternationRowColor>
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<EnableDrag>true</EnableDrag>
+					<DataPath>Products</DataPath>
+					<BorderColor>style:BorderColor</BorderColor>
+					<SearchStringLocation>None</SearchStringLocation>
+					<ViewStatusLocation>None</ViewStatusLocation>
+					<SearchControlLocation>None</SearchControlLocation>
+					<RowFilter xsi:nil="true"/>
+					<ContextMenu name="ProductsContextMenu" id="30">
+						<ChildItems>
+							<Button name="Delete" id="44">
+								<Type>CommandBarButton</Type>
+								<SkipOnInput>false</SkipOnInput>
+								<CommandName>5:ec576e13-1e76-4c33-98aa-a33204514227</CommandName>
+								<TextColor>style:ButtonTextColor</TextColor>
+								<BackColor>style:ButtonBackColor</BackColor>
+								<BorderColor>style:BorderColor</BorderColor>
+								<ExtendedTooltip name="DeleteExtendedTooltip" id="75"/>
+							</Button>
+						</ChildItems>
+					</ContextMenu>
+					<AutoCommandBar name="ProductsCommandBar" id="33"/>
+					<ExtendedTooltip name="ProductsExtendedTooltip" id="76"/>
+					<SearchStringAddition name="ProductsSearchString" id="101">
+						<AdditionSource>
+							<Item>Products</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ProductsSearchStringContextMenu" id="102"/>
+						<ExtendedTooltip name="ProductsSearchStringExtendedTooltip" id="103"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="ProductsViewStatus" id="104">
+						<AdditionSource>
+							<Item>Products</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ProductsViewStatusContextMenu" id="105"/>
+						<ExtendedTooltip name="ProductsViewStatusExtendedTooltip" id="106"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="ProductsSearchControl" id="107">
+						<AdditionSource>
+							<Item>Products</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="ProductsSearchControlContextMenu" id="108"/>
+						<ExtendedTooltip name="ProductsSearchControlExtendedTooltip" id="109"/>
+					</SearchControlAddition>
+					<Events>
+						<Event name="DragCheck">ProductsCheckDrag</Event>
+						<Event name="Drag">ProductsDrag</Event>
+					</Events>
+					<ChildItems>
+						<InputField name="ProductsProduct" id="34">
+							<DataPath>Products.Product</DataPath>
+							<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="ProductsProductContextMenu" id="35"/>
+							<ExtendedTooltip name="ProductsProductExtendedTooltip" id="77"/>
+						</InputField>
+						<InputField name="ProductsQuantity" id="36">
+							<DataPath>Products.Quantity</DataPath>
+							<WarningOnEditRepresentation>DontShow</WarningOnEditRepresentation>
+							<EditMode>EnterOnInput</EditMode>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="ProductsQuantityContextMenu" id="37"/>
+							<ExtendedTooltip name="ProductsQuantityExtendedTooltip" id="78"/>
+						</InputField>
+					</ChildItems>
+				</Table>
+			</ChildItems>
+		</UsualGroup>
+		<CommandBar name="FormActionsMain" id="1">
+			<HorizontalLocation>Right</HorizontalLocation>
+			<ExtendedTooltip name="FormActionsMainExtendedTooltip" id="79"/>
+		</CommandBar>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Products" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Products</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Product" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Product</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Products</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Quantity" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Quantity</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Price" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Price</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>2</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ProductList" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Product list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>2/6</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	Products.Code AS Code,
+	Products.Description AS Description,
+	Products.SKU AS SKU,
+	InventoryBalance.QuantityBalance AS Count,
+	ProductPricesSliceLast.Price AS Price,
+	Products.IsFolder
+FROM
+	Catalog.Products AS Products
+		LEFT JOIN AccumulationRegister.Inventory.Balance(, Warehouse = &amp;Warehouse) AS InventoryBalance
+			ON (InventoryBalance.Product = Products.Ref)
+		LEFT JOIN InformationRegister.ProductPrices.SliceLast(, PriceKind = &amp;PriceKind) AS ProductPricesSliceLast
+			ON Products.Ref = ProductPricesSliceLast.Product</QueryText>
+				<MainTable>Catalog.Products</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="ProductTree" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Product tree</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>false</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	Products.Description
+FROM
+	Catalog.Products AS Products
+WHERE
+	Products.IsFolder</QueryText>
+				<MainTable>Catalog.Products</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:item xsi:type="dcsset:FilterItemComparison">
+							<dcsset:left xsi:type="dcscor:Field">IsFolder</dcsset:left>
+							<dcsset:comparisonType>Equal</dcsset:comparisonType>
+							<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="Warehouse" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Warehouse</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Warehouses</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DocumentProductURL" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Document product URL</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="SearchString" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Find</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="PriceKindsAndWarehouse" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Kind price and warehouse</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8ui:FormattedString</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="OK" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>OK</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>OK</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OKExecute</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="Warehouse">
+			<Type>
+				<v8:Type>cfg:CatalogRef.Warehouses</v8:Type>
+			</Type>
+		</Parameter>
+		<Parameter name="PriceKind">
+			<Type>
+				<v8:Type>cfg:CatalogRef.PriceKinds</v8:Type>
+			</Type>
+		</Parameter>
+		<Parameter name="DocumentProductURL">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

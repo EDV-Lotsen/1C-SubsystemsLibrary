@@ -7,17 +7,30 @@
 		</v8:item>
 	</Title>
 	<Width>49</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<AutoTitle>false</AutoTitle>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>CustomizeForm</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>Cancel</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<ChildItems>
-			<Button name="Close" id="2">
+			<Button name="Close" id="28">
 				<Type>CommandBarButton</Type>
-				<Representation>PictureAndText</Representation>
+				<Representation>Text</Representation>
 				<DefaultButton>true</DefaultButton>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.StandardCommand.Close</CommandName>
-				<ExtendedTooltip name="CloseExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="CloseExtendedTooltip" id="30"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -25,7 +38,7 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="IsMain" id="4">
+		<UsualGroup name="IsMain" id="23">
 			<ReadOnly>true</ReadOnly>
 			<Title>
 				<v8:item>
@@ -33,74 +46,43 @@
 					<v8:content>1. Main</v8:content>
 				</v8:item>
 			</Title>
-			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
-			<ExtendedTooltip name="MainExtendedTooltip" id="5"/>
+			<ExtendedTooltip name="MainExtendedTooltip" id="31"/>
 			<ChildItems>
-				<InputField name="Description" id="6">
+				<InputField name="Description" id="5">
 					<DataPath>Description</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Description</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="DescriptionContextMenu" id="7"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="8"/>
+					<ContextMenu name="DescriptionContextMenu" id="6"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="32"/>
 				</InputField>
-				<InputField name="State" id="9">
+				<InputField name="State" id="19">
 					<DataPath>State</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>State</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="StateContextMenu" id="10"/>
-					<ExtendedTooltip name="StateExtendedTooltip" id="11"/>
+					<ContextMenu name="StateContextMenu" id="20"/>
+					<ExtendedTooltip name="StateExtendedTooltip" id="33"/>
 				</InputField>
-				<InputField name="Begin" id="12">
-					<DataPath>Begin</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Start date</v8:content>
-						</v8:item>
-					</Title>
+				<InputField name="Beginning" id="7">
+					<DataPath>Beginning</DataPath>
 					<Wrap>false</Wrap>
-					<ContextMenu name="BeginContextMenu" id="13"/>
-					<ExtendedTooltip name="BeginExtendedTooltip" id="14"/>
+					<ContextMenu name="StartContextMenu" id="8"/>
+					<ExtendedTooltip name="StartExtendedTooltip" id="34"/>
 				</InputField>
-				<InputField name="End" id="15">
+				<InputField name="End" id="9">
 					<DataPath>End</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>End date</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="EndContextMenu" id="16"/>
-					<ExtendedTooltip name="EndExtendedTooltip" id="17"/>
+					<ContextMenu name="EndContextMenu" id="10"/>
+					<ExtendedTooltip name="EndExtendedTooltip" id="35"/>
 				</InputField>
-				<InputField name="Placement" id="18">
-					<DataPath>Placement</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Execute on</v8:content>
-						</v8:item>
-					</Title>
+				<InputField name="Location" id="11">
+					<DataPath>Location</DataPath>
 					<Wrap>false</Wrap>
-					<ContextMenu name="PlacementContextMenu" id="19"/>
-					<ExtendedTooltip name="PlacementExtendedTooltip" id="20"/>
+					<ContextMenu name="PlacementContextMenu" id="12"/>
+					<ExtendedTooltip name="PlacementExtendedTooltip" id="36"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="Advanced" id="21">
+		<UsualGroup name="Advanced" id="24">
 			<ReadOnly>true</ReadOnly>
 			<Title>
 				<v8:item>
@@ -108,50 +90,31 @@
 					<v8:content>2. Advanced</v8:content>
 				</v8:item>
 			</Title>
-			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
-			<ExtendedTooltip name="AdvancedExtendedTooltip" id="22"/>
+			<ExtendedTooltip name="AdvancedExtendedTooltip" id="37"/>
 			<ChildItems>
-				<InputField name="ID" id="23">
+				<InputField name="ID" id="1">
 					<DataPath>ID</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>ID</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="IDContextMenu" id="24"/>
-					<ExtendedTooltip name="IDExtendedTooltip" id="25"/>
+					<ContextMenu name="IDContextMenu" id="2"/>
+					<ExtendedTooltip name="IDExtendedTooltip" id="38"/>
 				</InputField>
-				<InputField name="Key" id="26">
+				<InputField name="Key" id="3">
 					<DataPath>Key</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Key</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="KeyContextMenu" id="27"/>
-					<ExtendedTooltip name="KeyExtendedTooltip" id="28"/>
+					<ContextMenu name="KeyContextMenu" id="4"/>
+					<ExtendedTooltip name="KeyExtendedTooltip" id="39"/>
 				</InputField>
-				<InputField name="MethodName" id="29">
+				<InputField name="MethodName" id="17">
 					<DataPath>MethodName</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Metadata method name</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="MethodNameContextMenu" id="30"/>
-					<ExtendedTooltip name="MethodNameExtendedTooltip" id="31"/>
+					<ContextMenu name="MethodNameContextMenu" id="18"/>
+					<ExtendedTooltip name="MethodNameExtendedTooltip" id="40"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="ScheduledJob" id="32">
+		<UsualGroup name="ScheduledJob" id="25">
 			<ReadOnly>true</ReadOnly>
 			<Title>
 				<v8:item>
@@ -159,12 +122,11 @@
 					<v8:content>3. Scheduled job</v8:content>
 				</v8:item>
 			</Title>
-			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
-			<ExtendedTooltip name="ScheduledJobExtendedTooltip" id="33"/>
+			<ExtendedTooltip name="ScheduledJobExtendedTooltip" id="41"/>
 			<ChildItems>
-				<InputField name="ScheduledJobDescription" id="34">
+				<InputField name="ScheduledJobDescription" id="15">
 					<DataPath>ScheduledJobDescription</DataPath>
 					<Title>
 						<v8:item>
@@ -173,45 +135,37 @@
 						</v8:item>
 					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="ScheduledJobDescriptionContextMenu" id="35"/>
-					<ExtendedTooltip name="ScheduledJobDescriptionExtendedTooltip" id="36"/>
+					<ContextMenu name="ScheduledJobDescriptionContextMenu" id="16"/>
+					<ExtendedTooltip name="ScheduledJobDescriptionExtendedTooltip" id="42"/>
 				</InputField>
-				<InputField name="ScheduledJobID" id="37">
+				<InputField name="ScheduledJobID" id="13">
 					<DataPath>ScheduledJobID</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>ID</v8:content>
-						</v8:item>
-					</Title>
 					<Wrap>false</Wrap>
-					<ContextMenu name="ScheduledJobIDContextMenu" id="38"/>
-					<ExtendedTooltip name="ScheduledJobIDExtendedTooltip" id="39"/>
+					<ContextMenu name="ScheduledJobIDContextMenu" id="14"/>
+					<ExtendedTooltip name="ScheduledJobIDExtendedTooltip" id="43"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="UserMessagesAndErrorDetails" id="40">
+		<UsualGroup name="UserMessagesAndErrorDetails" id="29">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>4. User messages and error details</v8:content>
 				</v8:item>
 			</Title>
-			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
-			<ExtendedTooltip name="UserMessagesAndErrorDetailsExtendedTooltip" id="41"/>
+			<ExtendedTooltip name="UserMessagesAndErrorDetailsExtendedTooltip" id="44"/>
 			<ChildItems>
-				<InputField name="ErrorMessagesAndDetails" id="42">
+				<InputField name="ErrorMessagesAndDetails" id="26">
 					<DataPath>UserMessagesAndErrorDetails</DataPath>
 					<ReadOnly>true</ReadOnly>
 					<TitleLocation>None</TitleLocation>
-					<Height>4</Height>
-					<Wrap>false</Wrap>
+					<VerticalStretch>true</VerticalStretch>
 					<MultiLine>true</MultiLine>
 					<ExtendedEdit>true</ExtendedEdit>
-					<ContextMenu name="ErrorMessagesAndDetailsContextMenu" id="43"/>
-					<ExtendedTooltip name="ErrorMessagesAndDetailsExtendedTooltip" id="44"/>
+					<ContextMenu name="ErrorMessagesAndDetailsContextMenu" id="27"/>
+					<ExtendedTooltip name="ErrorMessagesAndDetailsExtendedTooltip" id="45"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
@@ -268,7 +222,7 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="Begin" id="5">
+		<Attribute name="Beginning" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -296,7 +250,7 @@
 				</v8:DateQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="Placement" id="7">
+		<Attribute name="Location" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -315,7 +269,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Scheduled job ID</v8:content>
+					<v8:content>ID</v8:content>
 				</v8:item>
 			</Title>
 			<Type>

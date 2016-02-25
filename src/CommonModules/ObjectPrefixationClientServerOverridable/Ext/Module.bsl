@@ -1,26 +1,26 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// Object prefixation subsystem. 
+// Object prefixation subsystem
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// "Getting a number for printing" event handler.
-// The event occurs before standard processing of number retrieval.
-// You can override standard processing of getting the number for printing in this procedure.
+// On get number for printing event handler.
+// The event occurs before the standard processing of getting a number.
+// The handler can override the default behavior of the system when getting a number for printing.
 // 
 // Parameters:
-//  ObjectNumber       - String - object number or code to be processed.
-//  StandardProcessing – Boolean – flag that shows whether standard number processing
-//                       will be executed.
+//  ObjectNumber         - String  - object number or object code under processing
+//  StandardProcessing   - Boolean - standard processing flag; if the flag value is set to false,
+//                       then number generation standard processing will not be executed
 // 
-// Example:
+// Handler code implementation example:
 // 
-// ObjectNumber = ObjectPrefixationClientServer.DeleteCustomPrefixesFromObjectNumber(ObjectNumber);
+// ObjectNumber       = ObjectPrefixationClientServer.DeleteCustomPrefixesFromObjectNumber (ObjectNumber);
 // StandardProcessing = False;
 // 
 Procedure OnGetNumberForPrinting(ObjectNumber, StandardProcessing) Export
 	
-	
 EndProcedure
+
+#EndRegion

@@ -3,16 +3,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL INTERFACE
+#Region InternalInterface
 
 ////////////////////////////////////////////////////////////////////////////////
-// Data exchange subsystem event handlers.
+// Data exchange subsystem event handlers
 
-// Data exchange subsystem BeforeSendData event handler.
-// See CommonModule.DataExchangeOverridable.BeforeSendData() for details.
+// OnDataExport event handler for Data exchange subsystem. 
+// For handler description, see CommonModule.DataExchangeOverridable.OnDataExport().
 //
-Procedure BeforeSendData(StandardProcessing,
+Procedure OnDataExport(StandardProcessing,
 								Recipient,
 								MessageFileName,
 								MessageData,
@@ -24,6 +23,8 @@ Procedure BeforeSendData(StandardProcessing,
 	If TypeOf(Recipient) <> Type("ExchangePlanRef.MessageExchange") Then
 		Return;
 	EndIf;
+	
+	MessageCatalogs = MessageExchangeCached.GetMessageCatalogs();
 	
 	StandardProcessing = False;
 	
@@ -48,26 +49,26 @@ Procedure BeforeSendData(StandardProcessing,
 	
 	WriteMessage.BeginWrite(XMLWriter, Recipient);
 	
-	// Counting written objects
-	WrittenObjectCount = 0;
+	// Counting the number of written objects
 	SentObjectCount = 0;
 	
-	UseTransactions = TransactionItemCount <> 1;
-	
-	If UseTransactions Then
-		BeginTransaction();
-	EndIf;
+	// Getting a changed data selection
+	ChangeSelection = DataExchangeServer.SelectChanges(WriteMessage.Recipient, WriteMessage.MessageNo);
 	
 	Try
-		
-		// Retrieving a selection of changed data
-		ChangeSelection = ExchangePlans.SelectChanges(WriteMessage.Recipient, WriteMessage.MessageNo);
 		
 		While ChangeSelection.Next() Do
 			
 			TableRow = DataSelectionTable.Add();
 			TableRow.Data = ChangeSelection.Get();
-			TableRow.Order = ?(TypeOf(TableRow.Data) = Type("CatalogObject.SystemMessages"), TableRow.Data.Code, 0);
+			
+			TableRow.Order = 0;
+			For Each MessageCatalog In MessageCatalogs Do
+				If TypeOf(TableRow.Data) = TypeOf(MessageCatalog.EmptyRef()) Then
+					TableRow.Order = TableRow.Data.Code;
+					Break;
+				EndIf;
+			EndDo;
 			
 		EndDo;
 		
@@ -75,55 +76,70 @@ Procedure BeforeSendData(StandardProcessing,
 		
 		For Each TableRow In DataSelectionTable Do
 			
-			If TypeOf(TableRow.Data) = Type("CatalogObject.SystemMessages") Then
+			SendingMessageNow = False;
+			
+			For Each MessageCatalog In MessageCatalogs Do
+				
+				If TypeOf(TableRow.Data) = TypeOf(MessageCatalog.CreateItem()) Then
+					SendingMessageNow = True;
+					Break;
+				EndIf;
+				
+			EndDo;
+			
+			If SendingMessageNow Then
+				
 				TableRow.Data.Code = 0;
+				
+				// {Event handler: OnSendMessage} Beginning
+				Body = TableRow.Data.Body.Get();
+				
+				OnSendMessageSL(TableRow.Data.Description, Body, TableRow.Data);
+				
+				OnSendMessage(TableRow.Data.Description, Body);
+				
+				TableRow.Data.Body = New ValueStorage(Body);
+				// {Event handler: OnSendMessage} End
+				
+			EndIf;
+			
+			If TypeOf(TableRow.Data) = Type("ObjectDeletion") Then
+				
+				If TypeOf(TableRow.Data.Ref) <> Type("CatalogRef.SystemMessages") Then
+					
+					TableRow.Data = New ObjectDeletion(Catalogs.SystemMessages.GetRef(
+						TableRow.Data.Ref.UUID()));
+					
+				EndIf;
+				
 			EndIf;
 			
 			// Writing data to the message
 			WriteXML(XMLWriter, TableRow.Data);
 			
-			WrittenObjectCount = WrittenObjectCount + 1;
 			SentObjectCount = SentObjectCount + 1;
-			
-			If UseTransactions
-				And TransactionItemCount > 0
-				And WrittenObjectCount = TransactionItemCount Then
-				
-				// Committing the transaction and begining a new one
-				CommitTransaction();
-				BeginTransaction();
-				
-				WrittenObjectCount = 0;
-			EndIf;
 			
 		EndDo;
 		
-		If UseTransactions Then
-			CommitTransaction();
-		EndIf;
-		
-		// Ending writing the message
+		// Finalizing the message
 		WriteMessage.EndWrite();
 		
 		MessageData = XMLWriter.Close();
 		
 	Except
 		
-		If UseTransactions Then
-			RollbackTransaction();
-		EndIf;
-		
 		WriteMessage.CancelWrite();
 		XMLWriter.Close();
 		Raise DetailErrorDescription(ErrorInfo());
+		
 	EndTry;
 	
 EndProcedure
 
-// Data exchange subsystem BeforeReceiveData event handler.
-// See CommonModule.DataExchangeOverridable.BeforeReceiveData() for details.
+// OnDataImport event handler for Data exchange subsystem. 
+// For handler description, see CommonModule.DataExchangeOverridable.OnDataImport().
 //
-Procedure BeforeReceiveData(StandardProcessing,
+Procedure OnDataImport(StandardProcessing,
 								Sender,
 								MessageFileName,
 								MessageData,
@@ -135,6 +151,13 @@ Procedure BeforeReceiveData(StandardProcessing,
 	If TypeOf(Sender) <> Type("ExchangePlanRef.MessageExchange") Then
 		Return;
 	EndIf;
+	
+	SaasOperationsModule = Undefined;
+	If CommonUseCached.IsSeparatedConfiguration() Then
+		SaasOperationsModule = CommonUse.CommonModule("SaaSOperations");
+	EndIf;
+	
+	MessageCatalogs = MessageExchangeCached.GetMessageCatalogs();
 	
 	StandardProcessing = False;
 	
@@ -149,22 +172,26 @@ Procedure BeforeReceiveData(StandardProcessing,
 	MessageReader = ExchangePlans.CreateMessageReader();
 	MessageReader.BeginRead(XMLReader, AllowedMessageNo.Greater);
 	
-	// Deleting change records of the message sender node
-	ExchangePlans.DeleteChangeRecords(MessageReader.Sender, MessageReader.ReceivedNo);
+	BackupCopyParameters = DataExchangeServer.BackupCopyParameters(MessageReader.Sender, MessageReader.ReceivedNo);
 	
-	// Counting read objects
-	WrittenObjectCount = 0;
-	ReceivedObjectCount = 0;
+	DeleteChangeRecords = Not BackupCopyParameters.BackupRestored;
 	
-	UseTransactions = TransactionItemCount <> 1;
-	
-	If UseTransactions Then
-		BeginTransaction();
+	If DeleteChangeRecords Then
+		
+		// Deleting change records for the message sender node
+		ExchangePlans.DeleteChangeRecords(MessageReader.Sender, MessageReader.ReceivedNo);
+		
 	EndIf;
+	
+	// Counting the number of read objects
+	ReceivedObjectCount = 0;
 	
 	Try
 		
-		// Reading message data
+		ExchangeMessageCanBePartiallyReceived = CorrespondentSupportsPartiallyReceivingExchangeMessages(Sender);
+		ExchangeMessagePartiallyReceived = False;
+		
+		// Reading data from the message
 		While CanReadXML(XMLReader) Do
 			
 			// Reading the next value
@@ -172,20 +199,38 @@ Procedure BeforeReceiveData(StandardProcessing,
 			
 			ReceivedObjectCount = ReceivedObjectCount + 1;
 			
-			// If the same data was changed in both infobases, the current one has higher priority.
-			If ExchangePlans.IsChangeRecorded(MessageReader.Sender, Data) Then
-				Continue;
-			EndIf;
+			ReceivingMessageNow = False;
+			For Each MessageCatalog In MessageCatalogs Do
+				If TypeOf(Data) = TypeOf(MessageCatalog.CreateItem()) Then
+					ReceivingMessageNow = True;
+					Break;
+				EndIf;
+			EndDo;
 			
-			Data.DataExchange.Sender = MessageReader.Sender;
-			Data.DataExchange.Load = True;
-			
-			If TypeOf(Data) = Type("CatalogObject.SystemMessages") Then
+			If ReceivingMessageNow Then
+				
+				If Not Data.IsNew() Then
+					Continue; // Importing new messages only
+				EndIf;
+				
+				// {Event handler: OnReceiveMessage} Beginning
+				Body = Data.Body.Get();
+				
+				OnReceiveMessageSL(Data.Description, Body, Data);
+				
+				OnReceiveMessage(Data.Description, Body);
+				
+				Data.Body = New ValueStorage(Body);
+				// {Event handler: OnReceiveMessage} End
+				
+				If Not Data.IsNew() Then
+					Continue; // Importing new messages only
+				EndIf;
 				
 				Data.SetNewCode();
 				Data.Sender = MessageReader.Sender;
 				Data.Recipient = ThisNode();
-				Data.AdditionalProperties.Insert("DontCheckEditProhibitionDates");
+				Data.AdditionalProperties.Insert("IgnoreChangeProhibitionCheck");
 				
 			ElsIf TypeOf(Data) = Type("InformationRegisterRecordSet.RecipientSubscriptions") Then
 				
@@ -197,86 +242,148 @@ Procedure BeforeReceiveData(StandardProcessing,
 					
 				EndDo;
 				
+			ElsIf TypeOf(Data) = Type("ObjectDeletion") Then
+				
+				If TypeOf(Data.Ref) = Type("CatalogRef.SystemMessages") Then
+					
+					For Each MessageCatalog In MessageCatalogs Do
+						
+						RefSubstitution = MessageCatalog.GetRef(Data.Ref.UUID());
+						If CommonUse.RefExists(RefSubstitution) Then
+							
+							Data = New ObjectDeletion(RefSubstitution);
+							Break;
+							
+						EndIf;
+						
+					EndDo;
+					
+				EndIf;
+				
 			EndIf;
 			
+			DataArea = -1;
+			If TypeOf(Data) = Type("ObjectDeletion") Then
+				
+				Ref = Data.Ref;
+				If Not CommonUse.RefExists(Ref) Then
+					Continue;
+				EndIf;
+				If CommonUseCached.IsSeparatedConfiguration() And CommonUse.IsSeparatedMetadataObject(Ref.Metadata(), CommonUseCached.AuxiliaryDataSeparator()) Then
+					DataArea = CommonUse.ObjectAttributeValue(Data.Ref, CommonUseCached.AuxiliaryDataSeparator());
+				EndIf;
+				
+			Else
+				
+				If CommonUseCached.IsSeparatedConfiguration() And CommonUse.IsSeparatedMetadataObject(Data.Metadata(), CommonUseCached.AuxiliaryDataSeparator()) Then
+					DataArea = Data[CommonUseCached.AuxiliaryDataSeparator()];
+				EndIf;
+				
+			EndIf;
+			
+			MustRestoreSeparation = False;
+			If DataArea <> -1 Then
+				
+				If SaasOperationsModule.DataAreaLocked(DataArea) Then
+					// Messages for a locked area cannot be accepted
+					If ExchangeMessageCanBePartiallyReceived Then
+						ExchangeMessagePartiallyReceived = True;
+						Continue;
+					Else
+						Raise StringFunctionsClientServer.SubstituteParametersInString(
+							NStr("en = 'Cannot execute message exchange: data area %1 is locked.'"),
+							DataArea);
+					EndIf;
+				EndIf;
+				
+				MustRestoreSeparation = True;
+				CommonUse.SetSessionSeparation(True, DataArea);
+				
+			EndIf;
+			
+			// In case of conflicting changes, the current infobase takes precedence (with the exception
+			// of incoming ObjectDeletion data from messages sent to the correspondent infobase)
+			If TypeOf(Data) <> Type("ObjectDeletion") And ExchangePlans.IsChangeRecorded(MessageReader.Sender, Data) Then
+				If MustRestoreSeparation Then
+					CommonUse.SetSessionSeparation(False);
+				EndIf;
+				Continue;
+			EndIf;
+			
+			Data.DataExchange.Sender = MessageReader.Sender;
+			Data.DataExchange.Load = True;
 			Data.Write();
 			
-			WrittenObjectCount = WrittenObjectCount + 1;
-			
-			If UseTransactions
-				And TransactionItemCount > 0
-				And WrittenObjectCount = TransactionItemCount Then
-				
-				// Committing the transaction and begining a new one
-				CommitTransaction();
-				BeginTransaction();
-				
-				WrittenObjectCount = 0;
+			If MustRestoreSeparation Then
+				CommonUse.SetSessionSeparation(False);
 			EndIf;
 			
 		EndDo;
 		
-		MessageReader.EndRead();
+		If ExchangeMessagePartiallyReceived Then
+			// If the data exchange message contains any rejected messages, the sender 
+			// must keep attempting to resend them whenever further exchange messages are generated
+			MessageReader.CancelRead();
+		Else
+			MessageReader.EndRead();
+		EndIf;
+		
+		DataExchangeServer.OnBackupRestore(BackupCopyParameters);
+		
 		XMLReader.Close();
 		
-		If UseTransactions Then
-			CommitTransaction();
-		EndIf;
-		
 	Except
-		If UseTransactions Then
-			RollbackTransaction();
-		EndIf;
 		MessageReader.CancelRead();
+		XMLReader.Close();
 		Raise;
 	EndTry;
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Infobase update.
+// Infobase update
 
-// Adds update handlers required to this subsystem in the Handlers list. 
-// 
-// Parameters:
-// Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details. 
+// Adds update handlers that are required by the subsystem.
 //
-Procedure RegisterUpdateHandlers(Handlers) Export
+// Parameters:
+//   Handlers - ValueTable - see the description of NewUpdateHandlerTable function in the InfobaseUpdate common module.
+// 
+Procedure OnAddUpdateHandlers(Handlers) Export
 	
 	Handler = Handlers.Add();
 	Handler.Version = "*";
 	Handler.SharedData = True;
-	Handler.Procedure = "MessageExchangeInternal.SetThisEndPointCode";
+	Handler.ExclusiveMode = False;
+	Handler.Procedure = "MessageExchangeInternal.SetThisEndpointCode";
 	
 EndProcedure
 
-// Sets a code for this end point if code is not specified yet.
+// Sets code for this setpoint if it is not yet set.
 // 
-Procedure SetThisEndPointCode() Export
+Procedure SetThisEndpointCode() Export
 	
 	If IsBlankString(ThisNodeCode()) Then
 		
-		ThisEndPoint = ThisNode().GetObject();
-		ThisEndPoint.Code = String(New UUID());
-		ThisEndPoint.Write();
+		ThisEndpoint = ThisNode().GetObject();
+		ThisEndpoint.Code = String(New UUID());
+		ThisEndpoint.Write();
 		
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// Export internal procedures and functions.
+// Export internal procedures and functions
 
-// The handler of the shaduled job that sends and receives system messages.
+// Handler of a scheduled job used to send and receive system messages.
 //
 Procedure SendReceiveMessagesByScheduledJob() Export
 	
-	If IsBlankString(UserName()) Then
-		SetPrivilegedMode(True);
-	EndIf;
+	CommonUse.ScheduledJobOnStart();
 	
 	SendAndReceiveMessages(False);
 	
@@ -285,7 +392,7 @@ EndProcedure
 // Sends and receives system messages.
 //
 // Parameters:
-// Cancel – Boolean. Cancel flag. It will be set to True if an error occures during the procedure execution.
+//   Cancel - Boolean - cancellation flag. Used on errors during operations.
 //
 Procedure SendAndReceiveMessages(Cancel) Export
 	
@@ -295,76 +402,165 @@ Procedure SendAndReceiveMessages(Cancel) Export
 	
 	SendReceiveMessagesViaStandardCommunicationLines(Cancel);
 	
-	HandleSystemMessageQueue();
+	ProcessSystemMessageQueue();
 	
 EndProcedure
 
 // For internal use only
-//
-Procedure HandleSystemMessageQueue(Filter = Undefined) Export
+Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 	
 	SetPrivilegedMode(True);
 	
+	If CommonUseCached.DataSeparationEnabled() And CommonUseCached.CanUseSeparatedData() Then
+		
+		WriteLogEvent(ThisSubsystemEventLogMessageText(),
+				EventLogLevel.Information,,,
+				NStr("en = 'Message message queue processing is started
+                      |from a session with separator values set. Processing will be performed
+                      |only for messages saved in separated catalog items with
+                      |separator values matching the session separator values.'")
+		);
+		
+		ProcessMessagesInSharedData = False;
+		
+	Else
+		
+		ProcessMessagesInSharedData = True;
+		
+	EndIf;
+	
+	SaasOperationsModule = Undefined;
+	If CommonUseCached.IsSeparatedConfiguration() Then
+		SaasOperationsModule = CommonUse.CommonModule("SaaSOperations");
+	EndIf;
+	
 	MessageHandlers = MessageHandlers();
 	
-	QueryText =
-	"SELECT TOP 100
-	|	SystemMessages.Ref AS Ref
+	QueryText = "";
+	MessageCatalogs = MessageExchangeCached.GetMessageCatalogs();
+	For Each MessageCatalog In MessageCatalogs Do
+		
+		FullCatalogName = MessageCatalog.EmptyRef().Metadata().FullName();
+		IsSharedCatalog = Not CommonUseCached.IsSeparatedConfiguration() Or
+			Not CommonUse.IsSeparatedMetadataObject(FullCatalogName, CommonUseCached.AuxiliaryDataSeparator());
+		
+		If IsSharedCatalog And Not ProcessMessagesInSharedData Then
+			Continue;
+		EndIf;
+		
+		If Not IsBlankString(QueryText) Then
+			
+			QueryText = QueryText + "
+			|
+			|UNION ALL
+			|"
+			
+		EndIf;
+		
+		Subquery =  StringFunctionsClientServer.SubstituteParametersInString(
+			"SELECT
+			|	MessageTable.DataAreaAuxiliaryData AS DataArea,
+			|	MessageTable.Ref AS Ref,
+			|	MessageTable.Code AS Code,
+			|	MessageTable.Sender.Locked AS EndpointLocked
+			|FROM
+			|	%1 AS MessageTable
+			|WHERE
+			|	MessageTable.Recipient = &Recipient
+			|	AND (Not MessageTable.Locked)
+			|	[Filter]"
+			, FullCatalogName);
+		
+		If IsSharedCatalog Then
+			Subquery = StrReplace(Subquery, "MessageTable.DataAreaAuxiliaryData AS DataArea", "-1 AS DataArea");
+		EndIf;
+		
+		QueryText = QueryText + Subquery;
+		
+	EndDo;
+	
+	FilterRow = ?(Filter = Undefined, "", "AND MessageTable.Ref IN(&Filter)");
+	
+	QueryText = StrReplace(QueryText, "[Filter]", FilterRow);
+	
+	QueryText = "SELECT TOP 100
+	|	NestedQuery.DataArea,
+	|	NestedQuery.Ref,
+	|	NestedQuery.Code,
+	|	NestedQuery.EndpointLocked
 	|FROM
-	|	Catalog.SystemMessages AS SystemMessages
-	|WHERE
-	|	SystemMessages.Recipient = &Recipient
-	|	AND (NOT SystemMessages.Locked)
-	|	[Filter]
+	|	(" +  QueryText + ") AS NestedQuery
 	|
 	|ORDER BY
-	|	SystemMessages.Code";
-	
-	FilterString = ?(Filter = Undefined, "", "AND SystemMessages.Ref In(&Filter)");
-	
-	QueryText = StrReplace(QueryText, "[Filter]", FilterString);
+	|	Code";
 	
 	Query = New Query;
 	Query.SetParameter("Recipient", ThisNode());
 	Query.SetParameter("Filter", Filter);
 	Query.Text = QueryText;
 	
-	QueryResult = GetQueryResult(Query);
+	QueryResult = CommonUse.ExecuteQueryOutsideTransaction(Query);
 	
 	Selection = QueryResult.Select();
 	
 	While Selection.Next() Do
 		
-		MessageObject = Selection.Ref.GetObject();
-		
 		Try
-			MessageObject.Lock();
+			LockDataForEdit(Selection.Ref);
 		Except
-			WriteLogEvent(ThisSubsystemEventLogMessageText(),
-				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
-			);
-			Continue;
+			Continue; // moving on
 		EndTry;
+		
+		// Checking for data area lock
+		If SaasOperationsModule <> Undefined
+				And Selection.DataArea <> -1
+				And SaasOperationsModule.DataAreaLocked(Selection.DataArea) Then
+			
+			// The area is locked, proceeding to the next record
+			Continue;
+		EndIf;
 		
 		Try
 			
+			BeginTransaction();
+			Try
+				MessageObject = Selection.Ref.GetObject();
+				CommitTransaction();
+			Except
+				RollbackTransaction();
+				Raise;
+			EndTry;
+		
 			MessageTitle = New Structure("MessageChannel, Sender", MessageObject.Description, MessageObject.Sender);
 			
 			FoundRows = MessageHandlers.FindRows(New Structure("Channel", MessageTitle.MessageChannel));
 			
-			MessageHandled = True;
+			MessageProcessed = True;
 			
-			// Handling message
+			// Processing message
 			Try
+				
+				If Selection.EndpointLocked Then
+					MessageObject.Locked = True;
+					Raise NStr("en = 'Attempting to process a message received from a locked endpoint.'");
+				EndIf;
 				
 				If FoundRows.Count() = 0 Then
 					MessageObject.Locked = True;
-					Raise NStr("en = 'The message handler is not defined.'");
+					Raise NStr("en = 'No handlers are assigned for this message.'");
 				EndIf;
 				
 				For Each TableRow In FoundRows Do
 					
-					TableRow.Handler.HandleMessage(MessageTitle.MessageChannel, MessageObject.Body.Get(), MessageTitle.Sender);
+					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, MessageObject.Body.Get(), MessageTitle.Sender);
+					
+					If TransactionActive() Then
+						While TransactionActive() Do
+							RollbackTransaction();
+						EndDo;
+						MessageObject.Locked = True;
+						Raise NStr("en = 'No transactions are registered in the message handler.'");
+					EndIf;
 					
 				EndDo;
 			Except
@@ -373,20 +569,19 @@ Procedure HandleSystemMessageQueue(Filter = Undefined) Export
 					RollbackTransaction();
 				EndDo;
 				
-				MessageHandled = False;
+				MessageProcessed = False;
 				
 				DetailErrorDescription = DetailErrorDescription(ErrorInfo());
 				WriteLogEvent(ThisSubsystemEventLogMessageText(),
 						EventLogLevel.Error,,,
 						StringFunctionsClientServer.SubstituteParametersInString(
-							NStr("en = 'Error handling the message %1: %2'"),
-							MessageTitle.MessageChannel, DetailErrorDescription)
-				);
+							NStr("en = 'Error while processing message %1: %2.'"),
+							MessageTitle.MessageChannel, DetailErrorDescription));
 			EndTry;
 			
-			If MessageHandled Then
+			If MessageProcessed Then
 				
-				// Deleting the message
+				// Deleting message
 				If ValueIsFilled(MessageObject.Sender)
 					And MessageObject.Sender <> ThisNode() Then
 					
@@ -394,12 +589,11 @@ Procedure HandleSystemMessageQueue(Filter = Undefined) Export
 					MessageObject.DataExchange.Recipients.AutoFill = False;
 					
 				EndIf;
-				// Existence of catalog references should not interfere with catalog item deletion
-				MessageObject.DataExchange.Load = True; 
-				MessageObject.Delete();
+				
+				MessageObject.DataExchange.Load = True; // Presence of catalog references should not impede or retard deletion of catalog items
+				CommonUse.DeleteAuxiliaryData(MessageObject);
 				
 			Else
-				
 				
 				MessageObject.ProcessMessageRetryCount = MessageObject.ProcessMessageRetryCount + 1;
 				MessageObject.DetailErrorDescription = DetailErrorDescription;
@@ -408,24 +602,41 @@ Procedure HandleSystemMessageQueue(Filter = Undefined) Export
 					MessageObject.Locked = True;
 				EndIf;
 				
-				MessageObject.Write();
+				CommonUse.WriteAuxiliaryData(MessageObject);
+				
+			EndIf;
+			
+			If ProcessMessagesInSharedData And CommonUseCached.DataSeparationEnabled() And CommonUseCached.CanUseSeparatedData() Then
+				
+				ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'Session separation is not disabled after processing a message in channel %1.'"),
+					MessageTitle.MessageChannel);
+				
+				WriteLogEvent(
+					ThisSubsystemEventLogMessageText(),
+					EventLogLevel.Error,
+					,
+					,
+					ErrorMessageText);
+				
+				CommonUse.SetSessionSeparation(False);
 				
 			EndIf;
 			
 		Except
 			WriteLogEvent(ThisSubsystemEventLogMessageText(),
 					EventLogLevel.Error,,,
-					DetailErrorDescription(ErrorInfo())
-			);
+					DetailErrorDescription(ErrorInfo()));
 		EndTry;
+		
+		UnlockDataForEdit(Selection.Ref);
 		
 	EndDo;
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, EndPoint) Export
+// For internal use only
+Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, Endpoint) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -435,145 +646,135 @@ Procedure SetLeadingEndpointAtSender(Cancel, SenderConnectionSettings, EndPoint)
 	
 	If WSProxy = Undefined Then
 		Cancel = True;
-		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(LeadingEndpointSettingEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
 	BeginTransaction();
 	Try
 		
-		EndPointObject = EndPoint.GetObject();
-		EndPointObject.Leading = False;
-		EndPointObject.Write();
+		EndpointObject = Endpoint.GetObject();
+		EndpointObject.Leading = False;
+		EndpointObject.Write();
 		
-		//Updating connection settings
+		//updating connection settings
 		RecordStructure = New Structure;
-		RecordStructure.Insert("Node", EndPoint);
-		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
+		RecordStructure.Insert("Node", Endpoint);
+		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		RecordStructure.Insert("WSURL", SenderConnectionSettings.WSURL);
+		RecordStructure.Insert("WSURL",      SenderConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", SenderConnectionSettings.WSUserName);
 		RecordStructure.Insert("WSPassword", SenderConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSRememberPassword", True);
 		
-		// Adding the record to the information register
+		// Adding information register record
 		InformationRegisters.ExchangeTransportSettings.AddRecord(RecordStructure);
 		
-		// Setting the recipient leading end point 
-		WSProxy.SetLeadingEndPoint(EndPointObject.Code, ThisNodeCode());
+		// Setting the leading endpoint at recipient side
+		WSProxy.SetLeadingEndpoint(EndpointObject.Code, ThisNodeCode());
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
 		Cancel = True;
-		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo())
-		);
+		WriteLogEvent(LeadingEndpointSettingEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo()));
 		Return;
 	EndTry;
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure SetRecipientLeadingEndPoint(ThisEndPointCode, LeadingEndPointCode) Export
+// For internal use only
+Procedure SetLeadingEndpointAtRecipient(ThisEndpointCode, LeadingEndpointCode) Export
 	
 	SetPrivilegedMode(True);
 	
-	If ExchangePlans.MessageExchange.FindByCode(ThisEndPointCode) <> ThisNode() Then
-		ErrorMessageString = NStr("en = 'End point connection parameters are specified incorrectly. Connection parameters belong to a different end point.'");
-		WriteLogEvent(LeadingEndPointSetEventLogMessageText(),
-				EventLogLevel.Error,,, ErrorMessageString);
+	If ExchangePlans.MessageExchange.FindByCode(ThisEndpointCode) <> ThisNode() Then
+		ErrorMessageString = NStr("en = 'The endpoint connection parameters are invalid. Connection parameters point to a different endpoint.'");
+		ErrorMessageStringForEventLog = NStr("en = 'The endpoint connection parameters are invalid.
+			|Connection parameters point to a different endpoint.'", CommonUseClientServer.DefaultLanguageCode());
+		WriteLogEvent(LeadingEndpointSettingEventLogMessageText(),
+				EventLogLevel.Error,,, ErrorMessageStringForEventLog);
 		Raise ErrorMessageString;
 	EndIf;
 	
 	BeginTransaction();
 	Try
 		
-		EndPointNode = ExchangePlans.MessageExchange.FindByCode(LeadingEndPointCode);
+		EndpointNode = ExchangePlans.MessageExchange.FindByCode(LeadingEndpointCode);
 		
-		If EndPointNode.IsEmpty() Then
+		If EndpointNode.IsEmpty() Then
 			
-			Raise NStr("en = 'The end point is not found in the correspondent infobase.'");
+			Raise NStr("en = 'The endpoint is not found in the correspondent infobase.'");
 			
 		EndIf;
-		EndPointNodeObject = EndPointNode.GetObject();
-		EndPointNodeObject.Leading = True;
-		EndPointNodeObject.Write();
+		EndpointNodeObject = EndpointNode.GetObject();
+		EndpointNodeObject.Leading = True;
+		EndpointNodeObject.Write();
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
-		WriteLogEvent(LeadingEndPointSetEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo())
-		);
+		WriteLogEvent(LeadingEndpointSettingEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo()));
 		Raise DetailErrorDescription(ErrorInfo());
 	EndTry;
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure ConnectEndPointAtReceiver(Cancel, Code, Description, RecipientConnectionSettings) Export
+// For internal use only
+Procedure ConnectEndpointAtRecipient(Cancel, Code, Description, RecipientConnectionSettings) Export
+	
+	DataExchangeServer.CheckUseDataExchange();
 	
 	SetPrivilegedMode(True);
 	
 	BeginTransaction();
 	Try
 		
-		// Creating / Updating the exchange plan node that corresponds to the the connecting end point
-		EndPointNode = ExchangePlans.MessageExchange.FindByCode(Code);
-		If EndPointNode.IsEmpty() Then
-			EndPointNodeObject = ExchangePlans.MessageExchange.CreateNode();
-			EndPointNodeObject.Code = Code;
+		// Creating/updating an exchange plan node matching the endpoint to be connected
+		EndpointNode = ExchangePlans.MessageExchange.FindByCode(Code);
+		If EndpointNode.IsEmpty() Then
+			EndpointNodeObject = ExchangePlans.MessageExchange.CreateNode();
+			EndpointNodeObject.Code = Code;
 		Else
-			EndPointNodeObject = EndPointNode.GetObject();
-			EndPointNodeObject.ReceivedNo = 0;
+			EndpointNodeObject = EndpointNode.GetObject();
+			EndpointNodeObject.ReceivedNo = 0;
 		EndIf;
-		EndPointNodeObject.Description = Description;
-		EndPointNodeObject.Leading = True;
-		EndPointNodeObject.Write();
+		EndpointNodeObject.Description = Description;
+		EndpointNodeObject.Leading = True;
+		EndpointNodeObject.Write();
 		
-		// Updating connection settings
+		//updating connection settings
 		RecordStructure = New Structure;
-		RecordStructure.Insert("Node", EndPointNodeObject.Ref);
-		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
+		RecordStructure.Insert("Node", EndpointNodeObject.Ref);
+		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		RecordStructure.Insert("DataExportTransactionItemCount", 0);
-		RecordStructure.Insert("DataImportTransactionItemCount", 0);
-		
-		RecordStructure.Insert("WSURL", RecipientConnectionSettings.WSURL);
+		RecordStructure.Insert("WSURL",   RecipientConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", RecipientConnectionSettings.WSUserName);
-		RecordStructure.Insert("WSPassword", RecipientConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSPassword",          RecipientConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSRememberPassword", True);
 		
-		// Adding the record to the information register
+		// Adding information register record
 		InformationRegisters.ExchangeTransportSettings.AddRecord(RecordStructure);
 		
-		If GetFunctionalOption("UseDataExchange") = False Then
-			Constants.UseDataExchange.Set(True);
-		EndIf;
-		
-		// Setting the sheduled job usage attribute
-		ScheduledJob = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.SendReceiveSystemMessages);
-		If Not ScheduledJob.Use Then
-			ScheduledJobsServer.SetScheduledJobUse(String(ScheduledJob.UUID), True);
-			Cancel = True;
-		EndIf;
+		// Setting the scheduled job usage flag
+		ScheduledJobsServer.SetUseScheduledJob(
+			Metadata.ScheduledJobs.SendReceiveSystemMessages, True);
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo())
-		);
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo()));
 		Raise DetailErrorDescription(ErrorInfo());
 	EndTry;
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSettings, RecipientConnectionSettings) Export
+// For internal use only
+Procedure UpdateEndpointConnectionSettings(Cancel, Endpoint, SenderConnectionSettings, RecipientConnectionSettings) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -590,19 +791,19 @@ Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSet
 	
 	If WSProxy = Undefined Then
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
 	Try
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 	Except
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return;
 	EndTry;
 	
@@ -611,14 +812,15 @@ Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSet
 		
 		// Updating connection settings
 		RecordStructure = New Structure;
-		RecordStructure.Insert("Node", EndPoint);
-		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
+		RecordStructure.Insert("Node", Endpoint);
+		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		RecordStructure.Insert("WSURL", SenderConnectionSettings.WSURL);
+		RecordStructure.Insert("WSURL",   SenderConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", SenderConnectionSettings.WSUserName);
-		RecordStructure.Insert("WSPassword", SenderConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSPassword",          SenderConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSRememberPassword", True);
 		
-		// Adding the record to the information register
+		// Adding information register record
 		InformationRegisters.ExchangeTransportSettings.UpdateRecord(RecordStructure);
 		
 		If CorrespondentVersion_2_0_1_6 Then
@@ -631,16 +833,14 @@ Procedure UpdateEndPointConnectionSettings(Cancel, EndPoint, SenderConnectionSet
 	Except
 		RollbackTransaction();
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo())
-		);
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo()));
 		Return;
 	EndTry;
 	
 EndProcedure
 
-// For internal use only.
-//
+// For internal use only
 Procedure AddMessageChannelHandler(Channel, ChannelHandler, Handlers) Export
 	
 	Handler = Handlers.Add();
@@ -649,32 +849,28 @@ Procedure AddMessageChannelHandler(Channel, ChannelHandler, Handlers) Export
 	
 EndProcedure
 
-// For internal use only.
-//
+// For internal use only
 Function ThisNodeCode() Export
 	
-	Return CommonUse.GetAttributeValue(ThisNode(), "Code");
+	Return CommonUse.ObjectAttributeValue(ThisNode(), "Code");
 	
 EndFunction
 
-// For internal use only.
-//
+// For internal use only
 Function ThisNodeDescription() Export
 	
-	Return CommonUse.GetAttributeValue(ThisNode(), "Description");
+	Return CommonUse.ObjectAttributeValue(ThisNode(), "Description");
 	
 EndFunction
 
-// For internal use only.
-//
+// For internal use only
 Function ThisNode() Export
 	
 	Return ExchangePlans.MessageExchange.ThisNode();
 	
 EndFunction
 
-// For internal use only.
-//
+// For internal use only
 Function AllRecipients() Export
 	
 	QueryText =
@@ -692,45 +888,7 @@ Function AllRecipients() Export
 	Return Query.Execute().Unload().UnloadColumn("Recipient");
 EndFunction
 
-// For internal use only.
-//
-Function GetQueryResult(Query) Export
-	
-	// The return value
-	Result = Undefined;
-	
-	AttemptCount = 0;
-	While AttemptCount < 5 Do
-		Try
-			Result = Query.Execute();
-			Break;
-		Except
-			AttemptCount = AttemptCount + 1;
-			
-			If AttemptCount = 5 Then
-				
-				DetailErrorDescription = DetailErrorDescription(ErrorInfo());
-				
-				WriteLogEvent(ThisSubsystemEventLogMessageText(),
-					EventLogLevel.Error,,, DetailErrorDescription
-				);
-				Raise DetailErrorDescription;
-			EndIf;
-			
-		EndTry;
-	EndDo;
-	
-	If Result = Undefined Then
-		
-		Raise(NStr("en = 'Error retrieving messages from the queue.'"));
-		
-	EndIf;
-	
-	Return Result;
-EndFunction
-
-// For internal use only.
-//
+// For internal use only
 Procedure SerializeDataToStream(DataSelection, Stream) Export
 	
 	XMLWriter = New XMLWriter;
@@ -743,6 +901,16 @@ Procedure SerializeDataToStream(DataSelection, Stream) Export
 		Data = Ref.GetObject();
 		Data.Code = 0;
 		
+		// {Event handler: OnSendMessage} Beginning
+		Body = Data.Body.Get();
+		
+		OnSendMessageSL(Data.Description, Body, Data);
+		
+		OnSendMessage(Data.Description, Body);
+		
+		Data.Body = New ValueStorage(Body);
+		// {Event handler: OnSendMessage} End
+		
 		WriteXML(XMLWriter, Data);
 		
 	EndDo;
@@ -752,9 +920,15 @@ Procedure SerializeDataToStream(DataSelection, Stream) Export
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure SerializeDataFromStream(Sender, Stream, ImportedObjects = Undefined) Export
+// For internal use only
+Procedure SerializeDataFromStream(Sender, Stream, ImportedObjects, DataReadPartially) Export
+	
+	SaasOperationsModule = Undefined;
+	If CommonUseCached.IsSeparatedConfiguration() Then
+		SaasOperationsModule = CommonUse.CommonModule("SaaSOperations");
+	EndIf;
+	
+	DataCanBeReadPartially = CorrespondentSupportsPartiallyReceivingExchangeMessages(Sender);
 	
 	ImportedObjects = New Array;
 	
@@ -763,30 +937,81 @@ Procedure SerializeDataFromStream(Sender, Stream, ImportedObjects = Undefined) E
 		
 		XMLReader = New XMLReader;
 		XMLReader.SetString(Stream);
-		XMLReader.Read(); // the Root node
-		XMLReader.Read(); // the object node
+		XMLReader.Read(); // Root node
+		XMLReader.Read(); // object node
 		
 		While CanReadXML(XMLReader) Do
 			
 			Data = ReadXML(XMLReader);
 			
-			// If the same data was changed in both infobases, the current one has higher priority.
+			If TypeOf(Data) = Type("ObjectDeletion") Then
+				
+				Raise NStr("en = 'Delivery via quick message mechanism is not supported for the ObjectDeletion object.'");
+				
+			Else
+				
+				If Not Data.IsNew() Then
+					Continue; // Importing new messages only
+				EndIf;
+				
+				// {Event handler: OnReceiveMessage} Beginning
+				Body = Data.Body.Get();
+				
+				OnReceiveMessageSL(Data.Description, Body, Data);
+				
+				OnReceiveMessage(Data.Description, Body);
+				
+				Data.Body = New ValueStorage(Body);
+				// {Event handler: OnReceiveMessage} End
+				
+				If Not Data.IsNew() Then
+					Continue; // Importing new messages only
+				EndIf;
+				
+				Data.SetNewCode();
+				Data.Sender = Sender;
+				Data.Recipient = ThisNode();
+				Data.AdditionalProperties.Insert("IgnoreChangeProhibitionCheck");
+				
+			EndIf;
+			
+			MustRestoreSeparation = False;
+			If CommonUseCached.IsSeparatedConfiguration() And CommonUse.IsSeparatedMetadataObject(Data.Metadata(), CommonUseCached.AuxiliaryDataSeparator()) Then
+				
+				DataArea = Data[CommonUseCached.AuxiliaryDataSeparator()];
+				
+				If SaasOperationsModule.DataAreaLocked(DataArea) Then
+					// Message for a locked area cannot be accepted.
+					If DataCanBeReadPartially Then
+						DataReadPartially = True;
+						Continue;
+					Else
+						Raise StringFunctionsClientServer.SubstituteParametersInString(
+							NStr("en = 'Cannot execute message exchange: data area %1 is locked.'"),
+							DataArea);
+					EndIf;
+				EndIf;
+				
+				MustRestoreSeparation = True;
+				CommonUse.SetSessionSeparation(True, DataArea);
+				
+			EndIf;
+			
+			// In case of conflicting changes, the current infobase takes precedence
 			If ExchangePlans.IsChangeRecorded(Sender, Data) Then
+				If MustRestoreSeparation Then
+					CommonUse.SetSessionSeparation(False);
+				EndIf;
 				Continue;
 			EndIf;
 			
 			Data.DataExchange.Sender = Sender;
 			Data.DataExchange.Load = True;
-			
-			If TypeOf(Data) <> Type("ObjectDeletion") Then
-				
-				Data.SetNewCode();
-				Data.Sender = Sender;
-				Data.Recipient = ThisNode();
-				Data.AdditionalProperties.Insert("DontCheckEditProhibitionDates");
-			EndIf;
-			
 			Data.Write();
+			
+			If MustRestoreSeparation Then
+				CommonUse.SetSessionSeparation(False);
+			EndIf;
 			
 			ImportedObjects.Add(Data.Ref);
 			
@@ -802,90 +1027,98 @@ Procedure SerializeDataFromStream(Sender, Stream, ImportedObjects = Undefined) E
 	
 EndProcedure
 
-
-// For internal use only.
-//
-Function GetWSProxy(SettingsStructure, ErrorMessageString = "") Export
+// For internal use only
+Function GetWSProxy(SettingsStructure, ErrorMessageString = "", Timeout = 60) Export
 	
-	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/MessageExchange");
-	SettingsStructure.Insert("WSServiceName", "MessageExchange");
-	
-	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
-EndFunction
-
-// For internal use only.
-//
-Function GetWSProxy_2_0_1_6(SettingsStructure, ErrorMessageString = "") Export
-	
-	SettingsStructure.Insert("ServiceNamespaceWSURL", "http://1c-dn.com/SL/MessageExchange_2_0_1_6");
-	SettingsStructure.Insert("WSServiceName", "MessageExchange_2_0_1_6");
+	SettingsStructure.Insert("NamespaceWebServiceURL", "http://www.1c.ru/SSL/MessageExchange");
+	SettingsStructure.Insert("WSServiceName",                 "MessageExchange");
+	SettingsStructure.Insert("WSTimeout", Timeout);
 	
 	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
 EndFunction
 
-// Returns an array of version numbers supported by correspondent API for the MessageExchange subsystem.
+// For internal use only
+Function GetWSProxy_2_0_1_6(SettingsStructure, ErrorMessageString = "", Timeout = 60) Export
+	
+	SettingsStructure.Insert("NamespaceWebServiceURL", "http://www.1c.ru/SSL/MessageExchange_2_0_1_6");
+	SettingsStructure.Insert("WSServiceName",                 "MessageExchange_2_0_1_6");
+	SettingsStructure.Insert("WSTimeout", Timeout);
+	
+	Return DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure, ErrorMessageString);
+EndFunction
+
+// Validates correspondent infobase support for partial
+//  delivery of data exchange messages during message exchange (if not supported - partial delivery
+//  of exchange messages on the infobase side must not be used).
 //
 // Parameters:
-// Correspondent – Structure or ExchangePlanRef - exchange plan note that corresponds to the correspondent infobase.
+//  Sender - ExchangePlanRef.MessageExchange,
+//
+// Return value: Boolean.
+//
+Function CorrespondentSupportsPartiallyReceivingExchangeMessages(Val Correspondent)
+	
+	CorrespondentVersions = CorrespondentVersions(Correspondent);
+	Return (CorrespondentVersions.Find("2.1.1.8") <> Undefined);
+	
+EndFunction
+
+// Returns an array containing numbers of versions supported by the MessageExchange subsystem correspondent interface.
+// 
+// Parameters:
+//   Correspondent - Structure, ExchangePlanRef - exchange plan note that matches the correspondent infobase.
 //
 // Returns:
-// Array of version numbers that are supported by correspondent API.
+//   Array of version numbers that are supported by correspondent API.
 //
 Function CorrespondentVersions(Val Correspondent) Export
 	
 	If TypeOf(Correspondent) = Type("Structure") Then
 		SettingsStructure = Correspondent;
 	Else
-		SettingsStructure = InformationRegisters.ExchangeTransportSettings.GetWSTransportSettings(Correspondent);
+		SettingsStructure = InformationRegisters.ExchangeTransportSettings.TransportSettingsWS(Correspondent);
 	EndIf;
 	
 	ConnectionParameters = New Structure;
-	ConnectionParameters.Insert("URL", SettingsStructure.WSURL);
+	ConnectionParameters.Insert("URL",      SettingsStructure.WSURL);
 	ConnectionParameters.Insert("UserName", SettingsStructure.WSUserName);
 	ConnectionParameters.Insert("Password", SettingsStructure.WSPassword);
 	
 	Return CommonUse.GetInterfaceVersions(ConnectionParameters, "MessageExchange");
 EndFunction
 
-
-// For internal use only.
-//
-Function EndPointConnectionEventLogMessageText() Export
+// For internal use only
+Function EndpointConnectionEventLogMessageText() Export
 	
-	Return NStr("en = 'Message exchange. Connecting the end point.'");
+	Return NStr("en = 'Message exchange. Connecting the endpoint'", CommonUseClientServer.DefaultLanguageCode());
 	
 EndFunction
 
-// For internal use only.
-//
-Function LeadingEndPointSetEventLogMessageText() Export
+// For internal use only
+Function LeadingEndpointSettingEventLogMessageText() Export
 	
-	Return NStr("en = 'Message exchange.Setting the leading end point.'", Metadata.DefaultLanguage.LanguageCode);
+	Return NStr("en = 'Message exchange. Setting the leading endpoint'", CommonUseClientServer.DefaultLanguageCode());
 	
 EndFunction
 
-// For internal use only.
-//
+// For internal use only
 Function ThisSubsystemEventLogMessageText() Export
 	
-	Return NStr("en = 'Message exchange.'", Metadata.DefaultLanguage.LanguageCode);
+	Return NStr("en = 'Message exchange'", CommonUseClientServer.DefaultLanguageCode());
 	
 EndFunction
 
-// For internal use only.
-//
+// For internal use only
 Function ThisNodeDefaultDescription() Export
 	
-	//Return ?(CommonUseCached.DataSeparationEnabled(), Metadata.Synonym, DataExchangeCached.ThisInfoBaseName());
-	Return Metadata.Synonym;
+	Return ?(CommonUseCached.DataSeparationEnabled(), Metadata.Synonym, DataExchangeCached.ThisInfobaseName());
 	
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// Local internal procedures and functions.
+// Local internal procedures and functions
 
-// For internal use only.
-//
+// For internal use only
 Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 	
 	QueryText =
@@ -894,12 +1127,13 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 	|FROM
 	|	ExchangePlan.MessageExchange AS MessageExchange
 	|		LEFT JOIN InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings
-	|			ON MessageExchange.Ref = ExchangeTransportSettings.Node
+	|		ON MessageExchange.Ref = ExchangeTransportSettings.Node
 	|WHERE
 	|	MessageExchange.Ref <> &ThisNode
-	|	AND (NOT MessageExchange.Leading)
-	|	AND (NOT MessageExchange.DeletionMark)
-	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportType = VALUE(Enum.ExchangeMessageTransportTypes.WS)";
+	|	AND (Not MessageExchange.Leading)
+	|	AND (Not MessageExchange.DeletionMark)
+	|	AND (Not MessageExchange.Locked)
+	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportKind = VALUE(Enum.ExchangeMessageTransportKinds.WS)";
 	
 	Query = New Query;
 	Query.SetParameter("ThisNode", ThisNode());
@@ -913,25 +1147,23 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 	
 	NodeArray = QueryResult.Unload().UnloadColumn("Ref");
 	
-	// Importing data from all end points
+	// Importing data from all endpoints
 	For Each Recipient In NodeArray Do
 		
 		Cancel1 = False;
 		
-		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False, Enums.ExchangeMessageTransportTypes.WS);
-		Cancel1 = True;
+		DataExchangeServer.ExecuteDataExchangeForInfobaseNode(Cancel1, Recipient, True, False, Enums.ExchangeMessageTransportKinds.WS);
 		
 		Cancel = Cancel Or Cancel1;
 		
 	EndDo;
 	
-	// Exporting data to all end points
+	// Exporting data to all endpoints
 	For Each Recipient In NodeArray Do
 		
 		Cancel1 = False;
 		
-		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True, Enums.ExchangeMessageTransportTypes.WS);
-		Cancel1 = True;
+		DataExchangeServer.ExecuteDataExchangeForInfobaseNode(Cancel1, Recipient, False, True, Enums.ExchangeMessageTransportKinds.WS);
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -939,8 +1171,7 @@ Procedure SendReceiveMessagesViaWebServiceExecute(Cancel)
 	
 EndProcedure
 
-// For internal use only.
-//
+// For internal use only
 Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 	
 	QueryText =
@@ -949,11 +1180,12 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 	|FROM
 	|	ExchangePlan.MessageExchange AS MessageExchange
 	|		LEFT JOIN InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings
-	|			ON MessageExchange.Ref = ExchangeTransportSettings.Node
+	|		ON MessageExchange.Ref = ExchangeTransportSettings.Node
 	|WHERE
 	|	MessageExchange.Ref <> &ThisNode
-	|	AND (NOT MessageExchange.DeletionMark)
-	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportType <> VALUE(Enum.ExchangeMessageTransportTypes.WS)";
+	|	AND (Not MessageExchange.DeletionMark)
+	|	AND (Not MessageExchange.Locked)
+	|	AND ExchangeTransportSettings.DefaultExchangeMessageTransportKind <> VALUE(Enum.ExchangeMessageTransportKinds.WS)";
 	
 	Query = New Query;
 	Query.SetParameter("ThisNode", ThisNode());
@@ -967,25 +1199,23 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 	
 	NodeArray = QueryResult.Unload().UnloadColumn("Ref");
 	
-	// Importing data from all end points
+	// Importing data from all endpoints
 	For Each Recipient In NodeArray Do
 		
 		Cancel1 = False;
 		
-		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, True, False);
-		Cancel1 = True;
+		DataExchangeServer.ExecuteDataExchangeForInfobaseNode(Cancel1, Recipient, True, False);
 		
 		Cancel = Cancel Or Cancel1;
 		
 	EndDo;
 	
-	// Exporting data to all end points
+	// Exporting data to all endpoints
 	For Each Recipient In NodeArray Do
 		
 		Cancel1 = False;
 		
-		//DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel1, Recipient, False, True);
-		Cancel1 = True;
+		DataExchangeServer.ExecuteDataExchangeForInfobaseNode(Cancel1, Recipient, False, True);
 		
 		Cancel = Cancel Or Cancel1;
 		
@@ -993,15 +1223,16 @@ Procedure SendReceiveMessagesViaStandardCommunicationLines(Cancel)
 	
 EndProcedure
 
-// For internal use only.
-//
-Procedure ConnectEndPointAtSender(Cancel,
+// For internal use only
+Procedure ConnectEndpointAtSender(Cancel,
 														SenderConnectionSettings,
 														RecipientConnectionSettings,
-														EndPoint,
-														RecipientEndPointDescription,
-														SenderEndPointDescription
+														Endpoint,
+														RecipientEndpointDescription,
+														SenderEndpointDescription
 	) Export
+	
+	DataExchangeServer.CheckUseDataExchange();
 	
 	ErrorMessageString = "";
 	
@@ -1018,122 +1249,117 @@ Procedure ConnectEndPointAtSender(Cancel,
 	
 	If WSProxy = Undefined Then
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
 	Try
 		
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 		
 	Except
 		Cancel = True;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return;
 	EndTry;
 	
 	If CorrespondentVersion_2_0_1_6 Then
-		EndPointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetIBParameters(RecipientEndPointDescription));
+		EndpointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(RecipientEndpointDescription));
 	Else
-		EndPointParameters = ValueFromStringInternal(WSProxy.GetIBParameters(RecipientEndPointDescription));
+		EndpointParameters = ValueFromStringInternal(WSProxy.GetInfobaseParameters(RecipientEndpointDescription));
 	EndIf;
 	
-	EndPointNode = ExchangePlans.MessageExchange.FindByCode(EndPointParameters.Code);
+	EndpointNode = ExchangePlans.MessageExchange.FindByCode(EndpointParameters.Code);
 	
-	If Not EndPointNode.IsEmpty() Then
+	If Not EndpointNode.IsEmpty() Then
 		Cancel = True;
-		ErrorMessageString = NStr("en = 'The end point is already connected to the infobase. The point description is %1.'");
-		ErrorMessageString = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, CommonUse.GetAttributeValue(EndPointNode, "Description"));
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
+		ErrorMessageString = NStr("en = 'The endpoint is already connected to the infobase. Endpoint name: %1'", CommonUseClientServer.DefaultLanguageCode());
+		ErrorMessageString = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, CommonUse.ObjectAttributeValue(EndpointNode, "Description"));
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,, ErrorMessageString);
 		Return;
 	EndIf;
 	
 	BeginTransaction();
 	Try
 		
-		// Setting this node description, if necessary
+		// Assigning name to the endpoint if necessary
 		If IsBlankString(ThisNodeDescription()) Then
 			
 			ThisNodeObject = ThisNode().GetObject();
-			ThisNodeObject.Description = ?(IsBlankString(SenderEndPointDescription), ThisNodeDefaultDescription(), SenderEndPointDescription);
+			ThisNodeObject.Description = ?(IsBlankString(SenderEndpointDescription), ThisNodeDefaultDescription(), SenderEndpointDescription);
 			ThisNodeObject.Write();
 			
 		EndIf;
 		
-		// Creating the exchange plan node that corresponds to the connecting end point
-		EndPointNodeObject = ExchangePlans.MessageExchange.CreateNode();
-		EndPointNodeObject.Code = EndPointParameters.Code;
-		EndPointNodeObject.Description = EndPointParameters.Description;
-		EndPointNodeObject.Write();
+		// Creating an exchange plan node matching the endpoint to be connected
+		EndpointNodeObject = ExchangePlans.MessageExchange.CreateNode();
+		EndpointNodeObject.Code = EndpointParameters.Code;
+		EndpointNodeObject.Description = EndpointParameters.Description;
+		EndpointNodeObject.Write();
 		
 		// Updating connection settings
 		RecordStructure = New Structure;
-		RecordStructure.Insert("Node", EndPointNodeObject.Ref);
-		RecordStructure.Insert("DefaultExchangeMessageTransportType", Enums.ExchangeMessageTransportTypes.WS);
+		RecordStructure.Insert("Node", EndpointNodeObject.Ref);
+		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		RecordStructure.Insert("DataExportTransactionItemCount", 0);
-		RecordStructure.Insert("DataImportTransactionItemCount", 0);
-		
-		RecordStructure.Insert("WSURL", SenderConnectionSettings.WSURL);
+		RecordStructure.Insert("WSURL",      SenderConnectionSettings.WSURL);
 		RecordStructure.Insert("WSUserName", SenderConnectionSettings.WSUserName);
 		RecordStructure.Insert("WSPassword", SenderConnectionSettings.WSPassword);
+		RecordStructure.Insert("WSRememberPassword", True);
 		
-		// Adding the record to the information register
+		// Adding information register record
 		InformationRegisters.ExchangeTransportSettings.AddRecord(RecordStructure);
 		
-		ThisPointParameters = CommonUse.GetAttributeValues(ThisNode(), "Code, Description");
+		ThisPointParameters = CommonUse.ObjectAttributeValues(ThisNode(), "Code, Description");
 		
-		// Connecting the recipient end point
+		// Establishing the endpoint connection on recipient side
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.ConnectEndPoint(ThisPointParameters.Code, ThisPointParameters.Description, XDTOSerializer.WriteXDTO(RecipientConnectionSettings));
+			WSProxy.ConnectEndpoint(ThisPointParameters.Code, ThisPointParameters.Description, XDTOSerializer.WriteXDTO(RecipientConnectionSettings));
 		Else
-			WSProxy.ConnectEndPoint(ThisPointParameters.Code, ThisPointParameters.Description, ValueToStringInternal(RecipientConnectionSettings));
+			WSProxy.ConnectEndpoint(ThisPointParameters.Code, ThisPointParameters.Description, ValueToStringInternal(RecipientConnectionSettings));
 		EndIf;
 		
-		If GetFunctionalOption("UseDataExchange") = False Then
-			Constants.UseDataExchange.Set(True);
-		EndIf;
+		// Setting the scheduled job usage flag
+		ScheduledJobsServer.SetUseScheduledJob(
+			Metadata.ScheduledJobs.SendReceiveSystemMessages, True);
 		
-		// Setting the schaduled job usage attribute
-		ScheduledJob = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.SendReceiveSystemMessages);
-		If Not ScheduledJob.Use Then
-			ScheduledJobsServer.SetScheduledJobUse(String(ScheduledJob.UUID), True);
-			Cancel = True;
-		EndIf;
-		
-		EndPoint = EndPointNodeObject.Ref;
+		Endpoint = EndpointNodeObject.Ref;
 		
 		CommitTransaction();
 	Except
 		RollbackTransaction();
 		Cancel = True;
-		EndPoint = Undefined;
-		WriteLogEvent(EndPointConnectionEventLogMessageText(), EventLogLevel.Error,,,
-				DetailErrorDescription(ErrorInfo())
-		);
+		Endpoint = Undefined;
+		WriteLogEvent(EndpointConnectionEventLogMessageText(), EventLogLevel.Error,,,
+				DetailErrorDescription(ErrorInfo()));
 		Return;
 	EndTry;
 	
 EndProcedure
 
-// For internal use only.
-//
+// For internal use only
 Function MessageHandlers()
 	
 	Result = NewMessageHandlerTable();
 	
+	EventHandlers = CommonUse.InternalEventHandlers(
+		"StandardSubsystems.SaaSOperations.MessageExchange\MessageChannelHandlersOnDefine");
+	
+	For Each Handler In EventHandlers Do
+		Handler.Module.MessageChannelHandlersOnDefine(Result);
+	EndDo;
+	
 	MessageExchangeOverridable.GetMessageChannelHandlers(Result);
 	
 	Return Result;
+	
 EndFunction
 
-
-// For internal use only.
-//
+// For internal use only
 Function NewMessageHandlerTable()
 	
 	Handlers = New ValueTable;
@@ -1141,4 +1367,94 @@ Function NewMessageHandlerTable()
 	Handlers.Columns.Add("Handler");
 	
 	Return Handlers;
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// Message sending/receiving event handlers
+
+Procedure OnSendMessageSL(Val MessageChannel, Body, MessageObject)
+	
+	MessageExchange.OnSendMessage(MessageChannel, Body, MessageObject);
+	
+EndProcedure
+
+Procedure OnSendMessage(Val MessageChannel, Body)
+	
+	EventHandlers = CommonUse.InternalEventHandlers(
+		"StandardSubsystems.SaaSOperations.MessageExchange\OnSendMessage");
+	For Each Handler In EventHandlers Do
+		Handler.Module.OnSendMessage(MessageChannel, Body);
+	EndDo;
+	
+	MessageExchangeOverridable.OnSendMessage(MessageChannel, Body);
+	
+EndProcedure
+
+Procedure OnReceiveMessageSL(Val MessageChannel, Body, MessageObject)
+	
+	MessageExchange.OnReceiveMessage(MessageChannel, Body, MessageObject);
+	
+EndProcedure
+
+Procedure OnReceiveMessage(Val MessageChannel, Body)
+	
+	EventHandlers = CommonUse.InternalEventHandlers(
+		"StandardSubsystems.SaaSOperations.MessageExchange\OnReceiveMessage");
+	For Each Handler In EventHandlers Do
+		Handler.Module.OnReceiveMessage(MessageChannel, Body);
+	EndDo;
+	
+	MessageExchangeOverridable.OnReceiveMessage(MessageChannel, Body);
+	
+EndProcedure
+
+#EndRegion
+
+// Internal use only
+Function ConvertExchangePlanName(ExchangePlanName) Export
+
+	Return StrReplace(ExchangePlanName, "ОбменСообщениями", "MessageExchange");
+
+EndFunction
+
+// Internal use only
+Function ConvertExchangePlanMessageData(MessageData) Export
+
+	Return StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		MessageData, 
+		"ОбменСообщениями", "MessageExchange"), 
+		"СообщенияСистемы", "SystemMessages"), 
+		"ТелоСообщения", "Body"), 
+		"Отправитель", "Sender"), 
+		"Получатель", "Recipient"), 
+		"Заблокировано", "Locked"), 
+		"КоличествоПопытокОбработкиСообщения", "ProcessMessageRetryCount"), 
+		"ПодробноеПредставлениеОшибки", "DetailErrorDescription"), 
+		"ЭтоБыстроеСообщение", "IsInstantMessage");
+
+EndFunction
+	
+// Internal use only
+Function ConvertRecipientConnectionSettings(Val SettingsStructure) Export
+
+	If SettingsStructure.Property("WSИмяПользователя") Then
+		SettingsStructure.Insert("WSUserName", SettingsStructure.WSИмяПользователя);
+	EndIf;
+	If SettingsStructure.Property("WSПароль") Then
+		SettingsStructure.Insert("WSPassword", SettingsStructure.WSПароль);
+	EndIf;
+	If SettingsStructure.Property("WSURLВебСервиса") Then
+		SettingsStructure.Insert("WSURL", SettingsStructure.WSURLВебСервиса);
+	EndIf;
+	
+	Return SettingsStructure;
+
 EndFunction

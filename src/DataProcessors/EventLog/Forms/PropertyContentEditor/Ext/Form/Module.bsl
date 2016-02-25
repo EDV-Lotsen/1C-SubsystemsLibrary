@@ -1,9 +1,8 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
+	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
 	If Parameters.Property("SelfTest") Then
 		Return;
 	EndIf;
@@ -20,18 +19,20 @@ Procedure OnOpen(Cancel)
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure CheckOnChange(Item)
-	MarkTreeItem(Items.List.CurrentData, Items.List.CurrentData.Check);
+	SelectTreeItem(Items.List.CurrentData, Items.List.CurrentData.Check);
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure ChooseFilterContent(Command)
@@ -52,60 +53,100 @@ EndProcedure
 Procedure UncheckAll(Command)
 	SetMarks(False);
 EndProcedure
+ 
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
 
 &AtClient
 Procedure SetEditorParameters(ListToEdit, ParametersToSelect)
 	FilterParameterStructure = GetEventLogFilterValuesByColumn(ParametersToSelect);
 	FilterValues = FilterParameterStructure[ParametersToSelect];
+ 
+	// Getting a list of event presentations
+	If ParametersToSelect = "Event" Then
+		
+		For Each MapItem In FilterValues Do
+			EventPresentationString = EventPresentations.Add();
+			EventPresentationString.Presentation = MapItem.Value;
+		EndDo;
+		
+	EndIf;
 	
 	If TypeOf(FilterValues) = Type("Array") Then
 		ListItems = List.GetItems();
-		For Each ArrayItem In FilterValues Do
+		For Each ArrayElement In FilterValues Do
 			NewItem = ListItems.Add();
 			NewItem.Check = False;
-			NewItem.Value = ArrayItem;
-			NewItem.Presentation = ArrayItem;
+			NewItem.Value = ArrayElement;
+			NewItem.Presentation = ArrayElement;
 		EndDo;
 	ElsIf TypeOf(FilterValues) = Type("Map") Then
-		If ParametersToSelect = "Event" or 
-			 ParametersToSelect = "Metadata" Then 
-			// getting as a tree
+		
+		If ParametersToSelect = "Event" Or
+			 ParametersToSelect = "Metadata" Then  
+			// Getting as a tree
 			For Each MapItem In FilterValues Do
+				EventFilterParameters = New Structure("Presentation", MapItem.Value);
+				
+				If MapItem.Key = MapItem.Value
+					And EventPresentations.FindRows(EventFilterParameters).Count() > 1 Then
+					AppliedSolutionEvents.Add(MapItem.Key, MapItem.Value);
+					Continue;
+				EndIf;
+				
 				NewItem = GetTreeBranch(MapItem.Value);
 				NewItem.Check = False;
 				NewItem.Value = MapItem.Key;
+				NewItem.FullPresentation = MapItem.Value;
 			EndDo;
+			
 		Else 
-			// getting as a flat list
+			// Getting as a flat list
 			ListItems = List.GetItems();
 			For Each MapItem In FilterValues Do
 				NewItem = ListItems.Add();
 				NewItem.Check = False;
 				NewItem.Value = MapItem.Key;
+				
 				If ParametersToSelect = "User" Then
 					// In this case the user name serves as a key 
 					NewItem.Value = MapItem.Value;
 					NewItem.Presentation = MapItem.Value;
+					NewItem.FullPresentation = MapItem.Value;
+					
 					If NewItem.Value = "" Then
 						// In case of default user
 						NewItem.Value = "";
-						NewItem.Presentation = Users.UnspecifiedUserFullName();
+						NewItem.FullPresentation = UnspecifiedUserFullName();
+						NewItem.Presentation = UnspecifiedUserFullName();
+					Else
+						// In case of internal user
+						InternalUserPresentation = InternalUserFullName(MapItem.Key);
+						If Not IsBlankString(InternalUserPresentation) Then
+							
+							NewItem.FullPresentation = InternalUserPresentation;
+							NewItem.Presentation = InternalUserPresentation;
+							
+						EndIf;
 					EndIf;
+					
 				Else
 					NewItem.Presentation = MapItem.Value;
+					NewItem.FullPresentation = MapItem.Value;
 				EndIf;
+				
 			EndDo;
+			
 		EndIf;
+		
 	EndIf;
 	
-	// Marking tree items that are mapped to ListToEdit items
-	MarkFoundItems(List.GetItems(), ListToEdit);
+	// Selecting marks of tree items that are mapped to ListToEdit items
+	SelectFoundItems(List.GetItems(), ListToEdit);
 	
-	// Finding child items in the list. If there are no such items
+	// Finding child items in the list. If there are no such items,
 	// switching the control in a list mode.
 	IsTree = False;
 	For Each TreeItem In List.GetItems() Do
@@ -117,6 +158,9 @@ Procedure SetEditorParameters(ListToEdit, ParametersToSelect)
 	If Not IsTree Then
 		Items.List.Representation = TableRepresentation.List;
 	EndIf;
+	
+ 	OrderTreeItems();	
+	
 EndProcedure
 
 &AtClient
@@ -125,12 +169,23 @@ Function GetEditedList()
 	ListToEdit = New ValueList;
 	
 	ListToEdit.Clear();
-	HasUnmarked = False;
-	GetSubtreeList(ListToEdit, List.GetItems(), HasUnmarked);
+	HasNotSelected = False;
+	GetSubtreeList(ListToEdit, List.GetItems(), HasNotSelected);
+	AddAppliedSolutionEvents();
 	
 	Return ListToEdit;
 	
 EndFunction
+ 
+ &AtClient
+
+Procedure AddAppliedSolutionEvents()
+	
+	For Each Event In AppliedSolutionEvents Do
+		ListToEdit.Add(Event.Value, Event.Presentation);
+	EndDo;
+	
+EndProcedure
 
 &AtClient
 Function GetTreeBranch(Presentation)
@@ -152,18 +207,19 @@ Function GetTreeBranch(Presentation)
 	EndIf;
 	
 	For Each TreeItem In TreeItems Do
-		If TreeItem.Presentation = BranchName Then
+		If TreeItem.Presentation = BranchName 
+			And TreeItem.GetItems().Count() > 0 Then
 			Return TreeItem;
 		EndIf;
 	EndDo;
-	// Tree item not found, it have to be created 
+	// The tree item is not found, it have to be created 
 	TreeItem = TreeItems.Add();
 	TreeItem.Presentation = BranchName;
 	TreeItem.Check = False;
 	Return TreeItem;
 EndFunction
 
-// Splits a string into a row array using dot as a separator
+// Splits a string into an Array of String using dot(.) as a separator
 &AtClient
 Function SplitStringByDots(Val Presentation)
 	Fragments = New Array;
@@ -188,45 +244,51 @@ Function GetEventLogFilterValuesByColumn(ParametersToSelect)
 EndFunction
 
 &AtClient
-Procedure GetSubtreeList(ListToEdit, TreeItems, HasUnmarked)
+Procedure GetSubtreeList(ListToEdit, TreeItems, HasNotSelected)
 	For Each TreeItem In TreeItems Do
 		If TreeItem.GetItems().Count() <> 0 Then
-			GetSubtreeList(ListToEdit, TreeItem.GetItems(), HasUnmarked);
+			GetSubtreeList(ListToEdit, TreeItem.GetItems(), HasNotSelected);
 		Else
 			If TreeItem.Check Then
 				NewListItem = ListToEdit.Add();
 				NewListItem.Value = TreeItem.Value;
-				NewListItem.Presentation = AssemblePresentation(TreeItem);
+				NewListItem.Presentation = TreeItem.FullPresentation;
 			Else
-				HasUnmarked = True;
+				HasNotSelected = True;
 			EndIf;
 		EndIf;
 	EndDo;
 EndProcedure
 
 &AtClient
-Procedure MarkFoundItems(TreeItems, ListToEdit)
-	For Each TreeItem In TreeItems Do
+Procedure SelectFoundItems(TreeItems, ListToEdit)
+ 	For Each TreeItem  In TreeItems Do
+		
 		If TreeItem.GetItems().Count() <> 0 Then 
-			MarkFoundItems(TreeItem.GetItems(), ListToEdit);
+			SelectFoundItems(TreeItem.GetItems(), ListToEdit);
 		Else
-			CombinedPresentation = AssemblePresentation(TreeItem);
-			For Each ListItem In ListToEdit Do
-				If CombinedPresentation = ListItem.Presentation Then
-					MarkTreeItem(TreeItem, True);
+			
+			For Each  ListItem In ListToEdit Do
+				
+				If TreeItem.FullPresentation =  ListItem.Presentation Then
+					SelectTreeItem(TreeItem, True);
 					Break;
 				EndIf;
+				
 			EndDo;
+			
 		EndIf;
+		
 	EndDo;
+	
 EndProcedure
-
+ 
 &AtClient
-Procedure MarkTreeItem(TreeItem, Check, CheckParentState = True)
+Procedure SelectTreeItem(TreeItem, Check, CheckParentState = True)
 	TreeItem.Check = Check;
-	// Marking all child items of tree 
+	// Selecting marks of all child items of tree 
 	For Each TreeChildItem In TreeItem.GetItems() Do
-		MarkTreeItem(TreeChildItem, Check, False);
+		SelectTreeItem(TreeChildItem, Check, False);
 	EndDo;
 	// Checking if parent item state should be changed.
 	If CheckParentState Then
@@ -262,20 +324,21 @@ Procedure CheckBranchMarked(Branch)
 	
 	If HasTrue Then
 		If HasFalse Then
-			// There are marked and unmarked branches. If nesessary, unmarking current item and than checking parent one.
+			// There are branches with both selected and cleared marks. If necessary, 
+			// clearing the mark of the current item and then checking the parent.
 			If Branch.Check Then
 				Branch.Check = False;
 				CheckBranchMarked(Branch.GetParent());
 			EndIf;
 		Else
-			// All of child branches are marked
+			// All child branch marks are selected
 			If Not Branch.Check Then
 				Branch.Check = True;
 				CheckBranchMarked(Branch.GetParent());
 			EndIf;
 		EndIf;
 	Else
-		// All of child branches are unmarked
+		// All child branch marks are cleared
 		If Branch.Check Then
 			Branch.Check = False;
 			CheckBranchMarked(Branch.GetParent());
@@ -297,7 +360,38 @@ EndFunction
 &AtClient
 Procedure SetMarks(Value)
 	For Each TreeItem In List.GetItems() Do
-		MarkTreeItem(TreeItem, Value, False);
+		SelectTreeItem(TreeItem, Value, False);
 	EndDo;
 EndProcedure
- 
+
+
+ &AtServer
+
+Procedure OrderTreeItems()
+	
+	ListTree = FormAttributeToValue("List");
+	ListTree.Strings.Sort("Presentation Asc", True);
+	ValueToFormAttribute(ListTree, "List");
+	
+EndProcedure
+
+&AtServerNoContext
+Function UnspecifiedUserFullName()
+	
+	Return Users.UnspecifiedUserFullName();
+	
+EndFunction
+
+&AtServerNoContext
+Function InternalUserFullName(InfobaseUserID)
+	
+	If CommonUse.SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		
+		SaaSOperationsModule = CommonUse.CommonModule("SaaSOperations");
+		Return SaaSOperationsModule.InfobaseUserAlias(InfobaseUserID);
+		
+	EndIf;
+	
+EndFunction
+
+#EndRegion

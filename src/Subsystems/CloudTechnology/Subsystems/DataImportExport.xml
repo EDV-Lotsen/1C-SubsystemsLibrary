@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="4bd401b9-7e40-4847-85df-ab45fba08d40">
+		<Properties>
+			<Name>DataImportExport</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data import export</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeInCommandInterface>false</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture/>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportDataStorageData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportUserSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.DataDump_1_0_2_1</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.DataImportExport</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.DataExportImportInternal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ImportExportContainerManagerData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportInfobaseData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.DataExportImportInternalEvents</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.DataArtefacts_ValueStorages_1_0_0_1</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportSequenceBoundaryData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportCommonSeparatedData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportSharedData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportPredefinedData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ImportExportInfobaseUsers</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">eee3e9e5-8af3-4511-9568-21749f02eb0c</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">5be088bd-94ab-43be-a608-255ef73334a4</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ListOfMetadataObjectsWithValueStorage</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.DataImportExportOverridable</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ListOfCommonSeparatedMetadataObjects</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ListOfMetadataObjectsWithPredefinedItems</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ImportExportCommonClassifierCacheData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ImportExportRefsToSharedDataCheckCacheOnExport</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

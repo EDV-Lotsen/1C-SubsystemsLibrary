@@ -10,28 +10,35 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
 			<Content>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.ContactInformation</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementClassifiers</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementClient</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementOverridable</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagement</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.FindByPostalCode</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.PhoneInput</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.ContactInformationKinds</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.WorldCountries</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.ContactInformationTypes</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Subsystem.StandardSubsystems.Subsystem.ContactInformation</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementClassifiersClient</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.FillContactInformation</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementEvents</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.SetContactInformationKindOrder</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.ResetContactInformationKindOrder</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.ContactInformationKindsFillOrderingAttributeValue</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.ContactInformationKindsResetOrderingAttributeValue</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationManagementClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.ContactInformationEditedInDialogColor</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.ContactInformationGotoURL</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationInternal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationClientServerCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ContactInformationInput</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.ContactInformation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.Submenu</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.ContactInformationObsolete</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationInternalServerCall</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationXML</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ContactInformationInternalCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.AddEditWorldCountries</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

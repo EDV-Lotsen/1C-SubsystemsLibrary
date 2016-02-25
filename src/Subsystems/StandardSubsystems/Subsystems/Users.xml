@@ -10,7 +10,7 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
@@ -20,7 +20,6 @@
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.Users</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Users</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersOverridable</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UsersSynchronize</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.SelectedUser</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.UserGroupContent</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.UserGroups</xr:Item>
@@ -30,7 +29,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UserState03</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UserState02</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UserState01</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersServerCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersInternalCached</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.ShowSelectedRolesOnly</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UserState07</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UserState08</xr:Item>
@@ -46,7 +45,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.AddEditExternalUsers</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Role.EditCurrentExternalUser</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">SessionParameter.CurrentExternalUser</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersEvents</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersInternal</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ExternalUsers</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Role.EditCurrentUser</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Role.AddEditUsers</xr:Item>
@@ -54,6 +53,17 @@
 				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.UseExternalUsers</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.UseUserGroups</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.UserTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersInternalClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersInternalClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.UsersInternalServerCall</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.OtherUserSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.AppUserSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">f561be64-9420-46ec-a4f7-9df0bea2e28b</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.UserSessionParameters</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.UserGroups</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">SessionParameter.AuthorizedUser</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Report.UserInfo</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

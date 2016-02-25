@@ -4,15 +4,6 @@ Procedure BeforeWrite(Cancel)
 	
 	AdditionalProperties.Insert("CurrentValue", Constants.UseSeparationByDataAreas.Get());
 	
-	If AdditionalProperties.CurrentValue <> Value  Then
-		RefreshReusableValues();
-		If Value Then
-			EventHandlers = CommonUse.InternalEventHandlers(
-				"StandardSubsystems.BaseFunctionality\OnEnableSeparationByDataAreas");
-			AdditionalProperties.Insert("EventHandlers", EventHandlers);
-		EndIf;
-	EndIf;
-	
 EndProcedure
 
 Procedure OnWrite(Cancel)
@@ -28,6 +19,11 @@ Procedure OnWrite(Cancel)
 	If Value Then
 		
 		Constants.DontUseSeparationByDataAreas.Set(False);
+		Constants.IsStandaloneWorkstation.Set(False);
+		
+	ElsIf Constants.IsStandaloneWorkstation.Get() Then
+		
+		Constants.DontUseSeparationByDataAreas.Set(False);
 		
 	Else
 		
@@ -35,10 +31,16 @@ Procedure OnWrite(Cancel)
 		
 	EndIf;
 	
-	If AdditionalProperties.Property("EventHandlers") Then
-		For Each Handler In AdditionalProperties.EventHandlers Do
-			Handler.Module.OnEnableSeparationByDataAreas();
-		EndDo;
+	If AdditionalProperties.CurrentValue <> Value  Then
+		RefreshReusableValues();
+		If Value Then
+			EventHandlers = CommonUse.InternalEventHandlers(
+				"StandardSubsystems.BaseFunctionality\OnEnableSeparationByDataAreas");
+			
+			For Each Handler  In EventHandlers Do
+				Handler.Module.OnEnableSeparationByDataAreas();
+			EndDo;
+		EndIf;
 	EndIf;
 	
 EndProcedure

@@ -1,40 +1,99 @@
-﻿
-// The group parent value to use it in the OnWrite event handler
-Var OldParent; 
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
 ////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+// INTERNAL VARIABLES
 
-// Prevents invalid actions with the All users predefined group.
-//
+Var OldParent; // Value of the group parent before changes, to be used in OnWrite event handler.
+
+Var OldContentUserGroups; // User group content (list of users) before changes, to be used in OnWrite event handler.
+
+Var IsNew; // Shows whether new object was written.
+           // Used in OnWrite event handler.
+
+#Region EventHandlers
+
+Procedure FillCheckProcessing(Cancel, AttributesToCheck)
+	
+	CheckedObjectAttributes = New Array;
+	Errors = Undefined;
+	
+	// Checking the parent.
+	If Parent = Catalogs.UserGroups.AllUsers Then
+		CommonUseClientServer.AddUserError(Errors,
+			"Object.Parent",
+			NStr("en = '""All users"" predefined group cannot be used as a parent.'"));
+	EndIf;
+	
+	// Checking whether blank or duplicate users are present
+	CheckedObjectAttributes.Add("Content.User");
+	
+	For Each CurrentRow In Content Do;
+		LineNumber = Content.IndexOf(CurrentRow);
+		
+		// Checking whether value is filled
+		If Not ValueIsFilled(CurrentRow.User) Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].User",
+				NStr("en = 'User name is not specified.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'User name is not specified in row #%1.'"));
+			Continue;
+		EndIf;
+		
+		// Checking whether duplicate values are present
+		FoundValues = Content.FindRows(New Structure("User", CurrentRow.User));
+		If FoundValues.Count() > 1 Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Object.Content[%1].User",
+				NStr("en = 'Duplicate user.'"),
+				"Object.Content",
+				LineNumber,
+				NStr("en = 'Duplicate user in row #%1.'"));
+		EndIf;
+	EndDo;
+	
+	CommonUseClientServer.ShowErrorsToUser(Errors, Cancel);
+	
+	CommonUse.DeleteNoCheckAttributesFromArray(AttributesToCheck, CheckedObjectAttributes);
+	
+EndProcedure
+
+// Blocking invalid operation with "All users" predefined group.
 Procedure BeforeWrite(Cancel)
 	
 	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
+	IsNew = IsNew();
+	
 	If Ref = Catalogs.UserGroups.AllUsers Then
-		If Not Parent.IsEmpty() Then
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The All users predefined group can be placed in the root only.'"),
-				, , , Cancel);
-			Return;
+		If NOT Parent.IsEmpty() Then
+			Raise
+				NStr("en = '""All users"" predefined group must be the root one.'");
 		EndIf;
 		If Content.Count() > 0 Then
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'Users cannot be added to the All users predefined group.'"),
-				, , , Cancel);
-			Return;
+			Raise
+				NStr("en = 'Adding users to ""All users"" group is not supported.'");
 		EndIf;
 	Else
 		If Parent = Catalogs.UserGroups.AllUsers Then
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The All users predefined group cannot have subgroups.'"),
-				, , , Cancel);
-			Return;
+			Raise
+				NStr("en = '""All users"" predefined group cannot be used as a parent.'");
 		EndIf;
 		
-		OldParent = ?(Ref.IsEmpty(), Undefined, CommonUse.GetAttributeValue(Ref, "Parent"));
+		OldParent = ?(
+			Ref.IsEmpty(),
+			Undefined,
+			CommonUse.ObjectAttributeValue(Ref, "Parent"));
+			
+		If ValueIsFilled(Ref)
+		   AND Ref <> Catalogs.UserGroups.AllUsers Then
+			
+			OldContentUserGroups =
+				CommonUse.ObjectAttributeValue(Ref, "Content").Unload();
+		EndIf;
 	EndIf;
 	
 EndProcedure
@@ -45,57 +104,43 @@ Procedure OnWrite(Cancel)
 		Return;
 	EndIf;
 	
-	Users.UpdateUserGroupContent(Ref);
+	ItemsToChange    = New Map;
+	ModifiedGroups   = New Map;
+	
+	If Ref <> Catalogs.UserGroups.AllUsers Then
 		
-	If ValueIsFilled(OldParent) And OldParent <> Parent Then
-		Users.UpdateUserGroupContent(OldParent);
+		UpdateContent = UsersInternal.ColumnValueDifferences(
+			"User",
+			Content.Unload(),
+			OldContentUserGroups);
+		
+		UsersInternal.UpdateUserGroupContent(
+			Ref, UpdateContent, ItemsToChange, ModifiedGroups);
+		
+		If OldParent <> Parent Then
+			
+			If ValueIsFilled(Parent) Then
+				UsersInternal.UpdateUserGroupContent(
+					Parent, , ItemsToChange, ModifiedGroups);
+			EndIf;
+			
+			If ValueIsFilled(OldParent) Then
+				UsersInternal.UpdateUserGroupContent(
+					OldParent, , ItemsToChange, ModifiedGroups);
+			EndIf;
+		EndIf;
+		
+		UsersInternal.RefreshContentUsingOfUserGroups(
+			Ref, ItemsToChange, ModifiedGroups);
 	EndIf;
+	
+	UsersInternal.AfterUserGroupContentUpdate(
+		ItemsToChange, ModifiedGroups);
+	
+	UsersInternal.AfterAddUserOrGroupChange(Ref, IsNew);
 	
 EndProcedure
 
-Procedure FillCheckProcessing(Cancel, AttributesToCheck)
-	
-	CheckedObjectAttributes = New Array;
-	Errors = Undefined;
-	
-	// Checking whether AllUsers has subgroups
-	If Parent = Catalogs.UserGroups.AllUsers Then
-		CommonUseClientServer.AddUserError(Errors,
-			"Object.Parent",
-			NStr("en = 'The All users predefined group cannot have subgroups.'"));
-	EndIf;
-	
-	// Checking whether there are empty or repeated users
-	CheckedObjectAttributes.Add("Content.User");
-	
-	For Each CurrentRow In Content Do;
-		RowNumber = Content.IndexOf(CurrentRow);
-		
-		// Checking whether the value is filled
-		If Not ValueIsFilled(CurrentRow.User) Then
-			CommonUseClientServer.AddUserError(Errors,
-				"Object.Content[%1].User",
-				NStr("en = 'User is not selected.'"),
-				"Object.Content",
-				RowNumber,
-				NStr("en = 'A user in the row #%1 is not selected.'"));
-			Continue;
-		EndIf;
-		
-		// Checking whether there are repeated values
-		FoundValues = Content.FindRows(New Structure("User", CurrentRow.User));
-		If FoundValues.Count() > 1 Then
-			CommonUseClientServer.AddUserError(Errors,
-				"Object.Content[%1].User",
-				NStr("en = 'Repeated user.'"),
-				"Object.Content",
-				RowNumber,
-				NStr("en = 'There is a repeated user in the row #%1.'"));
-		EndIf;
-	EndDo;
-	
-	CommonUseClientServer.ShowErrorsToUser(Errors, Cancel);
-	
-	CommonUse.DeleteNoncheckableAttributesFromArray(AttributesToCheck, CheckedObjectAttributes);
-	
-EndProcedure
+#EndRegion
+
+#EndIf

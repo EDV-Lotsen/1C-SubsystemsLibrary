@@ -4,13 +4,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////// 
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
 
 // Gets the form that indicates progress of a time-consuming action.
 //
-Function GetLongActionForm() Export
+Function LongActionForm() Export
 	
 	Return GetForm("CommonForm.LongAction");
 	
 EndFunction
+ 
+ #EndRegion

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html xmlns:o="urn:schemas-microsoft-com:office:office"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">This form is used to view and replace data conversion rules. Data conversion rules are used during data synchronization between two applications. </p>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The default <a href="CommonForm.DataExchanges/Help">data synchronization</a> settings are applied in accordance with <strong>Standard exchange rules</strong>. The <a href="InformationRegister.DataExchangeRules/Help">exchange rules</a> include object conversion rules and <a href="InformationRegister.DataExchangeRules.Form.ObjectChangeRecordRules/Help">object recording rules</a>. </p>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">You can access <strong>Object conversion rules</strong> from the data synchronization settings, via command <strong>All actions - Import object conversion rules</strong>. </p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Rule source</h3>
+<p>Normally, <strong>Standard application rules</strong> are used for data synchronization between standard applications (name of a conversion rules template used as a source for the standard rules must be specified).  However, in specific cases it may be necessary to use <strong>Rules from file</strong> (for example, when synchronizing data between infobases with non-standard configuration) or <strong>Debug mode</strong> (for example, when errors occur during data synchronization).</p>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The <strong>Rule source</strong> radio button is used to select a source for object recording rules:</p>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Standard application rules</strong> (used by default).</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Rules from file</strong>. Ensure that the rules you are about to import are created in the current application version. Using rules created in previous versions can cause errors.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Debug mode</strong>. When you select <strong>Debug mode</strong> the following options will be available:</div>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Attach external data processor for export debug</strong> - if you select this option, you wil need to specify path and file name for external data processor containing an export handler debug module created in Data conversion application. In client/server mode, server path is specified. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Attach external data processor for import debug</strong> - if you select this option, you wil need to specify path and file name for external data processor containing an import handler debug module created in Data conversion application. In client/server mode, server path is specified. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Data synchronization logging mode</strong> - if this option is enabled, all events and errors that occur during data exchange will be recorded to a log file you select. If you do not select a log file, all messages will be recorded to <a href="DataProcessor.EventLog/Help">Event log</a>.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Do not interrupt data exchange on errors</strong> - if this option is enabled, data exchange procedure will continue uninterrupted upon any errors. Data exchange will complete, and any debug messages will be saved to the exchange log file or event log.</div></li></ul></li></ul><p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The list of currently active rules is displayed below the radio button.</p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Rules information</h3>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The following rules information is displayed for additional verification:</p>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Reminder of errors that could occur due to using rules from external files;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Application conversion rules dated</strong> - rules creation date and time are displayed here;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Source application </strong>- object conversion rules version is displayed here;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Target application</strong> - object conversion rules version is displayed here;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Correspondent conversion rules dated</strong> - rules creation date and time are displayed here;</div>
+</li><li><strong>Source application</strong> - object conversion rules version is displayed here; 
+</li><li><strong>Target application</strong> - object conversion rules version is displayed here. </li></ul><h3>Advanced</h3>
+<ul><li>Select the <strong>Use selective object change record filter</strong> check box.</li></ul><h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Importing rules</h3>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Set the <strong>Rule source</strong> radio button.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Click <strong>Import rules</strong>.</div></div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Specify path to the rules file if necessary.</div></div></li></ul><h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Exporting rules</h3>
+<p class="MsoNormal" style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">You can export the recording rules to a separate file. </p>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Click <strong>Export rules</strong>. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Select export method:</div>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>Normal file; </strong></div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><strong>ZIP archive.</strong></div></li></ul></li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Specify file path on a local computer or network disk. File name will be generated automatically. Click Save.</div></li></ul><h3>Using external rule files instead of standard object conversion rules</h3>
+<ul><li>Set the <strong>Rule source</strong> radio button to <strong>Rules from file</strong> or <strong>Debug mode</strong>. Click <strong>Import rules</strong>. Select a rule file located on a local computer or network disk. 
+</li><li>Make sure that rules contained in the selected file are compatible with current versions of source and target applications. Take note of rules date displayed in <strong>Rules information</strong>. <o:p></o:p> 
+</li><li>Click <strong>Save and close</strong>. The imported rules will apply immediately.</li></ul><p>Note: the same object conversion rules and object recording rules are used for all data synchronization procedures of the same type, i.e. based on the same exchange plan (for example, data synchronization procedures <strong>Synchronization with Krasnodar branch</strong> and <strong>Synchronization with Kiev office</strong> are of the same type, because they both are based on <strong>Full</strong> exchange plan). Therefore, to apply new rules to multiple data synchronization procedures of the same type, you only need to import new rules for any one of them; the new rules will automatically apply to all other data synchronization procedures of the same type.</p></body></html>

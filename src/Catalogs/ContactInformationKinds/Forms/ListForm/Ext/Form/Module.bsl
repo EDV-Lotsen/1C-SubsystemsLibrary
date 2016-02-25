@@ -1,5 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+﻿
+#Region FormCommandHandlers
 
 &AtClient
 Procedure MoveItemUp()
@@ -15,22 +15,20 @@ Procedure MoveItemDown()
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#Region FormHeaderItemEventHandlers
 
 &AtClient
-Procedure ListBeforeAddRow(Item, Cancel, Copy, Parent, Group)
+Procedure ListBeforeAddRow(Item, Cancel, Clone, Parent, Group)
 	
-	// Checking whether copying a folder is allowed
-	If Copy And Group Then
-		ShowMessageBox(, NStr("en = 'Adding new groups is not allowed.'"));
+	// Checking if group is being cloned
+	If Clone And Group Then
 		Cancel = True;
+		
+		ShowMessageBox(, NStr("en='Adding new groups to catalog is prohibited.'"));
 	EndIf;
 	
 EndProcedure
 
-
-
-
-
+#EndRegion

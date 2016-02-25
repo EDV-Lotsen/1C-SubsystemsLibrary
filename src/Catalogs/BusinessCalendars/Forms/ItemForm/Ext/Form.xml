@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FormChangeDay" id="11">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ChangeDay</CommandName>
+				<ExtendedTooltip name="FormChangeDayExtendedTooltip" id="26"/>
+			</Button>
+			<Button name="FormReplaceHoliday" id="12">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ReplaceDay</CommandName>
+				<ExtendedTooltip name="FormReplaceHolidayExtendedTooltip" id="27"/>
+			</Button>
+			<Button name="FormFillByDefault" id="16">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.FillByDefault</CommandName>
+				<ExtendedTooltip name="FormFillByDefaultExtendedTooltip" id="28"/>
+			</Button>
+			<Button name="PrintForm" id="25">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.Print</CommandName>
+				<ExtendedTooltip name="PrintFormExtendedTooltip" id="29"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnReadAtServer">OnReadAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnWriteAtServer">OnWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="MainAttributesGroup" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main attributes</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main attributes</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="MainAttributesGroupExtendedTooltip" id="30"/>
+			<ChildItems>
+				<InputField name="Description" id="3">
+					<DataPath>Object.Description</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="DescriptionContextMenu" id="4"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="31"/>
+				</InputField>
+				<InputField name="Code" id="14">
+					<DataPath>Object.Code</DataPath>
+					<ContextMenu name="CodeContextMenu" id="15"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="32"/>
+				</InputField>
+				<InputField name="CurrentYearNumber" id="8">
+					<DataPath>CurrentYearNumber</DataPath>
+					<SpinButton>true</SpinButton>
+					<EditFormat>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>NG=</v8:content>
+						</v8:item>
+					</EditFormat>
+					<MinValue xsi:type="xs:decimal">1900</MinValue>
+					<ContextMenu name="CurrentYearNumberContextMenu" id="9"/>
+					<ExtendedTooltip name="CurrentYearNumberExtendedTooltip" id="33"/>
+					<Events>
+						<Event name="OnChange">CurrentYearNumberOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="CalendarGroup" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Calendar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Calendar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="CalendarGroupExtendedTooltip" id="34"/>
+			<ChildItems>
+				<CalendarField name="Calendar" id="5">
+					<DataPath>Calendar</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<Width>70</Width>
+					<Height>21</Height>
+					<ShowCurrentDate>false</ShowCurrentDate>
+					<WidthInMonths>4</WidthInMonths>
+					<HeightInMonths>3</HeightInMonths>
+					<ContextMenu name="CalendarContextMenu" id="6">
+						<ChildItems>
+							<Button name="CalendarContextMenuChangeDay" id="10">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.ChangeDay</CommandName>
+								<ExtendedTooltip name="CalendarContextMenuChangeDayExtendedTooltip" id="35"/>
+							</Button>
+							<Button name="CalendarContextMenuReplaceDay" id="13">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Command.ReplaceDay</CommandName>
+								<ExtendedTooltip name="CalendarContextMenuReplaceDayExtendedTooltip" id="36"/>
+							</Button>
+						</ChildItems>
+					</ContextMenu>
+					<ExtendedTooltip name="CalendarExtendedTooltip" id="37"/>
+					<Events>
+						<Event name="OnPeriodOutput">CalendarOnPeriodOutput</Event>
+					</Events>
+				</CalendarField>
+				<LabelField name="ReplacementPresentation" id="18">
+					<DataPath>ReplacementPresentation</DataPath>
+					<Visible>false</Visible>
+					<ReadOnly>true</ReadOnly>
+					<TitleLocation>Top</TitleLocation>
+					<TextColor>style:InformationText</TextColor>
+					<ContextMenu name="ReplacementPresentationContextMenu" id="19"/>
+					<ExtendedTooltip name="ReplacementPresentationExtendedTooltip" id="38"/>
+				</LabelField>
+				<Table name="ReplacementList" id="20">
+					<Representation>List</Representation>
+					<TitleLocation>Top</TitleLocation>
+					<CommandBarLocation>None</CommandBarLocation>
+					<ReadOnly>true</ReadOnly>
+					<ChangeRowSet>false</ChangeRowSet>
+					<ChangeRowOrder>false</ChangeRowOrder>
+					<Header>false</Header>
+					<HorizontalLines>false</HorizontalLines>
+					<VerticalLines>false</VerticalLines>
+					<AutoInsertNewRow>true</AutoInsertNewRow>
+					<DataPath>ReplacementList</DataPath>
+					<RowPictureDataPath>ReplacementList.Picture</RowPictureDataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Holiday replacements</v8:content>
+						</v8:item>
+					</Title>
+					<SearchStringLocation>None</SearchStringLocation>
+					<ViewStatusLocation>None</ViewStatusLocation>
+					<SearchControlLocation>None</SearchControlLocation>
+					<ContextMenu name="ReplacementListContextMenu" id="21">
+						<Autofill>false</Autofill>
+					</ContextMenu>
+					<AutoCommandBar name="ReplacementListCommandBar" id="22"/>
+					<ExtendedTooltip name="ReplacementListExtendedTooltip" id="39"/>
+					<SearchStringAddition name="ReplacementListSearchString" id="41">
+						<AdditionSource>
+							<Item>ReplacementList</Item>
+							<Type>SearchStringRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ReplacementListSearchStringContextMenu" id="42"/>
+						<ExtendedTooltip name="ReplacementListSearchStringExtendedTooltip" id="43"/>
+					</SearchStringAddition>
+					<ViewStatusAddition name="ReplacementListViewStatus" id="44">
+						<AdditionSource>
+							<Item>ReplacementList</Item>
+							<Type>ViewStatusRepresentation</Type>
+						</AdditionSource>
+						<ContextMenu name="ReplacementListViewStatusContextMenu" id="45"/>
+						<ExtendedTooltip name="ReplacementListViewStatusExtendedTooltip" id="46"/>
+					</ViewStatusAddition>
+					<SearchControlAddition name="ReplacementListSearchControl" id="47">
+						<AdditionSource>
+							<Item>ReplacementList</Item>
+							<Type>SearchControl</Type>
+						</AdditionSource>
+						<ContextMenu name="ReplacementListSearchControlContextMenu" id="48"/>
+						<ExtendedTooltip name="ReplacementListSearchControlExtendedTooltip" id="49"/>
+					</SearchControlAddition>
+					<ChildItems>
+						<LabelField name="ReplacementListPresentation" id="23">
+							<DataPath>ReplacementList.Presentation</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<EditMode>EnterOnInput</EditMode>
+							<Height>2</Height>
+							<ContextMenu name="ReplacementListPresentationContextMenu" id="24"/>
+							<ExtendedTooltip name="ReplacementListPresentationExtendedTooltip" id="40"/>
+						</LabelField>
+					</ChildItems>
+				</Table>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.BusinessCalendars</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="Calendar" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Calendar</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="CurrentYearNumber" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Year</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>4</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<FillCheck>ShowError</FillCheck>
+		</Attribute>
+		<Attribute name="PreviousYearNumber" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Previous year number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>4</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DayKindColors" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Day kind colors</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="DayKindList" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Day kind list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DayKinds" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Day kinds</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="HolidayReplacements" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Holiday replacements</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="ReplacementPresentation" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Holiday replacements</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ReplacementList" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Replacement list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ChangeDay" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change day</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change day</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeDay</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+		<Command name="ReplaceDay" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move day</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move day</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ReplaceDay</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+		<Command name="FillByDefault" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill with default values</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Fill with default values</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.FillForm</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>FillByDefault</Action>
+			<Representation>TextPicture</Representation>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+		<Command name="Print" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Print</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Print business calendar year summary</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Print</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Print</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>0</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+				<Visible>
+					<xr:Common>false</xr:Common>
+				</Visible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
+</Form>

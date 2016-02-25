@@ -7,17 +7,21 @@ Var CheckIteration;
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
+	If Parameters.Property("Autotest") Then // Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+		Return;
+	EndIf;
+	
 	If CommonUseCached.DataSeparationEnabled() Then
-		FormHeaderText = NStr("en = 'Export data for migration to local infobase'");
-		MessageText = NStr("en = 'Data will be exported from the service into a file.			
-			|Use this file for importing data into infobase that operates in file or client/server mode).'");
+		FormTitleText = NStr("en = 'Export data into local version'");
+		MessageText      = NStr("en = 'Data will be exported from the service to a
+			|file, for further import to the local version.'");
 	Else
-		FormHeaderText = NStr("en = 'Export data for migration to service");
-		MessageText = NStr("en = 'Data will be exported from the local infobase into a file
-			|Use this file for importing data into infobase that operates in service mode.'");
+		FormTitleText = NStr("en = 'Export data for migration to service'");
+		MessageText      = NStr("en = 'Data will be exported from the local version to a
+			|file, for further import and use SaaS.'");
 	EndIf;
 	Items.WarningDecoration.Title = MessageText;
-	Title = FormHeaderText;
+	Title = FormTitleText;
 	
 EndProcedure
 
@@ -37,7 +41,7 @@ EndProcedure
 &AtClient
 Procedure ExportData(Command)
 	
-	If CommonUse.FileInfoBase() Then
+	If StandardSubsystemsClientCached.ClientParameters().FileInfobase Then
 		
 		PrepareDataExport();
 		SaveExportFile();
@@ -55,8 +59,7 @@ EndProcedure
 Procedure PrepareDataExport()
 	
 	StorageAddress = PutToTempStorage(Undefined, UUID);
-	
-	DataImportExport.ExportCurrentAreaToTempStorage(StorageAddress);
+	DataAreaExportImport.ExportCurrentDataAreaToTemporaryStorage(StorageAddress);
 	
 EndProcedure
 
@@ -67,18 +70,18 @@ Procedure SaveExportFile()
 	
 	If AttachFileSystemExtension() Then
 		
-		FilesToReceive = New Array;
+		FilesToBeObtained = New Array;
 		
 		ChoiceDialog = New FileDialog(FileDialogMode.Save);
-		ChoiceDialog.Filter = "ZIP Archive(*.zip)|*.zip";
+		ChoiceDialog.Filter = "ZIP archive(*.zip)|*.zip";
 		ChoiceDialog.Extension = "zip";
 		ChoiceDialog.FullFileName = FileName;
 		
 		If ChoiceDialog.Choose() Then
 			FileDetails = New TransferableFileDescription(ChoiceDialog.FullFileName, StorageAddress);
-			FilesToReceive.Add(FileDetails);
+			FilesToBeObtained.Add(FileDetails);
 			
-			GetFiles(FilesToReceive, , , False);
+			GetFiles(FilesToBeObtained, , , False);
 			
 		EndIf;
 		
@@ -97,7 +100,7 @@ Procedure StartDataExport()
 	
 	StartDataExportAtServer();
 	
-	Items.GroupPages.CurrentPage = Items.Export;
+	Items.GroupPages.CurrentPage = Items.Data;
 	
 	CheckIteration = 1;
 	
@@ -137,15 +140,7 @@ EndProcedure
 &AtServerNoContext
 Function FindJobByID(ID)
 	
-	If CommonUseCached.DataSeparationEnabled()
-		And CommonUseCached.SessionWithoutSeparator() Then
-		
-		CommonUse.SetSessionSeparation(False);
-		Job = BackgroundJobs.FindByUUID(ID);
-		CommonUse.SetSessionSeparation(True)
-	Else
-		Job = BackgroundJobs.FindByUUID(ID);
-	EndIf;
+	Job = BackgroundJobs.FindByUUID(ID);
 	
 	Return Job;
 	
@@ -162,10 +157,10 @@ Function ExportDataReady()
 		Return False;
 	EndIf;
 	
-	Items.GroupPages.CurrentPage = Items.Warnings;
+	Items.GroupPages.CurrentPage = Items.Warning;
 	
 	If Job = Undefined Then
-		Raise(NStr("en = 'Error initializing data export: a job that initializes data export is not found.'"));
+		Raise(NStr("en = 'Error while preparing for data export - export preparation job is not found.'"));
 	EndIf;
 	
 	If Job.State = BackgroundJobState.Failed Then
@@ -173,10 +168,10 @@ Function ExportDataReady()
 		If JobError <> Undefined Then
 			Raise(DetailErrorDescription(JobError));
 		Else
-			Raise(NStr("en = 'Error initializing data export: a job that initializes data export finished with an unknown error.'"));
+			Raise(NStr("en = 'Error while preparing for data export - export preparation job terminated with an unknown error.'"));
 		EndIf;
 	ElsIf Job.State = BackgroundJobState.Canceled Then
-		Raise(NStr("en = 'Error initializing data export: an administrator canceled a job that prepares data export.'"));
+		Raise(NStr("en = 'Error while preparing for data export - export preparation job is cancelled by administrator.'"));
 	Else
 		JobID = Undefined;
 		Return True;
@@ -189,30 +184,13 @@ Procedure StartDataExportAtServer()
 	
 	StorageAddress = PutToTempStorage(Undefined, UUID);
 	
-	If CommonUseCached.DataSeparationEnabled()
-		And CommonUseCached.SessionWithoutSeparator() Then
-		
-		JobParameters = New Array;
-		JobParameters.Add(CommonUse.SessionSeparatorValue());
-		JobParameters.Add(StorageAddress);
-		
-		CommonUse.SetSessionSeparation(False);
-		
-		Job = BackgroundJobs.Execute("DataImportExport.ExportAreaToTempStorage",
-			JobParameters,
-			,
-			NStr("en = 'Initializing data area export'"));
-			
-		CommonUse.SetSessionSeparation(True)
-	Else
-		JobParameters = New Array;
-		JobParameters.Add(StorageAddress);
-		
-		Job = BackgroundJobs.Execute("DataImportExport.ExportCurrentAreaToTempStorage", 
-			JobParameters,
-			,
-			NStr("en = 'Initializing data area export'"));
-	EndIf;
+	JobParameters = New Array;
+	JobParameters.Add(StorageAddress);
+
+	Job = BackgroundJobs.Execute("DataAreaExportImport.ExportCurrentDataAreaToTemporaryStorage", 
+		JobParameters,
+		,
+		NStr("en = 'Preparing data area export'"));
 		
 	JobID = Job.UUID;
 	
@@ -240,8 +218,9 @@ Procedure CancelInitializationJob(Val JobID)
 	Try
 		Job.Cancel();
 	Except
-		// Perhaps the job finished just at this moment and there is no error.
-		WriteLogEvent(NStr("en = 'Canceling the job of initialization of the data area export'", Metadata.DefaultLanguage.LanguageCode),
+		// It is possible that the job has completed at that moment and no error has occurred
+		WriteLogEvent(NStr("en = 'Canceling data area export preparation job'", 
+			CommonUseClientServer.DefaultLanguageCode()),
 			EventLogLevel.Error,,,
 			DetailErrorDescription(ErrorInfo()));
 	EndTry;

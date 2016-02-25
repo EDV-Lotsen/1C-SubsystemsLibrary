@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FormSchedule" id="17">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.OpenJobSchedule</CommandName>
+				<ExtendedTooltip name="FormScheduleExtendedTooltip" id="18"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnReadAtServer">OnReadAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="ID" id="15">
+			<DataPath>ID</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<ContextMenu name="IDContextMenu" id="16"/>
+			<ExtendedTooltip name="IDExtendedTooltip" id="19"/>
+		</InputField>
+		<InputField name="Description" id="1">
+			<DataPath>Object.Description</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DescriptionContextMenu" id="2"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="20"/>
+		</InputField>
+		<InputField name="Name" id="13">
+			<DataPath>Object.Name</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="NameContextMenu" id="14"/>
+			<ExtendedTooltip name="NameExtendedTooltip" id="21"/>
+		</InputField>
+		<CheckBoxField name="Use" id="3">
+			<DataPath>Object.Use</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseContextMenu" id="4"/>
+			<ExtendedTooltip name="UseExtendedTooltip" id="22"/>
+		</CheckBoxField>
+		<InputField name="MethodName" id="5">
+			<DataPath>Object.MethodName</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MethodNameContextMenu" id="6"/>
+			<ExtendedTooltip name="MethodNameExtendedTooltip" id="23"/>
+		</InputField>
+		<InputField name="Key" id="7">
+			<DataPath>Object.Key</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="KeyContextMenu" id="8"/>
+			<ExtendedTooltip name="KeyExtendedTooltip" id="24"/>
+		</InputField>
+		<InputField name="RestartCountOnFailure" id="9">
+			<DataPath>Object.RestartCountOnFailure</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="RestartCountOnFailureContextMenu" id="10"/>
+			<ExtendedTooltip name="RestartCountOnFailureExtendedTooltip" id="25"/>
+		</InputField>
+		<InputField name="RestartIntervalOnFailure" id="11">
+			<DataPath>Object.RestartIntervalOnFailure</DataPath>
+			<WarningOnEditRepresentation>Show</WarningOnEditRepresentation>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="RestartIntervalOnFailureContextMenu" id="12"/>
+			<ExtendedTooltip name="RestartIntervalOnFailureExtendedTooltip" id="26"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.QueueJobTemplates</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="ID" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>36</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Schedule" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Schedule</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="OpenJobSchedule" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open job schedule</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open job schedule</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.SetTime</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>OpenJobSchedule</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+</Form>

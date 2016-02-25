@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoTime>CurrentOrLast</AutoTime>
+	<UsePostingMode>Auto</UsePostingMode>
+	<RepostOnWrite>true</RepostOnWrite>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnWriteAtServer">OnWriteAtServer</Event>
+		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Company" id="27">
+			<DataPath>Object.Company</DataPath>
+			<Wrap>false</Wrap>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="CompanyContextMenu" id="28"/>
+			<ExtendedTooltip name="CompanyExtendedTooltip" id="30"/>
+			<Events>
+				<Event name="OnChange">CompanyOnChange</Event>
+			</Events>
+		</InputField>
+		<InputField name="Number" id="2">
+			<DataPath>Object.Number</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<HorizontalStretch>false</HorizontalStretch>
+			<Wrap>false</Wrap>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="NumberContextMenu" id="14"/>
+			<ExtendedTooltip name="NumberExtendedTooltip" id="31"/>
+		</InputField>
+		<InputField name="Date" id="3">
+			<DataPath>Object.Date</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="DateContextMenu" id="15"/>
+			<ExtendedTooltip name="DateExtendedTooltip" id="32"/>
+		</InputField>
+		<InputField name="OperationContent" id="12">
+			<DataPath>Object.OperationContent</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="OperationContentContextMenu" id="16"/>
+			<ExtendedTooltip name="OperationContentExtendedTooltip" id="33"/>
+		</InputField>
+		<Pages name="TabularSectionsGroup" id="25">
+			<ExtendedTooltip name="TabularSectionsGroupExtendedTooltip" id="34"/>
+			<ChildItems>
+				<Page name="InventoryGroup" id="26">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Inventory</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="InventoryGroupExtendedTooltip" id="35"/>
+					<ChildItems>
+						<Table name="Inventory" id="4">
+							<SkipOnInput>false</SkipOnInput>
+							<Width>80</Width>
+							<HeightInTableRows>13</HeightInTableRows>
+							<SelectionMode>SingleRow</SelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<AutoAddIncomplete>true</AutoAddIncomplete>
+							<AutoMarkIncomplete>true</AutoMarkIncomplete>
+							<DataPath>Object.RegisterRecords.Inventory</DataPath>
+							<BorderColor>style:BorderColor</BorderColor>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="InventoryContextMenu" id="17"/>
+							<AutoCommandBar name="InventoryCommandBar" id="18">
+								<ChildItems>
+									<Button name="SwitchActivity" id="29">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<OnlyInAllActions>true</OnlyInAllActions>
+										<CommandName>4:2ccaf251-ee77-440f-a6e5-16f88825c6c0</CommandName>
+										<ExtendedTooltip name="SwitchActivityExtendedTooltip" id="36"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="InventoryExtendedTooltip" id="37"/>
+							<SearchStringAddition name="InventorySearchString" id="44">
+								<AdditionSource>
+									<Item>Inventory</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="InventorySearchStringContextMenu" id="45"/>
+								<ExtendedTooltip name="InventorySearchStringExtendedTooltip" id="46"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="InventoryViewStatus" id="47">
+								<AdditionSource>
+									<Item>Inventory</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="InventoryViewStatusContextMenu" id="48"/>
+								<ExtendedTooltip name="InventoryViewStatusExtendedTooltip" id="49"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="InventorySearchControl" id="50">
+								<AdditionSource>
+									<Item>Inventory</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="InventorySearchControlContextMenu" id="51"/>
+								<ExtendedTooltip name="InventorySearchControlExtendedTooltip" id="52"/>
+							</SearchControlAddition>
+							<ChildItems>
+								<LabelField name="InventoryLineNumber" id="6">
+									<DataPath>Object.RegisterRecords.Inventory.LineNumber</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<ContextMenu name="InventoryLineNumberContextMenu" id="19"/>
+									<ExtendedTooltip name="InventoryLineNumberExtendedTooltip" id="38"/>
+								</LabelField>
+								<InputField name="InventoryRecordType" id="8">
+									<DataPath>Object.RegisterRecords.Inventory.RecordType</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Width>5</Width>
+									<Wrap>false</Wrap>
+									<BorderColor>style:BorderColor</BorderColor>
+									<ContextMenu name="InventoryRecordTypeContextMenu" id="20"/>
+									<ExtendedTooltip name="InventoryRecordTypeExtendedTooltip" id="39"/>
+								</InputField>
+								<CheckBoxField name="InventoryActive" id="7">
+									<DataPath>Object.RegisterRecords.Inventory.Active</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="InventoryActiveContextMenu" id="21"/>
+									<ExtendedTooltip name="InventoryActiveExtendedTooltip" id="40"/>
+								</CheckBoxField>
+								<InputField name="InventoryProduct" id="9">
+									<DataPath>Object.RegisterRecords.Inventory.Product</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Wrap>false</Wrap>
+									<ContextMenu name="InventoryProductContextMenu" id="22"/>
+									<ExtendedTooltip name="InventoryProductExtendedTooltip" id="41"/>
+								</InputField>
+								<InputField name="InventoryWarehouse" id="10">
+									<DataPath>Object.RegisterRecords.Inventory.Warehouse</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Wrap>false</Wrap>
+									<ContextMenu name="InventoryWarehouseContextMenu" id="23"/>
+									<ExtendedTooltip name="InventoryWarehouseExtendedTooltip" id="42"/>
+								</InputField>
+								<InputField name="InventoryQuantity" id="11">
+									<DataPath>Object.RegisterRecords.Inventory.Quantity</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+									<Wrap>false</Wrap>
+									<ContextMenu name="InventoryQuantityContextMenu" id="24"/>
+									<ExtendedTooltip name="InventoryQuantityExtendedTooltip" id="43"/>
+								</InputField>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DocumentObject.ProductAccountingOperation</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+</Form>

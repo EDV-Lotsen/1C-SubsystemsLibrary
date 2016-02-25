@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="2fd1287d-d96d-4480-baf7-8815ae5ffbfb">
+		<Properties>
+			<Name>BaseFunctionalitySaaS</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Base functionality in SaaS model</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<IncludeInCommandInterface>false</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture/>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.SaaSOperations</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.SaaSOperationsOverridable</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.CopyDataAreasFromPrototype</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.InfobaseUsageMode</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.LockMessageOnConfigurationUpdate</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.InfobaseUsageModes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.DataAreaStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">SessionParameter.DataAreaValue</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">SessionParameter.UseDataArea</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonAttribute.DataAreaMainData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ScheduledJob.DataAreaMaintenance</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.LogOnToDataArea</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ScheduledJob.DataAreaUpdate</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.SaaSOperationsCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.FileTransferBlockSize</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.FileExchangeDirectorySaaS</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.FileExchangeDirectorySaaSLinux</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">5462f1ab-2095-4515-875e-471900f05db9</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">b95681f4-8f91-483e-a9c5-c8a21058679a</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">831f4abd-4f96-417f-a71a-9ff481c23922</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.AgentScripts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.Messages</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.MessagesSaaSCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DataAreaKey</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.RemoteAdministrationSaaS_1_0_3_1</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">138e674b-c9d4-4b89-b5ac-a50bd5313b98</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.ApplicationManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.DataAreaActivityRating</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.RemoteAdministrationSaaS_1_0_3_2</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.RemoteAdministrationSaaS_1_0_3_3</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DataAreaPresentation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DataAreaTimeZone</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DataAreaPrefix</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.JobQueueInternalDataSeparation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.DataAreaJobQueue</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.CheckSharedObjectOnWrite</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.CheckSharedRecordSetOnWrite</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.DataAreaMessages</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.RemoteAdministrationSaaS_1_0_3_4</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonAttribute.DataAreaAuxiliaryData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.DataAreas</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">XDTOPackage.RemoteAdministrationSaaS_1_0_3_5</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.SaaSOperationsClient</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

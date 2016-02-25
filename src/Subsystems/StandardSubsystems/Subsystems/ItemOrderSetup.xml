@@ -10,14 +10,15 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
 			<Content>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetup</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetupInternal</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetupClient</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetupEvents</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetup</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ItemOrderSetupInternalServerCall</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

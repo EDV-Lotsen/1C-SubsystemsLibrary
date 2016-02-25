@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="0b8e3358-2a9d-4692-a55d-c2f776d98083">
+		<Properties>
+			<Name>Administration</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeInCommandInterface>true</IncludeInCommandInterface>
+			<Explanation>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Companies, counterparties, and settings</v8:content>
+				</v8:item>
+			</Explanation>
+			<Picture>
+				<xr:Ref>CommonPicture.EnterpriseSubsystem</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">FilterCriterion.CounterpartyDocuments</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.CommonSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Currencies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.States</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.PriceKinds</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.CharacteristicValues</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Banks</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.SettlementAccounts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.StoredFiles</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.ShopEquipmentSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.ReportVariants</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Companies</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.FullTextSearchManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.AdministrativeTools</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.DocumentPosting</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ActiveUsers</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.EventLog</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.MarkedObjectDeletion</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.FormSettingsManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.CurrencyRates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.Characteristics</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ProductPrices</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ChartOfCharacteristicTypes.CharacteristicTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.InstallFileSystemExtension</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.UserSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.SalesAggregatesManagement</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.IncomingEmails</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.OutgoingEmails</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.MailAttachments</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.Email</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.EmailOptions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.IncomingEmailsState</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.InstallCryptoExtension</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ExchangePlan.Mobile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.MobileReports</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Users</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.SetObjectVisibilitiesUsingODataAPI</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.AdditionalReportsAndDataProcessors</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.BusinessCalendars</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.Calendars</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.ContactInformationKinds</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.DataExchangeScenarios</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.PerformanceMonitor</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ApplicationLock</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ScheduledAndBackgroundJobs</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.DeveloperToolsUpdateAuxiliaryData</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.JobQueue</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.QueueJobTemplates</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.DataExchangeExecution</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.ObjectChangeRecordRuleImport</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.InteractiveExportModification</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.InfobaseObjectConversion</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.InteractiveDataExchangeWizard</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.DataExchangeCreationWizard</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ObjectVersioningSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.DataImportFromFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.AdditionalDataAndAttributeSets</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.AdditionalDataProcessorsAdministration</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.AdditionalObjectPrintForms</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.AdditionalReportsAdministration</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.EmailAccounts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.AddressClassifier</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.OpenDataExchange</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ExchangePlan.DemoExchangeInDIB</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.OpenDataExchangeResults</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.ConstantsForm</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

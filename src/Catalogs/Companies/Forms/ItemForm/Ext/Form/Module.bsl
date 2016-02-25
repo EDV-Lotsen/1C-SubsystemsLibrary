@@ -1,41 +1,120 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHadlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	Если Parameters.Property("SelfTest") Then
+		Return;
+	EndIf;
+ 
 	// StandardSubsystems.ContactInformation
-	ContactInformationManagement.OnCreateAtServer(ThisForm, Object, "GroupContactInformation");
+	ContactInformationManagement.OnCreateAtServer(ThisObject, Object, "ContactInformationGroup");
 	// End StandardSubsystems.ContactInformation
 	
 EndProcedure
 
 &AtServer
-Procedure BeforeWriteAtServer(Cancel, CurrentObject)
+Procedure OnReadAtServer(CurrentObject)
 	
 	// StandardSubsystems.ContactInformation
-	ContactInformationManagement.BeforeWriteAtServer(ThisForm, CurrentObject, Cancel);
+	ContactInformationManagement.OnReadAtServer(ThisObject, CurrentObject);
 	// End StandardSubsystems.ContactInformation
+		
+EndProcedure
+ 
+&AtServer
+Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
+
+	// StandardSubsystems.ContactInformation	 
+	ContactInformationManagement.FillCheckProcessingAtServer(ThisObject, Object, Cancel);
+	// End StandardSubsystems.ContactInformation
+ 
+EndProcedure
+ 
+&AtServer
+Procedure BeforeWriteAtServer(Cancel, CurrentObject, WriteParameters)
+	
+	// StandardSubsystems.ContactInformation
+	ContactInformationManagement.BeforeWriteAtServer(ThisObject, CurrentObject);
+	// End StandardSubsystems.ContactInformation
+ 
+	RefreshInterface = CurrentObject.IsNew() And Not GetFunctionalOption("UseSeveralCompanies");
+ 
+EndProcedure
+ 
+&AtClient
+Procedure AfterWrite(WriteParameters)
+	
+	If RefreshInterface Then
+		RefreshInterface();
+	EndIf;
 	
 EndProcedure
 
+#Endregion
+
+#Region FormHeaderItemEventHandlers
+
+&AtClient
+Procedure PrefixOnChange(Item)
+	If Find(Object.Prefix, "-") > 0 Then
+		ShowMessageBox(Undefined, NStr("en = 'Cannot use ""-"" symbols in company prefixes.'"));
+		Object.Prefix = StrReplace(Object.Prefix, "-", "");
+	EndIf;
+EndProcedure
+ 
+#EndRegion
+
+#Region ServiceProceduresAndFunctions
+
+
 ////////////////////////////////////////////////////////////////////////////////
-// INFORMATION"  "CONTACT SUBSYSTEM PROCEDURES
+// CONTACT INFORMATION SUBSYSTEM PROCEDURES
 
 // StandardSubsystems.ContactInformation
 
 &AtClient
 Procedure Attachable_ContactInformationOnChange(Item)
 	
-	ContactInformationManagementClient.PresentationOnChange(ThisForm, Item);
+	ContactInformationManagementClient.PresentationOnChange(ThisObject, Item);
 	
 EndProcedure
 
 &AtClient
 Procedure Attachable_ContactInformationStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	ContactInformationManagementClient.PresentationStartChoice(ThisForm, Item, Modified, StandardProcessing);
-	
+	Result = ContactInformationManagementClient.PresentationStartChoice(ThisObject, Item, , StandardProcessing);
+	RefreshContactInformation(Result);
+ 
 EndProcedure
 
+&AtClient
+Procedure Attachable_ContactInformationCleanup(Item, StandardProcessing)
+	
+	Result = ContactInformationManagementClient.PresentationClearing(ThisObject, Item.Name);
+	RefreshContactInformation(Result);
+	
+EndProcedure
+ 
+&AtClient
+Procedure Attachable_ContactInformationExecuteCommand(Command)
+	
+	Result = ContactInformationManagementClient.AttachableCommand(ThisObject, Command.Name);
+	RefreshContactInformation(Result);
+	ContactInformationManagementClient.OpenAddressInputForm(ThisObject, Result);
+
+EndProcedure
+
+&AtServer
+Function RefreshContactInformation(Result = Undefined)
+	
+	Return ContactInformationManagement.UpdateContactInformation(ThisObject, Object, Result);
+	
+EndFunction
+ 
 // End StandardSubsystems.ContactInformation
+
+#EndRegion
+
+ 

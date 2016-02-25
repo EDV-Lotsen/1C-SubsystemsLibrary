@@ -1,76 +1,65 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// Get files from internet subsystem.
+// Get files from the Internet subsystem
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// The common interface function that receives a file from the internet with HTTP(S) 
-// or FTP protocol and saves it to a temporary file.
+// Gets the file from the Internet via http(s) protocol or ftp protocol and saves it 
+// at the specified path on client.
 //
 // Parameters:
-//  URL*                   - String - file URL in the following format:
-//                           [Protocol://]<Server>/<Path to the file on server>
-//  ReceivingParameters*   - structure with the following keys:
-//   PathForSaving          - String - path at the client (including the file name) 
-//                           where the downloaded file will be saved.
-//   User                   - String - user on behalf of which the connection is 
-//                           established.
-//   Password               - String - password of the user on behalf of which the 
-//                           connection is established.
-//   Port                   - Number - port that is used for establishing the
-//                           connection.
-//   SecureConnection       - Boolean - in case of HTTP this flag shows
-//                           whether a secure HTTPS connection is used.
-//   PassiveConnection      - Boolean - in case of FTP this flag shows 
-//                           whether the connection mode is passive or active;
-//
-// Parameters marked with * are mandatory.
+//   URL                   - String  - file url in the following format:
+//                                     [Protocol://]<Server>/<Path to file on server>
+//   AcquisitionParameters - Structure with the following properties:
+//      * PathForSaving     - String  - path to server (including file name), to save 
+//                                      the downloaded file
+//      * User              - String  - the user on behalf of whom the connection 
+//                                      is established 
+//      * Password          - String  - password of the user on behalf of whom 
+//                                      the connection is established 
+//      * Port              - Number  - server port to establish connection with
+//      * Timeout           - Number  - timeout for file acquisition, in seconds
+//      * SecureConnection  - Boolean - in case of http download the flag shows that 
+//                                      the connection must be estabished via https
+//      * PassiveConnection - Boolean - in case of ftp download the flag shows that 
+//                                      the connection must be passive (or active)
+//      * Headings          - Map     - see HTTPQuery Object headings parameter description
+//   WriteError            - Boolean - Indicates necessity to write errors to event log 
+//                                     while acquiring the file
 //
 // Returns:
-//  Structure with the following keys:
-//   State        - Boolean - this key always exists in the structure. It can take 
-//                  on the following values:
-//                   True if function execution completed successfully,
-//                   False if function execution failed.
-//   Path         - String - path to the file at the client. This key is used only if
-//                  State is True.
-//   ErrorMessage - String - error message if State is False.
+//   Structure - Structure with the following properties:
+//      * Status       - Boolean - file acquisition result
+//      * Path         - String  - path to the file on server, the key is used only if 
+//                                 Status is True
+//      * ErrorMessage - String  - error message, if Status is False
+//      * Headings     - Map     - see HTTPResponse Object headings parameter description
 //
-Function DownloadFileAtClient(Val URL, Val ReceivingParameters = Undefined) Export
+Function DownloadFileAtClient(Val URL, Val ReceivingParameters = Undefined, Val WriteError = True) Export
 	
-	// Declaring variables before their first use as the Property 
-	// method parameter.
-	Var PathForSaving, User, Password, Port, SecureConnection, PassiveConnection;
+	ReceivingSettings = GetFilesFromInternetClientServer.FileAcquisitionParameterStructure();
 	
-	// Retrieving parameters to receive the file 
-	
-	If ReceivingParameters = Undefined Then
-		ReceivingParameters = New Structure;
+	If ReceivingParameters <> Undefined Then
+		
+		FillPropertyValues(ReceivingSettings, ReceivingParameters);
+		
 	EndIf;
-	
-	ReceivingParameters.Property("PathForSaving", PathForSaving);
-	ReceivingParameters.Property("User", User);
-	ReceivingParameters.Property("Password", Password);
-	ReceivingParameters.Property("Port", Port);
-	ReceivingParameters.Property("SecureConnection", SecureConnection);
-	ReceivingParameters.Property("PassiveConnection", PassiveConnection);
 	
 	SavingSettings = New Map;
 	SavingSettings.Insert("Storage", "Client");
-	SavingSettings.Insert("Path", PathForSaving);
+	SavingSettings.Insert("Path", ReceivingSettings.PathForSaving);
 	
-	Result = GetFilesFromInternetClientServer.PrepareFileReceiving(
-		URL,
-		User,
-		Password,
-		Port,
-		SecureConnection,
-		PassiveConnection,
-		SavingSettings
-	);
-	
-	Return Result;
+	Return GetFilesFromInternetClientServer.PrepareFileReceiving(URL, ReceivingSettings, SavingSettings, WriteError);
 	
 EndFunction
+
+// Opens a form for entering proxy server parameters.
+//
+Procedure OpenProxyServerParameterForm() Export
+	
+	OpenForm("CommonForm.ProxyServerParameters");
+	
+EndProcedure
+
+#EndRegion

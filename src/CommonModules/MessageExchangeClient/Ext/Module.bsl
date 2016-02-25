@@ -3,84 +3,76 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
 
-// Sends and receives system messages. 
-//
+// Sends and receives system messages
+// 
 Procedure SendAndReceiveMessages() Export
 	
 	Status(NStr("en = 'Sending and receiving messages.'"),,
-			NStr("en = 'Please wait...'"), PictureLib.Information32
-	);
+			NStr("en = 'Please wait...'"), PictureLib.Information32);
 	
 	Cancel = False;
 	
-	MessageExchangeClient.SendAndReceiveMessages(Cancel);
+	MessageExchangeServerCall.SendAndReceiveMessages(Cancel);
 	
 	If Cancel Then
 		
-		Status(NStr("en = 'Error sending and receiving messages.'"),,
-				NStr("en = 'See the event log for details.'"), PictureLib.Error32
-		);
+		Status(NStr("en = 'Messages sending and receiving errors.'"),,
+				NStr("en = 'Use the event log to diagnose errors.'"), PictureLib.Error32);
 		
 	Else
 		
-		Status(NStr("en = 'Sending and receiving messages completed successfully.'"),,, PictureLib.Information32);
+		Status(NStr("en = 'Messages are sent and recieved.'"),,, PictureLib.Information32);
 		
 	EndIf;
 	
-	Notify(SendReceiveEmailExecutedEventName());
+	Notify(EventNameSendAndReceiveMessageExecuted());
 	
 EndProcedure
 
-// For internal use only.
+// For internal use only
 //
 // Returns:
-// String.
-// 
-Function EndPointAddedEventName() Export
+// String. 
+//
+Function EndpointAddedEventName() Export
 	
-	Return "MessageExchange.EndPointAdded";
+	Return "MessageExchange.EndpointAdded";
 	
 EndFunction
 
-// For internal use only.
+// For internal use only
 //
 // Returns:
-// String.
-// 
-Function SendReceiveEmailExecutedEventName() Export
+// String. 
+//
+Function EventNameSendAndReceiveMessageExecuted() Export
 	
 	Return "MessageExchange.SendAndReceiveExecuted";
 	
 EndFunction
 
-// For internal use only.
+// For internal use only
 //
 // Returns:
-// String.
-// 
-Function EndPointFormClosedEventName() Export
+// String. 
+//
+Function EndpointFormClosedEventName() Export
 	
-	Return "MessageExchange.EndPointFormClosed";
+	Return "MessageExchange.EndpointFormClosed";
 	
 EndFunction
 
-// For internal use only.
+// For internal use only
 //
 // Returns:
-// String.
-// 
-Function EventNameLeadingEndPointSet() Export
+// String. 
+//
+Function EventNameLeadingEndpointSet() Export
 	
-	Return "MessageExchange.LeadingEndPointSet";
+	Return "MessageExchange.LeadingEndpointSet";
 	
 EndFunction
 
-
-
-
-
-
-
+#EndRegion

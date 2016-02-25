@@ -6,16 +6,17 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Standard subsystems in local mode</v8:content>
+					<v8:content>Standard subsystem in local mode</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
 			<Location>Constant.DontUseSeparationByDataAreas</Location>
 			<PrivilegedGetMode>true</PrivilegedGetMode>
 			<Content>
-				<xr:Object>Catalog.Users.Command.InfoBaseUsers</xr:Object>
-				<xr:Object>CommonCommand.ExportDataForMigrationToService</xr:Object>
-				<xr:Object>CommonCommand.ImportDataFromService</xr:Object>
+				<xr:Object>Catalog.Users.Command.InfobaseUsers</xr:Object>
+				<xr:Object>InformationRegister.AddressClassifier.Command.AddressClassifier</xr:Object>
+				<xr:Object>DataProcessor.AutomaticTextExtraction</xr:Object>
+				<xr:Object>DataProcessor.AutomaticTextExtraction.Command.AutomaticTextExtraction</xr:Object>
 			</Content>
 		</Properties>
 	</FunctionalOption>

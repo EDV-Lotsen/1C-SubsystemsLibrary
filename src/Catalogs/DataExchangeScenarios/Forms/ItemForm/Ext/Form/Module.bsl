@@ -2,27 +2,32 @@
 Var CurrentlyProcessedRowNumber;
 
 &AtClient
-Var RowCount;
+Var LineCount;
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
+  
+  // Skipping the initialization to guarantee that the form 
+  // will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then
+		Return;
+	EndIf;
 	
 	IsNew = (Object.Ref.IsEmpty());
 	
-	InfoBaseNode = Undefined;
+	InfobaseNode = Undefined;
 	
 	If IsNew
-		And Parameters.Property("InfoBaseNode", InfoBaseNode)
-		And InfoBaseNode <> Undefined Then
+		And Parameters.Property("InfobaseNode", InfobaseNode)
+		And InfobaseNode <> Undefined Then
 		
-		Catalogs.DataExchangeScenarios.AddImportToDataExchangeScenarios(Object, InfoBaseNode);
-		Catalogs.DataExchangeScenarios.AddExportToDataExchangeScenarios(Object, InfoBaseNode);
+		Catalogs.DataExchangeScenarios.AddImportToDataExchangeScenarios(Object, InfobaseNode);
+		Catalogs.DataExchangeScenarios.AddExportToDataExchangeScenarios(Object, InfobaseNode);
 		
-		Description = NStr("en = 'The data exchange script for %1'");
-		Object.Description = StringFunctionsClientServer.SubstituteParametersInString(Description, String(InfoBaseNode));
+		Description = NStr("en = 'Synchronization scenario for %1'");
+		Object.Description = StringFunctionsClientServer.SubstituteParametersInString(Description, String(InfobaseNode));
 		
 		JobSchedule = Catalogs.DataExchangeScenarios.DefaultJobSchedule();
 		
@@ -30,8 +35,8 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 	Else
 		
-		// Getting a schedule from the scheduled jobs.
-		// If the scheduled job is not specified, the schedule is Undefined and it will be created on the client during editing. 
+		// Getting a schedule from the scheduled job.
+		// If the scheduled job is not specified, the schedule is Undefined and it will be created on the client during editing.
 		JobSchedule = Catalogs.DataExchangeScenarios.GetDataExchangeExecutionSchedule(Object.Ref);
 		
 	EndIf;
@@ -67,8 +72,9 @@ Procedure AfterWrite(WriteParameters)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure UseScheduledJobOnChange(Item)
@@ -84,19 +90,28 @@ Procedure ScheduleContentOnActivateRow(Item)
 		Return;
 	EndIf;
 	
-	FillExchangeTransportKindChoiceList(Item.ChildItems.ExchangeSettingsExchangeTransportKind.ChoiceList, Item.CurrentData.InfoBaseNode);
+	FillExchangeTransportTypeChoiceList(Item.ChildItems.ExchangeSettingsExchangeTransportKind.ChoiceList, Item.CurrentData.InfobaseNode);
 	
 EndProcedure
 
 &AtClient
-Procedure ExchangeSettingsInfoBaseNodeOnChange(Item)
+Procedure ExchangeSettingsInfobaseNodeOnChange(Item)
 	
 	Items.ScheduleContent.CurrentData.ExchangeTransportKind = Undefined;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF ExchangeSettings TABLE 
+&AtClient
+Procedure CommentStartChoice(Item, ChoiceData, StandardProcessing)
+	
+	CommonUseClient.ShowCommentEditingForm(Item.EditText, 
+		ThisObject, "Object.Comment");
+	
+EndProcedure
+
+#EndRegion
+
+#Region ExchangeSettingsFormTableItemEventHandlers
 
 &AtClient
 Procedure ExchangeSettingsExchangeTransportKindStartChoice(Item, ChoiceData, StandardProcessing)
@@ -105,14 +120,15 @@ Procedure ExchangeSettingsExchangeTransportKindStartChoice(Item, ChoiceData, Sta
 	
 	If CurrentData <> Undefined Then
 		
-		FillExchangeTransportKindChoiceList(Item.ChoiceList, CurrentData.InfoBaseNode);
+		FillExchangeTransportTypeChoiceList(Item.ChoiceList, CurrentData.InfobaseNode);
 		
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure ExecuteExchange(Command)
@@ -125,15 +141,15 @@ Procedure ExecuteExchange(Command)
 		
 	EndIf;
 	
-	CurrentlyProcessedRowNumber     = 1;
-	RowCount = Object.ExchangeSettings.Count();
+	CurrentlyProcessedRowNumber = 1;
+	LineCount = Object.ExchangeSettings.Count();
 	
 	AttachIdleHandler("ExecuteDataExchangeAtClient", 0.1, True);
 	
 EndProcedure
 
 &AtClient
-Procedure SetupJobSchedule(Command)
+Procedure SetJobSchedule(Command)
 	
 	EditJobSchedule();
 	
@@ -148,14 +164,14 @@ Procedure TransportSettings(Command)
 	
 	If CurrentData = Undefined Then
 		Return;
-	ElsIf Not ValueIsFilled(CurrentData.InfoBaseNode) Then
+	ElsIf Not ValueIsFilled(CurrentData.InfobaseNode) Then
 		Return;
 	EndIf;
 	
-	Filter        = New Structure("Node", CurrentData.InfoBaseNode);
-	FillingValues = New Structure("Node", CurrentData.InfoBaseNode);
+	Filter        = New Structure("Node", CurrentData.InfobaseNode);
+	FillingValues = New Structure("Node", CurrentData.InfobaseNode);
 	
-	DataExchangeClient.OpenInformationRegisterRecordFormByFilter(Filter, FillingValues, "ExchangeTransportSettings", ThisForm);
+	DataExchangeClient.OpenInformationRegisterRecordFormByFilter(Filter, FillingValues, "ExchangeTransportSettings", ThisObject);
 	
 EndProcedure
 
@@ -168,14 +184,15 @@ Procedure GoToEventLog(Command)
 		Return;
 	EndIf;
 	
-	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfoBaseNode,
-																	ThisForm,
+	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfobaseNode,
+																	ThisObject,
 																	CurrentData.CurrentAction);
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 &AtClient
 Procedure EditJobSchedule()
@@ -189,10 +206,18 @@ Procedure EditJobSchedule()
 	
 	Dialog = New ScheduledJobDialog(JobSchedule);
 	
-	// Open a dialog for editing the schedule
-	If Dialog.DoModal() Then
+	// Opening a dialog for editing the schedule
+	NotifyDescription = New NotifyDescription("EditJobScheduleCompletion", ThisObject);
+	Dialog.Show(NotifyDescription);
+	
+EndProcedure
+
+&AtClient
+Procedure EditJobScheduleCompletion(Schedule, AdditionalParameters) Export
+	
+	If Schedule <> Undefined Then
 		
-		JobSchedule = Dialog.Schedule;
+		JobSchedule = Schedule;
 		
 	EndIf;
 	
@@ -205,51 +230,50 @@ Procedure RefreshSchedulePresentation()
 	
 	If SchedulePresentation = String(New JobSchedule) Then
 		
-		SchedulePresentation = NStr("en = 'The schedule is not specified.'");
+		SchedulePresentation = NStr("en = 'The schedule is not set'");
 		
 	EndIf;
 	
-	Items.SetupJobSchedule.Title = SchedulePresentation;
+	Items.SetJobSchedule.Title = SchedulePresentation;
 	
 EndProcedure
 
 &AtClient
 Procedure SetScheduleSetupHyperlinkEnabled()
 	
-	Items.SetupJobSchedule.Enabled = Object.UseScheduledJob;
+	Items.SetJobSchedule.Enabled = Object.UseScheduledJob;
 	
 EndProcedure
 
 &AtClient
 Procedure ExecuteDataExchangeAtClient()
 	
-	If CurrentlyProcessedRowNumber > RowCount Then // exiting from the recursion
-		ShowProgress = (RowCount > 1);
-		Status(NStr("en = 'Data exchange executed.'"), ?(ShowProgress, 100, Undefined));
-		Return; 
+	If CurrentlyProcessedRowNumber > LineCount Then // exiting from the recursion
+		ShowProgress = (LineCount > 1);
+		Status(NStr("en = 'Synchronization completed.'"), ?(ShowProgress, 100, Undefined));
+		Return; // exiting
 	EndIf;
 	
 	CurrentData = Object.ExchangeSettings[CurrentlyProcessedRowNumber - 1];
 	
-	// Progress bar value
-	ShowProgress = (RowCount > 1);
+	ShowProgress = (LineCount > 1);
 	
 	MessageString = NStr("en = 'Executing %1 for %2'");
 	MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, 
 							String(CurrentData.CurrentAction),
-							String(CurrentData.InfoBaseNode));
-	
-	Progress = Round(100 * (CurrentlyProcessedRowNumber -1) / ?(RowCount = 0, 1, RowCount));
+							String(CurrentData.InfobaseNode));
+ 
+	Progress = Round(100 * (CurrentlyProcessedRowNumber -1) / ?(LineCount = 0, 1, LineCount));
 	Status(MessageString, ?(ShowProgress, Progress, Undefined));
 	
-	// Starting exchange by the setting row
+	// Starting exchange by setting row
 	ExecuteDataExchangeBySettingRow(CurrentlyProcessedRowNumber);
 	
 	UserInterruptProcessing();
 	
 	CurrentlyProcessedRowNumber = CurrentlyProcessedRowNumber + 1;
 	
-	// Calling this procedure recursively  
+	// Calling this procedure recursively
 	AttachIdleHandler("ExecuteDataExchangeAtClient", 0.1, True);
 	
 EndProcedure
@@ -259,30 +283,29 @@ Procedure RefreshDataExchangeStates()
 	
 	QueryText = "
 	|SELECT
-	|	DataExchangeScenariosExchangeSettings.InfoBaseNode,
-	|	DataExchangeScenariosExchangeSettings.ExchangeTransportKind,
-	|	DataExchangeScenariosExchangeSettings.CurrentAction,
-	|	DataExchangeScenariosExchangeSettings.TransactionItemCount,
+	|	DataExchangeScenarioExchangeSettings.InfobaseNode,
+	|	DataExchangeScenarioExchangeSettings.ExchangeTransportKind,
+	|	DataExchangeScenarioExchangeSettings.CurrentAction,
 	|	CASE
 	|	WHEN DataExchangeStates.ExchangeExecutionResult IS NULL
 	|	THEN 0
 	|	WHEN DataExchangeStates.ExchangeExecutionResult = VALUE(Enum.ExchangeExecutionResults.Warning_ExchangeMessageReceivedPreviously)
-	|	THEN 3
-	|	WHEN DataExchangeStates.ExchangeExecutionResult = VALUE(Enum.ExchangeExecutionResults.CompletedWithWarnings)
-	|	THEN 3
-	|	WHEN DataExchangeStates.ExchangeExecutionResult = VALUE(Enum.ExchangeExecutionResults.Completed)
 	|	THEN 2
+	|	WHEN DataExchangeStates.ExchangeExecutionResult = VALUE(Enum.ExchangeExecutionResults.CompletedWithWarnings)
+	|	THEN 2
+	|	WHEN DataExchangeStates.ExchangeExecutionResult = VALUE(Enum.ExchangeExecutionResults.Completed)
+	|	THEN 0
 	|	ELSE 1
 	|	END AS ExchangeExecutionResult
 	|FROM
-	|	Catalog.DataExchangeScenarios.ExchangeSettings AS DataExchangeScenariosExchangeSettings
+	|	Catalog.DataExchangeScenarios.ExchangeSettings AS DataExchangeScenarioExchangeSettings
 	|LEFT JOIN InformationRegister.DataExchangeStates AS DataExchangeStates
-	|		ON DataExchangeStates.InfoBaseNode = DataExchangeScenariosExchangeSettings.InfoBaseNode
-	|	 AND DataExchangeStates.ActionOnExchange      = DataExchangeScenariosExchangeSettings.CurrentAction
+	|	ON DataExchangeStates.InfobaseNode = DataExchangeScenarioExchangeSettings.InfobaseNode
+	|	 AND DataExchangeStates.ActionOnExchange      = DataExchangeScenarioExchangeSettings.CurrentAction
 	|WHERE
-	|	DataExchangeScenariosExchangeSettings.Ref = &Ref
-	|ORDER  BY
-	|	DataExchangeScenariosExchangeSettings.LineNumber ASC
+	|	DataExchangeScenarioExchangeSettings.Ref = &Ref
+	|ORDER BY
+	|	DataExchangeScenarioExchangeSettings.LineNumber ASC
 	|";
 	
 	Query = New Query;
@@ -298,24 +321,22 @@ Procedure ExecuteDataExchangeBySettingRow(Val Index)
 	
 	Cancel = False;
 	
-	// Starting the exchange
-	DataExchangeServer.ExecuteDataExchangeByDataExchangeScenario(Cancel, Object.Ref, Index);
+	// Starting synchronization
+	DataExchangeServer.ExecuteDataExchangeUsingDataExchangeScenario(Cancel, Object.Ref, Index);
 	
-	// Updating exchange script tabular section data
+	// Updating tabular section data of the synchronization scenario
 	RefreshDataExchangeStates();
 	
 EndProcedure
 
 &AtClient
-Procedure FillExchangeTransportKindChoiceList(ChoiceList, InfoBaseNode)
+Procedure FillExchangeTransportTypeChoiceList(ChoiceList, InfobaseNode)
 	
 	ChoiceList.Clear();
 	
-	If ValueIsFilled(InfoBaseNode) Then
+	If ValueIsFilled(InfobaseNode) Then
 		
-		UsedTransports = DataExchangeCached.UsedExchangeMessageTransports(InfoBaseNode);
-		
-		For Each Item In UsedTransports Do
+		For Each Item In UsedExchangeMessageTransports(InfobaseNode) Do
 			
 			ChoiceList.Add(Item, String(Item));
 			
@@ -325,9 +346,11 @@ Procedure FillExchangeTransportKindChoiceList(ChoiceList, InfoBaseNode)
 	
 EndProcedure
 
+&AtServerNoContext
+Function UsedExchangeMessageTransports(Val InfobaseNode)
+	
+	Return DataExchangeCached.UsedExchangeMessageTransports(InfobaseNode);
+	
+EndFunction
 
-
-
-
-
-
+#EndRegion

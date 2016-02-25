@@ -1,5 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+﻿
+#Region EventHandlers
 
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
@@ -10,3 +10,5 @@ Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 					CommandExecuteParameters.Window);
 	
 EndProcedure
+
+#EndRegion

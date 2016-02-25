@@ -3,83 +3,211 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-//   The EmailOperations module contains functions for working with email messages.
-// This module must be embedded in all configurations that contain the email subsystem.
-//
-//   Functions contain no parameters, all parameters are at modules that provide
-// function implementation.
-//
+#Region Interface
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+// Function for sending messages. Checks validity of the account filling and 
+// calls the function that implements email sending.
+//
+// see the SendMessage function parameters 
+//
+// Note: the EmailParameters.Attachments parameter can contain binary data instead 
+// of addresses in temporary storage where this data is stored.
 
-// Retrieves the system account reference.
+//
+Function SendEmailMessage(Val Account,
+	                        Val EmailParameters,
+	                        Val Connection = Undefined) Export
+	
+	If TypeOf(Account) <> Type("CatalogRef.EmailAccounts")
+		Or Not ValueIsFilled(Account) Тогда
+		Raise NStr("en = 'Account is not filled or filled incorrectly.'");
+	EndIf;
+ 
+	If EmailParameters = Undefined Then
+		Raise NStr("en = 'Sending parameters are not set.'");
+	EndIf;
+ 
+	RecipientType = ?(EmailParameters.Property("Recipient"), TypeOf(EmailParameters.Recipient), Undefined);
+	CcType = ?(EmailParameters.Property("Cc"), TypeOf(EmailParameters.Cc), Undefined);
+	BccType = ?(EmailParameters.Property("Bcc"), TypeOf(EmailParameters.Bcc), Undefined);
+	
+	If RecipientType = Undefined And CcType = Undefined And BccType = Undefined Then
+		Raise NStr("en = 'No recipient is specified.'");
+	EndIf;
+ 
+	If RecipientType = Type("String") Then
+		EmailParameters.Recipient = CommonUseClientServer.SplitStringWithEmailAddresses(EmailParameters.Recipient);
+	ElsIf RecipientType <> Type("Array") Then
+		EmailParameters.Insert("Recipient", New Array);
+	EndIf;
+ 
+	If CcType = Type("String") Then
+		EmailParameters.Cc = CommonUseClientServer.SplitStringWithEmailAddresses(EmailParameters.Cc);
+	ElsIf CcType <> Type("Array") Then
+		EmailParameters.Insert("Cc", New Array);
+	EndIf;
+ 
+	If BccType = Type("String") Then
+		EmailParameters.Bcc = CommonUseClientServer.SplitStringWithEmailAddresses(EmailParameters.Bcc);
+	ElsIf BccType <> Type("Array") Then
+		EmailParameters.Insert("Bcc", New Array);
+	EndIf;
+ 
+	If EmailParameters.Property("ReplyTo") And TypeOf(EmailParameters.ReplyTo) = Type("String") Then
+		EmailParameters.ReplyTo = CommonUseClientServer.SplitStringWithEmailAddresses(EmailParameters.ReplyTo);
+	EndIf;
+
+	If EmailParameters.Property("Attachments") Then
+		If TypeOf(EmailParameters.Attachments) = Type("Map") Then
+			For Each Attachment In EmailParameters.Attachments Do
+				DataAttachments = Attachment.Value;
+				If EmailOperationsInternal.ConvertAttachmentForEmailing(DataAttachments) Then
+					EmailParameters.Attachments.Insert(Attachment.Key, DataAttachments);
+				EndIf;
+			EndDo;
+		EndIf;
+	EndIf;
+ 
+	Return EmailOperationsInternal.SendMessage(Account, EmailParameters, Connection);
+	
+EndFunction
+ 
+// Function for downloading messages. Checks correctness of the filled account and 
+// call the function that implements the mechanics of downloading messages.
+// 
+// see parameters to the function in the DownloadMessages function.
+//
+Function DownloadEmailMessages(Val Account,
+                                   Val DownloadParameters = Undefined) Export
+ 
+	UseForReceiving = CommonUse.ObjectAttributeValue(Account, "UseForReceiving");
+	If Not UseForReceiving Then
+		Raise NStr("en = 'The account is not intended for getting messages.'");
+	EndIf;
+	
+	If DownloadParameters = Undefined Then
+		DownloadParameters = New Structure;
+	EndIf;
+	
+	Result = EmailOperationsInternal.DownloadMessages(Account, DownloadParameters);
+	
+	Return Result;
+	
+EndFunction
+ 
+// Get available email accounts 
+// Parameters:
+// ForSending - Boolean - If True, only records that allow sending emails
+//                        are selected
+// ForReceiving - Boolean - If True, only records that allow receiving emails 
+//                          are selected
+// IncludingSystemEmailAccount - Boolean - enable the system account, if available
 //
 // Returns:
-//  Account - CatalogRef.EmailAccounts - account reference.
+// AvailableEmailAccounts - ValueTable - With columns:
+//    Ref     - CatalogRef.EmailAccounts - Ref to account
+//    Name    - String - Account name
+//    Address - String - Email address
 //
-Function GetSystemAccount() Export
+Function AvailableEmailAccounts(Val ForSending = Undefined,
+										Val ForReceiving = Undefined,
+										Val IncludingSystemEmailAccount = True) Export
 	
-	Return Email.GetSystemAccount();
+	If Not AccessRight("Read", Metadata.Catalogs.EmailAccounts) Then
+		Return New ValueTable;
+	EndIf;
+ 
+	QueryText = 
+	"SELECT ALLOWED
+	|	EmailAccounts.Ref AS Ref,
+	|	EmailAccounts.Description AS Description,
+	|	EmailAccounts.EmailAddress AS Address
+	|FROM
+	|	Catalog.EmailAccounts AS EmailAccounts
+	|WHERE
+	|	EmailAccounts.DeletionMark = FALSE
+	|	AND CASE
+	|			WHEN &ForSending = UNDEFINED
+	|				THEN TRUE
+	|			ELSE EmailAccounts.UseForSending = &ForSending
+	|		END
+	|	AND CASE
+	|			WHEN &ForReceiving = UNDEFINED
+	|				THEN TRUE
+	|			ELSE EmailAccounts.UseForReceiving = &ForReceiving
+	|		END
+	|	AND CASE
+	|			WHEN &IncludingSystemEmailAccount
+	|				THEN TRUE
+	|			ELSE EmailAccounts.Ref <> VALUE(Catalog.EmailAccounts.SystemEmailAccount)
+	|		END";
+ 
+	Query = New Query;
+	Query.Text = QueryText;
+	Query.Parameters.Insert("ForSending", ForSending);
+	Query.Parameters.Insert("ForReceiving", ForReceiving);
+	Query.Parameters.Insert("IncludingSystemEmailAccount", IncludingSystemEmailAccount);
+	
+	Return Query.Execute().Unload();
+	
+EndFunction
+ 
+// Gets the reference to the account by the account purpose time.
+//
+// Returns:
+//  CatalogRef.EmailAccounts - reference to an account.
+//
+Function SystemAccount() Export
+	
+	Return Catalogs.EmailAccounts.SystemEmailAccount;
 	
 EndFunction
 
-// Checks whether the system account is available and can be used.
+// Checks that the system account is available (can be used).
 //
 Function CheckSystemAccountAvailable() Export
 	
-	Return Email.CheckSystemAccountAvailable();
+	Return EmailOperationsInternal.CheckSystemAccountAvailable();
 	
 EndFunction
-
-// Returns available email accounts.
-//
-// Parameters:
-// ForSending                  - Boolean - flag that shows whether only accounts that 
-//                               can be used as a sender will be chosen.
-// ForReceiving                - Boolean - flag that shows whether only accounts that 
-//                               can be used as arecipient will be chosen.
-// IncludingSystemEmailAccount - flag that shows whether the system email account will
-//                               be included in the selection (if it is available).
-//
-// Returns:
-// ValueTable that contains the following columns:
-//    Ref         - CatalogRef.EmailAccounts - account reference.
-//    Description - String - account description.
-//    Address     - String - email address.
-//
-Function GetAvailableAccounts(Val ForSending = Undefined, Val ForReceiving = Undefined, Val IncludingSystemEmailAccount = True) Export
-	
-	Return Email.GetAvailableAccounts(ForSending, ForReceiving, IncludingSystemEmailAccount);
-	
+ 
+// Returns True, if there is at least one configured email account for sending email.
+Function CanSendEmails() Export
+	Return AvailableEmailAccounts(True).Count() > 0 
+		Or AccessRight("Update", Metadata.Catalogs.EmailAccounts);
 EndFunction
 
+////////////////////////////////////////////////////////////////////////////////
+// Obsolete procedures and functions
+
+// Obsolete. You should use SendEmailMessage
+//
 // Sends the email message.
 //
 // Parameters:
 //  Account         - CatalogRef.EmailAccounts - email account reference.
 //  EmailParameters - Structure - Contains all required message details:
-//    Recipient*    - Array of Structure, String - message recipient address.
-//                    Address - String - email address.
-//                    Presentation - String - recipient name.
-//    Subject*      - String - message subject.
-//    Body*         - String - message body (win-1251 text).
-//    Attachments   - Map
-//                    Key - AttachmentDescription - String - attachment description.
-//                    Value - BinaryData - attachment data.
+//    Recipient*    - Array of structures, string - message recipient's address.
+//                    Address - string - email address.
+//                    Presentation - string - recipient's name.
+//    Subject*      - string - message subject.
+//    Body*         - string - message body (ANSI text).
+//    Attachments   - map
+//                    key - AttachmentDescription - string - attachment description.
+//                    value - BinaryData - attachment data.
 //
-//  Additional structure key that can be used:
-//    ReplyTo       - Map - see Recipient for details.
-//    Password      - String - account password.
-//    TextType      - String, Enum.EmailTextTypes - determines the passed text
-//                    type. It can take the following values:
+//  Additional structure keys that can be used:
+//    ReplyTo       - map - see Recipient for details.
+//    Password      - string - account password.
+//    TextType      - String / Enum.EmailTextTypes - determines the
+//                    transferred text type. It can take the following values:
 //                    HTML - EmailTextTypes.HTML - HTML formatted text.
-//                    PlainText - EmailTextTypes.PlainText - plain text. It is 
+//                    PlainText - EmailTextTypes.PlainText - plain text. It is
 //                    displayed "as is" (the default value).
 //                    RichText - EmailTextTypes.RichText - rich text.
 //
-//    Note: Parameters marked with * are mandatory.
+//    Note: Parameters marked with * are mandatory, i.e., these functions are treated 
+//          as filled by the time when work begins.
 //
 // Returns:
 // String - ID of the sent email message on the SMTP server.
@@ -88,6 +216,24 @@ EndFunction
 //
 Function SendMessage(Val Account, Val EmailParameters) Export
 	
-	Return Email.SendEmailMessage(Account, EmailParameters);
+	Return SendEmailMessage(Account, EmailParameters);
 	
 EndFunction
+
+// Obsolete. You should use AvailableAccounts.
+Function GetAvailableAccounts(Val ForSending = Undefined,
+										Val ForReceiving = Undefined,
+										Val ActivateSystemAccount = True) Export
+	
+	Return AvailableEmailAccounts(ForSending, ForReceiving, ActivateSystemAccount);
+	
+EndFunction
+
+// Obsolete. You should use SystemAccount.
+Function GetSystemAccount() Export
+	
+	Return SystemAccount();
+	
+EndFunction
+
+#EndRegion

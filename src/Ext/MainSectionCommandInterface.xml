@@ -1,6 +1,34 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <CommandInterface xmlns="http://v8.1c.ru/8.3/xcf/extrnprops" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandsVisibility>
+		<Command name="CommonCommand.UserInfo">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+			</Visibility>
+		</Command>
+		<Command name="CommonForm.ApplicationReleaseNotes.StandardCommand.Open">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+			</Visibility>
+		</Command>
+	</CommandsVisibility>
+	<CommandsPlacement>
+		<Command name="CommonCommand.UserInfo">
+			<CommandGroup>ActionsPanelTools</CommandGroup>
+			<Placement>Manual</Placement>
+		</Command>
+		<Command name="CommonForm.ApplicationReleaseNotes.StandardCommand.Open">
+			<CommandGroup>CommandGroup.Information</CommandGroup>
+			<Placement>Manual</Placement>
+		</Command>
+	</CommandsPlacement>
+	<CommandsOrder>
+		<Command name="CommonForm.ApplicationReleaseNotes.StandardCommand.Open">
+			<CommandGroup>CommandGroup.Information</CommandGroup>
+		</Command>
+	</CommandsOrder>
 	<GroupsOrder>
 		<Group>ActionsPanelReports</Group>
+		<Group>CommandGroup.Information</Group>
 	</GroupsOrder>
 </CommandInterface>

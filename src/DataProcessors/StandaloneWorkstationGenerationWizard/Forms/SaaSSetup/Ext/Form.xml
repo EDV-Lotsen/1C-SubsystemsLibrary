@@ -1,0 +1,1300 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Standalone workstation creation</v8:content>
+		</v8:item>
+	</Title>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoTitle>false</AutoTitle>
+	<Customizable>false</Customizable>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="MainPanel" id="29">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main panel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<VerticalStretch>true</VerticalStretch>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="MainPanelExtendedTooltip" id="226"/>
+			<ChildItems>
+				<Page name="Beginning" id="30">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Beginning</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="StartExtendedTooltip" id="227"/>
+					<ChildItems>
+						<UsualGroup name="BeginGroup" id="314">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Standalone workstation creation</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ExtendedTooltip name="BeginGroupExtendedTooltip" id="315"/>
+							<ChildItems>
+								<PictureDecoration name="LocalWorkstationCreationPicture" id="91">
+									<Width>64</Width>
+									<Height>9</Height>
+									<Picture>
+										<xr:Abs>Picture.png</xr:Abs>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="LocalWorkstationCreationPictureContextMenu" id="92"/>
+									<ExtendedTooltip name="LocalWorkstationCreationPictureExtendedTooltip" id="229"/>
+								</PictureDecoration>
+								<UsualGroup name="Group3" id="153">
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group3ExtendedTooltip" id="230"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration5" id="154">
+											<Width>2</Width>
+											<Height>2</Height>
+											<Picture>
+												<xr:Ref>CommonPicture.Information</xr:Ref>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration5ContextMenu" id="155"/>
+											<ExtendedTooltip name="Decoration5ExtendedTooltip" id="231"/>
+										</PictureDecoration>
+										<LabelDecoration name="PlatformVersionInscription" id="151">
+											<Height>2</Height>
+											<TextColor>style:InformationText</TextColor>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Running applications in standalone mode
+requires 1C:Enterprise platform version [AppVersion]</v8:content>
+												</v8:item>
+											</Title>
+											<VerticalAlign>Center</VerticalAlign>
+											<ContextMenu name="PlatformVersionInscriptionContextMenu" id="152"/>
+											<ExtendedTooltip name="PlatformVersionInscriptionExtendedTooltip" id="232"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="Group5" id="173">
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group5ExtendedTooltip" id="233"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration8" id="174">
+											<ContextMenu name="Decoration8ContextMenu" id="175"/>
+											<ExtendedTooltip name="Decoration8ExtendedTooltip" id="234"/>
+										</LabelDecoration>
+										<Button name="HowToInstallOrUpdate1CEnterprisePlatfomVersion" id="194">
+											<Type>Hyperlink</Type>
+											<SkipOnInput>true</SkipOnInput>
+											<CommandName>Form.Command.HowToInstallOrUpdate1CEnterprisePlatfomVersion</CommandName>
+											<ExtendedTooltip name="HowToInstallOrUpdate1CEnterprisePlatfomVersionExtendedTooltip" id="235"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+								<LabelDecoration name="NextLabel1" id="93">
+									<Height>3</Height>
+									<VerticalStretch>true</VerticalStretch>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Click Next to set up standalone workstation parameters.</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Bottom</VerticalAlign>
+									<ContextMenu name="NextLabel1ContextMenu" id="94"/>
+									<ExtendedTooltip name="NextLabel1ExtendedTooltip" id="236"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="ExportSetup" id="33">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export setup</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="ExportSetupExtendedTooltip" id="237"/>
+					<ChildItems>
+						<UsualGroup name="ExportSetupGroup" id="316">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Parameters setup</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Vertical</Group>
+							<Representation>NormalSeparation</Representation>
+							<ExtendedTooltip name="ExportSetupGroupExtendedTooltip" id="317"/>
+							<ChildItems>
+								<InputField name="StandaloneWorkstationDescription" id="139">
+									<DataPath>Object.StandaloneWorkstationDescription</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Standalone workstation description</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Top</TitleLocation>
+									<ToolTipRepresentation>Button</ToolTipRepresentation>
+									<AutoMarkIncomplete>true</AutoMarkIncomplete>
+									<ContextMenu name="StandaloneWorkstationDescriptionContextMenu" id="140"/>
+									<ExtendedTooltip name="StandaloneWorkstationDescriptionExtendedTooltip" id="239">
+										<Title formatted="false">
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>For example, "To work at home" or "Business trip to the partner."</v8:content>
+											</v8:item>
+										</Title>
+									</ExtendedTooltip>
+								</InputField>
+								<UsualGroup name="Group2" id="143">
+									<Group>Horizontal</Group>
+									<Representation>NormalSeparation</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group2ExtendedTooltip" id="241"/>
+									<ChildItems>
+										<Button name="SetupDataTransferRestrictions" id="105">
+											<Type>UsualButton</Type>
+											<CommandName>Form.Command.SetupDataTransferRestrictions</CommandName>
+											<ExtendedTooltip name="SetupDataTransferRestrictionsExtendedTooltip" id="242"/>
+										</Button>
+										<LabelDecoration name="DataTransferRestrictionDetails" id="206">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>&lt;All data is available in standalone workstation.&gt;</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="DataTransferRestrictionDetailsContextMenu" id="207"/>
+											<ExtendedTooltip name="DataTransferRestrictionDetailsExtendedTooltip" id="243"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="UserRightsSetup" id="212">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>User rights setup</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>User rights setup</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="UserRightsSetupExtendedTooltip" id="244"/>
+									<ChildItems>
+										<Table name="SynchronizationUsers" id="213">
+											<Representation>List</Representation>
+											<TitleLocation>Top</TitleLocation>
+											<CommandBarLocation>None</CommandBarLocation>
+											<ChangeRowSet>false</ChangeRowSet>
+											<ChangeRowOrder>false</ChangeRowOrder>
+											<Width>42</Width>
+											<Height>5</Height>
+											<SelectionMode>SingleRow</SelectionMode>
+											<RowSelectionMode>Row</RowSelectionMode>
+											<Header>false</Header>
+											<HorizontalStretch>false</HorizontalStretch>
+											<VerticalStretch>false</VerticalStretch>
+											<DataPath>SynchronizationUsers</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Allow users to synchronize data</v8:content>
+												</v8:item>
+											</Title>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<RowFilter xsi:nil="true"/>
+											<ContextMenu name="SynchronizationUsersContextMenu" id="214"/>
+											<AutoCommandBar name="SynchronizationUsersCommandBar" id="215"/>
+											<ExtendedTooltip name="SynchronizationUsersExtendedTooltip" id="245"/>
+											<SearchStringAddition name="SynchronizationUsersSearchString" id="318">
+												<AdditionSource>
+													<Item>SynchronizationUsers</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="SynchronizationUsersSearchStringContextMenu" id="319"/>
+												<ExtendedTooltip name="SynchronizationUsersSearchStringExtendedTooltip" id="320"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="SynchronizationUsersViewStatus" id="321">
+												<AdditionSource>
+													<Item>SynchronizationUsers</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="SynchronizationUsersViewStatusContextMenu" id="322"/>
+												<ExtendedTooltip name="SynchronizationUsersViewStatusExtendedTooltip" id="323"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="SynchronizationUsersSearchControl" id="324">
+												<AdditionSource>
+													<Item>SynchronizationUsers</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="SynchronizationUsersSearchControlContextMenu" id="325"/>
+												<ExtendedTooltip name="SynchronizationUsersSearchControlExtendedTooltip" id="326"/>
+											</SearchControlAddition>
+											<ChildItems>
+												<CheckBoxField name="UsersPermitDataSynchronization" id="224">
+													<DataPath>SynchronizationUsers.PermitDataSynchronization</DataPath>
+													<EditMode>EnterOnInput</EditMode>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="UsersPermitDataSynchronizationContextMenu" id="225"/>
+													<ExtendedTooltip name="UsersPermitDataSynchronizationExtendedTooltip" id="246"/>
+												</CheckBoxField>
+												<InputField name="UsersUser" id="216">
+													<DataPath>SynchronizationUsers.User</DataPath>
+													<ReadOnly>true</ReadOnly>
+													<EditMode>EnterOnInput</EditMode>
+													<ContextMenu name="UsersUserContextMenu" id="217"/>
+													<ExtendedTooltip name="UsersUserExtendedTooltip" id="247"/>
+												</InputField>
+											</ChildItems>
+										</Table>
+										<LabelDecoration name="Decoration6" id="222">
+											<TextColor>style:InformationText</TextColor>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Specified users can execute data
+synchronization with any standalone workstations or other applications.</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration6ContextMenu" id="223"/>
+											<ExtendedTooltip name="Decoration6ExtendedTooltip" id="248"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<LabelDecoration name="NextLabel2" id="95">
+									<Height>3</Height>
+									<VerticalStretch>true</VerticalStretch>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Click Next to prepare data for importing.</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Bottom</VerticalAlign>
+									<ContextMenu name="NextLabel2ContextMenu" id="96"/>
+									<ExtendedTooltip name="NextLabel2ExtendedTooltip" id="249"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="InitialImageCreationWaiting" id="45">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Waiting for initial image creation</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page 14</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="InitialImageCreationWaitingExtendedTooltip" id="250"/>
+					<ChildItems>
+						<UsualGroup name="MessageGroup" id="48">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Preparing data to import</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<Representation>NormalSeparation</Representation>
+							<ExtendedTooltip name="MessageGroupExtendedTooltip" id="252"/>
+							<ChildItems>
+								<UsualGroup name="PictureGroup" id="49">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Pictures group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Pictures group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="PictureGroupExtendedTooltip" id="253"/>
+									<ChildItems>
+										<PictureDecoration name="Decoration14" id="50">
+											<Width>8</Width>
+											<Height>3</Height>
+											<SkipOnInput>false</SkipOnInput>
+											<Picture>
+												<xr:Ref>CommonPicture.LongAction48</xr:Ref>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="Decoration14ContextMenu" id="51"/>
+											<ExtendedTooltip name="Decoration14ExtendedTooltip" id="254"/>
+										</PictureDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MessageGroup" id="52">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Message group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MessageGroupExtendedTooltip" id="255"/>
+									<ChildItems>
+										<LabelDecoration name="Decoration15" id="53">
+											<Height>3</Height>
+											<HorizontalStretch>true</HorizontalStretch>
+											<SkipOnInput>false</SkipOnInput>
+											<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data is being prepared for importing at your computer.
+This can take several minutes.
+Please wait...</v8:content>
+												</v8:item>
+											</Title>
+											<VerticalAlign>Center</VerticalAlign>
+											<ContextMenu name="Decoration15ContextMenu" id="54"/>
+											<ExtendedTooltip name="Decoration15ExtendedTooltip" id="256"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="End" id="42">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>End</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="EndExtendedTooltip" id="257"/>
+					<ChildItems>
+						<UsualGroup name="Group4" id="167">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Standalone workstation creation is completed successfully.</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<Representation>NormalSeparation</Representation>
+							<ExtendedTooltip name="Group4ExtendedTooltip" id="259"/>
+							<ChildItems>
+								<LabelDecoration name="Decoration3" id="168">
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>1. Download the data to your computer:</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="Decoration3ContextMenu" id="169"/>
+									<ExtendedTooltip name="Decoration3ExtendedTooltip" id="260"/>
+								</LabelDecoration>
+								<Button name="UploadInitialImageAtUsersComputer" id="170">
+									<Type>Hyperlink</Type>
+									<CommandName>Form.Command.UploadInitialImageAtUsersComputer</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Standalone mode.zip (&lt;FileSize&gt; MB)</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTipRepresentation>Button</ToolTipRepresentation>
+									<ExtendedTooltip name="UploadInitialImageAtUsersComputerExtendedTooltip" id="261">
+										<Title formatted="true">
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>If you experience problems downloading a file using web client, you can try to use 1C: Enterprise thin client.
+To use the thin client read the &lt;link ThinClientSetupInstructionAddress&gt;instruction&lt;/&gt; or contact administrator.</v8:content>
+											</v8:item>
+										</Title>
+										<Events>
+											<Event name="URLProcessing">UploadInitialImageAtUsersComputerExtendedTooltipURLProcessing</Event>
+										</Events>
+									</ExtendedTooltip>
+								</Button>
+							</ChildItems>
+						</UsualGroup>
+						<LabelDecoration name="Decoration1" id="210">
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>2. Follow these steps:</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration1ContextMenu" id="211"/>
+							<ExtendedTooltip name="Decoration1ExtendedTooltip" id="262"/>
+						</LabelDecoration>
+						<UsualGroup name="Group9" id="201">
+							<Group>Vertical</Group>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group9ExtendedTooltip" id="263"/>
+							<ChildItems>
+								<CommandBar name="Group6" id="180">
+									<CommandSource>Item.StandaloneWorkstationSetupInstruction</CommandSource>
+									<ExtendedTooltip name="Group6ExtendedTooltip" id="264"/>
+									<ChildItems>
+										<Button name="StandaloneWorkstationSetupInstructionSaveInstructionAs" id="209">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.SaveInstructionAs</CommandName>
+											<ExtendedTooltip name="StandaloneWorkstationSetupInstructionSaveInstructionAsExtendedTooltip" id="266"/>
+										</Button>
+										<Button name="StandaloneWorkstationSetupInstructionInstructionPrint" id="208">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.InstructionPrint</CommandName>
+											<ExtendedTooltip name="StandaloneWorkstationSetupInstructionInstructionPrintExtendedTooltip" id="265"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<HTMLDocumentField name="StandaloneWorkstationSetupInstruction" id="171">
+									<DataPath>StandaloneWorkstationSetupInstruction</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<ContextMenu name="StandaloneWorkstationSetupInstructionContextMenu" id="172"/>
+									<ExtendedTooltip name="StandaloneWorkstationSetupInstructionExtendedTooltip" id="267"/>
+									<Events>
+										<Event name="DocumentComplete">StandaloneWorkstationSetupInstructionDocumentComplete</Event>
+									</Events>
+								</HTMLDocumentField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<UsualGroup name="NavigationPanelBorder" id="55">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel border</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel border</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="NavigationPanelBorderExtendedTooltip" id="268"/>
+			<ChildItems>
+				<Pages name="NavigationPanel" id="56">
+					<EnableContentChange>true</EnableContentChange>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation panel</v8:content>
+						</v8:item>
+					</Title>
+					<PagesRepresentation>None</PagesRepresentation>
+					<ExtendedTooltip name="NavigationPanelExtendedTooltip" id="269"/>
+					<ChildItems>
+						<Page name="NavigationPageStart" id="57">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation start page</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation start page</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageStartExtendedTooltip" id="270"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar1" id="297">
+									<ExtendedTooltip name="LeftCommandBar1ExtendedTooltip" id="298"/>
+									<ChildItems>
+										<Button name="BackCommand" id="59">
+											<Type>CommandBarButton</Type>
+											<Visible>false</Visible>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommandExtendedTooltip" id="272"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel1" id="294">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel1ContextMenu" id="295"/>
+									<ExtendedTooltip name="IndentCommandPanel1ExtendedTooltip" id="296"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar1" id="58">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar1ExtendedTooltip" id="271"/>
+									<ChildItems>
+										<Button name="NextCommand" id="60">
+											<Type>CommandBarButton</Type>
+											<DefaultButton>true</DefaultButton>
+											<DefaultItem>true</DefaultItem>
+											<Check>true</Check>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommandExtendedTooltip" id="273"/>
+										</Button>
+										<Button name="CancelCommand" id="61">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommandExtendedTooltip" id="274"/>
+										</Button>
+										<Button name="Help" id="62">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>true</OnlyInAllActions>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="HelpExtendedTooltip" id="275"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageContinuation" id="63">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page continuation</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageContinuationExtendedTooltip" id="276"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar2" id="302">
+									<ExtendedTooltip name="LeftCommandBar2ExtendedTooltip" id="303"/>
+									<ChildItems>
+										<Button name="BackCommand1" id="65">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand1ExtendedTooltip" id="278"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel2" id="299">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel2ContextMenu" id="300"/>
+									<ExtendedTooltip name="IndentCommandPanel2ExtendedTooltip" id="301"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar2" id="64">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar2ExtendedTooltip" id="277"/>
+									<ChildItems>
+										<Button name="NextCommand1" id="66">
+											<Type>CommandBarButton</Type>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommand1ExtendedTooltip" id="279"/>
+										</Button>
+										<Button name="CancelCommand1" id="67">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand1ExtendedTooltip" id="280"/>
+										</Button>
+										<Button name="Help1" id="68">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>true</OnlyInAllActions>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help1ExtendedTooltip" id="281"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageEnd" id="69">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>End navigation page</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageEndExtendedTooltip" id="282"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar3" id="307">
+									<ExtendedTooltip name="LeftCommandBar3ExtendedTooltip" id="308"/>
+									<ChildItems>
+										<Button name="BackCommand2" id="71">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand2ExtendedTooltip" id="284"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel3" id="304">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel3ContextMenu" id="305"/>
+									<ExtendedTooltip name="IndentCommandPanel3ExtendedTooltip" id="306"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar3" id="70">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar3ExtendedTooltip" id="283"/>
+									<ChildItems>
+										<Button name="DoneCommand" id="72">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DoneCommand</CommandName>
+											<ExtendedTooltip name="DoneCommandExtendedTooltip" id="285"/>
+										</Button>
+										<Button name="CancelCommand2" id="73">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand2ExtendedTooltip" id="286"/>
+										</Button>
+										<Button name="Help2" id="74">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>true</OnlyInAllActions>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help2ExtendedTooltip" id="287"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageWait" id="75">
+							<Enabled>false</Enabled>
+							<ReadOnly>true</ReadOnly>
+							<EnableContentChange>true</EnableContentChange>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page wait</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageWaitExtendedTooltip" id="288"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar4" id="312">
+									<ExtendedTooltip name="LeftCommandBar4ExtendedTooltip" id="313"/>
+									<ChildItems>
+										<Button name="BackCommand3" id="77">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand3ExtendedTooltip" id="290"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel4" id="309">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel4ContextMenu" id="310"/>
+									<ExtendedTooltip name="IndentCommandPanel4ExtendedTooltip" id="311"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar4" id="76">
+									<Enabled>false</Enabled>
+									<ReadOnly>true</ReadOnly>
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar4ExtendedTooltip" id="289"/>
+									<ChildItems>
+										<Button name="NextCommand3" id="78">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Next &gt;</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="NextCommand3ExtendedTooltip" id="291"/>
+										</Button>
+										<Button name="CancelCommand3" id="79">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand3ExtendedTooltip" id="292"/>
+										</Button>
+										<Button name="Help3" id="80">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<OnlyInAllActions>true</OnlyInAllActions>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help3ExtendedTooltip" id="293"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+					</ChildItems>
+				</Pages>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.StandaloneWorkstationGenerationWizard</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="GoToNumber" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>3</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="GoToTable" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to table</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="GoToNumber" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go to number</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>3</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="MainPageName" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Main page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="DecorationPageName" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Decoration page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="NavigationPageName" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="OnOpenHandlerName" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>On open handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoNextHandlerName" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go next handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoBackHandlerName" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go back handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LongAction" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="LongActionHandlerName" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="NodeFilterStructure" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Node filter structure</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="StandaloneWorkstationSetupInstruction" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Standalone workstation setup instruction</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ExchangePlanName" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange plan name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="LongAction" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="LongActionFinished" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action finished</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="StandaloneWorkstationCreationEventLogMessageText" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Event log message text of standalone workstation creation</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="JobID" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Job ID</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="InitialImageTempStorageAddress" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Temporary storage address of initial image</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="InstallPackageFileName" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Install package file name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="InstallPackageInfoTempStorageAddress" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Temporary storage address of information about installation package</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="InstallPackageFileSize" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Installation package file size</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>1</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="SynchronizationUsers" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Synchronization users</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="User" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>User</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.Users</v8:Type>
+					</Type>
+				</Column>
+				<Column name="DataSynchronizationPermitted" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data synchronization permitted</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="PermitDataSynchronization" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Permit data synchronization</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ForceCloseForm" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Force close form</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ThinClientSetupInstructionAddress" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Address of thin client setup instruction</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<ConditionalAppearance>
+			<dcsset:item>
+				<dcsset:selection>
+					<dcsset:item>
+						<dcsset:field>UsersPermitDataSynchronization</dcsset:field>
+					</dcsset:item>
+				</dcsset:selection>
+				<dcsset:filter>
+					<dcsset:item xsi:type="dcsset:FilterItemComparison">
+						<dcsset:left xsi:type="dcscor:Field">SynchronizationUsers.DataSynchronizationPermitted</dcsset:left>
+						<dcsset:comparisonType>Equal</dcsset:comparisonType>
+						<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+					</dcsset:item>
+				</dcsset:filter>
+				<dcsset:appearance>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:use>false</dcscor:use>
+						<dcscor:parameter>Enabled</dcscor:parameter>
+						<dcscor:value xsi:type="xs:boolean">false</dcscor:value>
+					</dcscor:item>
+					<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+						<dcscor:parameter>ReadOnly</dcscor:parameter>
+						<dcscor:value xsi:type="xs:boolean">true</dcscor:value>
+					</dcscor:item>
+				</dcsset:appearance>
+			</dcsset:item>
+		</ConditionalAppearance>
+	</Attributes>
+	<Commands>
+		<Command name="DoneCommand" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Done</v8:content>
+				</v8:item>
+			</Title>
+			<Action>DoneCommand</Action>
+		</Command>
+		<Command name="NextCommand" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Next &gt;</v8:content>
+				</v8:item>
+			</Title>
+			<Action>NextCommand</Action>
+		</Command>
+		<Command name="BackCommand" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>&lt; Back</v8:content>
+				</v8:item>
+			</Title>
+			<Action>BackCommand</Action>
+		</Command>
+		<Command name="CancelCommand" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</Title>
+			<Action>CancelCommand</Action>
+		</Command>
+		<Command name="SetupDataTransferRestrictions" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change...</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>StdPicture.FilterCriterion</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetupDataTransferRestrictions</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="UploadInitialImageAtUsersComputer" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Load</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>StdPicture.MoveDown</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>UploadInitialImageAtUsersComputer</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="HowToInstallOrUpdate1CEnterprisePlatfomVersion" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>How to install or update 1C:Enterprise platform</v8:content>
+				</v8:item>
+			</Title>
+			<Action>HowToInstallOrUpdate1CEnterprisePlatfomVersion</Action>
+		</Command>
+		<Command name="InstructionPrint" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Print</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Instruction print</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Print</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>InstructionPrint</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SaveInstructionAs" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save as...</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>StdPicture.Write</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SaveInstructionAs</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+	</Commands>
+</Form>

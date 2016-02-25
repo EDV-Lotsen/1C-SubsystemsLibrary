@@ -1,66 +1,63 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then
+  // Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
+	If Parameters.Property("SelfTest") Then 
 		Return;
 	EndIf;
 	
-	If Parameters.Property("Message") Then
-		If Parameters.Message <> Undefined Then
-			Items.CommentDecoration.Title = Parameters.Message + Chars.LF + NStr("en = ' Install and plug in?'");
-		EndIf;
+	If Not IsBlankString(Parameters.SuggestionText) Then
+		Items.CommentDecoration.Title = Parameters.SuggestionText
+			+ Chars.LF
+			+ NStr("en = 'Do you want to install the extension?'");
+		
+	ElsIf Not Parameters.CanContinueWithoutInstalling Then
+		Items.CommentDecoration.Title =
+			NStr("en = 'The action you want to be performed requires the 1C:Enterprise web client extension to be installed .
+			           |Do you want to install the extension?'");
+	EndIf;
+	
+	If Not Parameters.CanContinueWithoutInstalling Then
+		Items.ContinueWithoutInstalling.Title = NStr("en = 'Cancel'");
+		Items.NoLongerPrompt.Visible = False;
 	EndIf;
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
-
-&AtClient
-Procedure DontInstall(Command)
-	Close(False); // Don't offer
-EndProcedure
+#Region FormCommandHandlers
 
 &AtClient
-Procedure SetLater(Command)
-	Close(True); // Offer later - in another session
-EndProcedure
-
-&AtClient
-Procedure SetNow(Command)
+Procedure InstallAndContinue(Command)
 	
-	BeginInstallFileSystemExtension(New NotifyDescription("SetNowEnd", ThisObject));	
+	Notification = New NotifyDescription("InstallAndContinueCompletion", ThisObject);
+	BeginInstallFileSystemExtension(Notification);
 	
 EndProcedure
 
 &AtClient
-Procedure SetNowEnd(AdditionalParameters) Export
-    
-    ExtensionConnected = Undefined;
-
-    
-    BeginAttachingFileSystemExtension(New NotifyDescription("SetNowEndEnd", ThisObject));
-
+Procedure ContinueWithoutInstalling(Command)
+	Close("ContinueWithoutInstalling");
 EndProcedure
 
 &AtClient
-Procedure SetNowEndEnd(Attached, AdditionalParameters1) Export
+Procedure NoLongerPrompt(Command)
+	Close("NoLongerPrompt");
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtClient
+Procedure InstallAndContinueCompletion(Parameters) Export
 	
-	ExtensionConnected = Attached;
-	If Not ExtensionConnected Then
-		Close(True); // Offer later - in another session
-	Else	
-		Close(False); // Don't offer
-	EndIf;
-
+	Close(?(AttachFileSystemExtension(), "NoLongerPrompt", "ContinueWithoutInstalling"));
+	
 EndProcedure
 
-&AtClient
-Procedure CloseForm(Command)
-	Close(True); // Offer later - in another session
-EndProcedure
+#EndRegion

@@ -1,16 +1,20 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+
+&AtClient
+Var PermissionsReceived;
+
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	If ValueIsFilled(Object.Password) Then
-		RememberPassword = True;
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
 	EndIf;
 	
-	// Hiding unused items if the email operation subsystem is the only one that is used
-	If Metadata.CommonModules.Find("EmailManagement") = Undefined Then
-		Items.IncludeUserNameInPresentation.Visible = False;
+	If Parameters.BlockUser Then
+		WindowOpeningMode = FormWindowOpeningMode.LockOwnerWindow;
 	EndIf;
 	
 	If Object.Ref.IsEmpty() Then
@@ -20,68 +24,176 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 EndProcedure
 
+&AtClient
+Procedure BeforeClose(Cancel, StandardProcessing)
+	NotifyDescription = New NotifyDescription("BeforeCloseConfirmationReceived", ThisObject);
+	CommonUseClient.ShowFormClosingConfirmation(NotifyDescription, Cancel);
+EndProcedure
+ 
+&AtClient
+Procedure BeforeWrite(Cancel, WriteParameters)
+	
+	If PermissionsReceived <> True Then
+		If Not CheckFilling() Then 
+			Cancel = True;
+			Return;
+		EndIf;
+		
+		Query = CreateRequestToUseExternalResources();
+		ClosingNotification = New NotifyDescription("GetPermitsEnd", ThisObject, WriteParameters);
+		
+		SafeModeClient.ApplyExternalResourceRequests(
+			CommonUseClientServer.ValueInArray(Query), ThisObject, ClosingNotification);
+		
+		Cancel = True;
+	EndIf;
+	PermissionsReceived = False;
+		
+EndProcedure
+
+&AtClient
+Procedure AfterWrite(WriteParameters)
+	If WriteParameters.Property("WriteAndClose") Then
+		Close();
+	EndIf;
+EndProcedure
+ 
+&AtClient
+Procedure GetPermitsEnd(Result, WriteParameters) Export
+	
+	Если Result = DialogReturnCode.OK Then
+		PermissionsReceived = True;
+		Write(WriteParameters);
+	EndIf;
+	
+EndProcedure
+ 
 &AtServer
-Procedure BeforeWriteAtServer(Cancel, CurrentObject)
+Function CreateRequestToUseExternalResources()
 	
-	If Not RememberPassword Then
-		CurrentObject.Password = "";
-	EndIf;
+	Return SafeMode.RequestToUseExternalResources(
+		Permissions(), Object.Ref);
 	
-	If Object.SMTPAuthentication <> Enums.SMTPAuthenticationVariants.SetWithParameters Then
-		Object.SMTPUser = "";
-		Object.SMTPPassword = "";
-	EndIf;
-	
-EndProcedure
+EndFunction
 
-// Processes the notification that contains account settings from the additional account parameter form.
-//
+&AtServer
+Function Permissions()
+	
+	Result = New Array;
+	
+	If Object.UseForSending Тогда
+		Result.Add(
+			SafeMode.PermissionToUseInternetResource(
+				"SMTP",
+				Object.OutgoingMailServer,
+				Object.OutgoingMailServerPort,
+				NStr("en = 'Email.'")));
+	EndIf;
+	
+	If Object.UseForReceiving Тогда
+		Result.Add(
+			SafeMode.PermissionToUseInternetResource(
+				Object.ProtocolForIncomingMail,
+				Object.IncomingMailServer,
+				Object.IncomingMailServerPort,
+				NStr("en = 'Email.'")));
+	EndIf;
+
+	Return Result;
+	
+EndFunction
+
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
+
 &AtClient
-Procedure NotificationProcessing(EventName, Parameter, Source)
-	
-	If EventName = "SetAdditionalAccountParameters" And Source = Object.Ref Then
-		Object.Timeout                   = Parameter.ServerTimeout;
-		Object.KeepMessageCopiesAtServer = Parameter.KeepMessageCopiesAtServer;
-		Object.KeepMessageAtServerPeriod = Parameter.KeepMessageAtServerPeriod;
-		Object.SMTPUser                  = Parameter.SMTPUser;
-		Object.SMTPPassword              = Parameter.SMTPPassword;
-		Object.POP3Port                  = Parameter.POP3Port;
-		Object.SMTPPort                  = Parameter.SMTPPort;
-		Object.SMTPAuthentication        = Parameter.SMTPAuthentication;
-		Object.SMTPAuthenticationMode    = Parameter.SMTPAuthenticationMode;
-		Object.POP3AuthenticationMode    = Parameter.POP3AuthenticationMode;
-		Modified = True;
+Procedure ProtocolOnChange(Item)
+	If Object.ProtocolForIncomingMail = "IMAP" Then
+		If Left(Object.IncomingMailServer, 4) = "pop." Then
+			Object.IncomingMailServer = "imap." + Mid(Object.IncomingMailServer, 5);
+		EndIf
+	Else
+		If IsBlankString(Object.ProtocolForIncomingMail) Then
+			Object.ProtocolForIncomingMail = "POP";
+		EndIf;
+		If Left(Object.IncomingMailServer, 5) = "imap." Then
+			Object.IncomingMailServer = "pop." + Mid(Object.IncomingMailServer, 6);
+		EndIf;
 	EndIf;
-	
+ 
+	ConnectIncomingMailPort();
 EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
 
 &AtClient
-Procedure AdditionalSettingsExecute()
+Procedure IncomingMailServerOnChange(Item)
+	Object.IncomingMailServer = TrimAll(Lower(Object.IncomingMailServer));
+EndProcedure
+
+&AtClient
+Procedure OutgoingMailServerOnChange(Item)
+	Object.OutgoingMailServer = TrimAll(Lower(Object.OutgoingMailServer));
+EndProcedure
+
+&AtClient
+Procedure EmailAddressOnChange(Item)
+	Object.EmailAddress = TrimAll(Object.EmailAddress);
+EndProcedure
+
+&AtClient
+Procedure UseSecureConnectionForOutgoingMailOnChange(Элемент)
+	ConnectOutgoingMailPort();
+EndProcedure
+
+&AtClient
+Procedure UseSecureConnectionForIncomingMailOnChange(Item)
+	ConnectIncomingMailPort();
+EndProcedure
+
+#EndRegion
+
+#Region FormCommandHandlers
+ 
+&AtClient
+Procedure WriteAndClose(Command)
 	
-	AccountStructure = New Structure;
-	AccountStructure.Insert("Timeout",                   Object.Timeout);
-	AccountStructure.Insert("KeepMessageCopiesAtServer", Object.KeepMessageCopiesAtServer);
-	AccountStructure.Insert("KeepMessageAtServerPeriod", Object.KeepMessageAtServerPeriod);
-	AccountStructure.Insert("SMTPUser",                  Object.SMTPUser);
-	AccountStructure.Insert("SMTPPassword",              Object.SMTPPassword);
-	AccountStructure.Insert("POP3Port",                  Object.POP3Port);
-	AccountStructure.Insert("SMTPPort",                  Object.SMTPPort);
-	AccountStructure.Insert("SMTPAuthentication",        Object.SMTPAuthentication);
-	AccountStructure.Insert("SMTPAuthenticationMode",    Object.SMTPAuthenticationMode);
-	AccountStructure.Insert("POP3AuthenticationMode",    Object.POP3AuthenticationMode);
-	
-	CallParameters = New Structure("Ref, AccountStructure, ReadOnly", Object.Ref, AccountStructure, ReadOnly);
-	
-	OpenForm("Catalog.EmailAccounts.Form.AdditionalAccountParameters", CallParameters);
+	Write(New Structure("WriteAndClose"));
 	
 EndProcedure
 
+#EndRegion
+ 
+#Region InternalProceduresAndFunctions
 
+&AtClient
+Procedure ConnectIncomingMailPort()
+	If Object.ProtocolForIncomingMail = "IMAP" Then
+		If Object.UseSecureConnectionForIncomingMail Then
+			Object.IncomingMailServerPort = 993;
+		Else
+			Object.IncomingMailServerPort = 143;
+		EndIf;
+	Else
+		If Object.UseSecureConnectionForIncomingMail Then
+			Object.IncomingMailServerPort = 995;
+		Else
+			Object.IncomingMailServerPort = 110;
+		EndIf;
+	EndIf;
+EndProcedure
 
+&AtClient
+Procedure ConnectOutgoingMailPort()
+	If Object.UseSecureConnectionForOutgoingMail Then
+		Object.OutgoingMailServerPort = 465;
+	Else
+		Object.OutgoingMailServerPort = 25;
+	EndIf;
+EndProcedure
+ 
+&AtClient
+Procedure BeforeCloseConfirmationReceived(QuestionResult, AdditionalParameters) Export
+	Write(New Structure("WriteAndClose"));
+EndProcedure
 
-
-
-
+#EndRegion

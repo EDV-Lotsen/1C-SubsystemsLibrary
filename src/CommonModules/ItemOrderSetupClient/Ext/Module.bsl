@@ -3,108 +3,151 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// The handler of the Move up command of the list form.
+// "Move up" сommand handler of the list form.
 //
 // Parameters:
-//  ListFormAttribute - DynamicList - form attribute that contains a list;
-//  ListFormItem - FormTable - form item that contains a list.
+//  ListFormAttribute - DynamicList - form attribute that contains a list.
+//  ListFormItem      - FormTable   - form item that contains a list.
 //
 Procedure MoveItemUpExecute(ListFormAttribute, ListFormItem) Export
 	
-	MoveItemExecute(ListFormAttribute, ListFormItem, True);
+	MoveItem(ListFormAttribute, ListFormItem, "Up");
 	
 EndProcedure
 
-// The handler of the Move down command of the list form.
+// "Move down" command handler of the list form.
 //
 // Parameters:
-//  ListFormAttribute - DynamicList - form attribute that contains a list;
-//  ListFormItem - FormTable - form item that contains a list.
+//  ListFormAttribute - DynamicList - form attribute that contains a list.
+//  ListFormItem      - FormTable   - form item that contains a list.
 //
 Procedure MoveItemDownExecute(ListFormAttribute, ListFormItem) Export
 	
-	MoveItemExecute(ListFormAttribute, ListFormItem, False);
+	MoveItem(ListFormAttribute, ListFormItem, "Down");
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
 
-Procedure MoveItemExecute(ListAttribute, ListItem, Up)
+#Region InternalProceduresAndFunctions
+
+Procedure MoveItem(ListAttribute, ListItem, Direction)
 	
-	AdjustedFilters = New Structure;
-	
-	If Not CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters) Then
+If ListItem.CurrentData = Undefined Then
 		Return;
 	EndIf;
 	
-	ListView = (ListItem.Representation = TableRepresentation.List);
+	Parameters = New Structure;
+	Parameters.Insert("ListAttribute", ListAttribute);
+	Parameters.Insert("ListItem", ListItem);
+	Parameters.Insert("Direction", Direction);
 	
-	ErrorText = ItemOrderSetup.ChangeItemOrder(
-								ListItem.CurrentData.Ref,
-								AdjustedFilters,
-								ListView,
-								Up);
-		
-	If IsBlankString(ErrorText) Then
-		ListItem.Refresh();
-	Else
-		ShowMessageBox(, ErrorText);
-	EndIf;
+	NotifyDescription = New NotifyDescription("MoveItemCheckingDone", ThisObject, Parameters);
+	
+	CheckListBeforeAction(NotifyDescription, ListAttribute);
 	
 EndProcedure
 
-Function CheckListBeforeAction(ListAttribute, ListItem, AdjustedFilters)
+Procedure MoveItemCheckingDone(CheckResult, AdditionalParameters) Export
 	
-	// Checking whether the current data is defined
-	If ListItem.CurrentData = Undefined Then
-		Return False;
+	If CheckResult <> True Then
+		Return;
 	EndIf;
 	
-	// Checking whether an order is set
+
+  ListItem = AdditionalParameters.ListItem;
+	ListAttribute = AdditionalParameters.ListAttribute;
+	Direction = AdditionalParameters.Direction;
+	
+	ListView = (ListItem.Representation = TableRepresentation.List);
+	
+	ErrorText = ItemOrderSetupInternalServerCall.ChangeItemOrder(
+	ListItem.CurrentData.Ref, ListAttribute, ListView, Direction);
+		
+	If Not IsBlankString(ErrorText) Then
+		ShowMessageBox(, ErrorText);
+	EndIf;
+	
+	ListItem.Refresh();
+	
+EndProcedure
+
+Procedure CheckListBeforeAction(ResultHandler, ListAttribute)
+	
+	Parameters = New Structure;
+	Parameters.Insert("ResultHandler", ResultHandler);
+	Parameters.Insert("ListAttribute", ListAttribute);
+	
 	If Not IsListSortingCorrect(ListAttribute) Then
-		ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to configure
-								 |the list order in the following way: the Order field with order kind   
-								 |set to Ascending must be the first row of the order table.'"));
-		Return False;
+		QuestionText = NStr("en = 'To change the item order, you have
+								|to configure the list order using the ""Order"" field. Do you want to configure the order?'");
+		NotifyDescription = New NotifyDescription("CheckListBeforeActionAnswerToSortReceived", ThisObject, Parameters);
+		Buttons = New ValueList;
+		Buttons.Add(DialogReturnCode.Yes, NStr("en = 'Configure'"));
+		Buttons.Add(DialogReturnCode.No, NStr("en = 'Skip'"));
+		ShowQueryBox(NotifyDescription, QuestionText, Buttons, , DialogReturnCode.Yes);
+		Return;
 	EndIf;
 	
-	// Checking whether filters are set
-	If Not CheckFiltersSetInList(ListAttribute, AdjustedFilters) Then
-		ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to clear all 
-								 |filters, except filters by owner and by folder.'"));
-		Return False;
+	MoveItemCheckingDone(True, ResultHandler.AdditionalParameters);
+	
+EndProcedure
+
+Procedure CheckListBeforeActionAnswerToSortReceived(ResponseResult, AdditionalParameters) Export
+	
+	If ResponseResult <> DialogReturnCode.Yes Then
+		Return;
 	EndIf;
 	
-	For Each GroupItem In ListAttribute.Group.Items Do
-		If GroupItem.Use Then
-			ShowMessageBox(, NStr("en = 'If you want to change the item order, you have to clear using groups.'"));
-			Return False;
+	ListAttribute = AdditionalParameters.ListAttribute;
+	
+	UserOrderSettings = Undefined;
+	For Each Item In ListAttribute.SettingsComposer.UserSettings.Items Do
+		If TypeOf(Item) = Type("DataCompositionOrder") Then
+			UserOrderSettings = Item;
+			Break;
 		EndIf;
 	EndDo;
 	
-	Return True;
+	CommonUseClientServer.Validate(UserOrderSettings <> Undefined, NStr("en = 'The user setting for the order is not found.'"));
 	
-EndFunction
+	UserOrderSettings.Items.Clear();
+	Item = UserOrderSettings.Items.Add(Type("DataCompositionOrderItem"));
+	Item.Use = True;
+	Item.Field = New DataCompositionField("AdditionalOrderingAttribute");
+	Item.OrderType = DataCompositionSortDirection.Asc;
+	
+EndProcedure
 
-Function IsListSortingCorrect(ListAttribute)
+Function IsListSortingCorrect(List)
 	
-	OrderItems = ListAttribute.Order.Items;
+	UserOrderSettings = Undefined;
+	For Each Item In List.SettingsComposer.UserSettings.Items Do
+		If TypeOf(Item) = Type("DataCompositionOrder") Then
+			UserOrderSettings = Item;
+			Break;
+		EndIf;
+	EndDo;
 	
-	// Finding the first order item that is used
+	If UserOrderSettings = Undefined Then
+		Return True;
+	EndIf;
+	
+	OrderItems = UserOrderSettings.Items;
+	
+	// Find the first used order item
 	Item = Undefined;
-	For Each OrderingItem In OrderItems Do
-		If OrderingItem.Use Then
-			Item = OrderingItem;
+	For Each OrderItem In OrderItems Do
+		If OrderItem.Use Then
+			Item = OrderItem;
 			Break;
 		EndIf;
 	EndDo;
 	
 	If Item = Undefined Then
-		// The order is not set
+		// No sorting set
 		Return False;
 	EndIf;
 	
@@ -121,40 +164,4 @@ Function IsListSortingCorrect(ListAttribute)
 	
 EndFunction
 
-Function CheckFiltersSetInList(ListAttribute, AdjustedFilters)
-	
-	AdjustedFilters.Insert("HasFilterByParent", False);
-	AdjustedFilters.Insert("HasFilterByOwner", False);
-	
-	ParentField1 = New DataCompositionField("Parent");
-	OwnerField1 = New DataCompositionField("Owner");
-	
-	For Each Filter In ListAttribute.Filter.Items Do
-		
-		If Not Filter.Use Then
-			// The filter is not set
-			Continue;
-		ElsIf TypeOf(Filter) <> Type("DataCompositionFilterItem") Then
-			// Incorrect filter item type
-			Return False;
-		ElsIf Filter.ComparisonType <> DataCompositionComparisonType.Equal Then
-			// Equal is the only one allowed comparison type
-			Return False;
-		EndIf;
-		
-		If Filter.LeftValue = ParentField1 Then
-			// The filter by parent is set
-			AdjustedFilters.HasFilterByParent = True;
-		ElsIf Filter.LeftValue = OwnerField1 Then
-			// The filter by owner is set
-			AdjustedFilters.HasFilterByOwner = True;
-		Else
-			// Filters by all other attributes are prohibited while the item order is being changed
-			Return False;
-		EndIf;
-		
-	EndDo;
-	
-	Return True;
-	
-EndFunction
+#EndRegion

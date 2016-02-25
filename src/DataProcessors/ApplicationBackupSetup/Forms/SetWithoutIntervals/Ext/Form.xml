@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Application backup setup</v8:content>
+		</v8:item>
+	</Title>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>Bottom</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<HorizontalAlign>Right</HorizontalAlign>
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="FormOK" id="26">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<CommandName>Form.Command.WriteAndClose</CommandName>
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>OK</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="FormOKExtendedTooltip" id="70"/>
+			</Button>
+			<Button name="FormCancel" id="27">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Cancel</CommandName>
+				<ExtendedTooltip name="FormCancelExtendedTooltip" id="71"/>
+			</Button>
+			<Button name="FormHelp" id="28">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="FormHelpExtendedTooltip" id="72"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="c1bc0d3e-d35e-4207-a06b-ece68ed25314">OnWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Button name="FormSetDefaultSettings" id="25">
+			<Type>UsualButton</Type>
+			<CommandName>Form.Command.SetDefault</CommandName>
+			<ExtendedTooltip name="FormSetDefaultSettingsExtendedTooltip" id="73"/>
+		</Button>
+		<UsualGroup name="BackupParametersGroup" id="29">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Backup parameters</v8:content>
+				</v8:item>
+			</Title>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="BackupParametersGroupExtendedTooltip" id="74"/>
+			<ChildItems>
+				<UsualGroup name="BackupCreationTimeGroup" id="30">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Backup creation time</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="BackupCreationTimeGroupExtendedTooltip" id="75"/>
+					<ChildItems>
+						<InputField name="BackupCreationTime" id="31">
+							<DataPath>BackupCreationTime</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Create backups at</v8:content>
+								</v8:item>
+							</Title>
+							<Width>6</Width>
+							<ContextMenu name="BackupCreationTimeContextMenu" id="32"/>
+							<ExtendedTooltip name="BackupCreationTimeExtendedTooltip" id="76"/>
+						</InputField>
+						<LabelField name="AreaTimeZone" id="33">
+							<DataPath>AreaTimeZone</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<ContextMenu name="AreaTimeZoneContextMenu" id="34"/>
+							<ExtendedTooltip name="AreaTimeZoneExtendedTooltip" id="77"/>
+						</LabelField>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="BackupParametersColumnsGroup" id="35">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Backup parameters</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="BackupParametersColumnsGroupExtendedTooltip" id="78"/>
+					<ChildItems>
+						<UsualGroup name="FlagsAndTimeGroup" id="36">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Flags and time</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="FlagsAndTimeGroupExtendedTooltip" id="79"/>
+							<ChildItems>
+								<UsualGroup name="DailyBackupsGroup" id="37">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Daily backups</v8:content>
+										</v8:item>
+									</Title>
+									<HorizontalStretch>true</HorizontalStretch>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="DailyBackupsGroupExtendedTooltip" id="80"/>
+									<ChildItems>
+										<CheckBoxField name="CreateDailyBackups" id="38">
+											<DataPath>CreateDailyBackups</DataPath>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="CreateDailyBackupsContextMenu" id="39"/>
+											<ExtendedTooltip name="CreateDailyBackupsExtendedTooltip" id="81"/>
+										</CheckBoxField>
+										<CheckBoxField name="CreateDailyBackupsOnlyOnUserWorkDays" id="40">
+											<DataPath>CreateDailyBackupsOnlyOnUserWorkDays</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>only on workdays</v8:content>
+												</v8:item>
+											</Title>
+											<TitleLocation>Left</TitleLocation>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="CreateDailyBackupsOnlyOnUserWorkDaysContextMenu" id="41"/>
+											<ExtendedTooltip name="CreateDailyBackupsOnlyOnUserWorkDaysExtendedTooltip" id="82"/>
+										</CheckBoxField>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MonthlyBackupsGroup" id="42">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Monthly backups</v8:content>
+										</v8:item>
+									</Title>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MonthlyBackupsGroupExtendedTooltip" id="83"/>
+									<ChildItems>
+										<CheckBoxField name="CreateMonthlyBackups" id="43">
+											<DataPath>CreateMonthlyBackups</DataPath>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="CreateMonthlyBackupsContextMenu" id="44"/>
+											<ExtendedTooltip name="CreateMonthlyBackupsExtendedTooltip" id="84"/>
+										</CheckBoxField>
+										<InputField name="MonthlyBackupCreationDate" id="45">
+											<DataPath>MonthlyBackupCreationDate</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content> day of month</v8:content>
+												</v8:item>
+											</Title>
+											<TitleLocation>Right</TitleLocation>
+											<SpinButton>true</SpinButton>
+											<MinValue xsi:type="xs:decimal">1</MinValue>
+											<MaxValue xsi:type="xs:decimal">28</MaxValue>
+											<ContextMenu name="MonthlyBackupCreationDateContextMenu" id="46"/>
+											<ExtendedTooltip name="MonthlyBackupCreationDateExtendedTooltip" id="85"/>
+										</InputField>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="GroupYearlyBackups" id="47">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Yearly backups</v8:content>
+										</v8:item>
+									</Title>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="GroupYearlyBackupsExtendedTooltip" id="86"/>
+									<ChildItems>
+										<CheckBoxField name="CreateYearlyBackups" id="48">
+											<DataPath>CreateYearlyBackups</DataPath>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="CreateYearlyBackupsContextMenu" id="49"/>
+											<ExtendedTooltip name="CreateYearlyBackupsExtendedTooltip" id="87"/>
+										</CheckBoxField>
+										<InputField name="YearlyBackupCreationDate" id="50">
+											<DataPath>YearlyBackupCreationDate</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<SpinButton>true</SpinButton>
+											<MinValue xsi:type="xs:decimal">1</MinValue>
+											<MaxValue xsi:type="xs:decimal">28</MaxValue>
+											<ContextMenu name="YearlyBackupCreationDateContextMenu" id="51"/>
+											<ExtendedTooltip name="YearlyBackupCreationDateExtendedTooltip" id="88"/>
+										</InputField>
+										<InputField name="YearlyBackupCreationMonth" id="52">
+											<DataPath>YearlyBackupCreationMonth</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<Width>10</Width>
+											<ListChoiceMode>true</ListChoiceMode>
+											<ContextMenu name="YearlyBackupCreationMonthContextMenu" id="53"/>
+											<ExtendedTooltip name="YearlyBackupCreationMonthExtendedTooltip" id="89"/>
+										</InputField>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="CountGroup" id="54">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Number of backups</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="CountGroupExtendedTooltip" id="90"/>
+							<ChildItems>
+								<UsualGroup name="DailyBackupCountGroup" id="55">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Number of daily backups</v8:content>
+										</v8:item>
+									</Title>
+									<HorizontalStretch>true</HorizontalStretch>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="DailyBackupCountGroupExtendedTooltip" id="91"/>
+									<ChildItems>
+										<InputField name="DailyBackupCount" id="56">
+											<DataPath>DailyBackupCount</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>store</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="DailyBackupCountContextMenu" id="57"/>
+											<ExtendedTooltip name="DailyBackupCountExtendedTooltip" id="92"/>
+										</InputField>
+										<LabelDecoration name="DailyBackupDecoration" id="58">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>backups</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="DailyBackupDecorationContextMenu" id="59"/>
+											<ExtendedTooltip name="DailyBackupDecorationExtendedTooltip" id="93"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="MonthlyBackupCountGroup" id="60">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Number of monthly backups</v8:content>
+										</v8:item>
+									</Title>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="MonthlyBackupCountGroupExtendedTooltip" id="94"/>
+									<ChildItems>
+										<InputField name="MonthlyBackupCount" id="61">
+											<DataPath>MonthlyBackupCount</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>store</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="MonthlyBackupCountContextMenu" id="62"/>
+											<ExtendedTooltip name="MonthlyBackupCountExtendedTooltip" id="95"/>
+										</InputField>
+										<LabelDecoration name="MonthlyBackupDecoration" id="63">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>backups</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="MonthlyBackupDecorationContextMenu" id="64"/>
+											<ExtendedTooltip name="MonthlyBackupDecorationExtendedTooltip" id="96"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="YearlyBackupCountGroup" id="65">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Number of yearly backups</v8:content>
+										</v8:item>
+									</Title>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="YearlyBackupCountGroupExtendedTooltip" id="97"/>
+									<ChildItems>
+										<InputField name="YearlyBackupCount" id="66">
+											<DataPath>YearlyBackupCount</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>store</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="YearlyBackupCountContextMenu" id="67"/>
+											<ExtendedTooltip name="YearlyBackupCountExtendedTooltip" id="98"/>
+										</InputField>
+										<LabelDecoration name="YearlyBackupDecoration" id="68">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>backups</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="YearlyBackupDecorationContextMenu" id="69"/>
+											<ExtendedTooltip name="YearlyBackupDecorationExtendedTooltip" id="99"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="CreateDailyBackups" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create daily backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="CreateMonthlyBackups" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create monthly backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="CreateYearlyBackups" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create yearly backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="BackupCreationTime" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Backup creation time</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Time</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="MonthlyBackupCreationDate" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Monthly backup creation date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="YearlyBackupCreationMonth" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Yearly backup creation month</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="YearlyBackupCreationDate" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Yearly backup creation date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="DailyBackupCount" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Number of daily backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="MonthlyBackupCount" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Number of monthly backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="YearlyBackupCount" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Number of yearly backups</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="CreateDailyBackupsOnlyOnUserWorkDays" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create daily backups only on user work days</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="AreaTimeZone" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Area time zone</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="SetDefault" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set default parameters</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set default</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetDefault</Action>
+			<ModifiesSavedData>true</ModifiesSavedData>
+		</Command>
+		<Command name="WriteAndClose" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and close</v8:content>
+				</v8:item>
+			</Title>
+			<Action>WriteAndClose</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="DataArea">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+	</Parameters>
+</Form>

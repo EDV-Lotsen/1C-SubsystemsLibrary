@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
@@ -18,6 +17,19 @@ EndProcedure
 &AtClient
 Procedure OnClose()
 	
-	LongActionsClient.CancelJobExecution(JobID);
+ 	OnCloseAtServer()
 	
 EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure OnCloseAtServer()
+	
+	LongActions.CancelJobExecution(JobID);
+	
+EndProcedure
+
+#EndRegion

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>Description of file storage volume properties.</p>
+<p>When creating a new storage volume, access to directory specified in the <strong>Full path</strong> field is validated automatically. If the specified path is invalid, a warning message will be displayed.  Path to an existing volume cannot be modified.</p>
+<p>These fields are mandatory for each volume:</p>
+<ul><li><strong>Name</strong> - full name of file storage volume; 
+</li><li><strong>Code</strong> - filled in automatically; 
+</li><li><strong>Full path</strong> 
+</li><li><strong>For 1C:Enterprise servers under Microsoft Windows</strong> - specify path to the volume directory on Microsoft Windows server, in <strong>UNC</strong> format (\\Computer name\Directory name\File name\); </li></ul><ul></ul><p>or</p>
+<ul><ul><li><strong>For 1C:Enterprise servers under Linux</strong> - specify path to the volume directory on Linux server;</li></ul><li><strong>Fill order</strong> - enter an integer. The default value is 1. Storage volumes are filled in this order (ascending) until each volume is full. You can exploit this feature in specific cases. For example, you can disable a volume temporarily by increasing its fill order number. 
+</li><li><strong>Max size</strong> - here you can specify maximum disk size allowed for file storage purposes on this volume (volume quote). When total size of all files stored in a volume exceeds the quota set for this volume, the next volume in fill order will be used for file storage. If none of the available volumes have sufficient free capacity for file storage, this event will be added to the <a href="DataProcessor.EventLog/Help">event log</a> and an error message will be displayed. To disable the total file size limitation, set volume quota to 0.  
+</li><li><strong>Current size, Mb</strong> - total size of files currently stored in the volume. Updated automatically as the volume fills up; 
+</li><li><strong>Comment</strong> - enter detailed volume information in this field.</li></ul><h3>Specifics of filling in the Full path field under Linux</h3>
+<ul><li>For 1C:Enterprise servers under Linux, you can use the local path to the file storage volume instead of the UNC path. Example: <strong>/home/path</strong>. Before you can use UNC path, you need to mount the directory.  Log in as administrator and execute the following commands: 
+<ul><li><strong>mkdir directory</strong>, where <strong>directory</strong> is your directory's name. Example: go to the <strong>/home</strong> directory and execute <strong>mkdir shared</strong>. This will create the <strong>shared</strong> directory (full path: <strong>/home/shared</strong>). 
+</li><li><strong>mount -t cifs //server/share directory -o //domain/user, password=pwd</strong>, where<br>   - <strong>//server/share</strong> - UNC path to another computer, <strong>directory</strong> - path to directory on Linux-based computer (example: <strong>\home\shared</strong>), <strong>//domain/user</strong> - domain/user name if required, <strong>pwd</strong> - user password if required. 
+</li><li>If the user name and password are not required, simply execute <strong>mount -t cifs //server/share directory</strong>.</li></ul></li><li>Now you can specify <strong>directory</strong> (example: <strong>/home/shared</strong>) as the path to the volume.</li></ul><h3>Viewing volume file lists</h3>
+<ul><li>Files in each volume are stored in subdirectories. For each file version creation date, a new subdirectory is created. All stored files retain their original names and extensions, with version number added in the middle. Example: original file name <strong>Orders.txt</strong>, version number <strong>2</strong>, resulting file name <strong>Orders.2.txt</strong>. 
+</li><li>To view the <a href="CommonForm.FilesInVolume/Help">list of files in volume</a>, execute the <strong>Files in volume</strong> command located in the volume navigation panel. </li></ul><h3>See also:</h3>
+<ul><li>
+<div><a href="Catalog.FileStorageVolumes/Help">File storage volumes</a>;</div>
+</li><li>
+<div><a href="Catalog.Files/Help">General information on files</a>;</div>
+</li><li>
+<div><a href="v8help://frame/form_common">Working with forms</a>.</div></li></ul></body></html>

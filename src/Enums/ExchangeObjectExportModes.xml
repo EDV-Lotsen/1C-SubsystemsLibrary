@@ -96,7 +96,7 @@
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export always</v8:content>
+							<v8:content>Always export</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment>Export without of applying filters.</Comment>
@@ -124,6 +124,30 @@
 						</v8:item>
 					</Synonym>
 					<Comment>Export without of applying filters, but with control of reference integrity of exported data.</Comment>
+				</Properties>
+			</EnumValue>
+			<EnumValue uuid="950b3ee3-070f-4946-8b9b-0aa2058de986">
+				<Properties>
+					<Name>ManualExport</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export manually</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment>In this mode object changes are not registered automatically (using event subscriptions). Objects are registered manually by a user. Object are exported only if they match the filter of the node that is used for data export.</Comment>
+				</Properties>
+			</EnumValue>
+			<EnumValue uuid="bd04a870-0943-4bdb-9e30-50a69daa8a13">
+				<Properties>
+					<Name>NotExport</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Not export</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment>In this mode object changes are not registered automatically (using event subscriptions) and are not exported, even if object changes were registered manually by a user.</Comment>
 				</Properties>
 			</EnumValue>
 		</ChildObjects>

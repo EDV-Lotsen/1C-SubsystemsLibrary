@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>Universal data exchange in XML format data processor is intended for import and export of data to/from file for any application based on 1C:Enterprise 8 platform.</p>
+<h2>Run mode</h2>
+<p>When using managed forms, two modes are available for the data processor:<br>1. Client side processing. In this mode, the rule files and data export files are sent from the client to the server, and the import data file is sent from the server to the client. Paths to the files located on the client side must be specified in a dialog window prior to sending the files.<br>2. Server side processing. In this mode, no files are sent to the client. All file paths must be specified on server side.<br>Note: The external data processor file and exchange protocol files must be located on the server, regardless of the selected mode.</p>
+<p>There are four tabs on the data processor form.</p>
+<h2>Data export</h2>
+<p>To export data you must specify the file name where the data will be exported to and select file with exchange rules. Exchange rules for any application can be configured using Data conversion application. </p>
+<p>To export documents and records of independent periodic information registers you must specify period: Start date and End date. The file with exported data can be compressed.</p>
+<p>You can specify which object types to export, filters for object selection, and exchange node on Data export rules tab.</p>
+<p>Additional export parameters can be set on Export parameters tab.</p>
+<p>A comment can be included to the exchange file on Comment tab.</p>
+<h2>Data import</h2>
+<p>To export data you must specify the file name from which to import the data. </p>
+<p>It is possible to configure data import using transactions. For this you need to set Use transaction check box and specify the number of items that should be imported in a single transaction.</p>
+<p>Import data in exchange mode (DataExchange.Load = True) – if this check box is set, the object import will be performed with data import check box is set. This means that during object writing all platform and application checks will be disabled. Except for documents that are written in undo posting mode. Posting and undo posting of document is always performed without setting data exchange mode to import, this means that check will be performed.</p>
+<h2>Additional settings</h2>
+<p>This tab allows to perform extended data import and export setup.</p>
+<p>Debug mode check box allows to enable the debug mode for data exchange. If this check box is set then the data exchange will not be stopped if any error occurs. The data exchange will complete any way and when it is finished, the data exchange log will be displayed. This mode is recommended to be used for debugging the data exchange rules.</p>
+<p>Show debug info in message window – if this check box is set then the data exchange log will be displayed in message window.</p>
+<p>Number of processed objects before the status is updated – defines the number of imported or exported objects after that the data exchange state message is updated.</p>
+<p>Data export settings – allow to define the number of items processed in a single transaction of data export, set data exchange to export and process only those objects on that  there are enough access rights, set up the type of change record changes for exported for exchange plan objects.</p>
+<p>Use optimized format for exchange data (V8 – V8, the data processor version not less 2.0.18) – the optimized exchange message format assumes that DataTypeInfo node presents in message header, in which the information about data types is exported. This allows to speed up the data import process.</p>
+<p>Use transaction for exchange plans during export – defines that transactions should be used during data export when selecting changes on exchange plan nodes. If this check box is set, the data export will be executed in a transactions.</p>
+<p>Number of items in a single transaction – defines the maximal number of data items, that are placed in the exchange message inside of a single database transaction. If the parameter value is equal to 0 (default value) then entire data is exported in a single transaction. This mode is recommended as it guarantees consistency of data, that is placed in the exchange message. But when exchange messages are created in multiuser mode, there can occure locking conflicts between transactions of users and the user that creates the exchange message. To reduce probability of occurrence of such conflicts, the value of this parameter can be set to be different from the default value. The lower the value of this parameter is, the lower the probability of locking conflict, but at the same time the probability of inconsistency of data, that is placed in the exchange message is increased.</p>
+<p>Export objects for which there are access rights – if this check box is set then infobase objects will be selected respecting access rights of the current user. This means, that SELECT clause will be completed with ALLOWED argument.</p>
+<p>Automatically delete invalid characters from strings for writing to XML – if this check box is set then when the data is written to exchange message, invalid characters will be removed from it. Characters are checked to comply recommendations of XML 1. 0 standard.0.</p>
+<p>Change record changes for exchange nodes after export – this field defines the mode of data change record processing after the data is exported. The possible values are:</p>
+<ul><li>
+<div>Do not delete change records – after the data is exported the change records will not be deleted.</div>
+</li><li>
+<div>Completely delete change records for exchange node – after the data is exported, all change records on the source node will be deleted.</div>
+</li><li>
+<div>Delete registration only for exported metadata – after the data is exported, change records on the source node will be deleted only for metadata objects that were selected for data export.</div></li></ul><p><br>Exchange protocol – allows to set whether to use or not information message and where to output them: to message window or a separate exchange log file.</p>
+<p>Exchange log file name – name of file for logging the data exchange execution.</p>
+<p>Import log (for COM connection) – the name of file for logging data import in target infobase when the data exchange is executed over COM connection. Note: this path should be available for the computer where the target infobase is placed.</p>
+<p>Append data to  exchange log – if this check box is set then the exchange log file will not be emptied on start logging if the log file already exists.</p>
+<p>Output data to exchange log – if this check box is set then information messages will be output to the log file in addition to data exchange error messages.</p>
+<p>Open data exchange log files after data exchange – if this check box is set then after the data exchange is completed, exchange log files will be automatically opened for viewing.</p>
+<h2>Data deletion</h2>
+<p>This tab is intended to be used by data exchange rule developers. It allows to delete arbitrary objects from infobase.</p>
+<h2>Debugging data export and import </h2>
+<p>This data processor allows to debug event handlers and generate debug modules from data exchange rules or data exchange message files.</p>
+<p>You can enable debug mode for data export handlers on Data export tab by setting Export handlers debug mode check box. In the same way on Data import tab the import debug mode can be enabled by setting Import handlers debug mode check box. </p>
+<p>After the debug mode for handlers is enabled the debug setup button becomes available. By pressing this button the settings window will be opened.</p>
+<p>Data exchange handlers are set up in following four steps:</p>
+<h3>Step 1: Choose algorithm debug mode</h3>
+<p><br>On the first step you must choose the algorithm debug mode:</p>
+<ul><li>
+<div><font size="1">Without<font size="1"> algorithm</font> debug;</font> </div>
+</li><li>
+<div><font size="1">Call algorithms as procedures;</font> </div>
+</li><li>
+<div><font size="1">Substitute algorithm script to the place where it is called.</font></div></li></ul><p>First mode is convenient to be used when there is no doubt that the error is not in any of algorithms. In this mode algorithm scripts are not included in debug module. Algorithms are executed using Execute() operator and their sources are not available for debugging.</p>
+<p>Second mode you must use in case when the error is located in algorithm script. In this mode algorithms will be exported as separate procedures. When the algorithm is called the corresponding procedure is executed. This mode is convenient to be used when parameters are passed to in algorithms using Parameters global variable. This mode does not allow to have an access to local variables of the handler from which the algorithm is called. </p>
+<p>Third debug mode can be used for debugging algorithm scripts in cases when the second debug mode does not fit. In this mode algorithms are exported as inline scripts in handlers. This means that instead of an algorithm call the full algorithm script is placed. Using this mode it is possible to debug local variables of the caller handler, but this mode does not allow to debug algorithms that call themselves recursively. </p>
+<h3>Step 2: Generate debug module</h3>
+<p><br>On the second step you must export handlers by clicking Generate export (import) debug module button. Generated handlers and algorithms will be opened in a separate window for viewing. The content of debug module can be copied to the clipboard by clicking Copy to clipboard button.</p>
+<h3>Step 3: Create external data processor</h3>
+<p><br>On this step you must run Designer and create a new external data processor. The debug module from clipboard should be pasted in module of this data processor. </p>
+<h3>Step 4: Attach external data processor</h3>
+<p><br>On this final step you must specify the external data processor file name in the input field. The application will validate the data processor file by checking its creation (or update) timestamp. If the data processor file is dated earlier than the debug module file, a warning will be displayed and the form will remain open.</p>
+<p>Note: The debug of After exchange rule import global conversion handler is not supported.</p></body></html>

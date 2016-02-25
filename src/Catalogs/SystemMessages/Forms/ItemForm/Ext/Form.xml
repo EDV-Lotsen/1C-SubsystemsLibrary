@@ -1,45 +1,57 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
 	<ChildItems>
-		<InputField name="Description" id="2">
+		<InputField name="Description" id="1">
 			<DataPath>Object.Description</DataPath>
 			<ReadOnly>true</ReadOnly>
 			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="DescriptionContextMenu" id="3"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="4"/>
+			<ContextMenu name="DescriptionContextMenu" id="2"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="13"/>
 		</InputField>
-		<InputField name="Sender" id="5">
+		<InputField name="From" id="3">
 			<DataPath>Object.Sender</DataPath>
 			<ReadOnly>true</ReadOnly>
 			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="SenderContextMenu" id="6"/>
-			<ExtendedTooltip name="SenderExtendedTooltip" id="7"/>
+			<ContextMenu name="SenderContextMenu" id="4"/>
+			<ExtendedTooltip name="SenderExtendedTooltip" id="14"/>
 		</InputField>
-		<InputField name="Recipient" id="8">
+		<InputField name="Recipient" id="5">
 			<DataPath>Object.Recipient</DataPath>
 			<ReadOnly>true</ReadOnly>
 			<EditMode>EnterOnInput</EditMode>
-			<ContextMenu name="RecipientContextMenu" id="9"/>
-			<ExtendedTooltip name="RecipientExtendedTooltip" id="10"/>
+			<ContextMenu name="RecipientContextMenu" id="6"/>
+			<ExtendedTooltip name="RecipientExtendedTooltip" id="15"/>
 		</InputField>
-		<CheckBoxField name="Locked" id="11">
+		<InputField name="Body" id="11">
+			<DataPath>BodyPresentation</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<Height>12</Height>
+			<MultiLine>true</MultiLine>
+			<ContextMenu name="BodyContextMenu" id="12"/>
+			<ExtendedTooltip name="BodyExtendedTooltip" id="16"/>
+		</InputField>
+		<CheckBoxField name="Locked" id="9">
 			<DataPath>Object.Locked</DataPath>
 			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="LockedContextMenu" id="12"/>
-			<ExtendedTooltip name="LockedExtendedTooltip" id="13"/>
+			<ContextMenu name="LockedContextMenu" id="10"/>
+			<ExtendedTooltip name="LockedExtendedTooltip" id="17"/>
 		</CheckBoxField>
-		<InputField name="DetailErrorDescription" id="14">
+		<InputField name="DetailErrorDescription" id="7">
 			<DataPath>Object.DetailErrorDescription</DataPath>
 			<ReadOnly>true</ReadOnly>
 			<TitleLocation>Top</TitleLocation>
 			<Height>4</Height>
 			<MultiLine>true</MultiLine>
 			<ExtendedEdit>true</ExtendedEdit>
-			<ContextMenu name="DetailErrorDescriptionContextMenu" id="15"/>
-			<ExtendedTooltip name="DetailErrorDescriptionExtendedTooltip" id="16"/>
+			<ContextMenu name="DetailErrorDescriptionContextMenu" id="8"/>
+			<ExtendedTooltip name="DetailErrorDescriptionExtendedTooltip" id="18"/>
 		</InputField>
 	</ChildItems>
 	<Attributes>
@@ -49,6 +61,21 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="BodyPresentation" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Body</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
 		</Attribute>
 	</Attributes>
 </Form>

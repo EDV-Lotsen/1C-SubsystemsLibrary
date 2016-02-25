@@ -1,13 +1,59 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="Text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 9.00.8112.16470"></meta></head><body>
-<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">To replace standard object conversion and object change record rules with rules from file you must:</p>
-<div class="Section1">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The default <a href="CommonForm.DataExchanges/Help">data synchronization</a> settings are applied in accordance with <strong>Standard exchange rules</strong>. Synchronization based on outdated rules is likely to result in critical errors and corrupted data. To avoid this, it is imperative to review the standard exchange rules in use whenever you set up a new data synchronization, or when an application participating in data synchronization is updated. </p>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Standard exchange rules include <a href="InformationRegister.DataExchangeRules.Form.ObjectConversionRules/Help">object conversion rules</a> and <a href="InformationRegister.DataExchangeRules.Form.ObjectChangeRecordRules/Help">object change record rules</a>. Data conversion rules are used during data synchronization between two applications. Recording rules are available for each <a href="CommonForm.DataExchanges/Help">data synchronization</a> method. </p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Checking exchange rules validity</h3>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">When checking validity of the exchange rules, pay attention to the following parameters:</p>
 <ul><li>
-<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Set a switch to <strong>Rules from file</strong>, click <strong>Import rules</strong> button, and select a file on a computer or in network directory;</div>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Release versions of source application and target application to which these rules apply;</div>
 </li><li>
-<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Check that correct and suitable for source and target configuration version rules are imported;</div>
-</li><li>
-<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Click <strong>Write and close</strong> button to apply imported rules.</div></li></ul></div>
-<p><strong>Note:</strong> object conversion rules and object change record rules are applied for data exchanges of the same type (that are based on the same exchange plan; for example: there are two data exchanges <strong>Exchange with Miami branch</strong> and <strong>Exchange with Brazil branch</strong> based on Full exchange plan). Thus is why it is enough to replace exchange rules for any of data exchanges of the same type (you can select it from created data exchanges).</p>
-<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">See also</h3>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">rules creation date.</div></li></ul><p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Validity check is performed as follows:</p>
 <ul><li>
-<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto"><a href="CommonForm.DataExchanges/Help">Data exchanges</a></div></li></ul></body></html>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">determine values of controlled parameters for the source application;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">determine values of controlled parameters for the target application;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">determine values of controlled parameters included in the source application distribution kit;</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">determine values of controlled parameters included in the target application distribution kit.</div></li></ul><p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Review all rules and select the rules with the latest creation date. When reviewing the rules, pay attention to the configuration release versions. Configuration release versions specified in the rules must match release versions of the configurations participating in data synchronization.</p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Checking rules loaded to applications</h3>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Create a new data synchronization, but do not run it.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Open settings for this data synchronization.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Execute the <strong>All actions - Import object conversion rules</strong> command. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Validate information on the data conversion rules.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Execute the <strong>All actions - Import object change record rules</strong> command. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Validate information on the object change record rules.</div></li></ul><p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">If you want to review the controlled parameters loaded to the application for an existing data synchronization, the procedure will be similar. For example, to validate object change record rules for an existing data synchronization in a subordinate node, use the <strong>Import object change record rules</strong> command. </p>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">To validate rules for data synchronization between two applications, you need to perform this procedure first for the source application, and then for the target application.</p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Checking rules included in application distribution kit</h3>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">In the <strong>Data conversion rules (Data change record rules)</strong> window, set the <strong>Rule source</strong> radio button to <strong>Debug mode (Rules from file)</strong>. Execute the <strong>Import rules</strong> command.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Select the conversion rules file located in the application distribution kit.</div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The file path may vary depending on a distribution kit. The <strong>Data exchanges</strong> directory is a common location for this file. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Validate the rules information.</div></li></ul><p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">You need to perform this procedure first for the source application, and then for the target application.</p>
+<h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Checking rules from external files</h3>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Review the rules information and click <strong>Export rules</strong> to save a copy of the current rules to a file. </p>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Set the <strong>Rule source</strong> radio button to <strong>Standard application rules</strong>. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Click <strong>Import rules</strong>. </div>
+</li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Review the available rules information.</div></li></ul><h3 style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Making decisions based on check results </h3>
+<p style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">As a result of rules validity check, the latest version is identified and a decision is made:</p>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Continue using current rules.</div>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">No additional actions required.</div></li></ul></li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Start using the latest rules available in one of the applications. </div>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">The rule import procedure is described in the file commonly named <strong>Exchange rules attachment instruction.txt</strong>, located in the <strong>Data exchanges</strong> directory.</div></li></ul></li><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">Start using standard conversion rules and object change record rules instead of the external rules.</div>
+<ul><li>
+<div style="mso-margin-top-alt: auto; mso-margin-bottom-alt: auto">For this, execute the <strong>All actions - Open object conversion rules (Object change record rules)</strong> command. Set the <strong>Rule source</strong> radio button to <strong>Standard application rules</strong> and click <strong>Import rules</strong>.</div></li></ul></li></ul></body></html>

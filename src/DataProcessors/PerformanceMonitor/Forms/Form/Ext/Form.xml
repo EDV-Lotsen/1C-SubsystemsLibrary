@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<SaveDataInSettings>UseList</SaveDataInSettings>
+	<AutoFillCheck>false</AutoFillCheck>
+	<Customizable>false</Customizable>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="UpdatePerformance" id="39">
+				<Type>CommandBarButton</Type>
+				<Representation>PictureAndText</Representation>
+				<DefaultButton>true</DefaultButton>
+				<CommandName>Form.Command.Update</CommandName>
+				<Picture>
+					<xr:Ref>StdPicture.Refresh</xr:Ref>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Update performance indicators</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="UpdatePerformanceExtendedTooltip" id="75"/>
+			</Button>
+			<Button name="FormSettings" id="66">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.Command.Settings</CommandName>
+				<Picture>
+					<xr:Ref>StdPicture.ListSettings</xr:Ref>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Settings...</v8:content>
+					</v8:item>
+				</Title>
+				<ExtendedTooltip name="FormSettingsExtendedTooltip" id="76"/>
+			</Button>
+			<Button name="DataExportForm" id="93">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.Command.DataExport</CommandName>
+				<Picture>
+					<xr:Ref>StdPicture.SaveValues</xr:Ref>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<ExtendedTooltip name="DataExportFormExtendedTooltip" id="94"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="Settings" id="57">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Period settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<ExtendedTooltip name="SettingsExtendedTooltip" id="77"/>
+			<ChildItems>
+				<InputField name="StartDate" id="69">
+					<DataPath>Object.StartDate</DataPath>
+					<ContextMenu name="StartDateContextMenu" id="70"/>
+					<ExtendedTooltip name="StartDateExtendedTooltip" id="78"/>
+				</InputField>
+				<InputField name="EndDate" id="71">
+					<DataPath>Object.EndDate</DataPath>
+					<ContextMenu name="EndDateContextMenu" id="72"/>
+					<ExtendedTooltip name="EndDateExtendedTooltip" id="79"/>
+				</InputField>
+				<InputField name="Step" id="4">
+					<DataPath>Object.Step</DataPath>
+					<HorizontalStretch>false</HorizontalStretch>
+					<DropListButton>true</DropListButton>
+					<ChoiceList>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation/>
+								<Value xsi:type="xs:string">Hour</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation/>
+								<Value xsi:type="xs:string">Day</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation/>
+								<Value xsi:type="xs:string">Week</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Month (30 days)</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:string">Month</Value>
+							</xr:Value>
+						</xr:Item>
+					</ChoiceList>
+					<ContextMenu name="StepContextMenu" id="5"/>
+					<ExtendedTooltip name="StepExtendedTooltip" id="80"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<Pages name="Form" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="FormExtendedTooltip" id="81"/>
+			<Events>
+				<Event name="OnCurrentPageChange">FormOnCurrentPageChange</Event>
+			</Events>
+			<ChildItems>
+				<Page name="PageTable" id="19">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Table</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Table page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="PageTableExtendedTooltip" id="82"/>
+					<ChildItems>
+						<Table name="Performance" id="23">
+							<Representation>List</Representation>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<SelectionMode>SingleRow</SelectionMode>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<DataPath>Object.Performance</DataPath>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>SortListAsc</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>CancelSearch</ExcludedCommand>
+								<ExcludedCommand>SortListDesc</ExcludedCommand>
+								<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+								<ExcludedCommand>Delete</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="PerformanceContextMenu" id="24">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="PerformanceContextMenuSpecifyApdex" id="73">
+										<Type>CommandBarButton</Type>
+										<Representation>PictureAndText</Representation>
+										<CommandName>Form.Command.SpecifyApdex</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.ReportSettings</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Calculate Apdex target time</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="PerformanceContextMenuSpecifyApdexExtendedTooltip" id="83"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="PerformanceCommandBar" id="25">
+								<ChildItems>
+									<Button name="PerformanceAddKeyOperation" id="95">
+										<Type>CommandBarButton</Type>
+										<Representation>Picture</Representation>
+										<CommandName>Form.Command.AddKeyOperation</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<ExtendedTooltip name="PerformanceAddKeyOperationExtendedTooltip" id="96"/>
+									</Button>
+									<Button name="PerformanceDeleteKeyOperation" id="97">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.DeleteKeyOperation</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.Delete</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<ExtendedTooltip name="PerformanceDeleteKeyOperationExtendedTooltip" id="98"/>
+									</Button>
+									<Button name="PerformanceMoveUp" id="63">
+										<Type>CommandBarButton</Type>
+										<Representation>Picture</Representation>
+										<CommandName>Form.Command.MoveUp</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.MoveUp</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<ExtendedTooltip name="PerformanceMoveUpExtendedTooltip" id="84"/>
+									</Button>
+									<Button name="PerformanceMoveDown" id="64">
+										<Type>CommandBarButton</Type>
+										<Representation>Picture</Representation>
+										<CommandName>Form.Command.MoveDown</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.MoveDown</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<ExtendedTooltip name="PerformanceMoveDownExtendedTooltip" id="85"/>
+									</Button>
+									<Button name="PerformanceSetFilter" id="74">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.SetFilter</CommandName>
+										<Picture>
+											<xr:Ref>StdPicture.FilterCriterion</xr:Ref>
+											<xr:LoadTransparent>true</xr:LoadTransparent>
+										</Picture>
+										<ExtendedTooltip name="PerformanceSetFilterExtendedTooltip" id="86"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="PerformanceExtendedTooltip" id="87"/>
+							<SearchStringAddition name="PerformanceSearchString" id="99">
+								<AdditionSource>
+									<Item>Performance</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="PerformanceSearchStringContextMenu" id="100"/>
+								<ExtendedTooltip name="PerformanceSearchStringExtendedTooltip" id="101"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="PerformanceViewStatus" id="102">
+								<AdditionSource>
+									<Item>Performance</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="PerformanceViewStatusContextMenu" id="103"/>
+								<ExtendedTooltip name="PerformanceViewStatusExtendedTooltip" id="104"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="PerformanceSearchControl" id="105">
+								<AdditionSource>
+									<Item>Performance</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="PerformanceSearchControlContextMenu" id="106"/>
+								<ExtendedTooltip name="PerformanceSearchControlExtendedTooltip" id="107"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">PerformanceSelection</Event>
+								<Event name="OnStartEdit">PerformanceOnStartEdit</Event>
+							</Events>
+							<ChildItems>
+								<InputField name="KeyOperation" id="28">
+									<DataPath>Object.Performance.KeyOperation</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Key operation</v8:content>
+										</v8:item>
+									</Title>
+									<EditMode>EnterOnInput</EditMode>
+									<OpenButton>false</OpenButton>
+									<AutoMarkIncomplete>false</AutoMarkIncomplete>
+									<ContextMenu name="KeyOperationContextMenu" id="29"/>
+									<ExtendedTooltip name="KeyOperationExtendedTooltip" id="88"/>
+								</InputField>
+								<InputField name="Priority" id="67">
+									<DataPath>Object.Performance.Priority</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="PriorityContextMenu" id="68"/>
+									<ExtendedTooltip name="PriorityExtendedTooltip" id="89"/>
+								</InputField>
+								<InputField name="TargetTime" id="30">
+									<DataPath>Object.Performance.TargetTime</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Target time</v8:content>
+										</v8:item>
+									</Title>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="TargetTimeContextMenu" id="31"/>
+									<ExtendedTooltip name="TargetTimeExtendedTooltip" id="90"/>
+									<Events>
+										<Event name="OnChange">TimeTargetOnChange</Event>
+									</Events>
+								</InputField>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</Page>
+				<Page name="PageChart" id="20">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Chart</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Chart page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="PageChartExtendedTooltip" id="91"/>
+					<ChildItems>
+						<ChartField name="Chart" id="21">
+							<DataPath>Object.Chart</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Chart:</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="ChartContextMenu" id="22"/>
+							<ExtendedTooltip name="ChartExtendedTooltip" id="92"/>
+						</ChartField>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.PerformanceMonitor</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<Save>
+				<Field>Object.Step</Field>
+				<Field>Object.StartDate</Field>
+				<Field>Object.EndDate</Field>
+				<Field>1/0:f54fde64-ca9e-49cc-8dc9-59ecaf4625a8</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="TableUpdated" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Table updated</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ChartUpdated" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Chart updated</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Update" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Update</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Update</Action>
+		</Command>
+		<Command name="MoveUp" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move up</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move up</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>MoveUp</Action>
+		</Command>
+		<Command name="MoveDown" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move down</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Move down</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>MoveDown</Action>
+		</Command>
+		<Command name="DataExport" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export data</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export data</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DataExport</Action>
+		</Command>
+		<Command name="Settings" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Settings</Action>
+		</Command>
+		<Command name="SpecifyApdex" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Specify Apdex</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Specify Apdex</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SpecifyApdex</Action>
+		</Command>
+		<Command name="SetFilter" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set filter</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set filter</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetFilter</Action>
+		</Command>
+		<Command name="AddKeyOperation" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add key operation</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add key operation</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AddKeyOperation</Action>
+		</Command>
+		<Command name="DeleteKeyOperation" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete key operation</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete key operation</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DeleteKeyOperation</Action>
+		</Command>
+	</Commands>
+</Form>

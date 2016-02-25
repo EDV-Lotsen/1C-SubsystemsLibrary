@@ -10,7 +10,7 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<Namespace>http://1c-dn.com/SL/MessageExchange</Namespace>
+			<Namespace>http://www.1c.ru/SSL/MessageExchange</Namespace>
 			<XDTOPackages/>
 			<DescriptorFileName>messageexchange.1cws</DescriptorFileName>
 			<ReuseSessions>DontUse</ReuseSessions>
@@ -68,31 +68,31 @@
 			</Operation>
 			<Operation uuid="bf3167d6-3047-482a-b280-184f446ae7a3">
 				<Properties>
-					<Name>GetInfoBaseParameters</Name>
+					<Name>GetIBParameters</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Get infobase parameters</v8:content>
+							<v8:content>Get IBParameters</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>false</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>GetInfoBaseParameters</ProcedureName>
+					<ProcedureName>GetInfobaseParameters</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
 					<Parameter uuid="50c47c0a-a199-4020-9df4-91b17c159454">
 						<Properties>
-							<Name>ThisEndPointName</Name>
+							<Name>ThisEndpointName</Name>
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>This end point name</v8:content>
+									<v8:content>This endpoint name</v8:content>
 								</v8:item>
 							</Synonym>
-							<Comment>Description of this end point</Comment>
+							<Comment>Description of this endpoint</Comment>
 							<XDTOValueType>xs:string</XDTOValueType>
 							<Nillable>true</Nillable>
 							<TransferDirection>In</TransferDirection>
@@ -109,11 +109,11 @@
 							<v8:content>Connect end point</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment>Performs actions on the recipient side to connect end point</Comment>
+					<Comment>Performs actions on the recipient side to connect endpoint</Comment>
 					<XDTOReturningValueType>xs:boolean</XDTOReturningValueType>
 					<Nillable>false</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>ConnectEndPoint</ProcedureName>
+					<ProcedureName>ConnectEndpoint</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
@@ -222,21 +222,21 @@
 							<v8:content>Set leading end point</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment>Sets the leading end point in the current infobase</Comment>
+					<Comment>Sets the leading endpoint in the current infobase</Comment>
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>true</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>SetLeadingEndPoint</ProcedureName>
+					<ProcedureName>SetLeadingEndpoint</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
 					<Parameter uuid="6aff6b2f-660b-4d75-9064-fed7a6b0feac">
 						<Properties>
-							<Name>ThisEndPointCode</Name>
+							<Name>ThisEndpointCode</Name>
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>This end point code</v8:content>
+									<v8:content>This endpoint code</v8:content>
 								</v8:item>
 							</Synonym>
 							<Comment/>
@@ -247,11 +247,11 @@
 					</Parameter>
 					<Parameter uuid="53502127-9f47-4e2e-b3ed-eb3c3aae1c50">
 						<Properties>
-							<Name>LeadingEndPointCode</Name>
+							<Name>LeadingEndpointCode</Name>
 							<Synonym>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Leading end point code</v8:content>
+									<v8:content>Leading endpoint code</v8:content>
 								</v8:item>
 							</Synonym>
 							<Comment/>
@@ -264,7 +264,7 @@
 			</Operation>
 			<Operation uuid="2fcdd0b5-b738-4e19-8bbf-13a72d7014ec">
 				<Properties>
-					<Name>CheckConnectionAtRecipient</Name>
+					<Name>TestConnectionRecipient</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -275,7 +275,7 @@
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>true</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>CheckConnectionAtRecipient</ProcedureName>
+					<ProcedureName>TestConnectionAtRecipient</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>
@@ -313,7 +313,7 @@
 			</Operation>
 			<Operation uuid="4e81ec90-f668-49ca-9193-22337bafb01b">
 				<Properties>
-					<Name>CheckConnectionAtSender</Name>
+					<Name>TestConnectionSender</Name>
 					<Synonym>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -324,7 +324,7 @@
 					<XDTOReturningValueType>xs:string</XDTOReturningValueType>
 					<Nillable>true</Nillable>
 					<Transactioned>false</Transactioned>
-					<ProcedureName>CheckConnectionAtSender</ProcedureName>
+					<ProcedureName>TestConnectionAtSender</ProcedureName>
 					<DataLockControlMode>Managed</DataLockControlMode>
 				</Properties>
 				<ChildObjects>

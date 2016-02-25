@@ -1,23 +1,24 @@
-﻿Var ErrorMessageString Export;
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+Var ErrorMessageString Export;
 Var ErrorMessageStringEL Export;
 
-Var mErrorMessages; // map that contains predefined error messages
-Var mObjectName;		// metadata object name
-Var mServerName;		// FTP server address (name or IP)
-Var mDirectoryAtServer; // directory on server for storing and receiving exchange messages
+Var ErrorMessages; // map that contains predefined error messages
+Var ObjectName;		// metadata object name
+Var FTPServerName;		// FTP server address (name or IP)
+Var DirectoryAtFTPServer;// Directory on server for storing and receiving exchange messages
 
-Var mTempExchangeMessageFile; // temporary exchange message file for importing and exporting data
-Var mTempExchangeMessageDirectory; // temporary exchange message directory
+Var TempExchangeMessageFile; // temporary exchange message file for importing and exporting data
+Var TempExchangeMessageDirectory; // temporary exchange message directory
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-////////////////////////////////////////////////////////////////////////////////
-// Export internal procedures and functions
+// Export internal procedures and functions.
 
 // Creates a temporary directory in the temporary file directory of the operating system user.
 // 
-// Returns:
+//  Returns:
 //  Boolean - True if the directory was created successfully, otherwise is False.
 // 
 Function ExecuteActionsBeforeMessageProcessing() Export
@@ -30,8 +31,8 @@ EndFunction
 
 // Sends the exchange message to the specified resource from the temporary exchange message directory.
 // 
-// Returns:
-//  Boolean - True if the message was sent successfully, otherwise is False. 
+//  Returns:
+//  Boolean - True if the directory was created successfully, otherwise is False.
 // 
 Function SendMessage() Export
 	
@@ -47,11 +48,11 @@ Function SendMessage() Export
 	
 EndFunction
 
-// Receives an exchange message from the specified resource and puts it into the
-// temporary exchange message directory.
+// Receives an exchange message from the specified resource and puts it into the 
+// temporary exchange message durectory.
 // 
-// Returns:
-//  Boolean - True if the message was received successfully, otherwise is False. 
+//  Returns:
+//  Boolean - True if the directory was created successfully, otherwise is False.
 // 
 Function ReceiveMessage() Export
 	
@@ -69,7 +70,7 @@ EndFunction
 
 // Deletes the temporary exchange message directory after performing data import and export.
 // 
-// Returns:
+//  Returns:
 //  Boolean - True.
 //
 Function ExecuteAfterMessageProcessingActions() Export
@@ -82,10 +83,10 @@ Function ExecuteAfterMessageProcessingActions() Export
 	
 EndFunction
 
-// Checking whether the specified resource contains the exchange message.
+// Checking whether the specified resource contains an exchange message.
 // 
-// Returns:
-//  Boolean - True if the specified resource contains the exchange message, otherwise is False.
+//  Returns:
+//  Boolean - True if the specified resource contains an exchange message, False otherwise.
 //
 Function ExchangeMessageFileExists() Export
 	
@@ -101,7 +102,7 @@ Function ExchangeMessageFileExists() Export
 	EndTry;
 	
 	Try
-		FoundFileArray = FTPConnection.FindFiles(mDirectoryAtServer, MessageFileNamePattern + ".*", False);
+		FoundFileArray = FTPConnection.FindFiles(DirectoryAtFTPServer, MessageFileNamePattern + ".*", False);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(104);
@@ -114,21 +115,21 @@ Function ExchangeMessageFileExists() Export
 EndFunction
 
 // Initializes properties with initial values and constants.
-//
+// 
 Procedure Initialization() Export
 	
 	InitMessages();
 	
 	ServerNameAndDirectoryAtServer = SplitFTPResourceToServerAndDirectory(TrimAll(FTPConnectionPath));
-	mServerName			= ServerNameAndDirectoryAtServer.ServerName;
-	mDirectoryAtServer	= ServerNameAndDirectoryAtServer.DirectoryName;
+	FTPServerName			             = ServerNameAndDirectoryAtServer.ServerName;
+	DirectoryAtFTPServer           = ServerNameAndDirectoryAtServer.DirectoryName;
 	
 EndProcedure
 
 // Checking whether the connection to the specified resource can be established.
 // 
-// Returns:
-//  Boolean – True if connection can be established, otherwise is False.
+//  Returns:
+//  Boolean - True if connection can be established, otherwise is False.
 //
 Function ConnectionIsSet() Export
 	
@@ -137,9 +138,7 @@ Function ConnectionIsSet() Export
 	
 	InitMessages();
 	
-	If	IsBlankString(FTPConnectionPath)
-		Or FTPConnectionPort = 0
-		Or IsBlankString(FTPConnectionUser) Then
+	If IsBlankString(FTPConnectionPath) Then
 		
 		GetErrorMessage(101);
 		Return False;
@@ -148,7 +147,7 @@ Function ConnectionIsSet() Export
 	
 	// Creating a file in the temporary directory
 	TempConnectionCheckFileName = GetTempFileName("tmp");
-	FileNameForTarget = DataExchangeServer.CheckConnectionFileName();
+	FileNameForTarget = DataExchangeServer.TestConnectionFileName();
 	
 	TextWriter = New TextWriter(TempConnectionCheckFileName);
 	TextWriter.WriteLine(FileNameForTarget);
@@ -160,7 +159,7 @@ Function ConnectionIsSet() Export
 	// Deleting file from the external resource
 	If Result Then
 		
-		Result = DeleteFileAtFTPServer(FileNameForTarget);
+		Result = DeleteFileAtFTPServer(FileNameForTarget, True);
 		
 	EndIf;
 	
@@ -176,20 +175,20 @@ EndFunction
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for retrieving properties.
 
-// Retrieves the exchange message file date.
+// Retrieves the exchange message file modification date.
 //
 // Returns:
-//  Date.
+//  Date - exchange message file modification date.
 //
 Function ExchangeMessageFileDate() Export
 	
 	Result = Undefined;
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		If mTempExchangeMessageFile.Exist() Then
+		If TempExchangeMessageFile.Exist() Then
 			
-			Result = mTempExchangeMessageFile.GetModificationTime();
+			Result = TempExchangeMessageFile.GetModificationTime();
 			
 		EndIf;
 		
@@ -202,15 +201,15 @@ EndFunction
 // Retrieves the full name of the exchange message file.
 //
 // Returns:
-//  String.
+//  String - full name of the exchange message file.
 //
 Function ExchangeMessageFileName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		Name = mTempExchangeMessageFile.FullName;
+		Name = TempExchangeMessageFile.FullName;
 		
 	EndIf;
 	
@@ -219,17 +218,17 @@ Function ExchangeMessageFileName() Export
 EndFunction
 
 // Retrieves the full name of the exchange message directory.
-// 
+//
 // Returns:
-//  String.
+//  String - full name of the exchange message directory.
 //
 Function ExchangeMessageDirectoryName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageDirectory) = Type("File") Then
+	If TypeOf(TempExchangeMessageDirectory) = Type("File") Then
 		
-		Name = mTempExchangeMessageDirectory.FullName;
+		Name = TempExchangeMessageDirectory.FullName;
 		
 	EndIf;
 	
@@ -242,23 +241,22 @@ EndFunction
 
 Function CreateTempExchangeMessageDirectory()
 	
-	mTempExchangeMessageDirectory = New File(CommonUseClientServer.GetFullFileName(TempFilesDir(), DataExchangeServer.TempExchangeMessageDirectory()));
-	
 	// Creating the temporary exchange message directory
 	Try
-		CreateDirectory(ExchangeMessageDirectoryName());
+		TempDirectoryName = DataExchangeServer.CreateTempExchangeMessageDirectory();
 	Except
 		GetErrorMessage(4);
 		SupplementErrorMessage(BriefErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	
+	TempExchangeMessageDirectory = New File(TempDirectoryName);
+	
 	MessageFileName = CommonUseClientServer.GetFullFileName(ExchangeMessageDirectoryName(), MessageFileNamePattern + ".xml");
 	
-	mTempExchangeMessageFile = New File(MessageFileName);
+	TempExchangeMessageFile = New File(MessageFileName);
 	
 	Return True;
-	
 EndFunction
 
 Function DeleteTempExchangeMessageDirectory()
@@ -266,7 +264,7 @@ Function DeleteTempExchangeMessageDirectory()
 	Try
 		If Not IsBlankString(ExchangeMessageDirectoryName()) Then
 			DeleteFiles(ExchangeMessageDirectoryName());
-			mTempExchangeMessageDirectory = Undefined;
+			TempExchangeMessageDirectory = Undefined;
 		EndIf;
 	Except
 		Return False;
@@ -291,7 +289,7 @@ Function SendExchangeMessage()
 		
 		Try
 			
-			Archiver = New ZipFileWriter(ArchiveTempFileName, ExchangeMessageArchivePassword, "Exchange message file");
+			Archiver = New ZipFileWriter(ArchiveTempFileName, ExchangeMessageArchivePassword, NStr("en = 'Exchange message file'"));
 			Archiver.Add(ExchangeMessageFileName());
 			Archiver.Write();
 			
@@ -307,7 +305,7 @@ Function SendExchangeMessage()
 		
 		If Result Then
 			
-			// Checking that the exchange message size does not exceed the maximum allowed size
+			// Checking that the exchange message size does not exeed the maximum allowed size
 			If DataExchangeServer.ExchangeMessageSizeExceedsAllowed(ArchiveTempFileName, MaxMessageSize()) Then
 				GetErrorMessage(108);
 				Result = False;
@@ -328,7 +326,7 @@ Function SendExchangeMessage()
 		
 		If Result Then
 			
-			// Checking that the exchange message size does not exceed the maximum allowed size
+			// Checking that the exchange message size does not exeed the maximum allowed size
 			If DataExchangeServer.ExchangeMessageSizeExceedsAllowed(ExchangeMessageFileName(), MaxMessageSize()) Then
 				GetErrorMessage(108);
 				Result = False;
@@ -355,7 +353,7 @@ Function GetExchangeMessage()
 	
 	ExchangeMessageFileTable = New ValueTable;
 	ExchangeMessageFileTable.Columns.Add("File");
-	ExchangeMessageFileTable.Columns.Add("ModifiedAt");
+	ExchangeMessageFileTable.Columns.Add("Modified");
 	
 	Try
 		FTPConnection = GetFTPConnection();
@@ -367,7 +365,7 @@ Function GetExchangeMessage()
 	EndTry;
 	
 	Try
-		FoundFileArray = FTPConnection.FindFiles(mDirectoryAtServer, MessageFileNamePattern + ".*", False);
+		FoundFileArray = FTPConnection.FindFiles(DirectoryAtFTPServer, MessageFileNamePattern + ".*", False);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(104);
@@ -395,11 +393,10 @@ Function GetExchangeMessage()
 			
 		EndIf;
 		
-		// The file is a required exchange message.
-   // Adding the file to the table.
-		TableRow            = ExchangeMessageFileTable.Add();
-		TableRow.File       = CurrentFile;
-		TableRow.ModifiedAt = CurrentFile.GetModificationTime();
+		// The file is a required exchange message. Adding the file to the table.
+		TableRow = ExchangeMessageFileTable.Add();
+		TableRow.File           = CurrentFile;
+		TableRow.Modified = CurrentFile.GetModificationTime();
 		
 	EndDo;
 	
@@ -408,10 +405,10 @@ Function GetExchangeMessage()
 		GetErrorMessage(1);
 		
 		MessageString = NStr("en = 'The data exchange directory on the server is %1.'");
-		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, mDirectoryAtServer);
+		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, DirectoryAtFTPServer);
 		SupplementErrorMessage(MessageString);
 		
-		MessageString = NStr("en = 'The data exchange file name is: %1 or %2.'");
+		MessageString = NStr("en = 'Exchange message file name is %1 or %2'");
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, MessageFileNamePattern + ".xml", MessageFileNamePattern + ".zip");
 		SupplementErrorMessage(MessageString);
 		
@@ -419,7 +416,7 @@ Function GetExchangeMessage()
 		
 	Else
 		
-		ExchangeMessageFileTable.Sort("ModifiedAt Desc");
+		ExchangeMessageFileTable.Sort("Modified Desc");
 		
 		// Getting the latest exchange message file from the table
 		IncomingMessageFile = ExchangeMessageFileTable[0].File;
@@ -477,18 +474,18 @@ EndFunction
 
 Procedure GetErrorMessage(MessageNo)
 	
-	SetErrorMessageString(mErrorMessages[MessageNo]);
+	SetErrorMessageString(ErrorMessages[MessageNo]);
 	
 EndProcedure
 
 Procedure SetErrorMessageString(Val Message)
 	
 	If Message = Undefined Then
-		Message = "Internal error";
+		Message = NStr("en = 'Internal error'");
 	EndIf;
 	
 	ErrorMessageString   = Message;
-	ErrorMessageStringEL = mObjectName + ": " + Message;
+	ErrorMessageStringEL = ObjectName + ": " + Message;
 	
 EndProcedure
 
@@ -498,7 +495,8 @@ Procedure SupplementErrorMessage(Message)
 	
 EndProcedure
 
-// The overridable function, returns the maximum allowed size of a message to be sent.
+// The overridable function, returns
+// the maximum allowed size of a message to be sent.
 // 
 Function MaxMessageSize()
 	
@@ -507,7 +505,7 @@ Function MaxMessageSize()
 EndFunction
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for retrieving properties
+// Functions for retrieving properties.
 
 Function CompressOutgoingMessageFile()
 	
@@ -516,7 +514,7 @@ Function CompressOutgoingMessageFile()
 EndFunction
 
 ///////////////////////////////////////////////////////////////////////////////
-// Initialization
+// Initialization.
 
 Procedure InitMessages()
 	
@@ -527,24 +525,24 @@ EndProcedure
 
 Procedure ErrorMessageInitialization()
 	
-	mErrorMessages = New Map;
+	ErrorMessages = New Map;
 	
 	// Common error codes
-	mErrorMessages.Insert(001, NStr("en = 'No message file with data was found in the exchange directory.'"));
-	mErrorMessages.Insert(002, NStr("en = 'Error unpacking the exchange message file.'"));
-	mErrorMessages.Insert(003, NStr("en = 'Error packing the exchange message file.'"));
-	mErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory.'"));
-	mErrorMessages.Insert(005, NStr("en = 'The archive does not contain the exchange message file.'"));
+	ErrorMessages.Insert(001, NStr("en = 'No message file with data was found in the exchange directory.'"));
+	ErrorMessages.Insert(002, NStr("en = 'Error unpacking the exchange message file.'"));
+	ErrorMessages.Insert(003, NStr("en = 'Error packing the exchange message file.'"));
+	ErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory.'"));
+	ErrorMessages.Insert(005, NStr("en = 'The archive does not contain the exchange message file.'"));
 	
 	// Errors codes that are dependent on the transport kind
-	mErrorMessages.Insert(101, NStr("en = 'One or more of the mandatory FTP connection parameters (path on the server, port, user) are not specified.'"));
-	mErrorMessages.Insert(102, NStr("en = 'Error initializing connection to the FTP server.'"));
-	mErrorMessages.Insert(103, NStr("en = 'Error establishing connection to the FTP server. Check whether the path is specified correctly and whether access rights are sufficient.'"));
-	mErrorMessages.Insert(104, NStr("en = 'Error searching for files on the FTP server.'"));
-	mErrorMessages.Insert(105, NStr("en = 'Error receiving the file from the FTP servers.'"));
-	mErrorMessages.Insert(106, NStr("en = 'Error deleting the file from the FTP server. Check whether resource access rights are sufficient.'"));
+	ErrorMessages.Insert(101, NStr("en = 'Path on the server is not specified.'"));
+	ErrorMessages.Insert(102, NStr("en = 'Error initializing connection to the FTP server.'"));
+	ErrorMessages.Insert(103, NStr("en = 'Error establishing connection to the FTP server. Check whether the path is specified correctly and whether access rights are sufficient.'"));
+	ErrorMessages.Insert(104, NStr("en = 'Error searching for files on the FTP server.'"));
+	ErrorMessages.Insert(105, NStr("en = 'Error receiving the file from the FTP server.'"));
+	ErrorMessages.Insert(106, NStr("en = 'Error deleting the file from the FTP server. Check whether resource access rights are sufficient.'"));
 	
-	mErrorMessages.Insert(108, NStr("en = 'The maximum allowed exchange message size is exceeded.'"));
+	ErrorMessages.Insert(108, NStr("en = 'The maximum allowed exchange message size is exceeded.'"));
 	
 EndProcedure
 
@@ -553,39 +551,14 @@ EndProcedure
 
 Function GetFTPConnection()
 	
-	ProxyServerSettings = GetFilesFromInternet.GetServerProxySettings();
+	FTPSettings                   = DataExchangeServer.FTPConnectionSettings();
+	FTPSettings.Server            = FTPServerName;
+	FTPSettings.Port              = FTPConnectionPort;
+	FTPSettings.UserName          = FTPConnectionUser;
+	FTPSettings.UserPassword      = FTPConnectionPassword;
+	FTPSettings.PassiveConnection = FTPConnectionPassiveConnection;
 	
-	If ProxyServerSettings <> Undefined Then
-		UseProxy = ProxyServerSettings.Get("UseProxy");
-		UseSystemSettings = ProxyServerSettings.Get("UseSystemSettings");
-		If UseProxy Then
-			If UseSystemSettings Then
-			// System proxy server settings 
-				Proxy = New InternetProxy(True);
-			Else
-			// Manual proxy server settings
-				Proxy = New InternetProxy;
-				Proxy.Set("ftp", ProxyServerSettings["Server"], ProxyServerSettings["Port"]);
-				Proxy.User = ProxyServerSettings["User"];
-				Proxy.Password  = ProxyServerSettings["Password"];
-				Proxy.BypassProxyForLocalURLs = ProxyServerSettings["BypassProxyForLocalURLs"];
-			EndIf;
-		Else
-			// Do not use proxy server	
-			Proxy = New InternetProxy(False);
-		EndIf;
-	Else
-		Proxy = Undefined;
-	EndIf;
-	
-	FTPConnection = New FTPConnection(mServerName,
-										FTPConnectionPort,
-										FTPConnectionUser,
-										FTPConnectionPassword,
-										Proxy,
-										FTPConnectionPassiveConnection);
-	
-	Return FTPConnection;
+	Return DataExchangeServer.FTPConnection(FTPSettings);
 	
 EndFunction
 
@@ -594,7 +567,7 @@ Function CopyFileToFTPServer(Val SourceFileName, TargetFileName)
 	Var DirectoryAtServer;
 	
 	ServerAndDirectoryAtServer = SplitFTPResourceToServerAndDirectory(TrimAll(FTPConnectionPath));
-	DirectoryAtServer = ServerAndDirectoryAtServer.DirectoryName;
+	DirectoryAtServer          = ServerAndDirectoryAtServer.DirectoryName;
 	
 	Try
 		FTPConnection = GetFTPConnection();
@@ -606,7 +579,7 @@ Function CopyFileToFTPServer(Val SourceFileName, TargetFileName)
 	EndTry;
 	
 	Try
-		FTPConnection.Write(SourceFileName, DirectoryAtServer + TargetFileName);
+		FTPConnection.Put(SourceFileName, DirectoryAtServer + TargetFileName);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(103);
@@ -627,7 +600,7 @@ Function CopyFileToFTPServer(Val SourceFileName, TargetFileName)
 	
 EndFunction
 
-Function DeleteFileAtFTPServer(Val FileName)
+Function DeleteFileAtFTPServer(Val FileName, ConnectionCheck = False)
 	
 	Var DirectoryAtServer;
 	
@@ -649,6 +622,17 @@ Function DeleteFileAtFTPServer(Val FileName)
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(106);
 		SupplementErrorMessage(ErrorText);
+		
+		If ConnectionCheck Then
+			
+			ErrorMessage = NStr("en = 'Cannot test connection using the test file %1.
+			|The specified directory is inaccessible or does not exist.
+			|We recommend that you check the FTP server documentation for information about support of non-Latin characters in file names.'");
+			ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, DataExchangeServer.TestConnectionFileName());
+			SupplementErrorMessage(ErrorMessage);
+			
+		EndIf;
+		
 		Return False;
 	EndTry;
 	
@@ -658,29 +642,14 @@ EndFunction
 
 Function SplitFTPResourceToServerAndDirectory(Val FullPath)
 	
-	Result = New Structure("ServerName,DirectoryName", "", "");
+	Result = New Structure("ServerName, DirectoryName");
 	
-	If Upper(Left(FullPath, 6)) = "FTP://" Then
-		FullPath = Right(FullPath, StrLen(FullPath) - 6);
-	EndIf;
+	FTPParameters = DataExchangeServer.FTPServerNameAndPath(FullPath);
 	
-	Position = Find(FullPath, "");
-	
-	If Position = 0 Then
-		Result.ServerName = FullPath;
-		Result.DirectoryName = "";
-		Return Result;
-	EndIf;
-	
-	Result.ServerName = Left(FullPath, Position - 1);
-	Result.DirectoryName = Right(FullPath, StrLen(FullPath) - Position);
-	
-	If Right(Result.DirectoryName, 1) <> "" Then
-		Result.DirectoryName = Result.DirectoryName + "";
-	EndIf;
+	Result.ServerName    = FTPParameters.Server;
+	Result.DirectoryName = FTPParameters.Path;
 	
 	Return Result;
-	
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -689,11 +658,15 @@ EndFunction
 InitMessages();
 ErrorMessageInitialization();
 
-mTempExchangeMessageDirectory = Undefined;
-mTempExchangeMessageFile    = Undefined;
+TempExchangeMessageDirectory = Undefined;
+TempExchangeMessageFile      = Undefined;
 
-mServerName			= Undefined;
-mDirectoryAtServer	= Undefined;
+FTPServerName        = Undefined;
+DirectoryAtFTPServer = Undefined;
 
-mObjectName = NStr("en = 'Data processor: %1'");
-mObjectName = StringFunctionsClientServer.SubstituteParametersInString(mObjectName, Metadata().Name);
+ObjectName = NStr("en = 'Data processor: %1'");
+ObjectName = StringFunctionsClientServer.SubstituteParametersInString(ObjectName, Metadata().Name);
+
+#EndRegion
+
+#EndIf

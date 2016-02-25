@@ -1,15 +1,65 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
 	<ChildItems>
-		<Table name="List" id="1">
-			<Representation>List</Representation>
+		<UsualGroup name="UserSettingsGroup" id="66">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="67"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="64">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="65"/>
+			<ChildItems>
+				<Button name="ImportCurrencyRatesForm" id="43">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Command.ImportCurrencyRates</CommandName>
+					<ExtendedTooltip name="FormImportCurrencyRatesExtendedTooltip" id="50"/>
+				</Button>
+				<Button name="FormPickFromCurrencyClassifier" id="44">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Command.PickFromCurrencyClassifier</CommandName>
+					<ExtendedTooltip name="FormPickFromCurrencyClassifierExtendedTooltip" id="51"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="Currencies" id="25">
 			<CommandBarLocation>None</CommandBarLocation>
-			<DefaultItem>true</DefaultItem>
+			<SkipOnInput>false</SkipOnInput>
 			<UseAlternationRowColor>true</UseAlternationRowColor>
-			<InitialTreeView>ExpandTopLevel</InitialTreeView>
-			<EnableStartDrag>true</EnableStartDrag>
 			<DataPath>List</DataPath>
 			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
 			<SearchStringLocation>None</SearchStringLocation>
@@ -28,47 +78,134 @@
 			<ShowRoot>true</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="2"/>
-			<AutoCommandBar name="ListCommandBar" id="3">
-				<Autofill>false</Autofill>
-			</AutoCommandBar>
-			<ExtendedTooltip name="ListExtendedTooltip" id="8"/>
-			<SearchStringAddition name="ListSearchString" id="9">
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="CurrenciesContextMenu" id="26"/>
+			<AutoCommandBar name="CurrenciesCommandBar" id="27"/>
+			<ExtendedTooltip name="CurrenciesExtendedTooltip" id="52"/>
+			<SearchStringAddition name="CurrenciesSearchString" id="68">
 				<AdditionSource>
-					<Item>List</Item>
+					<Item>Currencies</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="10"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="11"/>
+				<ContextMenu name="CurrenciesSearchStringContextMenu" id="69"/>
+				<ExtendedTooltip name="CurrenciesSearchStringExtendedTooltip" id="70"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="12">
+			<ViewStatusAddition name="CurrenciesViewStatus" id="71">
 				<AdditionSource>
-					<Item>List</Item>
+					<Item>Currencies</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="13"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="14"/>
+				<ContextMenu name="CurrenciesViewStatusContextMenu" id="72"/>
+				<ExtendedTooltip name="CurrenciesViewStatusExtendedTooltip" id="73"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="15">
+			<SearchControlAddition name="CurrenciesSearchControl" id="74">
 				<AdditionSource>
-					<Item>List</Item>
+					<Item>Currencies</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="16"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="17"/>
+				<ContextMenu name="CurrenciesSearchControlContextMenu" id="75"/>
+				<ExtendedTooltip name="CurrenciesSearchControlExtendedTooltip" id="76"/>
 			</SearchControlAddition>
+			<Events>
+				<Event name="BeforeAddRow">CurrenciesBeforeAddRow</Event>
+			</Events>
 			<ChildItems>
-				<LabelField name="Description" id="4">
+				<InputField name="LongDescription" id="40">
+					<DataPath>List.LongDescription</DataPath>
+					<Width>20</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="LongDescriptionContextMenu" id="41"/>
+					<ExtendedTooltip name="LongDescriptionExtendedTooltip" id="55"/>
+				</InputField>
+				<InputField name="Code" id="28">
+					<DataPath>List.Code</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Numeric code</v8:content>
+						</v8:item>
+					</Title>
+					<Width>9</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CodeContextMenu" id="29"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="53"/>
+				</InputField>
+				<InputField name="Description" id="32">
 					<DataPath>List.Description</DataPath>
-					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="DescriptionContextMenu" id="5"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="18"/>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Alphabetic code</v8:content>
+						</v8:item>
+					</Title>
+					<Width>9</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="33"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="54"/>
+				</InputField>
+				<LabelField name="Rate" id="38">
+					<DataPath>List.Rate</DataPath>
+					<Width>7</Width>
+					<ContextMenu name="RateContextMenu" id="39"/>
+					<ExtendedTooltip name="RateExtendedTooltip" id="56"/>
 				</LabelField>
-				<LabelField name="Code" id="6">
-					<DataPath>1/1</DataPath>
-					<Visible>false</Visible>
-					<ContextMenu name="CodeContextMenu" id="7"/>
-					<ExtendedTooltip name="CodeExtendedTooltip" id="19"/>
+				<ColumnGroup name="UnitConversionFactorPresentation" id="49">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Unit conversion factor</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Currency unit conversion factor. Displayed if not equal to 1.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<ShowInHeader>true</ShowInHeader>
+					<ExtendedTooltip name="UnitConversionFactorPresentationExtendedTooltip" id="57"/>
+					<ChildItems>
+						<LabelField name="CurrencyUnitPer" id="45">
+							<DataPath>List.CurrencyUnitPer</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<ShowInHeader>false</ShowInHeader>
+							<Width>7</Width>
+							<ContextMenu name="CurrencyUnitPerContextMenu" id="46"/>
+							<ExtendedTooltip name="CurrencyUnitPerExtendedTooltip" id="58"/>
+						</LabelField>
+						<LabelField name="UnitConversionFactor" id="36">
+							<DataPath>List.UnitConversionFactor</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Unit conversion factor equal to 1 is not displayed</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ShowInHeader>false</ShowInHeader>
+							<Width>7</Width>
+							<ContextMenu name="UnitConversionFactorContextMenu" id="37"/>
+							<ExtendedTooltip name="UnitConversionFactorExtendedTooltip" id="59"/>
+						</LabelField>
+						<LabelField name="ShortDescription" id="47">
+							<DataPath>List.ShortDescription</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<ShowInHeader>false</ShowInHeader>
+							<Width>7</Width>
+							<ContextMenu name="ShortDescriptionContextMenu" id="48"/>
+							<ExtendedTooltip name="ShortDescriptionExtendedTooltip" id="60"/>
+						</LabelField>
+					</ChildItems>
+				</ColumnGroup>
+				<LabelField name="Ref" id="61">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<Width>3</Width>
+					<ContextMenu name="RefContextMenu" id="62"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="63"/>
 				</LabelField>
 			</ChildItems>
 		</Table>
@@ -79,9 +216,38 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.Ref</Field>
+			</UseAlways>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	Currencies.DeletionMark,
+	Currencies.Code,
+	Currencies.Description,
+	Currencies.LongDescription,
+	CurrencyRates.Rate,
+	CASE
+		WHEN CurrencyRates.UnitConversionFactor = 1
+			THEN " "
+		ELSE "usd. for"
+	END AS CurrencyUnitPer,
+	CASE
+		WHEN CurrencyRates.UnitConversionFactor = 1
+			THEN " "
+		ELSE CurrencyRates.UnitConversionFactor
+	END AS UnitConversionFactor,
+	CASE
+		WHEN CurrencyRates.UnitConversionFactor = 1
+			THEN " "
+		ELSE Currencies.Description
+	END AS ShortDescription,
+	Currencies.Ref
+	FROM
+	Catalog.Currencies AS Currencies
+		LEFT JOIN InformationRegister.CurrencyRates.SliceLast(&amp;EndOfPeriod, ) AS CurrencyRates
+			ON Currencies.Ref = CurrencyRates.Currency</QueryText>
 				<MainTable>Catalog.Currencies</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -89,6 +255,10 @@
 						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
 					</dcsset:filter>
 					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>LongDescription</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
@@ -102,4 +272,49 @@
 			</Settings>
 		</Attribute>
 	</Attributes>
+	<Commands>
+		<Command name="PickFromCurrencyClassifier" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pick from the classifier...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Pick currencies from the Currency classifier</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.AddEditBasicRegulatoryData">true</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+			</Use>
+			<Action>PickFromCurrencyClassifier</Action>
+		</Command>
+		<Command name="ImportCurrencyRates" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import currency rates...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import currency rates from Internet</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.AddEditBasicRegulatoryData">true</xr:Value>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+			</Use>
+			<Action>ImportCurrencyRates</Action>
+			<FunctionalOptions>
+				<Item>FunctionalOption.StandardSubsystemsLocalMode</Item>
+			</FunctionalOptions>
+		</Command>
+	</Commands>
 </Form>

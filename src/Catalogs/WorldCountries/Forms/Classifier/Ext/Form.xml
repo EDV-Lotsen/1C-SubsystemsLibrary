@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>World country classifier</v8:content>
+		</v8:item>
+	</Title>
+	<Width>100</Width>
+	<Height>12</Height>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Table name="Classifier" id="17">
+			<Representation>List</Representation>
+			<CommandBarLocation>Top</CommandBarLocation>
+			<SelectionMode>SingleRow</SelectionMode>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<SearchOnInput>Use</SearchOnInput>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>Classifier</DataPath>
+			<RowPictureDataPath>Classifier.IconIndex</RowPictureDataPath>
+			<RowsPicture>
+				<xr:Ref>CommonPicture.ItemIcons</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</RowsPicture>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="ClassifierContextMenu" id="18">
+				<ChildItems>
+					<Button name="ClassifierContextMenuChange" id="35">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.Change</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuChangeExtendedTooltip" id="48"/>
+					</Button>
+					<Button name="ClassifierContextMenuFind" id="36">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.Find</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuFindExtendedTooltip" id="49"/>
+					</Button>
+					<Button name="ClassifierContextMenuCancelSearch" id="37">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.CancelSearch</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuCancelSearchExtendedTooltip" id="50"/>
+					</Button>
+					<Button name="ClassifierContextMenuSortListAsc" id="38">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.SortListAsc</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuSortListAscExtendedTooltip" id="51"/>
+					</Button>
+					<Button name="ClassifierContextMenuSortListDesc" id="39">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.SortListDesc</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuSortListDescExtendedTooltip" id="52"/>
+					</Button>
+					<Button name="ClassifierContextMenuOutputList" id="40">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.OutputList</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuOutputListExtendedTooltip" id="53"/>
+					</Button>
+					<Button name="ClassifierContextMenuCopyToClipboard" id="41">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.Classifier.StandardCommand.CopyToClipboard</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuCopyToClipboardExtendedTooltip" id="54"/>
+					</Button>
+					<Button name="ClassifierContextMenuSelectAll" id="42">
+						<Type>CommandBarButton</Type>
+						<CommandName>17:51c99108-107c-43e1-8918-e48835bf2495</CommandName>
+						<ExtendedTooltip name="ClassifierContextMenuSelectAllExtendedTooltip" id="55"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ClassifierCommandBar" id="19">
+				<ChildItems>
+					<ButtonGroup name="ClassifierGroupSearch" id="34">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Classifier group search</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Classifier group search</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ClassifierGroupSearchExtendedTooltip" id="56"/>
+						<ChildItems>
+							<Button name="ClassifierFind" id="32">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.Classifier.StandardCommand.Find</CommandName>
+								<ExtendedTooltip name="ClassifierFindExtendedTooltip" id="57"/>
+							</Button>
+							<Button name="ClassifierCancelSearch" id="33">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.Classifier.StandardCommand.CancelSearch</CommandName>
+								<ExtendedTooltip name="ClassifierCancelSearchExtendedTooltip" id="58"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Button name="ClassifierSortListAsc" id="30">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>true</OnlyInAllActions>
+						<CommandName>Form.Item.Classifier.StandardCommand.SortListAsc</CommandName>
+						<ExtendedTooltip name="ClassifierSortListAscExtendedTooltip" id="59"/>
+					</Button>
+					<Button name="ClassifierSortListDesc" id="31">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>true</OnlyInAllActions>
+						<CommandName>Form.Item.Classifier.StandardCommand.SortListDesc</CommandName>
+						<ExtendedTooltip name="ClassifierSortListDescExtendedTooltip" id="60"/>
+					</Button>
+					<Button name="ClassifierCustomizeForm" id="47">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+						<ExtendedTooltip name="ClassifierCustomizeFormExtendedTooltip" id="61"/>
+					</Button>
+					<Button name="ClassifierHelp" id="43">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.StandardCommand.Help</CommandName>
+						<ExtendedTooltip name="ClassifierHelpExtendedTooltip" id="62"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ClassifierExtendedTooltip" id="63"/>
+			<SearchStringAddition name="ClassifierSearchString" id="69">
+				<AdditionSource>
+					<Item>Classifier</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ClassifierSearchStringContextMenu" id="70"/>
+				<ExtendedTooltip name="ClassifierSearchStringExtendedTooltip" id="71"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ClassifierViewStatus" id="72">
+				<AdditionSource>
+					<Item>Classifier</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ClassifierViewStatusContextMenu" id="73"/>
+				<ExtendedTooltip name="ClassifierViewStatusExtendedtooltip" id="74"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ClassifierSearchControl" id="75">
+				<AdditionSource>
+					<Item>Classifier</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ClassifierSearchControlContextMenu" id="76"/>
+				<ExtendedTooltip name="ClassifierSearchControlExtendedTooltip" id="77"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="ValueChoice">ClassifierValueChoice</Event>
+				<Event name="Selection">ClassifierChoice</Event>
+				<Event name="BeforeAddRow">ClassifierBeforeAddRow</Event>
+				<Event name="BeforeDeleteRow">ClassifierBeforeDelete</Event>
+				<Event name="BeforeRowChange">ClassifierBeforeRowChange</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="ClassifierDescription" id="22">
+					<DataPath>Classifier.Description</DataPath>
+					<Width>12</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="ClassifierDescriptionContextMenu" id="23"/>
+					<ExtendedTooltip name="ClassifierDescriptionExtendedTooltip" id="64"/>
+				</InputField>
+				<InputField name="ClassifierCode" id="20">
+					<DataPath>Classifier.Code</DataPath>
+					<Width>5</Width>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="ClassifierCodeContextMenu" id="21"/>
+					<ExtendedTooltip name="ClassifierCodeExtendedTooltip" id="65"/>
+				</InputField>
+				<InputField name="ClassifierCodeAlpha2" id="26">
+					<DataPath>Classifier.AlphaCode2</DataPath>
+					<Width>10</Width>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="ClassifierCodeAlpha2ContextMenu" id="27"/>
+					<ExtendedTooltip name="ClassifierCodeAlpha2ExtendedTooltip" id="66"/>
+				</InputField>
+				<InputField name="ClassifierCodeAlpha3" id="28">
+					<DataPath>Classifier.AlphaCode3</DataPath>
+					<Width>10</Width>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="ClassifierCodeAlpha3ContextMenu" id="29"/>
+					<ExtendedTooltip name="ClassifierCodeAlpha3ExtendedTooltip" id="67"/>
+				</InputField>
+				<InputField name="ClassifierLongDescription" id="24">
+					<DataPath>Classifier.LongDescription</DataPath>
+					<TextEdit>false</TextEdit>
+					<ContextMenu name="ClassifierLongDescriptionContextMenu" id="25"/>
+					<ExtendedTooltip name="ClassifierLongDescriptionExtendedTooltip" id="68"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Classifier" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Classifier</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>Classifier.IconIndex</Field>
+			</UseAlways>
+			<Columns>
+				<Column name="Code" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>3</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Description" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>60</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LongDescription" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="AlphaCode2" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Alpha 2 code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>2</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="AlphaCode3" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Alpha 3 code</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>3</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="IconIndex" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Icon index</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>2</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ClassifierFields" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Classifier fields</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ClassifierObjectPresentation" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Classifier object presentation</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ChoiceMode" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choice mode</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Parameters>
+		<Parameter name="CurrentRow">
+			<Type>
+				<v8:Type>cfg:CatalogRef.WorldCountries</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

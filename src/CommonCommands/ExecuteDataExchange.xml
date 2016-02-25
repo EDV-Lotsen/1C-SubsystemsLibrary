@@ -6,20 +6,28 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute</v8:content>
+					<v8:content>Synchronize</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
 			<Group>CommandGroup.DataExchangeExecution</Group>
-			<Representation>Auto</Representation>
-			<ToolTip/>
+			<Representation>PictureAndText</Representation>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute automatic synchronization</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Picture>
-				<xr:Ref>StdPicture.GenerateReport</xr:Ref>
+				<xr:Ref>CommonPicture.DataSynchronizationExecution</xr:Ref>
 				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:TransparentPixel x="7" y="5"/>
 			</Picture>
 			<Shortcut/>
 			<IncludeHelpInContents>false</IncludeHelpInContents>
-			<CommandParameterType/>
+			<CommandParameterType>
+				<v8:Type>cfg:ExchangePlanRef.DemoExchangeInDIB</v8:Type>
+			</CommandParameterType>
 			<ParameterUseMode>Single</ParameterUseMode>
 			<ModifiesData>false</ModifiesData>
 		</Properties>

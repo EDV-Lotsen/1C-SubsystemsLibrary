@@ -1,5 +1,5 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// "Users" subsystem.
+// Users subsystem.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -41,8 +41,8 @@ Procedure BeforeStart(Parameters) Export
 	EndIf;
 	
 	Parameters.Cancel = True;
-	Parameters.InteractiveProcessing = New NotifyDescription(
-		"InteractiveProcessingOnCheckUserAuthorization", ThisObject);
+	Parameters.InteractiveHandler = New NotifyDescription(
+		"OnCheckUserAuthorizationInteractiveHandler", ThisObject);
 	
 EndProcedure
 
@@ -50,7 +50,7 @@ EndProcedure
 // Notification handlers.
 
 // Notifies about a user authentication error.
-Procedure InteractiveProcessingOnCheckUserAuthorization(Parameters, NotDefined) Export
+Procedure OnCheckUserAuthorizationInteractiveHandler(Parameters, NotDefined) Export
 	
 	ClientParameters = StandardSubsystemsClientCached.ClientParametersOnStart();
 	
@@ -161,7 +161,7 @@ EndProcedure
 // Returns:
 //  String - a string like "xx settings" with the right ending.
 //
-Function SettingsNumberLine(SettingsCount) Export
+Function SettingsCountString(SettingsCount) Export
 	
 	NumberInWords = NumberInWords(
 		SettingsCount,
@@ -171,12 +171,12 @@ Function SettingsNumberLine(SettingsCount) Export
 		SettingsCount,
 		"L=en_US",
 		NStr("en = 'setting,settings,settings,,,,,,0'"));
-	SybjectInWords = StrReplace(
+	SubjectInWords = StrReplace(
 		SubjectAndNumberInWords,
 		NumberInWords,
 		Format(SettingsCount, "NFD=0") + " ");
 		
-	Return SybjectInWords;
+	Return SubjectInWords;
 EndFunction
 
 // Generates a message to display after settings are copied
@@ -203,10 +203,10 @@ Function ExplanationOnCopy(SettingsItemPresentation, SettingsCount, ExplanationS
 		ExplanationText = StringFunctionsClientServer.SubstituteParametersInString(
 			ExplanationText, SettingsItemPresentation, ExplanationSettingsCopiedTo);
 	Else
-		SybjectInWords = SettingsNumberLine(SettingsCount);
+		SubjectInWords = SettingsCountString(SettingsCount);
 		ExplanationText = NStr("en = '%1 copied to %2'");
 		ExplanationText = StringFunctionsClientServer.SubstituteParametersInString(
-			ExplanationText, SybjectInWords, ExplanationSettingsCopiedTo);
+			ExplanationText, SubjectInWords, ExplanationSettingsCopiedTo);
 	EndIf;
 	
 	Return ExplanationText;

@@ -1,4 +1,6 @@
-﻿Var Record Export; // structure that contains registration parameters
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+Var Registration Export; // structure that contains registration parameters
 Var ObjectChangeRecordRules Export; // value table that contains object registration rules
 Var ErrorFlag Export; // global error flag
 
@@ -8,25 +10,26 @@ Var NumberType;
 Var DateType;
 
 Var EmptyDateValue;
-Var FilterByExchangePlanPropertiesTreePattern; // registration rule value tree pattern by exchange plan properties
-Var FilterByObjectPropertiesTreePattern; // registration rule value tree pattern by object properties
+Var FilterByExchangePlanPropertiesTreePattern;  // registration rule value tree pattern by exchange plan properties
+Var FilterByObjectPropertiesTreePattern;      // registration rule value tree pattern by object properties
 Var BooleanPropertyRootGroupValue; // boolean value for the root property group
-Var ErrorMessages; // Map where Key is an error code and Value is error details
+Var ErrorMessages; // Map. Key is an error code and Value is error details
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-////////////////////////////////////////////////////////////////////////////////
-// Export internal procedures and functions.
+// Export internal procedures and functions
 
 // Performs a syntactic analysis of the XML file that contains registration rules. Fills
 // collection values with data from the file.
 // Prepares read rules for the ORR mechanism.
+
 //
 // Parameters:
 //  FileName - String - full name of a rule file in the local file system.
 //  InfoOnly - Boolean - flag that shows whether the file title and rule information are
 //             the only data to be read. The default value is False.
+
 //
 Procedure ImportRules(Val FileName, InfoOnly = False) Export
 	
@@ -38,7 +41,7 @@ Procedure ImportRules(Val FileName, InfoOnly = False) Export
 	EndIf;
 	
 	// Initializing collections for rules
-	Record                                    = ReсordInitialization();
+	Registration                              = RecordInitialization();
 	ObjectChangeRecordRules                   = DataProcessors.ObjectChangeRecordRuleImport.ORRTableInitialization();
 	FilterByExchangePlanPropertiesTreePattern = DataProcessors.ObjectChangeRecordRuleImport.FilterByExchangePlanPropertiesTableInitialization();
 	FilterByObjectPropertiesTreePattern       = DataProcessors.ObjectChangeRecordRuleImport.FilterByObjectPropertiesTableInitialization();
@@ -53,9 +56,8 @@ Procedure ImportRules(Val FileName, InfoOnly = False) Export
 		
 	EndTry;
 	
-
+	// Error reading rules from the file
 	If ErrorFlag Then
-		// Error reading rules from the file
 		Return;
 	EndIf;
 	
@@ -73,12 +75,12 @@ Procedure ImportRules(Val FileName, InfoOnly = False) Export
 		
 	EndDo;
 	
-	ObjectChangeRecordRules.FillValues(Record.ExchangePlanName, "ExchangePlanName");
+	ObjectChangeRecordRules.FillValues(Registration.ExchangePlanName, "ExchangePlanName");
 	
 EndProcedure
 
 // Prepares a string that contains rule information based on data read from the XML file.
-// 
+//
 // Returns:
 //  InfoString - String - string with rule information.
 //
@@ -91,15 +93,11 @@ Function GetRuleInformation() Export
 		Return InfoString;
 	EndIf;
 	
-	InfoString = NStr("en = 'Object registration rules
-						|Created at:       %1
-						|Exchange plan:    %2
-						|Configuration:    %3'");
+	InfoString = NStr("en = 'Object registration rules in the current infobase (%1) created on %2'");
 	
 	Return StringFunctionsClientServer.SubstituteParametersInString(InfoString,
-					Record.CreationDateTime,
-					Record.ExchangePlanName,
-					GetConfigurationPresentationFromRecordRules());
+					GetConfigurationPresentationFromRecordRules(),
+					Format(Registration.CreationDateTime, "DLF = dd"));
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,9 +127,8 @@ Procedure LoadRecordFromFile(FileName, InfoOnly)
 	
 EndProcedure
 
-// Loads registration rules.
+// Loads registration rule.
 //  
-
 Procedure LoadRecord(Rules, InfoOnly)
 	
 	If Not ((Rules.LocalName = "RecordRules") 
@@ -152,40 +149,40 @@ Procedure LoadRecord(Rules, InfoOnly)
 		// Registration attributes
 		If NodeName = "FormatVersion" Then
 			
-			Record.FormatVersion = deElementValue(Rules, StringType);
+			Registration.FormatVersion = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "ID" Then
 			
-			Record.ID = deElementValue(Rules, StringType);
+			Registration.ID = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "Description" Then
 			
-			Record.Description = deElementValue(Rules, StringType);
+			Registration.Description = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "CreationDateTime" Then
 			
-			Record.CreationDateTime = deElementValue(Rules, DateType);
+			Registration.CreationDateTime = deElementValue(Rules, DateType);
 			
 		ElsIf NodeName = "ExchangePlan" Then
 			
 			// Exchange plan attributes
-			Record.ExchangePlanName = deAttribute(Rules, StringType, "Name");
+			Registration.ExchangePlanName = deAttribute(Rules, StringType, "Name");
 			
-			Record.ExchangePlan = deElementValue(Rules, StringType);
+			Registration.ExchangePlan = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "Comment" Then
 			
-			Record.Comment = deElementValue(Rules, StringType);
+			Registration.Comment = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "Configuration" Then
 			
 			// Configuration attributes
-			Record.PlatformVersion     = deAttribute(Rules, StringType, "PlatformVersion");
-			Record.ConfigurationVersion  = deAttribute(Rules, StringType, "ConfigurationVersion");
-			Record.ConfigurationSynonym = deAttribute(Rules, StringType, "ConfigurationSynonym");
+			Registration.PlatformVersion     = deAttribute(Rules, StringType, "PlatformVersion");
+			Registration.ConfigurationVersion  = deAttribute(Rules, StringType, "ConfigurationVersion");
+			Registration.ConfigurationSynonym = deAttribute(Rules, StringType, "ConfigurationSynonym");
 			
 			// Configuration description
-			Record.Configuration = deElementValue(Rules, StringType);
+			Registration.Configuration = deElementValue(Rules, StringType);
 			
 		ElsIf NodeName = "ObjectChangeRecordRules" Then
 			
@@ -195,20 +192,20 @@ Procedure LoadRecord(Rules, InfoOnly)
 				
 			Else
 				
-				// Checking whether ORR have been loaded for the required exchange plan 
+				// Checking whether ORR have been loaded for the required exchange plan
 				CheckExchangePlanExists();
 				
 				If ErrorFlag Then
 					Break; // Rules contain wrong exchange plan
 				EndIf;
 				
-				LoadRecordRules(Rules);
+				ImportRecordRules(Rules);
 				
 			EndIf;
 			
 		ElsIf (NodeName = "RecordRules") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -225,7 +222,7 @@ EndProcedure
 // Parameters:
 //  Rules - XMLReader object.
 // 
-Procedure LoadRecordRules(Rules)
+Procedure ImportRecordRules(Rules)
 	
 	While Rules.Read() Do
 		
@@ -342,7 +339,7 @@ Procedure LoadRecordRule(Rules)
 		
 	EndDo;
 	
-EndProcedure 
+EndProcedure
 
 Procedure LoadFilterByExchangePlanPropertiesTree(Rules, ValueTree)
 	
@@ -363,7 +360,7 @@ Procedure LoadFilterByExchangePlanPropertiesTree(Rules, ValueTree)
 			
 		ElsIf (NodeName = "FilterByExchangePlanProperties") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -394,7 +391,7 @@ Procedure LoadFilterByObjectPropertiesTree(Rules, ValueTree)
 			
 		ElsIf (NodeName = "FilterByObjectProperties") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break;
+			Break; // Exit
 			
 		Else
 			
@@ -407,8 +404,7 @@ Procedure LoadFilterByObjectPropertiesTree(Rules, ValueTree)
 EndProcedure
 
 // Loads the object registration rule by the property.
-//
-
+// 
 Procedure LoadExchangePlanFilterItem(Rules, NewRow)
 	
 	NewRow.IsFolder = False;
@@ -433,27 +429,28 @@ Procedure LoadExchangePlanFilterItem(Rules, NewRow)
 		ElsIf NodeName = "ExchangePlanProperty" Then
 			
 			// The property can be a header property or tabular section property.
-			// If the property is a tabular section property, the FullPropertyName 
+			// If the property is a tabular section property, the FullPropertyDescription 
 			// variable contains the tabular section name and the property name.
 			// The tabular section is written in square brackets,
 			// for example: "[Companies].Company".
-			FullPropertyName = deElementValue(Rules, StringType);
+
+			FullPropertyDescription = deElementValue(Rules, StringType);
 			
 			ExchangePlanTabularSectionName = "";
 			
-			FirstBracketPosition = Find(FullPropertyName, "[");
+			FirstBracketPosition = Find(FullPropertyDescription, "[");
 			
 			If FirstBracketPosition <> 0 Then
 				
-				SecondBracketPosition = Find(FullPropertyName, "]");
+				SecondBracketPosition = Find(FullPropertyDescription, "]");
 				
-				ExchangePlanTabularSectionName = Mid(FullPropertyName, FirstBracketPosition + 1, SecondBracketPosition - FirstBracketPosition - 1);
+				ExchangePlanTabularSectionName = Mid(FullPropertyDescription, FirstBracketPosition + 1, SecondBracketPosition - FirstBracketPosition - 1);
 				
-				FullPropertyName = Mid(FullPropertyName, SecondBracketPosition + 2);
+				FullPropertyDescription = Mid(FullPropertyDescription, SecondBracketPosition + 2);
 				
 			EndIf;
 			
-			NewRow.NodeParameter               = FullPropertyName;
+			NewRow.NodeParameter                = FullPropertyDescription;
 			NewRow.NodeParameterTabularSection = ExchangePlanTabularSectionName;
 			
 		ElsIf NodeName = "ComparisonType" Then
@@ -470,7 +467,7 @@ Procedure LoadExchangePlanFilterItem(Rules, NewRow)
 			
 		ElsIf (NodeName = "FilterItem") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -482,9 +479,8 @@ Procedure LoadExchangePlanFilterItem(Rules, NewRow)
 	
 EndProcedure
 
-// Loads the object filter by the property.
-//
-
+// Loads the object registration rule by the property.
+// 
 Procedure LoadObjectFilterItem(Rules, NewRow)
 	
 	NewRow.IsFolder = False;
@@ -508,15 +504,15 @@ Procedure LoadObjectFilterItem(Rules, NewRow)
 			
 			If NewRow.FilterItemKind = DataExchangeServer.FilterItemPropertyConstantValue() Then
 				
-				NewRow.ConstantValue = deElementValue(Rules, Type(NewRow.ObjectPropertyType)); //primitive types only
+				NewRow.ConstantValue = deElementValue(Rules, Type(NewRow.ObjectPropertyType)); // Primitive types only
 				
 			ElsIf NewRow.FilterItemKind = DataExchangeServer.FilterItemPropertyValueAlgorithm() Then
 				
-				NewRow.ConstantValue = deElementValue(Rules, StringType); // string
+				NewRow.ConstantValue = deElementValue(Rules, StringType); // String
 				
 			Else
 				
-				NewRow.ConstantValue = deElementValue(Rules, StringType); // string
+				NewRow.ConstantValue = deElementValue(Rules, StringType); // String
 				
 			EndIf;
 			
@@ -534,7 +530,7 @@ Procedure LoadObjectFilterItem(Rules, NewRow)
 			
 		ElsIf (NodeName = "FilterItem") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -549,7 +545,7 @@ EndProcedure
 // Loads the group of object registration rules by property.
 //
 // Parameters:
-//  Rules  - XMLReader object.
+//  Rules - XMLReader object.
 // 
 Procedure LoadExchangePlanFilterItemGroup(Rules, NewRow)
 	
@@ -574,7 +570,7 @@ Procedure LoadExchangePlanFilterItemGroup(Rules, NewRow)
 			
 		ElsIf (NodeName = "Group") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -589,7 +585,7 @@ EndProcedure
 // Loads the group of object registration rules by property.
 //
 // Parameters:
-//  Rules  - XMLReader object
+//  Rules - XMLReader object.
 // 
 Procedure LoadObjectFilterItemGroup(Rules, NewRow)
 	
@@ -616,7 +612,7 @@ Procedure LoadObjectFilterItemGroup(Rules, NewRow)
 			
 		ElsIf (NodeName = "Group") And (NodeType = XMLNodeType.EndElement) Then
 			
-			Break; 
+			Break; // Exit
 			
 		Else
 			
@@ -682,26 +678,24 @@ Procedure PrepareRecordRuleByExchangePlanProperties(ORR)
 		
 	EndIf;
 	
-	
 	QueryText = FieldSelectionText + Chars.LF 
 	             + "FROM"  + Chars.LF + TableDataText + Chars.LF
 	             + "WHERE" + Chars.LF + ConditionText
 	             + Chars.LF + "[RequiredConditions]";
 	
-	
-	// Setting variable values.
-	ORR.QueryText              = QueryText;
-	ORR.ObjectProperties       = ObjectProperties;
+	// Setting variable values
+	ORR.QueryText    = QueryText;
+	ORR.ObjectProperties = ObjectProperties;
 	ORR.ObjectPropertiesString = GetObjectPropertyString(ObjectProperties);
 	
 EndProcedure
 
-Function GetPropertyGroupConditionText(GroupProperties, BooleanGroupValue, Val Offset, ObjectProperties)
+Function GetPropertyGroupConditionText(GroupProperties, BooleanGroupValue, Val BeforeAfter, ObjectProperties)
 	
 	OffsetString = "";
 	
 	// Getting the offset string for the property group
-	For A = 0 to Offset Do
+	For A = 0 To BeforeAfter Do
 		OffsetString = OffsetString + " ";
 	EndDo;
 	
@@ -713,7 +707,7 @@ Function GetPropertyGroupConditionText(GroupProperties, BooleanGroupValue, Val O
 			
 			ConditionPrefix = ?(IsBlankString(ConditionText), "", Chars.LF + OffsetString + BooleanGroupValue + " ");
 			
-			ConditionText = ConditionText + ConditionPrefix + GetPropertyGroupConditionText(RecordRuleByProperty.Rows, RecordRuleByProperty.BooleanGroupValue, Offset + 10, ObjectProperties);
+			ConditionText = ConditionText + ConditionPrefix + GetPropertyGroupConditionText(RecordRuleByProperty.Rows, RecordRuleByProperty.BooleanGroupValue, BeforeAfter + 10, ObjectProperties);
 			
 		Else
 			
@@ -734,15 +728,15 @@ EndFunction
 
 Function GetDataTableTextForORR(DataTable)
 	
-	TableDataText = "ExchangePlan." + Record.ExchangePlanName + " AS ExchangePlanMainTable";
+	TableDataText = "ExchangePlan." + Registration.ExchangePlanName + " AS ExchangePlanMainTable";
 	
 	For Each TableRow In DataTable Do
 		
-		TableSynonym = Record.ExchangePlanName + TableRow.Name;
+		TableSynonym = Registration.ExchangePlanName + TableRow.Name;
 		
 		TableDataText = TableDataText + Chars.LF + Chars.LF + "LEFT JOIN" + Chars.LF
-		                 + "ExchangePlan." + Record.ExchangePlanName + "." + TableRow.Name + " AS " + TableSynonym + "" + Chars.LF
-		                 + "ON ExchangePlanMainTable.ref = " + TableSynonym + ".Ref";
+		                 + "ExchangePlan." + Registration.ExchangePlanName + "." + TableRow.Name + " AS " + TableSynonym + "" + Chars.LF
+		                 + "ON ExchangePlanMainTable.Ref = " + TableSynonym + ".Ref";
 		
 	EndDo;
 	
@@ -801,20 +795,20 @@ Function GetPropertyConditionText(Rule, ObjectProperties)
 	// The comparison type must be inverted as the exchange plan table and the table of
 	// the object to be registered contain data in inverted order (A>B <-> B<A) in the
 	// "Data conversation" configuration and in the exchange plan query described in the module.
+
 	InvertComparisonType(ComparisonType);
 	
 	TextOperator = GetCompareOperatorText(ComparisonType);
 	
 	TableSynonym = ?(IsBlankString(Rule.NodeParameterTabularSection),
 	                              "ExchangePlanMainTable",
-	                               Record.ExchangePlanName + Rule.NodeParameterTabularSection);
+	                               Registration.ExchangePlanName + Rule.NodeParameterTabularSection);
 	
-	
-	// A query parameter or a constant value can be used as a literal.
+	// A query parameter or a constant value can be used as a literal
 	//
 	// Example:
-	// ExchangePlanProperty <comparison type> &ObjectProperty_MyProperty
-	// ExchangePlanProperty <comparison type> DATETIME(1987,10,19,0,0,0)
+	// ExchangePlanProperty
+	// <comparison type> &ObjectProperty_MyProperty ExchangePlanProperty <comparison type> DATETIME(1987,10,19,0,0,0)
 	
 	If Rule.IsConstantString Then
 		
@@ -830,12 +824,12 @@ Function GetPropertyConditionText(Rule, ObjectProperties)
 			
 		ElsIf ConstantValueType = DateType Then // Date
 			
-			YearString   = Format(Year(Rule.ConstantValue),   "NZ=0; NG=0");
+			YearString   = Format(Year(Rule.ConstantValue),  "NZ=0; NG=0");
 			MonthString  = Format(Month(Rule.ConstantValue),  "NZ=0; NG=0");
-			DayString    = Format(Day(Rule.ConstantValue),    "NZ=0; NG=0");
-			HourString   = Format(Hour(Rule.ConstantValue),   "NZ=0; NG=0");
+			DayString    = Format(Day(Rule.ConstantValue),     "NZ=0; NG=0");
+			HourString   = Format(Hour(Rule.ConstantValue),  "NZ=0; NG=0");
 			MinuteString = Format(Minute(Rule.ConstantValue), "NZ=0; NG=0");
-			SecondString = Format(Second(Rule.ConstantValue), "NZ=0; NG=0");
+			SecondString = Format(Second(Rule.ConstantValue),  "NZ=0; NG=0");
 			
 			QueryParameterLiteral = "DATETIME("
 			+ YearString + ","
@@ -876,7 +870,7 @@ Procedure PrepareChangeRecordRuleByObjectProperties(ORR)
 	
 	ORR.RuleByObjectPropertiesEmpty = (ORR.FilterByObjectProperties.Rows.Count() = 0);
 	
-	// Skipping the blank rule.
+	// Skipping the blank rule
 	If ORR.RuleByObjectPropertiesEmpty Then
 		Return;
 	EndIf;
@@ -945,17 +939,17 @@ EndProcedure
 
 Procedure CheckExchangePlanExists()
 	
-	If TypeOf(Record) <> Type("Structure") Then
+	If TypeOf(Registration) <> Type("Structure") Then
 		
 		ReportProcessingError(0);
 		Return;
 		
 	EndIf;
 	
-	If Record.ExchangePlanName <> ExchangePlanNameForImport Then
+	If Registration.ExchangePlanName <> ExchangePlanNameForImport Then
 		
-		ErrorDescription = NStr("en = 'The name of the exchange plan specified in the registration rules (%1) does not match with the name of the exchange plan whose data is imported (%2).'");
-		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(ErrorDescription, Record.ExchangePlanName, ExchangePlanNameForImport);
+		ErrorDescription = NStr("en = 'The name of the exchange plan specified in the registration rules (%1) does not match with the name of the exchange plan whose data is imported (%2)'");
+		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(ErrorDescription, Registration.ExchangePlanName, ExchangePlanNameForImport);
 		ReportProcessingError(5, ErrorDescription);
 		
 	EndIf;
@@ -981,20 +975,20 @@ EndFunction
 Function GetConfigurationPresentationFromRecordRules()
 	
 	ConfigurationName = "";
-	Record.Property("ConfigurationSynonym", ConfigurationName);
+	Registration.Property("ConfigurationSynonym", ConfigurationName);
 	
 	If Not ValueIsFilled(ConfigurationName) Then
 		Return "";
 	EndIf;
 	
 	AccurateVersion = "";
-	Record.Property("ConfigurationVersion", AccurateVersion);
+	Registration.Property("ConfigurationVersion", AccurateVersion);
 	
 	If ValueIsFilled(AccurateVersion) Then
 		
 		AccurateVersion = CommonUseClientServer.ConfigurationVersionWithoutAssemblyNumber(AccurateVersion);
 		
-		ConfigurationName = ConfigurationName + " (" + AccurateVersion + ")";
+		ConfigurationName = ConfigurationName + " version " + AccurateVersion;
 		
 	EndIf;
 	
@@ -1058,7 +1052,7 @@ Function deAttribute(Object, Type, Name)
 		EndIf;
 	EndIf;
 	
-EndFunction
+EndFunction // deAttribute()
 
 // Reads the element text and casts the value to the specified primitive type.
 //
@@ -1075,7 +1069,7 @@ EndFunction
 Function deElementValue(Object, Type, SearchByProperty="")
 
 	Value = "";
-	Name  = Object.LocalName;
+	Name      = Object.LocalName;
 
 	While Object.Read() Do
 		
@@ -1099,14 +1093,14 @@ Function deElementValue(Object, Type, SearchByProperty="")
 	
 	Return XMLValue(Type, Value)
 	
-EndFunction
+EndFunction // deElementValue()
 
-// Skips XML nodes till the end of the specified element (default value is the current one).
+// Skips XML nodes till the end of the specified element (default is the current one).
 //
 // Parameters:
 //  Object - XMLReader.
 //  Name   - name of the node whose elements will be skipped.
-//
+// 
 Procedure deSkip(Object, Name = "")
 	
 	AttachmentCount = 0; // Number of attachments with the same name
@@ -1158,65 +1152,68 @@ EndFunction
 
 // Initializes data processor attributes and modular variables.
 //
-
 Procedure InitAttributesAndModuleVariables()
 	
 	ErrorFlag = False;
 	
 	// Types
-	StringType            = Type("String");
-	BooleanType           = Type("Boolean");
-	NumberType            = Type("Number");
-	DateType              = Type("Date");
+	StringType       = Type("String");
+	BooleanType      = Type("Boolean");
+	NumberType       = Type("Number");
+	DateType         = Type("Date");
 	
 	EmptyDateValue = Date('00010101');
 	
-	BooleanPropertyRootGroupValue = "AND"; // Boolean value for the root property group
+	BooleanPropertyRootGroupValue = "And"; // Boolean value for the root property group
 	
 EndProcedure
 
-// Initializes the registration structure. 
-//
-
-Function ReсordInitialization()
+// Initializes the registration structure.
+// 
+Function RecordInitialization()
 	
-	Record = New Structure;
-	Record.Insert("FormatVersion",    "");
-	Record.Insert("ID",               "");
-	Record.Insert("Description",      "");
-	Record.Insert("CreationDateTime", EmptyDateValue);
-	Record.Insert("ExchangePlan",     "");
-	Record.Insert("ExchangePlanName", "");
-	Record.Insert("Comment",          "");
+	Registration = New Structure;
+	Registration.Insert("FormatVersion",    "");
+	Registration.Insert("ID",               "");
+	Registration.Insert("Description",      "");
+	Registration.Insert("CreationDateTime", EmptyDateValue);
+	Registration.Insert("ExchangePlan",     "");
+	Registration.Insert("ExchangePlanName", "");
+	Registration.Insert("Comment",          "");
 	
 	// Configuration parameters
-	Record.Insert("PlatformVersion",      "");
-	Record.Insert("ConfigurationVersion", "");
-	Record.Insert("ConfigurationSynonym", "");
-	Record.Insert("Configuration",        "");
+	Registration.Insert("PlatformVersion",      "");
+	Registration.Insert("ConfigurationVersion", "");
+	Registration.Insert("ConfigurationSynonym", "");
+	Registration.Insert("Configuration",        "");
 	
-	Return Record;
+	Return Registration;
 	
 EndFunction
 
 // Initializes the variable that contains a map of message codes to message descriptions.
-//
+// 
 Function InitMessages()
 	
 	Messages = New Map;
+	DefaultLanguageCode = CommonUseClientServer.DefaultLanguageCode();
 	
-	Messages.Insert(0, NStr("en = 'Internal error.'"));
-	Messages.Insert(1, NStr("en = 'Error opening the rule file.'"));
-	Messages.Insert(2, NStr("en = 'Error loading rules.'"));
-	Messages.Insert(3, NStr("en = 'Rule format error.'"));
-	Messages.Insert(4, NStr("en = 'Error retrieving the rule file for reading.'"));
-	Messages.Insert(5, NStr("en = 'Registration rules you try to load are not intended for the current exchange plan.'"));
+	Messages.Insert(0, NStr("en = 'Internal error.'", DefaultLanguageCode));
+	Messages.Insert(1, NStr("en = 'Error opening the rule file.'", DefaultLanguageCode));
+	Messages.Insert(2, NStr("en = 'Error loading rules.'", DefaultLanguageCode));
+	Messages.Insert(3, NStr("en = 'Rule format error.'", DefaultLanguageCode));
+	Messages.Insert(4, NStr("en = 'Error retrieving the rule file for reading.'", DefaultLanguageCode));
+	Messages.Insert(5, NStr("en = 'Registration rules you try to load are not intended for the current exchange plan.'", DefaultLanguageCode));
 	
 	Return Messages;
 	
-EndFunction
+EndFunction // InitMessages()
 
 ////////////////////////////////////////////////////////////////////////////////
-// Main program operators.
+// Main application operators
 
 InitAttributesAndModuleVariables();
+
+#EndRegion
+
+#EndIf

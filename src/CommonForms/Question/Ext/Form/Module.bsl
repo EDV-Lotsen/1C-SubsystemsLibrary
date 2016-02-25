@@ -1,168 +1,128 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
 	If Parameters.Property("SelfTest") Then
 		Return;
 	EndIf;
 	
+	// Placing a title.
 	If Not IsBlankString(Parameters.Title) Then
 		Title = Parameters.Title;
+		TitleWidth = 1.3 * StrLen(Title);
+		If TitleWidth > 40 And TitleWidth < 80 Then
+			Width = TitleWidth;
+		EndIf;
 	EndIf;
 	
-	Timeout = Parameters.Timeout;
-	Items.MessageText.Title = Parameters.MessageText;
+	If Parameters.LockWholeInterface Then
+		WindowOpeningMode = FormWindowOpeningMode.LockWholeInterface;
+	EndIf;
+	
+	// Picture 
+	If Parameters.Picture.Type <> PictureType.Empty Then
+		Items.Warning.Picture = Parameters.Picture;
+	EndIf;
+	
+	// Placing a text
+	If StrLineCount(Parameters.MessageText) < 15 Then
+		// All lines can be displayed as text
+		Items.MessageText.Title = Parameters.MessageText;
+		Items.MultilineMessageText.Visible = False;
+	Else
+		// Multiline mode.
+		Items.MessageText.Visible = False;
+		MessageText = Parameters.MessageText;
+	EndIf;
+	
+	// Placing check box
+	If ValueIsFilled(Parameters.CheckBoxText) Then
+		Items.DontAskAgain.Title = Parameters.CheckBoxText;
+	ElsIf Not AccessRight("SaveUserData", Metadata) Or Not Parameters.SuggestDontAskAgain Then
+		Items.DontAskAgain.Visible = False;
+	EndIf;
+	
+	// Placing buttons
 	AddCommandsAndButtonsOnForm(Parameters.Buttons);
+	
+	// Setting the default button
 	SetDefaultButton(Parameters.DefaultButton);
 	
-	If Not IsBlankString(Parameters.TimeoutButton) Then
-		For Each Item In ButtonAndReturnValueMap Do
-			If Item.Value = Parameters.TimeoutButton Then
-				TimeoutCommand = Item.Key;
-				Command = Commands.Find(TimeoutCommand);
-				TimeoutCommandTitle = Command.Title;
-				Break;
-			EndIf;
-		EndDo;
-	EndIf;
+	// Setting the countdown button
+	SetTimeoutButton(Parameters.TimeoutButton);
 	
-	Items.DontAskAgain.Visible = AccessRight("SaveUserData", Metadata);
+	// Setting the countdown timer.
+	TimeoutCounter = Parameters.Timeout;
 	
+	// Reset sizes and position of the form window.
+	ResetWindowLocationAndSize();
+	
+	// Providing command bar visibility during the countdown
+	Items.MessageText.Title = Items.MessageText.Title + Chars.LF + Chars.LF;
 EndProcedure
 
 &AtClient
 Procedure OnOpen(Cancel)
-	
-	If Timeout > 0 Then
-		If TimeoutCommand <> "" Then
-			Items[TimeoutCommand].Title = GetTimeoutButtonTitle(TimeoutCommandTitle, Timeout);
-		EndIf;
-		AttachIdleHandler("Timer", 1, True);
+	// Starting countdown
+	If TimeoutCounter >= 1 Then
+		TimeoutCounter = TimeoutCounter + 1;
+		ReturnMessageTextSize();
+		ContinueCountdown();
 	EndIf;
-	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure Attachable_CommandHandler(Command)
+	SelectedValue = ButtonAndReturnValueMap.Get(Command.Name);
 	
-	Close(New Structure("DontAskAgain, Value", DontAskAgain,
-		  DialogReturnCodeByValue(ButtonAndReturnValueMap.Get(Command.Name))));
+	ChoiceResult = New Structure;
+	ChoiceResult.Insert("DontAskAgain", DontAskAgain);
+	ChoiceResult.Insert("Value", DialogReturnCodeByValue(SelectedValue));
 	
+	Close(ChoiceResult);
 EndProcedure
 
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-// Adds commands and corresponding to them buttons on the form.
-//
-// Parameters:
-// Buttons - String / ValueList - button set
-// if value type is String it must be an ID string in the following format: "QuestionDialogMode.<One of QuestionDialogMode values>",
-// for example "QuestionDialogMode.YesNo"
-// if value type is ValueList then for each value list items
-// Value - Value that the form returns on a button click
-// Presentation - Button title
-// 
-&AtServer
-Procedure AddCommandsAndButtonsOnForm(Buttons)
-	
-	If TypeOf(Buttons) = Type("String") Then
-		ButtonsValueList = StandardSet(Buttons);
-	Else
-		ButtonsValueList = Buttons;
-	EndIf;
-	
-	ButtonToValueMapping = New Map;
-	
-	Index = 0;
-	
-	For Each ButtonInfoItem In ButtonsValueList Do
-		Index = Index + 1;
-		CommandName = "Command" + String(Index);
-		Command = Commands.Add(CommandName);
-		Command.Action = "Attachable_CommandHandler";
-		Command.Title = ButtonInfoItem.Presentation;
-		Command.ModifiesStoredData = False;
-		
-		Button= Items.Add(CommandName, Type("FormButton"), Items.FormCommandBar);
-		Button.OnlyInAllActions = False;
-		Button.CommandName = CommandName;
-		
-		ButtonToValueMapping.Insert(CommandName, ButtonInfoItem.Value);
-	EndDo;
-	
-	ButtonAndReturnValueMap = New FixedMap(ButtonToValueMapping);
-	
-EndProcedure
+// Client
 
 &AtClient
-Procedure Timer()
-	
-	If Timeout = 0 Then
-		Close(New Structure("DontAskAgain, Value", False, DialogReturnCode.Timeout) );
+Procedure ContinueCountdown()
+	TimeoutCounter = TimeoutCounter - 1;
+	If TimeoutCounter <= 0 Then
+		Close(New Structure("DontAskAgain, Value", False, DialogReturnCode.Timeout));
 	Else
-		Timeout = Timeout - 1;
-		If TimeoutCommand <> "" Then
-			Items[TimeoutCommand].Title = GetTimeoutButtonTitle(TimeoutCommandTitle, Timeout);
+		If TimeoutButtonName <> "" Then
+			NewTitle = (
+				TimeoutButtonTitle
+				+ " ("
+				+ StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = '%1 sec. left'"),
+				String(TimeoutCounter))
+				+ ")");
+				
+			Items[TimeoutButtonName].Title = NewTitle;
 		EndIf;
-		AttachIdleHandler("Timer", 1, True);
+		AttachIdleHandler("ContinueCountdown", 1, True);
 	EndIf;
-	
 EndProcedure
 
-&AtServerNoContext
-Function StandardSet(Buttons)
-	
-	Result = New ValueList;
-	
-	If Buttons = "QuestionDialogMode.YesNo" Then
-		Result.Add("DialogReturnCode.Yes", NStr("en = 'Yes'"));
-		Result.Add("DialogReturnCode.No", NStr("en = 'No'"));
-	ElsIf Buttons = "QuestionDialogMode.YesNoCancel" Then
-		Result.Add("DialogReturnCode.Yes", NStr("en = 'Yes'"));
-		Result.Add("DialogReturnCode.No", NStr("en = 'No'"));
-		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
-	ElsIf Buttons = "QuestionDialogMode.OK" Then
-		Result.Add("DialogReturnCode.OK", NStr("en = 'OK'"));
-	ElsIf Buttons = "QuestionDialogMode.OKCancel" Then
-		Result.Add("DialogReturnCode.OK", NStr("en = 'OK'"));
-		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
-	ElsIf Buttons = "QuestionDialogMode.RetryCancel" Then
-		Result.Add("DialogReturnCode.Retry", NStr("en = 'Retry'"));
-		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
-	ElsIf Buttons = "QuestionDialogMode.AbortRetryIgnore" Then
-		Result.Add("DialogReturnCode.Abort", NStr("en = 'Abort'"));
-		Result.Add("DialogReturnCode.Retry", NStr("en = 'Retry'"));
-		Result.Add("DialogReturnCode.Ignore", NStr("en = 'Ignore'"));
-	EndIf;
-	
-	Return Result;
-	
-EndFunction
-
 &AtServer
-Procedure SetDefaultButton(DefaultButton)
-	
-	For Each Item In ButtonAndReturnValueMap Do
-		If Item.Value = DefaultButton Then
-			Items[Item.Key].DefaultButton = True;
-			Break;
-		EndIf;
-	EndDo;
-	
+Procedure ReturnMessageTextSize()
+	Items.MessageText.Title = TrimAll(Items.MessageText.Title);
 EndProcedure
 
 &AtClient
 Function DialogReturnCodeByValue(Value)
-	
 	If TypeOf(Value) <> Type("String") Then
 		Return Value;
 	EndIf;
@@ -186,13 +146,118 @@ Function DialogReturnCodeByValue(Value)
 	EndIf;
 	
 	Return Result;
-	
 EndFunction
 
-&AtClient
-Function GetTimeoutButtonTitle(Title, SecondsCount)
+////////////////////////////////////////////////////////////////////////////////
+// Server
+
+&AtServer
+Procedure AddCommandsAndButtonsOnForm(Buttons)
+// Adds commands and corresponding to them buttons on the form.
+//
+// Parameters:
+// Buttons - String, ValueList - button set. If the value is String, it must be an  
+//           ID string in the following format: "QuestionDialogMode.<One of the
+//           QuestionDialogMode values>", for example "QuestionDialogMode.YesNo".
+//           If the value is ValueList, for each value list item:
+//           Value        - value that the form returns when a button is clicked.
+//           Presentation - button title.
+// 
 	
-	Pattern = NStr("en = '%1 (%2 sec. left)'");
-	Return StringFunctionsClientServer.SubstituteParametersInString(Pattern, Title, SecondsCount);
+	If TypeOf(Buttons) = Type("String") Then
+		ButtonsValueList = StandardSet(Buttons);
+	Else
+		ButtonsValueList = Buttons;
+	EndIf;
 	
+	ButtonToValueMapping = New Map;
+	
+	Index = 0;
+	
+	For Each ButtonInfoItem In ButtonsValueList Do
+		Index = Index + 1;
+		CommandName = "Command" + String(Index);
+		Command = Commands.Add(CommandName);
+		Command.Action  = "Attachable_CommandHandler";
+		Command.Title = ButtonInfoItem.Presentation;
+		Command.ModifiesStoredData = False;
+		
+		Button = Items.Add(CommandName, Type("FormButton"), Items.CommandBar);
+		Button.OnlyInAllActions = False;
+		Button.CommandName = CommandName;
+		
+		ButtonToValueMapping.Insert(CommandName, ButtonInfoItem.Value);
+	EndDo;
+	
+	ButtonAndReturnValueMap = New FixedMap(ButtonToValueMapping);
+EndProcedure
+
+&AtServer
+Procedure SetDefaultButton(DefaultButton)
+	If ButtonAndReturnValueMap.Count() = 0 Then
+		Return;
+	EndIf;
+	
+	For Each Item In ButtonAndReturnValueMap Do
+		If Item.Value = DefaultButton Then
+			Items[Item.Key].DefaultButton = True;
+			Return;
+		EndIf;
+	EndDo;
+	
+	Items.CommandBar.ChildItems[0].DefaultButton = True;
+EndProcedure
+
+&AtServer
+Procedure SetTimeoutButton(TimeoutButtonValue)
+	If ButtonAndReturnValueMap.Count() = 0 Then
+		Return;
+	EndIf;
+	
+	For Each Item In ButtonAndReturnValueMap Do
+		If Item.Value = TimeoutButtonValue Then
+			TimeoutButtonName = Item.Key;
+			TimeoutButtonTitle = Commands[TimeoutButtonName].Title;
+			Return;
+		EndIf;
+	EndDo;
+EndProcedure
+
+&AtServer
+Procedure ResetWindowLocationAndSize()
+	UserName = InfobaseUsers.CurrentUser().Name;
+	If AccessRight("SaveUserData", Metadata) Then
+		SystemSettingsStorage.Delete("CommonForm.Question", "", UserName);
+	EndIf;
+	WindowOptionsKey = String(New UUID);
+EndProcedure
+
+&AtServerNoContext
+Function StandardSet(Buttons)
+	Result = New ValueList;
+	
+	If Buttons = "QuestionDialogMode.YesNo" Then
+		Result.Add("DialogReturnCode.Yes", NStr("en = 'Yes'"));
+		Result.Add("DialogReturnCode.No",  NStr("en = 'No'"));
+	ElsIf Buttons = "QuestionDialogMode.YesNoCancel" Then
+		Result.Add("DialogReturnCode.Yes",    NStr("en = 'Yes'"));
+		Result.Add("DialogReturnCode.No",     NStr("en = 'No'"));
+		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
+	ElsIf Buttons = "QuestionDialogMode.OK" Then
+		Result.Add("DialogReturnCode.OK", NStr("en = 'OK'"));
+	ElsIf Buttons = "QuestionDialogMode.OKCancel" Then
+		Result.Add("DialogReturnCode.OK",     NStr("en = 'OK'"));
+		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
+	ElsIf Buttons = "QuestionDialogMode.RetryCancel" Then
+		Result.Add("DialogReturnCode.Retry",  NStr("en = 'Retry'"));
+		Result.Add("DialogReturnCode.Cancel", NStr("en = 'Cancel'"));
+	ElsIf Buttons = "QuestionDialogMode.AbortRetryIgnore" Then
+		Result.Add("DialogReturnCode.Abort",  NStr("en = 'Abort'"));
+		Result.Add("DialogReturnCode.Retry",  NStr("en = 'Retry'"));
+		Result.Add("DialogReturnCode.Ignore", NStr("en = 'Ignore'"));
+	EndIf;
+	
+	Return Result;
 EndFunction
+
+#EndRegion

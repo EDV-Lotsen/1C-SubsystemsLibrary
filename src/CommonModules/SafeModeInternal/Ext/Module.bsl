@@ -15,7 +15,7 @@
 // profiles.
 //
 // See the description of this procedure in the StandardSubsystemsServer module.
-Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
+Procedure OnAddInternalEvent(ClientEvents, ServerEvents) Export
 	
 	// SERVER EVENTS.
 	
@@ -57,10 +57,10 @@ Procedure InternalEventOnAdd(ClientEvents, ServerEvents) Export
 	//                       function of the SafeMode module.
 	//
 	// Syntax:
-	//  Procedure PermissionsToAccessExternalResourcesOnFill(PermissionRequests) Export
+	//  Procedure OnFillPermissionsToAccessExternalResources(PermissionRequests) Export
 	//
 	ServerEvents.Add(
-		"StandardSubsystems.BaseFunctionality\PermissionsToAccessExternalResourcesOnFill");
+		"StandardSubsystems.BaseFunctionality\OnFillPermissionsToAccessExternalResources");
 	
 	// Is called during the registration of the external module managers.
 	//
@@ -189,7 +189,7 @@ EndProcedure
 //
 Function PermissionPresentationXDTOPackage() Export
 	
-	//Return Metadata.XDTOPackages.ApplicationPermissions_1_0_0_1.Namespace;
+	Return Metadata.XDTOPackages.ApplicationPermissions_1_0_0_1.Namespace;
 	
 EndFunction
 
@@ -200,7 +200,7 @@ EndFunction
 //
 Function CanUseSecurityProfiles() Export
 	
-	If CommonUse.FileInfoBase(InfoBaseConnectionString()) Then
+	If CommonUse.FileInfobase(InfobaseConnectionString()) Then
 		Return False;
 	EndIf;
 	
@@ -215,7 +215,7 @@ Function CanUseSecurityProfiles() Export
 		EndIf;
 	EndDo;
 	
-	SafeModeOverridable.CanUseSecurityProfilesOnCheck(Cancel);
+	SafeModeOverride.CanUseSecurityProfilesOnCheck(Cancel);
 	
 	Return Not Cancel;
 	
@@ -262,7 +262,7 @@ Procedure SecurityProfilesOnEnable() Export
 		Handler.Module.SecurityProfilesOnEnable();
 	EndDo;
 	
-	SafeModeOverridable.SecurityProfilesOnEnable();
+	SafeModeOverride.SecurityProfilesOnEnable();
 	
 EndProcedure
 
@@ -315,8 +315,8 @@ Function ExternalResourcesPermissionChangeRequest(Val Owner, Val ReplacementMode
 	
 	If StandardProcessing Then
 		
-		//Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcesPermissionChangeRequest(
-		//	Owner, ReplacementMode, PermissionsToAdd, PermissionsToDelete, ExternalModule);
+		Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcesPermissionChangeRequest(
+			Owner, ReplacementMode, PermissionsToAdd, PermissionsToDelete, ExternalModule);
 		
 	EndIf;
 	
@@ -405,8 +405,8 @@ Function PermissionSetCreatingRequest(Val ExternalModule) Export
 	
 	If StandardProcessing Then
 		
-		//Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcePermissionAdministrationRequest(
-		//	ExternalModule, Operation);
+		Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcePermissionAdministrationRequest(
+			ExternalModule, Operation);
 		
 	EndIf;
 	
@@ -445,8 +445,8 @@ Function PermissionSetDeletingRequest(Val ExternalModule) Export
 	
 	If StandardProcessing Then
 		
-		//Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcePermissionAdministrationRequest(
-		//	ExternalModule, Operation);
+		Result = DataProcessors.ExternalResourcePermissionSetup.ExternalResourcePermissionAdministrationRequest(
+			ExternalModule, Operation);
 		
 	EndIf;
 	
@@ -477,12 +477,12 @@ Function RequestsToUpdateConfigurationPermissions(Val IncludingInfobaseProfileCr
 		EndIf;
 		
 		EventHandlers = CommonUse.InternalEventHandlers(
-			"StandardSubsystems.BaseFunctionality\PermissionsToAccessExternalResourcesOnFill");
+			"StandardSubsystems.BaseFunctionality\OnFillPermissionsToAccessExternalResources");
 		For Each Handler In EventHandlers Do
-			Handler.Module.PermissionsToAccessExternalResourcesOnFill(Result);
+			Handler.Module.OnFillPermissionsToAccessExternalResources(Result);
 		EndDo;
 		
-		SafeModeOverridable.PermissionsToAccessExternalResourcesOnFill(Result);
+		SafeModeOverride.OnFillPermissionsToAccessExternalResources(Result);
 		
 		CommitTransaction();
 		
@@ -512,7 +512,7 @@ EndFunction
 //
 Function ExternalResourcePermissionPresentation(Val PermissionTables) Export
 	
-	//Return Reports.ExternalResourcesInUse.ExternalResourcePermissionPresentation(PermissionTables);
+	Return Reports.ExternalResourcesInUse.ExternalResourcePermissionPresentation(PermissionTables);
 	
 EndFunction
 
@@ -544,7 +544,7 @@ Procedure ApplyRequests(Val RequestIDs) Export
 		
 		If StandardProcessing Then
 			
-			//DataProcessors.ExternalResourcePermissionSetup.ApplyRequests(RequestIDs);
+			DataProcessors.ExternalResourcePermissionSetup.ApplyRequests(RequestIDs);
 			
 		EndIf;
 		
@@ -584,7 +584,7 @@ Procedure RequestsAfterProcess(Val RequestIDs) Export
 	
 	If StandardProcessing Then
 		
-		//DataProcessors.ExternalResourcePermissionSetup.RequestsAfterProcess(RequestIDs);
+		DataProcessors.ExternalResourcePermissionSetup.RequestsAfterProcess(RequestIDs);
 		
 	EndIf;
 	
@@ -606,7 +606,7 @@ EndProcedure
 //
 Function ExternalModuleAttachingMode(Val ExternalModule) Export
 	
-	//Return DataProcessors.ExternalResourcePermissionSetup.ExternalModuleAttachingMode(ExternalModule);
+	Return DataProcessors.ExternalResourcePermissionSetup.ExternalModuleAttachingMode(ExternalModule);
 	
 EndFunction
 
@@ -683,7 +683,7 @@ Procedure InternalEventHandlersOnAdd(ClientHandlers, ServerHandlers) Export
 	
 	// SERVER HANDLERS
 	
-	ServerHandlers["StandardSubsystems.InfoBaseVersionUpdate\UpdateHandlersOnAdd"].Add(
+	ServerHandlers["StandardSubsystems.InfobaseVersionUpdate\OnAddUpdateHandlers"].Add(
 		"SafeModeInternal");
 	
 	If CommonUse.SubsystemExists("StandardSubsystems.ReportOptions") Then
@@ -700,11 +700,12 @@ EndProcedure
 // Adds update handlers that the current subsystem requires.
 //
 // Parameters:
-//  Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable().
+//  Handlers - ValueTable - see InfobaseUpdate.NewUpdateHandlerTable().
 //
-Procedure UpdateHandlersOnAdd(Handlers) Export
+Procedure OnAddUpdateHandlers(Handlers) Export
 	
-	//DataProcessors.ExternalResourcePermissionSetup.UpdateHandlersOnAdd(Handlers);
+	//PARTIALLY_DELETED <BR> //DataProcessors.ExternalResourcePermissionSetup.OnAddUpdateHandlers(<BR>  //Handlers);
+
 	
 EndProcedure
 
@@ -715,11 +716,11 @@ EndProcedure
 //              ReportOptions.ConfigurationReportOptionSettingsTree() for details.
 //
 // Details:
-//   See ReportOptionsOverridable.SetUpReportsOptions().
+//   See ReportOptionsOverridable.SetUpReportOptions().
 //
 Procedure ReportOptionsOnSetup(Settings) Export
-	//ReportOptionsModule = CommonUse.CommonModule("ReportOptions");
-	//ReportOptionsModule.SetupReportInManagerModule(Settings, Metadata.Reports.ExternalResourcesInUse);
+	ReportOptionsModule = CommonUse.CommonModule("ReportOptions");
+	ReportOptionsModule.SetupReportInManagerModule(Settings, Metadata.Reports.ExternalResourcesInUse);
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////

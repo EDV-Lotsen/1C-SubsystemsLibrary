@@ -1,23 +1,61 @@
-﻿
-// A flag that shows whether the first administrator is
-// being recorded. It can be set when an infobase user is processed.
-// FirstAdministratorRecord is used in the OnWrite event handler.
-Var FirstAdministratorRecord; 
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region Interface
+
+// The object interface implementation is based on AdditionalProperties:
+//
+// InfobaseUserDescription - Structure with the following properties:
+//   Action - String - "Write" or "Delete".
+//      1. If Action = "Delete", other properties are ignored. 
+//      If InfobaseUser is not found by the value of InfobaseUserID attribute, 
+//      deletion is also considered successful.
+//      2. If Action = "Write", the infobase user is created or updated 
+//      according to the specified properties.
+//
+//   CanLogOnToApplication - Undefined - this value is calculated automatically:
+//                           If user access to the infobase is denied, it remains denied. 
+//                           Otherwise grant access based on the StandardAuthentication, 
+//                           OSAuthentication and OpenIDAuthentication values 
+//                           (if all these values are set to False, access is denied).
+//                         - Boolean - if True, grant access based on the 
+//                                     StandardAuthentication, 
+//                                     OSAuthentication and OpenIDAuthentication values;
+//                                   - if False, deny user access to infobase.
+//                                   - property is not specified - grant access based on the 
+//                                     StandardAuthentication, OSAuthentication, and
+//                                     OpenIDAuthentication values (to support backward
+//                                     compatibility).
+//
+//   StandardAuthentication, OSAuthentication, OpenIDAuthentication - set authentication type values. 
+//   These values take effect if the CanLogOnToApplication property is set to True.
+// 
+//   Other properties.
+//      The content of other properties is specified similarly to the property content of the UpdatedProperties parameter 
+//      in the Users.WriteInfobaseUser() procedure, except for the FullName property which is set based on Description.
+//
+//      To map an independent infobase user to a user from a catalog that is not yet mapped to another infobase user, insert the UUID property. 
+//      If you specify the ID of the infobase user that is mapped to the current user, nothing changes.
+//
+//   The InfobaseUserID object attribute is automatically update when "Write" or "Delete" actions is executed. 
+//   Do not change this attribute manually.
+//
+//   The following properties are inserted to the structure (or updated in the structure) once the action is executed:
+//   - ActionResult - Row containing one of the following values:
+//       "InfobaseUserAdded", "InfobaseUserChanged", "InfobaseUserDeleted", "MappingToNonExistentInfobaseUserCleared", "InfobaseUserDeletingIsNotNecessary".
+//   - ID - infobase user UUID.
+
+#EndRegion
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+// INTERNAL VARIABLES
 
-// The object interface is implemented with the following AdditionalProperties:
-//
-//  InfoBaseAccessAllowed     - flag that shows whether there is an infobase user
-//                              associated to this item.
-//
-//  InfoBaseUserInfoStructure - infobase user properties, they are used only
-//                              if InfoBaseAccessAllowed is True.
-//                              See Users.NewInfoBaseUserInfo for property contents.
+Var InfobaseUserProcessingParameters; // Parameters that are filled during infobase user processing.
+                                      // Used in OnWrite event handler.
 
-////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+Var IsNew; // Shows whether a new object is being written.
+           // Used in OnWrite event handler.
+
+#Region EventHandlers
 
 Procedure BeforeWrite(Cancel)
 	
@@ -25,27 +63,9 @@ Procedure BeforeWrite(Cancel)
 		Return;
 	EndIf;
 	
-	If StandardSubsystemsOverridable.IsSharedInfoBaseUser(InfoBaseUserID) Then
-		Return;
-	EndIf;
+	IsNew = IsNew();
 	
-	FirstAdministratorRecord = False;
-	
-	StandardSubsystemsOverridable.BeforeWriteUser(ThisObject);
-	
-	If AdditionalProperties.Property("InfoBaseAccessAllowed") Then
-		ProcessInfoBaseUser(Cancel);
-	EndIf;
-	
-	If Cancel Then
-		Return;
-	EndIf;
-	
-	If InfoBaseUserID <> New UUID("00000000-0000-0000-0000-000000000000")
-		And Users.UserByIDExists(InfoBaseUserID, Ref) Then
-		
-		Raise(NStr("en = 'Every infobase user can correspond to a single user or single external user only.'"));
-	EndIf;
+	UsersInternal.StartInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters);
 	
 EndProcedure
 
@@ -55,179 +75,77 @@ Procedure OnWrite(Cancel)
 		Return;
 	EndIf;
 	
-	If StandardSubsystemsOverridable.IsSharedInfoBaseUser(InfoBaseUserID) Then
-		Return;
-	EndIf;
-	
 	If AdditionalProperties.Property("NewUserGroup")
-		And ValueIsFilled(AdditionalProperties.NewUserGroup) Then
+		AND ValueIsFilled(AdditionalProperties.NewUserGroup) Then
+		
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("Catalog.UserGroups");
+		LockItem.Mode = DataLockMode.Exclusive;
+		DataLock.Lock();
 		
 		GroupObject = AdditionalProperties.NewUserGroup.GetObject();
 		GroupObject.Content.Add().User = Ref;
 		GroupObject.Write();
-		Users.UpdateUserGroupContent(GroupObject.Ref);
 	EndIf;
 	
-	Users.UpdateUserGroupContent(Catalogs.UserGroups.AllUsers);
+	// Update the content of the "All users" group. This group is always update automatically.
+	ItemsToChange    = New Map;
+	ModifiedGroups   = New Map;
 	
-	If FirstAdministratorRecord Then
-		SetPrivilegedMode(True);
-		
-		UsersOverridable.OnWriteFirstAdministrator(Ref);
-		
-		SetPrivilegedMode(False);
-	EndIf;
+	UsersInternal.UpdateUserGroupContent(
+		Catalogs.UserGroups.AllUsers, Ref, ItemsToChange, ModifiedGroups);
+	
+	UsersInternal.RefreshContentUsingOfUserGroups(
+		Ref, ItemsToChange, ModifiedGroups);
+	
+	UsersInternal.EndInfobaseUserProcessing(
+		ThisObject, InfobaseUserProcessingParameters);
+	
+	UsersInternal.AfterUserGroupContentUpdate(
+		ItemsToChange, ModifiedGroups);
+	
+	UsersInternal.AfterAddUserOrGroupChange(Ref, IsNew);
 	
 EndProcedure
 
 Procedure BeforeDelete(Cancel)
 	
-	If StandardSubsystemsOverridable.IsSharedInfoBaseUser(InfoBaseUserID) Then
+	If DataExchange.Load Then
 		Return;
 	EndIf;
 	
-	// The infobase user must be deleted because otherwise this user will be included 
-	// into the error list of the InfoBaseUsers form, in addition, starting the infobase  
-	// on behalf of this user will raise an error.
-	If Users.InfoBaseUserExists(InfoBaseUserID) Then
-		ErrorDescription = "";
-		If Not Users.DeleteInfoBaseUser(InfoBaseUserID, ErrorDescription) Then
-			Raise(ErrorDescription);
-		EndIf;
-	EndIf;
-	
-	// The DataExchange.Load check must be placed here.
+	CommonActionsBeforeDeleteInOrdinaryModeAndOnDataExchange();
 	
 EndProcedure
 
-Procedure OnCopy(CopiedObject)
+Procedure OnCopy(ObjectToCopy)
 	
-	InfoBaseUserID = Undefined;
+	AdditionalProperties.Insert("CopyingValue", ObjectToCopy.Ref);
+	
+	InfobaseUserID = Undefined;
 	ServiceUserID = Undefined;
+	Prepared = False;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
 
-Procedure ProcessInfoBaseUser(Cancel)
+#Region InternalProceduresAndFunctions
+
+// For internal use only
+Procedure CommonActionsBeforeDeleteInOrdinaryModeAndOnDataExchange() Export
 	
-	AccessLevel = Users.GetEditInfoBaseUserPropertiesAccessLevel();
+	// Infobase user must be deleted, otherwise it will be included in the list of errors of the InfobaseUsers form. In addition, an attempt to log on to the infobase as this user will generate an error.
 	
-	If AccessLevel = "AccessDenied" Then
-		MessageText = NStr("en = 'Insufficient rights to change infobase users.'");
-		CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
-		Return;
-	EndIf;
+	InfobaseUserDescription = New Structure;
+	InfobaseUserDescription.Insert("Action", "Delete");
+	AdditionalProperties.Insert("InfobaseUserDescription", InfobaseUserDescription);
 	
-	SetPrivilegedMode(True);
-	AdditionalProperties.Insert("InfoBaseUserExists", 
-		InfoBaseUsers.FindByUUID(InfoBaseUserID) <> Undefined);
-		
-	If AccessLevel <> "FullAccess" And AccessLevel <> "ListManagement"
-		And AdditionalProperties.InfoBaseUserExists <> AdditionalProperties.InfoBaseAccessAllowed Then
-		
-		MessageText = NStr("en = 'Insufficient rights to change infobase users.'");
-		CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
-		Return;
-	EndIf;
-	
-	If AdditionalProperties.InfoBaseAccessAllowed Then
-		// Checking whether the user has rights to change properties.
-		InfoBaseUserInfoStructure = AdditionalProperties.InfoBaseUserInfoStructure;
-		
-		If AccessLevel = "ListManagement" Then
-			If InfoBaseUserInfoStructure.Property("InfoBaseUserRoles") Then
-				MessageText = NStr("en = 'Insufficient rights to change infobase user roles.'");
-				CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
-				Return;
-			EndIf;
-		ElsIf AccessLevel = "ChangeCurrent" Then
-			ValidProperties = New Array;
-			ValidProperties.Add("InfoBaseUserName");
-			ValidProperties.Add("InfoBaseUserPassword");
-			ValidProperties.Add("InfoBaseUserLanguage");
-			ValidProperties.Add("PasswordConfirmation");
-			For Each KeyAndValue In InfoBaseUserInfoStructure Do
-				If ValidProperties.Find(KeyAndValue.Key) = Undefined Then
-					MessageText = NStr("en = 'Insufficient rights to change infobase users.'");
-					CommonUseClientServer.MessageToUser(MessageText, , , , Cancel);
-					Return;
-				EndIf;
-			EndDo;
-		EndIf;
-		
-		WriteIBUser(Cancel);
-	Else
-		If AdditionalProperties.InfoBaseUserExists Then
-			DeleteInfoBaseUser(Cancel);
-		EndIf;
-	EndIf;
+	UsersInternal.StartInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters, True);
+	UsersInternal.EndInfobaseUserProcessing(ThisObject, InfobaseUserProcessingParameters);
 	
 EndProcedure
 
-Procedure WriteIBUser(Cancel)
-	
-	InfoBaseUserInfoStructure = AdditionalProperties.InfoBaseUserInfoStructure;
-	If InfoBaseUserInfoStructure.Count() = 0 Then
-		Return;
-	EndIf;
-	
-	If InfoBaseUserInfoStructure.Property("InfoBaseUserRoles") Then
-		Roles = InfoBaseUserInfoStructure.InfoBaseUserRoles;
-	Else
-		Roles = Undefined;
-	EndIf;
-	
-	If Users.CreateFirstAdministratorRequired(InfoBaseUserInfoStructure) Then
-		FirstAdministratorRecord = True;
-		Roles = New Array;
-		Roles.Add("FullAccess");
-		
-		FullAdministratorRoleName = Users.FullAdministratorRole().Name;
-		If Roles.Find(FullAdministratorRoleName) = Undefined Then
-			Roles.Add(FullAdministratorRoleName);
-		EndIf;
-	EndIf;
-	
-	// Attempting to record the infobase user.
-	NewInfoBaseUserCreated = False;
-	ErrorDescription = "";
-	If Users.WriteIBUser(InfoBaseUserID,
-		InfoBaseUserInfoStructure, Roles, Not AdditionalProperties.InfoBaseUserExists, ErrorDescription) Then
-		
-		If Not AdditionalProperties.InfoBaseUserExists Then
-			NewInfoBaseUserCreated = True;
-			InfoBaseUserID = InfoBaseUserInfoStructure.InfoBaseUserUUID;
-			AdditionalProperties.InfoBaseUserExists = True;
-		EndIf;
-	Else
-		Cancel = True;
-		CommonUseClientServer.MessageToUser(ErrorDescription);
-	EndIf;
-	
-	If Not Cancel Then
-		If NewInfoBaseUserCreated Then
-			AdditionalProperties.Insert("InfoBaseUserAdded", InfoBaseUserID);
-		Else
-			AdditionalProperties.Insert("InfoBaseUserChanged", InfoBaseUserID);
-		EndIf
-	EndIf;
-	
-EndProcedure
+#EndRegion
 
-Function DeleteInfoBaseUser(Cancel)
-	
-	SetPrivilegedMode(True);
-	
-	ErrorDescription = "";
-	If Users.DeleteInfoBaseUser(InfoBaseUserID, ErrorDescription) Then
-		AdditionalProperties.Insert("InfoBaseUserDeleted", InfoBaseUserID);
-		AdditionalProperties.InfoBaseUserExists = False;
-		InfoBaseUserID = Undefined;
-	Else
-		CommonUseClientServer.MessageToUser(ErrorDescription, , , , Cancel);
-	EndIf;
-	
-EndFunction
-
+#EndIf

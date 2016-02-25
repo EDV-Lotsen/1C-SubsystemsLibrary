@@ -1,9 +1,13 @@
 ﻿
-////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
 	
 	IsThisNode = (Object.Ref = MessageExchangeInternal.ThisNode());
 	
@@ -11,17 +15,18 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If Not IsThisNode Then
 		
-		If Object.Leading Then
-			Items.InfoMessage.Title 
-				= NStr("en = 'This is a leading end point. It initiates sending and receiving exchange messages for the current application.'");
-			
+		If Object.Locked Then
+			Items.InfoMessage.Title
+				= NStr("en = 'This endpoint is locked.'");
+		ElsIf Object.Leading Then
+			Items.InfoMessage.Title
+				= NStr("en = 'This endpoint is leading, that is it initiates current infosystem exchange messages sending and receiving.'");
 		Else
-			Items.InfoMessage.Title 
-				= NStr("en = 'This is a subordinate end point. It sends and receives exchange messages only if the application requires this.'");
-			
+			Items.InfoMessage.Title
+				= NStr("en = 'This endpoint is subordinate, that is it performs exchange messages sending and receiving only upon the current infosystem request.'");
 		EndIf;
 		
-		Items.MakeThisEndPointSubordinate.Visible = Object.Leading;
+		Items.MakeThisEndpointSubordinate.Visible = Object.Leading And Not Object.Locked;
 		
 	EndIf;
 	
@@ -30,14 +35,14 @@ EndProcedure
 &AtClient
 Procedure OnClose()
 	
-	Notify(MessageExchangeClient.EndPointFormClosedEventName());
+	Notify(MessageExchangeClient.EndpointFormClosedEventName());
 	
 EndProcedure
 
 &AtClient
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
-	If EventName = MessageExchangeClient.EventNameLeadingEndPointSet() Then
+	If EventName = MessageExchangeClient.EventNameLeadingEndpointSet() Then
 		
 		Close();
 		
@@ -45,19 +50,17 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
-Procedure MakeThisEndPointSubordinate(Command)
+Procedure MakeThisEndpointSubordinate(Command)
 	
-	FormParameters = New Structure("EndPoint", Object.Ref);
+	FormParameters = New Structure("Endpoint", Object.Ref);
 	
-	OpenForm("CommonForm.LeadingEndPointSetting", FormParameters, ThisForm, Object.Ref);
+	OpenForm("CommonForm.LeadingEndpointSetting", FormParameters, ThisObject, Object.Ref);
 	
 EndProcedure
 
-
-
-
-
+#EndRegion

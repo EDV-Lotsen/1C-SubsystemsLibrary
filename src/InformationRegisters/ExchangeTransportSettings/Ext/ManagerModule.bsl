@@ -1,17 +1,107 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-// Adds the record to the register by the passed structure values.
+#Region InternalProceduresAndFunctions
+
+// Adds a record to the register by the passed structure values
 Procedure AddRecord(RecordStructure) Export
 	
-	DataExchangeServer.AddRecordToInformationRegister(RecordStructure, "ExchangeTransportSettings");
+	If CommonUseCached.DataSeparationEnabled()
+		And CommonUseCached.CanUseSeparatedData() Then
+		
+		DataExchangeServer.AddRecordToInformationRegister(New Structure("Correspondent", RecordStructure.Node), "DataAreaExchangeTransportSettings");
+	Else
+		DataExchangeServer.AddRecordToInformationRegister(RecordStructure, "ExchangeTransportSettings");
+	EndIf;
 	
 EndProcedure
 
-// Updates the record in the register by the passed structure values.
+// Updates a register record based on the passed structure values
 Procedure UpdateRecord(RecordStructure) Export
 	
 	DataExchangeServer.UpdateInformationRegisterRecord(RecordStructure, "ExchangeTransportSettings");
+	
+EndProcedure
+
+Procedure OnFillPermissionsToAccessExternalResources(PermissionRequests) Export
+	
+	TransportSettings = SavedTransportSettings();
+	
+	While TransportSettings.Next() Do
+		
+		RequestToUseExternalResources(PermissionRequests, TransportSettings);
+		
+	EndDo;
+	
+EndProcedure
+
+Function SavedTransportSettings()
+	
+	Query = New Query;
+	Query.Text = "SELECT
+	|	ExchangeTransportSettings.Node,
+	|	ExchangeTransportSettings.FTPConnectionPath,
+	|	ExchangeTransportSettings.FILEDataExchangeDirectory,
+	|	ExchangeTransportSettings.WSURL,
+	|	ExchangeTransportSettings.COMInfobaseDirectory,
+	|	ExchangeTransportSettings.COMInfobaseNameAtPlatformServer,
+	|	ExchangeTransportSettings.FTPConnectionPath AS FTPConnectionPath,
+	|	ExchangeTransportSettings.FTPConnectionPort AS FTPConnectionPort,
+	|	ExchangeTransportSettings.WSURL AS WSURL,
+	|	ExchangeTransportSettings.FILEDataExchangeDirectory AS FILEDataExchangeDirectory
+	|FROM
+	|	InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings";
+	
+	QueryResult = Query.Execute();
+	Return QueryResult.Select();
+	
+EndFunction
+
+Procedure RequestToUseExternalResources(PermissionRequests, Write, RequestCOM = True,
+	RequestFILE = True, RequestWS = True, RequestFTP = True) Export
+	
+	Permissions = New Array;
+	
+	If RequestFTP And Not IsBlankString(Write.FTPConnectionPath) Then
+		
+		AddressStructure = CommonUseClientServer.URIStructure(Write.FTPConnectionPath);
+		Permissions.Add(SafeMode.PermissionToUseInternetResource(
+			AddressStructure.Schema, AddressStructure.Domain, Write.FTPConnectionPort));
+		
+	EndIf;
+	
+	If RequestFILE And Not IsBlankString(Write.FILEDataExchangeDirectory) Then
+		
+		Permissions.Add(SafeMode.PermissionToUseFileSystemDirectory(
+			Write.FILEDataExchangeDirectory, True, True));
+		
+	EndIf;
+	
+	If RequestWS And Not IsBlankString(Write.WSURL) Then
+		
+		AddressStructure = CommonUseClientServer.URIStructure(Write.WSURL);
+		Permissions.Add(SafeMode.PermissionToUseInternetResource(
+			AddressStructure.Schema, AddressStructure.Domain, AddressStructure.Port));
+		
+	EndIf;
+	
+	If RequestCOM And (Not IsBlankString(Write.COMInfobaseDirectory)
+		Or Not IsBlankString(Write.COMInfobaseNameAtPlatformServer)) Then
+		
+		COMConnectorName = CommonUse.COMConnectorName();
+		Permissions.Add(SafeMode.PermissionToCreateCOMClass(
+			COMConnectorName, CommonUse.COMConnectorID(COMConnectorName)));
+		
+	EndIf;
+	
+	// Permissions to perform synchronization by email are requested 
+  // in the Email operations subsystem
+	
+	If Permissions.Count() > 0 Then
+		
+		PermissionRequests.Add(
+			SafeMode.RequestToUseExternalResources(Permissions, Write.Node));
+		
+	EndIf;
 	
 EndProcedure
 
@@ -19,55 +109,61 @@ EndProcedure
 // Functions for retrieving settings for an exchange plan node.
 
 // Retrieves settings of the specified transport kind.
-// If the transport kind is not specified (ExchangeTransportKind = Undefined),
-// the function retrieves settings of all transport kinds that are present in the system.
-//  
-// Returns:
-//  Structure.
-//  
-Function GetNodeTransportSettings(Node, ExchangeTransportKind = Undefined) Export
+// If the transport kind is not specified (ExchangeTransportKind = Undefined), 
+// the function retrieves settings of all transport kinds that are present in the infobase.
+//
+Function TransportSettings(Val Node, Val ExchangeTransportKind = Undefined) Export
 	
-	SettingsStructure = New Structure;
-	
-	// Common settings for all transport kinds
-	SettingsStructure.Insert("DefaultExchangeMessageTransportKind");
-	SettingsStructure.Insert("ExchangeMessageArchivePassword");
-	SettingsStructure.Insert("ExchangeLogFileName");
-	SettingsStructure.Insert("ExecuteExchangeInDebugMode");
-	SettingsStructure.Insert("DataExportTransactionItemCount");
-	SettingsStructure.Insert("DataImportTransactionItemCount");
-	
-	If ExchangeTransportKind = Undefined Then
+	If CommonUseCached.DataSeparationEnabled()
+		And CommonUseCached.CanUseSeparatedData() Then
 		
-		For Each TransportKind In Enums.ExchangeMessageTransportKinds Do
-			
-			TransportSettingsStructure = GetSettingsStructure(CommonUse.EnumValueName(TransportKind));
-			
-			SettingsStructure = MergeCollections(SettingsStructure, TransportSettingsStructure);
-			
-		EndDo;
-		
+		Return InformationRegisters["DataAreaExchangeTransportSettings"].TransportSettings(Node);
 	Else
 		
-		TransportSettingsStructure = GetSettingsStructure(CommonUse.EnumValueName(ExchangeTransportKind));
-		
-		SettingsStructure = MergeCollections(SettingsStructure, TransportSettingsStructure);
-		
+		Return ExchangeTransportSettings(Node, ExchangeTransportKind);
 	EndIf;
-	
-	Return GetRegisterDataByStructure(Node, SettingsStructure);
 	
 EndFunction
 
-Function GetWSTransportSettings(Node) Export
+Function TransportSettingsWS(Node, AuthenticationParameters = Undefined) Export
 	
 	SettingsStructure = GetSettingsStructure("WS");
 	
-	Return GetRegisterDataByStructure(Node, SettingsStructure);
+	Result = GetRegisterDataByStructure(Node, SettingsStructure);
 	
+	If TypeOf(AuthenticationParameters) = Type("Structure") Then // Initializing exchange using the current user name
+		
+		If AuthenticationParameters.UseCurrentUser Then
+			
+			Result.WSUserName = InfobaseUsers.CurrentUser().Name;
+			
+		EndIf;
+		
+		Password = Undefined;
+		
+		If AuthenticationParameters.Property("Password", Password)
+			And Password <> Undefined Then // The password is specified on the client
+			
+			Result.WSPassword = Password;
+			
+		Else // The password is not specified on the client
+			
+			Password = DataExchangeServer.DataSynchronizationPassword(Node);
+			
+			Result.WSPassword = ?(Password = Undefined, "", Password);
+			
+		EndIf;
+		
+	ElsIf TypeOf(AuthenticationParameters) = Type("String") Then
+		
+		Result.WSPassword = AuthenticationParameters;
+		
+	EndIf;
+	
+	Return Result;
 EndFunction
 
-Function DefaultExchangeMessageTransportKind(InfoBaseNode) Export
+Function DefaultExchangeMessageTransportKind(InfobaseNode) Export
 	
 	// Return value
 	ExchangeMessageTransportKind = Undefined;
@@ -78,12 +174,12 @@ Function DefaultExchangeMessageTransportKind(InfoBaseNode) Export
 	|FROM
 	|	InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings
 	|WHERE
-	|	ExchangeTransportSettings.Node = &InfoBaseNode
+	|	ExchangeTransportSettings.Node = &InfobaseNode
 	|";
 	
 	Query = New Query;
 	Query.Text = QueryText;
-	Query.SetParameter("InfoBaseNode", InfoBaseNode);
+	Query.SetParameter("InfobaseNode", InfobaseNode);
 	
 	Selection = Query.Execute().Select();
 	
@@ -96,20 +192,20 @@ Function DefaultExchangeMessageTransportKind(InfoBaseNode) Export
 	Return ExchangeMessageTransportKind;
 EndFunction
 
-Function DataExchangeDirectoryName(ExchangeMessageTransportKind, InfoBaseNode) Export
+Function DataExchangeDirectoryName(ExchangeMessageTransportKind, InfobaseNode) Export
 	
 	// Return value
 	Result = "";
 	
 	If ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.FILE Then
 		
-		TransportSettings = InformationRegisters.ExchangeTransportSettings.GetNodeTransportSettings(InfoBaseNode);
+		TransportSettings = TransportSettings(InfobaseNode);
 		
 		Result = TransportSettings["FILEDataExchangeDirectory"];
 		
 	ElsIf ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.FTP Then
 		
-		TransportSettings = InformationRegisters.ExchangeTransportSettings.GetNodeTransportSettings(InfoBaseNode);
+		TransportSettings = TransportSettings(InfobaseNode);
 		
 		Result = TransportSettings["FTPConnectionPath"];
 		
@@ -124,10 +220,10 @@ Function TransportSettingsPresentations(TransportKind) Export
 	
 	If TransportKind = Enums.ExchangeMessageTransportKinds.COM Then
 		
-		AddSettingPresentationItem(Result, "COMInfoBaseOperationMode");
+		AddSettingPresentationItem(Result, "COMInfobaseOperationMode");
 		AddSettingPresentationItem(Result, "COMPlatformServerName");
-		AddSettingPresentationItem(Result, "COMInfoBaseNameAtPlatformServer");
-		AddSettingPresentationItem(Result, "COMInfoBaseDirectory");
+		AddSettingPresentationItem(Result, "COMInfobaseNameAtPlatformServer");
+		AddSettingPresentationItem(Result, "COMInfobaseDirectory");
 		AddSettingPresentationItem(Result, "COMOSAuthentication");
 		AddSettingPresentationItem(Result, "COMUserName");
 		AddSettingPresentationItem(Result, "COMUserPassword");
@@ -178,72 +274,14 @@ Function NodeTransportSettingsAreSet(Node) Export
 	Return Not Query.Execute().IsEmpty();
 EndFunction
 
-Function DataImportTransactionItemCount(Node) Export
-	
-	// Return value
-	Result = 0;
-	
-	QueryText = "
-	|SELECT
-	|	ExchangeTransportSettings.DataImportTransactionItemCount AS TransactionItemCount
-	|FROM
-	|	InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings
-	|WHERE
-	|	ExchangeTransportSettings.Node = &Node
-	|";
-	
-	Query = New Query;
-	Query.SetParameter("Node", Node);
-	Query.Text = QueryText;
-	
-	Selection = Query.Execute().Select();
-	
-	If Selection.Next() Then
-		
-		Result = Selection.TransactionItemCount;
-		
-	EndIf;
-	
-	Return Result;
-EndFunction
-
-Function DataExportTransactionItemCount(Node) Export
-	
-	// Return value
-	Result = 0;
-	
-	QueryText = "
-	|SELECT
-	|	ExchangeTransportSettings.DataExportTransactionItemCount AS TransactionItemCount
-	|FROM
-	|	InformationRegister.ExchangeTransportSettings AS ExchangeTransportSettings
-	|WHERE
-	|	ExchangeTransportSettings.Node = &Node
-	|";
-	
-	Query = New Query;
-	Query.SetParameter("Node", Node);
-	Query.Text = QueryText;
-	
-	Selection = Query.Execute().Select();
-	
-	If Selection.Next() Then
-		
-		Result = Selection.TransactionItemCount;
-		
-	EndIf;
-	
-	Return Result;
-EndFunction
-
-Function ConfiguredTransportTypes(InfoBaseNode) Export
+Function ConfiguredTransportTypes(InfobaseNode) Export
 	
 	Result = New Array;
 	
-	TransportSettings = GetNodeTransportSettings(InfoBaseNode);
+	TransportSettings = TransportSettings(InfobaseNode);
 	
-	If ValueIsFilled(TransportSettings.COMInfoBaseDirectory) 
-		Or ValueIsFilled(TransportSettings.COMInfoBaseNameAtPlatformServer) Then
+	If ValueIsFilled(TransportSettings.COMInfobaseDirectory) 
+		Or ValueIsFilled(TransportSettings.COMInfobaseNameAtPlatformServer) Then
 		
 		Result.Add(Enums.ExchangeMessageTransportKinds.COM);
 		
@@ -279,6 +317,43 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 // Local internal procedures and functions.
 
+// Retrieves settings of the specified transport kind.
+// If the transport kind is not specified (ExchangeTransportKind = Undefined), 
+// the function retrieves settings of all transport kinds that are present in the infobase.
+//
+Function ExchangeTransportSettings(Node, ExchangeTransportKind)
+	
+	SettingsStructure = New Structure;
+	
+	// Common settings for all transport kinds
+	SettingsStructure.Insert("DefaultExchangeMessageTransportKind");
+	SettingsStructure.Insert("ExchangeMessageArchivePassword");
+	
+	If ExchangeTransportKind = Undefined Then
+		
+		For Each TransportKind In Enums.ExchangeMessageTransportKinds Do
+			
+			TransportSettingsStructure = GetSettingsStructure(CommonUse.EnumValueName(TransportKind));
+			
+			SettingsStructure = MergeCollections(SettingsStructure, TransportSettingsStructure);
+			
+		EndDo;
+		
+	Else
+		
+		TransportSettingsStructure = GetSettingsStructure(CommonUse.EnumValueName(ExchangeTransportKind));
+		
+		SettingsStructure = MergeCollections(SettingsStructure, TransportSettingsStructure);
+		
+	EndIf;
+	
+	Result = GetRegisterDataByStructure(Node, SettingsStructure);
+	Result.Insert("UseTempDirectoryForSendingAndReceivingMessages", True);
+	DataExchangeServer.AddTransactionItemCountToTransportSettings(Result);
+	
+	Return Result;
+EndFunction
+
 Function GetRegisterDataByStructure(Node, SettingsStructure)
 	
 	If Not ValueIsFilled(Node) Then
@@ -289,8 +364,8 @@ Function GetRegisterDataByStructure(Node, SettingsStructure)
 		Return SettingsStructure;
 	EndIf;
 	
-	// Generating a text query by the required fields only 
-	// (by parameters of the specified transport kinds).
+	// Generating a text query by the required fields only
+	// (by parameters of the specified transport kinds)
 	QueryText = "SELECT ";
 	
 	For Each SettingItem In SettingsStructure Do
@@ -299,7 +374,7 @@ Function GetRegisterDataByStructure(Node, SettingsStructure)
 		
 	EndDo;
 	
-	// Deleting the last , character from the query text
+	// Deleting the last ", " character from the query text
 	StringFunctionsClientServer.DeleteLastCharsInString(QueryText, 2);
 	
 	QueryText = QueryText + "
@@ -315,7 +390,7 @@ Function GetRegisterDataByStructure(Node, SettingsStructure)
 	
 	Selection = Query.Execute().Select();
 	
-	// Filling the structure if settings for the node are filled.
+	// Filling the structure if settings for the node are specified
 	If Selection.Next() Then
 		
 		For Each SettingItem In SettingsStructure Do
@@ -374,3 +449,7 @@ Procedure AddSettingPresentationItem(Structure, SettingName)
 	Structure.Insert(SettingName, Metadata.InformationRegisters.ExchangeTransportSettings.Resources[SettingName].Presentation());
 	
 EndProcedure
+
+#EndRegion
+
+#EndIf

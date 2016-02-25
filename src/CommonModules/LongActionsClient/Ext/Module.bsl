@@ -4,8 +4,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////// 
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
 // Fills the parameter structure with default values.
 // 
@@ -34,23 +33,11 @@ Procedure UpdateIdleHandlerParameters(IdleHandlerParameters) Export
 	EndIf;
 		
 EndProcedure
-
-// Cancels scheduled job execution by the passed ID.
-// 
-// Parameters:
-// TaskID - UUID - scheduled job ID.
-// 
-Procedure CancelJobExecution(Val TaskID) Export 
-	
-	If ValueIsFilled(TaskID) Then
-		LongActions.CancelJobExecution(TaskID);
-	EndIf;
-	
-EndProcedure
+ 
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions for working with the long action form 
+// Procedures and functions for working with the long action form. 
 
 // Opens the long operation progress bar form.
 // 
@@ -63,7 +50,7 @@ EndProcedure
 //
 Function OpenLongActionForm(Val FormOwner, Val TaskID) Export
 	
-	LongActionForm = LongActionsClientCached.GetLongActionForm();
+	LongActionForm = LongActionsClientCached.LongActionForm();
 	If LongActionForm.IsOpen() Then
 		LongActionForm = OpenForm(
 			"CommonForm.LongAction",
@@ -71,7 +58,7 @@ Function OpenLongActionForm(Val FormOwner, Val TaskID) Export
 			FormOwner);
 	Else
 		LongActionForm.FormOwner = FormOwner;
-		LongActionForm.TaskID = TaskID;
+		LongActionForm.TaskID    = TaskID;
 		LongActionForm.Open();
 	EndIf;
 	
@@ -94,3 +81,5 @@ Procedure CloseLongActionForm(LongActionForm) Export
 	LongActionForm = Undefined;
 	
 EndProcedure
+ 
+#EndRegion

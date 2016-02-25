@@ -1,11 +1,14 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿&AtClient
+Var ExternalResourcesAllowed;
+
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then
+  // Skipping the initialization to guarantee that the form 
+  // will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
 	
@@ -26,23 +29,55 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	EndIf;
 	
 	EventLogMessageTextEstablishingConnectionToWebService 
-	= DataExchangeServer.EventLogMessageTextEstablishingConnectionToWebService();
+		= DataExchangeServer.EventLogMessageTextEstablishingConnectionToWebService();
 	
-	Items.FixExternalConnectionErrors.Visible = False;
+	If CommonUse.SubsystemExists("StandardSubsystems.GetFilesFromInternet") Then
+		Items.InternetAccessParameters.Visible  = True;
+		Items.InternetAccessParameters1.Visible = True;
+	Else
+		Items.InternetAccessParameters.Visible  = False;
+		Items.InternetAccessParameters1.Visible = False;
+	EndIf;
 	
 EndProcedure
 
 &AtClient
 Procedure OnOpen(Cancel)
 	
-	InfoBaseRunModeOnChange();
+	InfobaseRunModeOnChange();
 	
 	OSAuthenticationOnChange();
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+&AtClient
+Procedure BeforeWrite(Cancel, WriteParameters)
+	
+	If ExternalResourcesAllowed <> True Then
+		
+		ClosingNotification = New NotifyDescription("AllowExternalResourceCompletion", ThisObject, WriteParameters);
+		Queries = CreateRequestForUseExternalResources(Record, True, True, True, True);
+		SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+		
+		Cancel = True;
+		
+	EndIf;
+	ExternalResourcesAllowed = False;
+	
+EndProcedure
+
+&AtClient
+Procedure AfterWrite(WriteParameters)
+	
+	If WriteParameters.Property("WriteAndClose") Then
+		Close();
+	EndIf;
+	
+EndProcedure
+
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure FILEDataExchangeDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
@@ -59,37 +94,23 @@ Procedure FILEDataExchangeDirectoryOpen(Item, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure COMInfoBaseDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
+Procedure COMInfobaseDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	DataExchangeClient.FileDirectoryChoiceHandler(Record, "COMInfoBaseDirectory", StandardProcessing);
-	
-EndProcedure
-
-&AtClient
-Procedure COMInfoBaseDirectoryOpen(Item, StandardProcessing)
-	
-	DataExchangeClient.FileOrDirectoryOpenHandler(Record, "COMInfoBaseDirectory", StandardProcessing)
+	DataExchangeClient.FileDirectoryChoiceHandler(Record, "COMInfobaseDirectory", StandardProcessing);
 	
 EndProcedure
 
 &AtClient
-Procedure ExchangeLogFileNameStartChoice(Item, ChoiceData, StandardProcessing)
-	
-	DataExchangeClient.FileChoiceHandler(Record, "ExchangeLogFileName", StandardProcessing, NStr("en = 'Text document (*.txt)|*.txt'"), False);
-	
+Procedure COMInfobaseDirectoryOpen(Item, StandardProcessing)
+
+DataExchangeClient.FileOrDirectoryOpenHandler(Record, "COMInfobaseDirectory", StandardProcessing)
+
 EndProcedure
 
 &AtClient
-Procedure ExchangeLogFileNameOpen(Item, StandardProcessing)
+Procedure COMInfobaseRunModeOnChange(Item)
 	
-	DataExchangeClient.FileOrDirectoryOpenHandler(Record, "ExchangeLogFileName", StandardProcessing)
-	
-EndProcedure
-
-&AtClient
-Procedure COMInfoBaseRunModeOnChange(Item)
-	
-	InfoBaseRunModeOnChange();
+	InfobaseRunModeOnChange();
 	
 EndProcedure
 
@@ -100,151 +121,109 @@ Procedure COMOSAuthenticationOnChange(Item)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
-Procedure FixExternalConnectionErrors(Command)
+Procedure TestCOMConnection(Command)
 	
-	CommonUseClient.RegisterCOMConnector();
+	ClosingNotification = New NotifyDescription("TestCOMConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Record, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
 	
 EndProcedure
 
 &AtClient
-Procedure CheckCOMConnection(Command)
+Procedure TestWSConnection(Command)
+	
+	ClosingNotification = New NotifyDescription("TestWSConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Record,,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+	
+EndProcedure
+
+&AtClient
+Procedure TestFILEConnection(Command)
+	
+	ClosingNotification = New NotifyDescription("TestFILEConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Record,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+	
+EndProcedure
+
+&AtClient
+Procedure TestFTPConnection(Command)
+	
+	ClosingNotification = New NotifyDescription("TestFTPConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Record,,,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+	
+EndProcedure
+
+&AtClient
+Procedure TestEMAILConnection(Command)
+	
+	TestConnection("EMAIL");
+	
+EndProcedure
+
+&AtClient
+Procedure InternetAccessParameters(Command)
+	
+	DataExchangeClient.OpenProxyServerParameterForm();
+	
+EndProcedure
+
+&AtClient
+Procedure WriteAndClose(Command)
+	
+	WriteParameters = New Structure;
+	WriteParameters.Insert("WriteAndClose");
+	Write(WriteParameters);
+
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtClient
+Procedure TestConnection(TransportKindString)
 	
 	Cancel = False;
 	
 	ClearMessages();
 	
-	CheckExternalConnection(Cancel);
+	TestConnectionAtServer(Cancel, TransportKindString);
 	
-	If Cancel Then
-		ShowMessageBox(,NStr("en = 'Failed to establish the connection.'"));
-	Else
-		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure CheckWSConnection(Command)
-	
-	Cancel = False;
-	
-	ClearMessages();
-	
-	CheckWSConnectionEstablished(Cancel);
-	
-	If Cancel Then
-		
-		NString = NStr("en = 'Error establishing the connection.
-		                     |Do you want to open the event log?'"
-		);
-		Response = Undefined;
-
-		ShowQueryBox(New NotifyDescription("CheckWSConnectionEnd", ThisObject), NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-		
-	Else
-		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure CheckWSConnectionEnd(QuestionResult, AdditionalParameters) Export
-	
-	Response = QuestionResult;
-	If Response = DialogReturnCode.Yes Then
-		
-		Filter = New Structure;
-		Filter.Insert("EventLogMessageText", EventLogMessageTextEstablishingConnectionToWebService);
-		OpenForm("DataProcessor.EventLogMonitor.Form", Filter, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-		
-	EndIf;
-
-EndProcedure
-
-&AtClient
-Procedure CheckFILEConnection(Command)
-	
-	CheckConnection("FILE");
-	
-EndProcedure
-
-&AtClient
-Procedure CheckFTPConnection(Command)
-	
-	CheckConnection("FTP");
-	
-EndProcedure
-
-&AtClient
-Procedure CheckEMAILConnection(Command)
-	
-	CheckConnection("EMAIL");
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-&AtClient
-Procedure CheckConnection(TransportKindString)
-	
-	Cancel = False;
-	
-	ClearMessages();
-	
-	CheckConnectionAtServer(Cancel, TransportKindString);
-	
-	If Cancel Then
-		ShowMessageBox(,NStr("en = 'Failed to establish the connection.'"));
-	Else
-		ShowMessageBox(,NStr("en = 'The connection was successfully established.'"));
-	EndIf;
+	NotifyUserAboutConnectionResult(Cancel);
 	
 EndProcedure
 
 &AtServer
-Procedure CheckConnectionAtServer(Cancel, TransportKindString)
+Procedure TestConnectionAtServer(Cancel, TransportKindString)
 	
-	CheckExchangeLogFileAvailability(Cancel);
-	
-	DataExchangeServer.CheckExchangeMessageTransportDataProcessorConnection(Cancel, Record, Enums.ExchangeMessageTransportKinds[TransportKindString]);
+	DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel, Record, Enums.ExchangeMessageTransportKinds[TransportKindString]);
 	
 EndProcedure
 
 &AtServer
-Procedure CheckExternalConnection(Cancel)
+Procedure TestExternalConnection(Cancel)
 	
-	CheckExchangeLogFileAvailability(Cancel);
-	
-	ErrorAttachingAddIn = False;
-	
-	DataExchangeServer.CheckExternalConnection(Cancel, Record, ErrorAttachingAddIn);
-	
-	If ErrorAttachingAddIn And CommonUse.FileInfoBase() Then
-		
-		Items.FixExternalConnectionErrors.Visible = True;
-		
-	EndIf;
+	DataExchangeServerCall.TestExternalConnection(Cancel, Record);
 	
 EndProcedure
 
 &AtServer
-Procedure CheckWSConnectionEstablished(Cancel)
-	
-	CheckExchangeLogFileAvailability(Cancel);
+Procedure TestWSConnectionEstablished(Cancel)
 	
 	ConnectionParameters = DataExchangeServer.WSParameterStructure();
-	
 	FillPropertyValues(ConnectionParameters, Record);
 	
-	WSProxy = DataExchangeServer.GetWSProxy(ConnectionParameters);
-	
-	If WSProxy = Undefined Then
-		Cancel = True;
+	UserMessage = "";
+	If Not DataExchangeServer.CorrespondentConnectionEstablished(Record.Node, ConnectionParameters, UserMessage) Then
+		CommonUseClientServer.MessageToUser(UserMessage,,,, Cancel);
 	EndIf;
 	
 EndProcedure
@@ -260,9 +239,9 @@ Procedure SetFormItemVisibility()
 		
 	EndIf;
 	
-	For Each TransportKindPage In Items.TransportKindPages.ChildItems Do
+	For Each TransportTypePage In Items.TransportKindPages.ChildItems Do
 		
-		TransportKindPage.Visible = False;
+		TransportTypePage.Visible = False;
 		
 	EndDo;
 	
@@ -288,9 +267,18 @@ Procedure SetFormItemVisibility()
 EndProcedure
 
 &AtClient
-Procedure InfoBaseRunModeOnChange()
+Procedure NotifyUserAboutConnectionResult(Val AttachingError)
 	
-	CurrentPage = ?(Record.COMInfoBaseOperationMode = 0, Items.FileModePage, Items.ClientServerModePage);
+	WarningText = ?(AttachingError, NStr("en = 'Cannot establish connection.'"),
+											   NStr("en = 'Connection established.'"));
+	ShowMessageBox(, WarningText);
+	
+EndProcedure
+
+&AtClient
+Procedure InfobaseRunModeOnChange()
+	
+	CurrentPage = ?(Record.COMInfobaseOperationMode = 0, Items.FileModePage, Items.ClientServerModePage);
 	
 	Items.InfobaseRunModes.CurrentPage = CurrentPage;
 	
@@ -304,76 +292,87 @@ Procedure OSAuthenticationOnChange()
 	
 EndProcedure
 
-&AtServer
-Procedure CheckExchangeLogFileAvailability(Cancel)
+&AtClient
+Procedure AllowExternalResourceCompletion(Result, WriteParameters) Export
 	
-	FileNameStructure = CommonUseClientServer.SplitFullFileName(Record.ExchangeLogFileName);
-	LogFileName = FileNameStructure.BaseName;
-	CheckDirectoryName	 = FileNameStructure.Path;
-	CheckDirectory = New File(CheckDirectoryName);
-	CheckFileName = "test.tmp";
-	
-	If Not ValueIsFilled(LogFileName) Then
-		Return;
-	ElsIf Not CheckDirectory.Exist() Then
-		
-		MessageString = NStr("en = '%1 exchange protocol file directory is not found.'");
-		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, CheckDirectoryName);
-		Cancel = True;
-		
-	ElsIf Not CreateCheckFile(CheckDirectoryName, CheckFileName) Then
-		
-		MessageString = NStr("en = 'Failed to create a file in the %1 exchange protocol directory.'");
-		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, CheckDirectoryName);
-		Cancel = True;
-		
-	ElsIf Not DeleteCheckFile(CheckDirectoryName, CheckFileName) Then
-		
-		MessageString = NStr("en = 'Failed to delete the file from the %1 exchange protocol directory.'");
-		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, CheckDirectoryName);
-		Cancel = True;
-		
-	Else 
-		Return;
+	If Result = DialogReturnCode.OK Then
+		ExternalResourcesAllowed = True;
+		Write(WriteParameters);
 	EndIf;
-	
-	CommonUseClientServer.MessageToUser(MessageString,,,, Cancel);
-	WriteLogEvent(NStr("en = 'Exchange message transport'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, MessageString);
 	
 EndProcedure
 
-&AtServer
-Function CreateCheckFile(CheckDirectoryName, CheckFileName)
+&AtServerNoContext
+Function CreateRequestForUseExternalResources(Val Record, RequestCOM = False,
+	RequestFILE = False, RequestWS = False, RequestFTP = False)
 	
-	TextDocument = New TextDocument;
-	TextDocument.AddLine(NStr("en = 'Temporary test file'"));
-	
-	Try
-		TextDocument.Write(CheckDirectoryName + "" + CheckFileName);
-	Except
-		Return False;
-	EndTry;
-	
-	Return True;
+	PermissionRequests = New Array;
+	InformationRegisters.ExchangeTransportSettings.RequestToUseExternalResources(PermissionRequests,
+		Record, RequestCOM, RequestFILE, RequestWS, RequestFTP);
+	Return PermissionRequests;
 	
 EndFunction
 
-&AtServer
-Function DeleteCheckFile(CheckDirectoryName, CheckFileName)
+&AtClient
+Procedure TestFILEConnectionCompletion(Result, AdditionalParameters) Export
 	
-	Try
-		DeleteFiles(CheckDirectoryName, CheckFileName);
-	Except
-		Return False;
-	EndTry;
+	If Result = DialogReturnCode.OK Then
+		
+		TestConnection("FILE");
+		
+	EndIf;
 	
-	Return True;
+EndProcedure
+
+&AtClient
+Procedure TestFTPConnectionCompletion(Result, AdditionalParameters) Export
 	
-EndFunction
+	If Result = DialogReturnCode.OK Then
+		
+		TestConnection("FTP");
+		
+	EndIf;
+	
+EndProcedure
 
+&AtClient
+Procedure TestWSConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		Cancel = False;
+		
+		ClearMessages();
+		
+		TestWSConnectionEstablished(Cancel);
+		
+		NotifyUserAboutConnectionResult(Cancel);
+		
+	EndIf;
+	
+EndProcedure
 
+&AtClient
+Procedure TestCOMConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		Cancel = False;
+		
+		ClearMessages();
+		
+		If StandardSubsystemsClientCached.ClientParameters().FileInfobase Then
+			
+			CommonUseClient.RegisterCOMConnector(False);
+			
+		EndIf;
+		
+		TestExternalConnection(Cancel);
+		
+		NotifyUserAboutConnectionResult(Cancel);
+		
+	EndIf;
+	
+EndProcedure
 
-
-
-
-
+#EndRegion

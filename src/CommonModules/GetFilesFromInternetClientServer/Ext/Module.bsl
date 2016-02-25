@@ -1,177 +1,262 @@
-﻿
-////////////////////////////////////////////////////////////////////////////////
-// Get files from internet subsystem.
+﻿////////////////////////////////////////////////////////////////////////////////
+// Get files from the Internet subsystem
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region Interface
 
-////////////////////////////////////////////////////////////////////////////////
-// Export internal procedures and functions.
-
-// Receives files from the internet.
+// Returns WebProxy object for Internet access.
 //
 // Parameters:
-//  URL               - String - file URL in the following format:
-//                      [Protocol://]<Server>/<Path to the file on server>
-//  User              - String - user on behalf of which the connection is established.
-//  Password          - String - password of the user on behalf of which the connection
-//                      is established.
-//  Port              - Number - port that is used for establishing the connection.
-//  SecureConnection  - Boolean - in case of HTTP this flag shows
-//                      whether a secure HTTPS connection is used.
-//  PassiveConnection - Boolean - in case of FTP this flag shows 
-//                      whether the connection mode is passive or active.
-//  SavingSettings    - Map - contains the following parameters for saving
-//                      the downloaded file: 
-//  Storage           - String - can take on the following values:
-//                       "Client" - save file at the client.
-//                       "Server" - save file at the server.
-//                       "TempararyStorage" - save file to the temporary storage.
+//   URLOrProtocol - String - file url in the following format:
+//                            [Protocol://]<Server>/<Path to file on server>,
+//                            or protocol indentifier (http, ftp, ...)
 //
 // Returns:
-//  Structure with the following key and value:
-//   Success - Boolean - flag that shows whether the file has been saved successfully.
-//   String  - String - it can contain a path to the file, an address in the temporary 
-//             storage, or an error message in case of failure.
+//   InternetProxy
 //
-Function PrepareFileReceiving(Val URL, Val User = Undefined, Val Password = Undefined,
-	Val Port = Undefined, Val SecureConnection = False, Val PassiveConnection = False, 
-	Val SavingSettings) Export
+Function GetProxy(Val URLOrProtocol) Export
 	
-	ConnectionSettings = New Map;
-	ConnectionSettings.Insert("User", User);
-	ConnectionSettings.Insert("Password", Password);
-	ConnectionSettings.Insert("Port", Port);
-	
-	Protocol = SplitURL(URL).Protocol;
-	
-	If Protocol = "ftp" Then
-		ConnectionSettings.Insert("PassiveConnection", PassiveConnection);
+#If Client Then
+	ProxyServerSettings = StandardSubsystemsClientCached.ClientParameters().ProxyServerSettings;
+#Else
+	ProxyServerSettings = GetFilesFromInternet.ProxySettingsAtServer();
+#EndIf
+	If Find(URLOrProtocol, "://") > 0 Then
+		Protocol = SplitURL(URLOrProtocol).Protocol;
 	Else
-		ConnectionSettings.Insert("SecureConnection", SecureConnection);
+		Protocol = Lower(URLOrProtocol);
 	EndIf;
+	Return GenerateWebProxy(ProxyServerSettings, Protocol);
 	
-	#If Client Then
-		ProxyServerSettings = StandardSubsystemsClientCached.ClientParameters().ProxyServerSettings;
-	#Else
-		ProxyServerSettings = GetFilesFromInternet.GetServerProxySettings();
-	#EndIf
+EndFunction
+
+// Splits URL: protocol, server, path to resource.
+//
+// Parameters:
+//  URL - String - link to a web resource
+//
+// Returns:
+//  Structure:
+//             Protocol           - String - resource access protocol 
+//             ServerName         - String - server resource 
+//             PathToFileAtServer - String - resource path at server
+//
+Function SplitURL(Val URL) Export
 	
-	If ProxyServerSettings = Undefined Or ProxyServerSettings.Get("UseProxy") <> True Then
-		ProxyServerSettings = GetEmptyProxyServerSettings();
-	EndIf;
+	URLStructure = CommonUseClientServer.URIStructure(URL);
 	
-	Result = GetFileFromInternet(URL, SavingSettings, ConnectionSettings, ProxyServerSettings);
+	Result = New Structure;
+	Result.Insert("Protocol", ?(IsBlankString(URLStructure.Schema), "http", URLStructure.Schema));
+	Result.Insert("ServerName", URLStructure.ServerName);
+	Result.Insert("PathToFileAtServer", URLStructure.PathAtServer);
 	
 	Return Result;
 	
 EndFunction
 
-////////////////////////////////////////////////////////////////////////////////
-// Local internal procedures and functions.
+// Splits URI string to assemble it and return it as a structure
+//
+Function URLStructure(Val URLString) Export
+	
+	Return CommonUseClientServer.URIStructure(URLString);
+	
+EndFunction
 
-// Receives a file from the internet.
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+////////////////////////////////////////////////////////////////////////////////
+// Export internal procedures and functions
+
+// function meant for getting files from the Internet.
 //
 // Parameters:
-//  URL                      - String - file URL in the following format:
-//                             [Protocol://]<Server>/<Path to the file on server>
+// URL               - String - file url in the following format:
+// ReceivingSettings - Featured structure 
+//     SavePath          - String  - path to server (including file name), to save the 
+//                                   downloaded file
+//     User              - String  - user on whose behalf the connection is being made
+//     Password          - String  - password for the user on whose behalf the connection 
+//                                   is being made
+//     Port              - Number  - server port to connect to
+//     Timeout           - Number  - timeout for file acquisition, in seconds
+//     SecureConnection  - Boolean - in case of http download the flag  shows
+//                                   that the connection is performed through https
+//     PassiveConnection - Boolean - in case of ftp download the flag shows
+//                                   that the connection must be passive (or active)
+//     Headings          - Map     - see HTTPRequest Object heading parameter description
 //
-//  ConnectionSettings       - Map - map with the following fields:
-//   User                    - String - user on behalf of which the connection is
-//                             established.
-//   Password                - String - password of the user on behalf of which the
-//                             connection is established.
-//   Port                    - Number - port that is used for establishing the
-//                             connection.
-//   SecureConnection        - Boolean - in case of HTTP this flag shows
-//                             whether a secure HTTPS connection is used.
-//   PassiveConnection       - Boolean - in case of FTP this flag shows 
-//                             whether the connection mode is passive or active.
-//
-//  ProxySettings            - Map - map with the following fields:
-//   UseProxy                - flag that shows whether the proxy server is used.
-//   BypassProxyForLocalURLs - flag that shows whether the proxy server is bypassed
-//                             for the local addresses.
-//   UseSystemSettings       - flag that shows whether system proxy server settings are
-//                             used. 
-//   Server                  - proxy server address.
-//   Port                    - proxy server port.
-//   User                    - name of the user for authorization at the proxy server.
-//   Password                - password of the user for authorization at the proxy
-//                             server.
-//
-// SavingSettings            - String - contains parameters for saving the downloaded
-//                             file.
-//  Storage                  - string - can take on the following values:
-//                             "Client" - save file at the client.
-//                             "Server" - save file at the server.
-//                             "TempararyStorage" - save file to the temporary storage.
-//  Path                     - String, Optional - path to a directory at client or  
-//                             at server,	or an address in the temporary storage.
-//                             If it is not specified, it is generated automatically.
+// SavingSettings    - Map - contains parameters to save the downloaded file keys:
+//                 Storage - String - can include
+//                           "Client" - client,
+//                           "Server" - server,
+//                           "TemporaryStorage" - temporary storage
+//                 Path    - String (optional parameter) - 
+//                           path to catalogue on client or at server or temporary storage
+//                           address will be generated, if not specified
 //
 // Returns:
-//  Structure with the following key and value:
-//  Success - Boolean - flag that shows whether the file has been saved successfully.
-//  String  - String - it can contain a path to the file, an address in the temporary
-//            storage, or an error message in case of failure.
+// Structure
+//  Success - Boolean - operation success or failure 
+//  String  - String - in case of success either string-path to save file
+//                     or address in temporary storage
+//                     in case of failure message
+//
+Function PrepareFileReceiving(Val URL, Val ReceivingSettings, Val SavingSettings, Val WriteError = True) Export
+	
+	ConnectionSettings = New Map;
+	ConnectionSettings.Insert("User",     ReceivingSettings.User);
+	ConnectionSettings.Insert("Password", ReceivingSettings.Password);
+	ConnectionSettings.Insert("Port",     ReceivingSettings.Port);
+	ConnectionSettings.Insert("Timeout",  ReceivingSettings.Timeout);
+	ConnectionSettings.Insert("Headings", ReceivingSettings.Headings);
+	
+	Protocol = SplitURL(URL).Protocol;
+	
+	If Protocol = "ftp" Then
+		ConnectionSettings.Insert("PassiveConnection", ReceivingSettings.PassiveConnection);
+	Else
+		ConnectionSettings.Insert("SecureConnection", ReceivingSettings.SecureConnection);
+	EndIf;
+	
+#If Client Then
+	ProxyServerSettings = StandardSubsystemsClientCached.ClientParameters().ProxyServerSettings;
+#Else
+	ProxyServerSettings = GetFilesFromInternet.ProxySettingsAtServer();
+#EndIf
+	
+	Return GetFileFromInternet(URL, SavingSettings, ConnectionSettings,
+		ProxyServerSettings, WriteError);
+	
+EndFunction
+
+Function FileAcquisitionParameterStructure() Export
+	
+	ReceivingParameters = New Structure;
+	ReceivingParameters.Insert("PathForSaving", Undefined);
+	ReceivingParameters.Insert("User", Undefined);
+	ReceivingParameters.Insert("Password", Undefined);
+	ReceivingParameters.Insert("Port", Undefined);
+	ReceivingParameters.Insert("Timeout", Undefined);
+	ReceivingParameters.Insert("SecureConnection", Undefined);
+	ReceivingParameters.Insert("PassiveConnection", Undefined);
+	ReceivingParameters.Insert("Headings", New Map());
+	
+	Return ReceivingParameters;
+	
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// Local internal procedures and functions
+
+// Function meant for getting files from the Internet.
+//
+// Parameters:
+// URL - String - file url in the following format: [Protocol://]<Server>/<Path to file at server>
+//
+// ConnectionSettings - Map:
+// 	SecureConnection*  - Boolean - secure connection
+// 	PassiveConnection* - Boolean - passive connection
+// 	User     - String - user on whose behalf the connection is being made
+// 	Password - String - password for the user on whose behalf the connection is being made
+// 	Port     - Number - server port to connect to
+// 	* - mutually exclusive keys
+//
+// ProxySettings - Map:
+// 	UseProxy           - whether to use proxy server
+// 	BypassProxyOnLocal - whether to use proxy server for local addresses
+// 	UseSystemSettings  - use proxy server system settings
+// 	Server             - proxy server address
+// 	Port               - proxy server port
+// 	User               - user name for proxy authorization
+// 	Password           - user password
+//
+// SavingSettings - Map - contains paramters to save the downloaded file
+// 	Storage - String - can contain: 
+// 		"Client" - client,
+// 		"Server" - server,
+// 		"TemporaryStorage" - temporary storage
+// 	Path    - String (optional parameter) - path to the directory on client or on server, 
+// 	                                        or temporary storage address, will be generated 
+//                                           automatically if not specified
+//
+// Returns:
+// Structure
+//  Success - Boolean - operation success or failure
+//  String  - String  - in case of success either path to save file or address 
+//                      in the temporary storage
+//                      in case of failure error message
 //
 Function GetFileFromInternet(Val URL, Val SavingSettings, Val ConnectionSettings = Undefined,
-	Val ProxySettings = Undefined)
+	Val ProxySettings = Undefined, Val WriteError = True)
 	
-	// Declaring variables before their first use as the Property 
-	// method parameter.
+	// Declare variables before the first use
+	// as Property method parameter when analyzing file aquisition parameters
+	// from AcquisitionParameters. Contain values of transmitted file acquisition parameters
 	Var ServerName, UserName, Password, Port,
-	 SecureConnection,PassiveConnection,
-	 PathToFileAtServer, Protocol;
+	      SecureConnection, PassiveConnection,
+	      PathToFileAtServer, Protocol;
 	
 	SeparatedURL = SplitURL(URL);
 	
-	ServerName = SeparatedURL.ServerName;
+	ServerName         = SeparatedURL.ServerName;
 	PathToFileAtServer = SeparatedURL.PathToFileAtServer;
-	Protocol = SeparatedURL.Protocol;
+	Protocol           = SeparatedURL.Protocol;
 	
-	SecureConnection = ConnectionSettings.Get("SecureConnection");
+	SecureConnection  = ConnectionSettings.Get("SecureConnection");
 	PassiveConnection = ConnectionSettings.Get("PassiveConnection");
 	
-	UserName = ConnectionSettings.Get("User");
+	UserName     = ConnectionSettings.Get("User");
 	UserPassword = ConnectionSettings.Get("Password");
-	Port = ConnectionSettings.Get("Port");
+	Port         = ConnectionSettings.Get("Port");
+	Timeout      = ConnectionSettings.Get("Timeout");
+	Headings     = ConnectionSettings.Get("Headings");
+	
+	If Protocol = "https" Then
+		SecureConnection = True;
+	EndIf;
 	
 	If Port = Undefined Then
-		FullURLStructure = URLStructure(URL);
+		FullURLStructure = CommonUseClientServer.URIStructure(URL);
 		
 		If Not IsBlankString(FullURLStructure.Port) Then
-			ServerName = FullURLStructure.Host;
+			ServerName = FullURLStructure.Domain;
 			Port = FullURLStructure.Port;
 		EndIf;
 	EndIf;
 	
-	ProxySettings = ?(ProxySettings = Undefined, GetEmptyProxyServerSettings(), ProxySettings);
-	Proxy = GenerateProxy(ProxySettings, Protocol);
+	Proxy = ?(ProxySettings <> Undefined, GenerateWebProxy(ProxySettings, Protocol), Undefined);
+	FTPProtocolIsUsed = (Protocol = "ftp");
 	
-	If Protocol = "ftp" Then
+	If FTPProtocolIsUsed Then
 		Try
-			Connection = New FTPConnection(ServerName, Port, UserName, UserPassword, Proxy, PassiveConnection);
+			Connection = New FTPConnection(ServerName, Port, UserName, UserPassword, Proxy, PassiveConnection, Timeout);
 		Except
 			ErrorInfo = ErrorInfo();
-			ErrorMessage = NStr("en = 'Error creating FTP connection with %1 server:'") + Chars.LF + "%2";
-			GetFilesFromInternet.WriteErrorToEventLog(
-				StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName,
-					DetailErrorDescription(ErrorInfo)));
+			ErrorMessage = NStr("en = 'Error creating FTP connection to the %1 server:'") + Chars.LF + "%2";
+			
+			WriteErrorToEventLog(StringFunctionsClientServer.SubstituteParametersInString(
+				ErrorMessage, ServerName, DetailErrorDescription(ErrorInfo)));
 			ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName,
 					BriefErrorDescription(ErrorInfo));
 			Return GenerateResult(False, ErrorMessage);
 		EndTry;
+		
 	Else
+		If SecureConnection = True Then
+			SecureConnection = New OpenSSLSecureConnection;
+		Else
+			SecureConnection = Undefined;
+		EndIf;
+		
 		Try
-			Connection = New HTTPConnection(ServerName, Port, UserName, UserPassword, Proxy, SecureConnection);
+			Connection = New HTTPConnection(ServerName, Port, UserName, UserPassword, Proxy, Timeout, SecureConnection);
 		Except
 			ErrorInfo = ErrorInfo();
-			ErrorMessage = NStr("en = 'Error creating FTP connection with %1 server:'") + Chars.LF + "%2";
-			GetFilesFromInternet.WriteErrorToEventLog(
+			ErrorMessage = NStr("en = 'Error creating HTTP connection to the %1 server:'") + Chars.LF + "%2";
+			WriteErrorToEventLog(
 				StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName, 
 					DetailErrorDescription(ErrorInfo)));
 			ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName, 
@@ -189,240 +274,169 @@ Function GetFileFromInternet(Val URL, Val SavingSettings, Val ConnectionSettings
 	EndIf;
 	
 	Try
-		Connection.Get(PathToFileAtServer, PathForSaving);
+		
+		If FTPProtocolIsUsed Then
+			Connection.Get(PathToFileAtServer, PathForSaving);
+			ResponseHeadings = Undefined;
+		Else
+			HTTPRequest = New HTTPRequest(PathToFileAtServer, Headings);
+			HTTPRequest.Headers.Insert("Accept-Charset", "utf-8");
+			HTTPResponse = Connection.Get(HTTPRequest, PathForSaving);
+			If HTTPResponse.StatusCode < 200 Or HTTPResponse.StatusCode >= 300 Then
+				ResponseFile = New TextReader(PathForSaving, TextEncoding.UTF8);
+				Raise StringFunctionsClientServer.ExtractTextFromHTML(ResponseFile.Read(5 * 1024));
+			EndIf;
+			ResponseHeadings = HTTPResponse.Headers;
+		EndIf;
+		
 	Except
 		ErrorInfo = ErrorInfo();
-		ErrorMessage = NStr("en = 'Error recieving file from %1 server:'") + Chars.LF + "%2";
-		GetFilesFromInternet.WriteErrorToEventLog(
-			StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName, 
+		ErrorMessage = NStr("en = 'Error downloading file from the %1 server:'") + Chars.LF + "%2";
+		If WriteError Then
+			WriteErrorToEventLog(
+				StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName, 
 				DetailErrorDescription(ErrorInfo)));
+		EndIf;
 		ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, ServerName, 
 				BriefErrorDescription(ErrorInfo));
 		Return GenerateResult(False, ErrorMessage);
 	EndTry;
 	
-	// Stoting a file according to settings 
+	// If the file is saved in accordance with the setting 
 	If SavingSettings["Storage"] = "TempStorage" Then
-		UniqueKey = New UUID;
-		Address = PutToTempStorage (PathForSaving, UniqueKey);
-		Return GenerateResult(True, Address);
+		UniquenessKey = New UUID;
+		Address = PutToTempStorage (New BinaryData(PathForSaving), UniquenessKey);
+		Return GenerateResult(True, Address, ResponseHeadings);
 	ElsIf SavingSettings["Storage"] = "Client"
-	 Or SavingSettings["Storage"] = "Server" Then
-		Return GenerateResult(True, PathForSaving);
+	      Or SavingSettings["Storage"] = "Server" Then
+		Return GenerateResult(True, PathForSaving, ResponseHeadings);
 	Else
 		Return Undefined;
 	EndIf;
 	
 EndFunction
 
-// Generates a proxy by proxy settings.
+// Returns proxy according to settings ProxyServerSetting for the specified Protocol protocol.
 // 
-// Parameters: 
-// ProxyServerSettings      - Map - map with the following fields:
-//  UseProxy                - flag that shows whether the proxy server is used.
-//  BypassProxyForLocalURLs - flag that shows whether the proxy server is bypassed
-//                            for the local addresses.
-//  UseSystemSettings       - flag that shows whether system proxy server settings is
-//                            used. 
-//  Server                  - proxy server address.
-//  Port                    - proxy server port.
-//  User                    - name of the user for authorization at the proxy server.
-//  Password                - password of the user for authorization at the proxy
-//                            server.
-// Protocol                 - string - protocol for which proxy server parameters are  
-//                            set, for example, "http", "https", "ftp".
+// Parameters:
+//  ProxyServerSettings - Map:
+// 	 UseProxy           - whether to use proxy server 
+// 	 BypassProxyOnLocal - whether to use proxy server for local addresses
+// 	 UseSystemSettings  - use server proxy system settings 
+// 	 Server             - proxy server address
+// 	 Port               - proxy server port
+// 	 User               - user name for proxy authorization
+// 	 Password           - user password
+//  Protocol - String - protocol for which proxy server parameters are set, 
+//                       for example http, https, ftp
 // 
-Function GenerateProxy(ProxyServerSettings, Protocol)
+// Returns:
+//   InternetProxy
+// 
+Function GenerateWebProxy(ProxyServerSettings, Protocol)
 	
-	If ProxyServerSettings <> Undefined Then
-		UseProxy = ProxyServerSettings.Get("UseProxy");
-		UseSystemSettings = ProxyServerSettings.Get("UseSystemSettings");
-		If UseProxy Then
-			If UseSystemSettings Then
-			// System proxy server settings
-				Proxy = New InternetProxy(True);
-			Else
-			// Manual proxy server settings
-				Proxy = New InternetProxy;
-				Proxy.Set(Protocol, ProxyServerSettings["Server"], ProxyServerSettings["Port"]);
-				Proxy.BypassProxyForLocalURLs = ProxyServerSettings["BypassProxyForLocalURLs"];
-				Proxy.User = ProxyServerSettings["User"];
-				Proxy.Password = ProxyServerSettings["Password"];
-			EndIf;
-		Else
-			// Do not use proxy server	
-			Proxy = New InternetProxy(False);
-		EndIf;
-	Else
-		Proxy = Undefined;
+	If ProxyServerSettings = Undefined Then
+		// Proxy server system guidelines
+		Return Undefined;
+	EndIf;	
+	
+	UseProxy = ProxyServerSettings.Get("UseProxy");
+	If Not UseProxy Then
+		// Bypass proxy server
+		Return New InternetProxy(False);
 	EndIf;
 	
+	UseSystemSettings = ProxyServerSettings.Get("UseSystemSettings");
+	If UseSystemSettings Then
+		// Proxy server system settings
+		Return New InternetProxy(True);
+	EndIf;
+			
+	// Manually configured proxy settings
+	Proxy = New InternetProxy;
+	
+	// Detect proxy server address and port
+	AdditionalSettings = ProxyServerSettings.Get("AdditionalProxySettings");
+	ProxyToProtocol = Undefined;
+	If TypeOf(AdditionalSettings) = Type("Map") Then
+		ProxyToProtocol = AdditionalSettings.Get(Protocol);
+	EndIf;
+	
+	If TypeOf(ProxyToProtocol) = Type("Structure") Then
+		Proxy.Set(Protocol, ProxyToProtocol.Address, ProxyToProtocol.Port);
+	Else
+		Proxy.Set(Protocol, ProxyServerSettings["Server"], ProxyServerSettings["Port"]);
+	EndIf;
+	
+	Proxy.BypassProxyOnLocal = ProxyServerSettings["BypassProxyOnLocal"];
+	Proxy.User               = ProxyServerSettings["User"];
+	Proxy.Password           = ProxyServerSettings["Password"];
+	
+	ExceptionAddresses = ProxyServerSettings.Get("BypassProxyOnAddresses");
+	If TypeOf(ExceptionAddresses) = Type("Array") Then
+		For Each ExceptionAddress In ExceptionAddresses Do
+			Proxy.BypassProxyOnAddresses.Add(ExceptionAddress);
+		EndDo;
+	EndIf;
+			
 	Return Proxy;
 	
 EndFunction
 
-// Splits URL into components: protocol, server, path to the resource.
+// Function meant for completing the structure according to parameters
 //
 // Parameters:
-//  URL - String - link to the resource in the internet.
+//  OperationSuccess - Boolean - operation success or failure
+//  MessagePath - String - 
 //
-// Returns:
-//  Structure with the following fields:
-//   Protocol           - String - protocol that will be used to get access to the
-//                        resource.
-//   ServerName         - String - server where the resource is placed.
-//   PathToFileAtServer - String - path to the resource at the server.
+// Returns - structure:
+//          Success - Boolean
+//          Path    - String
 //
-Function SplitURL(Val URL)
+Function GenerateResult(Val Status, Val MessagePath, ResponseHeadings = Undefined)
 	
-	URLStructure = URLStructure(URL);
+	Result = New Structure("Status", Status);
 	
-	Result = New Structure;
-	Result.Insert("Protocol", ?(IsBlankString(URLStructure.Schema),"http",URLStructure.Schema));
-	Result.Insert("ServerName", URLStructure.ServerName);
-	Result.Insert("PathToFileAtServer", URLStructure.PathAtServer);
-	
-	Return Result;
-	
-EndFunction
-
-// Splits the URL string into components according to RFC 3986 and returns it as a structure.
-//
-// Parameters:
-// URLString - String - link to the resource in the following format:
-// 
-//  <schema>://<login>:<password>@<host>:<port>/<path>?<parameters>#<anchor>
-//             \________________/ \___________/
-//                     |                |
-// 	             authorization     server name
-//               \____________________________/ \___________________________/
-//                              |                             |
-//                     connection string                path at server
-//
-// Returns:
-//  Structure with the following fields:
-//   Schema       - String.
-//   Login        - String. 
-//   Password     - String.
-//   ServerName   - String.
-//   Host         - String. 
-//   Port         - String. 
-//   PathAtServer - String.
-//
-Function URLStructure(Val URLString)
-	
-	URLString = TrimAll(URLString);
-	
-	// Schema
-	Schema = "";
-	Position = Find(URLString, "://");
-	If Position > 0 Then
-		Schema = Lower(Left(URLString, Position - 1));
-		URLString = Mid(URLString, Position + 3);
-	EndIf;
-
-	// Connection string and path at server
-	ConnectionString = URLString;
-	PathAtServer = "";
-	Position = Find(ConnectionString, "/");
-	If Position > 0 Then
-		PathAtServer = Mid(ConnectionString, Position + 1);
-		ConnectionString = Left(ConnectionString, Position - 1);
-	EndIf;
-		
-	// User information and server name 
-	AuthorizationString = "";
-	ServerName = ConnectionString;
-	Position = Find(ConnectionString, "@");
-	If Position > 0 Then
-		AuthorizationString = Left(ConnectionString, Position - 1);
-		ServerName = Mid(ConnectionString, Position + 1);
-	EndIf;
-	
-	// Login and password
-	Login = AuthorizationString;
-	Password = "";
-	Position = Find(AuthorizationString, ":");
-	If Position > 0 Then
-		Login = Left(AuthorizationString, Position - 1);
-		Password = Mid(AuthorizationString, Position + 1);
-	EndIf;
-	
-	// Host and port
-	Host = ServerName;
-	Port = "";
-	Position = Find(ServerName, ":");
-	If Position > 0 Then
-		Host = Left(ServerName, Position - 1);
-		Port = Mid(ServerName, Position + 1);
-	EndIf;
-	
-	Result = New Structure;
-	Result.Insert("Schema", Schema);
-	Result.Insert("Login", Login);
-	Result.Insert("Password", Password);
-	Result.Insert("ServerName", ServerName);
-	Result.Insert("Host", Host);
-	Result.Insert("Port", Port);
-	Result.Insert("PathAtServer", PathAtServer);
-	
-	Return Result;
-	
-EndFunction
-
-// Fills the structure with parameters.
-//
-// Parameters:
-//  State              - Boolean - flag that shows whether the operation completed
-//                       successfully.
-//  MessagePath        - String - path or error message. 
-//
-// Returns:
-//  Structure with the following fields:
-//   Success field - Boolean.
-//   Path field    - String.
-//
-Function GenerateResult(Val State, Val MessagePath)
-	
-	Result = New Structure("State");
-	
-	Result.State = State;
-
-	If State Then
+	If Status Then
 		Result.Insert("Path", MessagePath);
 	Else
 		Result.Insert("ErrorMessage", MessagePath);
 	EndIf;
 	
+	If ResponseHeadings <> Undefined Then
+		
+		Result.Insert("Headings", ResponseHeadings);
+		
+	EndIf;
+	
 	Return Result;
 	
 EndFunction
 
-// Returns empty proxy server settings that means that the proxy server is not used.
+// Writes error messages to the event log. 
+// The Get files from the Internet event name.
 //
-// Returns:
-// Structure with the following fields:
-// 	UseProxy                - flag that shows whether the proxy server is used.
-// 	BypassProxyForLocalURLs - flag that shows whether the proxy server is bypassed
-// 	                          for the local addresses.
-// 	UseSystemSettings       - flag that shows whether system proxy server settings is
-//                             used. 
-// 	Server                  - proxy server address.
-// 	Port                    - proxy server port.
-// 	User                    - name of the user for authorization at the proxy server.
-// 	Password                - password of the user for authorization at the proxy
-//                             server.
-//
-Function GetEmptyProxyServerSettings()
+// Parameters:
+//    ErrorMessage - String - error message string
+// 
+Procedure WriteErrorToEventLog(Val ErrorMessage) Export
 	
-	ProxyServerSettings = New Map;
-	ProxyServerSettings.Insert("UseProxy", False);
-	ProxyServerSettings.Insert("User", "");
-	ProxyServerSettings.Insert("Password", "");
-	ProxyServerSettings.Insert("Port", "");
-	ProxyServerSettings.Insert("Server", "");
-	ProxyServerSettings.Insert("BypassProxyForLocalURLs", False);
-	ProxyServerSettings.Insert("UseSystemSettings", False);
-	Return ProxyServerSettings;	
+#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+	WriteLogEvent(
+		EventLogMessageText(),
+		EventLogLevel.Error, , ,
+		ErrorMessage);
+#Else
+	EventLogOperationsClient.AddMessageForEventLog(EventLogMessageText(),
+		"Error", ErrorMessage,,True);
+#EndIf
+	
+EndProcedure
+
+Function EventLogMessageText() Export
+	
+	Return NStr("en = 'Get files from the Internet'", CommonUseClientServer.DefaultLanguageCode());
 	
 EndFunction
+
+#EndRegion

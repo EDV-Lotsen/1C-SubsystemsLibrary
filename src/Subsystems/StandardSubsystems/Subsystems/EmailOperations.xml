@@ -10,22 +10,25 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
 			<Content>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.EmailClientOverridable</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.Email</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.EmailOperationsInternal</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.EmailOperationsClient</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.EmailOperations</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.AccountPasswordConfirmation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.SendMessage</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Catalog.EmailAccounts</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.SMTPAuthenticationVariants</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.POP3AuthenticationModes</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.SMTPAuthenticationModes</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Enum.EmailTextTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.AttachFile</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.SystemEmailAccountSetup</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">Role.UseEmailAccounts</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.EmailOperationsServerCall</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

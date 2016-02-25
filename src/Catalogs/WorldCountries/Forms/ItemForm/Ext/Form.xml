@@ -1,57 +1,83 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>50</Width>
 	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
 	<AutoCommandBar name="Form_CommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWrite">AfterWrite</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
 	<ChildItems>
 		<UsualGroup name="Group" id="11">
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupExtendedTooltip" id="12"/>
+			<ExtendedTooltip name="GroupExtendedTooltip" id="13"/>
 			<ChildItems>
+				<InputField name="Description" id="3">
+					<DataPath>Object.Description</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="Description_ContextMenu" id="4"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="14"/>
+				</InputField>
 				<InputField name="Code" id="1">
 					<DataPath>Object.Code</DataPath>
 					<Wrap>false</Wrap>
-					<ContextMenu name="CodeContextMenu" id="2"/>
-					<ExtendedTooltip name="CodeExtendedTooltip" id="13"/>
-				</InputField>
-				<InputField name="Alpha2Code" id="7">
-					<DataPath>Object.AlphaCode2</DataPath>
-					<Width>2</Width>
-					<HorizontalStretch>false</HorizontalStretch>
-					<Wrap>false</Wrap>
-					<ContextMenu name="Alpha2CodeContextMenu" id="8"/>
-					<ExtendedTooltip name="Alpha2CodeExtendedTooltip" id="14"/>
-				</InputField>
-				<InputField name="Alpha3Code" id="9">
-					<DataPath>Object.AlphaCode3</DataPath>
-					<Width>3</Width>
-					<HorizontalStretch>false</HorizontalStretch>
-					<Wrap>false</Wrap>
-					<ContextMenu name="Alpha3CodeContextMenu" id="10"/>
-					<ExtendedTooltip name="Alpha3CodeExtendedTooltip" id="15"/>
+					<ContextMenu name="Code_ContextMenu" id="2"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="15"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<InputField name="Description" id="3">
-			<DataPath>Object.Description</DataPath>
-			<Wrap>false</Wrap>
-			<ContextMenu name="DescriptionContextMenu" id="4"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="16"/>
-		</InputField>
-		<InputField name="Details" id="5">
+		<InputField name="LongDescription" id="5">
 			<DataPath>Object.LongDescription</DataPath>
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Full name</v8:content>
+					<v8:content>Long description</v8:content>
 				</v8:item>
 			</Title>
 			<Wrap>false</Wrap>
-			<ContextMenu name="DetailsContextMenu" id="6"/>
-			<ExtendedTooltip name="DetailsExtendedTooltip" id="17"/>
+			<ContextMenu name="LongDescription_ContextMenu" id="6"/>
+			<ExtendedTooltip name="LongDescriptionExtendedTooltip" id="16"/>
 		</InputField>
+		<UsualGroup name="AlphaCodeGroup" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Alpha code group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Alpha code group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="AlphaCodeGroupExtendedTooltip" id="17"/>
+			<ChildItems>
+				<InputField name="AlphaCode2" id="7">
+					<DataPath>Object.AlphaCode2</DataPath>
+					<Width>2</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Wrap>false</Wrap>
+					<ContextMenu name="AlphaCode2_ContextMenu" id="8"/>
+					<ExtendedTooltip name="AlphaCode2ExtendedTooltip" id="18"/>
+				</InputField>
+				<InputField name="AlphaCode3" id="9">
+					<DataPath>Object.AlphaCode3</DataPath>
+					<Width>3</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Wrap>false</Wrap>
+					<ContextMenu name="AlphaCode3_ContextMenu" id="10"/>
+					<ExtendedTooltip name="AlphaCode3ExtendedTooltip" id="19"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Object" id="1">

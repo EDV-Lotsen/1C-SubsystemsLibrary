@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><style>P {
+	TEXT-INDENT: 3em
+}
+</style><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This form is used to input contact information according to a template. <a href="InformationRegister.AddressClassifier/Help">Address classifiers</a> can be utilized to further streamline the procedure. </p>
+<ul><li><strong>Country</strong> - select the address country in this field. Addresses outside of the U.S. are edited in a common field, as they are not broken into standard subfields like "Street" or "Apartment". "USA" is the default country. This field can be disabled via <a href="Catalog.ContactInformationKinds.Form.ItemForm/Help">settings</a>. To select a different country, click <img src="StdPicture.Select"></img> <strong>Select</strong>. You will be able to select a country from the <a href="Catalog.WorldCountries.Form.Classifier/Help">Classification of countries of the world (OKSM)</a> list. 
+</li><li><strong>Postal code</strong> - type in a postal code corresponding to the address. If the address can be found in the address classifier, postal code will be filled in automatically. You can also <a href="#1">fill in an address</a> based on the postal code, provided that the state address classifier is loaded and available. 
+</li><li><strong>City</strong> - enter the city name here. To enter detailed information, click <img src="StdPicture.Select" width="12" height="12"></img> <strong>Select</strong> and type in the detailed <a href="DataProcessor.ContactInformationInput.Form.SettlementAddresses/Help">city information</a> into the template form that will be displayed. 
+</li><li><strong>Street</strong> - select (click <img src="StdPicture.Select" width="12" height="12"></img> <strong>Select</strong> and pick a street from list) or type in a street name. 
+</li><li><strong>Building, Unit</strong>, Apartment - enter the related address information here. You can change these fields by selecting additional values from dropdown list. 
+</li><li>You can also <img src="StdPicture.CreateListItem"></img> <strong>Add</strong> additional fields to store other predefined address blocks, such as <strong>Room</strong> or <strong>Office</strong>.  
+</li><li><strong>Address presentation</strong> - in case of address input by template, this field is disabled. It will be filled automatically as you fill in address fields. 
+</li><li><strong>Comment</strong> - you can type in any comments to the address. These comments are never included in the address presentation or printed. </li></ul><h3>Address input examples</h3>
+<ul><li>To enter "<strong>1515 Connecticut Ave, Office 202, Washington DC, 20008, USA</strong>": 
+<ul><li><strong>City</strong> - select <strong>Washington, DC</strong>. 
+</li><li><strong>Street</strong> - select <strong>Connecticut Ave</strong>. 
+</li><li><strong>Building</strong> - type in <strong>1515</strong>. 
+</li><li><strong>Apartment</strong> - first, you need to change the name of this field to <strong>Office</strong>. Select <strong>Office</strong> from dropdown list and then type in <strong>202</strong>. </li></ul></li><li>To enter an address with a different set of fields, for example, "<strong>45 East 52nd Street, Unit 2, Room 111, New York, NY, 10022, USA</strong>": 
+<ul><li><strong>City</strong> - select <strong>New York</strong>. 
+</li><li><strong>Street </strong>- select <strong>52nd Street</strong>. 
+</li><li><strong>Building</strong> - type in <strong>45 East</strong>. 
+</li><li>Click <img src="StdPicture.CreateListItem" width="16" height="16"></img> <strong>Add</strong>, select <strong>Unit</strong> from the dropdown list, and type in <strong>2</strong>. </li></ul></li></ul><h3>Address validation</h3>
+<p>Click <strong>Check filling</strong> to validate the address you have entered. The following criteria are validated: </p>
+<ul><li>address completeness; 
+</li><li>absence of prohibited characters; 
+</li><li>length of address attributes; 
+</li><li>compliance with address classifier. In client/server mode Infobase, compliance of addresses with the address classifier is validated on the server side. When address validation is complete, the "Address is correct" message or list of errors will be displayed. Validation is not performed for addresses outside of the U.S. Validation is also not performed for free-format addresses.</li></ul><h3>Entering free-format addresses</h3>
+<ul><li>In certain cases you may need to knowingly enter an invalid address (for example, an address on an incoming recepit is invalid and cannot be used, but you still have to enter it). For this, execute the <strong>All actions</strong> (or <strong>More</strong>, in Taxi interface) - <strong>Free-format address input</strong> command. The invalid address will be further used for storage, so this option should only be used as a last resort. 
+</li><li>Once you execute the command, the "Free-format addresses are not validated by address classifier" message will be displayed. Click <strong>Yes</strong> to confirm, or click <strong>No</strong> to go back to the template-based address input form. 
+</li><li>You will be offered a standard address input template where all fields, except <strong>Address presentation</strong> and <strong>Comment</strong>, are disabled. Enter the address into the <strong>Address presentation</strong> field. As soon as you start filling in the <strong>Comment</strong> field or click <strong>OK</strong>, the address you have entered will be automatically parsed and some of the disabled template fields will be filled in. The standard address validation procedure will not be performed. 
+</li><li>Click <strong>OK</strong> to confirm the address. It wil be saved as a free-format address, to be viewed without any changes.</li></ul><h3><a name="#1">Address input by postal code</a> </h3>
+<p>If you know postal code for an address and have the address clasisifier for the related state loaded, you can <a href="DataProcessor.ContactInformationInput.Form.AddressSearchByPostalCode/Help">find the address</a> by using this postal code. For this, execute the <strong>All actions</strong> (or <strong>More</strong>, in Taxi interface) - <strong>Fill in by postal code</strong> command. This will display a list of addresses related to the postal code you have specified. Select the required address from list and fill in the remaning fields manually.</p>
+<h3>Clearing addresses</h3>
+<p>To delete a wrong address, execute the <strong>All actions</strong> (or <strong>More</strong>, in Taxi interface) - <strong>Clear address</strong> command.</p>
+<h3>Loading classifiers</h3>
+<p>To load an address classifier, execute the <strong>All actions</strong> (or <strong>More</strong>, in Taxi interface) - <strong>Load classifier</strong> command. Once the address classifier for the selected state has been updated, you can continue editing the address. When filling in certain fields, you will be automatically offered to load the classifier. </p>
+<h3>See also:</h3>
+<ul><li><a href="Catalog.ContactInformationKinds/Help">Contact information kinds</a>; 
+</li><li><a href="DataProcessor.ContactInformationInput/Help">Contact information input</a>; 
+</li><li><a href="v8help://frame/form_common">Working with forms</a>.</li></ul><h3></h3></body></html>

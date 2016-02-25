@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This form is used to review statistics based on data synchronization results.</p>
+<p><a href="CommonForm.DataExchanges/Help">Data synchronization</a> results are available as a hyperlink in the<strong> Data synchronization</strong> list, which can be accessed from the application desktop or other locations. In case of successful data synchronization, the hyperlink displays <strong>No warnings</strong>; otherwise, it displays <strong>Warnings</strong> (followed by the number of warnings). To open the detailed warning list, click the hyperlink. </p>
+<p>During data synchronization, problems may occur and manual intervention may be required from user. The list contains description of data that caused synchronization problems and the causes of there problems. The causes are briefly described in a separate column; click any cause to display detailed information at the bottom of the list, including the names of list fields or document fields where problems occurred.</p>
+<h3>Filters</h3>
+<p>For your convenience, the following filters can be enabled:</p>
+<ul><li>In the <strong>Period</strong> field, <img src="StdPicture.Select"></img> <strong>Select</strong> a specific data period; 
+</li><li>In the <strong>Sender</strong> field,  <strong>Select</strong> a specific infobase from the list; 
+</li><li>In the <strong>Cause </strong>field, type in a specific error cause (this filter is not available on the <strong>Conflicts</strong> tab). </li></ul><p>All data synchronization problems can be roughly broken down into the following categories (each category being displayed on a separate list tab):</p>
+<h3>Unposted documents</h3>
+<p>This list displays the documents that could not be posted for any reason. To fix a document posting problem, we recommend that you open the document and eliminate any inconsistencies that prevent posting (for example, insufficient product balance). The cause that prevents document posting is displayed at the bottom of the list.</p>
+<ul><li>To start fixing errors in the selected documents, click<strong> Change selected</strong>.  
+</li><li>Once all errors are fixed, <strong>Post </strong>the document again. 
+</li><li>To open the document, click <strong>All actions - Change.</strong> 
+</li><li>To hide the document from the list without fixing the posting problems, click<strong> Ignore</strong>. 
+</li><li>To display the ignored documents, click <strong>All actions - Show ignored</strong>. 
+</li><li>To revert the ignored document, click <strong>All actions - Do not ignore</strong>.</li></ul><h3>Blank attributes</h3>
+<p>This list displays blank attributes of catalog items. To fix this problem, open the related catalog item by double-clicking it and fill in all required fields, then save the item. </p>
+<ul><li>To fill in the attributes of selected items, click <strong>Change selected. </strong>
+</li><li>To open an item, click <strong>All actions - Change. </strong>
+</li><li>To hide the catalog item from the list without filling in the mandatory attributes, click <strong>Ignore</strong>. 
+</li><li>To display the ignored catalog items, click<strong> All actions - Show ignored. </strong>
+</li><li>To revert the ignored catalog item, click <strong>All actions - Do not ignore.</strong></li></ul><h3>Conflicts</h3>
+<p>When data synchronization between two applications is enabled, the same data may change in both applications nearly simultaneously (between two data synchronization sessions). In this case, the next data synchronization session will encounter two different versions of the same data. This situation is called "data change conflict".<br>The data change conflicts are resolved automatically by prioritizing one of the two available data versions; however, you can override the conflict resolution manually. For this, select a list item.</p>
+<ul><li>Description of the conflict resolution automatically chosen by the application will be displayed at the bottom of the list. 
+</li><li>To review differences between two data versions, click <strong>Show differences. </strong>
+</li><li>Before you decide which data version should be prioritized, you may want to review both versions. For this, click <strong>All actions - Show version created</strong> <strong>in this infobase</strong> or <strong>All actions - Show version created in other infobase. </strong>
+</li><li>To view the list item, click <strong>All actions - Change data. </strong>
+</li><li>Once you decide which data version to keep, click<strong> Confirm</strong> to preserve the current conflict resolution, or click <strong>Revise</strong> to change the conflict resolution. This will disable the item and assign the <strong>Reviewed</strong> attribute to it; the item will be hidden from the list by default. 
+</li><li>All resolved conflicts are hidden from the conflict list by default. To display these items, click <strong>All actions - Show resolved conflicts. </strong>
+</li><li>To re-review a resolved conflict and make changes to it, click <strong>All actions - Remove Reviewed attribute.</strong></li></ul><h3>Declined due to prohibited date</h3>
+<p>This list displays data declined because they belong to a date period for which any data import is prohibited. </p>
+<ul><li>To compare the declined data with the current application data, click Show differences (provided that current data is available in the application). 
+</li><li>To open an item, click <strong>All actions - Change. </strong>
+</li><li>To review the other data version, click <strong>Show rejected version. </strong>
+</li><li>To import data regardless of any data import prohibitions, click<strong> Accept version. </strong>
+</li><li>To hide the data from the list without making any decision on it<strong>, </strong>click <strong>Ignore</strong>.  
+</li><li>To display the ignored catalog items, click<strong> All actions - Show ignored. </strong>
+</li><li>To revert the ignored catalog item, click <strong>All actions - Do not ignore.</strong></li></ul></body></html>

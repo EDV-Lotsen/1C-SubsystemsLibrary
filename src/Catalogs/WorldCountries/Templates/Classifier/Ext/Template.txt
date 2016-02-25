@@ -1,246 +1,1750 @@
-﻿<Items Description="The countries of the world" Columns="Code,ShortName,Alpha2,Alpha3,FullName">
-	<Item Code="004" ShortName="AFGANISTAN" Alpha2="AF" Alpha3="AFG" FullName="The Islamic State Of Afghanistan"/>
-	<Item Code="008" ShortName="ALBANIA" Alpha2="AL" Alpha3="ALB" FullName="The Republic Of Albania"/>
-	<Item Code="010" ShortName="ANTARCTICA" Alpha2="AQ" Alpha3="ATA" FullName=""/>
-	<Item Code="012" ShortName="ALGERIA" Alpha2="DZ" Alpha3="DZA" FullName="The People's Democratic Republic Of Algeria"/>
-	<Item Code="016" ShortName="AMERICAN SAMOA" Alpha2="AS" Alpha3="ASM" FullName=""/>
-	<Item Code="020" ShortName="ANDORRA" Alpha2="AD" Alpha3="AND" FullName="The Principality Of Andorra"/>
-	<Item Code="024" ShortName="ANGOLA" Alpha2="AO" Alpha3="AGO" FullName="The Republic Of Angola"/>
-	<Item Code="028" ShortName="ANTIGUA AND BARBUDA" Alpha2="AG" Alpha3="ATG" FullName=""/>
-	<Item Code="031" ShortName="AZERBAIJAN" Alpha2="AZ" Alpha3="AZE" FullName="The Republic Of Azerbaijan"/>
-	<Item Code="032" ShortName="ARGENTINA" Alpha2="AR" Alpha3="ARG" FullName="The Republic of Argentine"/>
-	<Item Code="036" ShortName="AUSTRALIA" Alpha2="AU" Alpha3="AUS" FullName=""/>
-	<Item Code="040" ShortName="AUSTRIA" Alpha2="AT" Alpha3="AUT" FullName="The Republic Of Austria"/>
-	<Item Code="044" ShortName="THE BAHAMAS" Alpha2="BS" Alpha3="BHS" FullName="Commonwealth Of The Bahamas"/>
-	<Item Code="048" ShortName="BAHRAIN" Alpha2="BH" Alpha3="BHR" FullName="The Kingdom Of Bahrain"/>
-	<Item Code="050" ShortName="BANGLADESH" Alpha2="BD" Alpha3="BGD" FullName="People's Republic Of Bangladesh"/>
-	<Item Code="051" ShortName="ARMENIA" Alpha2="AM" Alpha3="ARM" FullName="The Republic Of Armenia"/>
-	<Item Code="052" ShortName="BARBADOS" Alpha2="BB" Alpha3="BRB" FullName=""/>
-	<Item Code="056" ShortName="BELGIUM" Alpha2="BE" Alpha3="BEL" FullName="The Kingdom Of Belgium"/>
-	<Item Code="060" ShortName="BERMUDA" Alpha2="BM" Alpha3="BMU" FullName=""/>
-	<Item Code="064" ShortName="BHUTAN" Alpha2="BT" Alpha3="BTN" FullName="The Kingdom Of Bhutan"/>
-	<Item Code="068" ShortName="BOLIVIA" Alpha2="BO" Alpha3="BOL" FullName="The Republic Of Bolivia"/>
-	<Item Code="070" ShortName="BOSNIA AND HERZEGOVINA" Alpha2="BA" Alpha3="BIH" FullName=""/>
-	<Item Code="072" ShortName="BOTSWANA" Alpha2="BW" Alpha3="BWA" FullName="The Republic Of Botswana"/>
-	<Item Code="074" ShortName="BOUVET ISLAND" Alpha2="BV" Alpha3="BVT" FullName=""/>
-	<Item Code="076" ShortName="BRAZIL" Alpha2="BR" Alpha3="BRA" FullName="The Federative Republic Of Brazil"/>
-	<Item Code="084" ShortName="BELIZE" Alpha2="BZ" Alpha3="BLZ" FullName=""/>
-	<Item Code="086" ShortName="BRITISH INDIAN OCEAN TERRITORY" Alpha2="IO" Alpha3="IOT" FullName=""/>
-	<Item Code="090" ShortName="SOLOMON ISLANDS" Alpha2="SB" Alpha3="SLB" FullName=""/>
-	<Item Code="092" ShortName="VIRGIN ISLANDS, BRITISH" Alpha2="VG" Alpha3="VGB" FullName="British Virgin Islands"/>
-	<Item Code="096" ShortName="BRUNEI-DARUSSALAM" Alpha2="BN" Alpha3="BRN" FullName=""/>
-	<Item Code="100" ShortName="BULGARIA" Alpha2="BG" Alpha3="BGR" FullName="The Republic Of Bulgaria"/>
-	<Item Code="104" ShortName="MYANMAR" Alpha2="MM" Alpha3="MMR" FullName="The Union Of Myanmar"/>
-	<Item Code="108" ShortName="BURUNDI" Alpha2="BI" Alpha3="BDI" FullName="The Republic Of Burundi"/>
-	<Item Code="112" ShortName="BELARUS" Alpha2="BY" Alpha3="BLR" FullName="The Republic Of Belarus"/>
-	<Item Code="116" ShortName="CAMBODIA" Alpha2="KH" Alpha3="KHM" FullName="The Kingdom Of Cambodia"/>
-	<Item Code="120" ShortName="CAMEROON" Alpha2="CM" Alpha3="CMR" FullName="The Republic Of Cameroon"/>
-	<Item Code="124" ShortName="CANADA" Alpha2="CA" Alpha3="CAN" FullName=""/>
-	<Item Code="132" ShortName="CAPE VERDE" Alpha2="CV" Alpha3="CPV" FullName="The Republic Of Cape Verde"/>
-	<Item Code="136" ShortName="CAYMAN ISLANDS" Alpha2="KY" Alpha3="CYM" FullName=""/>
-	<Item Code="140" ShortName="CENTRAL-AFRICAN REPUBLIC" Alpha2="CF" Alpha3="CAF" FullName=""/>
-	<Item Code="144" ShortName="SRI-LANKA" Alpha2="LK" Alpha3="LKA" FullName="Democratic Socialist Republic Of Sri Lanka"/>
-	<Item Code="148" ShortName="HAD" Alpha2="TD" Alpha3="TCD" FullName="The Republic Of Chad"/>
-	<Item Code="152" ShortName="CHILE" Alpha2="CL" Alpha3="CHL" FullName="The Republic Of Chile"/>
-	<Item Code="156" ShortName="CHINA" Alpha2="CN" Alpha3="CHN" FullName="People's Republic of China"/>
-	<Item Code="158" ShortName="TAIWAN (CHINA)" Alpha2="TW" Alpha3="TWN" FullName=""/>
-	<Item Code="162" ShortName="CHRISTMAS ISLAND" Alpha2="CX" Alpha3="CXR" FullName=""/>
-	<Item Code="166" ShortName="COCOS (KEELING) ISLANDS" Alpha2="CC" Alpha3="CCK" FullName=""/>
-	<Item Code="170" ShortName="COLOMBIA" Alpha2="CO" Alpha3="COL" FullName="The Republic Of Colombia"/>
-	<Item Code="174" ShortName="COMOROS" Alpha2="KM" Alpha3="COM" FullName="Conjunction The Union Of Comoros"/>
-	<Item Code="175" ShortName="MAYOTTE" Alpha2="YT" Alpha3="MYT" FullName=""/>
-	<Item Code="178" ShortName="CONGO" Alpha2="CG" Alpha3="COG" FullName="Republic Of The Congo"/>
-	<Item Code="180" ShortName="CONGO, DEMOCRATIC REPUBLIC" Alpha2="CD" Alpha3="COD" FullName="Democratic Republic Of The Congo"/>
-	<Item Code="184" ShortName="COOK ISLANDS" Alpha2="CK" Alpha3="COK" FullName=""/>
-	<Item Code="188" ShortName="COSTA-RICA" Alpha2="CR" Alpha3="CRI" FullName="The Republic Of Costa Rica"/>
-	<Item Code="191" ShortName="CROATIA" Alpha2="HR" Alpha3="HRV" FullName="The Republic Of Croatia"/>
-	<Item Code="192" ShortName="CUBA" Alpha2="CU" Alpha3="CUB" FullName="The Republic Of Cuba"/>
-	<Item Code="196" ShortName="CYPRUS" Alpha2="CY" Alpha3="CYP" FullName="The Republic Of Cyprus"/>
-	<Item Code="203" ShortName="CZECH REPUBLIC" Alpha2="CZ" Alpha3="CZE" FullName=""/>
-	<Item Code="204" ShortName="BENIN" Alpha2="BJ" Alpha3="BEN" FullName="The Republic Of Benin"/>
-	<Item Code="208" ShortName="DENMARK" Alpha2="DK" Alpha3="DNK" FullName="The Kingdom Of Denmark"/>
-	<Item Code="212" ShortName="DOMINICA" Alpha2="DM" Alpha3="DMA" FullName="The Commonwealth Of Dominica"/>
-	<Item Code="214" ShortName="DOMINICAN REPUBLIC" Alpha2="DO" Alpha3="DOM" FullName=""/>
-	<Item Code="218" ShortName="ECUADOR" Alpha2="EC" Alpha3="ECU" FullName="The Republic Of Ecuador"/>
-	<Item Code="222" ShortName="EL SALVADOR" Alpha2="SV" Alpha3="SLV" FullName="Republic Of El-Salvador"/>
-	<Item Code="226" ShortName="EQUATORIAL GUINEA" Alpha2="GQ" Alpha3="GNQ" FullName="The Republic Of Equatorial Guinea"/>
-	<Item Code="231" ShortName="ETHIOPIA" Alpha2="ET" Alpha3="ETH" FullName="The Federal Democratic Republic Of Ethiopia"/>
-	<Item Code="232" ShortName="ERITREA" Alpha2="ER" Alpha3="ERI" FullName=""/>
-	<Item Code="233" ShortName="ESTONIA" Alpha2="EE" Alpha3="EST" FullName="The Republic Of Estonia"/>
-	<Item Code="234" ShortName="FAROE ISLANDS" Alpha2="FO" Alpha3="FRO" FullName=""/>
-	<Item Code="238" ShortName="FALKLAND ISLANDS (MALVINAS)" Alpha2="FK" Alpha3="FLK" FullName=""/>
-	<Item Code="239" ShortName="SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS" Alpha2="GS" Alpha3="SGS" FullName=""/>
-	<Item Code="242" ShortName="FIJI" Alpha2="FJ" Alpha3="FJI" FullName="Republic Of The Fiji Islands"/>
-	<Item Code="246" ShortName="FINLAND" Alpha2="FI" Alpha3="FIN" FullName="The Republic Of Finland"/>
-	<Item Code="248" ShortName="ALAND ISLANDS" Alpha2="AX" Alpha3="ALA" FullName=""/>
-	<Item Code="250" ShortName="FRANCE" Alpha2="FR" Alpha3="FRA" FullName="The French Republic"/>
-	<Item Code="254" ShortName="FRENCH GUIANA" Alpha2="GF" Alpha3="GUF" FullName=""/>
-	<Item Code="258" ShortName="FRENCH POLYNESIA" Alpha2="PF" Alpha3="PYF" FullName=""/>
-	<Item Code="260" ShortName="FRENCH SOUTHERN TERRITORIES" Alpha2="TF" Alpha3="ATF" FullName=""/>
-	<Item Code="262" ShortName="DJIBOUTI" Alpha2="DJ" Alpha3="DJI" FullName="The Republic Of Djibouti"/>
-	<Item Code="266" ShortName="GABON" Alpha2="GA" Alpha3="GAB" FullName="The Gabonese Republic"/>
-	<Item Code="268" ShortName="GEORGIA" Alpha2="GE" Alpha3="GEO" FullName=""/>
-	<Item Code="270" ShortName="GAMBIA" Alpha2="GM" Alpha3="GMB" FullName="Republic Of The Gambia"/>
-	<Item Code="275" ShortName="PALESTINIAN TERRITORY, OCCUPIED" Alpha2="PS" Alpha3="PSE" FullName="The occupied Palestinian territory"/>
-	<Item Code="276" ShortName="GERMANY" Alpha2="DE" Alpha3="DEU" FullName="The Federal Republic Of Germany"/>
-	<Item Code="288" ShortName="GHANA" Alpha2="GH" Alpha3="GHA" FullName="The Republic Of Ghana"/>
-	<Item Code="292" ShortName="GIBRALTAR" Alpha2="GI" Alpha3="GIB" FullName=""/>
-	<Item Code="296" ShortName="KIRIBATI" Alpha2="KI" Alpha3="KIR" FullName="The Republic Of Kiribati"/>
-	<Item Code="300" ShortName="GREECE" Alpha2="GR" Alpha3="GRC" FullName="The republic of Greece"/>
-	<Item Code="304" ShortName="GREENLAND" Alpha2="GL" Alpha3="GRL" FullName=""/>
-	<Item Code="308" ShortName="GRENADA" Alpha2="GD" Alpha3="GRD" FullName=""/>
-	<Item Code="312" ShortName="GUADELOUPE" Alpha2="GP" Alpha3="GLP" FullName=""/>
-	<Item Code="316" ShortName="GUAM" Alpha2="GU" Alpha3="GUM" FullName=""/>
-	<Item Code="320" ShortName="GUATEMALA" Alpha2="GT" Alpha3="GTM" FullName="The Republic Of Guatemala"/>
-	<Item Code="324" ShortName="GUINEA" Alpha2="GN" Alpha3="GIN" FullName="The Republic Of Guinea"/>
-	<Item Code="328" ShortName="GUYANA" Alpha2="GY" Alpha3="GUY" FullName="The Republic Of Guyana"/>
-	<Item Code="332" ShortName="HAITI" Alpha2="HT" Alpha3="HTI" FullName="The Republic Of Haiti"/>
-	<Item Code="334" ShortName="HEARD ISLAND AND MCDONALD ISLANDS" Alpha2="HM" Alpha3="HMD" FullName=""/>
-	<Item Code="336" ShortName="HOLY SEE (VATICAN CITY STATE)" Alpha2="VA" Alpha3="VAT" FullName=""/>
-	<Item Code="340" ShortName="HONDURAS" Alpha2="HN" Alpha3="HND" FullName="The Republic Of Honduras"/>
-	<Item Code="344" ShortName="HONG KONG" Alpha2="HK" Alpha3="HKG" FullName="Hong Kong, China special administrative regiln"/>
-	<Item Code="348" ShortName="HUNGARY" Alpha2="HU" Alpha3="HUN" FullName="The Republic Of Hungary"/>
-	<Item Code="352" ShortName="ICELAND" Alpha2="IS" Alpha3="ISL" FullName="The Republic Of Iceland"/>
-	<Item Code="356" ShortName="INDIA" Alpha2="IN" Alpha3="IND" FullName="The Republic Of India"/>
-	<Item Code="360" ShortName="INDONESIA" Alpha2="ID" Alpha3="IDN" FullName="The Republic Of Indonesia"/>
-	<Item Code="364" ShortName="IRAN, ISLAMIC REPUBLIC" Alpha2="IR" Alpha3="IRN" FullName="The Islamic Republic Of Iran"/>
-	<Item Code="368" ShortName="IRAQ" Alpha2="IQ" Alpha3="IRQ" FullName="The Republic Of Iraq"/>
-	<Item Code="372" ShortName="IRELAND" Alpha2="IE" Alpha3="IRL" FullName=""/>
-	<Item Code="376" ShortName="IZRAEL" Alpha2="IL" Alpha3="ISR" FullName="The State Of Israel"/>
-	<Item Code="380" ShortName="ITALY" Alpha2="IT" Alpha3="ITA" FullName="The Republic of Italy"/>
-	<Item Code="384" ShortName="COTE D'IVUAR" Alpha2="CI" Alpha3="CIV" FullName="The Republic of Cote D'Ivuar"/>
-	<Item Code="388" ShortName="JAMAICA" Alpha2="JM" Alpha3="JAM" FullName=""/>
-	<Item Code="392" ShortName="JAPAN" Alpha2="JP" Alpha3="JPN" FullName=""/>
-	<Item Code="398" ShortName="KAZAKHSTAN" Alpha2="KZ" Alpha3="KAZ" FullName="The Republic Of Kazakhstan"/>
-	<Item Code="400" ShortName="JORDAN" Alpha2="JO" Alpha3="JOR" FullName="The Hashemite Kingdom Of Jordan"/>
-	<Item Code="404" ShortName="KENUA" Alpha2="KE" Alpha3="KEN" FullName="Republic Of Kenya"/>
-	<Item Code="408" ShortName="KOREA, DEMOCRATIC PEOPLE'S REPUBLIC" Alpha2="KP" Alpha3="PRK" FullName="The Democratic People's Republic Of Korea"/>
-	<Item Code="410" ShortName="KOREA" Alpha2="KR" Alpha3="KOR" FullName="Republic Of Korea"/>
-	<Item Code="414" ShortName="KUWAIT" Alpha2="KW" Alpha3="KWT" FullName="The State Of Kuwait"/>
-	<Item Code="417" ShortName="KYRGYZSTAN" Alpha2="KG" Alpha3="KGZ" FullName="The Kyrgyz Republic"/>
-	<Item Code="418" ShortName="LAOS PEOPLE'S DEMOCRATIC REPUBLIC" Alpha2="LA" Alpha3="LAO" FullName=""/>
-	<Item Code="422" ShortName="LEBANON" Alpha2="LB" Alpha3="LBN" FullName="The Lebanese Republic"/>
-	<Item Code="426" ShortName="LESOTHO" Alpha2="LS" Alpha3="LSO" FullName="The Kingdom Of Lesotho"/>
-	<Item Code="428" ShortName="LATVIA" Alpha2="LV" Alpha3="LVA" FullName="The Republic Of Latvia"/>
-	<Item Code="430" ShortName="LIBERIA" Alpha2="LR" Alpha3="LBR" FullName="Republic Of Liberia"/>
-	<Item Code="434" ShortName="THE LIBYAN ARAB JAMAHIRIYA" Alpha2="LY" Alpha3="LBY" FullName="The Socialist People's Libyan Arab Jamahiriya"/>
-	<Item Code="438" ShortName="LIECHTENSTEIN" Alpha2="LI" Alpha3="LIE" FullName="The Principality Of Liechtenstein"/>
-	<Item Code="440" ShortName="LITHUANIA" Alpha2="LT" Alpha3="LTU" FullName="The Republic Of Lithuania"/>
-	<Item Code="442" ShortName="LUXEMBOURG" Alpha2="LU" Alpha3="LUX" FullName="The Grand Duchy Of Luxembourg"/>
-	<Item Code="446" ShortName="MACAU" Alpha2="MO" Alpha3="MAC" FullName="The Chinese Special Administrative State Macau"/>
-	<Item Code="450" ShortName="MADAGASCAR" Alpha2="MG" Alpha3="MDG" FullName="The Republic Of Madagascar"/>
-	<Item Code="454" ShortName="MALAWI" Alpha2="MW" Alpha3="MWI" FullName="The Republic Of Malawi"/>
-	<Item Code="458" ShortName="MALAYSIA" Alpha2="MY" Alpha3="MYS" FullName=""/>
-	<Item Code="462" ShortName="MALDIVES" Alpha2="MV" Alpha3="MDV" FullName="The Republic Of Maldives"/>
-	<Item Code="466" ShortName="MALI" Alpha2="ML" Alpha3="MLI" FullName="The Republic Of Mali"/>
-	<Item Code="470" ShortName="MALTA" Alpha2="MT" Alpha3="MLT" FullName="The Republic Of Malta"/>
-	<Item Code="474" ShortName="MARTINIQUE" Alpha2="MQ" Alpha3="MTQ" FullName=""/>
-	<Item Code="478" ShortName="MAURITANIA" Alpha2="MR" Alpha3="MRT" FullName="The Islamic Republic Of Mauritania"/>
-	<Item Code="480" ShortName="MAURITIUS" Alpha2="MU" Alpha3="MUS" FullName="The Republic Of Mauritius"/>
-	<Item Code="484" ShortName="MEXICO" Alpha2="MX" Alpha3="MEX" FullName="The United Mexican States"/>
-	<Item Code="492" ShortName="MONACO" Alpha2="MC" Alpha3="MCO" FullName="Principality Of Monaco"/>
-	<Item Code="496" ShortName="MONGOLIA" Alpha2="MN" Alpha3="MNG" FullName=""/>
-	<Item Code="498" ShortName="MOLDOVA, REPUBLIC" Alpha2="MD" Alpha3="MDA" FullName="The Republic Of Moldova"/>
-	<Item Code="499" ShortName="MONTENEGRO" Alpha2="ME" Alpha3="MNE" FullName="The Republic Of Montenegro"/>
-	<Item Code="500" ShortName="MONTSERRAT" Alpha2="MS" Alpha3="MSR" FullName=""/>
-	<Item Code="504" ShortName="MOROCCO" Alpha2="MA" Alpha3="MAR" FullName="The Kingdom Of Morocco"/>
-	<Item Code="508" ShortName="MOZAMBIQUE" Alpha2="MZ" Alpha3="MOZ" FullName="The Republic Of Mozambique"/>
-	<Item Code="512" ShortName="OMAN" Alpha2="OM" Alpha3="OMN" FullName="The Republic Of Mozambique"/>
-	<Item Code="516" ShortName="NAMIBIA" Alpha2="NA" Alpha3="NAM" FullName="Republic Of Namibia"/>
-	<Item Code="520" ShortName="NAURU" Alpha2="NR" Alpha3="NRU" FullName="The Republic Of Nauru"/>
-	<Item Code="524" ShortName="NEPAL" Alpha2="NP" Alpha3="NPL" FullName="The Kingdom Of Nepal"/>
-	<Item Code="528" ShortName="NETHERLAND" Alpha2="NL" Alpha3="NLD" FullName="The Kingdom Of The Netherlands"/>
-	<Item Code="530" ShortName="NETHERLANDS ANTILLES" Alpha2="AN" Alpha3="ANT" FullName=""/>
-	<Item Code="533" ShortName="AUSDA" Alpha2="AW" Alpha3="ABW" FullName=""/>
-	<Item Code="540" ShortName="NEW CALEDONIA" Alpha2="NC" Alpha3="NCL" FullName=""/>
-	<Item Code="548" ShortName="VANUATU" Alpha2="VU" Alpha3="VUT" FullName="Republic Vanuatu"/>
-	<Item Code="554" ShortName="NEW ZELAND" Alpha2="NZ" Alpha3="NZL" FullName=""/>
-	<Item Code="558" ShortName="NICARAGUA" Alpha2="NI" Alpha3="NIC" FullName="The Republic Of Nicaragua"/>
-	<Item Code="562" ShortName="NIGER" Alpha2="NE" Alpha3="NER" FullName="Republic Of Niger"/>
-	<Item Code="566" ShortName="NIGERIA" Alpha2="NG" Alpha3="NGA" FullName="The Federal Republic Of Nigeria"/>
-	<Item Code="570" ShortName="NIUE" Alpha2="NU" Alpha3="NIU" FullName="Republic Of Niue"/>
-	<Item Code="574" ShortName="NORFOLK ISLAND" Alpha2="NF" Alpha3="NFK" FullName=""/>
-	<Item Code="578" ShortName="Norway" Alpha2="NO" Alpha3="NOR" FullName="The Kingdom Of Norway"/>
-	<Item Code="580" ShortName="NORTHERN MARIANA ISLANDS" Alpha2="MP" Alpha3="MNP" FullName="Commonwealth of the Northern Mariana Islands"/>
-	<Item Code="581" ShortName="MINOR OUTLYING ISLANDS UNITED STATES" Alpha2="UM" Alpha3="UMI" FullName=""/>
-	<Item Code="583" ShortName="MICRONESIA, FEDERATED STATES" Alpha2="FM" Alpha3="FSM" FullName="The Federated States of Micronesia"/>
-	<Item Code="584" ShortName="MARSHALL ISLANDS" Alpha2="MH" Alpha3="MHL" FullName="The Republic Of The Marshall Islands"/>
-	<Item Code="585" ShortName="PALAU" Alpha2="PW" Alpha3="PLW" FullName="The Republic Of Palau"/>
-	<Item Code="586" ShortName="PAKISTAN" Alpha2="PK" Alpha3="PAK" FullName="Islamic Republic of Pakistan"/>
-	<Item Code="591" ShortName="PANAMA" Alpha2="PA" Alpha3="PAN" FullName="The Republic Of Panama"/>
-	<Item Code="598" ShortName="PAPUA NEW GUINEA" Alpha2="PG" Alpha3="PNG" FullName=""/>
-	<Item Code="600" ShortName="PARAGUAY" Alpha2="PY" Alpha3="PRY" FullName="The Republic Of Paraguay"/>
-	<Item Code="604" ShortName="PERU" Alpha2="PE" Alpha3="PER" FullName="The Republic Of Peru"/>
-	<Item Code="608" ShortName="PHILIPPINES" Alpha2="PH" Alpha3="PHL" FullName="Republic of the Philippines"/>
-	<Item Code="612" ShortName="THE PITCAIRN ISLANDS" Alpha2="PN" Alpha3="PCN" FullName=""/>
-	<Item Code="616" ShortName="POLAND" Alpha2="PL" Alpha3="POL" FullName="The Republic Of Poland"/>
-	<Item Code="620" ShortName="PORTUGAL" Alpha2="PT" Alpha3="PRT" FullName="The Portuguese Republic"/>
-	<Item Code="624" ShortName="GUINEA-BISSAU" Alpha2="GW" Alpha3="GNB" FullName="The Republic Of Guinea-Bissau"/>
-	<Item Code="626" ShortName="TIMOR-LESTE" Alpha2="TL" Alpha3="TLS" FullName="The Democratic Republic Of Timor-Leste"/>
-	<Item Code="630" ShortName="PUERTO RICO" Alpha2="PR" Alpha3="PRI" FullName=""/>
-	<Item Code="634" ShortName="QATAR" Alpha2="QA" Alpha3="QAT" FullName="The State Of Qatar"/>
-	<Item Code="638" ShortName="REUNION" Alpha2="RE" Alpha3="REU" FullName=""/>
-	<Item Code="642" ShortName="ROMANIA" Alpha2="RO" Alpha3="ROU" FullName=""/>
-	<Item Code="643" ShortName="RUSSIA" Alpha2="RU" Alpha3="RUS" FullName="The Russian Federation"/>
-	<Item Code="646" ShortName="RWANDA" Alpha2="RW" Alpha3="RWA" FullName="The Rwandese Republic"/>
-	<Item Code="654" ShortName="SAINT HELENA" Alpha2="SH" Alpha3="SHN" FullName=""/>
-	<Item Code="659" ShortName="SAINT KITTS AND NEVIS" Alpha2="KN" Alpha3="KNA" FullName=""/>
-	<Item Code="660" ShortName="ANGUILLA" Alpha2="AI" Alpha3="AIA" FullName=""/>
-	<Item Code="662" ShortName="SAINT LUCIA" Alpha2="LC" Alpha3="LCA" FullName=""/>
-	<Item Code="666" ShortName="SAINT PIERRE AND MIQUELON" Alpha2="PM" Alpha3="SPM" FullName=""/>
-	<Item Code="670" ShortName="SAINT VINCENT AND THE GRENADINES" Alpha2="VC" Alpha3="VCT" FullName=""/>
-	<Item Code="674" ShortName="SAN MARINO" Alpha2="SM" Alpha3="SMR" FullName="The Republic Of San Marino"/>
-	<Item Code="678" ShortName="SAO TOME AND PRINCIPE" Alpha2="ST" Alpha3="STP" FullName="Democratic Republic of Sao Tome and Principe"/>
-	<Item Code="682" ShortName="SAUDI ARABIA" Alpha2="SA" Alpha3="SAU" FullName="The Kingdom Of Saudi Arabia"/>
-	<Item Code="686" ShortName="SENEGAL" Alpha2="SN" Alpha3="SEN" FullName="The Republic Of Senegal"/>
-	<Item Code="688" ShortName="SERBIA" Alpha2="RS" Alpha3="SRB" FullName="The Republic Of Serbia"/>
-	<Item Code="690" ShortName="SEYCHELLES" Alpha2="SC" Alpha3="SYC" FullName="The Republic Of Seychelles"/>
-	<Item Code="694" ShortName="SIERRA LEONE" Alpha2="SL" Alpha3="SLE" FullName="The Republic Of Sierra Leone"/>
-	<Item Code="702" ShortName="SINGAPORE" Alpha2="SG" Alpha3="SGP" FullName="Republic Of Singapore"/>
-	<Item Code="703" ShortName="SLOVAKIA" Alpha2="SK" Alpha3="SVK" FullName="The Slovak Republic"/>
-	<Item Code="704" ShortName="VIETNAM" Alpha2="VN" Alpha3="VNM" FullName="The Socialist Republic Of Vietnam"/>
-	<Item Code="705" ShortName="SLOVENIA" Alpha2="SI" Alpha3="SVN" FullName="The Republic Of Slovenia"/>
-	<Item Code="706" ShortName="SOMALIA" Alpha2="SO" Alpha3="SOM" FullName="The Republic Of Somalia"/>
-	<Item Code="710" ShortName="SOUTH AFRICA" Alpha2="ZA" Alpha3="ZAF" FullName="The Republic Of South Africa"/>
-	<Item Code="716" ShortName="ZIMBABWE" Alpha2="ZW" Alpha3="ZWE" FullName="The Republic Of Zimbabwe"/>
-	<Item Code="724" ShortName="SPAIN" Alpha2="ES" Alpha3="ESP" FullName="The Kingdom Of Spain"/>
-	<Item Code="732" ShortName="WESTERN SAHARA" Alpha2="EH" Alpha3="ESH" FullName=""/>
-	<Item Code="736" ShortName="SUDAN" Alpha2="SD" Alpha3="SDN" FullName="Republic Of Sudan"/>
-	<Item Code="740" ShortName="SURINAME" Alpha2="SR" Alpha3="SUR" FullName="The Republic Of Suriname"/>
-	<Item Code="744" ShortName="SVALBARD YIYANG MAYEN" Alpha2="SJ" Alpha3="SJM" FullName=""/>
-	<Item Code="748" ShortName="SWAZILAND" Alpha2="SZ" Alpha3="SWZ" FullName="The Kingdom Of Swaziland"/>
-	<Item Code="752" ShortName="SWEDEN" Alpha2="SE" Alpha3="SWE" FullName="The Kingdom Of Sweden"/>
-	<Item Code="756" ShortName="SWITZERLAND" Alpha2="CH" Alpha3="CHE" FullName="The Swiss Confederation"/>
-	<Item Code="760" ShortName="THE SYRIAN ARAB REPUBLIC" Alpha2="SY" Alpha3="SYR" FullName=""/>
-	<Item Code="762" ShortName="TAJIKISTAN" Alpha2="TJ" Alpha3="TJK" FullName="The Republic Of Tajikistan"/>
-	<Item Code="764" ShortName="THAILAND" Alpha2="TH" Alpha3="THA" FullName="The Kingdom Of Thailand"/>
-	<Item Code="768" ShortName="TOGO" Alpha2="TG" Alpha3="TGO" FullName="The Togolese Republic"/>
-	<Item Code="772" ShortName="TOKELAU" Alpha2="TK" Alpha3="TKL" FullName=""/>
-	<Item Code="776" ShortName="TONGA" Alpha2="TO" Alpha3="TON" FullName="The Kingdom Of Tonga"/>
-	<Item Code="780" ShortName="TRINIDADI TOBAGO" Alpha2="TT" Alpha3="TTO" FullName="The Republic of Trinidad and Tobago"/>
-	<Item Code="784" ShortName="UAE" Alpha2="AE" Alpha3="ARE" FullName=""/>
-	<Item Code="788" ShortName="TUNISIA" Alpha2="TN" Alpha3="TUN" FullName="The Republic Of Tunisia"/>
-	<Item Code="792" ShortName="TURKEY" Alpha2="TR" Alpha3="TUR" FullName="The Republic Of Turkey"/>
-	<Item Code="795" ShortName="TURKMENISTAN" Alpha2="TM" Alpha3="TKM" FullName="Turkmenistan"/>
-	<Item Code="796" ShortName="TURKS AND CAICOS ISLANDS" Alpha2="TC" Alpha3="TCA" FullName=""/>
-	<Item Code="798" ShortName="TUVALU" Alpha2="TV" Alpha3="TUV" FullName=""/>
-	<Item Code="800" ShortName="UGANDA" Alpha2="UG" Alpha3="UGA" FullName="The Republic Of Uganda"/>
-	<Item Code="804" ShortName="UKRAINE" Alpha2="UA" Alpha3="UKR" FullName=""/>
-	<Item Code="807" ShortName="REPUBLIC OF MACEDONIA" Alpha2="MK" Alpha3="MKD" FullName=""/>
-	<Item Code="818" ShortName="EGYPT" Alpha2="EG" Alpha3="EGY" FullName="Arab Republic Of Egypt"/>
-	<Item Code="826" ShortName="THE UNITED KINGDOM" Alpha2="GB" Alpha3="GBR" FullName="United Kingdom of Great Britain and Northern Ireland"/>
-	<Item Code="831" ShortName="GUERNSEY" Alpha2="GG" Alpha3="GGY" FullName=""/>
-	<Item Code="832" ShortName="JERSEY" Alpha2="JE" Alpha3="JEY" FullName=""/>
-	<Item Code="833" ShortName="MEN ISLAND" Alpha2="IM" Alpha3="IMN" FullName=""/>
-	<Item Code="834" ShortName="TANZANIA, UNITED REPUBLIC" Alpha2="TZ" Alpha3="TZA" FullName="United Republic Of Tanzania"/>
-	<Item Code="840" ShortName="USA" Alpha2="US" Alpha3="USA" FullName="The United States Of America"/>
-	<Item Code="850" ShortName="VIRGIN ISLANDS, UNITED STATES" Alpha2="VI" Alpha3="VIR" FullName="The United States Virgin Islands"/>
-	<Item Code="854" ShortName="BURKINA-FASO" Alpha2="BF" Alpha3="BFA" FullName=""/>
-	<Item Code="858" ShortName="URUGUAY" Alpha2="UY" Alpha3="URY" FullName="The Eastern Republic Of Uruguay"/>
-	<Item Code="860" ShortName="UZBEKISTAN" Alpha2="UZ" Alpha3="UZB" FullName="The Republic Of Uzbekistan"/>
-	<Item Code="862" ShortName="VENEZUELA" Alpha2="VE" Alpha3="VEN" FullName="The Bolivarian Republic Of Venezuela"/>
-	<Item Code="876" ShortName="WALLIS AND FUTUNA" Alpha2="WF" Alpha3="WLF" FullName=""/>
-	<Item Code="882" ShortName="SAMOA" Alpha2="WS" Alpha3="WSM" FullName="Independent State Of Samoa"/>
-	<Item Code="887" ShortName="YEMEN" Alpha2="YE" Alpha3="YEM" FullName="The Republic Of Yemen"/>
-	<Item Code="894" ShortName="ZAMBIA" Alpha2="ZM" Alpha3="ZMB" FullName="The Republic Of Zambia"/>
-</Items>
+﻿<ValueTable xmlns="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ValueTable">
+	
+	<column>
+		<Name xsi:type="xs:string">Description</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>60</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+
+	<column>
+		<Name xsi:type="xs:string">AlphaCode2</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>2</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+
+	<column>
+		<Name xsi:type="xs:string">AlphaCode3</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>3</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+
+	<column>
+		<Name xsi:type="xs:string">Code</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>3</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+	
+	<column>
+		<Name xsi:type="xs:string">LongDescription</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>100</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+
+	<column>
+		<Name xsi:type="xs:string">Obsolete</Name>
+		<ValueType>
+			<Type>xs:boolean</Type>
+		</ValueType>
+	</column>
+
+	<index>
+		<column>Code</column>
+	</index>
+	<index>
+		<column>Description</column>
+	</index>
+	
+	<row>
+		<Value>ABKHAZIA</Value>
+		<Value>AB</Value>
+		<Value>ABH</Value>
+		<Value>895</Value>
+		<Value>Republic of Abkhazia</Value>
+	</row>
+	<row>
+		<Value>AUSTRALIA</Value>
+		<Value>AU</Value>
+		<Value>AUS</Value>
+		<Value>036</Value>
+	</row>
+	<row>
+		<Value>AUSTRIA</Value>
+		<Value>AT</Value>
+		<Value>AUT</Value>
+		<Value>040</Value>
+		<Value>Republic of Austria</Value>
+	</row>
+	<row>
+		<Value>AZERBAIJAN</Value>
+		<Value>AZ</Value>
+		<Value>AZE</Value>
+		<Value>031</Value>
+		<Value>Republic of Azerbaijan</Value>
+	</row>
+	<row>
+		<Value>ALBANIA</Value>
+		<Value>AL</Value>
+		<Value>ALB</Value>
+		<Value>008</Value>
+		<Value>Republic of Albania</Value>
+	</row>
+	<row>
+		<Value>ALGERIA</Value>
+		<Value>DZ</Value>
+		<Value>DZA</Value>
+		<Value>012</Value>
+		<Value>People's Democratic Republic of Algeria</Value>
+	</row>
+	<row>
+		<Value>AMERICAN SAMOA</Value>
+		<Value>AS</Value>
+		<Value>ASM</Value>
+		<Value>016</Value>
+	</row>
+	<row>
+		<Value>ANGUILLA</Value>
+		<Value>AI</Value>
+		<Value>AIA</Value>
+		<Value>660</Value>
+	</row>
+	<row>
+		<Value>ANGOLA</Value>
+		<Value>AO</Value>
+		<Value>AGO</Value>
+		<Value>024</Value>
+		<Value>Republic of Angola</Value>
+	</row>
+	<row>
+		<Value>ANDORRA</Value>
+		<Value>AD</Value>
+		<Value>AND</Value>
+		<Value>020</Value>
+		<Value>Principality of Andorra</Value>
+	</row>
+	<row>
+		<Value>ANTARCTICA</Value>
+		<Value>AQ</Value>
+		<Value>ATA</Value>
+		<Value>010</Value>
+	</row>
+	<row>
+		<Value>ANTIGUA AND BARBUDA</Value>
+		<Value>AG</Value>
+		<Value>ATG</Value>
+		<Value>028</Value>
+	</row>
+	<row>
+		<Value>ARGENTINA</Value>
+		<Value>AR</Value>
+		<Value>ARG</Value>
+		<Value>032</Value>
+		<Value>Argentine Republic</Value>
+	</row>
+	<row>
+		<Value>ARMENIA</Value>
+		<Value>AM</Value>
+		<Value>ARM</Value>
+		<Value>051</Value>
+		<Value>Republic of Armenia</Value>
+	</row>
+	<row>
+		<Value>ARUBA</Value>
+		<Value>AW</Value>
+		<Value>ABW</Value>
+		<Value>533</Value>
+	</row>
+	<row>
+		<Value>AFGHANISTAN</Value>
+		<Value>AF</Value>
+		<Value>AFG</Value>
+		<Value>004</Value>
+		<Value>Islamic Republic of Afghanistan</Value>
+	</row>
+	<row>
+		<Value>BAHAMAS</Value>
+		<Value>BS</Value>
+		<Value>BHS</Value>
+		<Value>044</Value>
+		<Value>Commonwealth of the Bahamas</Value>
+	</row>
+	<row>
+		<Value>BANGLADESH</Value>
+		<Value>BD</Value>
+		<Value>BGD</Value>
+		<Value>050</Value>
+		<Value>People's Republic of Bangladesh</Value>
+	</row>
+	<row>
+		<Value>BARBADOS</Value>
+		<Value>BB</Value>
+		<Value>BRB</Value>
+		<Value>052</Value>
+	</row>
+	<row>
+		<Value>BAHRAIN</Value>
+		<Value>BH</Value>
+		<Value>BHR</Value>
+		<Value>048</Value>
+		<Value>Kingdom of Bahrain</Value>
+	</row>
+	<row>
+		<Value>BELARUS</Value>
+		<Value>BY</Value>
+		<Value>BLR</Value>
+		<Value>112</Value>
+		<Value>Republic of Belarus</Value>
+	</row>
+	<row>
+		<Value>BELIZE</Value>
+		<Value>BZ</Value>
+		<Value>BLZ</Value>
+		<Value>084</Value>
+	</row>
+	<row>
+		<Value>BELGIUM</Value>
+		<Value>BE</Value>
+		<Value>BEL</Value>
+		<Value>056</Value>
+		<Value>Kingdom of Belgium</Value>
+	</row>
+	<row>
+		<Value>BENIN</Value>
+		<Value>BJ</Value>
+		<Value>BEN</Value>
+		<Value>204</Value>
+		<Value>Republic of Benin</Value>
+	</row>
+	<row>
+		<Value>BERMUDAS</Value>
+		<Value>BM</Value>
+		<Value>BMU</Value>
+		<Value>060</Value>
+	</row>
+	<row>
+		<Value>BULGARIA</Value>
+		<Value>BG</Value>
+		<Value>BGR</Value>
+		<Value>100</Value>
+		<Value>Republic of Bulgaria</Value>
+	</row>
+	<row>
+		<Value>BOLIVIA, PLURINATIONAL STATE</Value>
+		<Value>BO</Value>
+		<Value>BOL</Value>
+		<Value>068</Value>
+		<Value>Plurinational State of Bolivia</Value>
+	</row>
+	<row>
+		<Value>BONAIRE, SINT EUSTATIUS, AND SABA</Value>
+		<Value>BQ</Value>
+		<Value>BES</Value>
+		<Value>535</Value>
+	</row>
+	<row>
+		<Value>BOSNIA AND HERZEGOVINA</Value>
+		<Value>BA</Value>
+		<Value>BIH</Value>
+		<Value>070</Value>
+	</row>
+	<row>
+		<Value>BOTSWANA</Value>
+		<Value>BW</Value>
+		<Value>BWA</Value>
+		<Value>072</Value>
+		<Value>Republic of Botswana </Value>
+	</row>
+	<row>
+		<Value>BRAZIL</Value>
+		<Value>BR</Value>
+		<Value>BRA</Value>
+		<Value>076</Value>
+		<Value>Federative Republic of Brazil</Value>
+	</row>
+	<row>
+		<Value>BRITISH INDIAN OCEAN TERRITORY</Value>
+		<Value>IO</Value>
+		<Value>IOT</Value>
+		<Value>086</Value>
+	</row>
+	<row>
+		<Value>BRUNEI DARUSSALAM</Value>
+		<Value>BN</Value>
+		<Value>BRN</Value>
+		<Value>096</Value>
+	</row>
+	<row>
+		<Value>BURKINA FASO</Value>
+		<Value>BF</Value>
+		<Value>BFA</Value>
+		<Value>854</Value>
+	</row>
+	<row>
+		<Value>BURUNDI</Value>
+		<Value>BI</Value>
+		<Value>BDI</Value>
+		<Value>108</Value>
+		<Value>Republic of Burundi</Value>
+	</row>
+	<row>
+		<Value>BUTANE</Value>
+		<Value>BT</Value>
+		<Value>BTN</Value>
+		<Value>064</Value>
+		<Value>Kingdom of Bhutan</Value>
+	</row>
+	<row>
+		<Value>VANUATU</Value>
+		<Value>VU</Value>
+		<Value>VUT</Value>
+		<Value>548</Value>
+		<Value>Republic of Vanuatu</Value>
+	</row>
+	<row>
+		<Value>HUNGARY</Value>
+		<Value>HU</Value>
+		<Value>HUN</Value>
+		<Value>348</Value>
+		<Value>Hungary</Value>
+	</row>
+	<row>
+		<Value>VENEZUELA, BOLIVARIAN REPUBLIC</Value>
+		<Value>VE</Value>
+		<Value>VEN</Value>
+		<Value>862</Value>
+		<Value>Bolivarian Republic of Venezuela</Value>
+	</row>
+	<row>
+		<Value>VIRGIN ISLANDS, BRITISH</Value>
+		<Value>VG</Value>
+		<Value>VGB</Value>
+		<Value>092</Value>
+		<Value>British Virgin Islands</Value>
+	</row>
+	<row>
+		<Value>VIRGIN ISLANDS OF THE UNITED STATES</Value>
+		<Value>VI</Value>
+		<Value>VIR</Value>
+		<Value>850</Value>
+		<Value>Virgin Islands of the United States</Value>
+	</row>
+	<row>
+		<Value>EAST TIMOR</Value>
+		<Value>TL</Value>
+		<Value>TLS</Value>
+		<Value>626</Value>
+		<Value>Democratic Republic of Timor-Leste</Value>
+	</row>
+	<row>
+		<Value>VIETNAM</Value>
+		<Value>VN</Value>
+		<Value>VNM</Value>
+		<Value>704</Value>
+		<Value>Socialist Republic of Vietnam</Value>
+	</row>
+	<row>
+		<Value>GABON</Value>
+		<Value>GA</Value>
+		<Value>GAB</Value>
+		<Value>266</Value>
+		<Value>Gabonese Republic</Value>
+	</row>
+	<row>
+		<Value>HAITI</Value>
+		<Value>HT</Value>
+		<Value>HTI</Value>
+		<Value>332</Value>
+		<Value>Republic of Haiti</Value>
+	</row>
+	<row>
+		<Value>GUYANA</Value>
+		<Value>GY</Value>
+		<Value>GUY</Value>
+		<Value>328</Value>
+		<Value>Co-operative Republic of Guyana</Value>
+	</row>
+	<row>
+		<Value>GAMBIA</Value>
+		<Value>GM</Value>
+		<Value>GMB</Value>
+		<Value>270</Value>
+		<Value>Republic of the Gambia</Value>
+	</row>
+	<row>
+		<Value>GHANA</Value>
+		<Value>GH</Value>
+		<Value>GHA</Value>
+		<Value>288</Value>
+		<Value>Republic of Ghana</Value>
+	</row>
+	<row>
+		<Value>GUADELOUPE</Value>
+		<Value>GP</Value>
+		<Value>GLP</Value>
+		<Value>312</Value>
+	</row>
+	<row>
+		<Value>GUATEMALA</Value>
+		<Value>GT</Value>
+		<Value>GTM</Value>
+		<Value>320</Value>
+		<Value>Republic of Guatemala</Value>
+	</row>
+	<row>
+		<Value>GUINEA</Value>
+		<Value>GN</Value>
+		<Value>GIN</Value>
+		<Value>324</Value>
+		<Value>Republic of Guinea</Value>
+	</row>
+	<row>
+		<Value>GUINEA-BISSAU</Value>
+		<Value>GW</Value>
+		<Value>GNB</Value>
+		<Value>624</Value>
+		<Value>Republic of Guinea-Bissau</Value>
+	</row>
+	<row>
+		<Value>GERMANY</Value>
+		<Value>DE</Value>
+		<Value>DEU</Value>
+		<Value>276</Value>
+		<Value>Federal Republic of Germany</Value>
+	</row>
+	<row>
+		<Value>GUERNSEY</Value>
+		<Value>GG</Value>
+		<Value>GGY</Value>
+		<Value>831</Value>
+	</row>
+	<row>
+		<Value>GIBRALTAR</Value>
+		<Value>GI</Value>
+		<Value>GIB</Value>
+		<Value>292</Value>
+	</row>
+	<row>
+		<Value>HONDURAS</Value>
+		<Value>HN</Value>
+		<Value>HND</Value>
+		<Value>340</Value>
+		<Value>Republic of Honduras</Value>
+	</row>
+	<row>
+		<Value>HONG KONG</Value>
+		<Value>HK</Value>
+		<Value>HKG</Value>
+		<Value>344</Value>
+		<Value>Hong Kong, special administrative region of China</Value>
+	</row>
+	<row>
+		<Value>GRENADA</Value>
+		<Value>GD</Value>
+		<Value>GRD</Value>
+		<Value>308</Value>
+	</row>
+	<row>
+		<Value>GREENLAND</Value>
+		<Value>GL</Value>
+		<Value>GRL</Value>
+		<Value>304</Value>
+	</row>
+	<row>
+		<Value>GREECE</Value>
+		<Value>GR</Value>
+		<Value>GRC</Value>
+		<Value>300</Value>
+		<Value>Hellenic Republic</Value>
+	</row>
+	<row>
+		<Value>GEORGIA</Value>
+		<Value>GE</Value>
+		<Value>GEO</Value>
+		<Value>268</Value>
+	</row>
+	<row>
+		<Value>GUAM</Value>
+		<Value>GU</Value>
+		<Value>GUM</Value>
+		<Value>316</Value>
+	</row>
+	<row>
+		<Value>DENMARK</Value>
+		<Value>DK</Value>
+		<Value>DNK</Value>
+		<Value>208</Value>
+		<Value>Kingdom of Denmark </Value>
+	</row>
+	<row>
+		<Value>JERSEY</Value>
+		<Value>JE</Value>
+		<Value>JEY</Value>
+		<Value>832</Value>
+	</row>
+	<row>
+		<Value>DJIBOUTI</Value>
+		<Value>DJ</Value>
+		<Value>DJI</Value>
+		<Value>262</Value>
+		<Value>Republic of Djibouti</Value>
+	</row>
+	<row>
+		<Value>DOMINICA</Value>
+		<Value>DM</Value>
+		<Value>DMA</Value>
+		<Value>212</Value>
+		<Value>Commonwealth of Dominica</Value>
+	</row>
+	<row>
+		<Value>DOMINICAN REPUBLIC</Value>
+		<Value>DO</Value>
+		<Value>DOM</Value>
+		<Value>214</Value>
+	</row>
+	<row>
+		<Value>EGYPT</Value>
+		<Value>EG</Value>
+		<Value>EGY</Value>
+		<Value>818</Value>
+		<Value>Arab Republic of Egypt</Value>
+	</row>
+	<row>
+		<Value>ZAMBIA</Value>
+		<Value>ZM</Value>
+		<Value>ZMB</Value>
+		<Value>894</Value>
+		<Value>Republic of Zambia</Value>
+	</row>
+	<row>
+		<Value>WESTERN SAHARA</Value>
+		<Value>EH</Value>
+		<Value>ESH</Value>
+		<Value>732</Value>
+	</row>
+	<row>
+		<Value>ZIMBABWE</Value>
+		<Value>ZW</Value>
+		<Value>ZWE</Value>
+		<Value>716</Value>
+		<Value>Republic of Zimbabwe</Value>
+	</row>
+	<row>
+		<Value>ISRAEL</Value>
+		<Value>IL</Value>
+		<Value>ISR</Value>
+		<Value>376</Value>
+		<Value>State of Israel</Value>
+	</row>
+	<row>
+		<Value>INDIA</Value>
+		<Value>IN</Value>
+		<Value>IND</Value>
+		<Value>356</Value>
+		<Value>Republic of India</Value>
+	</row>
+	<row>
+		<Value>INDONESIA</Value>
+		<Value>ID</Value>
+		<Value>IDN</Value>
+		<Value>360</Value>
+		<Value>Republic of Indonesia</Value>
+	</row>
+	<row>
+		<Value>JORDAN</Value>
+		<Value>JO</Value>
+		<Value>JOR</Value>
+		<Value>400</Value>
+		<Value>Hashemite Kingdom of Jordan</Value>
+	</row>
+	<row>
+		<Value>IRAQ</Value>
+		<Value>IQ</Value>
+		<Value>IRQ</Value>
+		<Value>368</Value>
+		<Value>Republic of Iraq</Value>
+	</row>
+	<row>
+		<Value>IRAN</Value>
+		<Value>IR</Value>
+		<Value>IRN</Value>
+		<Value>364</Value>
+		<Value>Islamic Republic of Iran</Value>
+	</row>
+	<row>
+		<Value>IRELAND</Value>
+		<Value>IE</Value>
+		<Value>IRL</Value>
+		<Value>372</Value>
+	</row>
+	<row>
+		<Value>ICELAND</Value>
+		<Value>IS</Value>
+		<Value>ISL</Value>
+		<Value>352</Value>
+		<Value>Republic of Iceland</Value>
+	</row>
+	<row>
+		<Value>SPAIN</Value>
+		<Value>ES</Value>
+		<Value>ESP</Value>
+		<Value>724</Value>
+		<Value>Kingdom of Spain</Value>
+	</row>
+	<row>
+		<Value>ITALY</Value>
+		<Value>IT</Value>
+		<Value>ITA</Value>
+		<Value>380</Value>
+		<Value>Italian Republic</Value>
+	</row>
+	<row>
+		<Value>YEMEN</Value>
+		<Value>YE</Value>
+		<Value>YEM</Value>
+		<Value>887</Value>
+		<Value>Republic of Yemen</Value>
+	</row>
+	<row>
+		<Value>CAPE VERDE</Value>
+		<Value>CV</Value>
+		<Value>CPV</Value>
+		<Value>132</Value>
+		<Value>Republic of Cape Verde</Value>
+	</row>
+	<row>
+		<Value>KAZAKHSTAN</Value>
+		<Value>KZ</Value>
+		<Value>KAZ</Value>
+		<Value>398</Value>
+		<Value>Republic of Kazakhstan</Value>
+	</row>
+	<row>
+		<Value>CAMBODIA</Value>
+		<Value>KH</Value>
+		<Value>KHM</Value>
+		<Value>116</Value>
+		<Value>Kingdom of Cambodia</Value>
+	</row>
+	<row>
+		<Value>CAMEROON</Value>
+		<Value>CM</Value>
+		<Value>CMR</Value>
+		<Value>120</Value>
+		<Value>Republic of Cameroon</Value>
+	</row>
+	<row>
+		<Value>CANADA</Value>
+		<Value>CA</Value>
+		<Value>CAN</Value>
+		<Value>124</Value>
+	</row>
+	<row>
+		<Value>QATAR</Value>
+		<Value>QA</Value>
+		<Value>QAT</Value>
+		<Value>634</Value>
+		<Value>State of Qatar</Value>
+	</row>
+	<row>
+		<Value>KENYA</Value>
+		<Value>KE</Value>
+		<Value>KEN</Value>
+		<Value>404</Value>
+		<Value>Republic of Kenya</Value>
+	</row>
+	<row>
+		<Value>CYPRUS</Value>
+		<Value>CY</Value>
+		<Value>CYP</Value>
+		<Value>196</Value>
+		<Value>Republic of Cyprus</Value>
+	</row>
+	<row>
+		<Value>KYRGYZSTAN</Value>
+		<Value>KG</Value>
+		<Value>KGZ</Value>
+		<Value>417</Value>
+		<Value>Kyrgyz Republic</Value>
+	</row>
+	<row>
+		<Value>KIRIBATI</Value>
+		<Value>KI</Value>
+		<Value>KIR</Value>
+		<Value>296</Value>
+		<Value>Republic of Kiribati</Value>
+	</row>
+	<row>
+		<Value>CHINA</Value>
+		<Value>CN</Value>
+		<Value>CHN</Value>
+		<Value>156</Value>
+		<Value>People's Republic of China</Value>
+	</row>
+	<row>
+		<Value>COCOS (KEELING) ISLANDS</Value>
+		<Value>CC</Value>
+		<Value>CCK</Value>
+		<Value>166</Value>
+	</row>
+	<row>
+		<Value>COLOMBIA</Value>
+		<Value>CO</Value>
+		<Value>COL</Value>
+		<Value>170</Value>
+		<Value>Republic of Colombia</Value>
+	</row>
+	<row>
+		<Value>COMOROS</Value>
+		<Value>KM</Value>
+		<Value>COM</Value>
+		<Value>174</Value>
+		<Value>Union of the Comoros</Value>
+	</row>
+	<row>
+		<Value>CONGO</Value>
+		<Value>CG</Value>
+		<Value>COG</Value>
+		<Value>178</Value>
+		<Value>Republic of the Congo</Value>
+	</row>
+	<row>
+		<Value>CONGO, DEMOCRATIC REPUBLIC</Value>
+		<Value>CD</Value>
+		<Value>COD</Value>
+		<Value>180</Value>
+	</row>
+	<row>
+		<Value>KOREA, NORTH</Value>
+		<Value>KP</Value>
+		<Value>PRK</Value>
+		<Value>408</Value>
+		<Value>Democratic People's Republic of Korea</Value>
+	</row>
+	<row>
+		<Value>KOREA, SOUTH</Value>
+		<Value>KR</Value>
+		<Value>KOR</Value>
+		<Value>410</Value>
+		<Value>Republic of Korea</Value>
+	</row>
+	<row>
+		<Value>COSTA-RICA</Value>
+		<Value>CR</Value>
+		<Value>CRI</Value>
+		<Value>188</Value>
+		<Value>Republic of Costa Rica</Value>
+	</row>
+	<row>
+		<Value>COTE D'IVOIRE</Value>
+		<Value>CI</Value>
+		<Value>CIV</Value>
+		<Value>384</Value>
+		<Value>Republic of Cote d'Ivoire</Value>
+	</row>
+	<row>
+		<Value>CUBA</Value>
+		<Value>CU</Value>
+		<Value>CUB</Value>
+		<Value>192</Value>
+		<Value>Republic of Cuba</Value>
+	</row>
+	<row>
+		<Value>KUWAIT</Value>
+		<Value>KW</Value>
+		<Value>KWT</Value>
+		<Value>414</Value>
+		<Value>State of Kuwait</Value>
+	</row>
+	<row>
+		<Value>CURACAO</Value>
+		<Value>CW</Value>
+		<Value>CUW</Value>
+		<Value>531</Value>
+	</row>
+	<row>
+		<Value>LAOS</Value>
+		<Value>LA</Value>
+		<Value>LAO</Value>
+		<Value>418</Value>
+	</row>
+	<row>
+		<Value>LATVIA</Value>
+		<Value>LV</Value>
+		<Value>LVA</Value>
+		<Value>428</Value>
+		<Value>Republic of Latvia</Value>
+	</row>
+	<row>
+		<Value>LESOTHO</Value>
+		<Value>LS</Value>
+		<Value>LSO</Value>
+		<Value>426</Value>
+		<Value>Kingdom of Lesotho</Value>
+	</row>
+	<row>
+		<Value>LIBERIA</Value>
+		<Value>LR</Value>
+		<Value>LBR</Value>
+		<Value>430</Value>
+		<Value>Republic of Liberia</Value>
+	</row>
+	<row>
+		<Value>LEBANON</Value>
+		<Value>LB</Value>
+		<Value>LBN</Value>
+		<Value>422</Value>
+		<Value>Lebanese Republic</Value>
+	</row>
+	<row>
+		<Value>LYBIA</Value>
+		<Value>LY</Value>
+		<Value>LBY</Value>
+		<Value>434</Value>
+		<Value>Libya</Value>
+	</row>
+	<row>
+		<Value>LITHUANIA</Value>
+		<Value>LT</Value>
+		<Value>LTU</Value>
+		<Value>440</Value>
+		<Value>Republic of Lithuania</Value>
+	</row>
+	<row>
+		<Value>LIECHTENSTEIN</Value>
+		<Value>LI</Value>
+		<Value>LIE</Value>
+		<Value>438</Value>
+		<Value>Principality of Liechtenstein</Value>
+	</row>
+	<row>
+		<Value>LUXEMBOURG</Value>
+		<Value>LU</Value>
+		<Value>LUX</Value>
+		<Value>442</Value>
+		<Value>Grand Duchy of Luxembourg</Value>
+	</row>
+	<row>
+		<Value>MAURITIUS</Value>
+		<Value>MU</Value>
+		<Value>MUS</Value>
+		<Value>480</Value>
+		<Value>Republic of Mauritius</Value>
+	</row>
+	<row>
+		<Value>MAURITANIA</Value>
+		<Value>MR</Value>
+		<Value>MRT</Value>
+		<Value>478</Value>
+		<Value>Islamic Republic of Mauritania</Value>
+	</row>
+	<row>
+		<Value>MADAGASCAR</Value>
+		<Value>MG</Value>
+		<Value>MDG</Value>
+		<Value>450</Value>
+		<Value>Republic of Madagascar</Value>
+	</row>
+	<row>
+		<Value>MAYOTTE</Value>
+		<Value>YT</Value>
+		<Value>MYT</Value>
+		<Value>175</Value>
+	</row>
+	<row>
+		<Value>MACAO</Value>
+		<Value>MO</Value>
+		<Value>MAC</Value>
+		<Value>446</Value>
+		<Value>Macau, special administrative region of China</Value>
+	</row>
+	<row>
+		<Value>MACEDONIA</Value>
+		<Value>MK</Value>
+		<Value>MKD</Value>
+		<Value>807</Value>
+		<Value>Republic of Macedonia</Value>
+	</row>
+	<row>
+		<Value>MALAWI</Value>
+		<Value>MW</Value>
+		<Value>MWI</Value>
+		<Value>454</Value>
+		<Value>Republic of Malawi</Value>
+	</row>
+	<row>
+		<Value>MALAYSIA</Value>
+		<Value>MY</Value>
+		<Value>MYS</Value>
+		<Value>458</Value>
+	</row>
+	<row>
+		<Value>MALI</Value>
+		<Value>ML</Value>
+		<Value>MLI</Value>
+		<Value>466</Value>
+		<Value>Republic of Mali</Value>
+	</row>
+	<row>
+		<Value>UNITED STATES MINOR OUTLYING ISLANDS</Value>
+		<Value>UM</Value>
+		<Value>UMI</Value>
+		<Value>581</Value>
+	</row>
+	<row>
+		<Value>MALDIVES</Value>
+		<Value>MV</Value>
+		<Value>MDV</Value>
+		<Value>462</Value>
+		<Value>Republic of Maldives</Value>
+	</row>
+	<row>
+		<Value>MALTA</Value>
+		<Value>MT</Value>
+		<Value>MLT</Value>
+		<Value>470</Value>
+		<Value>Republic of Malta</Value>
+	</row>
+	<row>
+		<Value>MOROCCO</Value>
+		<Value>MA</Value>
+		<Value>MAR</Value>
+		<Value>504</Value>
+		<Value>Kingdom of Morocco</Value>
+	</row>
+	<row>
+		<Value>MARTINIQUE</Value>
+		<Value>MQ</Value>
+		<Value>MTQ</Value>
+		<Value>474</Value>
+	</row>
+	<row>
+		<Value>MARSHALL ISLANDS</Value>
+		<Value>MH</Value>
+		<Value>MHL</Value>
+		<Value>584</Value>
+		<Value>Republic of the Marshall Islands</Value>
+	</row>
+	<row>
+		<Value>MEXICO</Value>
+		<Value>MX</Value>
+		<Value>MEX</Value>
+		<Value>484</Value>
+		<Value>United Mexican States</Value>
+	</row>
+	<row>
+		<Value>MICRONESIA, FEDERATED STATES</Value>
+		<Value>FM</Value>
+		<Value>FSM</Value>
+		<Value>583</Value>
+		<Value>Federated States of Micronesia</Value>
+	</row>
+	<row>
+		<Value>MOZAMBIQUE</Value>
+		<Value>MZ</Value>
+		<Value>MOZ</Value>
+		<Value>508</Value>
+		<Value>Republic of Mozambique</Value>
+	</row>
+	<row>
+		<Value>MOLDOVA</Value>
+		<Value>MD</Value>
+		<Value>MDA</Value>
+		<Value>498</Value>
+		<Value>Republic of Moldova</Value>
+	</row>
+	<row>
+		<Value>MONACO</Value>
+		<Value>MC</Value>
+		<Value>MCO</Value>
+		<Value>492</Value>
+		<Value>Principality of Monaco</Value>
+	</row>
+	<row>
+		<Value>MONGOLIA</Value>
+		<Value>MN</Value>
+		<Value>MNG</Value>
+		<Value>496</Value>
+	</row>
+	<row>
+		<Value>MONTSERRAT</Value>
+		<Value>MS</Value>
+		<Value>MSR</Value>
+		<Value>500</Value>
+	</row>
+	<row>
+		<Value>MYANMAR</Value>
+		<Value>MM</Value>
+		<Value>MMR</Value>
+		<Value>104</Value>
+		<Value>Republic of the Union of Myanmar</Value>
+	</row>
+	<row>
+		<Value>NAMIBIA</Value>
+		<Value>NA</Value>
+		<Value>NAM</Value>
+		<Value>516</Value>
+		<Value>Republic of Namibia</Value>
+	</row>
+	<row>
+		<Value>NAURU</Value>
+		<Value>NR</Value>
+		<Value>NRU</Value>
+		<Value>520</Value>
+		<Value>Republic of Nauru</Value>
+	</row>
+	<row>
+		<Value>NEPAL</Value>
+		<Value>NP</Value>
+		<Value>NPL</Value>
+		<Value>524</Value>
+		<Value>Federal Democratic Republic of Nepal</Value>
+	</row>
+	<row>
+		<Value>NIGER</Value>
+		<Value>NE</Value>
+		<Value>NER</Value>
+		<Value>562</Value>
+		<Value>Republic of Niger</Value>
+	</row>
+	<row>
+		<Value>NIGERIA</Value>
+		<Value>NG</Value>
+		<Value>NGA</Value>
+		<Value>566</Value>
+		<Value>Federal Republic of Nigeria</Value>
+	</row>
+	<row>
+		<Value>NETHERLANDS</Value>
+		<Value>NL</Value>
+		<Value>NLD</Value>
+		<Value>528</Value>
+		<Value>Kingdom of the Netherlands</Value>
+	</row>
+	<row>
+		<Value>NICARAGUA</Value>
+		<Value>NI</Value>
+		<Value>NIC</Value>
+		<Value>558</Value>
+		<Value>Republic of Nicaragua</Value>
+	</row>
+	<row>
+		<Value>NIUE</Value>
+		<Value>NU</Value>
+		<Value>NIU</Value>
+		<Value>570</Value>
+		<Value>Republic of Niue</Value>
+	</row>
+	<row>
+		<Value>NEW ZEALAND</Value>
+		<Value>NZ</Value>
+		<Value>NZL</Value>
+		<Value>554</Value>
+	</row>
+	<row>
+		<Value>NEW CALEDONIA</Value>
+		<Value>NC</Value>
+		<Value>NCL</Value>
+		<Value>540</Value>
+	</row>
+	<row>
+		<Value>NORWAY</Value>
+		<Value>NO</Value>
+		<Value>NOR</Value>
+		<Value>578</Value>
+		<Value>Kingdom of Norway</Value>
+	</row>
+	<row>
+		<Value>UNITED ARAB EMIRATES</Value>
+		<Value>AE</Value>
+		<Value>ARE</Value>
+		<Value>784</Value>
+	</row>
+	<row>
+		<Value>OMAN</Value>
+		<Value>OM</Value>
+		<Value>OMN</Value>
+		<Value>512</Value>
+		<Value>Sultanate of Oman</Value>
+	</row>
+	<row>
+		<Value>CAYMAN ISLANDS</Value>
+		<Value>KY</Value>
+		<Value>CYM</Value>
+		<Value>136</Value>
+	</row>
+	<row>
+		<Value>COOK ISLANDS</Value>
+		<Value>CK</Value>
+		<Value>COK</Value>
+		<Value>184</Value>
+	</row>
+	<row>
+		<Value>TURKS AND CAICOS ISLANDS</Value>
+		<Value>TC</Value>
+		<Value>TCA</Value>
+		<Value>796</Value>
+	</row>
+	<row>
+		<Value>BOUVET ISLAND</Value>
+		<Value>BV</Value>
+		<Value>BVT</Value>
+		<Value>074</Value>
+	</row>
+	<row>
+		<Value>ISLE OF MAN</Value>
+		<Value>IM</Value>
+		<Value>IMN</Value>
+		<Value>833</Value>
+	</row>
+	<row>
+		<Value>NORFOLK ISLAND</Value>
+		<Value>NF</Value>
+		<Value>NFK</Value>
+		<Value>574</Value>
+	</row>
+	<row>
+		<Value>CHRISTMAS ISLAND</Value>
+		<Value>CX</Value>
+		<Value>CXR</Value>
+		<Value>162</Value>
+	</row>
+	<row>
+		<Value>HEARD ISLAND AND MCDONALD ISLANDS</Value>
+		<Value>HM</Value>
+		<Value>HMD</Value>
+		<Value>334</Value>
+	</row>
+	<row>
+		<Value>PAKISTAN</Value>
+		<Value>PK</Value>
+		<Value>PAK</Value>
+		<Value>586</Value>
+		<Value>Islamic Republic of Pakistan</Value>
+	</row>
+	<row>
+		<Value>PALAU</Value>
+		<Value>PW</Value>
+		<Value>PLW</Value>
+		<Value>585</Value>
+		<Value>Republic of Palau</Value>
+	</row>
+	<row>
+		<Value>PALESTINE</Value>
+		<Value>PS</Value>
+		<Value>PSE</Value>
+		<Value>275</Value>
+		<Value>State of Palestine</Value>
+	</row>
+	<row>
+		<Value>PANAMA</Value>
+		<Value>PA</Value>
+		<Value>PAN</Value>
+		<Value>591</Value>
+		<Value>Republic of Panama</Value>
+	</row>
+	<row>
+		<Value>VATICAN CITY (HOLY SEE)</Value>
+		<Value>VA</Value>
+		<Value>VAT</Value>
+		<Value>336</Value>
+	</row>
+	<row>
+		<Value>PAPUA NEW GUINEA</Value>
+		<Value>PG</Value>
+		<Value>PNG</Value>
+		<Value>598</Value>
+		<Value>Independent State of Papua New Guinea</Value>
+	</row>
+	<row>
+		<Value>PARAGUAY</Value>
+		<Value>PY</Value>
+		<Value>PRY</Value>
+		<Value>600</Value>
+		<Value>Republic of Paraguay </Value>
+	</row>
+	<row>
+		<Value>PERU</Value>
+		<Value>PE</Value>
+		<Value>PER</Value>
+		<Value>604</Value>
+		<Value>Republic of Peru</Value>
+	</row>
+	<row>
+		<Value>PITCAIRN</Value>
+		<Value>PN</Value>
+		<Value>PCN</Value>
+		<Value>612</Value>
+	</row>
+	<row>
+		<Value>POLAND</Value>
+		<Value>PL</Value>
+		<Value>POL</Value>
+		<Value>616</Value>
+		<Value>Republic of Poland</Value>
+	</row>
+	<row>
+		<Value>PORTUGAL</Value>
+		<Value>PT</Value>
+		<Value>PRT</Value>
+		<Value>620</Value>
+		<Value>Portuguese Republic</Value>
+	</row>
+	<row>
+		<Value>PUERTO RICO</Value>
+		<Value>PR</Value>
+		<Value>PRI</Value>
+		<Value>630</Value>
+	</row>
+	<row>
+		<Value>REUNION</Value>
+		<Value>RE</Value>
+		<Value>REU</Value>
+		<Value>638</Value>
+	</row>
+	<row>
+		<Value>RUSSIA</Value>
+		<Value>EN</Value>
+		<Value>RUS</Value>
+		<Value>643</Value>
+		<Value>USA</Value>
+	</row>
+	<row>
+		<Value>RWANDA</Value>
+		<Value>RW</Value>
+		<Value>RWA</Value>
+		<Value>646</Value>
+		<Value>Republic of Rwanda</Value>
+	</row>
+	<row>
+		<Value>ROMANIA</Value>
+		<Value>RO</Value>
+		<Value>ROU</Value>
+		<Value>642</Value>
+	</row>
+	<row>
+		<Value>SAMOA</Value>
+		<Value>WS</Value>
+		<Value>WSM</Value>
+		<Value>882</Value>
+		<Value>Independent State of Samoa</Value>
+	</row>
+	<row>
+		<Value>SAN MARINO</Value>
+		<Value>SM</Value>
+		<Value>SMR</Value>
+		<Value>674</Value>
+		<Value>Republic of San Marino</Value>
+	</row>
+	<row>
+		<Value>SAO TOME AND PRINCIPE</Value>
+		<Value>ST</Value>
+		<Value>STP</Value>
+		<Value>678</Value>
+		<Value>Democratic Republic of Sao Tome and Principe</Value>
+	</row>
+	<row>
+		<Value>SAUDI ARABIA</Value>
+		<Value>SA</Value>
+		<Value>SAU</Value>
+		<Value>682</Value>
+		<Value>Kingdom of Saudi Arabia</Value>
+	</row>
+	<row>
+		<Value>SWAZILAND</Value>
+		<Value>SZ</Value>
+		<Value>SWZ</Value>
+		<Value>748</Value>
+		<Value>Kingdom of Swaziland</Value>
+	</row>
+	<row>
+		<Value>SAINT HELENA, ASCENSION ISLAND, TRISTAN DA CUNHA</Value>
+		<Value>SH</Value>
+		<Value>SHN</Value>
+		<Value>654</Value>
+	</row>
+	<row>
+		<Value>NORTHERN MARIANA ISLANDS</Value>
+		<Value>MP</Value>
+		<Value>MNP</Value>
+		<Value>580</Value>
+		<Value>Commonwealth of the Northern Mariana Islands</Value>
+	</row>
+	<row>
+		<Value>SEYCHELLES</Value>
+		<Value>SC</Value>
+		<Value>SYC</Value>
+		<Value>690</Value>
+		<Value>Republic of Seychelles</Value>
+	</row>
+	<row>
+		<Value>SAINT-BARTHELEMY</Value>
+		<Value>BL</Value>
+		<Value>BLM</Value>
+		<Value>652</Value>
+	</row>
+	<row>
+		<Value>SAINT-MARTIN</Value>
+		<Value>MF</Value>
+		<Value>MAF</Value>
+		<Value>663</Value>
+	</row>
+	<row>
+		<Value>SAINT-MARTIN (DUTCH)</Value>
+		<Value>SX</Value>
+		<Value>SXM</Value>
+		<Value>534</Value>
+	</row>
+	<row>
+		<Value>Senegal</Value>
+		<Value>SN</Value>
+		<Value>SEN</Value>
+		<Value>686</Value>
+		<Value>Republic of Senegal</Value>
+	</row>
+	<row>
+		<Value>SAINT VINCENT AND THE GRENADINES</Value>
+		<Value>VC</Value>
+		<Value>VCT</Value>
+		<Value>670</Value>
+	</row>
+	<row>
+		<Value>SAINT KITTS AND NEVIS</Value>
+		<Value>KN</Value>
+		<Value>KNA</Value>
+		<Value>659</Value>
+	</row>
+	<row>
+		<Value>SAINT LUCIA</Value>
+		<Value>LC</Value>
+		<Value>LCA</Value>
+		<Value>662</Value>
+	</row>
+	<row>
+		<Value>SAINT PIERRE AND MIQUELON</Value>
+		<Value>PM</Value>
+		<Value>SPM</Value>
+		<Value>666</Value>
+	</row>
+	<row>
+		<Value>SERBIA</Value>
+		<Value>RS</Value>
+		<Value>SRB</Value>
+		<Value>688</Value>
+		<Value>Republic of Serbia</Value>
+	</row>
+	<row>
+		<Value>SINGAPORE</Value>
+		<Value>SG</Value>
+		<Value>SGP</Value>
+		<Value>702</Value>
+		<Value>Republic of Singapore</Value>
+	</row>
+	<row>
+		<Value>SYRIA</Value>
+		<Value>SY</Value>
+		<Value>SYR</Value>
+		<Value>760</Value>
+	</row>
+	<row>
+		<Value>SLOVAKIA</Value>
+		<Value>SK</Value>
+		<Value>SVK</Value>
+		<Value>703</Value>
+		<Value>Slovak Republic</Value>
+	</row>
+	<row>
+		<Value>SLOVENIA</Value>
+		<Value>SI</Value>
+		<Value>SVN</Value>
+		<Value>705</Value>
+		<Value>Republic of Slovenia</Value>
+	</row>
+	<row>
+		<Value>UNITED KINGDOM</Value>
+		<Value>GB</Value>
+		<Value>GBR</Value>
+		<Value>826</Value>
+		<Value>United Kingdom of Great Britain and Northern Ireland</Value>
+	</row>
+	<row>
+		<Value>UNITED STATES</Value>
+		<Value>US</Value>
+		<Value>USA</Value>
+		<Value>840</Value>
+		<Value>United States of America</Value>
+	</row>
+	<row>
+		<Value>SOLOMON ISLANDS</Value>
+		<Value>SB</Value>
+		<Value>SLB</Value>
+		<Value>090</Value>
+	</row>
+	<row>
+		<Value>SOMALIA</Value>
+		<Value>SO</Value>
+		<Value>SOM</Value>
+		<Value>706</Value>
+		<Value>Federal Republic of Somalia</Value>
+	</row>
+	<row>
+		<Value>SUDAN</Value>
+		<Value>SD</Value>
+		<Value>SDN</Value>
+		<Value>729</Value>
+		<Value>Republic of Sudan</Value>
+	</row>
+	<row>
+		<Value>SURINAME</Value>
+		<Value>SR</Value>
+		<Value>SUR</Value>
+		<Value>740</Value>
+		<Value>Republic of Suriname</Value>
+	</row>
+	<row>
+		<Value>SIERRA LEONE</Value>
+		<Value>SL</Value>
+		<Value>SLE</Value>
+		<Value>694</Value>
+		<Value>Republic of Sierra Leone</Value>
+	</row>
+	<row>
+		<Value>TAJIKISTAN</Value>
+		<Value>TJ</Value>
+		<Value>TJK</Value>
+		<Value>762</Value>
+		<Value>Republic of Tajikistan</Value>
+	</row>
+	<row>
+		<Value>THAILAND</Value>
+		<Value>TH</Value>
+		<Value>THA</Value>
+		<Value>764</Value>
+		<Value>Kingdom of Thailand</Value>
+	</row>
+	<row>
+		<Value>TAIWAN (CHINA)</Value>
+		<Value>TW</Value>
+		<Value>TWN</Value>
+		<Value>158</Value>
+	</row>
+	<row>
+		<Value>TANZANIA</Value>
+		<Value>TZ</Value>
+		<Value>TZA</Value>
+		<Value>834</Value>
+		<Value>United Republic of Tanzania</Value>
+	</row>
+	<row>
+		<Value>TOGO</Value>
+		<Value>TG</Value>
+		<Value>TGO</Value>
+		<Value>768</Value>
+		<Value>Togolese Republic</Value>
+	</row>
+	<row>
+		<Value>TOKELAU</Value>
+		<Value>TK</Value>
+		<Value>TKL</Value>
+		<Value>772</Value>
+	</row>
+	<row>
+		<Value>TONGA</Value>
+		<Value>TO</Value>
+		<Value>TON</Value>
+		<Value>776</Value>
+		<Value>Kingdom of Tonga</Value>
+	</row>
+	<row>
+		<Value>TRINIDAD AND TOBAGO</Value>
+		<Value>TT</Value>
+		<Value>TTO</Value>
+		<Value>780</Value>
+		<Value>Republic of Trinidad and Tobago</Value>
+	</row>
+	<row>
+		<Value>TUVALU</Value>
+		<Value>TV</Value>
+		<Value>TUV</Value>
+		<Value>798</Value>
+	</row>
+	<row>
+		<Value>TUNISIA</Value>
+		<Value>TN</Value>
+		<Value>TUN</Value>
+		<Value>788</Value>
+		<Value>Republic of Tunisia</Value>
+	</row>
+	<row>
+		<Value>TURKMENISTAN</Value>
+		<Value>TM</Value>
+		<Value>TKM</Value>
+		<Value>795</Value>
+		<Value>Turkmenistan</Value>
+	</row>
+	<row>
+		<Value>TURKEY</Value>
+		<Value>TR</Value>
+		<Value>TUR</Value>
+		<Value>792</Value>
+		<Value>Republic of Turkey</Value>
+	</row>
+	<row>
+		<Value>UGANDA</Value>
+		<Value>UG</Value>
+		<Value>UGA</Value>
+		<Value>800</Value>
+		<Value>Republic of Uganda</Value>
+	</row>
+	<row>
+		<Value>UZBEKISTAN</Value>
+		<Value>UZ</Value>
+		<Value>UZB</Value>
+		<Value>860</Value>
+		<Value>Republic of Uzbekistan</Value>
+	</row>
+	<row>
+		<Value>UKRAINE</Value>
+		<Value>UA</Value>
+		<Value>UKR</Value>
+		<Value>804</Value>
+	</row>
+	<row>
+		<Value>WALLIS AND FUTUNA</Value>
+		<Value>WF</Value>
+		<Value>WLF</Value>
+		<Value>876</Value>
+	</row>
+	<row>
+		<Value>URUGUAY</Value>
+		<Value>UY</Value>
+		<Value>URY</Value>
+		<Value>858</Value>
+		<Value>Oriental Republic of Uruguay</Value>
+	</row>
+	<row>
+		<Value>FAROE ISLANDS</Value>
+		<Value>FO</Value>
+		<Value>FRO</Value>
+		<Value>234</Value>
+	</row>
+	<row>
+		<Value>FIJI</Value>
+		<Value>FJ</Value>
+		<Value>FJI</Value>
+		<Value>242</Value>
+		<Value>Republic of Fiji</Value>
+	</row>
+	<row>
+		<Value>PHILIPPINES</Value>
+		<Value>PH</Value>
+		<Value>PHL</Value>
+		<Value>608</Value>
+		<Value>Republic of the Philippines</Value>
+	</row>
+	<row>
+		<Value>FINLAND</Value>
+		<Value>FI</Value>
+		<Value>FIN</Value>
+		<Value>246</Value>
+		<Value>Republic of Finland</Value>
+	</row>
+	<row>
+		<Value>FALKLAND ISLANDS (MALVINAS)</Value>
+		<Value>FK</Value>
+		<Value>FLK</Value>
+		<Value>238</Value>
+	</row>
+	<row>
+		<Value>FRANCE</Value>
+		<Value>FR</Value>
+		<Value>FRA</Value>
+		<Value>250</Value>
+		<Value>French Republic</Value>
+	</row>
+	<row>
+		<Value>FRENCH GUIANA</Value>
+		<Value>GF</Value>
+		<Value>GUF</Value>
+		<Value>254</Value>
+	</row>
+	<row>
+		<Value>FRENCH POLYNESIA</Value>
+		<Value>PF</Value>
+		<Value>PYF</Value>
+		<Value>258</Value>
+	</row>
+	<row>
+		<Value>FRENCH SOUTHERN TERRITORIES</Value>
+		<Value>TF</Value>
+		<Value>ATF</Value>
+		<Value>260</Value>
+	</row>
+	<row>
+		<Value>CROATIA</Value>
+		<Value>HR</Value>
+		<Value>HRV</Value>
+		<Value>191</Value>
+		<Value>Republic of Croatia</Value>
+	</row>
+	<row>
+		<Value>CENTRAL AFRICAN REPUBLIC</Value>
+		<Value>CF</Value>
+		<Value>CAF</Value>
+		<Value>140</Value>
+	</row>
+	<row>
+		<Value>CHAD</Value>
+		<Value>TD</Value>
+		<Value>TCD</Value>
+		<Value>148</Value>
+		<Value>Republic of Chad</Value>
+	</row>
+	<row>
+		<Value>MONTENEGRO</Value>
+		<Value>ME</Value>
+		<Value>MNE</Value>
+		<Value>499</Value>
+	</row>
+	<row>
+		<Value>CZECH REPUBLIC</Value>
+		<Value>CZ</Value>
+		<Value>CZE</Value>
+		<Value>203</Value>
+	</row>
+	<row>
+		<Value>CHILE</Value>
+		<Value>CL</Value>
+		<Value>CHL</Value>
+		<Value>152</Value>
+		<Value>Republic of Chile</Value>
+	</row>
+	<row>
+		<Value>SWITZERLAND</Value>
+		<Value>CH</Value>
+		<Value>CHE</Value>
+		<Value>756</Value>
+		<Value>Swiss Confederation</Value>
+	</row>
+	<row>
+		<Value>SWEDEN</Value>
+		<Value>SE</Value>
+		<Value>SWE</Value>
+		<Value>752</Value>
+		<Value>Kingdom of Sweden</Value>
+	</row>
+	<row>
+		<Value>SVALBARD AND JAN MAYEN</Value>
+		<Value>SJ</Value>
+		<Value>SJM</Value>
+		<Value>744</Value>
+	</row>
+	<row>
+		<Value>SRI LANKA</Value>
+		<Value>LK</Value>
+		<Value>LKA</Value>
+		<Value>144</Value>
+		<Value>Democratic Socialist Republic of Sri Lanka</Value>
+	</row>
+	<row>
+		<Value>ECUADOR</Value>
+		<Value>EC</Value>
+		<Value>ECU</Value>
+		<Value>218</Value>
+		<Value>Republic of Ecuador</Value>
+	</row>
+	<row>
+		<Value>EQUATORIAL GUINEA</Value>
+		<Value>GQ</Value>
+		<Value>GNQ</Value>
+		<Value>226</Value>
+		<Value>Republic of Equatorial Guinea</Value>
+	</row>
+	<row>
+		<Value>ALAND ISLANDS</Value>
+		<Value>AX</Value>
+		<Value>ALA</Value>
+		<Value>248</Value>
+	</row>
+	<row>
+		<Value>EL SALVADOR</Value>
+		<Value>SV</Value>
+		<Value>SLV</Value>
+		<Value>222</Value>
+		<Value>Republic of El Salvador</Value>
+	</row>
+	<row>
+		<Value>ERITREA</Value>
+		<Value>ER</Value>
+		<Value>ERI</Value>
+		<Value>232</Value>
+		<Value>State of Eritrea</Value>
+	</row>
+	<row>
+		<Value>ESTONIA</Value>
+		<Value>EE</Value>
+		<Value>EST</Value>
+		<Value>233</Value>
+		<Value>Republic of Estonia</Value>
+	</row>
+	<row>
+		<Value>ETHIOPIA</Value>
+		<Value>ET</Value>
+		<Value>ETH</Value>
+		<Value>231</Value>
+		<Value>Federal Democratic Republic of Ethiopia</Value>
+	</row>
+	<row>
+		<Value>SOUTH AFRICA</Value>
+		<Value>ZA</Value>
+		<Value>ZAF</Value>
+		<Value>710</Value>
+		<Value>Republic of South Africa</Value>
+	</row>
+	<row>
+		<Value>SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS</Value>
+		<Value>GS</Value>
+		<Value>SGS</Value>
+		<Value>239</Value>
+	</row>
+	<row>
+		<Value>SOUTH OSSETIA</Value>
+		<Value>OS</Value>
+		<Value>OST</Value>
+		<Value>896</Value>
+		<Value>Republic of South Ossetia</Value>
+	</row>
+	<row>
+		<Value>SOUTH SUDAN</Value>
+		<Value>SS</Value>
+		<Value>SSD</Value>
+		<Value>728</Value>
+		<Value>Republic of South Sudan</Value>
+	</row>
+	<row>
+		<Value>JAMAICA</Value>
+		<Value>JM</Value>
+		<Value>JAM</Value>
+		<Value>388</Value>
+	</row>
+	<row>
+		<Value>JAPAN</Value>
+		<Value>JP</Value>
+		<Value>JPN</Value>
+		<Value>392</Value>
+	</row>
+	
+</ValueTable>

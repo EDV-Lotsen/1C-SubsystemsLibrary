@@ -1,92 +1,103 @@
-﻿// This procedure updates the full-text search index
-&AtServer
-Procedure UpdateIndex()
-	If Not AccessRight("Administration", Metadata) And CommonUse.FileInfoBase() Then
-		SetPrivilegedMode(True);	
-	EndIf;
-	FullTextSearch.UpdateIndex();
-	RefreshStateExecute();
-EndProcedure
-
-// UpdateIndex command handler
-&AtClient
-Procedure UpdateIndexExecute()
-	Status(NStr("en='Please wait...'") 
-		+ Chars.CR 
-		+ NStr("en='Updating the full-text search index...'"));
-	UpdateIndex();
-	Status(NStr("en='Full-text search index update completed'"));
-EndProcedure
-        
-
-// This procedure clears the full-text search index
-&AtServer
-Procedure ClearIndexServer() Export
-	FullTextSearch.ClearIndex(); 
-	RefreshStateExecute();
-EndProcedure	
-
-// ClearIndex command handler
-&AtClient
-Procedure ClearIndexExecute()
-	ClearIndexServer();	
-EndProcedure
-
-// This procedure updates the information about the index and manages the buttons enabled state
-&AtServer
-Procedure RefreshStateExecute()
-	ThisForm.Items.UpdateIndex.Enabled = False;
-	ThisForm.Items.ClearIndex.Enabled = False;
-	
-	EnableFullTextSearch = FullTextSearch.GetFullTextSearchMode() = FullTextSearchMode.Enable;
-	IndexRelevanceDate = '00010101';
-	IndexState = "";
-	
-	If FullTextSearch.GetFullTextSearchMode() = FullTextSearchMode.Enable Then
-		IndexRelevanceDate = FullTextSearch.UpdateDate();
-		
-		If FullTextSearch.IndexTrue() Then
-			IndexState = NStr("en='The index update is not required'");
-		Else                                                 
-			IndexState = NStr("en='The index update is required'");
-		EndIf;
-		
-		If AccessRight("Administration", Metadata) Or CommonUse.FileInfoBase() Then
-			ThisForm.Items.ClearIndex.Enabled = True;
-			ThisForm.Items.UpdateIndex.Enabled = True;
-		EndIf;
-	EndIf;
-EndProcedure
-
-
-// This procedure sets the full-text search mode
-&AtServer
-Procedure SetFullTextSearchEnable(Enabled) Export
-	If Enabled Then
-		FullTextSearch.SetFullTextSearchMode(FullTextSearchMode.Enable);
-	Else
-		FullTextSearch.SetFullTextSearchMode(FullTextSearchMode.Disable);
-	EndIf;
-	RefreshStateExecute();
-EndProcedure
-
-&AtClient
-Procedure AllowFullTextSearchOnChange(Element)
-	Try
-		SetFullTextSearchEnable(EnableFullTextSearch);
-	Except
-		EnableFullTextSearch = Not EnableFullTextSearch;
-		Info = ErrorInfo();
-		ExceptionString = Info.Description 
-		+ "." 
-		+ Chars.CR 
-		+ NStr("en='It is probably the index update scheduled job is running. Try again later.'");
-		Raise ExceptionString;
-	EndTry;
-EndProcedure
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	RefreshStateExecute();
+
+	SetConditionalAppearance();
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
+	
+	RefreshStatus();
+	
 EndProcedure
 
+#EndRegion
+
+#Region FormCommandHandlers
+
+&AtClient
+Procedure UpdateIndex(Command)
+	Status(
+		NStr("en = 'Updating full-text search index...
+		|Please wait.'"));
+	
+	UpdateIndexServer();
+	
+	Status(NStr("en = 'Full-text search index updated.'"));
+EndProcedure
+
+&AtClient
+Procedure ClearIndex(Command)
+	Status(
+		NStr("en = 'Clearing full-text search index...
+		|Please wait.'"));
+	
+	ClearIndexServer();
+	
+	Status(NStr("en = 'Full-text search index cleared.'"));
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure SetConditionalAppearance()
+
+	ConditionalAppearance.Items.Clear();
+
+	//
+
+	Item = ConditionalAppearance.Items.Add();
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.IndexStatus.Name);
+
+	ItemFilter = Item.Filter.Items.Add(Type("DataCompositionFilterItem"));
+	ItemFilter.LeftValue = New DataCompositionField("IndexTrue");
+	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
+	ItemFilter.RightValue = False;
+
+	Item.Appearance.SetParameterValue("Font", New Font(WindowsFonts.DefaultGUIFont, , , True, False, False, False, ));
+
+EndProcedure
+
+&AtServer
+Procedure UpdateIndexServer()
+	FullTextSearch.UpdateIndex(False, False);
+	RefreshStatus();
+EndProcedure
+
+&AtServer
+Procedure ClearIndexServer()
+	FullTextSearch.ClearIndex();
+	RefreshStatus();
+EndProcedure
+
+&AtServer
+Procedure RefreshStatus()
+	// Button availability, last update time.
+	
+	AllowFullTextSearch = (FullTextSearch.GetFullTextSearchMode() = FullTextSearchMode.Enable);
+	If AllowFullTextSearch Then
+		IndexUpdateDate = FullTextSearch.UpdateDate();
+		IndexTrue = FullTextSearchServer.SearchIndexTrue();
+		Items.FormUpdateIndex.Enabled = Not IndexTrue;
+		If IndexTrue Then
+			IndexStatus = NStr("en = 'No update required'");
+		Else
+			IndexStatus = NStr("en = 'Update required'");
+		EndIf;
+	Else
+		IndexUpdateDate = '00010101';
+		IndexTrue = False;
+		Items.FormUpdateIndex.Enabled = False;
+		IndexStatus = NStr("en = 'Full-text search is disabled'");
+	EndIf;
+	
+EndProcedure
+
+#EndRegion

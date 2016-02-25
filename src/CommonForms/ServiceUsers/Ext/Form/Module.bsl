@@ -1,83 +1,49 @@
 ﻿
-////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then
-		Return;
+
+	SetConditionalAppearance();
+ 
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 	
+  	Return;
 	EndIf;
 	
-	If Not Users.InfoBaseUserWithFullAccess() Then
-		Raise(NStr("en = 'Insufficient rights to add users.'"));
+	Mode = Constants.InfobaseUsageMode.Get();
+	If Mode = Enums.InfobaseUsageModes.Demo Then
+		Raise(NStr("en = 'Adding users is not available in the demo mode.'"));
 	EndIf;
 	
-	RunMode = Constants.InfoBaseUsageMode.Get();
-	If RunMode = Enums.InfoBaseUsageModes.Demo Then
-		Raise(NStr("en = 'New users cannot be added in the demo mode.'"));
-	EndIf;
-	
-	SetPrivilegedMode(True);
-	
-	Proxy = ServiceMode.GetServiceManagerProxy();
-	
-	ErrorMessage = "";
-	UserList = Undefined;
-	
-	CurrentDataArea = CommonUse.SessionSeparatorValue();
-	
-	Result = Proxy.GetUserList(CurrentDataArea, UserList, ErrorMessage);
-	
-	If Not Result Then
-		MessagePattern = NStr("en = 'Error retrieving the service user list:
-			|%1'");
-		Raise(StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, ErrorMessage));
-	EndIf;
-	
-	UserIDs = New Array;
-	
-	For Each UserInfo In UserList.User Do
-		UserIDs.Add(New UUID(UserInfo.UserID));
-	EndDo;
-	
-	Query = New Query;
-	Query.Text =
-	"SELECT
-	|	Users.Ref,
-	|	Users.ServiceUserID AS Id
-	|FROM
-	|	Catalog.Users AS Users
-	|WHERE
-	|	Users.ServiceUserID IN(&IDs)";
-	Query.SetParameter("IDs", UserIDs);
-	Result = Query.Execute();
-	UserWithAccessIDs = Result.Unload().UnloadColumn("ID");
-	
-	For Each UserInfo In UserList.User Do
-		UserID = New UUID(UserInfo.UserID);
-		If UserWithAccessIDs.Find(UserID) <> Undefined Then
-			Continue;
-		EndIf;
-		
-		UserRow = ServiceUsers.Add();
-		UserRow.Name = UserInfo.Name;
-		UserRow.FullName = UserInfo.FullName;
-		UserRow.Comment = UserInfo.Comment;
-		UserRow.ID = UserID;
-		UserRow.HasAccess = UserInfo.HasAccess;
-	EndDo;
+	// The form is not available until the preparation is finished.
+	Enabled = False;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+&AtClient
+Procedure OnOpen(Cancel)
+	
+	If ServiceUserPassword = Undefined Then
+		Cancel = True;
+		AttachIdleHandler("RequestPasswordForAuthenticationInService", 0.1, True);
+	Else
+		PrepareForm();
+	EndIf;
+	
+EndProcedure
+
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure CheckAll(Command)
 	
 	For Each TableRow In ServiceUsers Do
+		If TableRow.Access Then
+			Continue;
+		EndIf;
 		TableRow.Add = True;
 	EndDo;
 	
@@ -99,56 +65,105 @@ Procedure AddSelectedUsers(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure SetConditionalAppearance()
+
+	ConditionalAppearance.Items.Clear();
+
+	Item = ConditionalAppearance.Items.Add();
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ServiceUsersAdd.Name);
+
+	ItemFilter = Item.Filter.Items.Add(Type("DataCompositionFilterItem"));
+	ItemFilter.LeftValue = New DataCompositionField("ServiceUsers.Access");
+	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
+	ItemFilter.RightValue = True;
+
+	Item.Appearance.SetParameterValue("Enabled", False);
+
+	Item = ConditionalAppearance.Items.Add();
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ServiceUsersAdd.Name);
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ServiceUsersName.Name);
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ServiceUsersFullName.Name);
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ServiceUsersAccess.Name);
+
+	ItemFilter = Item.Filter.Items.Add(Type("DataCompositionFilterItem"));
+	ItemFilter.LeftValue = New DataCompositionField("ServiceUsers.Access");
+	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
+	ItemFilter.RightValue = True;
+
+	Item.Appearance.SetParameterValue("BgColor", StyleColors.InaccessibleDataColor);
+
+EndProcedure
+
+&AtClient
+Procedure RequestPasswordForAuthenticationInService()
+	
+	StandardSubsystemsClient.PasswordForAuthenticationInServiceOnRequest(
+		New NotifyDescription("OnOpenContinue", ThisObject));
+	
+EndProcedure
+
+&AtClient
+Procedure OnOpenContinue(SaaSUserNewPassword, NotDefined) Export
+	
+	If SaaSUserNewPassword <> Undefined Then
+		ServiceUserPassword = SaaSUserNewPassword;
+		Open();
+	EndIf;
+	
+EndProcedure
+
+&AtServer
+Procedure PrepareForm()
+	
+	UsersInternalSaaS.GetActionsWithSaaSUser(
+		Catalogs.Users.EmptyRef());
+		
+	UserTable = UsersInternalSaaS.GetSaaSUsers(
+		ServiceUserPassword);
+		
+	For Each UserInfo In UserTable Do
+		UserRow = ServiceUsers.Add();
+		FillPropertyValues(UserRow, UserInfo);
+	EndDo;
+	
+	Enabled = True;
+	
+EndProcedure
 
 &AtServer
 Procedure AddSelectedUsersAtServer()
 	
 	SetPrivilegedMode(True);
 	
-	Proxy = ServiceMode.GetServiceManagerProxy();
-	
-	RightSet = "DataAreaUser";
-	
 	Counter = 0;
-	RowCount = ServiceUsers.Count();
-	For Counter = 1 to RowCount Do
-		TableRow = ServiceUsers[RowCount - Counter];
+	LineCount = ServiceUsers.Count();
+	For Counter = 1 To LineCount Do
+		TableRow = ServiceUsers[LineCount - Counter];
 		If Not TableRow.Add Then
 			Continue;
 		EndIf;
 		
-		UserInfo = Undefined;
-		ErrorMessage = "";
-		Result = Proxy.GetUserInfo(String(TableRow.ID), 
-			UserInfo, ErrorMessage);
-		If Not Result Then
-			MessagePattern = NStr("en = 'Error retrieving details of a user whose ID is %1:
-				|%2'");
-			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, TableRow.ID, ErrorMessage);
-			WriteLogEvent(NStr("en = 'ManagementApplication'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , MessageText);
-			CommonUseClientServer.MessageToUser(MessageText);
-			Continue;
-		EndIf;
-		
-		ErrorMessage = "";
-		CurrentDataArea = CommonUse.SessionSeparatorValue();
-		
-		Result = Proxy.GrantUserAccess(String(TableRow.ID), CurrentDataArea, "User", ErrorMessage);
-		
-		If Not Result Then
-			MessagePattern = NStr("en = 'Error providing user access to the application %1 with the service:
-				|%2'");
-			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, TableRow.Name, ErrorMessage);
-			WriteLogEvent(NStr("en = 'ManagementApplication'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , MessageText);
-			CommonUseClientServer.MessageToUser(MessageText);
-			RollbackTransaction();
-			Continue;
-		EndIf;
+		UsersInternalSaaS.GrantSaaSUserAccess(
+			TableRow.ID, ServiceUserPassword);
 		
 		ServiceUsers.Delete(TableRow);
-		
 	EndDo;
 	
 EndProcedure
+
+#EndRegion

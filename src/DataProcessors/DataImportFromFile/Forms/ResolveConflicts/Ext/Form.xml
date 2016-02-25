@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Resolve conflict</v8:content>
+		</v8:item>
+	</Title>
+	<Height>12</Height>
+	<AutoTitle>false</AutoTitle>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<LabelDecoration name="DecorationTitleReferenceSearch" id="62">
+			<Title formatted="false">
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Several mapping options are found for %1 row.
+If the correct mapping option is found, select it from the list.</v8:content>
+				</v8:item>
+			</Title>
+			<ContextMenu name="DecorationTitleReferenceSearchContextMenu" id="63"/>
+			<ExtendedTooltip name="DecorationTitleReferenceSearchExtendedTooltip" id="64"/>
+		</LabelDecoration>
+		<LabelDecoration name="DecorationTitle" id="29">
+			<Visible>false</Visible>
+			<Title formatted="false">
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Several mapping options are found when mapping by the %1 column. 
+Select the item for mapping to the imported data.</v8:content>
+				</v8:item>
+			</Title>
+			<ContextMenu name="DecorationTitleContextMenu" id="30"/>
+			<ExtendedTooltip name="DecorationTitleExtendedTooltip" id="31"/>
+		</LabelDecoration>
+		<LabelDecoration name="ImportFromFileDecoration" id="32">
+			<Title formatted="false">
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Several mapping options are found when mapping application data to imported data.
+Select the item for mapping to the imported data. To create an item, click Create item.</v8:content>
+				</v8:item>
+			</Title>
+			<ContextMenu name="DecorationImportFromContextMenuFile" id="33"/>
+			<ExtendedTooltip name="ImportFromFileDecorationExtendedTooltip" id="34"/>
+		</LabelDecoration>
+		<RadioButtonField name="ConflictResolvingOption" id="26">
+			<DataPath>ConflictResolvingOption</DataPath>
+			<Visible>false</Visible>
+			<TitleLocation>None</TitleLocation>
+			<RadioButtonType>Auto</RadioButtonType>
+			<ChoiceList>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Map to an imported item</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:nil="true"/>
+					</xr:Value>
+				</xr:Item>
+				<xr:Item>
+					<xr:Presentation/>
+					<xr:CheckState>0</xr:CheckState>
+					<xr:Value xsi:type="FormChoiceListDesTimeValue">
+						<Presentation>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Create item</v8:content>
+							</v8:item>
+						</Presentation>
+						<Value xsi:type="xs:decimal">1</Value>
+					</xr:Value>
+				</xr:Item>
+			</ChoiceList>
+			<ContextMenu name="ConflictResolvingOptionContextMenu" id="27"/>
+			<ExtendedTooltip name="ConflictResolvingOptionExtendedTooltip" id="28"/>
+			<Events>
+				<Event name="OnChange">ConflictResolvingOptionOnChange</Event>
+			</Events>
+		</RadioButtonField>
+		<Table name="Options" id="40">
+			<Representation>Tree</Representation>
+			<Width>70</Width>
+			<Height>5</Height>
+			<Header>false</Header>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>Options</DataPath>
+			<CommandSet>
+				<ExcludedCommand>HierarchicalList</ExcludedCommand>
+				<ExcludedCommand>Tree</ExcludedCommand>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>List</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="OptionsContextMenu" id="41"/>
+			<AutoCommandBar name="OptionsCommandBar" id="42">
+				<ChildItems>
+					<Button name="OptionsSelect" id="56">
+						<Type>CommandBarButton</Type>
+						<DefaultButton>true</DefaultButton>
+						<CommandName>Form.Command.Select</CommandName>
+						<ExtendedTooltip name="OptionsSelectExtendedTooltip" id="57"/>
+					</Button>
+					<Button name="OptionsNewItem" id="58">
+						<Type>CommandBarButton</Type>
+						<Visible>false</Visible>
+						<CommandName>Form.Command.NewItem</CommandName>
+						<ExtendedTooltip name="OptionsNewItemExtendedTooltip" id="59"/>
+					</Button>
+					<Button name="OptionsOpen" id="60">
+						<Type>CommandBarButton</Type>
+						<Visible>false</Visible>
+						<CommandName>Form.Command.Open</CommandName>
+						<ExtendedTooltip name="OptionsOpenExtendedTooltip" id="61"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="OptionsExtendedTooltip" id="43"/>
+			<SearchStringAddition name="OptionsSearchString" id="65">
+				<AdditionSource>
+					<Item>Options</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="OptionsSearchStringContextMenu" id="66"/>
+				<ExtendedTooltip name="OptionsSearchStringExtendedTooltip" id="67"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="OptionsViewStatus" id="68">
+				<AdditionSource>
+					<Item>Options</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="OptionsViewStatusContextMenu" id="69"/>
+				<ExtendedTooltip name="OptionsViewStatusExtendedTooltip" id="70"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="OptionsSearchControl" id="71">
+				<AdditionSource>
+					<Item>Options</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="OptionsSearchControlContextMenu" id="72"/>
+				<ExtendedTooltip name="OptionsSearchControlExtendedTooltip" id="73"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">OptionsSelection</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="OptionsPresentation" id="44">
+					<DataPath>Options.Presentation</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="OptionsPresentationContextMenu" id="45"/>
+					<ExtendedTooltip name="OptionsPresentationExtendedTooltip" id="46"/>
+				</InputField>
+				<InputField name="OptionsRef" id="50">
+					<DataPath>Options.Ref</DataPath>
+					<Visible>false</Visible>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="OptionsRefContextMenu" id="51"/>
+					<ExtendedTooltip name="OptionsRefExtendedTooltip" id="52"/>
+				</InputField>
+				<InputField name="OptionsValue" id="53">
+					<DataPath>Options.Value</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<EditMode>EnterOnInput</EditMode>
+					<ShowInHeader>false</ShowInHeader>
+					<ContextMenu name="ValueOptionsContextMenu" id="54"/>
+					<ExtendedTooltip name="ValueOptionsExtendedTooltip" id="55"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<Table name="CatalogItems" id="6">
+			<Representation>List</Representation>
+			<Visible>false</Visible>
+			<ReadOnly>true</ReadOnly>
+			<Height>10</Height>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>CatalogItems</DataPath>
+			<CommandSet>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>SelectAll</ExcludedCommand>
+				<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>Change</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="CatalogItemsContextMenu" id="7"/>
+			<AutoCommandBar name="CatalogItemsCommandBar" id="8">
+				<ChildItems>
+					<Button name="Select" id="20">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Select</CommandName>
+						<ExtendedTooltip name="SelectExtendedTooltip" id="21"/>
+					</Button>
+					<Button name="CatalogItemsNewItem" id="35">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.NewItem</CommandName>
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Create item</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="CatalogItemNewItemExtendedTooltip" id="36"/>
+					</Button>
+					<Button name="CatalogItemFind" id="22">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>true</OnlyInAllActions>
+						<CommandName>Form.Item.CatalogItems.StandardCommand.Find</CommandName>
+						<ExtendedTooltip name="CatalogItemFindExtendedTooltip" id="23"/>
+					</Button>
+					<Button name="CatalogItemsCancelSearch" id="24">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>true</OnlyInAllActions>
+						<CommandName>Form.Item.CatalogItems.StandardCommand.CancelSearch</CommandName>
+						<ExtendedTooltip name="CatalogItemCancelSearchExtendedTooltip" id="25"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ExtendedTooltipCatalogItems" id="9"/>
+			<SearchStringAddition name="CatalogItemsSearchString" id="74">
+				<AdditionSource>
+					<Item>CatalogItems</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CatalogItemSearchStringContextMenu" id="75"/>
+				<ExtendedTooltip name="CatalogItemSearchStringExtendedTooltip" id="76"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="CatalogItemViewStatus" id="77">
+				<AdditionSource>
+					<Item>CatalogItems</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="CatalogItemViewStatusContextMenu" id="78"/>
+				<ExtendedTooltip name="CatalogItemViewStatusExtendedTooltip" id="79"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="CatalogItemSearchControl" id="80">
+				<AdditionSource>
+					<Item>CatalogItems</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="CatalogItemSearchControlContextMenu" id="81"/>
+				<ExtendedTooltip name="CatalogItemSearchExtendedTooltipControl" id="82"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">CatalogItemSelection</Event>
+			</Events>
+			<ChildItems>
+				<InputField name="CatalogItemsPresentation" id="37">
+					<DataPath>CatalogItems.Presentation</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="CatalogItemPresentationContextMenu" id="38"/>
+					<ExtendedTooltip name="CatalogItemPresentationExtendedTooltip" id="39"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<UsualGroup name="DataGroupFromFile" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Imported data</v8:content>
+				</v8:item>
+			</Title>
+			<VerticalStretch>true</VerticalStretch>
+			<Group>Vertical</Group>
+			<Representation>NormalSeparation</Representation>
+			<ExtendedTooltip name="DataGroupFromExtendedTooltipFile" id="5"/>
+			<ChildItems>
+				<UsualGroup name="BasicDataFromFile" id="16">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Basic imported data</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="BasicDataFromExtendedTooltipFile" id="17"/>
+				</UsualGroup>
+				<UsualGroup name="OtherDataFromFile" id="18">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Other imported data</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Vertical</Group>
+					<Behavior>Collapsible</Behavior>
+					<Collapsed>true</Collapsed>
+					<ExtendedTooltip name="OtherDataFromExtendedTooltipFile" id="19"/>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.DataImportFromFile</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="CatalogItems" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Catalog items</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Presentation" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Presentation</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="DataList" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Key" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Key</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Value" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Value</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ConflictResolvingOption" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Resolve conflict option</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="MappingColumns" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Mapping columns</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Options" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Options</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Presentation" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Presentation</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Ref" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Ref</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:TypeSet>cfg:AnyRef</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="Value" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Value</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Select" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Select</v8:content>
+				</v8:item>
+			</Title>
+			<Action>Select</Action>
+		</Command>
+		<Command name="NewItem" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Create item</v8:content>
+				</v8:item>
+			</Title>
+			<Action>NewItem</Action>
+		</Command>
+		<Command name="Open" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open</v8:content>
+				</v8:item>
+			</Title>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="AmbiguityList">
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Parameter>
+		<Parameter name="StringFromTable">
+			<Type/>
+		</Parameter>
+		<Parameter name="ImportType">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>50</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="TabularSectionFullName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+	</Parameters>
+</Form>

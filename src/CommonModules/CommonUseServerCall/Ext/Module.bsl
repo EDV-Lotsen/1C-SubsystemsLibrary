@@ -1,153 +1,299 @@
-﻿
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Base functionality subsystem.
-//------------------------------------------------------------------------------
-// Server interface procedures and functions of common use for working with:
-// - saving/reading/deleting settings to/from storages.
-//
+////////////////////////////////////////////////////////////////////////////////
+
+#Region Interface
 
 ////////////////////////////////////////////////////////////////////////////////
-#Region PUBLIC_INTERFACE
+// Common procedures and functions for working with infobase data
 
-// Set default value of setting defined for the passed user.
-// Use common settings storage for saving of user settings.
+// Checks whether there are references to the object in the infobase.
 //
 // Parameters:
-//  Setting   - String    - Setting name.
-//  Value     - Arbitrary - Value of setting.
-//  User      - String    - User defining setting (current user by default).
+//  RefOrRefArray          - AnyRef or
+//                         - Array of AnyRef.
 //
-Procedure SetValueAsDefault(Setting, Value, User = Undefined) Export 
-
-	// Get current setting value.
-	CurrentValueByDefault = GetValueByDefault(Setting,, User);
-	
-	// Check value type and compare old and new value.
-	If TypeOf(Value) <> TypeOf(CurrentValueByDefault)
-	Or Value <> CurrentValueByDefault Then
-		
-		// Save new value of setting.
-		CommonSettingsStorage.Save(Upper(Setting),, Value,, User);
-		
-	EndIf;
-
-EndProcedure
-
-// Get default value of setting defined for the passed user.
-// Use common settings storage for saving of user settings.
-//
-// Parameters:
-//  Setting   - String    - Setting name.
-//  Default   - Arbitrary - Default (or empty) value of the same type as expected.
-//                          or Undefined to skip value checking.
-//  User      - String    - User for which setting was defined (current user by default).
+//  SearchInInternalObjects - Boolean - default value is False.
+//                            If it is set to True, the list of search exceptions for
+//                            references will not be taken into account.
 //
 // Returns:
-//  Value     - Arbitrary - Value of setting.
+//  Boolean.
 //
-Function GetValueByDefault(Setting, Default = Undefined, User = Undefined) Export
+Function ReferencesToObjectFound(Val RefOrRefArray, Val SearchInInternalObjects = False) Export
 	
-	// Get value from common storage.
-	Value = CommonSettingsStorage.Load(Upper(Setting),,, User);
-	
-	// Check value is properly filled
-	If  Default = Undefined Then
-		// No value for compare provided: skip value checking.
-		Return Value;
-		
-	ElsIf Value = Undefined                // No value defined for this setting.
-	   Or TypeOf(Value) <> TypeOf(Default) // Value defined, but other type than expected.
-	Then // Only default value defined.
-		
-		// Try to use the existing value in the database if only one defined.
-		If CommonUse.IsReference(TypeOf(Default)) Then
-			
-			//// Check presence of only one ref othis kind in database.
-			//OnlyOneRef = CommonUse.RefIfOnlyOne(TypeOf(Default));
-			//If OnlyOneRef <> Undefined Then
-			//	
-			//	// Save currently found value for the later use.
-			//	CommonSettingsStorage.Save(Upper(Setting),, OnlyOneRef,, User);
-			//	
-			//	// Return set value.
-			//	Return OnlyOneRef;
-			//EndIf;
-		EndIf;
-		
-		// No proper value found.
-		Return Default;
-		
-	// Both Value and Default are defined.
-	ElsIf (Value <> Default) // This is not default (or empty) value (prevents empty search).
-	  And (CommonUse.IsReference(TypeOf(Value)))   // This is value of reference type
-	  And (Not CommonUse.RefExists(Value)) // And reference actually don't exist.
-	Then // Value of proper type saved, but no more exists in the database.
-		
-		// Broken link found.
-		CommonSettingsStorage.Delete(Upper(Setting),, User);
-		
-		// Try to get value once again.
-		Return GetValueByDefault(Setting, Default, User);
-		
-	Else
-		// Value of proper type.
-		Return Value;
-	EndIf;
+	Return CommonUse.ReferencesToObjectFound(RefOrRefArray, SearchInInternalObjects);
 	
 EndFunction
 
-Function CheckNumberAllowed(Num, Ref, BankAccount) Export
+// Checks whether the documents are posted.
+//
+// Parameters:
+//  Documents - Array - documents to be checked.
+//
+// Returns:
+//  Array - unposted documents from the Documents array.
+//
+Function CheckDocumentsPosted(Val Documents) Export
 	
-	Try
-		CheckNum = Number(Num);
-	Except
-		Return New Structure("DuplicatesFound, Allow", False, True);
-	EndTry;
+	Return CommonUse.CheckDocumentsPosted(Documents);
 	
-	If (CheckNum < 100) Or (CheckNum > 99999999) Then
-		Return New Structure("DuplicatesFound, Allow", False, True);
-	EndIf;
+EndFunction
 
-	Query = New Query("SELECT TOP 1
-	                  |	ChecksWithNumber.Number,
-	                  |	ChecksWithNumber.Ref,
-	                  |	AllowDuplicateCheckNumbers.Value AS AllowDuplicateCheckNumbers
-	                  |FROM
-	                  |	(SELECT
-	                  |		Check.PhysicalCheckNum AS Number,
-	                  |		Check.Ref AS Ref
-	                  |	FROM
-	                  |		Document.Check AS Check
-	                  |	WHERE
-	                  |		Check.BankAccount = &BankAccount
-	                  |		AND Check.PaymentMethod = VALUE(Catalog.PaymentMethods.Check)
-	                  |		AND Check.PhysicalCheckNum = &CheckNum
-	                  |	
-	                  |	UNION ALL
-	                  |	
-	                  |	SELECT
-	                  |		InvoicePayment.PhysicalCheckNum,
-	                  |		InvoicePayment.Ref
-	                  |	FROM
-	                  |		Document.InvoicePayment AS InvoicePayment
-	                  |	WHERE
-	                  |		InvoicePayment.BankAccount = &BankAccount
-	                  |		AND InvoicePayment.PaymentMethod = VALUE(Catalog.PaymentMethods.Check)
-	                  |		AND InvoicePayment.PhysicalCheckNum = &CheckNum) AS ChecksWithNumber,
-	                  |	Constant.AllowDuplicateCheckNumbers AS AllowDuplicateCheckNumbers
-	                  |WHERE
-	                  |	ChecksWithNumber.Ref <> &CurrentRef");
-	Query.SetParameter("BankAccount", BankAccount);
-	Query.SetParameter("CheckNum", CheckNum);
-	Query.SetParameter("CurrentRef", Ref);
-	QueryResult = Query.Execute();
-	If QueryResult.IsEmpty() Then
-		Return New Structure("DuplicatesFound, Allow", False, True);
-	Else	
-		Res = QueryResult.Select();
-		Res.Next();
-		Return New Structure("DuplicatesFound, Allow", True, Res.AllowDuplicateCheckNumbers);
-	EndIf;		
+// Attempts to post the documents.
+//
+// Parameters:
+// Documents - Array - documents to be posted.
+//
+// Returns:
+// Array - array of Structure with the following fields:
+// 					Ref              - unposted document;
+// 					ErrorDescription - posting error text.
+//
+Function PostDocuments(Documents) Export
+	
+	Return CommonUse.PostDocuments(Documents);
+	
+EndFunction 
+
+////////////////////////////////////////////////////////////////////////////////
+// Common procedures and functions for working in the data separation mode
+
+// Sets session separation.
+//
+// Parameters:
+//  Use      - Boolean - flag that shows whether the DataArea separator is used in
+//             the session.
+//  DataArea - Number - DataArea separator value.
+//
+Procedure SetSessionSeparation(Val Use, Val DataArea = Undefined) Export
+	
+	CommonUse.SetSessionSeparation(Use, DataArea);
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// Saving, reading, and deletion settings from storages
+
+// Saves settings to the common settings storage.
+// 
+// Parameters:
+//  Corresponds to the CommonSettingsStorage.Save method. 
+//  See StorageSave() procedure parameters for details. 
+//
+Procedure CommonSettingsStorageSave(ObjectKey, SettingsKey = "", Value, SettingsDescription = Undefined,
+	UserName = Undefined, NeedToRefreshCachedValues = False) Export
+	
+	CommonUse.CommonSettingsStorageSave(
+		ObjectKey,
+		SettingsKey,
+		Value,
+		SettingsDescription,
+		UserName,
+		NeedToRefreshCachedValues);
+		
+EndProcedure
+
+// Loads settings from the common settings storage.
+//
+// Parameters:
+//  Corresponds to the CommonSettingsStorage.Load method. 
+//  See StorageLoad() procedure parameters for details. 
+//
+Function CommonSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
+	SettingsDescription = Undefined, UserName = Undefined) Export
+	
+	Return CommonUse.CommonSettingsStorageLoad(
+		ObjectKey,
+		SettingsKey,
+		DefaultValue,
+		SettingsDescription,
+		UserName);
+		
+EndFunction
+
+// Deletes settings from the common settings storage.
+// 
+// Parameters:
+// Corresponds to the CommonSettingsStorage.Delete method. 
+// See StorageDelete() procedure parameters for details. 
+//
+Procedure CommonSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
+	
+	CommonUse.CommonSettingsStorageDelete(ObjectKey, SettingsKey, UserName);
+	
+EndProcedure
+
+// Saves the array of user settings to StructureArray. 
+// Can be called on client.
+// 
+// Parameters:
+//  StructureArray            - Array - Array of Structure with the following fields:
+//                              Object, SettingsItem, Value;
+//  NeedToRefreshCachedValues - Boolean - flag that shows whether cached values must
+//                              be updated.
+//
+Procedure CommonSettingsStorageSaveArray(StructureArray, NeedToRefreshCachedValues = False) Export
+	
+	CommonUse.CommonSettingsStorageSaveArray(StructureArray, NeedToRefreshCachedValues);
+	
+EndProcedure
+
+// Saves the StructureArray user settings array and updates cached values. 
+// Can be called on client.
+// 
+// Parameters:
+// StructureArray - Array - Array of Structure with the following fields:
+//                  Object, SettingsItem, Value.
+//
+Procedure CommonSettingsStorageSaveArrayAndRefreshCachedValues(StructureArray) Export
+	
+	CommonUse.CommonSettingsStorageSaveArrayAndRefreshCachedValues(StructureArray);
+	
+EndProcedure
+
+// Saves the settings item to the common settings storage and updates cached values.
+// 
+// Parameters:
+//  Corresponds to the CommonSettingsStorage.Save method. 
+//  See StorageSave() procedure parameters for details. 
+//
+Procedure CommonSettingsStorageSaveAndRefreshCachedValues(ObjectKey, SettingsKey, Value) Export
+	
+	CommonUse.CommonSettingsStorageSaveAndRefreshCachedValues(ObjectKey, SettingsKey, Value);
+	
+EndProcedure
+
+// Saves the settings item to the common settings storage.
+// 
+// Parameters:
+// Corresponds to the CommonSettingsStorage.Save method. 
+// See StorageSave() procedure parameters for details. 
+//
+Procedure SystemSettingsStorageSave(ObjectKey, SettingsKey = "", Value, SettingsDescription = Undefined,
+	UserName = Undefined, NeedToRefreshCachedValues = False) Export
+	
+	CommonUse.SystemSettingsStorageSave(
+		ObjectKey, 
+		SettingsKey, 
+		Value,
+		SettingsDescription, 
+		UserName, 
+		NeedToRefreshCachedValues);
+	
+EndProcedure
+
+// Loads the settings item from the common settings storage.
+//
+// Parameters: 
+//  Corresponds to the CommonSettingsStorage.Load method. 
+//  See StorageLoad() procedure parameters for details. 
+//
+Function SystemSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
+	SettingsDescription = Undefined, UserName = Undefined) Export
+	
+	Return CommonUse.SystemSettingsStorageLoad(
+		ObjectKey, 
+		SettingsKey, 
+		DefaultValue, 
+		SettingsDescription, 
+		UserName);
+	
+EndFunction
+
+// Deletes the settings item from the common settings storage.
+//
+// Parameters:
+// Corresponds to the CommonSettingsStorage.Delete method. 
+// See StorageDelete() procedure parameters for details. 
+//
+Procedure SystemSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
+	
+	CommonUse.SystemSettingsStorageDelete(ObjectKey, SettingsKey, UserName);
+	
+EndProcedure
+
+// Saves the settings item from the form data settings storage.
+//
+// Parameters:
+// Corresponds to the CommonSettingsStorage.Load method. 
+// See StorageLoad() procedure parameters for details. 
+//
+Procedure FormDataSettingsStorageSave(ObjectKey, SettingsKey = "", Value, SettingsDescription = Undefined,
+	UserName = Undefined, NeedToRefreshCachedValues = False) Export
+	
+	CommonUse.FormDataSettingsStorageSave(
+		ObjectKey, 
+		SettingsKey, 
+		Value,
+		SettingsDescription, 
+		UserName, 
+		NeedToRefreshCachedValues);
+	
+EndProcedure
+
+// Loads the settings item from the form data settings storage.
+//
+// Parameters:
+// Corresponds to the CommonSettingsStorage.Load method. 
+// See StorageLoad() procedure parameters for details. 
+//
+Function FormDataSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
+	SettingsDescription = Undefined, UserName = Undefined) Export
+	
+	Return CommonUse.FormDataSettingsStorageLoad(
+		ObjectKey, 
+		SettingsKey, 
+		DefaultValue, 
+		SettingsDescription, 
+		UserName);
+	
+EndFunction
+
+// Deletes the settings item from the form data settings storage.
+//
+// Parameters:
+//  Corresponds to the CommonSettingsStorage.Delete method. 
+//  See StorageDelete() procedure parameters for details. 
+//
+Procedure FormDataSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
+	
+	CommonUse.FormDataSettingsStorageDelete(ObjectKey, SettingsKey, UserName);
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions for workings with style colors in the client code
+
+// Retrieves a style color by the style item name.
+//
+// Parameters:
+// StyleColorName - String - Style item name.
+//
+// Returns:
+//  Color.
+//
+Function StyleColor(StyleColorName) Export
+	
+	Return StyleColors[StyleColorName];
+	
+EndFunction
+
+// Retrieves a style font by the style item name.
+//
+// Parameters:
+// StyleFontName - String - style item name.
+//
+// Returns:
+//  Font.
+//
+Function StyleFont(StyleFontName) Export
+	
+	Return StyleFonts[StyleFontName];
 	
 EndFunction
 

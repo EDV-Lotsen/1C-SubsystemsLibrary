@@ -1,68 +1,65 @@
 ﻿&AtClient
-Var ForceCloseForm;
+Var ForceCloseForm, UserAnsweredYesToQuestionAboutMapping, SkipCurrentPageCancelControl, ExternalResourcesAllowed;
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then
+	// Skipping the initialization to guarantee that the form
+	// will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
 	
-	If Not Users.RolesAvailable("AddEditDataExchanges") Then
-		DataExchangeServer.ReportError(NStr("en = 'Insufficient rights to add/edit data exchanges.'"), Cancel);
-		Return;
-	EndIf;
-	
-	// Parametrizing the wizard by the exchange plan name (it is mandatory)
-	If Not Parameters.Property("ExchangePlanName", Object.ExchangePlanName) Then
+	// Parameterizing the wizard by exchange plan name (it is mandatory)
+	If Not Parameters.Property("ExchangePlanName", Object.ExchangePlanName) And IsBlankString(Object.ExchangePlanName) Then
 		
-		DataExchangeServer.ReportError(
-		NStr("en = 'The wizard can be called from the command interface only. The wizard has been terminated.'"), Cancel);
-		
-	ElsIf IsBlankString(Object.ExchangePlanName) Then
-		
-		DataExchangeServer.ReportError(NStr("en = 'The exchange plan name is not specified. The wizard has been terminated.'"), Cancel);
+		Raise NStr("en='The data processor cannot be opened manually.'");
 		
 	EndIf;
 	
-	If Cancel Then
-		Return;
-	EndIf;
+	DataExchangeServer.CheckExchangeManagementRights();
+	
+	StandardSubsystemsServer.SetGroupTitleRepresentation(ThisObject);
 	
 	ExchangeWithServiceSetup = Parameters.Property("ExchangeWithServiceSetup");
 	
+	If GetFunctionalOption("UseSecurityProfiles") Then
+		Object.RefNew = ExchangePlans[Object.ExchangePlanName].GetRef();
+	EndIf;
+	
 	SetPrivilegedMode(True);
 	
-	// Setting common default values 
-	InfoBasePlacement                 = "ConnectionUnavailable";
-	InfoBaseType                      = "Server";
+	// Setting common default values
+	InfobasePlacement                 = "ConnectionUnavailable";
+	InfobaseType                      = "Server";
 	ExecuteDataExchangeNow            = True;
 	CreateInitialImageNow             = True;
 	ExecuteInteractiveDataExchangeNow = True;
 	
 	Object.EMAILCompressOutgoingMessageFile = True;
 	Object.FTPCompressOutgoingMessageFile   = True;
-	Object.FTPConnectionPort                = 21;
+	Object.FTPConnectionPort = 21;
 	
 	// The default value for the exchange message transport kind
 	Object.ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.FILE;
 	
-	// Checking whether an initial image creation form exists for the exchange plan.
+	// Checking whether an initial image creation form exists for the exchange plan
 	InitialImageCreationFormExists = (Metadata.ExchangePlans[Object.ExchangePlanName].Forms.Find("InitialImageCreationForm") <> Undefined);
 	
-	// Getting default exchange plan values
+	// Getting exchange plan manager by name
 	ExchangePlanManager = ExchangePlans[Object.ExchangePlanName];
 	
-	Title = Metadata.ExchangePlans[Object.ExchangePlanName].Synonym + "" + NStr("en='(creating)'");
+	BriefDetails  = ExchangePlanManager.ExchangeBriefInfo();
+	LinkToDetails = ExchangePlanManager.ExchangeDetailedInformation();
 	
 	SettingsFileNameForTarget = ExchangePlanManager.SettingsFileNameForTarget() + ".xml";
 	
-	NodeFilterStructure    = DataExchangeServer.ValueByType(ExchangePlanManager.NodeFilterStructure(), "Structure");
-	NodeDefaultValues = DataExchangeServer.ValueByType(ExchangePlanManager.NodeDefaultValues(), "Structure");
+	NodeSettingsForm = "";
+	DefaultValueSetupForm = "";
+	
+	NodeFilterStructure = DataExchangeServer.NodeFilterStructure(Object.ExchangePlanName, CorrespondentConfigurationVersion, NodeSettingsForm);
+	NodeDefaultValues   = DataExchangeServer.NodeDefaultValues(Object.ExchangePlanName,   CorrespondentConfigurationVersion, DefaultValueSetupForm);
 	
 	AccountingSettingsCommentLabel = ExchangePlanManager.AccountingSettingsSetupComment();
 	
@@ -78,10 +75,9 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	Items.DefaultValueGroupBorder1.Visible = NodeDefaultValuesAvailable;
 	Items.DefaultValueGroupBorder2.Visible = NodeDefaultValuesAvailable;
 	Items.DefaultValueGroupBorder6.Visible = NodeDefaultValuesAvailable;
-	Items.FixExternalConnectionErrors.Visible = False;
 	
-	DataTransferRestrictionDetails = ExchangePlanManager.DataTransferRestrictionDetails(NodeFilterStructure);
-	DefaultValueDetails            = ExchangePlanManager.DefaultValueDetails(NodeDefaultValues);
+	DataTransferRestrictionDetails = DataExchangeServer.DataTransferRestrictionDetails(Object.ExchangePlanName, NodeFilterStructure, CorrespondentConfigurationVersion);
+	DefaultValueDetails            = DataExchangeServer.DefaultValueDetails(Object.ExchangePlanName, NodeDefaultValues, CorrespondentConfigurationVersion);
 	
 	ThisNode = ExchangePlanManager.ThisNode();
 	
@@ -95,35 +91,16 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	UseExchangeMessageTransportCOM   = (UsedExchangeMessageTransports.Find(Enums.ExchangeMessageTransportKinds.COM) <> Undefined);
 	UseExchangeMessageTransportWS    = (UsedExchangeMessageTransports.Find(Enums.ExchangeMessageTransportKinds.WS) <> Undefined);
 	
-	If UseExchangeMessageTransportCOM
-		Or UseExchangeMessageTransportWS Then
-		
-		CorrespondentInfoBaseNodeFilterSetup    = DataExchangeServer.ValueByType(ExchangePlanManager.CorrespondentInfoBaseNodeFilterSetup(), "Structure");
-		CorrespondentInfoBaseNodeDefaultValues = DataExchangeServer.ValueByType(ExchangePlanManager.CorrespondentInfoBaseNodeDefaultValues(), "Structure");
-		
-		CorrespondentInfoBaseNodeFilterSettingsAvailable    = CorrespondentInfoBaseNodeFilterSetup.Count() > 0;
-		CorrespondentInfoBaseNodeDefaultValuesAvailable = CorrespondentInfoBaseNodeDefaultValues.Count() > 0;
-		
-		Items.RestrictionsGroupBorder4.Visible = CorrespondentInfoBaseNodeFilterSettingsAvailable;
-		Items.DefaultValueGroupBorder4.Visible = CorrespondentInfoBaseNodeDefaultValuesAvailable;
-		
-		Items.CorrespondentInfoBaseDefaultValueGroupBorder.Visible = CorrespondentInfoBaseNodeDefaultValuesAvailable;
-		
-		CorrespondentInfoBaseDataTransferRestrictionDetails = ExchangePlanManager.CorrespondentInfoBaseDataTransferRestrictionDetails(CorrespondentInfoBaseNodeFilterSetup);
-		CorrespondentInfoBaseDefaultValueDetails       = ExchangePlanManager.CorrespondentInfoBaseDefaultValueDetails(CorrespondentInfoBaseNodeDefaultValues);
-		
-		CorrespondentAccountingSettingsCommentLabel = ExchangePlanManager.CorrespondentInfoBaseAccountingSettingsSetupComment();
-		
-	EndIf;
-	
 	// Getting other settings
-	Object.SourceInfoBasePrefix      = GetFunctionalOption("InfoBasePrefix");
-	Object.SourceInfoBasePrefixIsSet = ValueIsFilled(Object.SourceInfoBasePrefix);
+	Object.SourceInfobasePrefix      = GetFunctionalOption("InfobasePrefix");
+	Object.SourceInfobasePrefixIsSet = ValueIsFilled(Object.SourceInfobasePrefix);
 	
-	If Not Object.SourceInfoBasePrefixIsSet
+	If Not Object.SourceInfobasePrefixIsSet
 		And Not ExchangeWithServiceSetup Then
 		
-		Object.SourceInfoBasePrefix = DataExchangeOverridable.DefaultInfoBasePrefix();
+		//Object.SourceInfobasePrefix = DataExchangeOverridable.DefaultInfobasePrefix();
+		DataExchangeOverridable.OnDefineDefaultInfobasePrefix(Object.SourceInfobasePrefix);
+		
 	EndIf;
 	
 	WizardRunVariant = "SetupNewDataExchange";
@@ -136,6 +113,10 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 		WizardRunMode = "ExchangeOverExternalConnection";
 		
+	ElsIf UseExchangeMessageTransportWS Then
+		
+		WizardRunMode = "ExchangeOverWebService";
+		
 	Else
 		
 		WizardRunMode = "ExchangeOverOrdinaryCommunicationChannels";
@@ -143,14 +124,16 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	EndIf;
 	
 	ExchangePlanMetadata = Metadata.ExchangePlans[Object.ExchangePlanName];
+	ExchangePlanSynonym  = ExchangePlanMetadata.Synonym;
 	
-	Object.IsDistributedInfoBaseSetup = DataExchangeCached.IsDistributedInfoBaseExchangePlan(Object.ExchangePlanName);
+	FormTitle = NStr("en='Data synchronization with %Application% (setup)'");
+	FormTitle = StrReplace(FormTitle, "%Application%", ExchangePlanSynonym);
+	Title = FormTitle;
+	
+	Object.IsDistributedInfobaseSetup = DataExchangeCached.IsDistributedInfobaseExchangePlan(Object.ExchangePlanName);
 	Object.IsStandardExchangeSetup    = DataExchangeCached.IsStandardDataExchangeNode(ThisNode);
 	
-	FileInfoBase = CommonUse.FileInfoBase();
-	
-	SetVisibleAtServer();
-	
+	FileInfobase = CommonUse.FileInfobase();
 	
 	Object.UseTransportParametersFILE  = True;
 	Object.UseTransportParametersFTP   = False;
@@ -160,38 +143,29 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	Items.TransportSettingsFTP.Enabled   = Object.UseTransportParametersFTP;
 	Items.TransportSettingsEMAIL.Enabled = Object.UseTransportParametersEMAIL;
 	
-	Object.ThisInfoBaseDescription = DataExchangeServer.PredefinedExchangePlanNodeDescription(Object.ExchangePlanName);
-	ThisInfoBaseDescriptionSet     = Not IsBlankString(Object.ThisInfoBaseDescription);
+	Object.ThisInfobaseDescription = DataExchangeServer.PredefinedExchangePlanNodeDescription(Object.ExchangePlanName);
+	ThisInfobaseDescriptionSet     = Not IsBlankString(Object.ThisInfobaseDescription);
 	
-	Items.ThisInfoBaseDescription.ReadOnly  = ThisInfoBaseDescriptionSet;
-	Items.ThisInfoBaseDescription1.ReadOnly = ThisInfoBaseDescriptionSet;
+	Items.ThisInfobaseDescription.ReadOnly  = ThisInfobaseDescriptionSet;
+	Items.ThisInfobaseDescription1.ReadOnly = ThisInfobaseDescriptionSet;
 	
-	If Not ThisInfoBaseDescriptionSet Then
+	If Not ThisInfobaseDescriptionSet Then
 		
-		Object.ThisInfoBaseDescription = DataExchangeCached.ThisInfoBaseName();
+		Object.ThisInfobaseDescription = DataExchangeCached.ThisInfobaseName();
 		
 	EndIf;
 	
-	// Setting values of the Next button comment labels on the bottom of wizard pages
+	Items.WSConnectionSettingsDecoration.ExtendedTooltip.Title = StrReplace(
+		Items.WSConnectionSettingsDecoration.ExtendedTooltip.Title, "[ProhibitedChars]",
+		DataExchangeClientServer.ProhibitedCharsInWSProxyUserName());
+		
+	Items.SaaSConnectionParametersDecoration.ExtendedTooltip.Title = StrReplace(
+		Items.SaaSConnectionParametersDecoration.ExtendedTooltip.Title, "[ProhibitedChars]",
+		DataExchangeClientServer.ProhibitedCharsInWSProxyUserName());
 	
-	// Comment label on first page
-	If UseExchangeMessageTransportFILE Then
-		
-		Items.NextLabelWizardRunVariant.Title = LabelNextFILE();
-		
-	ElsIf UseExchangeMessageTransportFTP Then
-		
-		Items.NextLabelWizardRunVariant.Title = NextLabelFTP();
-		
-	ElsIf UseExchangeMessageTransportEMAIL Then
-		
-		Items.NextLabelWizardRunVariant.Title = NextLabelEMAIL();
-		
-	Else
-		
-		Items.NextLabelWizardRunVariant.Title = NextLabelSettings();
-		
-	EndIf;
+	SetVisibleAtServer();
+	
+	// Setting values of the Next button comment labels at the bottom of wizard pages
 	
 	// Comment label on FILE page
 	If UseExchangeMessageTransportFILE Then
@@ -227,7 +201,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 	EndIf;
 	
-	// Comment label on EMAIL page 
+	// Comment label on EMAIL page
 	If UseExchangeMessageTransportEMAIL Then
 		
 		Items.NextLabelEMAIL.Title = NextLabelSettings();
@@ -240,7 +214,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 		If DataExchangeServer.IsSubordinateDIBNode() Then
 			
-			DIBExchangePlanName = ExchangePlans.MasterNode().Metadata().Name;
+			DIBExchangePlanName = DataExchangeServer.MasterNode().Metadata().Name;
 			
 			If Object.ExchangePlanName = DIBExchangePlanName
 				And Not Constants.SubordinateDIBNodeSetupCompleted.Get() Then
@@ -255,18 +229,21 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If IsContinuedInDIBSubordinateNodeSetup Then
 		
+		DataExchangeServer.OnContinueSubordinateDIBNodeSetup();
+		
 		WizardRunVariant = "ContinueDataExchangeSetup";
 		
 		DataProcessorObject = FormAttributeToValue("Object");
-		
 		DataProcessorObject.ExecuteWizardParameterImportFromConstant(False);
-		
 		ValueToFormAttribute(DataProcessorObject, "Object");
 		
 		Items.TransportSettingsFILE.Enabled  = Object.UseTransportParametersFILE;
-		Items.TransportSettingsFTP.Enabled   = Object.UseTransportParametersFTP ;
+		Items.TransportSettingsFTP.Enabled   = Object.UseTransportParametersFTP;
 		Items.TransportSettingsEMAIL.Enabled = Object.UseTransportParametersEMAIL;
 		
+		Items.WizardRunModeChoiceSwitchGroup.Title = NStr("en = 'Continue setup for synchronization with the master node'");
+		
+		Items.BackupGroup.Visible = False;
 	EndIf;
 	
 	WizardRunVariantOnChangeAtServer();
@@ -278,24 +255,40 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	LongAction = False;
 	PredefinedDataExchangeSchedule = "EveryHour";
-	DataExchangeExecutionSchedule = PredefinedScheduleEveryHour();
-	CustomDescriptionPresentation = String(DataExchangeExecutionSchedule);
+	DataExchangeExecutionSchedule  = PredefinedScheduleEveryHour();
+	CustomDescriptionPresentation  = String(DataExchangeExecutionSchedule);
 	
-	EnableAllEventWritingToEventLog = Not CommonUse.EventLogEnabled("Error");
-	Items.EnableAllEventWritingToEventLogGroup.Visible  = EnableAllEventWritingToEventLog;
-	Items.EnableAllEventWritingToEventLogGroup1.Visible = EnableAllEventWritingToEventLog;
-	Items.EnableAllEventWritingToEventLogGroup2.Visible = EnableAllEventWritingToEventLog;
+	If CommonUse.SubsystemExists("StandardSubsystems.GetFilesFromInternet") Then
+		Items.InternetAccessParameters.Visible  = True;
+		Items.InternetAccessParameters1.Visible = True;
+		Items.InternetAccessParameters2.Visible = True;
+	Else
+		Items.InternetAccessParameters.Visible  = False;
+		Items.InternetAccessParameters1.Visible = False;
+		Items.InternetAccessParameters2.Visible = False;
+	EndIf;
 	
+	SetBackupDetailsText();
 EndProcedure
 
 &AtClient
 Procedure OnOpen(Cancel)
 	
+	If IsContinuedInDIBSubordinateNodeSetup Then
+		WindowOpeningMode = FormWindowOpeningMode.LockWholeInterface;
+	EndIf;
+
 	ForceCloseForm = False;
+	UserAnsweredYesToQuestionAboutMapping = False;
+	
+	ExternalResourcesAllowed = New Structure;
+	ExternalResourcesAllowed.Insert("COMAllowed",  False);
+	ExternalResourcesAllowed.Insert("FILEAllowed", False);
+	ExternalResourcesAllowed.Insert("FTPAllowed",  False);
 	
 	OSAuthenticationOnChange();
 	
-	InfoBaseRunModeOnChange();
+	InfobaseRunModeOnChange();
 	
 	SetGoToNumber(1);
 	
@@ -305,9 +298,8 @@ EndProcedure
 Procedure BeforeClose(Cancel, StandardProcessing)
 	
 	If LongAction Then
-		ShowMessageBox(,NStr("en = 'Creating the data exchange.
-							|The wizard cannot be terminated.'")
-		);
+		ShowMessageBox(, NStr("en = 'Creating the data synchronization.
+		                            |The wizard cannot be terminated at this time.'"));
 		Cancel = True;
 		Return;
 	EndIf;
@@ -316,15 +308,19 @@ Procedure BeforeClose(Cancel, StandardProcessing)
 		Return;
 	EndIf;
 	
-	NString = NStr("en = 'Do you want to cancel exchange setup and exit the wizard?'");
-	
-	Response = DoQueryBox(NString, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
-	
-	If Response = DialogReturnCode.No Then
+	If IsContinuedInDIBSubordinateNodeSetup Then
+		WarningText = NStr("en = 'Setting up the subordinate node of the distributed infobase.
+		                          |Do you want to cancel the setup and use the default settings?'");
 		
-		Cancel = True;
+		DIBContinuationCancelNotifyDescription = New NotifyDescription("DIBContinuationCancelNotifyDescription", ThisObject);
+		CommonUseClient.ShowArbitraryFormClosingConfirmation(ThisObject, Cancel, WarningText, "CloseFormWithoutWarning", DIBContinuationCancelNotifyDescription);
 		
+		Return;
 	EndIf;
+	
+	WarningText = NStr("en = 'Do you want to cancel synchronization setup and exit the wizard?'");
+	CloseNotifyDescription = New NotifyDescription("DeleteDataExchangeSettings", ThisObject);
+	CommonUseClient.ShowArbitraryFormClosingConfirmation(ThisObject, Cancel, WarningText, "CloseFormWithoutWarning", CloseNotifyDescription);
 	
 EndProcedure
 
@@ -347,10 +343,10 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 		UpdateMappingStatisticsDataAtServer(Cancel, Parameter);
 		
 		If Cancel Then
-			ShowMessageBox(,NStr("en = 'Error gathering statistic data.'"));
+			ShowMessageBox(, NStr("en = 'Error gathering statistic data.'"));
 		Else
 			
-			ExpandStatisticsTree(Parameter.UniqueKey);
+			ExpandStatisticsTree(Parameter.UniquenessKey);
 			
 			Status(NStr("en = 'Data gathering completed.'"));
 		EndIf;
@@ -359,51 +355,29 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
 
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageStart page
+// WizardPageStart page.
 
 &AtClient
 Procedure DataExchangeSettingsFileNameToImportStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	SelectExchangeSettingsFile(True);
+	StandardProcessing = False;
 	
+	DialogSettings = New Structure;
+	DialogSettings.Insert("Filter", NStr("en = 'Data synchronization settings file (*.xml)'") + "|*.xml" );
+	
+	Notification = New NotifyDescription("ExportDataExchangeFileSelectionCompletion", ThisObject);
+	DataExchangeClient.SelectAndSendFileToServer(Notification, DialogSettings, UUID);
 EndProcedure
 
 &AtClient
 Procedure DataExchangeSettingsFileNameToImportOnChange(Item)
 	
-	File = New File(Object.DataExchangeSettingsFileNameToImport);
-	
-	If    Not File.Exist()
-		Or Not File.IsFile() Then
-		
-		ShowMessageBox(,NStr("en = 'Specify the correct settings file name.'"));
-		Object.DataExchangeSettingsFileNameToImport = "";
-		Return;
-	EndIf;
-	
-	SelectExchangeSettingsFile(False);
-	
-EndProcedure
-
-&AtClient
-Procedure FirstInfoBasePicture1Click(Item)
-	
-	WizardRunVariant = "SetupNewDataExchange";
-	
-	WizardRunVariantOnChangeAtServer();
-	
-EndProcedure
-
-&AtClient
-Procedure SecondInfoBasePicture1Click(Item)
-	
-	WizardRunVariant = "ContinueDataExchangeSetup";
-	
-	WizardRunVariantOnChangeAtServer();
+	DataExchangeSettingsFileImported = False;
 	
 EndProcedure
 
@@ -415,7 +389,7 @@ Procedure WizardRunVariantOnChange(Item)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageDataExchangeCreatedSuccessfully page
+// WizardPageDataExchangeCreatedSuccessfully page.
 
 &AtClient
 Procedure PredefinedDataExchangeScheduleOnChange(Item)
@@ -432,7 +406,7 @@ Procedure ExecuteDataExchangeAutomaticallyOnChange(Item)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageWizardRunModeChoice page
+// WizardPageWizardRunModeChoice page.
 
 &AtClient
 Procedure WizardRunModeOnChange(Item)
@@ -442,38 +416,42 @@ Procedure WizardRunModeOnChange(Item)
 EndProcedure
 
 &AtClient
-Procedure COMInfoBaseDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
+Procedure COMInfobaseDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	DataExchangeClient.FileDirectoryChoiceHandler(Object, "COMInfoBaseDirectory", StandardProcessing);
-	
-EndProcedure
-
-&AtClient
-Procedure COMInfoBaseDirectoryOpen(Item, StandardProcessing)
-	
-	DataExchangeClient.FileOrDirectoryOpenHandler(Object, "COMInfoBaseDirectory", StandardProcessing)
+	DataExchangeClient.FileDirectoryChoiceHandler(Object, "COMInfobaseDirectory", StandardProcessing);
 	
 EndProcedure
 
 &AtClient
-Procedure COMOSAuthenticationOnChange(Item)
+Procedure COMInfobaseDirectoryOpen(Item, StandardProcessing)
+	
+	DataExchangeClient.FileOrDirectoryOpenHandler(Object, "COMInfobaseDirectory", StandardProcessing)
+	
+EndProcedure
+
+&AtClient
+Procedure COMInfobaseRunModeOnChange(Item)
+	
+	InfobaseRunModeOnChange();
+	
+EndProcedure
+
+&AtClient
+Procedure AuthenticationTypeOnChange(Item)
 	
 	OSAuthenticationOnChange();
 	
 EndProcedure
 
-&AtClient
-Procedure COMInfoBaseRunModeOnChange(Item)
-	
-	InfoBaseRunModeOnChange();
-	
-EndProcedure
-
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageSetTransportParametersFILE page
+// WizardPageSetTransportParametersFILE page.
 
 &AtClient
 Procedure FILEDataExchangeDirectoryStartChoice(Item, ChoiceData, StandardProcessing)
+	
+	If Not FileInfobase Then
+		Return;
+	EndIf;
 	
 	DataExchangeClient.FileDirectoryChoiceHandler(Object, "FILEDataExchangeDirectory", StandardProcessing);
 	
@@ -494,7 +472,7 @@ Procedure UseTransportParametersFILEOnChange(Item)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageSetTransportParametersFTP page
+// WizardPageSetTransportParametersFTP page.
 
 &AtClient
 Procedure UseTransportParametersFTPOnChange(Item)
@@ -504,7 +482,7 @@ Procedure UseTransportParametersFTPOnChange(Item)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// WizardPageSetTransportParametersEMAIL page
+// WizardPageSetTransportParametersEMAIL page.
 
 &AtClient
 Procedure UseTransportParametersEMAILOnChange(Item)
@@ -513,8 +491,9 @@ Procedure UseTransportParametersEMAILOnChange(Item)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF StatisticsTree TABLE
+#EndRegion
+
+#Region StatisticsTreeFormTableItemEventHandlers
 
 &AtClient
 Procedure StatisticsTreeChoice(Item, SelectedRow, Field, StandardProcessing)
@@ -523,11 +502,12 @@ Procedure StatisticsTreeChoice(Item, SelectedRow, Field, StandardProcessing)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 ////////////////////////////////////////////////////////////////////////////////
-// Supplied part 
+// Supplied part.
 
 &AtClient
 Procedure NextCommand(Command)
@@ -539,6 +519,7 @@ EndProcedure
 &AtClient
 Procedure BackCommand(Command)
 	
+	UserAnsweredYesToQuestionAboutMapping = False;
 	ChangeGoToNumber(-1);
 	
 EndProcedure
@@ -546,53 +527,7 @@ EndProcedure
 &AtClient
 Procedure DoneCommand(Command)
 	
-	// Enabling event log, if necessary
-	If EnableAllEventWritingToEventLog Then
-		
-		DoMessageBox = "";
-		
-		EnableUseEventLog(DataExchangeCreationEventLogMessageText, DoMessageBox);
-		
-		If Not IsBlankString(DoMessageBox) Then
-			
-			ShowMessageBox(,DoMessageBox);
-			
-		EndIf;
-		
-	EndIf;
-	
-	Cancel = False;
-	
-	If WizardRunMode = "ExchangeOverExternalConnection" Then
-		
-		FinishExchangeOverExternalConnectionSetup();
-		
-	ElsIf WizardRunMode = "ExchangeOverWebService" Then
-		
-		FinishExchangeOverWebServiceSetup();
-		
-	ElsIf WizardRunMode = "ExchangeOverOrdinaryCommunicationChannels" Then
-		
-		If WizardRunVariant = "SetupNewDataExchange" Then
-			
-			FinishFirstExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel);
-			
-		ElsIf WizardRunVariant = "ContinueDataExchangeSetup" Then
-			
-			FinishSecondExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel);
-			
-		EndIf;
-		
-	EndIf;
-	
-	If Cancel Then
-		Return;
-	EndIf;
-	
-	DataExchangeClientOverridable.OnExchangeCreationWizardExit(ThisForm, StartJobManager());
-	
-	ForceCloseForm = True;
-	Close();
+	ExecuteDoneCommand();
 	
 EndProcedure
 
@@ -611,7 +546,7 @@ Procedure HelpCommand(Command)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Overridable part 
+// Overridable part.
 
 &AtClient
 Procedure MapData(Command)
@@ -623,131 +558,131 @@ EndProcedure
 &AtClient
 Procedure SetupDataExport(Command)
 	
-	ConnectionType = "WebService";
+	JoinType = "WebService";
 	
-	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.NodesSetupForm";
+	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodeSetupForm]", NodesSetupForm);
 	
 	FormParameters = New Structure;
-	FormParameters.Insert("ConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-	FormParameters.Insert("Settings", NodesSetupFormContext);
+	FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+	FormParameters.Insert("ConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+	FormParameters.Insert("Settings",             NodesSetupFormContext);
 	
-	OpeningResult = Undefined;
-
-	
-	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("SetupDataExportEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	Handler = New NotifyDescription("DataExportSetupCompletion", ThisObject);
+	Mode = FormWindowOpeningMode.LockOwnerWindow;
+	OpenForm(NodeSettingsFormName, FormParameters, ThisObject,,,,Handler, Mode);
 	
 EndProcedure
 
 &AtClient
-Procedure SetupDataExportEnd(Result, AdditionalParameters) Export
+Procedure DataExportSetupCompletion(Result, AdditionalParameters) Export
 	
-	OpeningResult = Result;
-	
-	If OpeningResult <> Undefined Then
+	If Result <> Undefined Then
 		
-		NodesSetupFormContext = OpeningResult;
+		NodesSetupFormContext = Result;
 		
-		DataExportSettingsDescription = OpeningResult.ContextDetails;
+		DataExportSettingsDescription = Result.ContextDetails;
 		
 	EndIf;
-
+	
 EndProcedure
 
 &AtClient
 Procedure DataRegistrationRestrictionSetup(Command)
 	
-	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.NodeSettingsForm";
+	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodeSettingsForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodeSettingsForm]", NodeSettingsForm);
 	
-	OpeningResult = Undefined;
-
+	FormParameters = New Structure;
+	FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+	FormParameters.Insert("NodeFilterStructure",  NodeFilterStructure);
 	
-	OpenForm(NodeSettingsFormName, New Structure("NodeFilterStructure", NodeFilterStructure), ThisForm,,,, New NotifyDescription("DataRegistrationRestrictionSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	Handler = New NotifyDescription("DataRegistrationRestrictionSetupCompletion", ThisObject);
+	Mode = FormWindowOpeningMode.LockOwnerWindow;
+	OpenForm(NodeSettingsFormName, FormParameters, ThisObject,,,,Handler, Mode);
 	
 EndProcedure
 
 &AtClient
-Procedure DataRegistrationRestrictionSetupEnd(Result, AdditionalParameters) Export
+Procedure DataRegistrationRestrictionSetupCompletion(Result, AdditionalParameters) Export
 	
-	OpeningResult = Result;
-	
-	If OpeningResult <> Undefined Then
+	If Result <> Undefined Then
 		
 		For Each FilterSettings In NodeFilterStructure Do
 			
-			NodeFilterStructure[FilterSettings.Key] = OpeningResult[FilterSettings.Key];
+			NodeFilterStructure[FilterSettings.Key] = Result[FilterSettings.Key];
 			
 		EndDo;
 		
-		// Calling server
+		// Server call
 		GetDataTransferRestrictionDetails(NodeFilterStructure);
 		
 	EndIf;
-
-EndProcedure
-
-&AtClient
-Procedure CorrespondentInfoBaseRegistrationRestrictionSetupViaWebService(Command)
-	
-	CorrespondentInfoBaseRegistrationRestrictionSetup("WebService");
 	
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseRegistrationRestrictionSetupThroughExternalConnection(Command)
+Procedure CorrespondentInfobaseRegistrationRestrictionSetupViaWebService(Command)
 	
-	CorrespondentInfoBaseRegistrationRestrictionSetup("ExternalConnection");
+	CorrespondentInfobaseRegistrationRestrictionSetup("WebService");
+	
+EndProcedure
+
+&AtClient
+Procedure CorrespondentInfobaseRegistrationRestrictionSetupThroughExternalConnection(Command)
+	
+	CorrespondentInfobaseRegistrationRestrictionSetup("ExternalConnection");
 	
 EndProcedure
 
 &AtClient
 Procedure DefaultValueSetup(Command)
 	
-	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.DefaultValueSetupForm";
+	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[DefaultValueSetupForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[DefaultValueSetupForm]", DefaultValueSetupForm);
 	
 	FormParameters = New Structure;
+	FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
 	FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
 	
-	OpeningResult = Undefined;
-
-	
-	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("DefaultValueSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	Handler = New NotifyDescription("DefaultValueSetupCompletion", ThisObject);
+	Mode = FormWindowOpeningMode.LockOwnerWindow;
+	OpenForm(NodeSettingsFormName, FormParameters, ThisObject,,,,Handler, Mode);
 	
 EndProcedure
 
 &AtClient
-Procedure DefaultValueSetupEnd(Result, AdditionalParameters) Export
+Procedure DefaultValueSetupCompletion(Result, AdditionalParameters) Export
 	
-	OpeningResult = Result;
-	
-	If OpeningResult <> Undefined Then
+	If Result <> Undefined Then
 		
-		For Each Setting In NodeDefaultValues Do
+		For Each Settings In NodeDefaultValues Do
 			
-			NodeDefaultValues[Setting.Key] = OpeningResult[Setting.Key];
+			NodeDefaultValues[Settings.Key] = Result[Settings.Key];
 			
 		EndDo;
 		
-		// Calling server
+		// Server call
 		GetDefaultValueDetails(NodeDefaultValues);
 		
 	EndIf;
-
-EndProcedure
-
-&AtClient
-Procedure CorrespondentInfoBaseDefaultValueSetupViaWebService(Command)
-	
-	CorrespondentInfoBaseDefaultValueSetup("WebService");
 	
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseDefaultValueSetupViaExternalConnection(Command)
+Procedure CorrespondentInfobaseDefaultValueSetupViaWebService(Command)
 	
-	CorrespondentInfoBaseDefaultValueSetup("ExternalConnection");
+	CorrespondentInfobaseDefaultValueSetup("WebService");
+	
+EndProcedure
+
+&AtClient
+Procedure CorrespondentInfobaseDefaultValueSetupViaExternalConnection(Command)
+	
+	CorrespondentInfobaseDefaultValueSetup("ExternalConnection");
 	
 EndProcedure
 
@@ -758,12 +693,12 @@ Procedure SaveDataExchangeSettingsFile(Command)
 	
 	Cancel = False;
 	
-	// Calling server
+	// Server call
 	ExportExchangeSettingsForTarget(Cancel, TempStorageAddress);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Error saving data exchange settings file.'"));
+		ShowMessageBox(, NStr("en = 'Error saving data synchronization settings file.'"));
 		
 	Else
 		
@@ -777,9 +712,9 @@ Procedure SaveDataExchangeSettingsFile(Command)
 			
 			Dialog = New FileDialog(FileDialogMode.Save);
 			
-			Dialog.Title        = NStr("en = 'Specify the data exchange settings file name.'");
+			Dialog.Title        = NStr("en = 'Specify data synchronization settings file name.'");
 			Dialog.Extension    = "xml";
-			Dialog.Filter       = "Data exchange settings file(*.xml)|*.xml";
+			Dialog.Filter       = NStr("en = 'Data synchronization settings file(*.xml)|*.xml'");
 			Dialog.FullFileName = SettingsFileNameForTarget;
 			
 			If Dialog.Choose() Then
@@ -802,152 +737,45 @@ Procedure SaveDataExchangeSettingsFile(Command)
 EndProcedure
 
 &AtClient
-Procedure CheckFILEConnection(Command)
+Procedure TestFILEConnection(Command)
 	
-	CheckConnection("FILE");
-	
-EndProcedure
-
-&AtClient
-Procedure CheckFTPConnection(Command)
-	
-	CheckConnection("FTP");
+	ClosingNotification = New NotifyDescription("TestFILEConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Object,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
 	
 EndProcedure
 
 &AtClient
-Procedure CheckEMAILConnection(Command)
+Procedure TestFTPConnection(Command)
 	
-	CheckConnection("EMAIL");
-	
-EndProcedure
-
-&AtClient
-Procedure CheckCOMConnection(Command)
-	
-	ClearMessages();
-	
-	SettingsStructure = New Structure;
-	SettingsStructure.Insert("COMOSAuthentication");
-	SettingsStructure.Insert("COMInfoBaseOperationMode");
-	SettingsStructure.Insert("COMInfoBaseNameAtPlatformServer");
-	SettingsStructure.Insert("COMUserName");
-	SettingsStructure.Insert("COMPlatformServerName");
-	SettingsStructure.Insert("COMInfoBaseDirectory");
-	SettingsStructure.Insert("COMUserPassword");
-	
-	FillPropertyValues(SettingsStructure, Object);
-	
-	Cancel = False;
-	ErrorAttachingAddIn = False;
-	
-	DataExchangeServer.CheckExternalConnection(Cancel, SettingsStructure, ErrorAttachingAddIn);
-	
-	If Cancel Then
-		
-		ShowMessageBox(,NStr("en = 'Error establishing connection (see the event log for details).'"));
-		
-		If ErrorAttachingAddIn And FileInfoBase Then
-			
-			Items.FixExternalConnectionErrors.Visible = True;
-			
-		EndIf;
-		
-	Else
-		ShowMessageBox(,NStr("en = 'Connection established successfully.'"));
-	EndIf;
+	ClosingNotification = New NotifyDescription("TestFTPConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Object,,,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
 	
 EndProcedure
 
 &AtClient
-Procedure CheckWSConnection(Command)
+Procedure TestEMAILConnection(Command)
 	
-	Cancel = False;
-	
-	CheckWSConnectionAtClient(Cancel);
-	
-	If Not Cancel Then
-		
-		ShowMessageBox(,NStr("en = 'Connection established successfully.'"));
-		
-	EndIf;
+	TestConnection("EMAIL");
 	
 EndProcedure
 
 &AtClient
-Procedure FixExternalConnectionErrors(Command)
+Procedure TestCOMConnection(Command)
 	
-	ForceCloseForm = True;
-	CommonUseClient.RegisterCOMConnector();
-	
-EndProcedure
-
-&AtClient
-Procedure HowToGetWebServiceConnectionParameters(Command)
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("TemplateName", "HowToGetWebServiceConnectionParameters");
-	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the second infobase'"));
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+	ClosingNotification = New NotifyDescription("TestCOMConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Object, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
 	
 EndProcedure
 
 &AtClient
-Procedure HowToGetServiceConnectionParameters(Command)
+Procedure TestWSConnection(Command)
 	
-	FormParameters = New Structure;
-	FormParameters.Insert("TemplateName", "HowToGetServiceConnectionParameters");
-	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the application located in the service'"));
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-	
-EndProcedure
-
-&AtClient
-Procedure HowToGetConnectionParameters(Command)
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("TemplateName", "HowToGetConnectionParameters");
-	FormParameters.Insert("Title", NStr("en = 'How to determine parameters for connecting the second infobase'"));
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-	
-EndProcedure
-
-&AtClient
-Procedure HowToGetSecondInfoBasePrefix(Command)
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("TemplateName", "HowToGetSecondInfoBasePrefix");
-	FormParameters.Insert("Title", NStr("en = 'How to determine the prefix of the correspondent infobase'"));
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-	
-EndProcedure
-
-&AtClient
-Procedure HowToGenerateExchangeSettingsFile(Command)
-	
-	FormParameters = New Structure;
-	FormParameters.Insert("TemplateName", "HowToGenerateExchangeSettingsFile");
-	FormParameters.Insert("Title", NStr("en = 'How to generate the data exchange settings file'"));
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.AdditionalDetails", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-	
-EndProcedure
-
-&AtClient
-Procedure GetThisInfoBasePrefix(Command)
-	
-	OpenForm("DataProcessor.DataExchangeCreationWizard.Form.GetThisInfoBasePrefix", , ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
-	
-EndProcedure
-
-&AtClient
-Procedure ExecuteDataImportInSecondInfoBase(Command)
-	
-	DataExchangeClient.RunPlatformAppAndExecuteInteractiveDataImport(ExternalConnectionParameterStructure(), Object.ExchangePlanName);
+	ClosingNotification = New NotifyDescription("TestWSConnectionCompletion", ThisObject);
+	Queries = CreateRequestForUseExternalResources(Object,,, True);
+	SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
 	
 EndProcedure
 
@@ -955,10 +783,17 @@ EndProcedure
 Procedure ChangeCustomSchedule(Command)
 	
 	Dialog = New ScheduledJobDialog(DataExchangeExecutionSchedule);
+	NotifyDescription = New NotifyDescription("ChangeCustomScheduleCompletion", ThisObject);
+	Dialog.Show(NotifyDescription);
 	
-	If Dialog.DoModal() Then
+EndProcedure
+
+&AtClient
+Procedure ChangeCustomScheduleCompletion(Schedule) Export
+	
+	If Schedule <> Undefined Then
 		
-		DataExchangeExecutionSchedule = Dialog.Schedule;
+		DataExchangeExecutionSchedule = Schedule;
 		
 		CustomDescriptionPresentation = String(DataExchangeExecutionSchedule);
 		
@@ -966,8 +801,89 @@ Procedure ChangeCustomSchedule(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+&AtClient
+Procedure DetailedDescription(Command)
+	
+	DataExchangeClient.OpenDetailedSynchronizationDetails(LinkToDetails);
+	
+EndProcedure
+
+&AtClient
+Procedure InternetAccessParameters(Command)
+	
+	DataExchangeClient.OpenProxyServerParameterForm();
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtClient
+Procedure ExecuteDoneCommand(Val CloseForm = True)
+	
+	Cancel = False;
+	If WizardRunMode = "ExchangeOverExternalConnection" Then
+		FinishExchangeOverExternalConnectionSetup(CloseForm);
+		
+	ElsIf WizardRunMode = "ExchangeOverWebService" Then
+		FinishExchangeOverWebServiceSetup();
+		
+	ElsIf WizardRunMode = "ExchangeOverOrdinaryCommunicationChannels" Then
+		If WizardRunVariant = "SetupNewDataExchange" Then
+			FinishFirstExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel);
+			
+		ElsIf WizardRunVariant = "ContinueDataExchangeSetup" Then
+			FinishSecondExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel, CloseForm);
+			
+		EndIf;
+		
+	EndIf;
+	
+	If Cancel Then
+		Return;
+	EndIf;
+	
+	RefreshInterface();
+	
+	If CloseForm Then
+		ForceCloseForm = True;
+		Close();
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure BackupLabelURLProcessing(Item, URL, StandardProcessing)
+	StandardProcessing = False;
+	
+	If URL = "Backup" Then
+		InfobaseBackupClientModule = CommonUseClient.CommonModule("InfobaseBackupClient");
+		InfobaseBackupClientModule.OpenBackupForm(ThisObject);
+		
+	EndIf;
+	
+EndProcedure
+
+&AtServer
+Procedure SetBackupDetailsText()
+	Option = DataExchangeServer.BackupOption();
+	
+	If IsBlankString(Option) Then
+		Return;
+	EndIf;
+	
+	Text = StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en = 'It is recommended that you create an <a href=%1>infobase backup</a> before synchronization setup.'"),
+		Option);
+		
+	DocFormat = New FormattedDocument;
+	DocFormat.SetHTML(Text, New Structure);
+	Text = DocFormat.GetFormattedString();
+	
+	Items.BackupLabel.Title        = Text;
+	Items.BackupServiceLabel.Title = Text;
+EndProcedure
 
 &AtClient
 Procedure PredefinedDataExchangeScheduleOnValueChange()
@@ -976,8 +892,7 @@ Procedure PredefinedDataExchangeScheduleOnValueChange()
 	
 	Items.CustomSchedulePages.CurrentPage = ?(UseCustomSchedule,
 						Items.CustomSchedulePage,
-						Items.EmptyCustomSchedulePage
-	);
+						Items.EmptyCustomSchedulePage);
 	
 EndProcedure
 
@@ -986,8 +901,7 @@ Procedure ExecuteDataExchangeAutomaticallyOnValueChange()
 	
 	Items.PredefinedSchedulePages.CurrentPage = ?(ExecuteDataExchangeAutomatically,
 						Items.PredefinedSchedulePage,
-						Items.NotAvailablePredefinedSchedulePage
-	);
+						Items.NotAvailablePredefinedSchedulePage);
 	
 EndProcedure
 
@@ -1020,27 +934,27 @@ EndProcedure
 &AtClient
 Procedure GoToNumberOnChange(Val IsGoNext)
 	
-	// Executing step change event handlers
+	// Executing wizard step change event handlers
 	ExecuteGoToEventHandlers(IsGoNext);
 	
-	// Setting page visibility
+	// Setting page to be displayed
 	GoToRowsCurrent = GoToTable.FindRows(New Structure("GoToNumber", GoToNumber));
 	
 	If GoToRowsCurrent.Count() = 0 Then
-		Raise NStr("en = 'The page to be displayed is not specified.'");
+		Raise NStr("en = 'Page to be displayed is not specified.'");
 	EndIf;
 	
 	GoToRowCurrent = GoToRowsCurrent[0];
 	
-	Items.MainPanel.CurrentPage  = Items[GoToRowCurrent.MainPageName];
+	Items.MainPanel.CurrentPage       = Items[GoToRowCurrent.MainPageName];
 	Items.NavigationPanel.CurrentPage = Items[GoToRowCurrent.NavigationPageName];
 	
-	// Setting current default button
-	ButtonNext = GetFormButtonByCommandName(Items.NavigationPanel.CurrentPage, "NextCommand");
+	// Setting the default button
+	NextButton = GetFormButtonByCommandName(Items.NavigationPanel.CurrentPage, "NextCommand");
 	
-	If ButtonNext <> Undefined Then
+	If NextButton <> Undefined Then
 		
-		ButtonNext.DefaultButton = True;
+		NextButton.DefaultButton = True;
 		
 	Else
 		
@@ -1065,7 +979,7 @@ EndProcedure
 &AtClient
 Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	
-	// Step change event handlers
+	// Step change handlers
 	If IsGoNext Then
 		
 		GoToRows = GoToTable.FindRows(New Structure("GoToNumber", GoToNumber - 1));
@@ -1133,7 +1047,7 @@ Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	GoToRowsCurrent = GoToTable.FindRows(New Structure("GoToNumber", GoToNumber));
 	
 	If GoToRowsCurrent.Count() = 0 Then
-		Raise NStr("en = 'The page to be displayed is not specified.'");
+		Raise NStr("en = 'Page to be displayed is not specified.'");
 	EndIf;
 	
 	GoToRowCurrent = GoToRowsCurrent[0];
@@ -1189,7 +1103,7 @@ Procedure ExecuteLongActionHandler()
 	GoToRowsCurrent = GoToTable.FindRows(New Structure("GoToNumber", GoToNumber));
 	
 	If GoToRowsCurrent.Count() = 0 Then
-		Raise NStr("en = 'The page to be displayed is not specified.'");
+		Raise NStr("en = 'Page to be displayed is not specified.'");
 	EndIf;
 	
 	GoToRowCurrent = GoToRowsCurrent[0];
@@ -1238,8 +1152,7 @@ Procedure GoToTableNewRow(GoToNumber,
 									GoBackHandlerName = "",
 									OnOpenHandlerName = "",
 									LongAction = False,
-									LongActionHandlerName = ""
-	)
+									LongActionHandlerName = "")
 	NewRow = GoToTable.Add();
 	
 	NewRow.GoToNumber         = GoToNumber;
@@ -1263,6 +1176,7 @@ Function GetFormButtonByCommandName(FormItem, CommandName)
 		
 		If TypeOf(Item) = Type("FormGroup") Then
 			
+			//Return GetFormButtonByCommandName(Item, CommandName);
 			FormItemByCommandName = GetFormButtonByCommandName(Item, CommandName);
 			
 			If FormItemByCommandName <> Undefined Then
@@ -1272,7 +1186,7 @@ Function GetFormButtonByCommandName(FormItem, CommandName)
 			EndIf;
 			
 		ElsIf TypeOf(Item) = Type("FormButton")
-				And Find(Item.CommandName, CommandName) > 0 Then
+			And Find(Item.CommandName, CommandName) > 0 Then
 			
 			Return Item;
 			
@@ -1288,20 +1202,132 @@ Function GetFormButtonByCommandName(FormItem, CommandName)
 	
 EndFunction
 
+&AtServer
+Function TestCOMConnectionAtServer()
+	
+	SettingsStructure = New Structure;
+	SettingsStructure.Insert("COMOSAuthentication");
+	SettingsStructure.Insert("COMInfobaseOperationMode");
+	SettingsStructure.Insert("COMInfobaseNameAtPlatformServer");
+	SettingsStructure.Insert("COMUserName");
+	SettingsStructure.Insert("COMPlatformServerName");
+	SettingsStructure.Insert("COMInfobaseDirectory");
+	SettingsStructure.Insert("COMUserPassword");
+	FillPropertyValues(SettingsStructure, Object);
+	
+	Result = DataExchangeServer.EstablishExternalConnectionWithInfobase(SettingsStructure);
+	If Result.Connection = Undefined Then
+		Return Result.BriefErrorDetails;
+	EndIf;
+	Return ""; // done
+	
+EndFunction
+
+&AtClient
+Procedure AllowResourceCompletion(Result, PermissionName) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		ExternalResourcesAllowed[PermissionName] = True;
+		ChangeGoToNumber(+1);
+		
+	EndIf;
+	
+EndProcedure
+
+&AtServerNoContext
+Function CreateRequestForUseExternalResources(Val Object, RequestCOM = False,
+	RequestFILE = False, RequestWS = False, RequestFTP = False)
+	
+	Write = InformationRegisters.ExchangeTransportSettings.CreateRecordManager();
+	FillPropertyValues(Write, Object);
+	Write.Node = Object.RefNew;
+	
+	PermissionRequests = New Array;
+	
+	InformationRegisters.ExchangeTransportSettings.RequestToUseExternalResources(PermissionRequests,
+		Write, RequestCOM, RequestFILE, RequestWS, RequestFTP);
+	Return PermissionRequests;
+	
+EndFunction
+
+&AtClient
+Procedure TestCOMConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		ClearMessages();
+		
+		If StandardSubsystemsClientCached.ClientParameters().FileInfobase Then
+			
+			CommonUseClient.RegisterCOMConnector(False);
+			
+		EndIf;
+		
+		MessageText = TestCOMConnectionAtServer();
+		If IsBlankString(MessageText) Then
+			MessageText = NStr("en = 'Connection test succeeded.'");
+		EndIf;
+		ShowMessageBox(,MessageText);
+		
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure TestFILEConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		TestConnection("FILE");
+		
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure TestFTPConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		TestConnection("FTP");
+		
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure TestWSConnectionCompletion(Result, AdditionalParameters) Export
+	
+	If Result = DialogReturnCode.OK Then
+		
+		Cancel = False;
+		
+		TestWSConnectionAtClient(Cancel);
+		
+		If Not Cancel Then
+			
+			ShowMessageBox(, NStr("en = 'Connection established.'"));
+			
+		EndIf;
+		
+	EndIf;
+	
+EndProcedure
+
 ////////////////////////////////////////////////////////////////////////////////
-// Idle handlers
+// Idle handlers.
 
 &AtClient
 Procedure LongActionIdleHandler()
 	
 	ErrorMessageString = "";
 	
-	ActionState = DataExchangeServer.LongActionState(LongActionID,
+	ActionState = DataExchangeServerCall.LongActionState(LongActionID,
 																		Object.WSURL,
 																		Object.WSUserName,
 																		Object.WSPassword,
-																		ErrorMessageString
-	);
+																		ErrorMessageString);
 	
 	If ActionState = "Active" Then
 		
@@ -1309,7 +1335,7 @@ Procedure LongActionIdleHandler()
 		
 	ElsIf ActionState = "Completed" Then
 		
-		LongAction = False;
+		LongAction         = False;
 		LongActionFinished = True;
 		
 		NextCommand(Undefined);
@@ -1322,9 +1348,8 @@ Procedure LongActionIdleHandler()
 		
 		BackCommand(Undefined);
 		
-		QuestionText = NStr("en = 'Error creating the data exchange.
-							|Do you want to open the event log?'"
-		);
+		QuestionText = NStr("en = 'Error creating data synchronization.
+							|Do you want to view the event log?'");
 		
 		SuggestOpenEventLog(QuestionText, DataExchangeCreationEventLogMessageText);
 		
@@ -1333,7 +1358,7 @@ Procedure LongActionIdleHandler()
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Internal procedures and functions
+// Internal procedures and functions.
 
 &AtServer
 Procedure SetupNewDataExchangeAtServer(Cancel, NodeFilterStructure, NodeDefaultValues)
@@ -1349,15 +1374,17 @@ Procedure SetupNewDataExchangeAtServer(Cancel, NodeFilterStructure, NodeDefaultV
 EndProcedure
 
 &AtServer
-Procedure SetupNewDataExchangeOverExternalConnectionAtServer(Cancel, CorrespondentInfoBaseNodeFilterSetup, CorrespondentInfoBaseNodeDefaultValues)
+Procedure SetupNewDataExchangeOverExternalConnectionAtServer(Cancel, CorrespondentInfobaseNodeFilterSetup, CorrespondentInfobaseNodeDefaultValues)
 	
 	Object.WizardRunVariant = WizardRunVariant;
 	
 	DataProcessorObject = FormAttributeToValue("Object");
 	
-	DataProcessorObject.SetUpNewDataExchangeOverExternalConnection(Cancel, NodeFilterStructure, NodeDefaultValues, CorrespondentInfoBaseNodeFilterSetup, CorrespondentInfoBaseNodeDefaultValues);
+	DataProcessorObject.SetUpNewDataExchangeOverExternalConnection(Cancel, NodeFilterStructure, NodeDefaultValues, CorrespondentInfobaseNodeFilterSetup, CorrespondentInfobaseNodeDefaultValues);
 	
 	ValueToFormAttribute(DataProcessorObject, "Object");
+	
+	Items.ExecuteInteractiveDataExchangeNow.Title = StrReplace(Items.ExecuteInteractiveDataExchangeNow.Title, "%Application%", ExchangePlanSynonym);
 	
 EndProcedure
 
@@ -1371,8 +1398,7 @@ Procedure SetupNewDataExchangeAtServerOverWebService(Cancel)
 	DataProcessorObject.SetUpNewDataExchangeOverWebServiceInTwoBases(Cancel,
 																		NodesSetupFormContext,
 																		LongAction,
-																		LongActionID
-	);
+																		LongActionID);
 	
 	ValueToFormAttribute(DataProcessorObject, "Object");
 	
@@ -1385,10 +1411,9 @@ Procedure UpdateDataExchangeSettings(Cancel)
 	
 	DataProcessorObject.UpdateDataExchangeSettings(Cancel,
 												NodeDefaultValues,
-												CorrespondentInfoBaseNodeDefaultValues,
+												CorrespondentInfobaseNodeDefaultValues,
 												LongAction,
-												LongActionID
-	);
+												LongActionID);
 	
 	ValueToFormAttribute(DataProcessorObject, "Object");
 	
@@ -1397,37 +1422,31 @@ EndProcedure
 &AtServer
 Procedure SetVisibleAtServer()
 	
-	Items.ExchangeInformationDirectoryAtServerSelectionComment.Visible = Not FileInfoBase;
+	Items.ExchangeInformationDirectoryAtServerSelectionComment.Visible = Not FileInfobase;
+	Items.FILEDataExchangeDirectory.ChoiceButton = FileInfobase;
 	
-	Items.SourceInfoBasePrefix.Visible  = Not Object.SourceInfoBasePrefixIsSet;
-	Items.SourceInfoBasePrefix1.Visible = Not Object.SourceInfoBasePrefixIsSet;
-	Items.TargetInfoBasePrefix.Visible  = False;
+	Items.SourceInfobasePrefix.Visible  = Not Object.SourceInfobasePrefixIsSet;
+	Items.SourceInfobasePrefix1.Visible = Not Object.SourceInfobasePrefixIsSet;
+	Items.TargetInfobasePrefix.Visible  = False;
 	
-	Items.SourceInfoBasePrefixExchangeOverWebService.Visible  = Not Object.SourceInfoBasePrefixIsSet;
-	Items.SourceInfoBasePrefixExchangeOverWebService.ReadOnly = Object.SourceInfoBasePrefixIsSet;
+	Items.SourceInfobasePrefixExchangeOverWebService.Visible  = Not Object.SourceInfobasePrefixIsSet;
+	Items.SourceInfobasePrefixExchangeOverWebService.ReadOnly = Object.SourceInfobasePrefixIsSet;
 	
-	Items.SourceInfoBasePrefixExchangeWithService.ReadOnly = Object.SourceInfoBasePrefixIsSet;
-	Items.TargetInfoBasePrefixExchangeWithService.ReadOnly = True;
+	Items.SourceInfobasePrefixExchangeWithService.ReadOnly = Object.SourceInfobasePrefixIsSet;
+	Items.TargetInfobasePrefixExchangeWithService.ReadOnly = True;
 	
-	Items.FinalActionDisplayPages.CurrentPage = ?(Object.IsDistributedInfoBaseSetup,
+	Items.FinalActionDisplayPages.CurrentPage = ?(Object.IsDistributedInfobaseSetup,
 					Items.ExecuteSubordinateNodeImageInitialCreationPage,
 					Items.ExecuteDataExportForMappingPage);
 	
-	If Object.IsDistributedInfoBaseSetup Then
+	If Object.IsDistributedInfobaseSetup Then
 		
-		Items.WizardRunVariant.Enabled = False;
-		Items.FirstInfoBasePicture.Href = False;
-		Items.FirstInfoBasePicture1.Href = False;
-		Items.SecondInfoBasePicture.Href = False;
-		Items.SecondInfoBasePicture1.Href = False;
+		Items.WizardRunVariant.Visible = False;
 		
-		// The settings file does not created for a DIB node. Settings for the
-		// correspondent infobase are passed via constant.
-		Items.ExchangeSettingsFileGroup1.Visible = False;
-		Items.ExchangeSettingsFileSelectionPages.Visible = False;
+		Items.PrefixStub.Visible = False;
+		Items.TargetInfobasePrefix1.ToolTipRepresentation = ToolTipRepresentation.None;
 		
-		Items.HowToGetSecondInfoBasePrefix.Visible = False;
-		Items.GetThisInfoBasePrefix.Visible = False;
+		Items.WizardRunModeChoiceSwitchGroup.Title = NStr("en = 'Initial image creation for subordinate DIB node.'");
 		
 	EndIf;
 	
@@ -1461,9 +1480,9 @@ Function NodeFiltersResultPresentation()
 EndFunction
 
 &AtClient
-Function CorrespondentInfoBaseNodeFilterResultPresentation()
+Function CorrespondentInfobaseNodeFilterResultPresentation()
 	
-	Return ?(IsBlankString(CorrespondentInfoBaseDataTransferRestrictionDetails), "", CorrespondentInfoBaseDataTransferRestrictionDetails + Chars.LF + Chars.LF);
+	Return ?(IsBlankString(CorrespondentInfobaseDataTransferRestrictionDetails), "", CorrespondentInfobaseDataTransferRestrictionDetails + Chars.LF + Chars.LF);
 	
 EndFunction
 
@@ -1475,9 +1494,9 @@ Function DefaultNodeValueResultPresentation()
 EndFunction
 
 &AtClient
-Function CorrespondentInfoBaseNodeDefaultValueResultPresentation()
+Function CorrespondentInfobaseNodeDefaultValueResultPresentation()
 	
-	Return ?(IsBlankString(CorrespondentInfoBaseDefaultValueDetails), "", CorrespondentInfoBaseDefaultValueDetails + Chars.LF + Chars.LF);
+	Return ?(IsBlankString(CorrespondentInfobaseDefaultValueDetails), "", CorrespondentInfobaseDefaultValueDetails + Chars.LF + Chars.LF);
 	
 EndFunction
 
@@ -1505,49 +1524,53 @@ Procedure ImportWizardParameters(Cancel, TempStorageAddress)
 	Items.TransportSettingsFTP.Enabled   = Object.UseTransportParametersFTP;
 	Items.TransportSettingsEMAIL.Enabled = Object.UseTransportParametersEMAIL;
 	
+	If Not Cancel Then
+		SettingsRead = True;
+	EndIf;
+	
 EndProcedure
 
 &AtServer
 Procedure GetDataTransferRestrictionDetails(NodeFilterStructure)
 	
-	DataTransferRestrictionDetails = ExchangePlans[Object.ExchangePlanName].DataTransferRestrictionDetails(NodeFilterStructure);
+	DataTransferRestrictionDetails = DataExchangeServer.DataTransferRestrictionDetails(Object.ExchangePlanName, NodeFilterStructure, CorrespondentConfigurationVersion);
 	
 EndProcedure
 
 &AtServer
-Procedure GetCorrespondentInfoBaseDataTransferRestrictionDetails(CorrespondentInfoBaseNodeFilterSetup)
+Procedure GetCorrespondentInfobaseDataTransferRestrictionDetails(CorrespondentInfobaseNodeFilterSetup)
 	
-	CorrespondentInfoBaseDataTransferRestrictionDetails = ExchangePlans[Object.ExchangePlanName].CorrespondentInfoBaseDataTransferRestrictionDetails(CorrespondentInfoBaseNodeFilterSetup);
+	CorrespondentInfobaseDataTransferRestrictionDetails = DataExchangeServer.CorrespondentInfobaseDataTransferRestrictionDetails(Object.ExchangePlanName, CorrespondentInfobaseNodeFilterSetup, CorrespondentConfigurationVersion);
 	
 EndProcedure
 
 &AtServer
 Procedure GetDefaultValueDetails(NodeDefaultValues)
 	
-	DefaultValueDetails = ExchangePlans[Object.ExchangePlanName].DefaultValueDetails(NodeDefaultValues);
+	DefaultValueDetails = DataExchangeServer.DefaultValueDetails(Object.ExchangePlanName, NodeDefaultValues, CorrespondentConfigurationVersion);
 	
 EndProcedure
 
 &AtServer
-Procedure GetCorrespondentInfoBaseDefaultValueDetails(CorrespondentInfoBaseNodeDefaultValues)
+Procedure GetCorrespondentInfobaseDefaultValueDetails(CorrespondentInfobaseNodeDefaultValues)
 	
-	CorrespondentInfoBaseDefaultValueDetails = ExchangePlans[Object.ExchangePlanName].CorrespondentInfoBaseDefaultValueDetails(CorrespondentInfoBaseNodeDefaultValues);
+	CorrespondentInfobaseDefaultValueDetails = DataExchangeServer.CorrespondentInfobaseDefaultValueDetails(Object.ExchangePlanName, CorrespondentInfobaseNodeDefaultValues, CorrespondentConfigurationVersion);
 	
 EndProcedure
 
 &AtClient
 Procedure DataExchangeInitializationAtClient(Cancel)
 	
-	Status(NStr("en = 'Exporting data...'"));
+	Status(NStr("en = 'Sending data...'"));
 	
 	// Exporting data
-	DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(Cancel, Object.InfoBaseNode, False, True, Object.ExchangeMessageTransportKind);
+	DataExchangeServerCall.ExecuteDataExchangeForInfobaseNode(Cancel, Object.InfobaseNode, False, True, Object.ExchangeMessageTransportKind);
 	
-	Status(NStr("en = 'Data export completed.'"));
+	Status(NStr("en = 'Sending data completed.'"));
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Error exporting data (see the event log for details).'"));
+		ShowMessageBox(, NStr("en = 'Error sending data (see the event log for details).'"));
 		
 	EndIf;
 	
@@ -1556,7 +1579,7 @@ EndProcedure
 &AtServer
 Function GetExchangeTransportSettingsDescription()
 	
-	COMInfoBaseOperationMode = 0;
+	COMInfobaseOperationMode = 0;
 	COMOSAuthentication = False;
 	
 	// Return value
@@ -1570,11 +1593,11 @@ Function GetExchangeTransportSettingsDescription()
 		
 		If WizardRunMode = "ExchangeOverExternalConnection" Then
 			
-			If Item.Key = "COMInfoBaseOperationMode" Then
+			If Item.Key = "COMInfobaseOperationMode" Then
 				
 				SettingValue = ?(Object[Item.Key] = 0, NStr("en = 'File'"), NStr("en = 'Client/server'"));
 				
-				COMInfoBaseOperationMode = Object[Item.Key];
+				COMInfobaseOperationMode = Object[Item.Key];
 				
 			EndIf;
 			
@@ -1584,16 +1607,16 @@ Function GetExchangeTransportSettingsDescription()
 				
 			EndIf;
 			
-			If COMInfoBaseOperationMode = 0 Then
+			If COMInfobaseOperationMode = 0 Then
 				
-				If    Item.Key = "COMInfoBaseNameAtPlatformServer"
+				If    Item.Key = "COMInfobaseNameAtPlatformServer"
 					Or Item.Key = "COMPlatformServerName" Then
 					Continue;
 				EndIf;
 				
 			Else
 				
-				If Item.Key = "COMInfoBaseDirectory" Then
+				If Item.Key = "COMInfobaseDirectory" Then
 					Continue;
 				EndIf;
 				
@@ -1612,14 +1635,14 @@ Function GetExchangeTransportSettingsDescription()
 		
 		If Find(Upper(Item.Value), "PASSWORD") <> 0 Then
 			
-			Continue; // hiding password values
+			Continue; // Hiding password values
 			
 		ElsIf  Not ValueType(SettingValue, "Number")
 				 And Not ValueType(SettingValue, "Boolean")
 				 And Not ValueIsFilled(SettingValue) Then
 			
-			// Displaying <Empty> if the setting value is not specified
-			SettingValue = NStr("en = '<Empty>'");
+			// Displaying <empty> if the setting value is not specified
+			SettingValue = NStr("en = '<empty>'");
 			
 		EndIf;
 		
@@ -1633,7 +1656,7 @@ Function GetExchangeTransportSettingsDescription()
 	
 	If IsBlankString(Result) Then
 		
-		Result = NStr("en = 'Transport parameters are not specified.'");
+		Result = NStr("en = 'Connection parameters are not specified.'");
 		
 	EndIf;
 	
@@ -1649,21 +1672,23 @@ Function ValueType(Value, TypeName)
 EndFunction
 
 &AtClient
-Procedure CheckConnection(TransportKind)
+Procedure TestConnection(TransportKind)
 	
 	Cancel = False;
 	
-	CheckConnectionAtServer(Cancel, TransportKind);
+	TestConnectionAtServer(Cancel, TransportKind);
 	
-	MessageString = ?(Cancel,  NStr("en = 'Error establishing the connection (see the event log for details).'"),
-								NStr("en = 'The connection has been successfully established.'"));
-	
-	ShowMessageBox(,MessageString);
+	If Not Cancel Then
+		
+		WarningText = NStr("en = 'Connection established.'");
+		ShowMessageBox(, WarningText);
+		
+	EndIf;
 	
 EndProcedure
 
 &AtServer
-Procedure CheckConnectionAtServer(Cancel, TransportKind)
+Procedure TestConnectionAtServer(Cancel, TransportKind)
 	
 	If TypeOf(TransportKind) = Type("String") Then
 		
@@ -1671,12 +1696,12 @@ Procedure CheckConnectionAtServer(Cancel, TransportKind)
 		
 	EndIf;
 	
-	DataExchangeServer.CheckExchangeMessageTransportDataProcessorConnection(Cancel, Object, TransportKind);
+	DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel, Object, TransportKind);
 	
 EndProcedure
 
 &AtServer
-Procedure CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog)
+Procedure TestWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog)
 	
 	ConnectionParameters = DataExchangeServer.WSParameterStructure();
 	
@@ -1692,8 +1717,18 @@ Procedure CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog
 	CorrespondentVersions = DataExchangeCached.CorrespondentVersions(ConnectionParameters);
 	
 	Object.CorrespondentVersion_2_0_1_6 = (CorrespondentVersions.Find("2.0.1.6") <> Undefined);
+	Object.CorrespondentVersion_2_1_1_7 = (CorrespondentVersions.Find("2.1.1.7") <> Undefined);
 	
-	If Object.CorrespondentVersion_2_0_1_6 Then
+	If Object.CorrespondentVersion_2_1_1_7 Then
+		
+		WSProxy = DataExchangeServer.GetWSProxy_2_1_1_7(ConnectionParameters);
+		
+		If WSProxy = Undefined Then
+			Cancel = True;
+			Return;
+		EndIf;
+		
+	ElsIf Object.CorrespondentVersion_2_0_1_6 Then
 		
 		WSProxy = DataExchangeServer.GetWSProxy_2_0_1_6(ConnectionParameters);
 		
@@ -1706,18 +1741,37 @@ Procedure CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog
 		
 	If ExtendedCheck Then
 		
-		// Getting parameters of the correspondent information base
+		// Getting parameters of the correspondent infobase
 		IsSuggestOpenEventLog = False;
 		
-		If Object.CorrespondentVersion_2_0_1_6 Then
-			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetIBParameters(Object.ExchangePlanName, "", ""));
+		If Object.CorrespondentVersion_2_1_1_7 Then
+			
+			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(Object.ExchangePlanName, "", ""));
+			
+		ElsIf Object.CorrespondentVersion_2_0_1_6 Then
+			
+			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(Object.ExchangePlanName, "", ""));
+			
 		Else
-			TargetParameters = ValueFromStringInternal(WSProxy.GetIBParameters(Object.ExchangePlanName, "", ""));
+			
+			TargetParameters = ValueFromStringInternal(WSProxy.GetInfobaseParameters(Object.ExchangePlanName, "", ""));
+			
 		EndIf;
+		
+		// {HANDLER: OnConnectToCorrespondent} Start
+		CorrespondentConfigurationVersion = Undefined;
+		TargetParameters.Property("ConfigurationVersion", CorrespondentConfigurationVersion);
+		
+		OnConnectToCorrespondent(Cancel, CorrespondentConfigurationVersion);
+		
+		If Cancel Then
+			Return;
+		EndIf;
+		// {HANDLER: OnConnectToCorrespondent} End
 		
 		If Not TargetParameters.ExchangePlanExists Then
 			
-			Message = NStr("en = 'The correspondent infobase does not provide the exchange with the current infobase.'");
+			Message = NStr("en = 'The correspondent infobase does not provide the synchronization with the current infobase.'");
 			CommonUseClientServer.MessageToUser(Message,,,, Cancel);
 			Return;
 			
@@ -1725,15 +1779,15 @@ Procedure CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog
 		
 		Object.CorrespondentNodeCode = TargetParameters.ThisNodeCode;
 		
-		Object.TargetInfoBasePrefix = TargetParameters.InfoBasePrefix;
-		Object.TargetInfoBasePrefixIsSet = ValueIsFilled(Object.TargetInfoBasePrefix);
+		Object.TargetInfobasePrefix = TargetParameters.InfobasePrefix;
+		Object.TargetInfobasePrefixIsSet = ValueIsFilled(Object.TargetInfobasePrefix);
 		
-		If Not Object.TargetInfoBasePrefixIsSet Then
-			Object.TargetInfoBasePrefix = TargetParameters.DefaultInfoBasePrefix;
+		If Not Object.TargetInfobasePrefixIsSet Then
+			Object.TargetInfobasePrefix = TargetParameters.DefaultInfobasePrefix;
 		EndIf;
 		
-		Items.TargetInfoBasePrefixExchangeOverWebService.Visible = Not Object.TargetInfoBasePrefixIsSet;
-		Items.TargetInfoBasePrefixExchangeOverWebService.ReadOnly = Object.TargetInfoBasePrefixIsSet;
+		Items.TargetInfobasePrefixExchangeOverWebService.Visible  = Not Object.TargetInfobasePrefixIsSet;
+		Items.TargetInfobasePrefixExchangeOverWebService.ReadOnly = Object.TargetInfobasePrefixIsSet;
 		
 		// Checking whether an exchange with the correspondent infobase exists
 		CheckWhetherDataExchangeWithSecondBaseExists(Cancel);
@@ -1741,27 +1795,49 @@ Procedure CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog
 			Return;
 		EndIf;
 		
-		Object.SecondInfoBaseDescription = TargetParameters.InfoBaseDescription;
-		SecondInfoBaseDescriptionSet = Not IsBlankString(Object.SecondInfoBaseDescription);
+		Object.SecondInfobaseDescription = TargetParameters.InfobaseDescription;
+		SecondInfobaseDescriptionSet = Not IsBlankString(Object.SecondInfobaseDescription);
 		
-		Items.SecondInfoBaseDescription1.ReadOnly = SecondInfoBaseDescriptionSet;
+		Items.SecondInfobaseDescription1.ReadOnly = SecondInfobaseDescriptionSet;
 		
-		If Not SecondInfoBaseDescriptionSet Then
+		If Not SecondInfobaseDescriptionSet Then
 			
-			Object.SecondInfoBaseDescription = TargetParameters.DefaultInfoBaseDescription;
+			Object.SecondInfobaseDescription = TargetParameters.DefaultInfobaseDescription;
 			
 		EndIf;
+		
+		NodeSettingsForm = "";
+		CorrespondentInfobaseNodeSettingsForm = "";
+		DefaultValueSetupForm = "";
+		CorrespondentInfobaseDefaultValueSetupForm = "";
+		NodesSetupForm = "";
+		
+		NodeFilterStructure = DataExchangeServer.NodeFilterStructure(Object.ExchangePlanName, CorrespondentConfigurationVersion, NodeSettingsForm);
+		NodeDefaultValues   = DataExchangeServer.NodeDefaultValues(Object.ExchangePlanName, CorrespondentConfigurationVersion, DefaultValueSetupForm);
+		
+		DataExchangeServer.CommonNodeData(Object.ExchangePlanName, CorrespondentConfigurationVersion, NodesSetupForm);
+		
+		CorrespondentInfobaseNodeDefaultValues = DataExchangeServer.CorrespondentInfobaseNodeDefaultValues(Object.ExchangePlanName, CorrespondentConfigurationVersion, CorrespondentInfobaseDefaultValueSetupForm);
+		
+		CorrespondentInfobaseNodeDefaultValuesAvailable = CorrespondentInfobaseNodeDefaultValues.Count() > 0;
+		
+		Items.DefaultValueGroupBorder4.Visible                     = CorrespondentInfobaseNodeDefaultValuesAvailable;
+		Items.CorrespondentInfobaseDefaultValueGroupBorder.Visible = CorrespondentInfobaseNodeDefaultValuesAvailable;
+		
+		CorrespondentInfobaseDefaultValueDetails = DataExchangeServer.CorrespondentInfobaseDefaultValueDetails(Object.ExchangePlanName, CorrespondentInfobaseNodeDefaultValues, CorrespondentConfigurationVersion);
+		
+		CorrespondentAccountingSettingsCommentLabel = DataExchangeServer.CorrespondentInfobaseAccountingSettingsSetupComment(Object.ExchangePlanName, CorrespondentConfigurationVersion);
 		
 	EndIf;
 	
 EndProcedure
 
 &AtClient
-Procedure CheckWSConnectionAtClient(Cancel, ExtendedCheck = False)
+Procedure TestWSConnectionAtClient(Cancel, ExtendedCheck = False)
 	
 	If IsBlankString(Object.WSURL) Then
 		
-		NString = NStr("en = 'Specify the Internet application address.'");
+		NString = NStr("en = 'Specify the online application address.'");
 		CommonUseClientServer.MessageToUser(NString,, "Object.WSURL",, Cancel);
 		
 	ElsIf IsBlankString(Object.WSUserName) Then
@@ -1776,15 +1852,21 @@ Procedure CheckWSConnectionAtClient(Cancel, ExtendedCheck = False)
 		
 	Else
 		
+		Try
+			DataExchangeClientServer.CheckProhibitedCharsInWSProxyUserName(Object.WSUserName);
+		Except
+			CommonUseClientServer.MessageToUser(BriefErrorDescription(ErrorInfo()),, "Object.WSUserName",, Cancel);
+			Return;
+		EndTry;
+		
 		IsSuggestOpenEventLog = True;
 		
-		CheckWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog);
+		TestWSConnectionAtServer(Cancel, ExtendedCheck, IsSuggestOpenEventLog);
 		
 		If Cancel And IsSuggestOpenEventLog Then
 			
 			QuestionText = NStr("en = 'Error establishing the connection.
-								|Do you want to open the event log?'"
-			);
+				|Do you want to view the event log?'");
 			
 			SuggestOpenEventLog(QuestionText, EventLogMessageTextEstablishingConnectionToWebService);
 			
@@ -1797,13 +1879,19 @@ EndProcedure
 &AtClient
 Procedure SuggestOpenEventLog(QuestionText, Val Event)
 	
-	Response = DoQueryBox(QuestionText, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
+	NotifyDescription = New NotifyDescription("SuggestOpenEventLogCompletion", ThisObject, Event);
+	ShowQueryBox(NotifyDescription, QuestionText, QuestionDialogMode.YesNo, ,DialogReturnCode.No);
 	
-	If Response = DialogReturnCode.Yes Then
+EndProcedure
+
+&AtClient
+Procedure SuggestOpenEventLogCompletion(Answer, Event) Export
+	
+	If Answer = DialogReturnCode.Yes Then
 		
 		Filter = New Structure("EventLogMessageText", Event);
 		
-		OpenFormModal("DataProcessor.EventLogMonitor.Form", Filter, ThisForm);
+		OpenForm("DataProcessor.EventLog.Form", Filter, ThisObject);
 		
 	EndIf;
 	
@@ -1844,29 +1932,10 @@ Procedure FillGoToTable()
 	
 EndProcedure
 
-&AtServer
-Procedure FirstWizardPagePictureCompositionItemRepresentation()
-	
-	IsFirstInfoBase = (WizardRunVariant = "SetupNewDataExchange");
-	
-	Postfix1 = ?(IsFirstInfoBase, "Active", "Inactive");
-	Postfix2 = ?(IsFirstInfoBase, "Inactive", "Active");
-	
-	FirstInfoBasePageName = "FirstInfoBasePage[Postfix]";
-	FirstInfoBasePageName = StrReplace(FirstInfoBasePageName, "[Postfix]", Postfix1);
-	
-	SecondInfoBasePageName = "SecondInfoBasePage[Postfix]";
-	SecondInfoBasePageName = StrReplace(SecondInfoBasePageName, "[Postfix]", Postfix2);
-	
-	Items.FirstInfoBasePages.CurrentPage = Items[FirstInfoBasePageName];
-	Items.SecondInfoBasePages.CurrentPage = Items[SecondInfoBasePageName];
-	
-EndProcedure
-
 &AtClient
-Procedure InfoBaseRunModeOnChange()
+Procedure InfobaseRunModeOnChange()
 	
-	CurrentPage = ?(Object.COMInfoBaseOperationMode = 0, Items.FileModePage, Items.ClientServerModePage);
+	CurrentPage = ?(Object.COMInfobaseOperationMode = 0, Items.FileModePage, Items.ClientServerModePage);
 	
 	Items.InfobaseRunModes.CurrentPage = CurrentPage;
 	
@@ -1875,6 +1944,7 @@ EndProcedure
 &AtClient
 Procedure OSAuthenticationOnChange()
 	
+	Object.COMOSAuthentication    = (AuthenticationType = 1);
 	Items.COMUserName.Enabled     = Not Object.COMOSAuthentication;
 	Items.COMUserPassword.Enabled = Not Object.COMOSAuthentication;
 	
@@ -1883,12 +1953,11 @@ EndProcedure
 &AtServer
 Procedure WizardRunVariantOnChangeAtServer()
 	
-	FirstWizardPagePictureCompositionItemRepresentation();
-	
-	Items.ExchangeSettingsFileSelectionPages.CurrentPage = ?(WizardRunVariant = "ContinueDataExchangeSetup",
+	Items.ExchangeSettingsFileSelectionPages.CurrentPage = ?(WizardRunVariant = "ContinueDataExchangeSetup"
+																		And Not Object.IsDistributedInfobaseSetup,
 																		Items.ExchangeSettingsFileSelectionPage,
 																		Items.EmptyExchangeSettingsFileSelectionPage);
-	
+ 
 	
 	If WizardRunVariant = "ContinueDataExchangeSetup" Then
 		
@@ -1903,6 +1972,10 @@ Procedure WizardRunVariantOnChangeAtServer()
 		ElsIf UseExchangeMessageTransportCOM Then
 			
 			WizardRunMode = "ExchangeOverExternalConnection";
+			
+		ElsIf UseExchangeMessageTransportWS Then
+			
+			WizardRunMode = "ExchangeOverWebService";
 			
 		Else
 			
@@ -1919,93 +1992,79 @@ EndProcedure
 &AtServer
 Procedure WizardRunModeOnChangeAtServer()
 	
-	PicturePages = New Structure;
-	PicturePages.Insert("ExchangeOverExternalConnection",  Items.PictureForExchangeOverExternalConnection);
-	PicturePages.Insert("ExchangeOverWebService",          Items.PictureForExchangeOverWebService);
-	PicturePages.Insert("ExchangeOverOrdinaryCommunicationChannels", Items.PictureForExchangeOverOrdinaryCommunicationChannels);
+	AllPageSettings = New Structure;
 	
-	Items.WizardRunModeChoicePictures.CurrentPage = PicturePages[WizardRunMode];
+	SettingsOption = "ExchangeOverExternalConnection";
+	SettingsValues = New Structure;
 	
-	TransportParameterPages = New Structure;
-	TransportParameterPages.Insert("ExchangeOverExternalConnection",  Items.TransportParameterPageCOM);
-	TransportParameterPages.Insert("ExchangeOverOrdinaryCommunicationChannels", Items.TransportParameterPage);
-	TransportParameterPages.Insert("ExchangeOverWebService",          Items.TransportParameterPageWS);
+	SettingsValues.Insert("Transport", Items.TransportParameterPageCOM);
+	SettingsValues.Insert("Messages",  Enums.ExchangeMessageTransportKinds.COM);
+	SettingsValues.Insert("Use",       WizardRunMode = SettingsOption Or UseExchangeMessageTransportCOM);
+	AllPageSettings.Insert(SettingsOption, SettingsValues);
 	
-	ExchangeMessageTransportKinds = New Structure;
-	ExchangeMessageTransportKinds.Insert("ExchangeOverExternalConnection",  Enums.ExchangeMessageTransportKinds.COM);
-	ExchangeMessageTransportKinds.Insert("ExchangeOverOrdinaryCommunicationChannels", Enums.ExchangeMessageTransportKinds.FILE);
-	ExchangeMessageTransportKinds.Insert("ExchangeOverWebService",          Enums.ExchangeMessageTransportKinds.WS);
+	SettingsOption  = "ExchangeOverOrdinaryCommunicationChannels";
+	SettingsValues = New Structure;
+	SettingsValues.Insert("Transport", Items.TransportParameterPage);
+	SettingsValues.Insert("Messages",  Enums.ExchangeMessageTransportKinds.FILE);
+	SettingsValues.Insert("Use",       WizardRunMode = SettingsOption Or UseExchangeMessageTransportFILE 
+		Or UseExchangeMessageTransportFTP Or UseExchangeMessageTransportEMAIL);
+	AllPageSettings.Insert(SettingsOption, SettingsValues);
+		
+	SettingsOption  = "ExchangeOverWebService";
+	SettingsValues = New Structure;
+	SettingsValues.Insert("Transport", Items.TransportParameterPageWS);
+	SettingsValues.Insert("Messages",  Enums.ExchangeMessageTransportKinds.WS);
+	SettingsValues.Insert("Use",       WizardRunMode = SettingsOption Or UseExchangeMessageTransportWS);
+	AllPageSettings.Insert(SettingsOption, SettingsValues);
 	
-	Items.TransportParameterPages.CurrentPage = TransportParameterPages[WizardRunMode];
+	// Refining settings, leaving only allowed ones
+	OptionSelectionList = Items.WizardRunMode.ChoiceList;
 	
-	Object.ExchangeMessageTransportKind = ExchangeMessageTransportKinds[WizardRunMode];
-	
+	For Each KeyValue In AllPageSettings Do
+		SettingsOption  = KeyValue.Key;
+		SettingsValues = KeyValue.Value;
+		OptionInList   = OptionSelectionList.FindByValue(SettingsOption);
+		
+		If SettingsValues.Use Then
+			If SettingsOption = WizardRunMode Then
+				Items.TransportParameterPages.CurrentPage = SettingsValues.Transport;
+				Object.ExchangeMessageTransportKind       = SettingsValues.Messages;
+			EndIf;
+			
+		Else
+			If OptionInList <> Undefined Then
+				OptionSelectionList.Delete( OptionInList );
+			EndIf;
+			
+		EndIf;
+		
+	EndDo;
+
 	FillGoToTable();
-	
 EndProcedure
 
 &AtClient
-Procedure SelectExchangeSettingsFile(Interactively)
-	
-	Var SelectedFileName;
-	Var TempStorageAddress;
-	
-	DefaultFileName = ?(IsBlankString(Object.DataExchangeSettingsFileNameToImport), SettingsFileNameForTarget, Object.DataExchangeSettingsFileNameToImport);
-	
-	BeginPutFile(New NotifyDescription("SelectExchangeSettingsFileEnd", ThisObject, New Structure("Interactively, SelectedFileName, TempStorageAddress", Interactively, SelectedFileName, TempStorageAddress)), TempStorageAddress, DefaultFileName, Interactively, UUID);
-	
-EndProcedure
-
-&AtClient
-Procedure SelectExchangeSettingsFileEnd(Result, Address, SelectedFileName, AdditionalParameters) Export
-	
-	Interactively = AdditionalParameters.Interactively;
-	TempStorageAddress = AdditionalParameters.TempStorageAddress;
-	
-	
-	If Result Then
-		
-		Cancel = False;
-		
-		// Calling server
-		ImportWizardParameters(Cancel, TempStorageAddress);
-		
-		If Cancel Then
-			ShowMessageBox(,NStr("en = 'Invalid data exchange settings file is specified. Specify the correct file.'"));
-			Return;
-		EndIf;
-		
-		If Interactively Then
-			
-			Object.DataExchangeSettingsFileNameToImport = SelectedFileName;
-			
-		EndIf;
-		
-	EndIf;
-
-EndProcedure
-
-&AtClient
-Function ExternalConnectionParameterStructure(ConnectionType = "ExternalConnection")
+Function ExternalConnectionParameterStructure(JoinType = "ExternalConnection")
 	
 	Result = Undefined;
 	
-	If ConnectionType = "ExternalConnection" Then
+	If JoinType = "ExternalConnection" Then
 		
 		Result = CommonUseClientServer.ExternalConnectionParameterStructure();
 		
-		Result.InfoBaseOperationMode        = Object.COMInfoBaseOperationMode;
-		Result.InfoBaseDirectory            = Object.COMInfoBaseDirectory;
+		Result.InfobaseOperationMode        = Object.COMInfobaseOperationMode;
+		Result.InfobaseDirectory            = Object.COMInfobaseDirectory;
 		Result.PlatformServerName           = Object.COMPlatformServerName;
-		Result.InfoBaseNameAtPlatformServer = Object.COMInfoBaseNameAtPlatformServer;
+		Result.InfobaseNameAtPlatformServer = Object.COMInfobaseNameAtPlatformServer;
 		Result.OSAuthentication             = Object.COMOSAuthentication;
 		Result.UserName                     = Object.COMUserName;
 		Result.UserPassword                 = Object.COMUserPassword;
 		
-		Result.Insert("ConnectionType", ConnectionType);
+		Result.Insert("JoinType", JoinType);
 		Result.Insert("CorrespondentVersion_2_0_1_6", Object.CorrespondentVersion_2_0_1_6);
+		Result.Insert("CorrespondentVersion_2_1_1_7", Object.CorrespondentVersion_2_1_1_7);
 		
-	ElsIf ConnectionType = "WebService" Then
+	ElsIf JoinType = "WebService" Then
 		
 		Result = New Structure;
 		Result.Insert("WSURL");
@@ -2014,8 +2073,9 @@ Function ExternalConnectionParameterStructure(ConnectionType = "ExternalConnecti
 		
 		FillPropertyValues(Result, Object);
 		
-		Result.Insert("ConnectionType", ConnectionType);
+		Result.Insert("JoinType", JoinType);
 		Result.Insert("CorrespondentVersion_2_0_1_6", Object.CorrespondentVersion_2_0_1_6);
+		Result.Insert("CorrespondentVersion_2_1_1_7", Object.CorrespondentVersion_2_1_1_7);
 		
 	EndIf;
 	
@@ -2029,11 +2089,11 @@ Procedure CheckAttributeFillingOnForm(Cancel, FormToCheckName, FormParameters, F
 	SettingsFormName = StrReplace(SettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
 	SettingsFormName = StrReplace(SettingsFormName, "[FormName]", FormToCheckName);
 	
-	SettingsForm = GetForm(SettingsFormName, FormParameters, ThisForm);
+	SettingsForm = GetForm(SettingsFormName, FormParameters, ThisObject);
 	
 	If Not SettingsForm.CheckFilling() Then
 		
-		CommonUseClientServer.MessageToUser(NStr("en = 'Specify mandatory settings.'"),,, FormAttributeName, Cancel);
+		CommonUseClientServer.MessageToUser(NStr("en = 'Specify the mandatory settings.'"),,, FormAttributeName, Cancel);
 		
 	EndIf;
 	
@@ -2047,91 +2107,97 @@ Procedure WriteErrorToEventLog(ErrorMessageString, Event)
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseRegistrationRestrictionSetup(ConnectionType)
+Procedure CorrespondentInfobaseRegistrationRestrictionSetup(JoinType)
 	
-	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.CorrespondentInfoBaseNodeSettingsForm";
+	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[CorrespondentInfobaseNodeSettingsForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[CorrespondentInfobaseNodeSettingsForm]", CorrespondentInfobaseNodeSettingsForm);
 	
 	FormParameters = New Structure;
-	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-	FormParameters.Insert("NodeFilterStructure",      CorrespondentInfoBaseNodeFilterSetup);
+	FormParameters.Insert("CorrespondentVersion",         CorrespondentConfigurationVersion);
+	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+	FormParameters.Insert("NodeFilterStructure",          CorrespondentInfobaseNodeFilterSetup);
 	
-	OpeningResult = Undefined;
-
-	
-	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("CorrespondentInfoBaseRegistrationRestrictionSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	Handler = New NotifyDescription("CorrespondentInfobaseDataRegistrationRestrictionSetupCompletion", ThisObject);
+	Mode = FormWindowOpeningMode.LockOwnerWindow;
+	OpenForm(NodeSettingsFormName, FormParameters, ThisObject,,,,Handler, Mode);
 	
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseRegistrationRestrictionSetupEnd(Result, AdditionalParameters) Export
+Procedure CorrespondentInfobaseDataRegistrationRestrictionSetupCompletion(Result, AdditionalParameters) Export
 	
-	OpeningResult = Result;
-	
-	If OpeningResult <> Undefined Then
+	If Result <> Undefined Then
 		
-		For Each FilterSettings In CorrespondentInfoBaseNodeFilterSetup Do
+		For Each FilterSettings In CorrespondentInfobaseNodeFilterSetup Do
 			
-			CorrespondentInfoBaseNodeFilterSetup[FilterSettings.Key] = OpeningResult[FilterSettings.Key];
+			CorrespondentInfobaseNodeFilterSetup[FilterSettings.Key] = Result[FilterSettings.Key];
 			
 		EndDo;
 		
-		// Calling server
-		GetCorrespondentInfoBaseDataTransferRestrictionDetails(CorrespondentInfoBaseNodeFilterSetup);
+		// Server call
+		GetCorrespondentInfobaseDataTransferRestrictionDetails(CorrespondentInfobaseNodeFilterSetup);
 		
 	EndIf;
-
+	
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseDefaultValueSetup(ConnectionType)
+Procedure CorrespondentInfobaseDefaultValueSetup(JoinType)
 	
-	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.CorrespondentInfoBaseDefaultValueSetupForm";
+	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[CorrespondentInfobaseDefaultValueSetupForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[CorrespondentInfobaseDefaultValueSetupForm]", CorrespondentInfobaseDefaultValueSetupForm);
 	
 	FormParameters = New Structure;
-	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-	FormParameters.Insert("NodeDefaultValues",   CorrespondentInfoBaseNodeDefaultValues);
+	FormParameters.Insert("CorrespondentVersion",         CorrespondentConfigurationVersion);
+	FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+	FormParameters.Insert("NodeDefaultValues",            CorrespondentInfobaseNodeDefaultValues);
 	
-	OpeningResult = Undefined;
-
-	
-	OpenForm(NodeSettingsFormName, FormParameters, ThisForm,,,, New NotifyDescription("CorrespondentInfoBaseDefaultValueSetupEnd", ThisObject), FormWindowOpeningMode.LockWholeInterface);
+	Handler = New NotifyDescription("CorrespondentInfobaseDefaultValueSetupCompletion", ThisObject);
+	Mode = FormWindowOpeningMode.LockOwnerWindow;
+	OpenForm(NodeSettingsFormName, FormParameters, ThisObject,,,,Handler, Mode);
 	
 EndProcedure
 
 &AtClient
-Procedure CorrespondentInfoBaseDefaultValueSetupEnd(Result, AdditionalParameters) Export
+Procedure CorrespondentInfobaseDefaultValueSetupCompletion(Result, AdditionalParameters) Export
 	
-	OpeningResult = Result;
-	
-	If OpeningResult <> Undefined Then
+	If Result <> Undefined Then
 		
-		For Each FilterSettings In CorrespondentInfoBaseNodeDefaultValues Do
+		For Each FilterSettings In CorrespondentInfobaseNodeDefaultValues Do
 			
-			CorrespondentInfoBaseNodeDefaultValues[FilterSettings.Key] = OpeningResult[FilterSettings.Key];
+			CorrespondentInfobaseNodeDefaultValues[FilterSettings.Key] = Result[FilterSettings.Key];
 			
 		EndDo;
 		
-		// Calling server
-		GetCorrespondentInfoBaseDefaultValueDetails(CorrespondentInfoBaseNodeDefaultValues);
+		// Server call
+		GetCorrespondentInfobaseDefaultValueDetails(CorrespondentInfobaseNodeDefaultValues);
 		
 	EndIf;
-
+	
 EndProcedure
 
 &AtClient
-Procedure FinishExchangeOverExternalConnectionSetup()
+Procedure FinishExchangeOverExternalConnectionSetup(Val OpenFormAfterCurrentFormClosed)
 	
 	If ExecuteInteractiveDataExchangeNow Then
 		
 		FormParameters = New Structure;
-		FormParameters.Insert("InfoBaseNode",                 Object.InfoBaseNode);
+		FormParameters.Insert("InfobaseNode",                 Object.InfobaseNode);
 		FormParameters.Insert("ExchangeMessageTransportKind", Object.ExchangeMessageTransportKind);
 		FormParameters.Insert("ExecuteMappingOnOpen",         False);
+		FormParameters.Insert("ExportAdditionExtendedMode",   True);
 		
-		OpenForm("DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters);
-		
+		If OpenFormAfterCurrentFormClosed Then
+			OpenParameters = New Structure;
+			OpenParameters.Insert("WindowOpeningMode", FormWindowOpeningMode.LockOwnerWindow);
+			DataExchangeClient.OpenFormAfterCurrentFormClosed(ThisObject, "DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters, OpenParameters);
+			
+		Else
+			OpenForm("DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters, , , WindowOpenVariant.SingleWindow, , ,FormWindowOpeningMode.LockOwnerWindow);
+			
+		EndIf;
 	EndIf;
 	
 EndProcedure
@@ -2141,14 +2207,14 @@ Procedure FinishExchangeOverWebServiceSetup()
 	
 	If ExecuteDataExchangeAutomatically Then
 		
-		FinishExchangeOverWebServiceSetupAtServer(Object.InfoBaseNode, PredefinedDataExchangeSchedule, DataExchangeExecutionSchedule);
+		FinishExchangeOverWebServiceSetupAtServer(Object.InfobaseNode, PredefinedDataExchangeSchedule, DataExchangeExecutionSchedule);
 		
 	EndIf;
 	
 EndProcedure
 
 &AtServerNoContext
-Procedure FinishExchangeOverWebServiceSetupAtServer(InfoBaseNode, PredefinedSchedule, Schedule)
+Procedure FinishExchangeOverWebServiceSetupAtServer(InfobaseNode, PredefinedSchedule, Schedule)
 	
 	SetPrivilegedMode(True);
 	
@@ -2178,7 +2244,7 @@ Procedure FinishExchangeOverWebServiceSetupAtServer(InfoBaseNode, PredefinedSche
 	
 	If ScenarioSchedule <> Undefined Then
 		
-		Catalogs.DataExchangeScenarios.CreateScenario(InfoBaseNode, ScenarioSchedule);
+		Catalogs.DataExchangeScenarios.CreateScenario(InfobaseNode, ScenarioSchedule);
 		
 	EndIf;
 	
@@ -2189,7 +2255,7 @@ Procedure FinishFirstExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel)
 	
 	ClearMessages();
 	
-	If Not Object.IsDistributedInfoBaseSetup
+	If Not Object.IsDistributedInfobaseSetup
 		And IsBlankString(Object.DataExchangeSettingsFileName) Then
 		
 		NString = NStr("en = 'Save the settings file for the target infobase.'");
@@ -2198,13 +2264,16 @@ Procedure FinishFirstExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel)
 		Return;
 	EndIf;
 	
-	If Object.IsDistributedInfoBaseSetup Then
+	If Object.IsDistributedInfobaseSetup Then
 		
 		If CreateInitialImageNow Then
 			
-			FormParameters = New Structure("Key, Node", Object.InfoBaseNode, Object.InfoBaseNode);
+			FormParameters = New Structure("Key, Node", Object.InfobaseNode, Object.InfobaseNode);
 			
-			OpenFormModal(InitialImageCreationFormName, FormParameters);
+			Mode = FormWindowOpeningMode.LockOwnerWindow;
+			Handler = New NotifyDescription("CloseFormAfterInitialImageCreation", ThisObject);
+			OpenForm(InitialImageCreationFormName, FormParameters,,,,, Handler, Mode);
+			Cancel = True;
 			
 		EndIf;
 		
@@ -2221,53 +2290,48 @@ Procedure FinishFirstExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel)
 EndProcedure
 
 &AtClient
-Procedure FinishSecondExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel)
+Procedure CloseFormAfterInitialImageCreation(Result, AdditionalParameters) Export
 	
-	Status(NStr("en = 'Creating data exchange settings.'"));
+	RefreshInterface();
+	
+	ForceCloseForm = True;
+	Close();
+	
+EndProcedure
+
+&AtClient
+Procedure FinishSecondExchangeOverOrdinaryCommunicationChannelsSetupStage(Cancel, Val OpenFormAfterCurrentFormClosed)
+	
+	Status(NStr("en = 'Creating data synchronization settings'"));
 	
 	SetupNewDataExchangeAtServer(Cancel, NodeFilterStructure, NodeDefaultValues);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Error creating data exchange settings.'"));
+		ShowMessageBox(, NStr("en = 'Error creating data synchronization settings.'"));
 		Return;
 	EndIf;
 	
-	OpenMappingWizard = Not Object.IsDistributedInfoBaseSetup And Not Object.IsStandardExchangeSetup;
+	OpenMappingWizard = Not Object.IsDistributedInfobaseSetup And Not Object.IsStandardExchangeSetup;
 	
 	If OpenMappingWizard Then
 		
 		FormParameters = New Structure;
-		FormParameters.Insert("InfoBaseNode",                 Object.InfoBaseNode);
+		FormParameters.Insert("InfobaseNode",                 Object.InfobaseNode);
 		FormParameters.Insert("ExchangeMessageTransportKind", Object.ExchangeMessageTransportKind);
 		FormParameters.Insert("ExecuteMappingOnOpen",         False);
+		FormParameters.Insert("ExportAdditionExtendedMode",   True);
 		
-		OpenForm("DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters);
-		
+		If OpenFormAfterCurrentFormClosed Then
+			OpenParameters = New Structure;
+			OpenParameters.Insert("WindowOpeningMode", FormWindowOpeningMode.LockOwnerWindow);
+			DataExchangeClient.OpenFormAfterCurrentFormClosed(ThisObject, "DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters, OpenParameters);
+			
+		Else
+			OpenForm("DataProcessor.InteractiveDataExchangeWizard.Form", FormParameters, , , WindowOpenVariant.SingleWindow, , ,FormWindowOpeningMode.LockOwnerWindow);
+			
+		EndIf;
 	EndIf;
-	
-EndProcedure
-
-&AtClient
-Function StartJobManager()
-	
-	Return (	WizardRunMode = "ExchangeOverExternalConnection"
-			Or WizardRunMode = "ExchangeOverWebService")
-		And FileInfoBase
-		And ExecuteDataExchangeAutomatically
-	;
-EndFunction
-
-&AtServerNoContext
-Procedure EnableUseEventLog(Val EventLogMessageText, DoMessageBox)
-	
-	Try
-		CommonUse.EnableUseEventLog();
-	Except
-		DoMessageBox = NStr("en = 'Failed to enable the event log: %1'");
-		DoMessageBox = StringFunctionsClientServer.SubstituteParametersInString(DoMessageBox, BriefErrorDescription(ErrorInfo()));
-		WriteLogEvent(EventLogMessageText, EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
-	EndTry;
 	
 EndProcedure
 
@@ -2285,7 +2349,7 @@ Procedure OpenMappingForm()
 	EndIf;
 	
 	If Not CurrentData.UsePreview Then
-		ShowMessageBox(,NStr("en = 'This data cannot be mapped.'"));
+		ShowMessageBox(, NStr("en = 'Cannot create mapping for the selected data.'"));
 		Return;
 	EndIf;
 	
@@ -2298,13 +2362,14 @@ Procedure OpenMappingForm()
 	FormParameters.Insert("TargetTypeString",          CurrentData.TargetTypeString);
 	FormParameters.Insert("IsObjectDeletion",          CurrentData.IsObjectDeletion);
 	FormParameters.Insert("DataImportedSuccessfully",  CurrentData.DataImportedSuccessfully);
+	FormParameters.Insert("Key",                       CurrentData.Key);
 	
-	FormParameters.Insert("InfoBaseNode",              Object.InfoBaseNode);
-	FormParameters.Insert("ExchangeMessageFileName",   Object.ExchangeMessageFileName);
+	FormParameters.Insert("InfobaseNode",            Object.InfobaseNode);
+	FormParameters.Insert("ExchangeMessageFileName", Object.ExchangeMessageFileName);
 	
-	FormParameters.Insert("PerformDataImport",         False);
+	FormParameters.Insert("PerformDataImport", False);
 	
-	OpenForm("DataProcessor.InfoBaseObjectMapping.Form", FormParameters, ThisForm, CurrentData.Key);
+	OpenForm("DataProcessor.InfobaseObjectMapping.Form", FormParameters, ThisObject);
 	
 EndProcedure
 
@@ -2319,7 +2384,7 @@ Procedure ExpandStatisticsTree(RowKey = "")
 		
 	EndDo;
 	
-	// Determining value tree cursor position
+	// Specifying the value tree cursor position
 	If Not IsBlankString(RowKey) Then
 		
 		RowID = 0;
@@ -2335,12 +2400,12 @@ EndProcedure
 &AtServer
 Procedure UpdateMappingStatisticsDataAtServer(Cancel, NotificationParameters)
 	
-	TableRows = Object.Statistics.FindRows(New Structure("Key", NotificationParameters.UniqueKey));
+	TableRows = Object.Statistics.FindRows(New Structure("Key", NotificationParameters.UniquenessKey));
 	
 	FillPropertyValues(TableRows[0], NotificationParameters, "DataImportedSuccessfully");
 	
 	RowKeys = New Array;
-	RowKeys.Add(NotificationParameters.UniqueKey);
+	RowKeys.Add(NotificationParameters.UniquenessKey);
 	
 	UpdateMappingByRowDetailsAtServer(Cancel, RowKeys);
 	
@@ -2361,8 +2426,6 @@ Procedure UpdateMappingByRowDetailsAtServer(Cancel, RowKeys)
 	
 	If Not Cancel Then
 		
-		FillPropertyValues(Object, InteractiveDataExchangeWizard, "IncomingMessageNumber");
-		
 		Object.Statistics.Load(InteractiveDataExchangeWizard.StatisticsTable());
 		
 		GetStatisticsTree(InteractiveDataExchangeWizard.StatisticsTable());
@@ -2382,9 +2445,9 @@ Function GetStatisticsTableRowIndexes(RowKeys)
 		
 		TableRows = Object.Statistics.FindRows(New Structure("Key", Key));
 		
-		RowIndex = Object.Statistics.IndexOf(TableRows[0]);
+		LineIndex = Object.Statistics.IndexOf(TableRows[0]);
 		
-		RowIndexes.Add(RowIndex);
+		RowIndexes.Add(LineIndex);
 		
 	EndDo;
 	
@@ -2399,39 +2462,78 @@ Procedure GetStatisticsTree(Statistics)
 	TreeItemCollection.Clear();
 	
 	CommonUse.FillFormDataTreeItemCollection(TreeItemCollection,
-		DataExchangeServer.GetStatisticsTree(Statistics)
-	);
+		DataExchangeServer.GetStatisticsTree(Statistics));
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// Constant values
+&AtServer
+Procedure OnConnectToCorrespondent(Cancel, Val CorrespondentVersion)
+	
+	If CorrespondentVersion = Undefined
+		Or IsBlankString(CorrespondentVersion) Then
+		
+		CorrespondentVersion = "0.0.0.0";
+	EndIf;
+	
+	Try
+		DataExchangeServer.OnConnectToCorrespondent(Object.ExchangePlanName, CorrespondentVersion);
+	Except
+		CommonUseClientServer.MessageToUser(BriefErrorDescription(ErrorInfo()),,,, Cancel);
+		WriteErrorToEventLog(
+			StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'An error occurred during the OnConnectToCorrespondent handler execution:%1%2'"),
+				Chars.LF,
+				DetailErrorDescription(ErrorInfo())),
+			DataExchangeCreationEventLogMessageText
+		);
+		Return;
+	EndTry;
+	
+EndProcedure
 
-&AtClientAtServerNoContext
-Function LabelNextFILE()
+&AtClient
+Procedure DeleteDataExchangeSettings(Result, AdditionalParameters) Export
 	
-	Return NStr("en = 'Click Next to set up the exchange via local or network directory.'");
+	If Object.InfobaseNode <> Undefined Then
+		
+		DataExchangeServerCall.DeleteSynchronizationSettings(Object.InfobaseNode);
+		
+		Notify("Write_ExchangePlanNode");
+		
+	EndIf;
 	
-EndFunction
+EndProcedure
+
+// Applies the default settings when the DIB setup is canceled.
+&AtClient
+Procedure DIBContinuationCancelNotifyDescription(Val Result, AdditionalParameters) Export
+	
+	// Ignoring all steps because the settings must be specified earlier
+	ExecuteDoneCommand(False);
+	
+EndProcedure
+	
+////////////////////////////////////////////////////////////////////////////////
+// Constant values.
 
 &AtClientAtServerNoContext
 Function NextLabelFTP()
 	
-	Return NStr("en = 'Click Next to set up the exchange via FTP site.'");
+	Return NStr("en = 'Click Next to set up FTP server connection.'");
 	
 EndFunction
 
 &AtClientAtServerNoContext
 Function NextLabelEMAIL()
 	
-	Return NStr("en = 'Click Next to set up the exchange via Email.'");
+	Return NStr("en = 'Click Next to set up email connection.'");
 	
 EndFunction
 
 &AtClientAtServerNoContext
 Function NextLabelSettings()
 	
-	Return NStr("en = 'Click Next to set up additional data exchange parameters.'");
+	Return NStr("en = 'Click Next to set up additional data synchronization parameters.'");
 	
 EndFunction
 
@@ -2465,7 +2567,7 @@ Function PredefinedScheduleEvery15Minutes()
 	Schedule.Months            = Months;
 	Schedule.WeekDays          = WeekDays;
 	Schedule.RepeatPeriodInDay = 60*15; // 15 minutes
-	Schedule.DaysRepeatPeriod  = 1;     // Every day
+	Schedule.DaysRepeatPeriod  = 1; // every day
 	
 	Return Schedule;
 EndFunction
@@ -2500,7 +2602,7 @@ Function PredefinedScheduleEvery30Minutes()
 	Schedule.Months            = Months;
 	Schedule.WeekDays          = WeekDays;
 	Schedule.RepeatPeriodInDay = 60*30; // 30 minutes
-	Schedule.DaysRepeatPeriod  = 1;     // Every day
+	Schedule.DaysRepeatPeriod  = 1; // every day
 	
 	Return Schedule;
 EndFunction
@@ -2535,7 +2637,7 @@ Function PredefinedScheduleEveryHour()
 	Schedule.Months            = Months;
 	Schedule.WeekDays          = WeekDays;
 	Schedule.RepeatPeriodInDay = 60*60; // 60 minutes
-	Schedule.DaysRepeatPeriod  = 1;     // Every Day
+	Schedule.DaysRepeatPeriod  = 1; // every day
 	
 	Return Schedule;
 EndFunction
@@ -2570,25 +2672,62 @@ Function PredefinedScheduleEveryDayAt_8_00()
 	Schedule.Months           = Months;
 	Schedule.WeekDays         = WeekDays;
 	Schedule.BeginTime        = Date('00010101080000'); // 8:00
-	Schedule.DaysRepeatPeriod = 1;                      // Every day
+	Schedule.DaysRepeatPeriod = 1; // every day
 	
 	Return Schedule;
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// Overridable part - step change event handlers
+// Overridable part. Step change handlers.
+
+&AtClient
+Procedure GoToStepForwardWithDeferredProcessing()
+	
+	AttachIdleHandler("Attachable_GoToStepForwardWithDeferredProcessing", 0.01, True);
+	
+EndProcedure
+
+&AtClient
+Procedure Attachable_GoToStepForwardWithDeferredProcessing()
+	
+	// Going a step forward (forced)
+	SkipCurrentPageCancelControl = True;
+	ChangeGoToNumber( +1 );
+	
+EndProcedure
 
 &AtClient
 Function Attachable_WizardPageSetTransportParametersFILE_OnGoNext(Cancel)
 	
-	WizardPageSetTransportParametersFILE_OnGoNextAtServer(Cancel);
+	If Object.UseTransportParametersFILE Then
+		
+		If IsBlankString(Object.FILEDataExchangeDirectory) Or ExternalResourcesAllowed.FileAllowed Then
+			WizardPageSetTransportParametersFILE_OnGoNextAtServer(Cancel);
+		Else
+			ClosingNotification = New NotifyDescription("AllowResourceCompletion", ThisObject, "FileAllowed");
+			Queries = CreateRequestForUseExternalResources(Object,, True);
+			SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+			Cancel = True;
+		EndIf;
+		
+	EndIf;
 	
 EndFunction
 
 &AtClient
 Function Attachable_WizardPageSetTransportParametersFTP_OnGoNext(Cancel)
 	
-	WizardPageSetTransportParametersFTP_OnGoNextAtServer(Cancel);
+	If Object.UseTransportParametersFTP Then
+		
+		If IsBlankString(Object.FTPConnectionPath) Or ExternalResourcesAllowed.FTPAllowed Then
+			WizardPageSetTransportParametersFTP_OnGoNextAtServer(Cancel);
+		Else
+			ClosingNotification = New NotifyDescription("AllowResourceCompletion", ThisObject, "FTPAllowed");
+			Queries = CreateRequestForUseExternalResources(Object,,,, True);
+			SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+			Cancel = True;
+		EndIf;
+	EndIf;
 	
 EndFunction
 
@@ -2602,7 +2741,7 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageWizardRunModeChoice_OnOpen(Cancel, SkipPage, IsGoNext)
 	
-	If Not UseExchangeMessageTransportCOM Then
+	If Not UseExchangeMessageTransportCOM Or Not UseExchangeMessageTransportWS Then
 		
 		Object.UseTransportParametersCOM = False;
 		
@@ -2613,7 +2752,28 @@ Function Attachable_WizardPageWizardRunModeChoice_OnOpen(Cancel, SkipPage, IsGoN
 EndFunction
 
 &AtClient
+Function Attachable_WizardPageWizardRunModeChoice_OnGoNext(Cancel)
+	
+	If ((WizardRunMode = "ExchangeOverExternalConnection" And (Not IsBlankString(Object.COMInfobaseDirectory) Or Not IsBlankString(Object.COMPlatformServerName)))
+		Or (WizardRunMode = "ExchangeOverWebService" And Not IsBlankString(Object.WSURL)))
+		And Not ExternalResourcesAllowed.COMAllowed Then
+		
+		ClosingNotification = New NotifyDescription("AllowResourceCompletion", ThisObject, "COMAllowed");
+		If WizardRunMode = "ExchangeOverWebService" Then
+			Queries = CreateRequestForUseExternalResources(Object,,, True);
+		ElsIf WizardRunMode = "ExchangeOverExternalConnection" Then
+			Queries = CreateRequestForUseExternalResources(Object, True);
+		EndIf;
+		SafeModeClient.ApplyExternalResourceRequests(Queries, ThisObject, ClosingNotification);
+		Cancel = True;
+	EndIf;
+	
+EndFunction
+
+&AtClient
 Function Attachable_WizardPageSetTransportParametersFILE_OnOpen(Cancel, SkipPage, IsGoNext)
+	
+	ExternalResourcesAllowed.FileAllowed = False;
 	
 	If Not UseExchangeMessageTransportFILE Then
 		
@@ -2628,9 +2788,11 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageSetTransportParametersFTP_OnOpen(Cancel, SkipPage, IsGoNext)
 	
+	ExternalResourcesAllowed.FTPAllowed = False;
+	
 	If Not UseExchangeMessageTransportFTP Then
 		
-		Object.UseTransportParametersFTP  = False;
+		Object.UseTransportParametersFTP = False;
 		
 		SkipPage = True;
 		
@@ -2654,31 +2816,31 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageParameterSetup_OnGoNext(Cancel)
 	
-	If IsBlankString(Object.ThisInfoBaseDescription) Then
+	If IsBlankString(Object.ThisInfobaseDescription) Then
 		
 		NString = NStr("en = 'Specify the name of the current infobase.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfoBaseDescription",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfobaseDescription",, Cancel);
 		
 	EndIf;
 	
-	If IsBlankString(Object.SecondInfoBaseDescription) Then
+	If IsBlankString(Object.SecondInfobaseDescription) Then
 		
 		NString = NStr("en = 'Specify the name of the second infobase.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfoBaseDescription",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfobaseDescription",, Cancel);
 		
 	EndIf;
 	
-	If IsBlankString(Object.TargetInfoBasePrefix) Then
+	If IsBlankString(Object.TargetInfobasePrefix) Then
 		
 		NString = NStr("en = 'Specify the correspondent infobase prefix. You can use the existing prefix or a create a new one.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfoBasePrefix",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfobasePrefix",, Cancel);
 		
 	EndIf;
 	
-	If TrimAll(Object.SourceInfoBasePrefix) = TrimAll(Object.TargetInfoBasePrefix) Then
+	If TrimAll(Object.SourceInfobasePrefix) = TrimAll(Object.TargetInfobasePrefix) Then
 		
 		NString = NStr("en = 'Infobase prefixes must be different.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfoBasePrefix",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfobasePrefix",, Cancel);
 		
 	EndIf;
 	
@@ -2688,21 +2850,23 @@ Function Attachable_WizardPageParameterSetup_OnGoNext(Cancel)
 	
 	If NodeFilterSettingsAvailable Then
 		
-		// Checking whether data migration restriction settings form attributes are filled
+		// Checking whether the form attributes that describe data migration restriction settings are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("NodeFilterStructure", NodeFilterStructure);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("NodeFilterStructure",  NodeFilterStructure);
 		
-		CheckAttributeFillingOnForm(Cancel, "NodeSettingsForm", FormParameters, "DataTransferRestrictionDetails");
+		CheckAttributeFillingOnForm(Cancel, NodeSettingsForm, FormParameters, "DataTransferRestrictionDetails");
 		
 	EndIf;
 	
 	If NodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
 		FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "DefaultValueSetupForm", FormParameters, "DefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, DefaultValueSetupForm, FormParameters, "DefaultValueDetails");
 		
 	EndIf;
 	
@@ -2711,53 +2875,57 @@ Function Attachable_WizardPageParameterSetup_OnGoNext(Cancel)
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageFirstInfoBaseExternalConnectionParameterSetup_OnGoNext(Cancel)
+Function Attachable_WizardPageFirstInfobaseExternalConnectionParameterSetup_OnGoNext(Cancel)
 	
-	If IsBlankString(Object.ThisInfoBaseDescription) Then
+	If IsBlankString(Object.ThisInfobaseDescription) Then
 		
 		NString = NStr("en = 'Specify the infobase name.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfoBaseDescription",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfobaseDescription",, Cancel);
 		Return Undefined;
 	EndIf;
 	
 	If NodeFilterSettingsAvailable Then
 		
-		// Checking whether data migration restriction settings form attributes are filled
+		// Checking whether the form attributes that describe data migration restriction settings are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("NodeFilterStructure", NodeFilterStructure);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("NodeFilterStructure",  NodeFilterStructure);
 		
-		CheckAttributeFillingOnForm(Cancel, "NodeSettingsForm", FormParameters, "DataTransferRestrictionDetails");
+		CheckAttributeFillingOnForm(Cancel, NodeSettingsForm, FormParameters, "DataTransferRestrictionDetails");
 		
 	EndIf;
 	
 	If NodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("NodeDefaultValues",    NodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "DefaultValueSetupForm", FormParameters, "DefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, DefaultValueSetupForm, FormParameters, "DefaultValueDetails");
 		
 	EndIf;
 	
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageDataExchangeParameterSetup_OnOpen(Cancel, SkipPage, IsGoNext)
+Function Attachable_WizardPageDataExchangeSetupParameter_OnOpen(Cancel, SkipPage, IsGoNext)
 	
 	If IsGoNext Then
 		
-		// Getting node settings form context description
-		
+		// Getting context and context description for the node settings form
 		FormParameters = New Structure;
-		FormParameters.Insert("GetContextDescription");
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("GetDefaultValue");
 		FormParameters.Insert("Settings", NodesSetupFormContext);
 		
-		SettingsFormName = "ExchangePlan.[ExchangePlanName].Form.NodesSetupForm";
+		SettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 		SettingsFormName = StrReplace(SettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
+		SettingsFormName = StrReplace(SettingsFormName, "[NodeSetupForm]", NodesSetupForm);
 		
-		SettingsForm = GetForm(SettingsFormName, FormParameters, ThisForm);
+		SettingsForm = GetForm(SettingsFormName, FormParameters, ThisObject);
 		
+		NodesSetupFormContext         = SettingsForm.Context;
 		DataExportSettingsDescription = SettingsForm.ContextDetails;
 		
 	EndIf;
@@ -2765,16 +2933,16 @@ Function Attachable_WizardPageDataExchangeParameterSetup_OnOpen(Cancel, SkipPage
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageDataExchangeParameterSetup_OnGoNext(Cancel)
+Function Attachable_WizardPageDataExchangeSetupParameter_OnGoNext(Cancel)
 	
-	CheckJobSettingsForFirstInfoBase(Cancel, "WebService");
+	CheckJobSettingsForFirstInfobase(Cancel, "WebService");
 	
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageSecondInfoBaseExternalConnectionParameterSetup_OnGoNext(Cancel)
+Function Attachable_WizardPageSecondInfobaseExternalConnectionParameterSetup_OnGoNext(Cancel)
 	
-	CheckJobSettingsForSecondInfoBase(Cancel, "ExternalConnection");
+	CheckJobSettingsForSecondInfobase(Cancel, "ExternalConnection");
 	
 EndFunction
 
@@ -2783,21 +2951,23 @@ Function Attachable_WizardPageSecondSetupStageParameterSetup_OnGoNext(Cancel)
 	
 	If NodeFilterSettingsAvailable Then
 		
-		// Checking whether data migration restriction settings form attributes are filled
+		// Checking whether the form attributes that describe data migration restriction settings are filled
 		FormParameters = New Structure;
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
 		FormParameters.Insert("NodeFilterStructure", NodeFilterStructure);
 		
-		CheckAttributeFillingOnForm(Cancel, "NodeSettingsForm", FormParameters, "DataTransferRestrictionDetails");
+		CheckAttributeFillingOnForm(Cancel, NodeSettingsForm, FormParameters, "DataTransferRestrictionDetails");
 		
 	EndIf;
 	
 	If NodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("NodeDefaultValues",    NodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "DefaultValueSetupForm", FormParameters, "DefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, DefaultValueSetupForm, FormParameters, "DefaultValueDetails");
 		
 	EndIf;
 	
@@ -2806,37 +2976,129 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageStart_OnGoNext(Cancel)
 	
-	If Not Object.IsDistributedInfoBaseSetup Then
+	If True = SkipCurrentPageCancelControl Then
+		SkipCurrentPageCancelControl = Undefined;
+		Return Undefined;
 		
-		If IsBlankString(Object.DataExchangeSettingsFileNameToImport) Then
-			
-			NString = NStr("en = 'Select the data exchange settings file.'");
-			CommonUseClientServer.MessageToUser(NString,,"Object.DataExchangeSettingsFileNameToImport",, Cancel);
-			
-		EndIf;
+	ElsIf Object.IsDistributedInfobaseSetup Then
+		Return Undefined;
+		
+	ElsIf WizardRunVariant <> "ContinueDataExchangeSetup" Then
+		Return Undefined;
+		
+	ElsIf DataExchangeSettingsFileImported Then
+		// No additional checks are required to continue the exchange
+		Return Undefined;
 		
 	EndIf;
 	
+	// The OnGoNext handler is included in the notifications
+	Cancel = True;
+	
+	// Attempting to upload the file to the server, with an extension installation request. The file selection dialog in not displayed.
+	If IsBlankString(Object.DataExchangeSettingsFileNameToImport) Then
+		ErrorText = NStr("en = 'Select the data synchronization settings file.'");
+		CommonUseClientServer.MessageToUser(ErrorText, , "Object.DataExchangeSettingsFileNameToImport");
+		Return Undefined;
+	EndIf;
+	
+	Notification = New NotifyDescription("WizardPageStart_OnGoNext_Completion", ThisObject, New Structure);
+	WarningText = NStr("en = 'To upload the synchronization settings file to the server, you have to install the file system extension for 1C:Enterprise web client.'");
+	
+	FileNames = New Array;
+	FileNames.Add(Object.DataExchangeSettingsFileNameToImport);
+	
+	DataExchangeClient.SendFilesToServer(Notification, FileNames, UUID, WarningText);
 EndFunction
+
+// Notification description of the completion of file uploading to the server.
+//
+&AtClient
+Procedure WizardPageStart_OnGoNext_End(Val FileStoringResult, Val AdditionalParameters) Export
+	
+	ExportDataExchangeFileSelectionCompletion(FileStoringResult[0], Undefined);
+	
+	If DataExchangeSettingsFileImported Then
+		// Going to the next wizard step if the settings file is imported successfully
+		GoToStepForwardWithDeferredProcessing();
+	EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure ExportDataExchangeFileSelectionCompletion(Val FileStoringResult, Val AdditionalParameters) Export
+	
+	ClearMessages();
+	
+	StoredFileAddress = FileStoringResult.Location;
+	ErrorText         = FileStoringResult.ErrorDescription;
+	
+	Object.DataExchangeSettingsFileNameToImport = FileStoringResult.Name;
+	
+	DataExchangeSettingsFileImported = False;
+	
+	If IsBlankString(ErrorText) And IsBlankString(StoredFileAddress) Then
+		ErrorText = NStr("en = 'An error occurred while sending data synchronization settings to the server.'");
+	EndIf;
+	
+	If IsBlankString(ErrorText) Then
+		// Attempting to apply the settings after uploading the settings file to the server
+		WizardParameterImportError = False;
+		// Server call
+		ImportWizardParameters(WizardParameterImportError, StoredFileAddress);
+		If WizardParameterImportError Then
+			ErrorText = NStr("en = 'The specified data synchronization settings file is invalid. Specify the correct file.'");
+		Else
+			DataExchangeSettingsFileImported = True;
+		EndIf;
+	EndIf;
+	
+	If Not IsBlankString(ErrorText) Then
+		CommonUseClientServer.MessageToUser(ErrorText, , "Object.DataExchangeSettingsFileNameToImport");
+	EndIf;
+	
+	RefreshDataRepresentation();
+EndProcedure
 
 &AtClient
 Function Attachable_WizardPageParameterSetup_OnOpen(Cancel, SkipPage, IsGoNext)
 	
-	// Displaying the error message if the user proceed to the additional parameter page
-	// but no transport kind is set up.
-	If Not (Object.UseTransportParametersEMAIL
+	// Displaying the error message if the user proceeded to the additional parameter page but no transport kind is set up
+	If Not    (Object.UseTransportParametersEMAIL
 			Or Object.UseTransportParametersFILE
-			Or Object.UseTransportParametersFTP ) Then
+			Or Object.UseTransportParametersFTP) Then
 		
-		NString = NStr("en = 'No data exchange kind is set up.
-						|Set up at least one exchange data kind.'");
-		
+		NString = NStr("en = 'Connection settings for the data synchronization are not specified.
+						|You have to set up at least one connection.'");
+ 
 		CommonUseClientServer.MessageToUser(NString,,,, Cancel);
 		
 		Return Undefined;
 	EndIf;
 	
 	WizardPageParameterSetup_OnOpenAtServer(Cancel, SkipPage, IsGoNext);
+	
+EndFunction
+
+&AtClient
+Function Attachable_WizardPageFirstInfobaseExternalConnectionParameterSetup_OnOpen(Cancel, SkipPage, IsGoNext)
+	
+	Items.DataTransferRestrictionDetails1.Title = StrReplace(Items.DataTransferRestrictionDetails1.Title,
+																	   "%Application%", ExchangePlanSynonym);
+	
+	Items.DefaultValueDetails1.Title = StrReplace(Items.DefaultValueDetails1.Title,
+																	   "%Application%", ExchangePlanSynonym);
+	
+EndFunction
+
+&AtClient
+Function Attachable_WizardPageSecondInfobaseExternalConnectionParameterSetup_OnOpen(Cancel, SkipPage, IsGoNext)
+	
+	Items.DataTransferRestrictionDetails4.Title = StrReplace(Items.DataTransferRestrictionDetails4.Title,
+																	   "%Application%", Object.ThisInfobaseDescription);
+	
+	Items.DefaultValueDetails4.Title = StrReplace(Items.DefaultValueDetails4.Title,
+																	   "%Application%", Object.ThisInfobaseDescription);
 	
 EndFunction
 
@@ -2853,9 +3115,8 @@ Function Attachable_WizardPageExchangeSetupResults_OnOpen(Cancel, SkipPage, IsGo
 							MessageTransportResultPresentation(),
 							NodeFiltersResultPresentation(),
 							DefaultNodeValueResultPresentation(),
-							Object.SourceInfoBasePrefix,
-							Object.TargetInfoBasePrefix
-		);
+							Object.SourceInfobasePrefix,
+							Object.TargetInfobasePrefix);
 		
 	Else
 		
@@ -2866,17 +3127,15 @@ Function Attachable_WizardPageExchangeSetupResults_OnOpen(Cancel, SkipPage, IsGo
 							MessageTransportResultPresentation(),
 							NodeFiltersResultPresentation(),
 							DefaultNodeValueResultPresentation(),
-							Object.SourceInfoBasePrefix
-		);
+							Object.SourceInfobasePrefix);
 		
 	EndIf;
 	
 	// Displaying comment label
 	Items.MappingWizardOpenedInfoLabelGroup.Visible =
 	(WizardRunVariant = "ContinueDataExchangeSetup" 
-	And Not Object.IsDistributedInfoBaseSetup
-	And Not Object.IsStandardExchangeSetup
-	);
+	And Not Object.IsDistributedInfobaseSetup
+	And Not Object.IsStandardExchangeSetup);
 	
 EndFunction
 
@@ -2886,25 +3145,25 @@ Function Attachable_WizardPageExchangeSetupResults_OnOpen_ExternalConnection(Can
 	// Data exchange setup result presentation
 	If ExchangeWithServiceSetup Then
 		
-		MessageString = NStr("en = '%1
-		|Settings for the current information base:
-		|========================================================
-		|%2%3Infobase prefix: %4
-		|
-		|Settings for the service application:
-		|========================================================
-		|%5%6Application prefix: %7'");
+		MessageString = NStr("en = '%1 
+   |Settings for the current infobase: 
+   |======================================================== 
+   |%2%3Infobase prefix: %4 
+   |
+   |Settings for the service application: 
+   |======================================================== 
+   |%5%6Application prefix: %7'");
 		
 	Else
 		
-		MessageString = NStr("en = '%1
-		|Data exchange settings for the current information base:
-		|========================================================
-		|%2%3Infobase prefix: %4
-		|
-		|Data exchange settings for the second infobase:
-		|========================================================
-		|%5%6Infobase prefix: %7'");
+		MessageString = NStr("en = '%1 
+   |Data synchronization settings for the current infobase: 
+   |======================================================== 
+   |%2%3Infobase prefix: %4 
+   |
+   |Data synchronization settings for the second infobase: 
+   |======================================================== 
+   |%5%6Infobase prefix: %7'");
 		
 	EndIf;
 	
@@ -2912,11 +3171,10 @@ Function Attachable_WizardPageExchangeSetupResults_OnOpen_ExternalConnection(Can
 						MessageTransportResultPresentation(),
 						NodeFiltersResultPresentation(),
 						DefaultNodeValueResultPresentation(),
-						Object.SourceInfoBasePrefix,
-						CorrespondentInfoBaseNodeFilterResultPresentation(),
-						CorrespondentInfoBaseNodeDefaultValueResultPresentation(),
-						Object.TargetInfoBasePrefix
-	);
+						Object.SourceInfobasePrefix,
+						CorrespondentInfobaseNodeFilterResultPresentation(),
+						CorrespondentInfobaseNodeDefaultValueResultPresentation(),
+						Object.TargetInfobasePrefix);
 	
 	// Displaying comment label
 	Items.MappingWizardOpenedInfoLabelGroup.Visible = False;
@@ -2933,8 +3191,8 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageWaitForDataExchangeSettingsCreationOverExternalConnection_LongActionProcessing(Cancel, GoToNext)
 	
-	// Creating data exchange via the external connection setup 
-	SetupNewDataExchangeOverExternalConnectionAtServer(Cancel, CorrespondentInfoBaseNodeFilterSetup, CorrespondentInfoBaseNodeDefaultValues);
+	// Creating data exchange via the external connection
+	SetupNewDataExchangeOverExternalConnectionAtServer(Cancel, CorrespondentInfobaseNodeFilterSetup, CorrespondentInfobaseNodeDefaultValues);
 	
 EndFunction
 
@@ -2946,22 +3204,19 @@ Function Attachable_WizardPageWaitForCheckExternalConnectionConnected_LongAction
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForConnectionViaWebServiceCheck_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForConnectionCheckOverWebService_LongActionProcessing(Cancel, GoToNext)
 	
-	CheckWSConnectionAtClient(Cancel, True);
+	TestWSConnectionAtClient(Cancel, True);
 	
 EndFunction
 
 
-
 &AtClient
-Function Attachable_WizardPageWaitForDataAnalysisExchangeSettingsCreation_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForExchangeSettingsCreationDataAnalysis_LongActionProcessing(Cancel, GoToNext)
 	
 	// Creating data exchange settings:
-	//  - creating nodes in this infobase and in the correspondent infobase with data
-	//    export settings.
-	//  - registering catalogs to be exported in this infobase and in the correspondent
-	//    infobase.
+	//  - creating nodes in this infobase and in the correspondent infobase with data export settings,
+	//  - registering catalogs to be exported in this infobase and in the correspondent infobase.
 	
 	LongAction = False;
 	LongActionFinished = False;
@@ -2971,16 +3226,15 @@ Function Attachable_WizardPageWaitForDataAnalysisExchangeSettingsCreation_LongAc
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during creating data exchange settings.
-					|Use the event log to solve the problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred while creating data synchronization settings.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForDataAnalysisExchangeSettingsCreationLongAction_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForExchangeSettingsCreationDataAnalysisLongAction_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongAction Then
 		
@@ -2993,28 +3247,26 @@ Function Attachable_WizardPageWaitForDataAnalysisExchangeSettingsCreationLongAct
 EndFunction
 
 
-
 &AtClient
 Function Attachable_WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing(Cancel, GoToNext)
 	
-	LongAction = False;
-	LongActionFinished = False;
+	LongAction             = False;
+	LongActionFinished     = False;
 	MessageFileIDInService = "";
-	LongActionID = "";
+	LongActionID           = "";
 	
-	DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfoBaseOverWebService(
+	DataStructure = DataExchangeServerCall.GetExchangeMessageToTempDirectoryFromCorrespondentInfobaseOverWebService(
 		Cancel,
-		Object.InfoBaseNode,
+		Object.InfobaseNode,
 		MessageFileIDInService,
 		LongAction,
-		LongActionID
-	);
+		LongActionID,
+		Object.WSPassword);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.
-					|Use the event log to solve the problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred during the data analysis.
+					|Use the event log to solve the problems.'"));
 		
 	ElsIf Not LongAction Then
 		
@@ -3039,21 +3291,20 @@ Function Attachable_WizardPageWaitForDataAnalysisGetMessageLongAction_LongAction
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForDataAnalysisGetMessageLongActionCompletion_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongActionFinished Then
 		
-		DataStructure = DataExchangeServer.GetExchangeMessageToTempDirectoryFromCorrespondentInfoBaseOverWebServiceFinishLongAction(
+		DataStructure = DataExchangeServerCall.GetExchangeMessageToTempDirectoryFromCorrespondentInfobaseOverWebServiceFinishLongAction(
 			Cancel,
-			Object.InfoBaseNode,
-			MessageFileIDInService
-		);
+			Object.InfobaseNode,
+			MessageFileIDInService,
+			Object.WSPassword);
 		
 		If Cancel Then
 			
-			ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.
-						|Use the event log to solve the problems.'")
-			);
+			ShowMessageBox(, NStr("en = 'Errors occurred during the data analysis.
+						|Use the event log to solve the problems.'"));
 			
 		Else
 			
@@ -3069,18 +3320,18 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing(Cancel, GoToNext)
 	
-	WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing(Cancel);
+	WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing(Cancel);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during the data analysis.'"));
+		ShowMessageBox(, NStr("en = 'Errors occurred during the data analysis.'"));
 		
 	EndIf;
 	
 EndFunction
 
 &AtServer
-Procedure WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing(Cancel)
+Procedure WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing(Cancel)
 	
 	InteractiveDataExchangeWizard = DataProcessors.InteractiveDataExchangeWizard.Create();
 	
@@ -3088,7 +3339,7 @@ Procedure WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing(Can
 	
 	InteractiveDataExchangeWizard.Statistics.Load(Object.Statistics.Unload());
 	
-	InteractiveDataExchangeWizard.ExecuteExchangeMessagAnalysis(Cancel, False);
+	InteractiveDataExchangeWizard.ExecuteExchangeMessagAnalysis(Cancel);
 	
 	InteractiveDataExchangeWizard.ExecuteDefaultAutomaticMappingAndGetMappingStatistics(Cancel);
 	
@@ -3112,8 +3363,6 @@ Procedure WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing(Can
 			ReverseIndex = ReverseIndex - 1;
 		EndDo;
 		
-		FillPropertyValues(Object, InteractiveDataExchangeWizard, "IncomingMessageNumber");
-		
 		Object.Statistics.Load(StatisticsTable);
 		
 		GetStatisticsTree(StatisticsTable);
@@ -3127,16 +3376,15 @@ EndProcedure
 &AtServer
 Procedure SetAdditionalInfoGroupVisible()
 	
-	// Making the group with additional information visible if statistic data table
-	// contains one or more rows with mapping less than 100%.
+	// Making the group with additional information visible if statistic data
+	// table contains one or more rows with mapping less than 100%
 	RowArray = Object.Statistics.FindRows(New Structure("PictureIndex", 1));
 	
 	AllDataMapped = (RowArray.Count() = 0);
 	
-	Items.DataMappingStatePages.CurrentPage = ?(AllDataMapped,
-				Items.MappingStateAllDataMapped,
-				Items.MappingStateHasUnmappedData
-	);
+	Items.DataMappingStatusPages.CurrentPage = ?(AllDataMapped,
+				Items.MappingStatusAllDataMapped,
+				Items.MappingStatusHasUnmappedData);
 	
 EndProcedure
 
@@ -3158,37 +3406,44 @@ Function Attachable_WizardPageDataMapping_OnGoNext(Cancel)
 		
 		Buttons = New ValueList;
 		Buttons.Add(DialogReturnCode.Yes, "Continue");
-		Buttons.Add(DialogReturnCode.No, "Cancel");
+		Buttons.Add(DialogReturnCode.No,  "Cancel");
 		
-		Message = NStr("en = 'Unmapped data has been found. This can lead to
-							 |duplication of catalog items.
-							 |Do you want to continue?'"
-		);
-		
-		Response = DoQueryBox(Message, Buttons,, DialogReturnCode.No);
-		
-		If Response = DialogReturnCode.No Then
-			
+		Message = NStr("en = 'Some data is not mapped. Leaving unmapped
+							   |data can result in duplicate catalog items.
+							   |Do you want to continue?'");
+							   
+		If Not UserAnsweredYesToQuestionAboutMapping Then
+			NotifyDescription = New NotifyDescription("ProcessUserAnswerOnMap", ThisObject);
+			ShowQueryBox(NotifyDescription, Message, Buttons,, DialogReturnCode.No);
 			Cancel = True;
-			
 		EndIf;
 		
 	EndIf;
 	
 EndFunction
 
-
+&AtClient
+Procedure ProcessUserAnswerOnMap(Answer, AdditionalParameters) Export
+	
+	If Answer = DialogReturnCode.Yes Then
+		
+		UserAnsweredYesToQuestionAboutMapping = True;
+		ChangeGoToNumber(+1);
+		
+	EndIf;
+	
+EndProcedure
+ 
 
 &AtClient
 Function Attachable_WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing(Cancel, GoToNext)
 	
-	DataExchangeServer.ImportInfoBaseNodeViaFile(Cancel, Object.InfoBaseNode, Object.ExchangeMessageFileName);
+	DataExchangeServerCall.ImportInfobaseNodeViaFile(Cancel, Object.InfobaseNode, Object.ExchangeMessageFileName);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during catalog synchronization.
-					|Use the event log to solve problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred during catalog synchronization.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
@@ -3204,18 +3459,17 @@ Function Attachable_WizardPageWaitForCatalogSynchronizationExport_LongActionProc
 	
 	WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing(
 											Cancel,
-											Object.InfoBaseNode,
+											Object.InfobaseNode,
 											LongAction,
 											LongActionID,
 											MessageFileIDInService,
-											ActionStartDate
-	);
+											ActionStartDate,
+											Object.WSPassword);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during catalog synchronization.
-					|Use the event log to solve problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred during catalog synchronization.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
@@ -3224,27 +3478,27 @@ EndFunction
 &AtServerNoContext
 Procedure WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											LongAction,
 											ActionID,
 											FileID,
-											ActionStartDate
-	)
+											ActionStartDate,
+											Password)
 	
 	ActionStartDate = CurrentSessionDate();
 	
-	// Executing exchange
-	DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(
+	// Starting synchronization
+	DataExchangeServer.ExecuteDataExchangeForInfobaseNode(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											False,
 											True,
 											Enums.ExchangeMessageTransportKinds.WS,
 											LongAction,
 											ActionID,
 											FileID,
-											True
-	);
+											True,
+											Password);
 	
 EndProcedure
 
@@ -3262,11 +3516,11 @@ Function Attachable_WizardPageWaitForCatalogSynchronizationExportLongAction_Long
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForCatalogSynchronizationExportLongActionCompletion_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongActionFinished Then
 		
-		DataExchangeServer.CommitDataExportExecutionInLongActionMode(Object.InfoBaseNode, ActionStartDate);
+		DataExchangeServerCall.CommitDataExportExecutionInLongActionMode(Object.InfobaseNode, ActionStartDate);
 		
 	EndIf;
 	
@@ -3276,9 +3530,8 @@ EndFunction
 Function Attachable_WizardPageWaitForSaveSettings_LongActionProcessing(Cancel, GoToNext)
 	
 	// Updating data exchange settings in this infobase and in the correspondent infobase:
-	//  - updating default values on the exchange plan nodes.
-	//  - registering all data to be exported except catalogs and CCT in this infobase and
-	//    in the correspondent infobase.
+	//  - updating default values in the exchange plan nodes,
+	//  - registering all data to be exported except catalogs and charts of characteristic types in this infobase and in the correspondent infobase.
 	
 	LongAction = False;
 	LongActionFinished = False;
@@ -3288,16 +3541,15 @@ Function Attachable_WizardPageWaitForSaveSettings_LongActionProcessing(Cancel, G
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during settings saving.
-					|Use the event log to solve the problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred while saving the settings.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForSaveSettingsLongAction_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageSettingsSavingWaitLongAction_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongAction Then
 		
@@ -3308,8 +3560,7 @@ Function Attachable_WizardPageWaitForSaveSettingsLongAction_LongActionProcessing
 	EndIf;
 	
 EndFunction
-
-
+ 
 
 &AtClient
 Function Attachable_WizardPageWaitForDataSynchronizationImport_LongActionProcessing(Cancel, GoToNext)
@@ -3321,18 +3572,17 @@ Function Attachable_WizardPageWaitForDataSynchronizationImport_LongActionProcess
 	
 	WizardPageWaitForDataSynchronizationImport_LongActionProcessing(
 											Cancel,
-											Object.InfoBaseNode,
+											Object.InfobaseNode,
 											LongAction,
 											LongActionID,
 											MessageFileIDInService,
-											ActionStartDate
-	);
+											ActionStartDate,
+											Object.WSPassword);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
-					|Use the event log to solve the problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred during data synchronization.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
@@ -3341,27 +3591,27 @@ EndFunction
 &AtServerNoContext
 Procedure WizardPageWaitForDataSynchronizationImport_LongActionProcessing(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											LongAction,
 											ActionID,
 											FileID,
-											ActionStartDate
-	)
+											ActionStartDate,
+											Password)
 	
 	ActionStartDate = CurrentSessionDate();
 	
-	// Executing exchange
-	DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(
+	// Starting synchronization
+	DataExchangeServer.ExecuteDataExchangeForInfobaseNode(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											True,
 											False,
 											Enums.ExchangeMessageTransportKinds.WS,
 											LongAction,
 											ActionID,
 											FileID,
-											True
-	);
+											True,
+											Password);
 	
 EndProcedure
 
@@ -3379,22 +3629,21 @@ Function Attachable_WizardPageWaitForDataSynchronizationImportLongAction_LongAct
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForDataSynchronizationImportLongActionCompletion_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongActionFinished Then
 		
-		DataExchangeServer.ExecuteDataExchangeForInfoBaseNodeFinishLongAction(
+		DataExchangeServerCall.ExecuteDataExchangeForInfobaseNodeFinishLongAction(
 										Cancel,
-										Object.InfoBaseNode,
+										Object.InfobaseNode,
 										MessageFileIDInService,
-										ActionStartDate
-		);
+										ActionStartDate,
+										Object.WSPassword);
 		
 		If Cancel Then
 			
-			ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
-						|Use the event log to solve the problems.'")
-			);
+			ShowMessageBox(, NStr("en = 'Errors occurred during data synchronization.
+						|Use the event log to solve the problems.'"));
 			
 		EndIf;
 		
@@ -3412,18 +3661,17 @@ Function Attachable_WizardPageWaitForDataSynchronizationExport_LongActionProcess
 	
 	WizardPageWaitForDataSynchronizationExport_LongActionProcessing(
 											Cancel,
-											Object.InfoBaseNode,
+											Object.InfobaseNode,
 											LongAction,
 											LongActionID,
 											MessageFileIDInService,
-											ActionStartDate
-	);
+											ActionStartDate,
+											Object.WSPassword);
 	
 	If Cancel Then
 		
-		ShowMessageBox(,NStr("en = 'Errors occurred during data synchronization.
-					|Use the event log to solve the problems.'")
-		);
+		ShowMessageBox(, NStr("en = 'Errors occurred during data synchronization.
+					|Use the event log to solve the problems.'"));
 		
 	EndIf;
 	
@@ -3432,27 +3680,27 @@ EndFunction
 &AtServerNoContext
 Procedure WizardPageWaitForDataSynchronizationExport_LongActionProcessing(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											LongAction,
 											ActionID,
 											FileID,
-											ActionStartDate
-	)
+											ActionStartDate,
+											Password)
 	
 	ActionStartDate = CurrentSessionDate();
 	
-	// run execution exchange
-	DataExchangeServer.ExecuteDataExchangeForInfoBaseNode(
+	// Starting synchronization
+	DataExchangeServer.ExecuteDataExchangeForInfobaseNode(
 											Cancel,
-											InfoBaseNode,
+											InfobaseNode,
 											False,
 											True,
 											Enums.ExchangeMessageTransportKinds.WS,
 											LongAction,
 											ActionID,
 											FileID,
-											True
-	);
+											True,
+											Password);
 	
 EndProcedure
 
@@ -3470,11 +3718,11 @@ Function Attachable_WizardPageWaitForDataSynchronizationExportLongAction_LongAct
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForDataSynchronizationExportLongActionCompletion_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongActionFinished Then
 		
-		DataExchangeServer.CommitDataExportExecutionInLongActionMode(Object.InfoBaseNode, ActionStartDate);
+		DataExchangeServerCall.CommitDataExportExecutionInLongActionMode(Object.InfobaseNode, ActionStartDate);
 		
 	EndIf;
 	
@@ -3485,15 +3733,14 @@ Function Attachable_WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOp
 	
 	If IsGoNext Then
 		
-		ConnectionType = "WebService";
+		JoinType = "WebService";
 		
 		CheckAccountingSettingsAtServer(
 										False,
-										ConnectionType,
+										JoinType,
 										Object.ExchangePlanName,
-										ExternalConnectionParameterStructure(ConnectionType)
-		);
-		
+										ExternalConnectionParameterStructure(JoinType),
+										SkipPage);
 		
 	EndIf;
 	
@@ -3502,20 +3749,27 @@ EndFunction
 &AtClient
 Function Attachable_WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext(Cancel)
 	
-	ConnectionType = "WebService";
+	JoinType = "WebService";
 	
-	CheckAddingDocumentDataToAccountingRecordsForAccountingSettings(Cancel, ConnectionType);
+	CheckAccountingSettingsAtServer(
+									Cancel,
+									JoinType,
+									Object.ExchangePlanName,
+									ExternalConnectionParameterStructure(JoinType),
+									False);
+	
+EndFunction
+
+&AtClient
+Function Attachable_WizardPageDataGetParameters_OnGoNext(Cancel)
+	
+	JoinType = "WebService";
+	
+	CheckDataGettingRules(Cancel, JoinType);
 	
 	If Cancel Then
 		Return Undefined;
 	EndIf;
-	
-	CheckAccountingSettingsAtServer(
-									Cancel,
-									ConnectionType,
-									Object.ExchangePlanName,
-									ExternalConnectionParameterStructure(ConnectionType)
-	);
 	
 EndFunction
 
@@ -3529,28 +3783,29 @@ Function Attachable_WizardPageDataExchangeCreatedSuccessfully_OnOpen(Cancel, Ski
 EndFunction
 
 
-
 &AtClient
-Procedure CheckAddingDocumentDataToAccountingRecordsForAccountingSettings(Cancel, ConnectionType)
+Procedure CheckDataGettingRules(Cancel, JoinType)
 	
 	If NodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("NodeDefaultValues", NodeDefaultValues);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("NodeDefaultValues",    NodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "DefaultValueSetupForm", FormParameters, "DefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, DefaultValueSetupForm, FormParameters, "DefaultValueDetails");
 		
 	EndIf;
 	
-	If CorrespondentInfoBaseNodeDefaultValuesAvailable Then
+	If CorrespondentInfobaseNodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-		FormParameters.Insert("NodeDefaultValues", CorrespondentInfoBaseNodeDefaultValues);
+		FormParameters.Insert("CorrespondentVersion",         CorrespondentConfigurationVersion);
+		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+		FormParameters.Insert("NodeDefaultValues",            CorrespondentInfobaseNodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "CorrespondentInfoBaseDefaultValueSetupForm", FormParameters, "CorrespondentInfoBaseDefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, CorrespondentInfobaseDefaultValueSetupForm, FormParameters, "CorrespondentInfobaseDefaultValueDetails");
 		
 	EndIf;
 	
@@ -3559,26 +3814,34 @@ EndProcedure
 &AtServer
 Procedure CheckAccountingSettingsAtServer(
 									Cancel,
-									Val ConnectionType,
+									Val JoinType,
 									Val ExchangePlanName,
-									ConnectionParameters
-	)
+									ConnectionParameters,
+									SkipPage)
 	
 	ErrorMessage = "";
 	CorrespondentErrorMessage = "";
 	
-	NodeCode = CommonUse.GetAttributeValue(Object.InfoBaseNode, "Code");
+	NodeCode = CommonUse.ObjectAttributeValue(Object.InfobaseNode, "Code");
 	
-	AccountingSettingsAreSet = DataExchangeServer.SystemAccountingSettingsAreSet(ExchangePlanName, NodeCode, ErrorMessage);
+	SystemAccountingSettingsAreSet = DataExchangeServer.SystemAccountingSettingsAreSet(ExchangePlanName, NodeCode, ErrorMessage);
 	
-	If ConnectionType = "WebService" Then
+	If JoinType = "WebService" Then
 		
 		ErrorMessageString = "";
 		
-		If Object.CorrespondentVersion_2_0_1_6 Then
+		If Object.CorrespondentVersion_2_1_1_7 Then
+			
+			WSProxy = DataExchangeServer.GetWSProxy_2_1_1_7(ConnectionParameters, ErrorMessageString);
+			
+		ElsIf Object.CorrespondentVersion_2_0_1_6 Then
+			
 			WSProxy = DataExchangeServer.GetWSProxy_2_0_1_6(ConnectionParameters, ErrorMessageString);
+			
 		Else
+			
 			WSProxy = DataExchangeServer.GetWSProxy(ConnectionParameters, ErrorMessageString);
+			
 		EndIf;
 		
 		If WSProxy = Undefined Then
@@ -3586,38 +3849,55 @@ Procedure CheckAccountingSettingsAtServer(
 			Return;
 		EndIf;
 		
-		NodeCode = DataExchangeCached.GetThisNodeCodeForExchangePlan(Object.ExchangePlanName);
+		NodeCode = DataExchangeServerCall.GetThisNodeCodeForExchangePlan(Object.ExchangePlanName);
 		
-		// Getting correspondent infobase parameters
-		If Object.CorrespondentVersion_2_0_1_6 Then
-			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetIBParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+		// Getting parameters of the correspondent infobase
+		If Object.CorrespondentVersion_2_1_1_7 Then
+			
+			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
+		ElsIf Object.CorrespondentVersion_2_0_1_6 Then
+			
+			TargetParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
 		Else
-			TargetParameters = ValueFromStringInternal(WSProxy.GetIBParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
+			TargetParameters = ValueFromStringInternal(WSProxy.GetInfobaseParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
 		EndIf;
 		
-		CorrespondentAccountingSettingsAreSet = TargetParameters.AccountingSettingsAreSet;
+		CorrespondentAccountingSettingsAreSet = TargetParameters.SystemAccountingSettingsAreSet;
 		
-	ElsIf ConnectionType = "ExternalConnection" Then
+	ElsIf JoinType = "ExternalConnection" Then
 		
-		ErrorMessageString = "";
-		
-		ExternalConnection = DataExchangeServer.EstablishExternalConnection(ConnectionParameters, ErrorMessageString);
+		TransportParameters = DataExchangeServer.TransportSettingsByExternalConnectionParameters(ConnectionParameters);
+		Connection          = DataExchangeServer.EstablishExternalConnectionWithInfobase(ConnectionParameters);
+		ErrorMessageString  = Connection.DetailedErrorDetails;
+		ExternalConnection  = Connection.Connection;
 		
 		If ExternalConnection = Undefined Then
 			DataExchangeServer.ReportError(ErrorMessageString, Cancel);
 			Return;
 		EndIf;
 		
-		NodeCode = DataExchangeCached.GetThisNodeCodeForExchangePlan(Object.ExchangePlanName);
+		NodeCode = DataExchangeServerCall.GetThisNodeCodeForExchangePlan(Object.ExchangePlanName);
 		
-		// Getting correspondent infobase parameters
-		If Object.CorrespondentVersion_2_0_1_6 Then
-			TargetParameters = CommonUse.ValueFromXMLString(ExternalConnection.DataExchangeExternalConnection.GetInfoBaseParameters_2_0_1_6(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+		// Getting parameters of the correspondent infobase
+		If Object.CorrespondentVersion_2_1_1_7 Then
+			
+			TargetParameters = CommonUse.ValueFromXMLString(ExternalConnection.DataExchangeExternalConnection.GetInfobaseParameters_2_0_1_6(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
+		ElsIf Object.CorrespondentVersion_2_0_1_6 Then
+			
+			TargetParameters = CommonUse.ValueFromXMLString(ExternalConnection.DataExchangeExternalConnection.GetInfobaseParameters_2_0_1_6(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
 		Else
-			TargetParameters = ValueFromStringInternal(ExternalConnection.DataExchangeExternalConnection.GetInfoBaseParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
+			TargetParameters = ValueFromStringInternal(ExternalConnection.DataExchangeExternalConnection.GetInfobaseParameters(ExchangePlanName, NodeCode, CorrespondentErrorMessage));
+			
 		EndIf;
 		
-		CorrespondentAccountingSettingsAreSet = TargetParameters.AccountingSettingsAreSet;
+		CorrespondentAccountingSettingsAreSet = TargetParameters.SystemAccountingSettingsAreSet;
 		
 	EndIf;
 	
@@ -3625,62 +3905,69 @@ Procedure CheckAccountingSettingsAtServer(
 		Return;
 	EndIf;
 	
-	If Not AccountingSettingsAreSet Then
+	If SystemAccountingSettingsAreSet And CorrespondentAccountingSettingsAreSet Then
+		SkipPage = True;
+		Return;
+	EndIf;
+	
+	If Not SystemAccountingSettingsAreSet Then
 		
 		If IsBlankString(ErrorMessage) Then
-			ErrorMessage = NStr("en = 'Accounting parameters for the current application are not set.'");
+			ErrorMessage = NStr("en = 'Accounting parameters of the current application are not set.'");
 		EndIf;
 		
-		CommonUseClientServer.MessageToUser(ErrorMessage,, "AccountingSettingsCommentLabel",, Cancel);
+		AccountingSettingsLabel = ErrorMessage;
+		Cancel = True;
 		
 	EndIf;
 	
 	If Not CorrespondentAccountingSettingsAreSet Then
 		
 		If IsBlankString(CorrespondentErrorMessage) Then
-			CorrespondentErrorMessage = NStr("en = 'Accounting parameters for the cloud application are not set.'");
+			CorrespondentErrorMessage = NStr("en = 'Accounting parameters of the online application are not set.'");
 		EndIf;
 		
-		CommonUseClientServer.MessageToUser(CorrespondentErrorMessage,, "CorrespondentAccountingSettingsCommentLabel",, Cancel);
+		CorrespondentAccountingSettingsLabel = CorrespondentErrorMessage;
+		Cancel = True;
 		
 	EndIf;
 	
-	Items.AccountingSettings.Visible = Not AccountingSettingsAreSet;
+	Items.AccountingSettings.Visible = Not SystemAccountingSettingsAreSet;
 	Items.CorrespondentAccountingSettings.Visible = Not CorrespondentAccountingSettingsAreSet;
 	
 EndProcedure
 
 &AtClient
-Procedure CheckJobSettingsForFirstInfoBase(Cancel, ConnectionType = "WebService")
+Procedure CheckJobSettingsForFirstInfobase(Cancel, JoinType = "WebService")
 	
-	If IsBlankString(Object.ThisInfoBaseDescription) Then
+	If IsBlankString(Object.ThisInfobaseDescription) Then
 		
-		NString = NStr("en = 'Specify the name of the current application.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfoBaseDescription",, Cancel);
+		NString = NStr("en = 'Specify the name of the current infobase.'");
+		CommonUseClientServer.MessageToUser(NString,, "Object.ThisInfobaseDescription",, Cancel);
 		
 	EndIf;
 	
-	If IsBlankString(Object.SecondInfoBaseDescription) Then
+	If IsBlankString(Object.SecondInfobaseDescription) Then
 		
-		NString = NStr("en = 'Specify the name of the cloud application.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfoBaseDescription",, Cancel);
+		NString = NStr("en = 'Specify the name of the online application.'");
+		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfobaseDescription",, Cancel);
 		
 	EndIf;
 	
-	If TrimAll(Object.SourceInfoBasePrefix) = TrimAll(Object.TargetInfoBasePrefix) Then
+	If TrimAll(Object.SourceInfobasePrefix) = TrimAll(Object.TargetInfobasePrefix) Then
 		
-		NString = NStr("en = 'The infobase prefixes must be different.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.SourceInfoBasePrefix",, Cancel);
-		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfoBasePrefix",, Cancel);
+		NString = NStr("en = 'Infobase prefixes must be different.'");
+		CommonUseClientServer.MessageToUser(NString,, "Object.SourceInfobasePrefix",, Cancel);
+		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfobasePrefix",, Cancel);
 		
-		Items.SourceInfoBasePrefixExchangeWithService.Visible = True;
-		Items.SourceInfoBasePrefixExchangeWithService.Enabled = True;
-		Items.TargetInfoBasePrefixExchangeWithService.Visible = True;
+		Items.SourceInfobasePrefixExchangeWithService.Visible = True;
+		Items.SourceInfobasePrefixExchangeWithService.Enabled = True;
+		Items.TargetInfobasePrefixExchangeWithService.Visible = True;
 		
-		Items.SourceInfoBasePrefixExchangeOverWebService.Visible = True;
-		Items.SourceInfoBasePrefixExchangeOverWebService.Enabled = True;
-		Items.TargetInfoBasePrefixExchangeOverWebService.Visible = True;
-		Items.TargetInfoBasePrefixExchangeOverWebService.Enabled = True;
+		Items.SourceInfobasePrefixExchangeOverWebService.Visible = True;
+		Items.SourceInfobasePrefixExchangeOverWebService.Enabled = True;
+		Items.TargetInfobasePrefixExchangeOverWebService.Visible = True;
+		Items.TargetInfobasePrefixExchangeOverWebService.Enabled = True;
 		
 	EndIf;
 	
@@ -3692,30 +3979,31 @@ Procedure CheckJobSettingsForFirstInfoBase(Cancel, ConnectionType = "WebService"
 		
 		// Checking whether form attributes are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("ConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-		FormParameters.Insert("Settings", NodesSetupFormContext);
-		FormParameters.Insert("CheckFillinging");
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("ConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+		FormParameters.Insert("Settings",             NodesSetupFormContext);
+		FormParameters.Insert("FillChecking");
 		
-		CheckAttributeFillingOnForm(Cancel, "NodesSetupForm", FormParameters, "DataExportSettingsDescription");
+		CheckAttributeFillingOnForm(Cancel, NodesSetupForm, FormParameters, "DataExportSettingsDescription");
 		
 	EndIf;
 	
 EndProcedure
 
 &AtClient
-Procedure CheckJobSettingsForSecondInfoBase(Cancel, ConnectionType)
+Procedure CheckJobSettingsForSecondInfobase(Cancel, JoinType)
 	
-	If IsBlankString(Object.SecondInfoBaseDescription) Then
+	If IsBlankString(Object.SecondInfobaseDescription) Then
 		
-		NString = NStr("en = 'Specify the infobase name.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfoBaseDescription",, Cancel);
+		NString = NStr("en = 'Specify the application name.'");
+		CommonUseClientServer.MessageToUser(NString,, "Object.SecondInfobaseDescription",, Cancel);
 		
 	EndIf;
 	
-	If TrimAll(Object.SourceInfoBasePrefix) = TrimAll(Object.TargetInfoBasePrefix) Then
+	If TrimAll(Object.SourceInfobasePrefix) = TrimAll(Object.TargetInfobasePrefix) Then
 		
-		NString = NStr("en = 'The infobase prefixes must be different.'");
-		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfoBasePrefix",, Cancel);
+		NString = NStr("en = 'Infobase prefixes must be different.'");
+		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfobasePrefix",, Cancel);
 		
 	EndIf;
 	
@@ -3723,25 +4011,27 @@ Procedure CheckJobSettingsForSecondInfoBase(Cancel, ConnectionType)
 		Return;
 	EndIf;
 	
-	If CorrespondentInfoBaseNodeFilterSettingsAvailable Then
+	If CorrespondentInfobaseNodeFilterSettingsAvailable Then
 		
-		// Checking whether data migration restriction settings form attributes are filled
+		// Checking whether the form attributes that describe data migration restriction settings are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-		FormParameters.Insert("NodeFilterStructure", CorrespondentInfoBaseNodeFilterSetup);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+		FormParameters.Insert("NodeFilterStructure", CorrespondentInfobaseNodeFilterSetup);
 		
-		CheckAttributeFillingOnForm(Cancel, "CorrespondentInfoBaseNodeSettingsForm", FormParameters, "CorrespondentInfoBaseDataTransferRestrictionDetails");
+		CheckAttributeFillingOnForm(Cancel, CorrespondentInfobaseNodeSettingsForm, FormParameters, "CorrespondentInfobaseDataTransferRestrictionDetails");
 		
 	EndIf;
 	
-	If CorrespondentInfoBaseNodeDefaultValuesAvailable Then
+	If CorrespondentInfobaseNodeDefaultValuesAvailable Then
 		
-		// Checking whether additional settings form attributes are filled
+		// Checking whether attributes of the additional settings form are filled
 		FormParameters = New Structure;
-		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(ConnectionType));
-		FormParameters.Insert("NodeDefaultValues", CorrespondentInfoBaseNodeDefaultValues);
+		FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
+		FormParameters.Insert("ExternalConnectionParameters", ExternalConnectionParameterStructure(JoinType));
+		FormParameters.Insert("NodeDefaultValues", CorrespondentInfobaseNodeDefaultValues);
 		
-		CheckAttributeFillingOnForm(Cancel, "CorrespondentInfoBaseDefaultValueSetupForm", FormParameters, "CorrespondentInfoBaseDefaultValueDetails");
+		CheckAttributeFillingOnForm(Cancel, CorrespondentInfobaseDefaultValueSetupForm, FormParameters, "CorrespondentInfobaseDefaultValueDetails");
 		
 	EndIf;
 	
@@ -3750,22 +4040,14 @@ EndProcedure
 &AtServer
 Procedure WizardPageSetTransportParametersFILE_OnGoNextAtServer(Cancel)
 	
-	If Object.UseTransportParametersFILE Then
-		
-		DataExchangeServer.CheckExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.FILE);
-		
-	EndIf;
+	DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.FILE);
 	
 EndProcedure
 
 &AtServer
 Procedure WizardPageSetTransportParametersFTP_OnGoNextAtServer(Cancel)
 	
-	If Object.UseTransportParametersFTP  Then
-		
-		DataExchangeServer.CheckExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.FTP);
-		
-	EndIf;
+	DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.FTP);
 	
 EndProcedure
 
@@ -3774,7 +4056,7 @@ Procedure WizardPageSetTransportParametersEMAIL_OnGoNextAtServer(Cancel)
 	
 	If Object.UseTransportParametersEMAIL Then
 		
-		DataExchangeServer.CheckExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.EMAIL);
+		DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel, Object, Enums.ExchangeMessageTransportKinds.EMAIL);
 		
 	EndIf;
 	
@@ -3783,13 +4065,13 @@ EndProcedure
 &AtServer
 Procedure WizardPageParameterSetup_OnGoNextAtServer(Cancel)
 	
-	If Not ExchangePlans[Object.ExchangePlanName].FindByCode(DataExchangeServer.ExchangePlanNodeCodeString(Object.TargetInfoBasePrefix)).IsEmpty() Then
+	If Not ExchangePlans[Object.ExchangePlanName].FindByCode(DataExchangeServer.ExchangePlanNodeCodeString(Object.TargetInfobasePrefix)).IsEmpty() Then
 		
 		NString = NStr("en = 'The prefix of the second infobase is not unique.
-			|The system has the data exchange for the infobase with the specified prefix.
-			|Change the prefix value or use the existing exchange.'");
-		
-		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfoBasePrefix",, Cancel);
+			|The system has the data synchronization for the infobase with the specified prefix.
+			|Change the prefix value or use the existing synchronization.'");
+
+		CommonUseClientServer.MessageToUser(NString,, "Object.TargetInfobasePrefix",, Cancel);
 		
 	EndIf;
 	
@@ -3806,7 +4088,7 @@ Procedure WizardPageParameterSetup_OnOpenAtServer(Cancel, SkipPage, IsGoNext)
 		ValueList.Add(EnumValue, String(EnumValue));
 	EndIf;
 	
-	If Object.UseTransportParametersFTP  Then
+	If Object.UseTransportParametersFTP Then
 		EnumValue = Enums.ExchangeMessageTransportKinds.FTP;
 		ValueList.Add(EnumValue, String(EnumValue));
 	EndIf;
@@ -3825,13 +4107,13 @@ Procedure WizardPageParameterSetup_OnOpenAtServer(Cancel, SkipPage, IsGoNext)
 		
 	EndDo;
 	
-	// Setting default exchange message transport kind according to transport kinds
-	// selected by user.
+	// Setting default exchange message
+	// transport kind according to transport kinds selected by user.
 	If Object.UseTransportParametersFILE Then
 		
 		Object.ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.FILE;
 		
-	ElsIf Object.UseTransportParametersFTP  Then
+	ElsIf Object.UseTransportParametersFTP Then
 		
 		Object.ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.FTP;
 		
@@ -3840,6 +4122,14 @@ Procedure WizardPageParameterSetup_OnOpenAtServer(Cancel, SkipPage, IsGoNext)
 		Object.ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.EMAIL;
 		
 	EndIf;
+	
+	Items.DataTransferRestrictionDetails.Title = StrReplace(Items.DataTransferRestrictionDetails.Title,
+																	   "%Application%", ExchangePlanSynonym);
+	Items.DataTransferRestrictionDetails2.Title = Items.DataTransferRestrictionDetails.Title;
+	
+	Items.DefaultValueDetails.Title = StrReplace(Items.DefaultValueDetails.Title,
+																 "%Application%", ExchangePlanSynonym);
+	Items.DefaultValueDetails2.Title = Items.DefaultValueDetails.Title;
 	
 EndProcedure
 
@@ -3854,7 +4144,7 @@ Procedure WizardPageWaitForDataExchangeSettingsCreation_LongActionProcessingAtSe
 	EndIf;
 	
 	// Creating a settings file for the correspondent infobase
-	If Object.IsDistributedInfoBaseSetup Then
+	If Object.IsDistributedInfobaseSetup Then
 		
 		DataProcessorObject = FormAttributeToValue("Object");
 		
@@ -3883,28 +4173,66 @@ Procedure WizardPageWaitForDataExchangeSettingsCreation_LongActionProcessingAtSe
 		
 	EndIf;
 	
+	Items.ExecuteDataExchangeNow21.Title = StrReplace(Items.ExecuteDataExchangeNow21.Title, "%Application%", ExchangePlanSynonym);
+	
 EndProcedure
 
 &AtServer
 Procedure WizardPageWaitForCheckExternalConnectionConnected_LongActionProcessingAtServer(Cancel)
 	
-	ErrorAttachingAddIn = False;
-	ErrorMessageString = "";
-	
-	ExternalConnection = DataExchangeServer.EstablishExternalConnection(Object, ErrorMessageString, ErrorAttachingAddIn);
-	
-	If ExternalConnection = Undefined Then
-		CommonUseClientServer.MessageToUser(ErrorMessageString,,,, Cancel);
+	If Object.COMInfobaseOperationMode = 0 Then
 		
-		If ErrorAttachingAddIn And FileInfoBase Then
-			Items.FixExternalConnectionErrors.Visible = True;
+		If IsBlankString(Object.COMInfobaseDirectory) Then
+			
+			NString = NStr("en = 'Specify the infobase directory.'");
+			CommonUseClientServer.MessageToUser(NString,, "Object.COMInfobaseDirectory",, Cancel);
+			Cancel = True;
+			Return;
+			
 		EndIf;
+		
+	Else
+		
+		If IsBlankString(Object.COMPlatformServerName) Then
+			
+			NString = NStr("en = 'Specify the server cluster name.'");
+			CommonUseClientServer.MessageToUser(NString,, "Object.COMPlatformServerName",, Cancel);
+			Cancel = True;
+			Return;
+			
+		ElsIf IsBlankString(Object.COMInfobaseNameAtPlatformServer) Then
+			
+			NString = NStr("en = 'Specify the infobase name.'");
+			CommonUseClientServer.MessageToUser(NString,, "Object.COMInfobaseNameAtPlatformServer",, Cancel);
+			Cancel = True;
+			Return;
+			
+		EndIf;
+		
+	EndIf;
+	
+	Result = DataExchangeServer.EstablishExternalConnectionWithInfobase(Object);
+	ExternalConnection = Result.Connection;
+	ErrorAttachingAddIn = Result.ErrorAttachingAddIn;
+	If ExternalConnection = Undefined Then
+		CommonUseClientServer.MessageToUser(Result.BriefErrorDetails,,,, Cancel);
 		Return;
 	EndIf;
+	
+	// {HANDLER: OnConnectToCorrespondent} Start
+	CorrespondentConfigurationVersion = ExternalConnection.Metadata.Version;
+	
+	OnConnectToCorrespondent(Cancel, CorrespondentConfigurationVersion);
+	
+	If Cancel Then
+		Return;
+	EndIf;
+	// {HANDLER: OnConnectToCorrespondent} End
 	
 	CorrespondentVersions = DataExchangeServer.CorrespondentVersionsViaExternalConnection(ExternalConnection);
 	
 	Object.CorrespondentVersion_2_0_1_6 = (CorrespondentVersions.Find("2.0.1.6") <> Undefined);
+	Object.CorrespondentVersion_2_1_1_7 = (CorrespondentVersions.Find("2.1.1.7") <> Undefined);
 	
 	Try
 		ExchangePlanExists = ExternalConnection.DataExchangeExternalConnection.ExchangePlanExists(Object.ExchangePlanName);
@@ -3914,45 +4242,69 @@ Procedure WizardPageWaitForCheckExternalConnectionConnected_LongActionProcessing
 	
 	If Not ExchangePlanExists Then
 		
-		Message = NStr("en = 'The second infobase does not provide the exchange with the current infobase.'");
+		Message = NStr("en = 'Data synchronization with the specified application is not available.'");
 		CommonUseClientServer.MessageToUser(Message,,,, Cancel);
 		Return;
 		
 	EndIf;
 	
-	If Lower(InfoBaseConnectionString()) = Lower(ExternalConnection.InfoBaseConnectionString()) Then
+	If Lower(InfobaseConnectionString()) = Lower(ExternalConnection.InfobaseConnectionString()) Then
 		
-		Message = NStr("en = 'Connection settings point to the current infobase.'");
+		Message = NStr("en = 'The specified settings are the connection settings of the current infobase.'");
 		CommonUseClientServer.MessageToUser(Message,,,, Cancel);
 		Return;
 		
 	EndIf;
 	
-	Object.TargetInfoBasePrefix      = ExternalConnection.GetFunctionalOption("InfoBasePrefix");
-	Object.TargetInfoBasePrefixIsSet = ValueIsFilled(Object.TargetInfoBasePrefix);
+	Object.TargetInfobasePrefix      = ExternalConnection.GetFunctionalOption("InfobasePrefix");
+	Object.TargetInfobasePrefixIsSet = ValueIsFilled(Object.TargetInfobasePrefix);
 	
-	If Not Object.TargetInfoBasePrefixIsSet Then
-		Object.TargetInfoBasePrefix = ExternalConnection.DataExchangeExternalConnection.DefaultInfoBasePrefix();
-	EndIf;
-	
-	Items.TargetInfoBasePrefix.Visible = Not Object.TargetInfoBasePrefixIsSet;
-	
-	// Checking whether exchange with the correspondent infobase exists
+	// Checking whether an exchange with the correspondent infobase exists
 	CheckWhetherDataExchangeWithSecondBaseExists(Cancel);
 	If Cancel Then
 		Return;
 	EndIf;
 	
-	Object.SecondInfoBaseDescription = ExternalConnection.DataExchangeExternalConnection.PredefinedExchangePlanNodeDescription(Object.ExchangePlanName);
-	SecondInfoBaseDescriptionSet = Not IsBlankString(Object.SecondInfoBaseDescription);
+	If Not Object.TargetInfobasePrefixIsSet Then
+		Object.TargetInfobasePrefix = ExternalConnection.DataExchangeExternalConnection.DefaultInfobasePrefix();
+	EndIf;
 	
-	Items.SecondInfoBaseDescription2.ReadOnly = SecondInfoBaseDescriptionSet;
+	Items.TargetInfobasePrefix.Visible = Not Object.TargetInfobasePrefixIsSet;
 	
-	If Not SecondInfoBaseDescriptionSet Then
+	Object.SecondInfobaseDescription = ExternalConnection.DataExchangeExternalConnection.PredefinedExchangePlanNodeDescription(Object.ExchangePlanName);
+	SecondInfobaseDescriptionSet = Not IsBlankString(Object.SecondInfobaseDescription);
+	
+	Items.SecondInfobaseDescription2.ReadOnly = SecondInfobaseDescriptionSet;
+	
+	If Not SecondInfobaseDescriptionSet Then
 		
-		Object.SecondInfoBaseDescription = ExternalConnection.DataExchangeCached.ThisInfoBaseName();
+		Object.SecondInfobaseDescription = ExternalConnection.DataExchangeCached.ThisInfobaseName();
 		
 	EndIf;
+	
+	NodeSettingsForm = "";
+	CorrespondentInfobaseNodeSettingsForm = "";
+	DefaultValueSetupForm = "";
+	CorrespondentInfobaseDefaultValueSetupForm = "";
+	NodesSetupForm = "";
+	
+	NodeFilterStructure = DataExchangeServer.NodeFilterStructure(Object.ExchangePlanName, CorrespondentConfigurationVersion, NodeSettingsForm);
+	NodeDefaultValues   = DataExchangeServer.NodeDefaultValues(Object.ExchangePlanName, CorrespondentConfigurationVersion, DefaultValueSetupForm);
+	
+	CorrespondentInfobaseNodeFilterSetup   = DataExchangeServer.CorrespondentInfobaseNodeFilterSetup(Object.ExchangePlanName, CorrespondentConfigurationVersion, CorrespondentInfobaseNodeSettingsForm);
+	CorrespondentInfobaseNodeDefaultValues = DataExchangeServer.CorrespondentInfobaseNodeDefaultValues(Object.ExchangePlanName, CorrespondentConfigurationVersion, CorrespondentInfobaseDefaultValueSetupForm);
+	
+	CorrespondentInfobaseNodeFilterSettingsAvailable = CorrespondentInfobaseNodeFilterSetup.Count() > 0;
+	CorrespondentInfobaseNodeDefaultValuesAvailable  = CorrespondentInfobaseNodeDefaultValues.Count() > 0;
+	
+	Items.RestrictionsGroupBorder4.Visible                     = CorrespondentInfobaseNodeFilterSettingsAvailable;
+	Items.DefaultValueGroupBorder4.Visible                     = CorrespondentInfobaseNodeDefaultValuesAvailable;
+	Items.CorrespondentInfobaseDefaultValueGroupBorder.Visible = CorrespondentInfobaseNodeDefaultValuesAvailable;
+	
+	CorrespondentInfobaseDataTransferRestrictionDetails = DataExchangeServer.CorrespondentInfobaseDataTransferRestrictionDetails(Object.ExchangePlanName, CorrespondentInfobaseNodeFilterSetup, CorrespondentConfigurationVersion);
+	CorrespondentInfobaseDefaultValueDetails            = DataExchangeServer.CorrespondentInfobaseDefaultValueDetails(Object.ExchangePlanName, CorrespondentInfobaseNodeDefaultValues, CorrespondentConfigurationVersion);
+	
+	CorrespondentAccountingSettingsCommentLabel = DataExchangeServer.CorrespondentInfobaseAccountingSettingsSetupComment(Object.ExchangePlanName, CorrespondentConfigurationVersion);
 	
 EndProcedure
 
@@ -3960,14 +4312,13 @@ EndProcedure
 Procedure CheckWhetherDataExchangeWithSecondBaseExists(Cancel)
 	
 	NodeCode = ?(IsBlankString(Object.CorrespondentNodeCode),
-					DataExchangeServer.ExchangePlanNodeCodeString(Object.TargetInfoBasePrefix),
-					Object.CorrespondentNodeCode
-	);
+					DataExchangeServer.ExchangePlanNodeCodeString(Object.TargetInfobasePrefix),
+					Object.CorrespondentNodeCode);
 	
 	If Not IsBlankString(NodeCode)
 		And Not ExchangePlans[Object.ExchangePlanName].FindByCode(NodeCode).IsEmpty() Then
 		
-		Message = NStr("en = 'The data exchange is already configured in the system. Use the existing exchange.'");
+		Message = NStr("en = 'Data synchronization between the applications is already set up.'");
 		CommonUseClientServer.MessageToUser(Message,,,, Cancel);
 		
 	EndIf;
@@ -3975,7 +4326,7 @@ Procedure CheckWhetherDataExchangeWithSecondBaseExists(Cancel)
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Overridable part - Wizard step change initialization
+// Overridable part. Filling wizard navigation table.
 
 &AtServer
 Procedure FirstExchangeSetupStageGoToTable()
@@ -3985,12 +4336,13 @@ Procedure FirstExchangeSetupStageGoToTable()
 	GoToTableNewRow(1, "WizardPageStart",                            "", "NavigationPageStart");
 	GoToTableNewRow(2, "WizardPageWizardRunModeChoice",              "", "NavigationPageContinuation", "",,"WizardPageWizardRunModeChoice_OnOpen");
 	GoToTableNewRow(3, "WizardPageSetTransportParametersFILE",       "", "NavigationPageContinuation", "WizardPageSetTransportParametersFILE_OnGoNext",,"WizardPageSetTransportParametersFILE_OnOpen");
-	GoToTableNewRow(4, "WizardPageSetTransportParametersFTP",        "", "NavigationPageContinuation", "WizardPageSetTransportParametersFTP_OnGoNext",,"WizardPageSetParametersFTP_OnOpenTransport");
-	GoToTableNewRow(5, "WizardPageSetTransportParametersEMAIL",      "", "NavigationPageContinuation", "WizardPageSetTransportParametersEMAIL_OnGoNext",,"WizardPageSetParametersEMAIL_OnOpenTransport");
+	GoToTableNewRow(4, "WizardPageSetTransportParametersFTP",        "", "NavigationPageContinuation", "WizardPageSetTransportParametersFTP_OnGoNext",,"WizardPageSetTransportParametersFTP_OnOpen");
+	GoToTableNewRow(5, "WizardPageSetTransportParametersEMAIL",      "", "NavigationPageContinuation", "WizardPageSetTransportParametersEMAIL_OnGoNext",,"WizardPageSetTransportParametersEMAIL_OnOpen");
 	GoToTableNewRow(6, "WizardPageParameterSetup",                   "", "NavigationPageContinuation", "WizardPageParameterSetup_OnGoNext",, "WizardPageParameterSetup_OnOpen");
 	GoToTableNewRow(7, "WizardPageExchangeSetupResults",             "", "NavigationPageContinuation",,,"WizardPageExchangeSetupResults_OnOpen");
 	GoToTableNewRow(8, "WizardPageWaitForDataExchangeSettingsCreation", "", "NavigationPageWait",,,, True, "WizardPageWaitForDataExchangeSettingsCreation_LongActionProcessing");
 	GoToTableNewRow(9, "WizardPageEndWithSettingsExport",            "", "NavigationPageEnd");
+
 	
 EndProcedure
 
@@ -3999,12 +4351,13 @@ Procedure SecondExchangeSetupStageGoToTable()
 	
 	GoToTable.Clear();
 	
-	GoToTableNewRow(1, "WizardPageStart",                        "", "NavigationPageStart", "WizardPageStart_OnGoNext");
-	GoToTableNewRow(2, "WizardPageSetTransportParametersFILE",   "", "NavigationPageContinuation", "WizardPageSetTransportParametersFILE_OnGoNext",,"WizardPageSetTransportParametersFILE_OnOpen");
-	GoToTableNewRow(3, "WizardPageSetTransportParametersFTP",    "", "NavigationPageContinuation", "WizardPageSetTransportParametersFTP_OnGoNext",,"WizardPageSetTransportParametersFTP_OnOpen");
-	GoToTableNewRow(4, "WizardPageSetTransportParametersEMAIL",  "", "NavigationPageContinuation", "WizardPageSetTransportParametersEMAIL_OnGoNext",,"WizardPageSetTransportParametersEMAIL_OnOpen");
-	GoToTableNewRow(5, "WizardPageSecondSetupStageParameterSetup", "", "NavigationPageContinuation", "Attachable_WizardPageSecondSetupStageParameterSetup_OnGoNext",, "WizardPageParameterSetup_OnOpen");
-	GoToTableNewRow(6, "WizardPageExchangeSetupResults",          "", "NavigationPageEnd",,,"WizardPageExchangeSetupResults_OnOpen");
+	GoToTableNewRow(1, "WizardPageStart",                          "", "NavigationPageStart", "WizardPageStart_OnGoNext");
+	GoToTableNewRow(2, "WizardPageSetTransportParametersFILE",     "", "NavigationPageContinuation", "WizardPageSetTransportParametersFILE_OnGoNext",,"WizardPageSetTransportParametersFILE_OnOpen");
+	GoToTableNewRow(3, "WizardPageSetTransportParametersFTP",      "", "NavigationPageContinuation", "WizardPageSetTransportParametersFTP_OnGoNext",,"WizardPageSetTransportParametersFTP_OnOpen");
+	GoToTableNewRow(4, "WizardPageSetTransportParametersEMAIL",    "", "NavigationPageContinuation", "WizardPageSetTransportParametersEMAIL_OnGoNext",,"WizardPageSetTransportParametersEMAIL_OnOpen");
+ GoToTableNewRow(5, "WizardPageSecondSetupStageParameterSetup", "", "NavigationPageContinuation", "WizardPageSecondSetupStageParameterSetup_OnGoNext",, "WizardPageParameterSetup_OnOpen");
+	GoToTableNewRow(6, "WizardPageExchangeSetupResults",           "", "NavigationPageEndAndBack",,,"WizardPageExchangeSetupResults_OnOpen");
+
 	
 EndProcedure
 
@@ -4013,14 +4366,14 @@ Procedure DataExchangeOverExternalConnectionSettingsGoToTable()
 	
 	GoToTable.Clear();
 	
-	GoToTableNewRow(1, "WizardPageStart",                                             "", "NavigationPageStart");
-	GoToTableNewRow(2, "WizardPageWizardRunModeChoice",                               "", "NavigationPageContinuation");
-	GoToTableNewRow(3, "WizardPageWaitForCheckExternalConnectionConnected",                    "", "NavigationPageWait",,,, True, "WizardPageWaitForCheckExternalConnectionConnected_LongActionProcessing");
-	GoToTableNewRow(4, "WizardPageFirstInfoBaseExternalConnectionParameterSetup",  "", "NavigationPageContinuation", "WizardPageFirstInfoBaseExternalConnectionParameterSetup_OnGoNext");
-	GoToTableNewRow(5, "WizardPageSecondInfoBaseExternalConnectionParameterSetup", "", "NavigationPageContinuation", "WizardPageSecondInfoBaseExternalConnectionParameterSetup_OnGoNext");
-	GoToTableNewRow(6, "WizardPageExchangeSetupResults",                                "", "NavigationPageContinuation",,,"WizardPageExchangeSetupResults_OnOpen_ExternalConnection");
-	GoToTableNewRow(7, "WizardPageWaitForDataExchangeSettingsCreation",                  "", "NavigationPageWait",,,, True, "WizardPageWaitForDataExchangeSettingsCreationOverExternalConnection_LongActionProcessing");
-	GoToTableNewRow(8, "WizardPageEndWithExchangeOverExternalConnection",              "", "NavigationPageEnd");
+	GoToTableNewRow(1, "WizardPageStart",                                          "", "NavigationPageStart");
+	GoToTableNewRow(2, "WizardPageWizardRunModeChoice",                            "", "NavigationPageContinuation", "WizardPageWizardRunModeChoice_OnGoNext");
+	GoToTableNewRow(3, "WizardPageWaitForCheckExternalConnectionConnected",        "", "NavigationPageWait",,,, True, "WizardPageWaitForCheckExternalConnectionConnected_LongActionProcessing");
+	GoToTableNewRow(4, "WizardPageFirstInfobaseExternalConnectionParameterSetup",  "", "NavigationPageContinuation", "WizardPageFirstInfobaseExternalConnectionParameterSetup_OnGoNext",,"WizardPageFirstInfobaseExternalConnectionParameterSetup_OnOpen");
+	GoToTableNewRow(5, "WizardPageSecondInfobaseExternalConnectionParameterSetup", "", "NavigationPageContinuation", "WizardPageSecondInfobaseExternalConnectionParameterSetup_OnGoNext",,"WizardPageSecondInfobaseExternalConnectionParameterSetup_OnOpen");
+	GoToTableNewRow(6, "WizardPageExchangeSetupResults",                           "", "NavigationPageContinuation",,,"WizardPageExchangeSetupResults_OnOpen_ExternalConnection");
+	GoToTableNewRow(7, "WizardPageWaitForDataExchangeSettingsCreation",            "", "NavigationPageWait",,,, True, "WizardPageWaitForDataExchangeSettingsCreationOverExternalConnection_LongActionProcessing");
+	GoToTableNewRow(8, "WizardPageEndWithExchangeOverExternalConnection",          "", "NavigationPageEnd");
 	
 EndProcedure
 
@@ -4032,49 +4385,52 @@ Procedure ExchangeOverWebServiceSetupGoToTable()
 	GoToTableNewRow(1,  "WizardPageStart",, "NavigationPageStart");
 	GoToTableNewRow(2,  "WizardPageWizardRunModeChoice", , "NavigationPageContinuation");
 	
-	// Setting connection parameters; Verifying connection.
-	GoToTableNewRow(3,  "WizardPageWaitForConnectionToServiceCheck", "", "NavigationPageWait",,,, True, "WizardPageWaitForConnectionViaWebServiceCheck_LongActionProcessing");
+	// Setting connection parameters. Verifying connection
+	GoToTableNewRow(3,  "WizardPageWaitForConnectionToServiceCheck", "", "NavigationPageWait",,,, True, "WizardPageWaitForTestConnectionViaWebService_LongActionProcessing");
 	
 	// Setting data export parameters (node filters)
 	GoToTableNewRow(4,  "WizardPageDataExchangeOverWebServiceParameterSetup", "", "NavigationPageContinuation", "WizardPageDataExchangeParameterSetup_OnGoNext",, "WizardPageDataExchangeParameterSetup_OnOpen");
 	
-	// Creating data exchange settings; Registering catalogs to be exported.
-	GoToTableNewRow(5,  "WizardPageWaitForDataAnalysisExchangeSettingsCreation",  "", "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisExchangeSettingsCreation_LongActionProcessing");
-	GoToTableNewRow(6,  "WizardPageWaitForDataAnalysisExchangeSettingsCreation",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisExchangeSettingsCreationLongAction_LongActionProcessing");
+	// Applying default values for data import
+	GoToTableNewRow(5, "WizardPageDataGetParameters",, "NavigationPageContinuation", "WizardPageDataGetParameters_OnGoNext");
+	
+	// Creating data exchange settings. Registering catalogs to be exported.
+	GoToTableNewRow(6,  "WizardPageWaitForExchangeSettingsCreationDataAnalysis",  "", "NavigationPageWait",,,, True, "WizardPageWaitForExchangeSettingsCreationDataAnalysis_LongActionProcessing");
+	GoToTableNewRow(7,  "WizardPageWaitForExchangeSettingsCreationDataAnalysis",, "NavigationPageWait",,,, True, "WizardPageWaitForExchangeSettingsCreationDataAnalysisLongAction_LongActionProcessing");
 	
 	// Getting catalogs from the correspondent infobase
-	GoToTableNewRow(7,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
-	GoToTableNewRow(8,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
-	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(8,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
+	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
+	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
 	
-	// Mapping data automatically; Getting mapping statistics.
-	GoToTableNewRow(10, "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing");
+	// Mapping data automatically. Getting mapping statistics.
+	GoToTableNewRow(11, "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing");
 	
 	// Mapping data manually
-	GoToTableNewRow(11, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
+	GoToTableNewRow(12, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
 	
-	// Synchronizing catalogs
-	GoToTableNewRow(12, "WizardPageWaitForCatalogSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
-	GoToTableNewRow(13, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
-	GoToTableNewRow(14, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(15, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
+	// Catalog synchronization
+	GoToTableNewRow(13, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
+	GoToTableNewRow(14, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
+	GoToTableNewRow(15, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
+	GoToTableNewRow(16, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
 	
-	// Accounting parameter settings; Default values for data export.
-	GoToTableNewRow(16, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
+	// Accounting parameter settings
+	GoToTableNewRow(17, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
 	
-	// Saving settings; Registering all data to be exported except catalogs.
-	GoToTableNewRow(17, "WizardPageWaitForSettingsSaving",, "NavigationPageWait",,,, True, "WizardPageWaitForSettingsSaving_LongActionProcessing");
-	GoToTableNewRow(18, "WizardPageWaitForSettingsSaving",, "NavigationPageWait",,,, True, "WizardPageWaitForSettingsSavingLongAction_LongActionProcessing");
+	// Saving settings. Registering all data to be exported except catalogs.
+	GoToTableNewRow(18, "WizardPageWaitForSaveSettings",, "NavigationPageWait",,,, True, "WizardPageWaitForSaveSettings_LongActionProcessing");
+	GoToTableNewRow(19, "WizardPageWaitForSaveSettings",, "NavigationPageWait",,,, True, "WizardPageWaitForSaveSettingsLongAction_LongActionProcessing");
 	
 	// Synchronizing all data except catalogs
-	GoToTableNewRow(19, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
-	GoToTableNewRow(20, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
-	GoToTableNewRow(21, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionEndLongActionProcessing");
-	GoToTableNewRow(22, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
-	GoToTableNewRow(23, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(24, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(20, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
+	GoToTableNewRow(21, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
+	GoToTableNewRow(22, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(23, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
+	GoToTableNewRow(24, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
+	GoToTableNewRow(25, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
 	
-	GoToTableNewRow(25, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeCreatedSuccessfully_OnOpen");
+	GoToTableNewRow(26, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeSuccessfullyCreated_OnOpen");
 	
 EndProcedure
 
@@ -4083,49 +4439,54 @@ Procedure ExtendedExchangeWithServiceSetupGoToTable()
 	
 	GoToTable.Clear();
 	
-	// Setting connection parameters; Verifying connection.
-	GoToTableNewRow(1, "WizardPageStartExchangeWithServiceSetup", "", "NavigationPageStart");
-	GoToTableNewRow(2, "WizardPageWaitForConnectionToServiceCheck", "", "NavigationPageWait",,,,  True, "WizardPageWaitForConnectionViaWebServiceCheck_LongActionProcessing");
+	// Setting connection parameters. Verifying connection
+	GoToTableNewRow(1,  "WizardPageStartExchangeWithServiceSetup",   "", "NavigationPageStart");
+	GoToTableNewRow(2,  "WizardPageWaitForConnectionToServiceCheck", "", "NavigationPageWait",,,, True, "WizardPageWaitForTestConnectionViaWebService_LongActionProcessing");
 	
 	// Setting data export parameters (node filters)
-	GoToTableNewRow(3, "WizardPageDataExchangeParameterSetup", "", "NavigationPageContinuation",  "WizardPageDataExchangeParameterSetup_OnGoNext",, "WizardPageDataExchangeParameterSetup_OnOpen");
+	GoToTableNewRow(3,  "WizardPageDataExchangeSetupParameter", "", "NavigationPageContinuation", "WizardPageDataExchangeParameterSetup_OnGoNext",, "WizardPageDataExchangeParameterSetup_OnOpen");
 	
-	// Creating data exchange settings; Registering catalogs to be exported.
-	GoToTableNewRow(4, "WizardPageWaitForDataAnalysisExchangeSettingsCreation", "", "NavigationPageWait",,,,  True, "WizardPageWaitForDataAnalysisExchangeSettingsCreation_LongActionProcessing");
-	GoToTableNewRow(5, "WizardPageWaitForDataAnalysisExchangeSettingsCreation",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisExchangeSettingsCreationLongAction_LongActionProcessing");
+	// Applying default values for data import
+	GoToTableNewRow(4, "WizardPageDataGetParameters",, "NavigationPageContinuation", "WizardPageDataGetParameters_OnGoNext");
+	
+	// Creating data exchange settings. Registering catalogs to be exported.
+	GoToTableNewRow(5,  "WizardPageWaitForExchangeSettingsCreationDataAnalysis",  "", "NavigationPageWait",,,, True, "WizardPageWaitForExchangeSettingsCreationDataAnalysis_LongActionProcessing");
+	GoToTableNewRow(6,  "WizardPageWaitForExchangeSettingsCreationDataAnalysis",, "NavigationPageWait",,,, True, "WizardPageWaitForExchangeSettingsCreationDataAnalysisLongAction_LongActionProcessing");
 	
 	// Getting catalogs from the correspondent infobase
-	GoToTableNewRow(6, "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
-	GoToTableNewRow(7, "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
-	GoToTableNewRow(8, "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(7,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
+	GoToTableNewRow(8,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
+	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
 	
-	// Mapping data automatically; Getting mapping statistics.
-	GoToTableNewRow(9, "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing");
+	// Mapping data automatically. Getting mapping statistics.
+	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing");
 	
 	// Mapping data manually
-	GoToTableNewRow(10, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
+	GoToTableNewRow(11, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
 	
-	// Synchronizing catalogs
-	GoToTableNewRow(11, "WizardPageWaitForCatalogSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
-	GoToTableNewRow(12, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
-	GoToTableNewRow(13, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(14, "WizardPageWaitForCatalogSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
+	// Catalog synchronization
+	GoToTableNewRow(12, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
+	GoToTableNewRow(13, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
+	GoToTableNewRow(14, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
+	GoToTableNewRow(15, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
 	
-	// Accounting parameter settings; Default values for data export.
-	GoToTableNewRow(15, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
+	// Accounting parameter settings
+	GoToTableNewRow(16, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
 	
 	// Saving settings; Registering all data to be exported except catalogs.
-	GoToTableNewRow(16, "WizardPageWaitForSettingsSaving",, "NavigationPageWait",,,, True, "WizardPageWaitForSettingsSaving_LongActionProcessing");
-	GoToTableNewRow(17, "WizardPageWaitForSettingsSaving",, "NavigationPageWait",,,, True, "WizardPageWaitForSettingsSavingLongAction_LongActionProcessing");
+	GoToTableNewRow(17, "WizardPageWaitForSaveSettings",, "NavigationPageWait",,,, True, "WizardPageWaitForSaveSettings_LongActionProcessing");
+	GoToTableNewRow(18, "WizardPageWaitForSaveSettings",, "NavigationPageWait",,,, True, "WizardPageWaitForSaveSettingsLongAction_LongActionProcessing");
 	
 	// Synchronizing all data except catalogs
-	GoToTableNewRow(18, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
-	GoToTableNewRow(19, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
-	GoToTableNewRow(20, "WizardPageWaitForDataSynchronizationImport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing");
-	GoToTableNewRow(21, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
-	GoToTableNewRow(22, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(23, "WizardPageWaitForDataSynchronizationExport",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(19, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
+	GoToTableNewRow(20, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
+	GoToTableNewRow(21, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(22, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
+	GoToTableNewRow(23, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
+	GoToTableNewRow(24, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
 	
-	GoToTableNewRow(24, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "PageDataExchangeWizardCreatedSuccessfully_OnOpen");
+	GoToTableNewRow(25, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeSuccessfullyCreated_OnOpen");
 	
 EndProcedure
+
+#EndRegion

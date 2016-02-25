@@ -1,5 +1,6 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region InternalProceduresAndFunctions
 
 Procedure AddRecord(RecordStructure) Export
 	
@@ -12,3 +13,7 @@ Procedure DeleteRecord(RecordStructure) Export
 	DataExchangeServer.DeleteRecordSetFromInformationRegister(RecordStructure, "DataExchangeMessages");
 	
 EndProcedure
+
+#EndRegion
+
+#EndIf

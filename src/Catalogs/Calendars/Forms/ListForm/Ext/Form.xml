@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="34">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="35"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="33"/>
+			<ChildItems>
+				<Button name="ListChangeSelected" id="30">
+					<Type>CommandBarButton</Type>
+					<CommandName>Form.Command.ChangeSelected</CommandName>
+					<ExtendedTooltip name="ListChangeSelectedExtendedTooltip" id="31"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<Table name="List" id="1">
+			<CommandBarLocation>None</CommandBarLocation>
+			<DefaultItem>true</DefaultItem>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<InitialTreeView>ExpandTopLevel</InitialTreeView>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ListExtendedTooltip" id="21"/>
+			<SearchStringAddition name="ListSearchString" id="36">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="37"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="38"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="39">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="40"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="41"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="42">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="43"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="44"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<LabelField name="Ref" id="27">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="28"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="29"/>
+				</LabelField>
+				<LabelField name="Description" id="4">
+					<DataPath>List.Description</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="DescriptionContextMenu" id="5"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="22"/>
+				</LabelField>
+				<LabelField name="BusinessCalendar" id="17">
+					<DataPath>List.BusinessCalendar</DataPath>
+					<ContextMenu name="BusinessCalendarContextMenu" id="18"/>
+					<ExtendedTooltip name="BusinessCalendarExtendedTooltip" id="23"/>
+				</LabelField>
+				<LabelField name="FillingMethod" id="15">
+					<DataPath>List.FillingMethod</DataPath>
+					<ContextMenu name="FillingMethodContextMenu" id="16"/>
+					<ExtendedTooltip name="FillingMethodExtendedTooltip" id="24"/>
+				</LabelField>
+				<LabelField name="PossibleReason" id="19">
+					<DataPath>List.PossibleReason</DataPath>
+					<ContextMenu name="PossibleReasonContextMenu" id="20"/>
+					<ExtendedTooltip name="PossibleReasonExtendedTooltip" id="25"/>
+				</LabelField>
+				<LabelField name="Details" id="13">
+					<DataPath>List.Details</DataPath>
+					<Height>1</Height>
+					<ContextMenu name="DetailsContextMenu" id="14"/>
+					<ExtendedTooltip name="DetailsExtendedTooltip" id="26"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.RequiresFilling</Field>
+				<Field>List.Ref</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	CatalogWorkSchedules.Ref,
+	CatalogWorkSchedules.DataVersion,
+	CatalogWorkSchedules.DeletionMark,
+	CatalogWorkSchedules.Predefined,
+	CatalogWorkSchedules.Parent,
+	CatalogWorkSchedules.IsFolder,
+	CatalogWorkSchedules.Description,
+	CatalogWorkSchedules.BusinessCalendar,
+	CatalogWorkSchedules.FillingMethod,
+	CatalogWorkSchedules.StartDate,
+	CatalogWorkSchedules.EndDate,
+	CatalogWorkSchedules.PeriodStartDate,
+	CatalogWorkSchedules.ConsiderHolidays,
+	CatalogWorkSchedules.Details,
+	//CatalogWorkSchedules.DeleteCalendarType,
+	CatalogWorkSchedules.PlanningHorizon,
+	CatalogWorkSchedules.ScheduleOwner,
+	DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon) AS RequiredFillingDate,
+	ScheduleData.FillDate,
+	BusinessCalendarsData.FillDate AS BusinessCalendarFillDate,
+	CASE
+		WHEN ScheduleData.FillDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
+			THEN TRUE
+		ELSE FALSE
+	END AS RequiresFilling,
+	CASE
+		WHEN ScheduleData.FillDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
+			THEN CASE
+					WHEN CatalogWorkSchedules.BusinessCalendar &lt;&gt; VALUE(Catalog.BusinessCalendars.EmptyRef)
+						THEN CASE
+								WHEN BusinessCalendarsData.FillDate = DATETIME(1, 1, 1)
+									THEN "The business calendar is not filled"
+								ELSE CASE
+										WHEN BusinessCalendarsData.FillDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
+											THEN "The business calendar for the next calendar year is not filled"
+									END
+							END
+					ELSE CASE
+							WHEN CatalogWorkSchedules.EndDate = DATETIME(1, 1, 1)
+								THEN "The schedule for the next calendar year is not filled"
+							ELSE CASE
+									WHEN CatalogWorkSchedules.EndDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
+										THEN "Schedule fill period is limited (see End date field)"
+								END
+						END
+				END
+		ELSE ""
+	END AS PossibleReason
+	FROM
+	Catalog.Calendars AS CatalogWorkSchedules
+		LEFT JOIN (SELECT
+			CalendarSchedules.Calendar AS WorkSchedule,
+			MAX(CalendarSchedules.ScheduleDate) AS FillDate
+		FROM
+			InformationRegister.CalendarSchedules AS CalendarSchedules
+		
+		GROUP BY
+			CalendarSchedules.Calendar) AS ScheduleData
+		ON CatalogWorkSchedules.Ref = ScheduleData.WorkSchedule
+		LEFT JOIN (SELECT
+			BusinessCalendarsData.BusinessCalendar AS BusinessCalendar,
+			MAX(BusinessCalendarsData.Date) AS FillDate
+		FROM
+			InformationRegister.BusinessCalendarData AS BusinessCalendarsData
+		
+		GROUP BY
+			BusinessCalendarsData.BusinessCalendar) AS BusinessCalendarsData
+			ON CatalogWorkSchedules.BusinessCalendar = BusinessCalendarsData.BusinessCalendar</QueryText>
+				<MainTable>Catalog.Calendars</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">RequiresFilling</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:OverdueDataColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ChangeSelected" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change selected</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Modify selected objects</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeSelected</Action>
+		</Command>
+	</Commands>
+</Form>

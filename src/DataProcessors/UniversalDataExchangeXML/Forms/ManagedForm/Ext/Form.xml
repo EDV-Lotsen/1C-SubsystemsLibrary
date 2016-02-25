@@ -1,0 +1,2431 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<SaveDataInSettings>UseList</SaveDataInSettings>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="FormRestore" id="185">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>true</OnlyInAllActions>
+				<CommandName>Form.StandardCommand.RestoreValues</CommandName>
+				<ExtendedTooltip name="FormRestoreExtendedTooltip" id="233"/>
+			</Button>
+			<Button name="FormSave" id="184">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>true</OnlyInAllActions>
+				<CommandName>Form.StandardCommand.SaveValues</CommandName>
+				<ExtendedTooltip name="FormSaveExtendedTooltip" id="234"/>
+			</Button>
+			<Popup name="ProcessingMode" id="197">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Run mode</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Processing mode</v8:content>
+					</v8:item>
+				</ToolTip>
+				<ExtendedTooltip name="ProcessingModeExtendedTooltip" id="235"/>
+				<ChildItems>
+					<Button name="FormOnClient" id="198">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.AtClient</CommandName>
+						<ExtendedTooltip name="FormOnClientExtendedTooltip" id="236"/>
+					</Button>
+					<Button name="FormOnServer" id="199">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.AtServer</CommandName>
+						<ExtendedTooltip name="FormOnServerExtendedTooltip" id="237"/>
+					</Button>
+				</ChildItems>
+			</Popup>
+			<Button name="FormHelp" id="183">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>true</OnlyInAllActions>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="FormHelpExtendedTooltip" id="238"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="FormMainPanel" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form main panel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Form main panel</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="FormMainPanelExtendedTooltip" id="239"/>
+			<Events>
+				<Event name="OnCurrentPageChange">FormMainPanelOnCurrentPageChange</Event>
+			</Events>
+			<ChildItems>
+				<Page name="Data" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data export</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="ExportExtendedTooltip" id="240"/>
+					<ChildItems>
+						<UsualGroup name="RuleFileGroup" id="200">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Rule file group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Rule file group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="RuleFileGroupExtendedTooltip" id="241"/>
+							<ChildItems>
+								<InputField name="RuleFileName" id="8">
+									<DataPath>RuleFileName</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Rule file name on server</v8:content>
+										</v8:item>
+									</Title>
+									<ChoiceButton>true</ChoiceButton>
+									<OpenButton>true</OpenButton>
+									<ContextMenu name="RuleFileNameContextMenu" id="9"/>
+									<ExtendedTooltip name="RuleFileNameExtendedTooltip" id="242"/>
+									<Events>
+										<Event name="OnChange">RuleFileNameOnChange</Event>
+										<Event name="StartChoice">ExchangeRuleFileNameStartChoice</Event>
+										<Event name="Opening">ExchangeRuleFileNameOpen</Event>
+									</Events>
+								</InputField>
+								<Button name="FormImportRules" id="196">
+									<Type>UsualButton</Type>
+									<CommandName>Form.Command.ReadExchangeRules</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Read exchange rules</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="FormImportRulesExtendedTooltip" id="243"/>
+								</Button>
+							</ChildItems>
+						</UsualGroup>
+						<RadioButtonField name="DirectExport" id="14">
+							<DataPath>DirectExport</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<RadioButtonType>Auto</RadioButtonType>
+							<ChoiceList>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Export to exchange file</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">0</Value>
+									</xr:Value>
+								</xr:Item>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Direct connection and data import to the target infobase</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">1</Value>
+									</xr:Value>
+								</xr:Item>
+							</ChoiceList>
+							<ContextMenu name="DirectExportContextMenu" id="15"/>
+							<ExtendedTooltip name="DirectExportExtendedTooltip" id="244"/>
+							<Events>
+								<Event name="OnChange">DirectExportOnChange</Event>
+							</Events>
+						</RadioButtonField>
+						<Pages name="ExportParameters" id="63">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Export parameters</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Export parameters</v8:content>
+								</v8:item>
+							</ToolTip>
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="ExportParametersExtendedTooltip" id="245"/>
+							<ChildItems>
+								<Page name="ExportToFile" id="6">
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Saving to file</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ExportToFileExtendedTooltip" id="246"/>
+									<ChildItems>
+										<InputField name="DataFileName" id="16">
+											<DataPath>DataFileName</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data file name on server</v8:content>
+												</v8:item>
+											</Title>
+											<ChoiceButton>true</ChoiceButton>
+											<OpenButton>true</OpenButton>
+											<ContextMenu name="DataFileNameContextMenu" id="17"/>
+											<ExtendedTooltip name="DataFileNameExtendedTooltip" id="247"/>
+											<Events>
+												<Event name="OnChange">DataFileNameOnChange</Event>
+												<Event name="StartChoice">DataFileNameStartChoice</Event>
+												<Event name="Opening">DataFileNameOpening</Event>
+											</Events>
+										</InputField>
+										<CheckBoxField name="ArchiveFile" id="18">
+											<DataPath>Object.ArchiveFile</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Compress outgoing data exchange file</v8:content>
+												</v8:item>
+											</Title>
+											<TitleLocation>Right</TitleLocation>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="ArchiveFileContextMenu" id="19"/>
+											<ExtendedTooltip name="ArchiveFileExtendedTooltip" id="248"/>
+											<Events>
+												<Event name="OnChange">ArchiveFileOnChange</Event>
+											</Events>
+										</CheckBoxField>
+										<InputField name="ExchangeFileCompressionPassword" id="20">
+											<DataPath>Object.ExchangeFileCompressionPassword</DataPath>
+											<Width>23</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<PasswordMode>true</PasswordMode>
+											<ContextMenu name="ExchangeFileCompressionPasswordContextMenu" id="21"/>
+											<ExtendedTooltip name="ExchangeFileCompressionPasswordExtendedTooltip" id="249"/>
+										</InputField>
+									</ChildItems>
+								</Page>
+								<Page name="ExportToTargetInfobase" id="7">
+									<ExtendedTooltip name="ExportToTargetInfobaseExtendedTooltip" id="250"/>
+									<ChildItems>
+										<Pages name="GroupOS" id="355">
+											<PagesRepresentation>None</PagesRepresentation>
+											<ExtendedTooltip name="GroupOSExtendedTooltip" id="356"/>
+											<ChildItems>
+												<Page name="WindowsGroup" id="357">
+													<ExtendedTooltip name="WindowsGroupExtendedTooltip" id="358"/>
+													<ChildItems>
+														<UsualGroup name="TypePlatform" id="26">
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Type platform</v8:content>
+																</v8:item>
+															</ToolTip>
+															<HorizontalStretch>true</HorizontalStretch>
+															<Group>Horizontal</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="TypePlatformExtendedTooltip" id="251"/>
+															<ChildItems>
+																<InputField name="InfobaseConnectionType" id="22">
+																	<DataPath>Object.InfobaseConnectionType</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Infobase type</v8:content>
+																		</v8:item>
+																	</Title>
+																	<Width>41</Width>
+																	<ListChoiceMode>true</ListChoiceMode>
+																	<EditFormat>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>BF ='On 1C:Enterprise server'; BT='On this computer or on a computer in the local network'</v8:content>
+																		</v8:item>
+																	</EditFormat>
+																	<TextEdit>false</TextEdit>
+																	<ChoiceList>
+																		<xr:Item>
+																			<xr:Presentation/>
+																			<xr:CheckState>0</xr:CheckState>
+																			<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																				<Presentation>
+																					<v8:item>
+																						<v8:lang>en</v8:lang>
+																						<v8:content>At 1C:Enterprise server</v8:content>
+																					</v8:item>
+																				</Presentation>
+																				<Value xsi:type="xs:boolean">false</Value>
+																			</xr:Value>
+																		</xr:Item>
+																		<xr:Item>
+																			<xr:Presentation/>
+																			<xr:CheckState>0</xr:CheckState>
+																			<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																				<Presentation>
+																					<v8:item>
+																						<v8:lang>en</v8:lang>
+																						<v8:content>On this computer or on a computer in the local network</v8:content>
+																					</v8:item>
+																				</Presentation>
+																				<Value xsi:type="xs:boolean">true</Value>
+																			</xr:Value>
+																		</xr:Item>
+																	</ChoiceList>
+																	<ContextMenu name="InfobaseConnectionTypeContextMenu" id="23"/>
+																	<ExtendedTooltip name="InfobaseConnectionTypeExtendedTooltip" id="252"/>
+																	<Events>
+																		<Event name="OnChange">InfobaseConnectionTypeOnChange</Event>
+																	</Events>
+																</InputField>
+																<InputField name="InfobaseConnectionPlatformVersion" id="24">
+																	<DataPath>Object.InfobaseConnectionPlatformVersion</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Platform</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ListChoiceMode>true</ListChoiceMode>
+																	<TextEdit>false</TextEdit>
+																	<ChoiceList>
+																		<xr:Item>
+																			<xr:Presentation/>
+																			<xr:CheckState>0</xr:CheckState>
+																			<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																				<Presentation>
+																					<v8:item>
+																						<v8:lang>en</v8:lang>
+																						<v8:content>8.2</v8:content>
+																					</v8:item>
+																				</Presentation>
+																				<Value xsi:type="xs:string">V82</Value>
+																			</xr:Value>
+																		</xr:Item>
+																		<xr:Item>
+																			<xr:Presentation/>
+																			<xr:CheckState>0</xr:CheckState>
+																			<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																				<Presentation>
+																					<v8:item>
+																						<v8:lang>en</v8:lang>
+																						<v8:content>8.3</v8:content>
+																					</v8:item>
+																				</Presentation>
+																				<Value xsi:type="xs:string">V83</Value>
+																			</xr:Value>
+																		</xr:Item>
+																	</ChoiceList>
+																	<ContextMenu name="InfobaseConnectionPlatformVersionContextMenu" id="25"/>
+																	<ExtendedTooltip name="InfobaseConnectionPlatformVersionExtendedTooltip" id="253"/>
+																	<Events>
+																		<Event name="OnChange">InfobaseConnectionPlatformVersionOnChange</Event>
+																	</Events>
+																</InputField>
+															</ChildItems>
+														</UsualGroup>
+														<Pages name="BaseType" id="64">
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Base type</v8:content>
+																</v8:item>
+															</Title>
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Base type</v8:content>
+																</v8:item>
+															</ToolTip>
+															<PagesRepresentation>None</PagesRepresentation>
+															<ExtendedTooltip name="BaseTypeExtendedTooltip" id="254"/>
+															<ChildItems>
+																<Page name="FileInfobase" id="38">
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>File infobase</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ToolTip>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>File infobase</v8:content>
+																		</v8:item>
+																	</ToolTip>
+																	<Group>Horizontal</Group>
+																	<ExtendedTooltip name="InfobaseFileExtendedTooltip" id="255"/>
+																	<ChildItems>
+																		<InputField name="InfobaseConnectionDirectory" id="27">
+																			<DataPath>Object.InfobaseConnectionDirectory</DataPath>
+																			<ChoiceButton>true</ChoiceButton>
+																			<OpenButton>true</OpenButton>
+																			<ContextMenu name="InfobaseConnectionDirectoryContextMenu" id="28"/>
+																			<ExtendedTooltip name="InfobaseConnectionDirectoryExtendedTooltip" id="256"/>
+																			<Events>
+																				<Event name="StartChoice">InfobaseConnectionDirectoryStartChoice</Event>
+																				<Event name="Opening">InfobaseConnectionDirectoryOpen</Event>
+																			</Events>
+																		</InputField>
+																	</ChildItems>
+																</Page>
+																<Page name="BaseOnServer" id="39">
+																	<ToolTip>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Base on server</v8:content>
+																		</v8:item>
+																	</ToolTip>
+																	<Group>Horizontal</Group>
+																	<ExtendedTooltip name="BaseOnServerExtendedTooltip" id="257"/>
+																	<ChildItems>
+																		<InputField name="InfobaseConnectionServerName" id="40">
+																			<DataPath>Object.InfobaseConnectionServerName</DataPath>
+																			<Title>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>1C:Enterprise server name</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="InfobaseConnectionServerNameContextMenu" id="41"/>
+																			<ExtendedTooltip name="InfobaseConnectionServerNameExtendedTooltip" id="258"/>
+																		</InputField>
+																		<InputField name="InfobaseConnectionNameOnServer" id="42">
+																			<DataPath>Object.InfobaseConnectionNameOnServer</DataPath>
+																			<Title>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Infobase</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="InfobaseConnectionNameOnServerContextMenu" id="43"/>
+																			<ExtendedTooltip name="InfobaseConnectionNameOnServerExtendedTooltip" id="259"/>
+																		</InputField>
+																	</ChildItems>
+																</Page>
+															</ChildItems>
+														</Pages>
+														<UsualGroup name="AuthenticationTest" id="31">
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Authentication test</v8:content>
+																</v8:item>
+															</ToolTip>
+															<Group>Horizontal</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="AuthenticationTestExtendedTooltip" id="260"/>
+															<ChildItems>
+																<CheckBoxField name="InfobaseConnectionWindowsAuthentication" id="29">
+																	<DataPath>Object.InfobaseConnectionWindowsAuthentication</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>OS Authentication</v8:content>
+																		</v8:item>
+																	</Title>
+																	<TitleLocation>Right</TitleLocation>
+																	<CheckBoxType>Auto</CheckBoxType>
+																	<ContextMenu name="InfobaseConnectionWindowsAuthenticationContextMenu" id="30"/>
+																	<ExtendedTooltip name="InfobaseConnectionWindowsAuthenticationExtendedTooltip" id="261"/>
+																	<Events>
+																		<Event name="OnChange">InfobaseConnectionWindowsAuthenticationOnChange</Event>
+																	</Events>
+																</CheckBoxField>
+																<Button name="ConnectionTest" id="32">
+																	<Type>UsualButton</Type>
+																	<CommandName>Form.Command.ConnectionTest</CommandName>
+																	<ExtendedTooltip name="ConnectionTestExtendedTooltip" id="262"/>
+																</Button>
+															</ChildItems>
+														</UsualGroup>
+														<UsualGroup name="UserPassword" id="33">
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>User password</v8:content>
+																</v8:item>
+															</ToolTip>
+															<Group>Horizontal</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="UserPasswordExtendedTooltip" id="263"/>
+															<ChildItems>
+																<InputField name="InfobaseUserForConnection" id="34">
+																	<DataPath>Object.InfobaseUserForConnection</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>User</v8:content>
+																		</v8:item>
+																	</Title>
+																	<HorizontalStretch>false</HorizontalStretch>
+																	<ContextMenu name="InfobaseUserForConnectionContextMenu" id="35"/>
+																	<ExtendedTooltip name="InfobaseUserForConnectionExtendedTooltip" id="264"/>
+																</InputField>
+																<InputField name="InfobaseConnectionPassword" id="36">
+																	<DataPath>Object.InfobaseConnectionPassword</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Password</v8:content>
+																		</v8:item>
+																	</Title>
+																	<HorizontalStretch>false</HorizontalStretch>
+																	<PasswordMode>true</PasswordMode>
+																	<ContextMenu name="InfobaseConnectionPasswordContextMenu" id="37"/>
+																	<ExtendedTooltip name="InfobaseConnectionPasswordExtendedTooltip" id="265"/>
+																</InputField>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</Page>
+												<Page name="LinuxGroup" id="359">
+													<ExtendedTooltip name="LinuxGroupExtendedTooltip" id="360"/>
+													<ChildItems>
+														<LabelDecoration name="LinuxLabelDecoration" id="361">
+															<Height>3</Height>
+															<TextColor>style:SpecialTextColor</TextColor>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Direct infobase connection is not supported if the client application is running on Linux.</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="LinuxDecorationLabelContextMenu" id="362"/>
+															<ExtendedTooltip name="LinuxLabelDecorationExtendedTooltip" id="363"/>
+														</LabelDecoration>
+													</ChildItems>
+												</Page>
+											</ChildItems>
+										</Pages>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+						<UsualGroup name="ExportCommandsGroup" id="216">
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ExportCommandsGroupExtendedTooltip" id="266"/>
+							<ChildItems>
+								<Button name="FormExecuteExport" id="191">
+									<Type>UsualButton</Type>
+									<Enabled>false</Enabled>
+									<CommandName>Form.Command.ExecuteExport</CommandName>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export data</v8:content>
+										</v8:item>
+									</Title>
+									<ExtendedTooltip name="ExecuteFormExportExtendedTooltip" id="267"/>
+								</Button>
+								<LabelDecoration name="ExportDetailsLabel" id="217">
+									<TextColor>#455185</TextColor>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>To export data, exchange rules must be read</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="ExportDetailsLabelContextMenu" id="218"/>
+									<ExtendedTooltip name="ExportDetailsLabelExtendedTooltip" id="268"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<Pages name="ExportPanel" id="45">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Export panel</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Export panel</v8:content>
+								</v8:item>
+							</ToolTip>
+							<ExtendedTooltip name="ExportPanelExtendedTooltip" id="269"/>
+							<ChildItems>
+								<Page name="DataToExport" id="46">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data to export</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data to export</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="DataToExportExtendedTooltip" id="270"/>
+									<ChildItems>
+										<UsualGroup name="ExportPeriodGroup" id="211">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Export period group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Export period group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Horizontal</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="ExportPeriodGroupExtendedTooltip" id="271"/>
+											<ChildItems>
+												<InputField name="ExportPeriod" id="212">
+													<DataPath>ExportPeriod</DataPath>
+													<ContextMenu name="ExportPeriodContextMenu" id="213"/>
+													<ExtendedTooltip name="ExportPeriodExtendedTooltip" id="272"/>
+													<Events>
+														<Event name="OnChange">ExportPeriodOnChange</Event>
+													</Events>
+												</InputField>
+											</ChildItems>
+										</UsualGroup>
+										<Table name="ExportRuleTable" id="133">
+											<Representation>Tree</Representation>
+											<ChangeRowSet>false</ChangeRowSet>
+											<ChangeRowOrder>false</ChangeRowOrder>
+											<AutoInsertNewRow>true</AutoInsertNewRow>
+											<EnableStartDrag>true</EnableStartDrag>
+											<EnableDrag>true</EnableDrag>
+											<DataPath>Object.ExportRuleTable</DataPath>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<ContextMenu name="ExportRuleTableContextMenu" id="134"/>
+											<AutoCommandBar name="ExportRuleTableCommandBar" id="135">
+												<Autofill>false</Autofill>
+												<ChildItems>
+													<Button name="ExportRuleTableExportCheckAll" id="178">
+														<Type>CommandBarButton</Type>
+														<CommandName>Form.Command.ExportCheckAll</CommandName>
+														<ExtendedTooltip name="ExportRuleTableExportCheckAllExtendedTooltip" id="273"/>
+													</Button>
+													<Button name="ExportRuleTableExportCancelAll" id="179">
+														<Type>CommandBarButton</Type>
+														<CommandName>Form.Command.ExportCancelAll</CommandName>
+														<ExtendedTooltip name="ExportRuleTableExportCancelAllExtendedTooltip" id="274"/>
+													</Button>
+													<Popup name="ExchangeNodes" id="180">
+														<Title>
+															<v8:item>
+																<v8:lang>en</v8:lang>
+																<v8:content>Exchange nodes</v8:content>
+															</v8:item>
+														</Title>
+														<ToolTip>
+															<v8:item>
+																<v8:lang>en</v8:lang>
+																<v8:content>Exchange nodes</v8:content>
+															</v8:item>
+														</ToolTip>
+														<ExtendedTooltip name="ExchangeNodesExtendedTooltip" id="275"/>
+														<ChildItems>
+															<Button name="ExportRuleTableExportClearExchangeNodes" id="181">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.ExportClearExchangeNodes</CommandName>
+																<ExtendedTooltip name="ExportRuleTableExportClearExchangeNodesExtendedTooltip" id="276"/>
+															</Button>
+															<Button name="ExportRuleTableExportSetExchangeNode" id="182">
+																<Type>CommandBarButton</Type>
+																<CommandName>Form.Command.ExportSetExchangeNode</CommandName>
+																<ExtendedTooltip name="ExportRuleTableExportSetExchangeNodeExtendedTooltip" id="277"/>
+															</Button>
+														</ChildItems>
+													</Popup>
+												</ChildItems>
+											</AutoCommandBar>
+											<ExtendedTooltip name="ExportRuleTableExtendedTooltip" id="278"/>
+											<SearchStringAddition name="ExportRuleTableSearchString" id="366">
+												<AdditionSource>
+													<Item>ExportRuleTable</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ExportRuleTableSearchStringContextMenu" id="367"/>
+												<ExtendedTooltip name="ExportRuleTableSearchStringExtendedTooltip" id="368"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="ExportRuleTableViewStatus" id="369">
+												<AdditionSource>
+													<Item>ExportRuleTable</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ExportRuleTableViewStatusContextMenu" id="370"/>
+												<ExtendedTooltip name="ExportRuleTableViewStatusExtendedTooltip" id="371"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="ExportRuleTableSearchControl" id="372">
+												<AdditionSource>
+													<Item>ExportRuleTable</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="ExportRuleTableSearchControlContextMenu" id="373"/>
+												<ExtendedTooltip name="ExportRuleTableSearchControlExtendedTooltip" id="374"/>
+											</SearchControlAddition>
+											<Events>
+												<Event name="BeforeRowChange">ExportRuleTableBeforeRowChange</Event>
+												<Event name="OnChange">ExportRuleTableOnChange</Event>
+											</Events>
+											<ChildItems>
+												<ColumnGroup name="MarkGroup" id="142">
+													<Group>InCell</Group>
+													<ExtendedTooltip name="MarkGroupExtendedTooltip" id="279"/>
+													<ChildItems>
+														<CheckBoxField name="Mark" id="140">
+															<DataPath>Object.ExportRuleTable.PrivilegedModeOn</DataPath>
+															<TitleLocation>None</TitleLocation>
+															<EditMode>EnterOnInput</EditMode>
+															<CheckBoxType>Auto</CheckBoxType>
+															<ContextMenu name="CheckContextMenu" id="141"/>
+															<ExtendedTooltip name="CheckExtendedTooltip" id="280"/>
+														</CheckBoxField>
+														<InputField name="DER" id="136">
+															<DataPath>Object.ExportRuleTable.Description</DataPath>
+															<ReadOnly>true</ReadOnly>
+															<EditMode>EnterOnInput</EditMode>
+															<ContextMenu name="DERContextMenu" id="137"/>
+															<ExtendedTooltip name="DERExtendedTooltip" id="281"/>
+														</InputField>
+													</ChildItems>
+												</ColumnGroup>
+												<InputField name="ExchangeNodeRef" id="138">
+													<DataPath>Object.ExportRuleTable.ExchangeNodeRef</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Exchange node</v8:content>
+														</v8:item>
+													</Title>
+													<EditMode>EnterOnInput</EditMode>
+													<ClearButton>true</ClearButton>
+													<ContextMenu name="ExchangeNodeRefContextMenu" id="139"/>
+													<ExtendedTooltip name="ExchangeNodeRefExtendedTooltip" id="282"/>
+												</InputField>
+												<CheckBoxField name="ExportRuleTableIsFolder" id="147">
+													<DataPath>Object.ExportRuleTable.IsFolder</DataPath>
+													<Visible>false</Visible>
+													<EditMode>EnterOnInput</EditMode>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="ExportRuleTableIsFolderContextMenu" id="148"/>
+													<ExtendedTooltip name="ExportRuleTableIsFolderExtendedTooltip" id="283"/>
+												</CheckBoxField>
+											</ChildItems>
+										</Table>
+									</ChildItems>
+								</Page>
+								<Page name="Parameters" id="47">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export parameters</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Parameters</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ParametersExtendedTooltip" id="284"/>
+									<ChildItems>
+										<Table name="ParameterSetupTable" id="58">
+											<Representation>List</Representation>
+											<ChangeRowSet>false</ChangeRowSet>
+											<AutoInsertNewRow>true</AutoInsertNewRow>
+											<EnableStartDrag>true</EnableStartDrag>
+											<EnableDrag>true</EnableDrag>
+											<DataPath>Object.ParameterSetupTable</DataPath>
+											<SearchStringLocation>None</SearchStringLocation>
+											<ViewStatusLocation>None</ViewStatusLocation>
+											<SearchControlLocation>None</SearchControlLocation>
+											<RowFilter xsi:nil="true"/>
+											<ContextMenu name="ParameterSetupTableContextMenu" id="59"/>
+											<AutoCommandBar name="ParameterSetupTableCommandBar" id="60">
+												<Autofill>false</Autofill>
+												<ChildItems>
+													<Button name="ParameterSetupTableRestoreParameters" id="61">
+														<Type>CommandBarButton</Type>
+														<CommandName>Form.Command.RestoreParameters</CommandName>
+														<ExtendedTooltip name="ParameterSetupTableRestoreParametersExtendedTooltip" id="285"/>
+													</Button>
+													<Button name="ParameterSetupTableSaveParameters" id="62">
+														<Type>CommandBarButton</Type>
+														<CommandName>Form.Command.SaveParameters</CommandName>
+														<ExtendedTooltip name="ParameterSetupTableSaveParametersExtendedTooltip" id="286"/>
+													</Button>
+												</ChildItems>
+											</AutoCommandBar>
+											<ExtendedTooltip name="ParameterSetupTableExtendedTooltip" id="287"/>
+											<SearchStringAddition name="ParameterSetupTableSearchString" id="375">
+												<AdditionSource>
+													<Item>ParameterSetupTable</Item>
+													<Type>SearchStringRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ParameterSetupTableSearchStringContextMenu" id="376"/>
+												<ExtendedTooltip name="ParameterSetupTableSearchStringExtendedTooltip" id="377"/>
+											</SearchStringAddition>
+											<ViewStatusAddition name="ParameterSetupTableViewStatus" id="378">
+												<AdditionSource>
+													<Item>ParameterSetupTable</Item>
+													<Type>ViewStatusRepresentation</Type>
+												</AdditionSource>
+												<ContextMenu name="ParameterSetupTableViewStatusContextMenu" id="379"/>
+												<ExtendedTooltip name="ParameterSetupTableViewStatusExtendedTooltip" id="380"/>
+											</ViewStatusAddition>
+											<SearchControlAddition name="ParameterSetupTableSearchControl" id="381">
+												<AdditionSource>
+													<Item>ParameterSetupTable</Item>
+													<Type>SearchControl</Type>
+												</AdditionSource>
+												<ContextMenu name="ParameterSetupTableSearchControlContextMenu" id="382"/>
+												<ExtendedTooltip name="ParameterSetupTableSearchControlExtendedTooltip" id="383"/>
+											</SearchControlAddition>
+											<ChildItems>
+												<InputField name="ParameterSetupTableDescription" id="143">
+													<DataPath>Object.ParameterSetupTable.Description</DataPath>
+													<EditMode>EnterOnInput</EditMode>
+													<ContextMenu name="ParameterSetupTableDescriptionContextMenu" id="144"/>
+													<ExtendedTooltip name="ParameterSetupTableDescriptionExtendedTooltip" id="288"/>
+												</InputField>
+												<InputField name="ParameterSetupTableValue" id="145">
+													<DataPath>Object.ParameterSetupTable.Value</DataPath>
+													<EditMode>EnterOnInput</EditMode>
+													<ChooseType>false</ChooseType>
+													<ContextMenu name="ParameterSetupTableValueContextMenu" id="146"/>
+													<ExtendedTooltip name="ParameterSetupTableValueExtendedTooltip" id="289"/>
+												</InputField>
+											</ChildItems>
+										</Table>
+									</ChildItems>
+								</Page>
+								<Page name="CommentBookmark" id="48">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Comment</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Comment bookmark</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="CommentBookmarkExtendedTooltip" id="290"/>
+									<ChildItems>
+										<InputField name="Comment" id="49">
+											<DataPath>Object.Comment</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<MultiLine>true</MultiLine>
+											<ContextMenu name="CommentContextMenu" id="50"/>
+											<ExtendedTooltip name="CommentExtendedTooltip" id="291"/>
+										</InputField>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+						<UsualGroup name="ExportDebug" id="57">
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Export debugging</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="ExportDebugExtendedTooltip" id="292"/>
+						</UsualGroup>
+						<Pages name="ExportDebugPages" id="221">
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="ExportDebugPagesExtendedTooltip" id="293"/>
+							<ChildItems>
+								<Page name="ExportDebugEnabledGroup" id="222">
+									<Group>Horizontal</Group>
+									<ExtendedTooltip name="ExportDebugEnabledGroupExtendedTooltip" id="294"/>
+									<ChildItems>
+										<UsualGroup name="ExportDebugGroup" id="364">
+											<Group>Horizontal</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="ExportDebugGroupExtendedTooltip" id="365"/>
+											<ChildItems>
+												<CheckBoxField name="ExportHandlerDebugModeFlag" id="54">
+													<DataPath>Object.HandlerDebugModeFlag</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export handler debugging mode</v8:content>
+														</v8:item>
+													</Title>
+													<TitleLocation>Right</TitleLocation>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="ExportHandlerDebugModeFlagContextMenu" id="55"/>
+													<ExtendedTooltip name="ExportHandlerDebugModeFlagExtendedTooltip" id="295"/>
+													<Events>
+														<Event name="OnChange">ExportHandlerDebugModeFlagOnChange</Event>
+													</Events>
+												</CheckBoxField>
+												<Button name="ExportDebugSetup" id="56">
+													<Type>UsualButton</Type>
+													<CommandName>Form.Command.ExportDebugSetup</CommandName>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Import debugging setup...</v8:content>
+														</v8:item>
+													</Title>
+													<ExtendedTooltip name="ExportDebugSetupExtendedTooltip" id="296"/>
+												</Button>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</Page>
+								<Page name="WebClientExportGroup" id="223">
+									<Group>Horizontal</Group>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="WebClientExportGroupExtendedTooltip" id="297"/>
+									<ChildItems>
+										<PictureDecoration name="ExportInfoDecoration" id="224">
+											<Width>2</Width>
+											<Height>1</Height>
+											<Picture>
+												<xr:Abs>Picture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="ExportInfoDecorationContextMenu" id="225"/>
+											<ExtendedTooltip name="ExportInfoDecorationExtendedTooltip" id="298"/>
+										</PictureDecoration>
+										<LabelDecoration name="ExportDebugDecoration" id="219">
+											<TextColor>#455185</TextColor>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Debugging tools are unavailable in the web client mode</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="ExportDebugDecorationContextMenu" id="220"/>
+											<ExtendedTooltip name="ExportDebugDecorationExtendedTooltip" id="299"/>
+										</LabelDecoration>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</Page>
+				<Page name="Import" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data import</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Import</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="ImportExtendedTooltip" id="300"/>
+					<ChildItems>
+						<Button name="FormExecuteImport" id="192">
+							<Type>UsualButton</Type>
+							<CommandName>Form.Command.ExecuteImport</CommandName>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Import data</v8:content>
+								</v8:item>
+							</Title>
+							<ExtendedTooltip name="FormExecuteImportExtendedTooltip" id="301"/>
+						</Button>
+						<InputField name="ExchangeFileName" id="68">
+							<DataPath>ExchangeFileName</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Name of file to upload to the server</v8:content>
+								</v8:item>
+							</Title>
+							<ChoiceButton>true</ChoiceButton>
+							<OpenButton>true</OpenButton>
+							<ContextMenu name="ExchangeFileNameContextMenu" id="69"/>
+							<ExtendedTooltip name="ExchangeFileNameExtendedTooltip" id="302"/>
+							<Events>
+								<Event name="OnChange">ExchangeFileNameOnChange</Event>
+								<Event name="StartChoice">ExchangeFileNameStartChoice</Event>
+								<Event name="Opening">ExchangeFileNameOpen</Event>
+							</Events>
+						</InputField>
+						<InputField name="ExchangeFileExtractionPassword" id="70">
+							<DataPath>Object.ExchangeFileExtractionPassword</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Password for unpacking</v8:content>
+								</v8:item>
+							</Title>
+							<Width>24</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<PasswordMode>true</PasswordMode>
+							<ContextMenu name="ExchangeFileExtractionPasswordContextMenu" id="71"/>
+							<ExtendedTooltip name="ExchangeFileExtractionPasswordExtendedTooltip" id="303"/>
+						</InputField>
+						<CheckBoxField name="UseTransactions" id="72">
+							<DataPath>Object.UseTransactions</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="UseTransactionsContextMenu" id="73"/>
+							<ExtendedTooltip name="UseTransactionsExtendedTooltip" id="304"/>
+							<Events>
+								<Event name="OnChange">UseTransactionsOnChange</Event>
+							</Events>
+						</CheckBoxField>
+						<InputField name="ObjectCountPerTransaction" id="74">
+							<DataPath>Object.ObjectCountPerTransaction</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Transaction item count</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="ObjectCountPerTransactionContextMenu" id="75"/>
+							<ExtendedTooltip name="ObjectCountPerTransactionExtendedTooltip" id="305"/>
+						</InputField>
+						<CheckBoxField name="ImportDataInExchangeMode" id="76">
+							<DataPath>Object.ImportDataInExchangeMode</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="ImportDataInExchangeModeContextMenu" id="77"/>
+							<ExtendedTooltip name="ImportDataInExchangeModeExtendedTooltip" id="306"/>
+						</CheckBoxField>
+						<CheckBoxField name="WriteOnlyChangedObjectsToInfobase" id="78">
+							<DataPath>Object.WriteOnlyChangedObjectsToInfobase</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="WriteOnlyChangedObjectsToInfobaseContextMenu" id="79"/>
+							<ExtendedTooltip name="WriteOnlyChangedObjectsToInfobaseExtendedTooltip" id="307"/>
+						</CheckBoxField>
+						<CheckBoxField name="ImportObjectsByRefWithoutDeletionMark" id="80">
+							<DataPath>Object.ImportObjectsByRefWithoutDeletionMark</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="ImportObjectsByRefWithoutDeletionMarkContextMenu" id="81"/>
+							<ExtendedTooltip name="ImportObjectsByRefWithoutDeletionMarkExtendedTooltip" id="308"/>
+						</CheckBoxField>
+						<CheckBoxField name="OptimizedObjectWriting" id="82">
+							<DataPath>Object.OptimizedObjectWriting</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="OptimizedObjectWritingContextMenu" id="83"/>
+							<ExtendedTooltip name="OptimizedObjectWritingExtendedTooltip" id="309"/>
+						</CheckBoxField>
+						<CheckBoxField name="WriteRegisterRecordsAsRecordSets" id="84">
+							<DataPath>Object.WriteRegisterRecordsAsRecordSets</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="WriteRegisterRecordsAsRecordSetsContextMenu" id="85"/>
+							<ExtendedTooltip name="WriteRegisterRecordsAsRecordSetsExtendedTooltip" id="310"/>
+						</CheckBoxField>
+						<CheckBoxField name="CutRowsFromRight" id="86">
+							<DataPath>Object.CutRowsFromRight</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="CutRowsFromRightContextMenu" id="87"/>
+							<ExtendedTooltip name="CutRowsFromRightExtendedTooltip" id="311"/>
+						</CheckBoxField>
+						<RadioButtonField name="AutomaticDataImportSetup" id="88">
+							<DataPath>Object.AutomaticDataImportSetup</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Automatic data import settings</v8:content>
+								</v8:item>
+							</Title>
+							<RadioButtonType>Auto</RadioButtonType>
+							<ChoiceList>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Do not use the automatic import when opening</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">0</Value>
+									</xr:Value>
+								</xr:Item>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Display the request about action execution before the automatic data import</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">1</Value>
+									</xr:Value>
+								</xr:Item>
+								<xr:Item>
+									<xr:Presentation/>
+									<xr:CheckState>0</xr:CheckState>
+									<xr:Value xsi:type="FormChoiceListDesTimeValue">
+										<Presentation>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Use automatic data import</v8:content>
+											</v8:item>
+										</Presentation>
+										<Value xsi:type="xs:decimal">2</Value>
+									</xr:Value>
+								</xr:Item>
+							</ChoiceList>
+							<ContextMenu name="AutomaticDataImportSetupContextMenu" id="89"/>
+							<ExtendedTooltip name="AutomaticDataImportSetupExtendedTooltip" id="312"/>
+						</RadioButtonField>
+						<UsualGroup name="ExchangeFileInfo" id="149">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Information about exchange file</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Information about exchange file</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<ExtendedTooltip name="ExchangeFileInfoExtendedTooltip" id="313"/>
+							<ChildItems>
+								<UsualGroup name="RuleVersionGroup" id="153">
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Rule version group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="RuleVersionGroupExtendedTooltip" id="314"/>
+									<ChildItems>
+										<LabelField name="ExchangeRulesVersion" id="168">
+											<DataPath>Object.ExchangeRulesVersion</DataPath>
+											<ContextMenu name="ExchangeRulesVersionContextMenu" id="169"/>
+											<ExtendedTooltip name="ExchangeRulesVersionExtendedTooltip" id="315"/>
+										</LabelField>
+										<Button name="GetExchangeFileInfo" id="150">
+											<Type>UsualButton</Type>
+											<CommandName>Form.Command.GetExchangeFileInfo</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Exchange file details</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="GetFileInfoExchangeExtendedTooltip" id="316"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+								<LabelField name="DataExportDate" id="170">
+									<DataPath>Object.DataExportDate</DataPath>
+									<ContextMenu name="DataExportDateContextMenu" id="171"/>
+									<ExtendedTooltip name="DataExportDateExtendedTooltip" id="317"/>
+								</LabelField>
+								<LabelField name="DataExportPeriod" id="164">
+									<DataPath>ExportPeriodPresentation</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data export period</v8:content>
+										</v8:item>
+									</Title>
+									<HorizontalStretch>false</HorizontalStretch>
+									<ContextMenu name="DataExportPeriodContextMenu" id="165"/>
+									<ExtendedTooltip name="DataExportPeriodExtendedTooltip" id="318"/>
+								</LabelField>
+								<InputField name="ImportComment" id="166">
+									<DataPath>Object.Comment</DataPath>
+									<TitleLocation>Left</TitleLocation>
+									<MultiLine>true</MultiLine>
+									<ContextMenu name="ImportCommentContextMenu" id="167"/>
+									<ExtendedTooltip name="ImportCommentExtendedTooltip" id="319"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<Pages name="ImportDebugPages" id="226">
+							<PagesRepresentation>None</PagesRepresentation>
+							<ExtendedTooltip name="ImportDebugPagesExtendedTooltip" id="320"/>
+							<ChildItems>
+								<Page name="ImportDebugEnabledGroup" id="227">
+									<Group>Horizontal</Group>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="ImportDebugEnabledGroupExtendedTooltip" id="321"/>
+									<ChildItems>
+										<CheckBoxField name="ImportHandlerDebugModeFlag" id="90">
+											<DataPath>Object.HandlerDebugModeFlag</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Import handler debugging mode</v8:content>
+												</v8:item>
+											</Title>
+											<TitleLocation>Right</TitleLocation>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="ImportHandlerDebugModeFlagContextMenu" id="91"/>
+											<ExtendedTooltip name="ImportHandlerDebugModeFlagExtendedTooltip" id="322"/>
+											<Events>
+												<Event name="OnChange">ImportHandlerDebugModeFlagOnChange</Event>
+											</Events>
+										</CheckBoxField>
+										<Button name="ImportDebugSetup" id="93">
+											<Type>UsualButton</Type>
+											<CommandName>Form.Command.ImportDebugSetup</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Export debugging setup...</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="ImportDebugSetupExtendedTooltip" id="323"/>
+										</Button>
+									</ChildItems>
+								</Page>
+								<Page name="WebClientImportGroup" id="228">
+									<Group>Horizontal</Group>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="WebClientImportGroupxtendedTooltip" id="324"/>
+									<ChildItems>
+										<PictureDecoration name="ImportInfoDecoration" id="229">
+											<Width>2</Width>
+											<Height>1</Height>
+											<HorizontalStretch>false</HorizontalStretch>
+											<Picture>
+												<xr:Abs>Picture.png</xr:Abs>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</Picture>
+											<ContextMenu name="ImportInfoDecorationContextMenu" id="230"/>
+											<ExtendedTooltip name="ImportInfoDecorationExtendedTooltip" id="325"/>
+										</PictureDecoration>
+										<LabelDecoration name="ImportDebugDecoration" id="231">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Debugging tools are unavailable in the web client mode</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="ImportDebugDecorationContextMenu" id="232"/>
+											<ExtendedTooltip name="ImportDebugDecorationExtendedTooltip" id="326"/>
+										</LabelDecoration>
+									</ChildItems>
+								</Page>
+							</ChildItems>
+						</Pages>
+					</ChildItems>
+				</Page>
+				<Page name="DataExchangeSettings" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Additional settings</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data exchange settings</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataExchangeSettingsExtendedTooltip" id="327"/>
+					<ChildItems>
+						<CheckBoxField name="DebugModeFlag" id="94">
+							<DataPath>Object.DebugModeFlag</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="DebugModeFlagContextMenu" id="95"/>
+							<ExtendedTooltip name="DebugModeFlagExtendedTooltip" id="328"/>
+							<Events>
+								<Event name="OnChange">DebugModeFlagOnChange</Event>
+							</Events>
+						</CheckBoxField>
+						<CheckBoxField name="OutputInfoMessagesToMessageWindow" id="96">
+							<DataPath>Object.OutputInfoMessagesToMessageWindow</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="OutputInfoMessagesToMessageWindowContextMenu" id="97"/>
+							<ExtendedTooltip name="OutputInfoMessagesToMessageWindowExtendedTooltip" id="329"/>
+						</CheckBoxField>
+						<InputField name="ProcessedObjectNumberToUpdateStatus" id="98">
+							<DataPath>Object.ProcessedObjectNumberToUpdateStatus</DataPath>
+							<ContextMenu name="ProcessedObjectNumberToUpdateStatusContextMenu" id="99"/>
+							<ExtendedTooltip name="ProcessedObjectNumberToUpdateStatusExtendedTooltip" id="330"/>
+							<Events>
+								<Event name="OnChange">ProcessedObjectNumberToUpdateStatusOnChange</Event>
+							</Events>
+						</InputField>
+						<UsualGroup name="DataExportSettings" id="100">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data export settings</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data export settings</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<ExtendedTooltip name="DataExportSettingsExtendedTooltip" id="331"/>
+							<ChildItems>
+								<CheckBoxField name="ExecuteDataExchangeInOptimizedFormat" id="101">
+									<DataPath>Object.ExecuteDataExchangeInOptimizedFormat</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Use optimized format for exchange data (V8 – V8, the data processor version not less 2.0.18)</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="ExecuteDataExchangeInOptimizedFormatContextMenu" id="102"/>
+									<ExtendedTooltip name="ExecuteDataExchangeInOptimizedFormatExtendedTooltip" id="332"/>
+								</CheckBoxField>
+								<CheckBoxField name="UseTransactionsForExchangePlansOnExport" id="103">
+									<DataPath>Object.UseTransactionsForExchangePlansOnExport</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="UseTransactionsForExchangePlansOnExportContextMenu" id="104"/>
+									<ExtendedTooltip name="UseTransactionsForExchangePlansOnExportExtendedTooltip" id="333"/>
+								</CheckBoxField>
+								<InputField name="TransactionItemCountOnExportForExchangePlans" id="105">
+									<DataPath>Object.TransactionItemCountOnExportForExchangePlans</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Transaction item count</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="TransactionItemCountOnExportForExchangePlansContextMenu" id="106"/>
+									<ExtendedTooltip name="TransactionItemCountOnExportForExchangePlansExtendedTooltip" id="334"/>
+								</InputField>
+								<CheckBoxField name="ExportAllowedOnly" id="107">
+									<DataPath>Object.ExportAllowedOnly</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export objects for which there are access rights</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="ExportAllowedOnlyContextMenu" id="108"/>
+									<ExtendedTooltip name="ExportAllowedOnlyExtendedTooltip" id="335"/>
+								</CheckBoxField>
+								<CheckBoxField name="PerformAdditionalWriteToXMLControl" id="109">
+									<DataPath>Object.PerformAdditionalWriteToXMLControl</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Automatically delete invalid characters from strings for writing to XML</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="PerformAdditionalWriteToXMLControlContextMenu" id="110"/>
+									<ExtendedTooltip name="PerformAdditionalWriteToXMLControlExtendedTooltip" id="336"/>
+								</CheckBoxField>
+								<InputField name="ChangeRecordsForExchangeNodeDeleteAfterExportType" id="186">
+									<DataPath>ChangeRecordsForExchangeNodeDeleteAfterExportType</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Change record changes for exchange nodes after export</v8:content>
+										</v8:item>
+									</Title>
+									<ListChoiceMode>true</ListChoiceMode>
+									<TextEdit>false</TextEdit>
+									<ChoiceList>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Do not delete registration</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:string">0</Value>
+											</xr:Value>
+										</xr:Item>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Completely delete change records for exchange node</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:string">1</Value>
+											</xr:Value>
+										</xr:Item>
+										<xr:Item>
+											<xr:Presentation/>
+											<xr:CheckState>0</xr:CheckState>
+											<xr:Value xsi:type="FormChoiceListDesTimeValue">
+												<Presentation>
+													<v8:item>
+														<v8:lang>en</v8:lang>
+														<v8:content>Delete registration only for exported metadata</v8:content>
+													</v8:item>
+												</Presentation>
+												<Value xsi:type="xs:string">2</Value>
+											</xr:Value>
+										</xr:Item>
+									</ChoiceList>
+									<ContextMenu name="ChangeRecordsForExchangeNodeDeleteAfterExportTypeContextMenu" id="187"/>
+									<ExtendedTooltip name="ChangeRecordsForExchangeNodeDeleteAfterExportTypeExtendedTooltip" id="337"/>
+									<Events>
+										<Event name="OnChange">ChangeRecordsForExchangeNodeDeleteAfterExportTypeOnChange</Event>
+									</Events>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="ExchangeLog" id="113">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Exchange log</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Exchange log</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<ExtendedTooltip name="ExchangeLogExtendedTooltip" id="338"/>
+							<ChildItems>
+								<InputField name="ExchangeLogFileName" id="114">
+									<DataPath>Object.ExchangeLogFileName</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Exchange log file name on the server</v8:content>
+										</v8:item>
+									</Title>
+									<ChoiceButton>true</ChoiceButton>
+									<OpenButton>true</OpenButton>
+									<ContextMenu name="ExchangeLogFileNameContextMenu" id="115"/>
+									<ExtendedTooltip name="ExchangeLogFileNameExtendedTooltip" id="339"/>
+									<Events>
+										<Event name="StartChoice">ExchangeLogFileNameStartChoice</Event>
+										<Event name="Opening">ExchangeLogFileNameOpen</Event>
+									</Events>
+								</InputField>
+								<InputField name="ImportExchangeLogFileName" id="116">
+									<DataPath>Object.ImportExchangeLogFileName</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Import log (for COM connection) on server</v8:content>
+										</v8:item>
+									</Title>
+									<ChoiceButton>true</ChoiceButton>
+									<OpenButton>true</OpenButton>
+									<ContextMenu name="ImportExchangeLogFileNameContextMenu" id="117"/>
+									<ExtendedTooltip name="ImportExchangeLogFileNameExtendedTooltip" id="340"/>
+									<Events>
+										<Event name="StartChoice">ImportExchangeLogFileNameStartChoice</Event>
+										<Event name="Opening">ImportExchangeLogFileNameOpen</Event>
+									</Events>
+								</InputField>
+								<CheckBoxField name="AppendDataToExchangeLog" id="118">
+									<DataPath>Object.AppendDataToExchangeLog</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="AppendDataToExchangeLogContextMenu" id="119"/>
+									<ExtendedTooltip name="AppendDataToExchangeLogExtendedTooltip" id="341"/>
+								</CheckBoxField>
+								<CheckBoxField name="WriteInfoMessagesToLog" id="120">
+									<DataPath>Object.WriteInfoMessagesToLog</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="WriteInfoMessagesToLogContextMenu" id="121"/>
+									<ExtendedTooltip name="WriteInfoMessagesToLogExtendedTooltip" id="342"/>
+								</CheckBoxField>
+								<CheckBoxField name="OpenExchangeLogsAfterOperationsExecuted" id="122">
+									<DataPath>Object.OpenExchangeLogsAfterOperationsExecuted</DataPath>
+									<TitleLocation>Right</TitleLocation>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="OpenExchangeLogsAfterOperationsExecutedContextMenu" id="123"/>
+									<ExtendedTooltip name="OpenExchangeLogsAfterOperationsExecutedExtendedTooltip" id="343"/>
+								</CheckBoxField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="DataDeletionSetup" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data deletion</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data deletion setup</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataDeletionSetupExtendedTooltip" id="344"/>
+					<ChildItems>
+						<LabelDecoration name="UserWarningLabel" id="124">
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data deletion functional is intended for transfer debugging. We don't recommend to use the object deletion for other purposes.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="UserWarningLabelContextMenu" id="125"/>
+							<ExtendedTooltip name="UserWarningLabelExtendedTooltip" id="345"/>
+						</LabelDecoration>
+						<CheckBoxField name="DeleteObjectsThatAvailableForUser" id="126">
+							<DataPath>Object.ExportAllowedOnly</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Delete objects that are available for user</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="DeleteObjectsThatAvailableForUserContextMenu" id="127"/>
+							<ExtendedTooltip name="DeleteObjectsThatAvailableForUserExtendedTooltip" id="346"/>
+						</CheckBoxField>
+						<InputField name="DeletionPeriod" id="214">
+							<DataPath>ExportPeriod</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Deletion period</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="DeletionPeriodContextMenu" id="215"/>
+							<ExtendedTooltip name="DeletionPeriodExtendedTooltip" id="347"/>
+							<Events>
+								<Event name="OnChange">DeletionPeriodOnChange</Event>
+							</Events>
+						</InputField>
+						<Table name="DataToDelete" id="201">
+							<Representation>Tree</Representation>
+							<ChangeRowSet>false</ChangeRowSet>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<EnableStartDrag>true</EnableStartDrag>
+							<EnableDrag>true</EnableDrag>
+							<DataPath>DataToDelete</DataPath>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<ContextMenu name="DataToDeleteContextMenu" id="202"/>
+							<AutoCommandBar name="DataToDeleteCommandBar" id="203">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="DataToDeleteDeletionCheckAll" id="172">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.DeletionCheckAll</CommandName>
+										<ExtendedTooltip name="DataToDeleteDeletionCheckAllExtendedTooltip" id="348"/>
+									</Button>
+									<Button name="DataToDeleteDeletionCancelAll" id="173">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.DeletionCancelAll</CommandName>
+										<ExtendedTooltip name="DataToDeleteDeletionCancelAllExtendedTooltip" id="349"/>
+									</Button>
+									<Button name="DataToDeleteDeletionDelete" id="174">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.DeletionDelete</CommandName>
+										<ExtendedTooltip name="DataToDeleteDeletionDeleteExtendedTooltip" id="350"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="DataToDeleteExtendedTooltip" id="351"/>
+							<SearchStringAddition name="DataToDeleteSearchString" id="384">
+								<AdditionSource>
+									<Item>DataToDelete</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="DataToDeleteSearchStringContextMenu" id="385"/>
+								<ExtendedTooltip name="DataToDeleteSearchStringExtendedTooltip" id="386"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="DataToDeleteViewStatus" id="387">
+								<AdditionSource>
+									<Item>DataToDelete</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="DataToDeleteViewStatusContextMenu" id="388"/>
+								<ExtendedTooltip name="DataToDeleteViewStatusExtendedTooltip" id="389"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="DataToDeleteSearchControl" id="390">
+								<AdditionSource>
+									<Item>DataToDelete</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="DataToDeleteSearchControlContextMenu" id="391"/>
+								<ExtendedTooltip name="DataToDeleteSearchControlExtendedTooltip" id="392"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="OnChange">DataToDeleteOnChange</Event>
+							</Events>
+							<ChildItems>
+								<ColumnGroup name="MetadataGroup" id="208">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Metadata group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Metadata group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="MetadataGroupExtendedTooltip" id="352"/>
+									<ChildItems>
+										<CheckBoxField name="MetadataToDeleteMark" id="206">
+											<DataPath>DataToDelete.Check</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<EditMode>EnterOnInput</EditMode>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="MetadataToDeleteMarkContextMenu" id="207"/>
+											<ExtendedTooltip name="MetadataToDeleteMarkExtendedTooltip" id="353"/>
+										</CheckBoxField>
+										<InputField name="MetadataToDeletePresentation" id="209">
+											<DataPath>DataToDelete.Presentation</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Metadata</v8:content>
+												</v8:item>
+											</Title>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="MetadataToDeletePresentationContextMenu" id="210"/>
+											<ExtendedTooltip name="MetadataToDeletePresentationExtendedTooltip" id="354"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.UniversalDataExchangeXML</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>Object.ParameterSetupTable</Field>
+				<Field>Object.HandlerDebugModeFlag</Field>
+				<Field>Object.ExportRuleTable</Field>
+				<Field>Object.Data</Field>
+				<Field>Object.ConversionRuleTable</Field>
+				<Field>Object.ClearingRuleTable</Field>
+			</UseAlways>
+			<Save>
+				<Field>Object.WriteRegisterRecordsAsRecordSets</Field>
+				<Field>Object.WriteOnlyChangedObjectsToInfobase</Field>
+				<Field>Object.WriteInfoMessagesToLog</Field>
+				<Field>Object.UseTransactionsForExchangePlansOnExport</Field>
+				<Field>Object.UseTransactions</Field>
+				<Field>Object.UseFilterByDateForAllObjects</Field>
+				<Field>Object.TransactionItemCountOnExportForExchangePlans</Field>
+				<Field>Object.StartDate</Field>
+				<Field>Object.SavedSettings</Field>
+				<Field>Object.ReadEventHandlersFromExchangeRuleFile</Field>
+				<Field>Object.ProcessedObjectNumberToUpdateStatus</Field>
+				<Field>Object.PerformAdditionalWriteToXMLControl</Field>
+				<Field>Object.Parameters</Field>
+				<Field>Object.OutputToErrorMessagesLog</Field>
+				<Field>Object.OutputInfoMessagesToMessageWindow</Field>
+				<Field>Object.OptimizedObjectWriting</Field>
+				<Field>Object.OpenExchangeLogsAfterOperationsExecuted</Field>
+				<Field>Object.ObjectCountPerTransaction</Field>
+				<Field>Object.InfobaseUserForConnection</Field>
+				<Field>Object.InfobaseConnectionWindowsAuthentication</Field>
+				<Field>Object.InfobaseConnectionType</Field>
+				<Field>Object.InfobaseConnectionServerName</Field>
+				<Field>Object.InfobaseConnectionPlatformVersion</Field>
+				<Field>Object.InfobaseConnectionPassword</Field>
+				<Field>Object.InfobaseConnectionNameOnServer</Field>
+				<Field>Object.InfobaseConnectionDirectory</Field>
+				<Field>Object.ImportSetupDataProcessors</Field>
+				<Field>Object.ImportObjectsByRefWithoutDeletionMark</Field>
+				<Field>Object.ImportExchangeLogFileName</Field>
+				<Field>Object.ImportDataInExchangeMode</Field>
+				<Field>Object.HandlerDebugModeFlag</Field>
+				<Field>Object.ExportSetupDataProcessors</Field>
+				<Field>Object.ExportAllowedOnly</Field>
+				<Field>Object.ExecuteDataExchangeInOptimizedFormat</Field>
+				<Field>Object.ExchangeRuleFileName</Field>
+				<Field>Object.ExchangeMode</Field>
+				<Field>Object.ExchangeLogFileName</Field>
+				<Field>Object.ExchangeFileName</Field>
+				<Field>Object.ExchangeFileExtractionPassword</Field>
+				<Field>Object.ExchangeFileCompressionPassword</Field>
+				<Field>Object.EventHandlersFileName</Field>
+				<Field>Object.EventHandlerExternalDataProcessorFileName</Field>
+				<Field>Object.EndDate</Field>
+				<Field>Object.DontShowInfoMessagesToUser</Field>
+				<Field>Object.DontRequestConfirmationOnDataImportOnOpenDataProcessors</Field>
+				<Field>Object.DirectReadingInTargetInfobase</Field>
+				<Field>Object.DebugModeFlag</Field>
+				<Field>Object.CutRowsFromRight</Field>
+				<Field>Object.CommentOnDataImport</Field>
+				<Field>Object.CommentOnDataExport</Field>
+				<Field>Object.Comment</Field>
+				<Field>Object.AutomaticDataImportSetup</Field>
+				<Field>Object.AskConfirmationOnDataImportOnOpenDataProcessor</Field>
+				<Field>Object.ArchiveFile</Field>
+				<Field>Object.AppendDataToExchangeLog</Field>
+				<Field>Object.AlgorithmDebugMode</Field>
+			</Save>
+			<Columns>
+				<AdditionalColumns table="Object.ExportRuleTable">
+					<Column name="Description" id="1">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Data export rules</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+					<Column name="ExchangeNodeRef" id="2">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Exchange node</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+						</Type>
+					</Column>
+					<Column name="PrivilegedModeOn" id="3">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>PrivilegedModeOn</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:decimal</v8:Type>
+							<v8:NumberQualifiers>
+								<v8:Digits>1</v8:Digits>
+								<v8:FractionDigits>0</v8:FractionDigits>
+								<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+							</v8:NumberQualifiers>
+						</Type>
+					</Column>
+					<Column name="IsFolder" id="4">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Is folder</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:boolean</v8:Type>
+						</Type>
+					</Column>
+				</AdditionalColumns>
+				<AdditionalColumns table="Object.ParameterSetupTable">
+					<Column name="Description" id="1">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Description</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+					<Column name="Value" id="2">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Value</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:boolean</v8:Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:Type>xs:dateTime</v8:Type>
+							<v8:TypeSet>cfg:AnyRef</v8:TypeSet>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+							<v8:DateQualifiers>
+								<v8:DateFractions>Date</v8:DateFractions>
+							</v8:DateQualifiers>
+						</Type>
+					</Column>
+				</AdditionalColumns>
+				<AdditionalColumns table="Object.ConversionRuleTable"/>
+			</Columns>
+		</Attribute>
+		<Attribute name="DirectExport" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Direct export</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+			<Save>
+				<Field>DirectExport</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ExportPeriodPresentation" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export period presentation</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="DataImportFromFile" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data import from file</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+			<Save>
+				<Field>DataImportFromFile</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ExchangeRules" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange rules</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+			<Save>
+				<Field>ExchangeRules</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="DataExportToFile" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export to data file</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+			<Save>
+				<Field>DataExportToFile</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ChangeRecordsForExchangeNodeDeleteAfterExportType" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Type of object change record deletion after export for nodes</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<SavedData>true</SavedData>
+			<Save>
+				<Field>ChangeRecordsForExchangeNodeDeleteAfterExportType</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="IsClient" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Is client</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+			<Save>
+				<Field>IsClient</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ExchangeFileName" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exchange file name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<Save>
+				<Field>ExchangeFileName</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="DataFileName" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data file name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<Save>
+				<Field>DataFileName</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="RuleFileName" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rule file name</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<Save>
+				<Field>RuleFileName</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="RulesLoaded" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rules are imported</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DataToDelete" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data to delete</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Metadata" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Metadata</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Check" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Check</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Presentation" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Presentation</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="RuleFileAddressInStorage" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Rule file address in storage</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ExportPeriod" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export period</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:StandardPeriod</v8:Type>
+			</Type>
+			<Save>
+				<Field>ExportPeriod</Field>
+			</Save>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ReadExchangeRules" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Read exchange rules</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Read exchange rules</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ReadExchangeRules</Action>
+		</Command>
+		<Command name="ConnectionTest" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Test connection</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Connection test</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ConnectionTest</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExportDebugSetup" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export debugging setup</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export debugging setup</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExportDebugSetup</Action>
+		</Command>
+		<Command name="RestoreParameters" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Restore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Restore parameters</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>RestoreParameters</Action>
+		</Command>
+		<Command name="SaveParameters" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save parameters</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SaveParameters</Action>
+		</Command>
+		<Command name="ImportDebugSetup" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import debugging setup</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import debugging setup</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ImportDebugSetup</Action>
+		</Command>
+		<Command name="GetExchangeFileInfo" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Get exchange file info</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Get exchange file info</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GetExchangeFileInfo</Action>
+		</Command>
+		<Command name="DeletionCheckAll" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Deletion check all</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Deletion check all</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>DeletionCheckAll</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="DeletionCancelAll" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Deletion cancel all</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Deletion cancel all</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>DeletionCancelAll</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="DeletionDelete" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Deletion delete</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Clear</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>DeletionDelete</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExportCheckAll" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export check all</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export check all</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportCheckAll</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="ExportCancelAll" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export cancel all</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export cancel all</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.UncheckAll</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportCancelAll</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="ExportClearExchangeNodes" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear exchange nodes</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export clear exchange nodes</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExportClearExchangeNodes</Action>
+		</Command>
+		<Command name="ExportSetExchangeNode" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set current exchange node for all items</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export set exchange node</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ExportSetExchangeNode</Action>
+		</Command>
+		<Command name="ExecuteExport" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute export</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute data export to the file or to the target infobase</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.GenerateReport</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExecuteExport</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ExecuteImport" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute import</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute import</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.GenerateReport</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExecuteImport</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="AtClient" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>On the client</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>On the client</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AtClient</Action>
+		</Command>
+		<Command name="AtServer" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>On the server</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>On the server</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AtServer</Action>
+		</Command>
+	</Commands>
+</Form>

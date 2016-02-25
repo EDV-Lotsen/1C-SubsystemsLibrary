@@ -1,12 +1,13 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// Operation handlers.
+// Web service operation handlers.
 
-// Corresponds to the ExecuteExport operation.
-//
-Function ExecuteExport (ExchangePlanName, InfoBaseNodeCode, ExchangeMessageStorage)
+// Matches the Upload web service operation.
+Function ExecuteExport(ExchangePlanName, InfobaseNodeCode, ExchangeMessageStorage)
+	
+	CheckInfobaseLockForUpdate();
 	
 	DataExchangeServer.CheckUseDataExchange();
 	
@@ -14,180 +15,168 @@ Function ExecuteExport (ExchangePlanName, InfoBaseNodeCode, ExchangeMessageStora
 	
 	ExchangeMessage = "";
 	
-	DataExchangeServer.ExportForInfoBaseNodeViaString(ExchangePlanName, InfoBaseNodeCode, ExchangeMessage);
+	DataExchangeServer.ExportForInfobaseNodeViaString(MessageExchangeInternal.ConvertExchangePlanName(ExchangePlanName), InfobaseNodeCode, ExchangeMessage);
 	
 	ExchangeMessageStorage = New ValueStorage(ExchangeMessage, New Deflation(9));
 	
 EndFunction
 
-// Corresponds to the ExecuteImport operation. 
-//
-Function ExecuteImport(ExchangePlanName, InfoBaseNodeCode, ExchangeMessageStorage)
+// Matches the Download web service operation.
+Function ExecuteImport(ExchangePlanName, InfobaseNodeCode, ExchangeMessageStorage)
+	
+	CheckInfobaseLockForUpdate();
 	
 	DataExchangeServer.CheckUseDataExchange();
 	
 	SetPrivilegedMode(True);
 	
-	DataExchangeServer.ImportForInfoBaseNodeViaString(ExchangePlanName, InfoBaseNodeCode, ExchangeMessageStorage.Get());
+	DataExchangeServer.ImportForInfobaseNodeViaString(MessageExchangeInternal.ConvertExchangePlanName(ExchangePlanName), InfobaseNodeCode, MessageExchangeInternal.ConvertExchangePlanMessageData(ExchangeMessageStorage.Get()));
 	
 EndFunction
 
-// Corresponds to the ExecuteDataExport operation.
-//
+// Matches the UploadData web service operation.
 Function ExecuteDataExport(ExchangePlanName,
-								InfoBaseNodeCode,
+								InfobaseNodeCode,
 								FileIDString,
 								LongAction,
 								ActionID,
-								LongActionAllowed
-	)
+								LongActionAllowed)
+	
+	CheckInfobaseLockForUpdate();
 	
 	DataExchangeServer.CheckUseDataExchange();
 	
 	FileID = New UUID;
 	FileIDString = String(FileID);
 	
-	If CommonUse.FileInfoBase() Then
+	If CommonUse.FileInfobase() Then
 		
-		DataExchangeServer.ExportToFileTransferServiceForInfoBaseNode(ExchangePlanName, InfoBaseNodeCode, FileID);
+		DataExchangeServer.ExportToFileTransferServiceForInfobaseNode(ExchangePlanName, InfobaseNodeCode, FileID);
 		
 	Else
 		
-		ExecuteDataExportInClientServerMode(ExchangePlanName, InfoBaseNodeCode, FileID, LongAction, ActionID, LongActionAllowed);
+		ExecuteDataExportInClientServerMode(ExchangePlanName, InfobaseNodeCode, FileID, LongAction, ActionID, LongActionAllowed);
 		
 	EndIf;
 	
 EndFunction
 
-// Corresponds to the ExecuteDataImport operation.
-//
+// Matches the DownloadData web service operation.
 Function ExecuteDataImport(ExchangePlanName,
-								InfoBaseNodeCode,
+								InfobaseNodeCode,
 								FileIDString,
 								LongAction,
 								ActionID,
-								LongActionAllowed
-	)
+								LongActionAllowed)
+	
+	CheckInfobaseLockForUpdate();
 	
 	DataExchangeServer.CheckUseDataExchange();
 	
 	FileID = New UUID(FileIDString);
 	
-	If CommonUse.FileInfoBase() Then
+	If CommonUse.FileInfobase() Then
 		
-		DataExchangeServer.ImportForInfoBaseNodeFromFileTransferService(ExchangePlanName, InfoBaseNodeCode, FileID);
+		DataExchangeServer.ImportForInfobaseNodeFromFileTransferService(ExchangePlanName, InfobaseNodeCode, FileID);
 		
 	Else
 		
-		ImportDataInClientServerMode(ExchangePlanName, InfoBaseNodeCode, FileID, LongAction, ActionID, LongActionAllowed);
+		ImportDataInClientServerMode(ExchangePlanName, InfobaseNodeCode, FileID, LongAction, ActionID, LongActionAllowed);
 		
 	EndIf;
 	
 EndFunction
 
-// Corresponds to the GetInfoBaseParameters operation. 
-//
-Function GetInfoBaseParameters(ExchangePlanName, NodeCode, ErrorMessage)
+// Matches the GetInfobaseParameters web service operation.
+Function GetInfobaseParameters(ExchangePlanName, NodeCode, ErrorMessage)
 	
-	Return DataExchangeServer.GetInfoBaseParameters(ExchangePlanName, NodeCode, ErrorMessage);
+	Return DataExchangeServer.GetInfobaseParameters(ExchangePlanName, NodeCode, ErrorMessage);
 	
 EndFunction
 
-// Corresponds to the GetInfoBaseData operation.
-//
-Function GetInfoBaseData(FullTableName)
+// Matches the GetIBData web service operation.
+Function GetInfobaseData(FullTableName)
 	
-	Result = New Structure("MetadataObjectProperties, CorrespondentInfoBaseTable");
+	Result = New Structure("MetadataObjectProperties, CorrespondentInfobaseTable");
 	
-	Result.MetadataObjectProperties = ValueToStringInternal(DataExchangeServer.MetadataObjectProperties(FullTableName));
-	Result.CorrespondentInfoBaseTable = ValueToStringInternal(DataExchangeServer.GetTableObjects(FullTableName));
+	Result.MetadataObjectProperties   = ValueToStringInternal(DataExchangeServer.MetadataObjectProperties(FullTableName));
+	Result.CorrespondentInfobaseTable = ValueToStringInternal(DataExchangeServer.GetTableObjects(FullTableName));
 	
 	Return ValueToStringInternal(Result);
 EndFunction
 
-// Corresponds to the GetCommonNodeData operation.
-//
+// Matches the GetCommonNodsData web service operation.
 Function GetCommonNodeData(ExchangePlanName)
 	
 	SetPrivilegedMode(True);
 	
-	Return ValueToStringInternal(DataExchangeServer.DataForThisInfoBaseNodeTabularSections(ExchangePlanName));
+	Return ValueToStringInternal(DataExchangeServer.DataForThisInfobaseNodeTabularSections(ExchangePlanName));
 	
 EndFunction
 
-// Corresponds to the CreateDataExchange operation.
-//
-Function CreateDataExchange(ExchangePlanName, ParameterString, FilterStructureString, DefaultValueString)
+// Matches the CreateExchange web service operation.
+Function CreateDataExchange(ExchangePlanName, ParameterString, FilterStructureString, DefaultValuesString)
+	
+	DataExchangeServer.CheckUseDataExchange();
 	
 	SetPrivilegedMode(True);
 	
-	// Getting the data exchange creation wizard processor in the second infobase
+	// Creating an instance of exchange setup wizard data processor
 	DataExchangeCreationWizard = DataProcessors.DataExchangeCreationWizard.Create();
 	DataExchangeCreationWizard.ExchangePlanName = ExchangePlanName;
 	
 	Cancel = False;
 	
-	// Importing wizard parameters to the wizard processor from the string
+	// Loading wizard parameters from a string to the wizard data processor
 	DataExchangeCreationWizard.ImportWizardParameters(Cancel, ParameterString);
 	
 	If Cancel Then
-		Message = NStr("en = 'Error generating exchange settings in the second infobase: %1'");
+		Message = NStr("en = 'Errors occurred in the second infobase during the data exchange setup: %1'");
 		Message = StringFunctionsClientServer.SubstituteParametersInString(Message, DataExchangeCreationWizard.ErrorMessageString());
 		Raise Message;
 	EndIf;
 	
-	DataExchangeCreationWizard.WizardRunVariant = "ContinueDataExchangeSetUp";
-	DataExchangeCreationWizard.IsDistributedInfoBaseSetup = False;
+	DataExchangeCreationWizard.WizardRunVariant = "ContinueDataExchangeSetup";
+	DataExchangeCreationWizard.IsDistributedInfobaseSetup = False;
 	DataExchangeCreationWizard.ExchangeMessageTransportKind = Enums.ExchangeMessageTransportKinds.WS;
-	DataExchangeCreationWizard.SourceInfoBasePrefixIsSet = ValueIsFilled(GetFunctionalOption("InfoBasePrefix"));
+	DataExchangeCreationWizard.SourceInfobasePrefixIsSet = ValueIsFilled(GetFunctionalOption("InfobasePrefix"));
 	
-	// Generating exchange settings
-	DataExchangeCreationWizard.SetUpNewWebServiceModeDataExchange(
+	// Data exchange setup
+	DataExchangeCreationWizard.SetUpNewDataExchangeWebService(
 											Cancel,
 											ValueFromStringInternal(FilterStructureString),
-											ValueFromStringInternal(DefaultValueString)
-	);
+											ValueFromStringInternal(DefaultValuesString));
 	
 	If Cancel Then
-		Message = NStr("en = 'Error generating exchange settings in the second infobase: %1'");
+		Message = NStr("en = 'Errors occurred in the second infobase during the data exchange setup: %1'");
 		Message = StringFunctionsClientServer.SubstituteParametersInString(Message, DataExchangeCreationWizard.ErrorMessageString());
 		Raise Message;
 	EndIf;
 	
-	If GetFunctionalOption("UseDataExchange") = False Then
-		
-		Constants.UseDataExchange.Set(True);
-		
-	EndIf;
+EndFunction
+
+// Matches the UpdateExchange web service operation.
+Function UpdateDataExchangeSettings(ExchangePlanName, NodeCode, DefaultValuesString)
+	
+	DataExchangeServer.ExternalConnectionRefreshExchangeSettingsData(ExchangePlanName, NodeCode, DefaultValuesString);
 	
 EndFunction
 
-// Corresponds to the UpdateDataExchangeSettings operation.
-//
-Function UpdateDataExchangeSettings(ExchangePlanName, NodeCode, DefaultValueString)
-	
-	DataExchangeServer.ExternalConnectionRefreshExchangeSettingsData(ExchangePlanName, NodeCode, DefaultValueString);
-	
-EndFunction
-
-// Corresponds to the RecordCatalogChangesOnly operation.
-//
+// Matches the RegisterOnlyCatalogData web service operation.
 Function RecordCatalogChangesOnly(ExchangePlanName, NodeCode, LongAction, ActionID)
 	
 	RegisterDataForInitialExport(ExchangePlanName, NodeCode, LongAction, ActionID, True);
 	
 EndFunction
 
-// Corresponds to the RecordAllChangesExceptCatalogs operation.
-//
+// Matches the RegisterAllDataExceptCatalogs web service operation.
 Function RecordAllChangesExceptCatalogs(ExchangePlanName, NodeCode, LongAction, ActionID)
 	
 	RegisterDataForInitialExport(ExchangePlanName, NodeCode, LongAction, ActionID, False);
 	
 EndFunction
 
-// Corresponds to the GetLongActionState operation.
-//
+// Matches the GetLongActionState web service operation.
 Function GetLongActionState(ActionID, ErrorMessageString)
 	
 	BackgroundJobState = New Map;
@@ -209,16 +198,14 @@ Function GetLongActionState(ActionID, ErrorMessageString)
 	Return BackgroundJobState.Get(BackgroundJob.State);
 EndFunction
 
-// Corresponds to the GetFunctionalOptionValue operation.
-//
+// Matches the GetFunctionalOption web service operation.
 Function GetFunctionalOptionValue(Name)
 	
 	Return GetFunctionalOption(Name);
 	
 EndFunction
 
-// Corresponds to the PrepareGetFile operation.
-//
+// Matches the PrepareGetFile web service operation.
 Function PrepareGetFile(FileId, BlockSize, TransferId, PartQuantity)
 	
 	SetPrivilegedMode(True);
@@ -243,8 +230,8 @@ Function PrepareGetFile(FileId, BlockSize, TransferId, PartQuantity)
 	Archiver.Write();
 	
 	If BlockSize <> 0 Then
-		// Splitting the file
-		FileNames = SplitFile(SharedFileName, BlockSize * 1024);
+		// Splitting file into volumes
+		FileNames    = SplitFile(SharedFileName, BlockSize * 1024);
 		PartQuantity = FileNames.Count();
 	Else
 		PartQuantity = 1;
@@ -253,8 +240,7 @@ Function PrepareGetFile(FileId, BlockSize, TransferId, PartQuantity)
 	
 EndFunction
 
-// Corresponds to the GetFilePart operation.
-//
+// Matches the GetFilePart web service operation
 Function GetFilePart(TransferId, PartNumber, PartData)
 	
 	FileName = "data.zip.[n]";
@@ -263,13 +249,13 @@ Function GetFilePart(TransferId, PartNumber, PartData)
 	FileNames = FindFiles(TemporaryExportDirectory(TransferId), FileName);
 	If FileNames.Count() = 0 Then
 		
-		MessagePattern = NStr("en = 'The %1 transfer session fragment with the %2 ID has not been found.'");
+		MessagePattern = NStr("en = 'Volume %1 is not found in the transfer session with the following ID: %2'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, String(PartNumber), String(TransferId));
 		Raise(MessageText);
 		
 	ElsIf FileNames.Count() > 1 Then
 		
-		MessagePattern = NStr("en = 'Several %1 transfer session fragments with the %2 ID have been found.'");
+		MessagePattern = NStr("en = 'Multiple instances of volume %1 are found in the transfer session with the following ID: %2'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, String(PartNumber), String(TransferId));
 		Raise(MessageText);
 		
@@ -280,22 +266,19 @@ Function GetFilePart(TransferId, PartNumber, PartData)
 	
 EndFunction
 
-// Corresponds to the ReleaseFile operation.
-//
+// Matches the ReleaseFile web service operation.
 Function ReleaseFile(TransferId)
 	
 	Try
 		DeleteFiles(TemporaryExportDirectory(TransferId));
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
-			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
-		);
+		WriteLogEvent(DataExchangeServer.TempFileDeletionEventLogMessageText(),
+			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	
 EndFunction
 
-// Corresponds to the PutFilePart operation.
-//
+// Matches the PutFilePart web service operation.
 Function PutFilePart(TransferId, PartNumber, PartData)
 	
 	TemporaryDirectory = TemporaryExportDirectory(TransferId);
@@ -312,8 +295,7 @@ Function PutFilePart(TransferId, PartNumber, PartData)
 	
 EndFunction
 
-// Corresponds to the SaveFileFromParts operation.
-//
+// Matches the SaveFileFromParts web service operation.
 Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 	
 	SetPrivilegedMode(True);
@@ -322,16 +304,14 @@ Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 	
 	PartFilesToMerge = New Array;
 	
-	For PartNumber = 1 to PartQuantity Do
+	For PartNumber = 1 To PartQuantity Do
 		
 		FileName = CommonUseClientServer.GetFullFileName(TemporaryDirectory, GetPartFileName(PartNumber));
 		
 		If FindFiles(FileName).Count() = 0 Then
-			MessagePattern = NStr("en = 'The %1 transfer session fragment with the %2 ID has not been found.
-					|Make sure constant values are specified on the
-					|ExchangeMessageTempFileDirForLinux and ExchangeMessageTempFileDirForWindows 
-					|application setup forms.'"
-			);
+			MessagePattern = NStr("en = 'Volume %1 is not found in the transfer session with the following ID: %2.
+					|Ensure that the """"Linux synchronization message directory""""
+					|and """"Windows synchronization message directory"""" parameters are set in the application settings.'");
 			MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, String(PartNumber), String(TransferId));
 			Raise(MessageText);
 		EndIf;
@@ -350,9 +330,8 @@ Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 		Try
 			DeleteFiles(TemporaryDirectory);
 		Except
-			WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
-				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo())
-			);
+			WriteLogEvent(DataExchangeServer.TempFileDeletionEventLogMessageText(),
+				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		EndTry;
 		Raise(NStr("en = 'The archive file does not contain data.'"));
 	EndIf;
@@ -369,14 +348,13 @@ Function SaveFileFromParts(TransferId, PartQuantity, FileId)
 	Try
 		DeleteFiles(TemporaryDirectory);
 	Except
-		WriteLogEvent(NStr("en = 'Deleting temporary file'", Metadata.DefaultLanguage.LanguageCode),
+		WriteLogEvent(DataExchangeServer.TempFileDeletionEventLogMessageText(),
 			EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	
 EndFunction
 
-// Corresponds PutFileIntoStorage operation.
-//
+// Matches the PutFileIntoStorage web service operation.
 Function PutFileIntoStorage(FileName, FileId)
 	
 	SetPrivilegedMode(True);
@@ -385,8 +363,7 @@ Function PutFileIntoStorage(FileName, FileId)
 	
 EndFunction
 
-// Corresponds to the GetFileFromStorage operation.
-//
+// Matches the GetFileFromStorage web service operation.
 Function GetFileFromStorage(FileId)
 	
 	SetPrivilegedMode(True);
@@ -398,8 +375,7 @@ Function GetFileFromStorage(FileId)
 	Return File.Name;
 EndFunction
 
-// Corresponds to the FileExists operation.
-//
+// Matches the FileExists web service operation.
 Function FileExists(FileName)
 	
 	SetPrivilegedMode(True);
@@ -414,24 +390,39 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 // Local internal procedures and functions.
 
+Procedure CheckInfobaseLockForUpdate()
+	
+	InfobaseLockedForUpdate = InfobaseUpdateInternal.InfobaseLockedForUpdate();
+	If ValueIsFilled(InfobaseLockedForUpdate) Then
+		Raise InfobaseLockedForUpdate;
+	EndIf;
+	
+EndProcedure
+
 Procedure ExecuteDataExportInClientServerMode(ExchangePlanName,
-														InfoBaseNodeCode,
+														InfobaseNodeCode,
 														FileID,
 														LongAction,
 														ActionID,
-														LongActionAllowed
-	)
+														LongActionAllowed)
 	
 	Parameters = New Array;
 	Parameters.Add(ExchangePlanName);
-	Parameters.Add(InfoBaseNodeCode);
+	Parameters.Add(InfobaseNodeCode);
 	Parameters.Add(FileID);
 	
-	BackgroundJob = BackgroundJobs.Execute("DataExchangeServer.ExportToFileTransferServiceForInfoBaseNode",
+	BackgroundJobKey = ImportExportDataBackgroundJobKey(ExchangePlanName, InfobaseNodeCode);
+	Filter = New Structure;
+	Filter.Insert("Key", BackgroundJobKey);
+	Filter.Insert("State", BackgroundJobState.Active);
+	If BackgroundJobs.GetBackgroundJobs (Filter).Count() = 1 Then
+		Raise NStr("en = 'Synchronization in progress.'");
+	EndIf;
+	
+	BackgroundJob = BackgroundJobs.Execute("DataExchangeServer.ExportToFileTransferServiceForInfobaseNode",
 										Parameters,
-										ImportExportDataBackgroundJobKey(ExchangePlanName, InfoBaseNodeCode),
-										NStr("en = 'Exchanging data via the web service.'")
-	);
+										BackgroundJobKey,
+										NStr("en = 'Data exchange through a web service.'"));
 	
 	Try
 		Timeout = ?(LongActionAllowed, 5, Undefined);
@@ -466,29 +457,35 @@ Procedure ExecuteDataExportInClientServerMode(ExchangePlanName,
 			Raise DetailErrorDescription(BackgroundJob.ErrorInfo);
 		EndIf;
 		
-		Raise NStr("en = 'Error exporting data via the web service.'");
+		Raise NStr("en = 'An error occurred during the data export through the web service.'");
 	EndIf;
 	
 EndProcedure
 
 Procedure ImportDataInClientServerMode(ExchangePlanName,
-													InfoBaseNodeCode,
+													InfobaseNodeCode,
 													FileID,
 													LongAction,
 													ActionID,
-													LongActionAllowed
-	)
+													LongActionAllowed)
 	
 	Parameters = New Array;
 	Parameters.Add(ExchangePlanName);
-	Parameters.Add(InfoBaseNodeCode);
+	Parameters.Add(InfobaseNodeCode);
 	Parameters.Add(FileID);
 	
-	BackgroundJob = BackgroundJobs.Execute("DataExchangeServer.ImportForInfoBaseNodeFromFileTransferService",
+	BackgroundJobKey = ImportExportDataBackgroundJobKey(ExchangePlanName, InfobaseNodeCode);
+	Filter = New Structure;
+	Filter.Insert("Key", BackgroundJobKey);
+	Filter.Insert("State", BackgroundJobState.Active);
+	If BackgroundJobs.GetBackgroundJobs (Filter).Count() = 1 Then
+		Raise NStr("en = 'Synchronization in progress.'");
+	EndIf;
+	
+	BackgroundJob = BackgroundJobs.Execute("DataExchangeServer.ImportForInfobaseNodeFromFileTransferService",
 										Parameters,
-										ImportExportDataBackgroundJobKey(ExchangePlanName, InfoBaseNodeCode),
-										NStr("en = 'Exchanging data via the web service.'")
-	);
+										BackgroundJobKey,
+										NStr("en = 'Data exchange through a web service.'"));
 	
 	Try
 		Timeout = ?(LongActionAllowed, 5, Undefined);
@@ -522,7 +519,7 @@ Procedure ImportDataInClientServerMode(ExchangePlanName,
 			Raise DetailErrorDescription(BackgroundJob.ErrorInfo);
 		EndIf;
 		
-		Raise NStr("en = 'Error importing data via the web service.'");
+		Raise NStr("en = 'An error occurred during the data import through the web service.'");
 	EndIf;
 	
 EndProcedure
@@ -540,34 +537,38 @@ Function RegisterDataForInitialExport(Val ExchangePlanName, Val NodeCode, LongAc
 	
 	SetPrivilegedMode(True);
 	
-	InfoBaseNode = ExchangePlans[ExchangePlanName].FindByCode(NodeCode);
+	InfobaseNode = ExchangePlans[ExchangePlanName].FindByCode(NodeCode);
 	
-	If Not ValueIsFilled(InfoBaseNode) Then
-		Message = NStr("en = 'The exchange plan node named %1 with the %2 node code is not  found.'");
+	If Not ValueIsFilled(InfobaseNode) Then
+		Message = NStr("en = 'Exchange plan node not found. Node name: %1, node code: %2.'");
 		Message = StringFunctionsClientServer.SubstituteParametersInString(Message, ExchangePlanName, NodeCode);
 		Raise Message;
 	EndIf;
 	
-	Data = ?(CatalogsOnly,
-				DataExchangeServer.ExchangePlanCatalogs(ExchangePlanName),
-				DataExchangeServer.AllExchangePlanDataExceptCatalogs(ExchangePlanName)
-	);
-	
-	If CommonUse.FileInfoBase() Then
+	If CommonUse.FileInfobase() Then
 		
-		DataExchangeServer.RegisterDataForInitialExport(InfoBaseNode, Data);
+		If CatalogsOnly Then
+			
+			DataExchangeServer.RegisterOnlyCatalogsForInitialExport(InfobaseNode);
+			
+		Else
+			
+			DataExchangeServer.RegisterAllDataExceptCatalogsForInitialExport(InfobaseNode);
+			
+		EndIf;
 		
 	Else
 		
-		Parameters = New Array;
-		Parameters.Add(InfoBaseNode);
-		Parameters.Add(Data);
+		If CatalogsOnly Then
+			MethodName = "DataExchangeServer.RegisterOnlyCatalogsForInitialExport";
+		Else
+			MethodName = "DataExchangeServer.RegisterAllDataExceptCatalogsForInitialExport";
+		EndIf;
 		
-		BackgroundJob = BackgroundJobs.Execute("DataExchangeServer.RegisterDataForInitialExport",
-											Parameters,
-											,
-											NStr("en = 'Creating the data exchange.'")
-		);
+		Parameters = New Array;
+		Parameters.Add(InfobaseNode);
+		
+		BackgroundJob = BackgroundJobs.Execute(MethodName, Parameters,, NStr("en = 'Data exchange setup.'"));
 		
 		Try
 			BackgroundJob.WaitForCompletion(5);
@@ -613,9 +614,4 @@ Function TemporaryExportDirectory(Val SessionID)
 	Return Result;
 EndFunction
 
-
-
-
-
-
-
+#EndRegion

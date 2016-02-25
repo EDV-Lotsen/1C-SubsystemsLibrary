@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="739bd762-01fc-41a8-87df-844eb201962f">
+		<Properties>
+			<Name>FileFunctions</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>File functions</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<IncludeInCommandInterface>false</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture/>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.SelectActionIfDifferenceInFilesFound</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ScheduledJob.TextExtraction</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternalClientServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.CreateInitialImageWithFiles</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.OpenSelectedFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.SaveFileAs</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ExtractFileTextsAtServer</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.MaxFileSize</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.FileTextExtractionStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.FileStorageTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Catalog.FileStorageVolumes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">DataProcessor.AutomaticTextExtraction</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.SelectSignatures</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.SelectVolumeFileArchivePath</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.AddSignatureFromFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternalClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternalClientCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.ClipCollection</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.SelectEncryptionCertificate</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.EnterPasswordWithDetails</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.ReminderOnEdit</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.Encrypted</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.EndFileEditing</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.LockFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UnlockFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.EditFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.FileIconCollection</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.DefaultWorkingDirectory</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ProhibitImportFilesByExtension</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ProhibitedFileExtensionList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.LockedByAnotherUserFile</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.FileLockedByCurrentUser</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.StoreFilesInVolumesOnHardDisk</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternalCached</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.UpdateFileFromFileOnHardDisk</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.OpenDocumentFileExtensionList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.StoreFilesInVolumesOnHardDisk</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.MaxDataAreaFileSize</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.ProhibitedDataAreaFileExtensionList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.DataAreaOpenDocumentFileExtensionList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.TextFileExtensionList</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.OpenFileForViewingVariants</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctionsInternalServerCall</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.FileFunctions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.CreateInitialImageWithFiles</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.SignedEncryptedTitle</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.SignedEncryptedStatuses</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonForm.FilesInVolume</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.FilesInVolume</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

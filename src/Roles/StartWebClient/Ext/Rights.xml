@@ -4,6 +4,39 @@
 	<setForAttributesByDefault>true</setForAttributesByDefault>
 	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.ShowNotification</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.TabularSection.AdditionalData.Attribute.Property</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.Dimension.User</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.DataImportedSuccessfully</name>
 		<right>
 			<name>View</name>
@@ -15,7 +48,29 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetPictureIndex</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetPictureIndex</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.Resource.Rate</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -37,7 +92,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.SortTable.Attribute.FieldName</name>
+		<name>DataProcessor.ApplicationLock.Attribute.MessageForUsers</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -48,7 +103,194 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.UnapprovedRelationTable.Attribute.TargetUUID</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.SortTable.Attribute.FieldName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachmentExistence.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachmentExistence.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachmentExistence.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachmentExistence.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.UnapprovedMappingTable.Attribute.TargetUUID</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -81,7 +323,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SourceInfoBasePrefix</name>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SourceInfobasePrefix</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -125,7 +367,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ContactInformationKinds.Attribute.HomeCountryAddressOnly</name>
+		<name>Catalog.ContactInformationKinds.Attribute.DomesticAddressOnly</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -137,6 +379,105 @@
 	</object>
 	<object>
 		<name>InformationRegister.DataExchangeRules.Resource.XMLRules</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.Dimension.Object</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.ValueType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.StandardAttribute.Ref</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -169,7 +510,40 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.UserPrintTemplates.Dimension.Object</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.SuccessfulDataExchangeStates.Resource.EndDate</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.Dimension.AddressObject</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.Modifier</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -202,6 +576,17 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ImportDataInExchangeMode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ExchangeMessageTransportFILE.Attribute.MessageFileNamePattern</name>
 		<right>
 			<name>View</name>
@@ -224,7 +609,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.UnapprovedRelationTable.Attribute.SourceUUID</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ImportObjectsByRefWithoutDeletionMark</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -235,7 +620,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ProcessedObjectCountForUpdatingState</name>
+		<name>InformationRegister.AddressClassifier.Resource.Description</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -246,7 +631,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.Country</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.UnapprovedMappingTable.Attribute.SourceUUID</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -257,7 +642,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ClearingRuleTable</name>
+		<name>InformationRegister.CalendarSchedules.StandardAttribute.Active</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -268,7 +653,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SecondInfoBaseNewNodeCode</name>
+		<name>InformationRegister.CalendarSchedules.StandardAttribute.LineNumber</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -279,7 +664,183 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField3</name>
+		<name>InformationRegister.CalendarSchedules.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CalendarSchedules.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CalendarSchedules.Resource.DayNumberInScheduleSinceYearBeginning</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Attribute.IsAdditionalData</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalDataAndAttributeSets.TabularSection.AdditionalData</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.ScheduledJobGUID</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SecondInfobaseNewNodeCode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField3</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Calendars.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.Resource.VersionReleaseDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -301,7 +862,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.UsedFieldList</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.UsedFieldList</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -312,7 +873,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.TargetTableName</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.TargetTableName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -334,7 +895,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.StandardAttribute.Active</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.AskConfirmationOnDataImportOnOpenDataProcessor</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -345,7 +906,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.StandardAttribute.LineNumber</name>
+		<name>InformationRegister.InfobaseObjectMappings.StandardAttribute.Active</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -356,7 +917,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.StandardAttribute.Recorder</name>
+		<name>InformationRegister.InfobaseObjectMappings.StandardAttribute.LineNumber</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -367,7 +928,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.StandardAttribute.Period</name>
+		<name>InformationRegister.InfobaseObjectMappings.StandardAttribute.Recorder</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -378,7 +939,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExportSetupDataProcessors</name>
+		<name>InformationRegister.InfobaseObjectMappings.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -389,7 +950,51 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.SubsystemVersions.Dimension.SubsystemName</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.Data</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeLogTempFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.Resource.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.Attribute.LongDescription</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -411,6 +1016,28 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Responsible</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ChangeRecordsForExchangeNodeDeleteAfterExportType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.UserGroups.Attribute.Comment</name>
 		<right>
 			<name>View</name>
@@ -422,7 +1049,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Dimension.SourceUUID</name>
+		<name>InformationRegister.InfobaseObjectMappings.Dimension.SourceUUID</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -433,7 +1060,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.AppendDataToExchangeLog</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.EndDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -444,7 +1071,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.UnapprovedRelationTable.Attribute.TargetType</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.UnapprovedMappingTable.Attribute.TargetType</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -466,7 +1093,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.ExchangeMessageFileName</name>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Attribute.ToolTip</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -477,7 +1104,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourcePictureIndex</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseUserForConnection</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -488,7 +1115,84 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField1</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.ExchangeMessageFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourcePictureIndex</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Dimension.AddressItemType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ErrorFlag</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ImportExchangeLogFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.CurrencyRateImport.Attribute.ImportPeriodEnd</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField1</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ProcessedObjectNumberToUpdateStatus</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -510,7 +1214,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.UseTransactions</name>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList.Attribute.UnitConversionFactor</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -543,6 +1258,17 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.FieldValues</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.DataExchangeScenarios.TabularSection.ExchangeSettings.Attribute.CurrentAction</name>
 		<right>
 			<name>View</name>
@@ -565,7 +1291,29 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.ID</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.DataExchangeRules.Resource.RuleTemplateName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.OpenExchangeLogsAfterOperationsExecuted</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -587,7 +1335,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Dimension.TargetUUID</name>
+		<name>InformationRegister.InfobaseObjectMappings.Dimension.TargetUUID</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -598,7 +1346,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField5</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField5</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -620,7 +1368,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.SubsystemVersions.Resource.Version</name>
+		<name>InformationRegister.AttachmentExistence.Resource.HasFiles</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -631,7 +1379,51 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceType</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -653,7 +1445,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.FieldValues</name>
+		<name>InformationRegister.AdditionalData.StandardAttribute.Active</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -664,7 +1456,40 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField2</name>
+		<name>InformationRegister.AdditionalData.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalData.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalData.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField2</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -676,6 +1501,28 @@
 	</object>
 	<object>
 		<name>DataProcessor.DataExchangeCreationWizard.Attribute.ExchangeMessageTransportKind</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Comment</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionServerName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -807,7 +1654,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeNodeDataImport</name>
+		<name>InformationRegister.DataExchangeRules.Resource.RuleFileName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -818,7 +1665,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.DataExchangeRules.Resource.RuleFileName</name>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Attribute.FormatProperties</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -840,6 +1687,61 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionDirectory</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.EmailAccounts.Attribute.KeepMessageCopiesAtServer</name>
 		<right>
 			<name>View</name>
@@ -851,7 +1753,106 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ExternalUsers.Attribute.InfoBaseUserID</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeMode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.OutputToErrorMessagesLog</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ExternalUsers.Attribute.InfobaseUserID</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.SafeMode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachedFiles.Resource.StoredFile</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CalendarSchedules.Dimension.Year</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -873,7 +1874,40 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExportSetupDataProcessors</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.DataExchangeStates.Resource.ExchangeExecutionResult</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.ApplicationLock.Attribute.LockPeriodEnd</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.Dimension.VersionNumber</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -895,18 +1929,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeLogFileName</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeRuleFileName</name>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.City</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -928,7 +1951,40 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.EventHandlersFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.TransactionItemCountOnExportForExchangePlans</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Resource.DefaultExchangeMessageTransportKind</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.Resource.UnitConversionFactor</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -961,7 +2017,40 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField5</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionWindowsAuthentication</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField5</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExportRuleTable</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList.Attribute.RateDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -973,6 +2062,28 @@
 	</object>
 	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.SourceTypeString</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList.Attribute.Rate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1005,6 +2116,17 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ObjectVersioningSettings.Dimension.ObjectType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ExchangeMessageTransportFTP.Attribute.MessageFileNamePattern</name>
 		<right>
 			<name>View</name>
@@ -1016,7 +2138,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.Dimension.InfoBaseNode</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.Dimension.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1027,7 +2149,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.SavedSettings</name>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.IsDistributedInfobaseSetup</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1038,7 +2160,29 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.IsDistributedInfoBaseSetup</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Version</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.DontShowInfoMessagesToUser</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Resource.AlternateNames</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1060,7 +2204,18 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.DataExchangeStates.Dimension.InfoBaseNode</name>
+		<name>InformationRegister.AttachedFiles.Dimension.AttachedFile</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataExchangeStates.Dimension.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1093,106 +2248,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.SortTable.Attribute.Use</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Predefined</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Ref</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.DeletionMark</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.IsFolder</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Owner</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Parent</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Description</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.StandardAttribute.Code</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.EmailAccounts.Attribute.ResponsibleForEmailProcessing</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.SortTable.Attribute.Use</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1214,7 +2270,29 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ObjectCountPerTransaction</name>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.Resource.UseObjectFilling</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.Attribute.VersionAuthor</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ObjectCountPerTransaction</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1236,6 +2314,17 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.OutputInfoMessagesToMessageWindow</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Resource.EMAILCompressOutgoingMessageFile</name>
 		<right>
 			<name>View</name>
@@ -1247,7 +2336,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField2</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField2</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.SavedSettings</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1313,7 +2413,84 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InteractiveDataExchangeWizard.Attribute.IncomingMessageNumber</name>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.ServerDomainName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.Dimension.AdditionalReportOrDataProcessor</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.EventHandlerExternalDataProcessorFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersioningSettings.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersioningSettings.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersioningSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersioningSettings.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Kind</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1335,6 +2512,28 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.UserPrintTemplates.Attribute.Use</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.Attribute.MainCurrency</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ExchangeMessageTransportFTP.Attribute.ExchangeMessageArchivePassword</name>
 		<right>
 			<name>View</name>
@@ -1346,40 +2545,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.SubsystemVersions.StandardAttribute.Active</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.SubsystemVersions.StandardAttribute.LineNumber</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.SubsystemVersions.StandardAttribute.Recorder</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>InformationRegister.SubsystemVersions.StandardAttribute.Period</name>
+		<name>DataProcessor.CurrencyRateImport.Attribute.ImportPeriodBegin</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1401,7 +2567,29 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.DataExchangeScenarios.TabularSection.ExchangeSettings.Attribute.InfoBaseNode</name>
+		<name>InformationRegister.AddressAbbreviations.Resource.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.Resource.UsePrintForms</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.DataExchangeScenarios.TabularSection.ExchangeSettings.Attribute.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1423,7 +2611,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.EmailAddress</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.DontRequestConfirmationOnDataImportOnOpenDataProcessors</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1445,7 +2633,18 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.SMTPPort</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.UseForObjectForm</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.EmailAccounts.Attribute.OutgoingMailServerPort</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1467,7 +2666,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ConversionRuleTable</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.WriteRegisterRecordsAsRecordSets</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1478,18 +2677,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Attribute.ObjectExportedByRef</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ParameterSetupTable</name>
+		<name>InformationRegister.InfobaseObjectMappings.Attribute.ObjectExportedByRef</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1643,6 +2831,50 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.DataExchangeRules.Resource.RuleInfo</name>
 		<right>
 			<name>View</name>
@@ -1654,7 +2886,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.CommentOnDataExport</name>
+		<name>InformationRegister.CalendarSchedules.Resource.DayAddedToSchedule</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1665,7 +2897,29 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.IncomingMailServerPOP3</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ImportSetupDataProcessors</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.EmailAccounts.Attribute.IncomingMailServer</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.Presentation</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1687,7 +2941,51 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetType</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1830,6 +3128,17 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.AdditionalData.Dimension.Property</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.WorldCountries.StandardAttribute.Predefined</name>
 		<right>
 			<name>View</name>
@@ -1918,7 +3227,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.UnapprovedRelationTable</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ParameterSetupTable</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1929,7 +3238,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.TargetTypeString</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.UnapprovedMappingTable</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1940,7 +3249,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Resource.SourceUUIDString</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.CommentOnDataExport</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1951,7 +3260,73 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.IsObjectDeletion</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Purpose</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.Type</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.TargetTypeString</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.InfobaseObjectMappings.Resource.SourceUUIDString</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ClearingRuleTable</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionPlatformVersion</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.IsObjectDeletion</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1963,6 +3338,17 @@
 	</object>
 	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.ObjectCountInTarget</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ArchiveFile</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -1995,7 +3381,62 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.InfoBaseNode</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.InfobaseNode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.ApplicationLock.Attribute.UnlockCode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExportAllowedOnly</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.Attribute.Prefix</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersions.Attribute.VersionDate</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Attribute.MultilineInputField</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2017,18 +3458,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.DontExportObjectsByRefs</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>DataProcessor.DistributedInfoBaseObjectsConversion.Attribute.InfoBaseNode</name>
+		<name>DataProcessor.DistributedInfobaseObjectsConversion.Attribute.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2050,7 +3480,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.DataExchangeScenarios.TabularSection.ExchangeSettings.Attribute.TransactionItemCount</name>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.Resource.UseRelatedObjectCreation</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2105,7 +3535,95 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Sections</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.UsePreview</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.Attribute.Margin</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.UserPrintTemplates.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.UserPrintTemplates.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.UserPrintTemplates.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.UserPrintTemplates.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.Resource.Available</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.PerformAdditionalWriteToXMLControl</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2127,7 +3645,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExportRuleTable</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeRulesVersion</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Resource.PostalCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2149,7 +3678,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ExchangeTransportSettings.Resource.ExecuteExchangeInDebugMode</name>
+		<name>ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Attribute.Comment</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2182,17 +3711,6 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.NodeForExchange</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
 		<name>DataProcessor.ExchangeMessageTransportFILE.Attribute.FILEDataExchangeDirectory</name>
 		<right>
 			<name>View</name>
@@ -2204,7 +3722,227 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.WriteInfoMessagesToLog</name>
+		<name>Catalog.FileStorageVolumes.Attribute.MaxSize</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.Comment</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.CutRowsFromRight</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.UseTransactions</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.Attribute.LinuxFullPath</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2325,7 +4063,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.CommentOnDataImport</name>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList.Attribute.CurrencyCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2337,6 +4075,17 @@
 	</object>
 	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.ObjectTypeString</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.UseFilterByDateForAllObjects</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2369,6 +4118,28 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.WriteOnlyChangedObjectsToInfobase</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachmentExistence.Attribute.ObjectIdentifier</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.DataExchangeCreationWizard.Attribute.FTPCompressOutgoingMessageFile</name>
 		<right>
 			<name>View</name>
@@ -2380,7 +4151,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InteractiveDataExchangeWizard.Attribute.InfoBaseNode</name>
+		<name>DataProcessor.InteractiveDataExchangeWizard.Attribute.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2391,7 +4162,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.Attribute.InfoBaseUserID</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.HandlerDebugModeFlag</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2402,7 +4173,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.OutputInfoMessagesToMessageWindow</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.TargetTableFields</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2413,7 +4184,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.TargetTableFields</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeRuleFileName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2435,7 +4206,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.Attribute.SentNo</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.Attribute.SentNo</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2457,6 +4228,17 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.DataProcessorAccessUserSettings.Dimension.CommandID</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics.Attribute.MappedObjectPercent</name>
 		<right>
 			<name>View</name>
@@ -2468,7 +4250,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.State</name>
+		<name>Catalog.Currencies.Attribute.ImportFromInternet</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2578,7 +4360,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField4</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetField4</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2600,7 +4382,14 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.IncludeUserNameInPresentation</name>
+		<name>Configuration.SubsystemsLibrary</name>
+		<right>
+			<name>WebClient</name>
+			<value>true</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.StartDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2611,7 +4400,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Dimension.InfoBaseNode</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionPassword</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2622,7 +4411,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Active</name>
+		<name>InformationRegister.InfobaseObjectMappings.Dimension.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2633,7 +4422,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.LineNumber</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.StandardAttribute.Active</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2644,7 +4433,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Recorder</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.StandardAttribute.LineNumber</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2655,7 +4444,73 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.StandardAttribute.Period</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CommonInfobaseNodeSettings.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifierObjectVersions.StandardAttribute.Period</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.Kind</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2677,7 +4532,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField1</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.DataExportDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2688,7 +4543,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.UnapprovedRelationTable.Attribute.SourceType</name>
+		<name>InformationRegister.AddressClassifier.Dimension.Code</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2699,7 +4554,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.Kind</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField1</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2710,7 +4565,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeMode</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.UnapprovedMappingTable.Attribute.SourceType</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2722,6 +4577,28 @@
 	</object>
 	<object>
 		<name>DataProcessor.ExchangeMessageTransportEMAIL.Attribute.EMAILMaxMessageSize</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalData.Resource.Value</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.DirectReadingInTargetInfobase</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2776,6 +4653,39 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.ApplicationLock.Attribute.LockPeriodStart</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.Attribute.Weight</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.FileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Dimension.Node</name>
 		<right>
 			<name>View</name>
@@ -2787,7 +4697,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeNodeBackgroundDataImport</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.IsInteractiveMode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2809,7 +4719,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2820,7 +4730,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Dimension.TargetType</name>
+		<name>InformationRegister.InfobaseObjectMappings.Dimension.TargetType</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2875,7 +4785,106 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.DebugModeFlag</name>
+		<name>Catalog.FileStorageVolumes.Attribute.Comment</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.ObjectPropertyValues.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.InfobaseConnectionNameOnServer</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2897,7 +4906,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ImportSetupDataProcessors</name>
+		<name>Catalog.AdditionalDataAndAttributeSets.TabularSection.AdditionalAttributes</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2908,7 +4917,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangePlanInDEName</name>
+		<name>Catalog.EmailAccounts.Attribute.IncomingMailServerPort</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2919,7 +4928,18 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.POP3Port</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.AlgorithmDebugMode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeFileExtractionPassword</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2952,7 +4972,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.Presentation</name>
+		<name>InformationRegister.AddressClassifier.Dimension.CityCodeInCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2963,7 +4983,40 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.KeepMessageAtServerPeriod</name>
+		<name>Catalog.EmailAccounts.Attribute.KeepMessagesOnServerPeriod</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.UseTransactionsForExchangePlansOnExport</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.CurrencyRateImport.TabularSection.CurrencyList.Attribute.Currency</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Dimension.AddressObjectCodeInCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2985,7 +5038,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.PhoneNumber</name>
+		<name>InformationRegister.UserPrintTemplates.Resource.Template</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -2996,7 +5049,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.ExternalUsers.Attribute.DeletePassword</name>
+		<name>InformationRegister.AddressClassifier.Dimension.SettlementCodeInCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3018,6 +5071,17 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.DataProcessorStorage</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.ObjectChangeRecordRuleImport.Attribute.ExchangePlanNameForImport</name>
 		<right>
 			<name>View</name>
@@ -3029,7 +5093,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.BackgroundExchangeNode</name>
+		<name>Catalog.AdditionalDataAndAttributeSets.TabularSection.AdditionalAttributes.Attribute.Property</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3051,7 +5115,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ReportBuilder</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Publication</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3062,7 +5126,139 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExportAllowedOnly</name>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.Dimension.FormType</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.AppendDataToExchangeLog</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.StandardAttribute.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ReadEventHandlersFromExchangeRuleFile</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.ObjectVersioningSettings.Resource.Use</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.Attribute.FillOrder</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3084,10 +5280,14 @@
 		</right>
 	</object>
 	<object>
-		<name>Configuration.SubsystemsLibrary</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.Presentation</name>
 		<right>
-			<name>WebClient</name>
-			<value>true</value>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
 		</right>
 	</object>
 	<object>
@@ -3113,7 +5313,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.SourceTypeString</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.SourceTypeString</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3125,6 +5325,17 @@
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.UserName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalData.Dimension.Object</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3223,7 +5434,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.Type</name>
+		<name>InformationRegister.AttachmentExistence.Dimension.ObjectWithFiles</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3267,7 +5478,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetUUID</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.TargetUUID</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3278,7 +5489,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.SuccessfulDataExchangeStates.Dimension.InfoBaseNode</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ReportBuilder</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3289,7 +5500,40 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField4</name>
+		<name>InformationRegister.SuccessfulDataExchangeStates.Dimension.InfobaseNode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField4</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Dimension.StreetCodeInCode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.Attribute.WindowsFullPath</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3322,6 +5566,17 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.ObjectVersions.Resource.ObjectVersion</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.TabularSection.Statistics</name>
 		<right>
 			<name>View</name>
@@ -3333,7 +5588,29 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.DataExchangeCreationWizard.Attribute.FTPConnectionPath</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AdditionalDataProcessorPurposes.Resource.UseReports</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3399,7 +5676,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.DataImportMode</name>
+		<name>InformationRegister.CalendarSchedules.Dimension.ScheduleDate</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3432,7 +5709,106 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.CommentOnDataImport</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.OptimizedObjectWriting</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Predefined</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Ref</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.IsFolder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Owner</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Parent</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Description</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FileStorageVolumes.StandardAttribute.Code</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3454,7 +5830,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.Check</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ConversionRuleTable</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.Check</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3476,6 +5863,17 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.TabularSection.Commands.Attribute.RunningVariant</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPassiveConnection</name>
 		<right>
 			<name>View</name>
@@ -3487,7 +5885,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DistributedInfoBaseObjectsConversion.Attribute.TransactionItemCount</name>
+		<name>DataProcessor.DistributedInfobaseObjectsConversion.Attribute.TransactionItemCount</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3498,7 +5896,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.InfoBaseObjectMaps.Dimension.SourceType</name>
+		<name>InformationRegister.InfobaseObjectMappings.Dimension.SourceType</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3509,7 +5907,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.InfoBaseNode</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeFileCompressionPassword</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3520,7 +5918,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.SourceTableObjectTypeName</name>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.InfobaseNode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3531,7 +5929,40 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DistributedInfoBaseObjectsConversion.Attribute.EventLogMessageKey</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.SourceTableObjectTypeName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.Dimension.Code</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.DistributedInfobaseObjectsConversion.Attribute.EventLogMessageKey</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.EmailAddress</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3564,7 +5995,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.CommonInfoBaseNodeSettings.Resource.ExecuteMappingInfoAdjustment</name>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.Country</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3575,7 +6006,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.TableFieldList</name>
+		<name>InformationRegister.CommonInfobaseNodeSettings.Resource.ExecuteMappingInfoAdjustment</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3586,7 +6017,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.OutputToErrorMessagesLog</name>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.TableFieldList</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3597,7 +6028,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SourceInfoBasePrefixIsSet</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.Parameters</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3608,7 +6039,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField3</name>
+		<name>DataProcessor.ApplicationLock.Attribute.ProhibitUserWorkTemporarily</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3619,7 +6050,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.Parameters</name>
+		<name>InformationRegister.UserPrintTemplates.Dimension.TemplateName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3630,7 +6061,51 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.DataImportedSuccessfully</name>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.SourceInfobasePrefixIsSet</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceField3</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.Dimension.Level</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.DataImportedSuccessfully</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CurrencyRates.Dimension.Currency</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3652,7 +6127,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.DataExchangeCreationWizard.Attribute.ThisInfoBaseDescription</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.EventHandlerTempFileName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3663,7 +6138,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.OptimizedObjectWriting</name>
+		<name>DataProcessor.DataExchangeCreationWizard.Attribute.ThisInfobaseDescription</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.Information</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3675,6 +6161,50 @@
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.User</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachedFiles.StandardAttribute.Active</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachedFiles.StandardAttribute.LineNumber</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachedFiles.StandardAttribute.Recorder</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AttachedFiles.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3707,7 +6237,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.EmailAccounts.Attribute.OutgoingMailServerSMTP</name>
+		<name>Catalog.EmailAccounts.Attribute.OutgoingMailServer</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3718,7 +6248,29 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectConversion.Attribute.ExchangeFileName</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.AutomaticDataImportSetup</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressAbbreviations.Resource.Abbr</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.PhoneNumber</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3740,29 +6292,18 @@
 		</right>
 	</object>
 	<object>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExecuteDataExchangeInOptimizedFormat</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.ExternalUserGroups.TabularSection.Roles</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.ExternalUserGroups.TabularSection.Roles.Attribute.Role</name>
-		<right>
-			<name>View</name>
-			<value>false</value>
-		</right>
-		<right>
-			<name>Edit</name>
-			<value>false</value>
-		</right>
-	</object>
-	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.ServerDomainName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3784,7 +6325,40 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.Companies.TabularSection.ContactInformation.Attribute.PhoneNumberWithoutCodes</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Resource.Abbr</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.InteractiveDataExchangeWizard.Attribute.ExchangeMessageFileName</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.AddressClassifier.Dimension.CountyCodeInCode</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3806,7 +6380,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.SortTable.Attribute.SortDirection</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.DebugModeFlag</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3817,7 +6391,18 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.Attribute.TargetTableSearchFields</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.SortTable.Attribute.SortDirection</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.Attribute.TargetTableSearchFields</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3839,7 +6424,7 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.SortTable</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.ExchangeLogFileName</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3850,7 +6435,7 @@
 		</right>
 	</object>
 	<object>
-		<name>Catalog.Users.TabularSection.ContactInformation.Attribute.City</name>
+		<name>DataProcessor.UniversalDataExchangeXML.Attribute.WriteInfoMessagesToLog</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3861,7 +6446,7 @@
 		</right>
 	</object>
 	<object>
-		<name>InformationRegister.ExchangeTransportSettings.Resource.ExchangeLogFileName</name>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.SortTable</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3872,7 +6457,29 @@
 		</right>
 	</object>
 	<object>
-		<name>DataProcessor.InfoBaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceUUID</name>
+		<name>Catalog.AdditionalReportsAndDataProcessors.Attribute.UseForListForm</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.Currencies.Attribute.InWordParametersInHomeLanguage</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>DataProcessor.InfobaseObjectMapping.TabularSection.AutomaticallyMappedObjectTable.Attribute.SourceUUID</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
@@ -3884,6 +6491,17 @@
 	</object>
 	<object>
 		<name>Catalog.EmailAccounts.Attribute.POP3AuthenticationMode</name>
+		<right>
+			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.CalendarSchedules.Dimension.Calendar</name>
 		<right>
 			<name>View</name>
 			<value>false</value>

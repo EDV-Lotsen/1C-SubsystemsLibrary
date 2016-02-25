@@ -1,14 +1,15 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-// Determines end points (subscribers) for the broadcast channel of the 
-// Publication/Subscription type.
+#Region InternalProceduresAndFunctions
+
+// Defines the endpoints (subscribers) for
+// broadcast channel of the "Publication/Subscription" type.
 //
 // Parameters:
-// MessageChannel – String. ID of the broadcast message channel.
+//  MessageChannel - String - Message broadcast channel ID.
 //
 // Returns:
-// Array of ExchangePlanRef.MessageExchange - array of end point items.
+//  Array - Endpoints items array, that contains items of ExchangePlanRef.MessageExchange type.
 //
 Function MessageChannelSubscribers(Val MessageChannel) Export
 	
@@ -26,3 +27,7 @@ Function MessageChannelSubscribers(Val MessageChannel) Export
 	
 	Return Query.Execute().Unload().UnloadColumn("Recipient");
 EndFunction
+
+#EndRegion
+
+#EndIf

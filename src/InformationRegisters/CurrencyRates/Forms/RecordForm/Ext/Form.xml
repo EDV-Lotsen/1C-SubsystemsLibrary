@@ -5,40 +5,95 @@
 	<AutoCommandBar name="FormCommandBar" id="-1"/>
 	<Events>
 		<Event name="AfterWrite">AfterWrite</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
 	</Events>
 	<ChildItems>
+		<LabelField name="CurrencyLabel" id="11">
+			<DataPath>CurrencyLabel</DataPath>
+			<ContextMenu name="CurrencyLabelContextMenu" id="12"/>
+			<ExtendedTooltip name="CurrencyLabelExtendedTooltip" id="13"/>
+		</LabelField>
+		<InputField name="CurrencyList" id="9">
+			<DataPath>CurrencyList</DataPath>
+			<ListChoiceMode>true</ListChoiceMode>
+			<ContextMenu name="CurrencyListContextMenu" id="10"/>
+			<ExtendedTooltip name="CurrencyListExtendedTooltip" id="14"/>
+			<Events>
+				<Event name="OnChange">CurrencyOnChange</Event>
+			</Events>
+		</InputField>
 		<InputField name="Period" id="1">
-			<DataPath>Record.Period</DataPath>
+			<DataPath>Write.Period</DataPath>
 			<Wrap>false</Wrap>
 			<ContextMenu name="PeriodContextMenu" id="2"/>
-			<ExtendedTooltip name="PeriodExtendedTooltip" id="9"/>
+			<ExtendedTooltip name="PeriodExtendedTooltip" id="15"/>
 		</InputField>
-		<InputField name="Currency" id="3">
-			<DataPath>Record.Currency</DataPath>
+		<InputField name="Rate" id="5">
+			<DataPath>Write.Rate</DataPath>
 			<Wrap>false</Wrap>
-			<ContextMenu name="CurrencyContextMenu" id="4"/>
-			<ExtendedTooltip name="CurrencyExtendedTooltip" id="10"/>
+			<ContextMenu name="RateContextMenu" id="6"/>
+			<ExtendedTooltip name="RateExtendedTooltip" id="16"/>
 		</InputField>
-		<InputField name="ExchangeRate" id="5">
-			<DataPath>Record.ExchangeRate</DataPath>
+		<InputField name="UnitConversionFactor" id="7">
+			<DataPath>Write.UnitConversionFactor</DataPath>
 			<Wrap>false</Wrap>
-			<ContextMenu name="ExchangeRateContextMenu" id="6"/>
-			<ExtendedTooltip name="ExchangeRateExtendedTooltip" id="11"/>
-		</InputField>
-		<InputField name="Multiplicity" id="7">
-			<DataPath>Record.Multiplicity</DataPath>
-			<Wrap>false</Wrap>
-			<ContextMenu name="MultiplicityContextMenu" id="8"/>
-			<ExtendedTooltip name="MultiplicityExtendedTooltip" id="12"/>
+			<ContextMenu name="UnitConversionFactorContextMenu" id="8"/>
+			<ExtendedTooltip name="UnitConversionFactorExtendedTooltip" id="17"/>
 		</InputField>
 	</ChildItems>
 	<Attributes>
-		<Attribute name="Record" id="1">
+		<Attribute name="Write" id="1">
 			<Type>
 				<v8:Type>cfg:InformationRegisterRecordManager.CurrencyRates</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="CurrencyList" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Currency</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Currencies</v8:Type>
+			</Type>
+			<SavedData>true</SavedData>
+			<FillCheck>ShowError</FillCheck>
+		</Attribute>
+		<Attribute name="CurrencyLabel" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Currency</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="CurrencySelectionAvailable" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Currency selection is available</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<View>
+				<xr:Common>false</xr:Common>
+			</View>
+			<Edit>
+				<xr:Common>false</xr:Common>
+			</Edit>
 		</Attribute>
 	</Attributes>
 </Form>

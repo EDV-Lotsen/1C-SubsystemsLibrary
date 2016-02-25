@@ -1,46 +1,28 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// Object prefixation subsystemю
+// Object prefixation subsystem
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
 
-// Returns a flag that shows whether the configuration includes the CompanyPrefixes
-// functional option.
+// Returns the table of prefix forming attributes specified in the overridable module.
 //
-// Returns:
-//  Boolean - flag that shows whether the configuration includes the CompanyPrefixes
-//            functional option.
-//
-Function HasFunctionalOptionCompanyPrefixes() Export
-
-	Return HasFunctionalOption("CompanyPrefixes");
-
-EndFunction
-
-// Returns a flag that shows whether the configuration includes the InfoBasePrefix
-// functional option.
-//
-// Returns:
-// Boolean - flag that shows whether the configuration includes the InfoBasePrefix
-//           functional option.
-//
-Function HasInfoBasePrefixFunctionalOption() Export
-
-	Return HasFunctionalOption("InfoBasePrefix");
-
-EndFunction	
-
-// Returns a flag that shows whether the configuration includes the functional
-// option of the specified name.
-//
-// Returns:
-//  Boolean - flag that shows whether the configuration includes the functional
-//            option of the specified name.
-//
-Function HasFunctionalOption(FunctionalOptionName)
+Function PrefixFormingAttributes() Export
 	
-	Return Metadata.FunctionalOptions.Find(FunctionalOptionName) <> Undefined;
+	Objects = New ValueTable;
+	Objects.Columns.Add("Object");
+	Objects.Columns.Add("Attribute");
+	
+	ObjectPrefixationOverridable.GetPrefixFormingAttributes(Objects);
+	
+	ObjectAttributes = New Map;
+	
+	For Each Row In Objects Do
+		ObjectAttributes.Insert(Row.Object.FullName(), Row.Attribute);
+	EndDo;
+	
+	Return New FixedMap(ObjectAttributes);
 	
 EndFunction
+
+#EndRegion

@@ -11,10 +11,11 @@
 			</Synonym>
 			<Comment/>
 			<Source>
+				<v8:Type>cfg:CatalogObject.Companies</v8:Type>
 				<v8:Type>cfg:CatalogObject.Users</v8:Type>
 			</Source>
 			<Event>Filling</Event>
-			<Handler>CommonModule.ContactInformationManagementEvents.CIFilling</Handler>
+			<Handler>CommonModule.ContactInformationManagement.FillContactInformationProcessing</Handler>
 		</Properties>
 	</EventSubscription>
 </MetaDataObject>

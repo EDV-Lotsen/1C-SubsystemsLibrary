@@ -1,20 +1,70 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <HomePageWorkArea xmlns="http://v8.1c.ru/8.3/xcf/extrnprops" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<WorkingAreaTemplate>OneColumn</WorkingAreaTemplate>
-	<Column>
-		<Item>
-			<Form>Catalog.Users.Form.ListForm</Form>
-			<Height>10</Height>
-			<Visibility>
-				<xr:Common>true</xr:Common>
-			</Visibility>
-		</Item>
+	<WorkingAreaTemplate>TwoColumnsVariableWidth</WorkingAreaTemplate>
+	<LeftColumn>
 		<Item>
 			<Form>CommonForm.DataExchanges</Form>
 			<Height>10</Height>
 			<Visibility>
+				<xr:Common>false</xr:Common>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>Catalog.Users.Form.ListForm</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>DataProcessor.ActiveUsers.Form.ActiveUsersListForm</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>DocumentJournal.SalesDocuments.Form.ListForm</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.FullAccess">false</xr:Value>
+				<xr:Value name="Role.FullAdministrator">false</xr:Value>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>DataProcessor.EventLog.Form.EventLog</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.FullAccess">true</xr:Value>
+				<xr:Value name="Role.FullAdministrator">true</xr:Value>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>Document.ProductReceipt.Form.ListForm</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.PurchasesManager">true</xr:Value>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>Document.ProductExpense.Form.ListForm</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.Salesman">true</xr:Value>
+			</Visibility>
+		</Item>
+	</LeftColumn>
+	<RightColumn>
+		<Item>
+			<Form>DataProcessor.FullTextSearchInData.Form.SimplifiedForm</Form>
+			<Height>4</Height>
+			<Visibility>
 				<xr:Common>true</xr:Common>
 			</Visibility>
 		</Item>
-	</Column>
+	</RightColumn>
 </HomePageWorkArea>

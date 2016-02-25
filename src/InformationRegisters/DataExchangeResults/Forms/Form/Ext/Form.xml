@@ -1,0 +1,2542 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Data synchronization warnings</v8:content>
+		</v8:item>
+	</Title>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnClose">OnClose</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="FilterGroup" id="38">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Filter group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Filter group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="FilterGroupExtendedTooltip" id="364"/>
+			<ChildItems>
+				<InputField name="Period" id="34">
+					<DataPath>Period</DataPath>
+					<Width>30</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ClearButton>true</ClearButton>
+					<ContextMenu name="PeriodContextMenu" id="35">
+						<Autofill>false</Autofill>
+					</ContextMenu>
+					<ExtendedTooltip name="PeriodExtendedTooltip" id="365"/>
+					<Events>
+						<Event name="OnChange">PeriodOnChange</Event>
+					</Events>
+				</InputField>
+				<InputField name="InfobaseNode" id="36">
+					<DataPath>InfobaseNode</DataPath>
+					<Width>30</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ClearButton>true</ClearButton>
+					<OpenButton>false</OpenButton>
+					<ListChoiceMode>true</ListChoiceMode>
+					<ContextMenu name="InfobaseNodeContextMenu" id="37">
+						<Autofill>false</Autofill>
+					</ContextMenu>
+					<ExtendedTooltip name="InfobaseNodeExtendedTooltip" id="366"/>
+					<Events>
+						<Event name="OnChange">InfobaseNodeOnChange</Event>
+						<Event name="StartChoice">InfobaseNodeStartChoice</Event>
+						<Event name="Clearing">InfobaseNodeClearing</Event>
+						<Event name="ChoiceProcessing">InfobaseNodeChoiceProcessing</Event>
+					</Events>
+				</InputField>
+				<InputField name="SearchString" id="55">
+					<DataPath>SearchString</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Reason</v8:content>
+						</v8:item>
+					</Title>
+					<Width>30</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ClearButton>true</ClearButton>
+					<ContextMenu name="SearchStringContextMenu" id="56">
+						<Autofill>false</Autofill>
+					</ContextMenu>
+					<ExtendedTooltip name="SearchStringExtendedTooltip" id="367"/>
+					<Events>
+						<Event name="OnChange">SearchStringOnChange</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<Pages name="DataExchangeResults" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data exchange result</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data exchange result</v8:content>
+				</v8:item>
+			</ToolTip>
+			<ExtendedTooltip name="DataExchangeResultsExtendedTooltip" id="368"/>
+			<Events>
+				<Event name="OnCurrentPageChange">DataExchangeResultsOnCurrentPageChange</Event>
+			</Events>
+			<ChildItems>
+				<Page name="PageUnpostedDocuments" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Unposted documents</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Unposted documents page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Ref>StdPicture.Document</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<ExtendedTooltip name="PageUnpostedDocumentsExtendedTooltip" id="369"/>
+					<ChildItems>
+						<LabelDecoration name="DocumentsDecoration" id="57">
+							<Height>2</Height>
+							<TextColor>style:InformationText</TextColor>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Documents that are received during data synchronization with the other application, cannot be posted automatically.
+We recommend that you open the document and solve any issues that prevent posting</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="DocumentsDecorationContextMenu" id="58"/>
+							<ExtendedTooltip name="DocumentsDecorationExtendedTooltip" id="370"/>
+						</LabelDecoration>
+						<Table name="UnpostedDocuments" id="4">
+							<ReadOnly>true</ReadOnly>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<DataPath>UnpostedDocuments</DataPath>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>true</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="UnpostedDocumentsContextMenu" id="5">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="UnpostedDocumentsContextMenuChangeSelectedDocuments" id="62">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ChangeSelectedDocuments</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsContextMenuChangeSelectedDocumentsExtendedTooltip" id="371"/>
+									</Button>
+									<Button name="UnpostedDocumentsContextMenuPostDocument" id="63">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.PostDocument</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsContextMenuPostDocumentExtendedTooltip" id="372"/>
+									</Button>
+									<Button name="UnpostedDocumentsContextMenuChange" id="324">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsContextMenuChangeExtendedTooltip" id="373"/>
+									</Button>
+									<ButtonGroup name="UnpostedDocumentsContextMenuIgnoringGroup" id="64">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Unposted documents context menu ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Unposted documents context menu ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="UnpostedDocumentsContextMenuIgnoringGroupExtendedTooltip" id="374"/>
+										<ChildItems>
+											<Button name="UnpostedDocumentsContextMenuIgnoreDocument" id="65">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreDocument</CommandName>
+												<ExtendedTooltip name="UnpostedDocumentsContextMenuIgnoreDocumentExtendedTooltip" id="375"/>
+											</Button>
+											<Button name="UnpostedDocumentsContextMenuNotIgnoreDocument" id="66">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.NotIgnoreDocument</CommandName>
+												<ExtendedTooltip name="UnpostedDocumentsContextMenuNotIgnoreDocumentExtendedTooltip" id="376"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="UnpostedDocumentsContextMenuCopyToClipboard" id="236">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.UnpostedDocuments.StandardCommand.CopyToClipboard</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsContextMenuCopyToClipboardExtendedTooltip" id="377"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="UnpostedDocumentsCommandBar" id="6">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="UnpostedDocumentsChangeSelectedDocuments" id="26">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ChangeSelectedDocuments</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsChangeSelectedDocumentsExtendedTooltip" id="378"/>
+									</Button>
+									<Button name="UnpostedDocumentsPostDocument" id="30">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.PostDocument</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsPostDocumentExtendedTooltip" id="379"/>
+									</Button>
+									<Button name="UnpostedDocumentsChange" id="180">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsChangeExtendedTooltip" id="380"/>
+									</Button>
+									<ButtonGroup name="DocumentIgnoringGroup" id="23">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Document ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Document ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DocumentIgnoringGroupExtendedTooltip" id="381"/>
+										<ChildItems>
+											<Button name="UnpostedDocumentsIgnoreDocument" id="21">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreDocument</CommandName>
+												<ExtendedTooltip name="UnpostedDocumentsIgnoreDocumentExtendedTooltip" id="382"/>
+											</Button>
+											<Button name="UnpostedDocumentsNotIgnoreDocument" id="22">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.NotIgnoreDocument</CommandName>
+												<ExtendedTooltip name="UnpostedDocumentsNotIgnoreDocumentExtendedTooltip" id="383"/>
+											</Button>
+											<Button name="UnpostedDocumentsShowIgnoredUnposted" id="340">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.ShowIgnoredUnposted</CommandName>
+												<ExtendedTooltip name="UnpostedDocumentsShowIgnoredUnpostedExtendedTooltip" id="384"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="UnpostedDocumentsRefresh" id="357">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Refresh</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsRefreshExtendedTooltip" id="385"/>
+									</Button>
+									<Button name="UnpostedDocumentsFind" id="228">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.UnpostedDocuments.StandardCommand.Find</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsFindExtendedTooltip" id="386"/>
+									</Button>
+									<Button name="UnpostedDocumentsCancelSearch" id="229">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.UnpostedDocuments.StandardCommand.CancelSearch</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsCancelSearchExtendedTooltip" id="387"/>
+									</Button>
+									<Button name="UnpostedDocumentsListSettings" id="29">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>true</OnlyInAllActions>
+										<CommandName>Form.Item.UnpostedDocuments.StandardCommand.ListSettings</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsListSettingsExtendedTooltip" id="388"/>
+									</Button>
+									<Button name="UnpostedDocumentsOutputList" id="230">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.UnpostedDocuments.StandardCommand.OutputList</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsOutputListExtendedTooltip" id="389"/>
+									</Button>
+									<Button name="UnpostedDocumentsChangeForm" id="344">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsChangeFormExtendedTooltip" id="390"/>
+									</Button>
+									<Button name="UnpostedDocumentsHelp" id="360">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.StandardCommand.Help</CommandName>
+										<ExtendedTooltip name="UnpostedDocumentsHelpExtendedTooltip" id="391"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="UnpostedDocumentsExtendedTooltip" id="392"/>
+							<SearchStringAddition name="UnpostedDocumentsSearchString" id="499">
+								<AdditionSource>
+									<Item>UnpostedDocuments</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="UnpostedDocumentsSearchStringContextMenu" id="500"/>
+								<ExtendedTooltip name="UnpostedDocumentsSearchStringExtendedTooltip" id="501"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="UnpostedDocumentsViewStatus" id="502">
+								<AdditionSource>
+									<Item>UnpostedDocuments</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="UnpostedDocumentsViewStatusContextMenu" id="503"/>
+								<ExtendedTooltip name="UnpostedDocumentsViewStatusExtendedTooltip" id="504"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="UnpostedDocumentsSearchControl" id="505">
+								<AdditionSource>
+									<Item>UnpostedDocuments</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="UnpostedDocumentsSearchControlContextMenu" id="506"/>
+								<ExtendedTooltip name="UnpostedDocumentsSearchExtendedTooltipControl" id="507"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">UnpostedDocumentsSelection</Event>
+								<Event name="BeforeRowChange">UnpostedDocumentsBeforeRowChange</Event>
+							</Events>
+							<ChildItems>
+								<LabelField name="UnpostedDocumentsRef" id="255">
+									<DataPath>UnpostedDocuments.Ref</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Document reference</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="UnpostedDocumentsRefContextMenu" id="256"/>
+									<ExtendedTooltip name="UnpostedDocumentsRefExtendedTooltip" id="396"/>
+								</LabelField>
+								<ColumnGroup name="UnpostedDocumentsPictureGroup" id="258">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Unposted documents picture group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Unposted documents picture group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="UnpostedDocumentsPictureGroupExtendedTooltip" id="393"/>
+									<ChildItems>
+										<PictureField name="UnpostedDocumentsDeletionMark" id="259">
+											<DataPath>UnpostedDocuments.DeletionMark</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<Width>9</Width>
+											<ValuesPicture>
+												<xr:Ref>CommonPicture.DocumentStatuses</xr:Ref>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</ValuesPicture>
+											<ContextMenu name="UnpostedDocumentsDeletionMarkContextMenu" id="260"/>
+											<ExtendedTooltip name="UnpostedDocumentsDeletionMarkExtendedTooltip" id="394"/>
+										</PictureField>
+										<LabelField name="UnpostedDocumentsTypeString" id="19">
+											<DataPath>UnpostedDocuments.TypeString</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Document kind</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Document type</v8:content>
+												</v8:item>
+											</ToolTip>
+											<ContextMenu name="UnpostedDocumentsTypeStringContextMenu" id="20"/>
+											<ExtendedTooltip name="UnpostedDocumentsTypeStringExtendedTooltip" id="395"/>
+										</LabelField>
+									</ChildItems>
+								</ColumnGroup>
+								<LabelField name="UnpostedDocumentsDocumentNumber" id="251">
+									<DataPath>UnpostedDocuments.DocumentNumber</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Number</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>document number</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>14</Width>
+									<ContextMenu name="UnpostedDocumentsDocumentNumberContextMenu" id="252"/>
+									<ExtendedTooltip name="UnpostedDocumentsDocumentNumberExtendedTooltip" id="397"/>
+								</LabelField>
+								<LabelField name="UnpostedDocumentsDocumentDate" id="253">
+									<DataPath>UnpostedDocuments.DocumentDate</DataPath>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>the date of the document</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>15</Width>
+									<ContextMenu name="UnpostedDocumentsDocumentDateContextMenu" id="254"/>
+									<ExtendedTooltip name="UnpostedDocumentsDocumentDateExtendedTooltip" id="398"/>
+								</LabelField>
+								<LabelField name="UnpostedDocumentsReason" id="15">
+									<DataPath>UnpostedDocuments.Reason</DataPath>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Reason why document cannot be posted</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>10</Width>
+									<ContextMenu name="UnpostedDocumentsReasonContextMenu" id="16"/>
+									<ExtendedTooltip name="UnpostedDocumentsReasonExtendedTooltip" id="399"/>
+								</LabelField>
+								<LabelField name="UnpostedDocumentsOccurrenceDate" id="13">
+									<DataPath>UnpostedDocuments.OccurrenceDate</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Date</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Unposted document receiving date</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>15</Width>
+									<ContextMenu name="UnpostedDocumentsOccurrenceDateContextMenu" id="14"/>
+									<ExtendedTooltip name="UnpostedDocumentsOccurrenceDateExtendedTooltip" id="400"/>
+								</LabelField>
+								<LabelField name="UnpostedDocumentsInfobaseNode" id="11">
+									<DataPath>UnpostedDocuments.InfobaseNode</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Sender</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The infobase or application from which the document is received</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>15</Width>
+									<ContextMenu name="UnpostedDocumentsInfobaseNodeContextMenu" id="12"/>
+									<ExtendedTooltip name="UnpostedDocumentsInfobaseNodeExtendedTooltip" id="401"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+						<InputField name="UnpostedDocumentsDetailedReason" id="170">
+							<DataPath>Items.UnpostedDocuments.CurrentData.Reason</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>The document cannot be posted automatically by the following reason</v8:content>
+								</v8:item>
+							</Title>
+							<Height>4</Height>
+							<MultiLine>true</MultiLine>
+							<ContextMenu name="UnpostedDocumentsDetailedReasonContextMenu" id="171"/>
+							<ExtendedTooltip name="UnpostedDocumentsDetailedReasonExtendedTooltip" id="402"/>
+						</InputField>
+					</ChildItems>
+				</Page>
+				<Page name="PageBlankAttributes" id="39">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Blank attributes</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Blank attributes page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Ref>StdPicture.Catalog</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<ExtendedTooltip name="PageBlankAttributesExtendedTooltip" id="403"/>
+					<ChildItems>
+						<LabelDecoration name="ObjectsDecoration" id="59">
+							<Height>2</Height>
+							<TextColor>style:InformationText</TextColor>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Objects that are received during data synchronization with the other application, cannot be written properly because
+one or several attributes are filled incorrectly. We recommend that you open the catalog item and fill these attributes.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="ObjectsDecorationContextMenu" id="60"/>
+							<ExtendedTooltip name="ObjectsDecorationExtendedTooltip" id="404"/>
+						</LabelDecoration>
+						<Table name="BlankAttributes" id="67">
+							<ReadOnly>true</ReadOnly>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<EnableStartDrag>true</EnableStartDrag>
+							<DataPath>BlankAttributes</DataPath>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>true</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="BlankAttributesContextMenu" id="68">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="BlankAttributesContextMenuChangeSelectedObjects" id="100">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ChangeSelectedObjects</CommandName>
+										<ExtendedTooltip name="BlankContextMenuAttributesChangeSelectedObjectsExtendedTooltip" id="405"/>
+									</Button>
+									<Button name="BlankAttributesContextMenuChange" id="276">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="BlankAttributesContextMenuChangeExtendedTooltip" id="406"/>
+									</Button>
+									<ButtonGroup name="BlankAttributesContextMenuIgnoringGroup" id="101">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Blank attributes context menu ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Blank attributes context menu ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="BlankAttributesContextMenuIgnoringGroupExtendedTooltip" id="407"/>
+										<ChildItems>
+											<Button name="BlankAttributesContextMenuIgnoreObject" id="97">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreObject</CommandName>
+												<ExtendedTooltip name="BlankAttributesContextMenuIgnoreObjectExtendedTooltip" id="408"/>
+											</Button>
+											<Button name="BlankAttributesContextMenuNotIgnoreObject" id="99">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.NotIgnoreObject</CommandName>
+												<ExtendedTooltip name="BlankAttributesContextMenuNotIgnoreObjectExtendedTooltip" id="409"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="BlankAttributesContextMenuCopyToClipboard" id="237">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.BlankAttributes.StandardCommand.CopyToClipboard</CommandName>
+										<ExtendedTooltip name="BlankAttributesContextMenuCopyToClipboardExtendedTooltip" id="410"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="BlankAttributesCommandBar" id="69">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="BlankAttributesChangeSelectedObjects" id="91">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ChangeSelectedObjects</CommandName>
+										<ExtendedTooltip name="BlankAttributesChangeSelectedObjectsExtendedTooltip" id="411"/>
+									</Button>
+									<Button name="BlankAttributesChange" id="181">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="BlankAttributesChangeExtendedTooltip" id="412"/>
+									</Button>
+									<ButtonGroup name="ObjectIgnoringGroup" id="92">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Object ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Object ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="ObjectIgnoringGroupExtendedTooltip" id="413"/>
+										<ChildItems>
+											<Button name="BlankAttributesIgnoreObject" id="89">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreObject</CommandName>
+												<ExtendedTooltip name="BlankAttributesIgnoreObjectExtendedTooltip" id="414"/>
+											</Button>
+											<Button name="BlankAttributesNotIgnoreObject" id="167">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.NotIgnoreObject</CommandName>
+												<ExtendedTooltip name="BlankAttributesNotIgnoreObjectExtendedTooltip" id="415"/>
+											</Button>
+											<Button name="BlankAttributesShowIgnoredBlank" id="341">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.ShowIgnoredBlank</CommandName>
+												<ExtendedTooltip name="BlankAttributesShowIgnoredBlankExtendedTooltip" id="416"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="BlankAttributesRefresh" id="358">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Refresh</CommandName>
+										<ExtendedTooltip name="BlankAttributesRefreshExtendedTooltip" id="417"/>
+									</Button>
+									<Button name="BlankAttributesFind" id="234">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.BlankAttributes.StandardCommand.Find</CommandName>
+										<ExtendedTooltip name="BlankAttributesFindExtendedTooltip" id="418"/>
+									</Button>
+									<Button name="BlankAttributesCancelSearch" id="235">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.BlankAttributes.StandardCommand.CancelSearch</CommandName>
+										<ExtendedTooltip name="BlankAttributesCancelSearchExtendedTooltip" id="419"/>
+									</Button>
+									<Button name="BlankOutputAttributesList" id="233">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.BlankAttributes.StandardCommand.OutputList</CommandName>
+										<ExtendedTooltip name="BlankAttributesOutputListExtendedTooltip" id="420"/>
+									</Button>
+									<Button name="BlankAttributesListSettings" id="96">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>true</OnlyInAllActions>
+										<CommandName>Form.Item.BlankAttributes.StandardCommand.ListSettings</CommandName>
+										<ExtendedTooltip name="BlankAttributesListSettingsExtendedTooltip" id="421"/>
+									</Button>
+									<Button name="BlankAttributesChangeForm" id="345">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+										<ExtendedTooltip name="BlankAttributesChangeFormExtendedTooltip" id="422"/>
+									</Button>
+									<Button name="BlankAttributesHelp" id="361">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.StandardCommand.Help</CommandName>
+										<ExtendedTooltip name="BlankAttributesHelpExtendedTooltip" id="423"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="BlankAttributesExtendedTooltip" id="424"/>
+							<SearchStringAddition name="BlankAttributesSearchString" id="508">
+								<AdditionSource>
+									<Item>BlankAttributes</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="BlankAttributesSearchStringContextMenu" id="509"/>
+								<ExtendedTooltip name="BlankAttributesSearchStringExtendedTooltip" id="510"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="BlankAttributesViewStatus" id="511">
+								<AdditionSource>
+									<Item>BlankAttributes</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="BlankAttributesViewStatusContextMenu" id="512"/>
+								<ExtendedTooltip name="BlankAttributesViewStatusExtendedTooltip" id="513"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="BlankAttributesSearchControl" id="514">
+								<AdditionSource>
+									<Item>BlankAttributes</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="BlankAttributesSearchControlContextMenu" id="515"/>
+								<ExtendedTooltip name="BlankAttributesSearchControlExtendedTooltip" id="516"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">BlankAttributesSelection</Event>
+								<Event name="BeforeRowChange">BlankAttributesBeforeRowChange</Event>
+							</Events>
+							<ChildItems>
+								<ColumnGroup name="BlankAttributesPictureGroup" id="261">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Blank attributes picture group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Blank attributes picture group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>InCell</Group>
+									<ExtendedTooltip name="BlankAttributesPictureGroupExtendedTooltip" id="425"/>
+									<ChildItems>
+										<PictureField name="BlankAttributesDeletionMark" id="262">
+											<DataPath>BlankAttributes.DeletionMark</DataPath>
+											<TitleLocation>None</TitleLocation>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data type</v8:content>
+												</v8:item>
+											</ToolTip>
+											<ValuesPicture>
+												<xr:Ref>CommonPicture.ItemIcons</xr:Ref>
+												<xr:LoadTransparent>false</xr:LoadTransparent>
+											</ValuesPicture>
+											<ContextMenu name="BlankAttributesDeletionMarkContextMenu" id="263"/>
+											<ExtendedTooltip name="BlankAttributesDeletionMarkExtendedTooltip" id="426"/>
+										</PictureField>
+										<LabelField name="BlankAttributesTypeString" id="82">
+											<DataPath>BlankAttributes.TypeString</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data kind</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="BlankAttributesTypeStringContextMenu" id="83"/>
+											<ExtendedTooltip name="BlankAttributesTypeStringExtendedTooltip" id="427"/>
+										</LabelField>
+									</ChildItems>
+								</ColumnGroup>
+								<LabelField name="BlankAttributesRef" id="84">
+									<DataPath>BlankAttributes.Ref</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data items with blank attributes</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="BlankAttributesRefContextMenu" id="85"/>
+									<ExtendedTooltip name="BlankAttributesRefExtendedTooltip" id="428"/>
+								</LabelField>
+								<LabelField name="BlankAttributesOccurrenceDate" id="76">
+									<DataPath>BlankAttributes.OccurrenceDate</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Date</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Date received</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="BlankAttributesOccurrenceDateContextMenu" id="77"/>
+									<ExtendedTooltip name="BlankAttributesOccurrenceDateExtendedTooltip" id="429"/>
+								</LabelField>
+								<LabelField name="BlankAttributesReason" id="78">
+									<DataPath>BlankAttributes.Reason</DataPath>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The reason why the data cannot be written correctly</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="BlankAttributesReasonContextMenu" id="79"/>
+									<ExtendedTooltip name="BlankAttributesReasonExtendedTooltip" id="430"/>
+								</LabelField>
+								<LabelField name="BlankAttributesInfobaseNode" id="74">
+									<DataPath>BlankAttributes.InfobaseNode</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Sender</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The infobase or application from which data is received</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="BlankAttributesInfobaseNodeContextMenu" id="75"/>
+									<ExtendedTooltip name="BlankAttributesInfobaseNodeExtendedTooltip" id="431"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+						<InputField name="BlankAttributesDetailedReason" id="174">
+							<DataPath>Items.BlankAttributes.CurrentData.Reason</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data item cannot be written by the following reason</v8:content>
+								</v8:item>
+							</Title>
+							<Height>4</Height>
+							<MultiLine>true</MultiLine>
+							<ContextMenu name="BlankAttributesDetailedReasonContextMenu" id="175"/>
+							<ExtendedTooltip name="BlankAttributesDetailedReasonExtendedTooltip" id="432"/>
+						</InputField>
+					</ChildItems>
+				</Page>
+				<Page name="ConflictPage" id="42">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Conflicts</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Conflicts page</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Ref>CommonPicture.DataSynchronizationConflict</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</Picture>
+					<ExtendedTooltip name="ConflictPageExtendedTooltip" id="433"/>
+					<ChildItems>
+						<LabelDecoration name="ConflictsDecoration" id="176">
+							<Height>2</Height>
+							<TextColor>style:InformationText</TextColor>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>The same data was changed in both applications, and as the result two versions
+of a catalog item (document) were created and conflict occurred that was resolved automatically.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="ConflictsDecorationContextMenu" id="177"/>
+							<ExtendedTooltip name="ConflictsDecorationExtendedTooltip" id="434"/>
+						</LabelDecoration>
+						<Table name="Conflicts" id="102">
+							<ReadOnly>true</ReadOnly>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<EnableStartDrag>true</EnableStartDrag>
+							<DataPath>Conflicts</DataPath>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>true</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="CoordinationWithContextMenu" id="103">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="ConflictsContextMenuCompareWithCurrentConflictVersion" id="161">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ShowConflictDifference</CommandName>
+										<ExtendedTooltip name="ConflictsContextMenuCompareWithCurrentConflictVersionExtendedTooltip" id="435"/>
+									</Button>
+									<Button name="ConflictsContextMenuOpenVersionUpBeforeConflict" id="162">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.OpenVersionUpBeforeConflict</CommandName>
+										<ExtendedTooltip name="ConflictsContextMenuOpenVersionUpBeforeConflictExtendedTooltip" id="436"/>
+									</Button>
+									<Button name="ConflictsContextMenuOpenConflictVersion" id="338">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.OpenConflictVersion</CommandName>
+										<ExtendedTooltip name="ConflictsContextMenuOpenConflictVersionExtendedTooltip" id="437"/>
+									</Button>
+									<Button name="ConflictsContextMenuChange" id="277">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="ConflictsContextMenuChangeExtendedTooltip" id="438"/>
+									</Button>
+									<ButtonGroup name="CoordinationWithContextMenuSplitterGroup" id="349">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Coordination with context menu splitter group</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="ConflictsContextMenuSplitterGroupExtendedTooltip" id="439"/>
+										<ChildItems>
+											<Button name="ConflictsContextMenuNotIgnoreConflict" id="317">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.NotIgnoreConflict</CommandName>
+												<ExtendedTooltip name="ConflictsContextMenuNotIgnoreConflictExtendedTooltip" id="440"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="ConflictsContextMenuCopyToClipboard" id="274">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.Conflicts.StandardCommand.CopyToClipboard</CommandName>
+										<ExtendedTooltip name="ConflictsContextMenuCopyToClipboardExtendedTooltip" id="441"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="ConflictsCommandBar" id="104">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="ConflictsCompareWithCurrentConflictVersion" id="158">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ShowConflictDifference</CommandName>
+										<ExtendedTooltip name="ConflictsCompareWithCurrentConflictVersionExtendedTooltip" id="442"/>
+									</Button>
+									<Button name="ConflictsOpenCollisionVersion" id="157">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.OpenVersionUpBeforeConflict</CommandName>
+										<ExtendedTooltip name="ConflictsOpenCollisionVersionExtendedTooltip" id="443"/>
+									</Button>
+									<Button name="ConflictsOpenConflictVersion" id="356">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.OpenConflictVersion</CommandName>
+										<ExtendedTooltip name="ConflictsOpenConflictVersionExtendedTooltip" id="444"/>
+									</Button>
+									<Button name="ConflictsChange" id="201">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.Change</CommandName>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Edit data</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="ConflictsChangeExtendedTooltip" id="445"/>
+									</Button>
+									<ButtonGroup name="ConflictsIgnoringGroup" id="314">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Conflicts ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Conflicts ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="ConflictsIgnoringGroupExtendedTooltip" id="446"/>
+										<ChildItems>
+											<Button name="ConflictsIgnoreConflict" id="272">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreConflict</CommandName>
+												<ExtendedTooltip name="ConflictsIgnoreConflictExtendedTooltip" id="447"/>
+											</Button>
+											<Button name="ConflictsNotIgnoreConflict" id="312">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.NotIgnoreConflict</CommandName>
+												<ExtendedTooltip name="ConflictsNotIgnoreConflictExtendedTooltip" id="448"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="ConflictsChangeConflictResult" id="355">
+										<Type>CommandBarButton</Type>
+										<Representation>PictureAndText</Representation>
+										<CommandName>Form.Command.ChangeConflictResult</CommandName>
+										<Picture>
+											<xr:Ref>CommonPicture.DataSynchronizationConflict</xr:Ref>
+											<xr:LoadTransparent>false</xr:LoadTransparent>
+										</Picture>
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Review</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="ConflictsChangeConflictResultExtendedTooltip" id="449"/>
+									</Button>
+									<Button name="ConflictsShowIgnoredConflicts" id="342">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.ShowIgnoredConflicts</CommandName>
+										<ExtendedTooltip name="ConflictsShowIgnoredConflictsExtendedTooltip" id="450"/>
+									</Button>
+									<ButtonGroup name="ConflictsInternalGroup" id="156">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Conflicts internal group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Conflicts internal group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="ConflictsInternalGroupExtendedTooltip" id="451"/>
+										<ChildItems>
+											<Button name="FormRefresh" id="28">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>true</OnlyInAllActions>
+												<CommandName>Form.Command.Refresh</CommandName>
+												<ExtendedTooltip name="FormRefreshExtendedTooltip" id="452"/>
+											</Button>
+											<Button name="ConflictsFind" id="238">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.Conflicts.StandardCommand.Find</CommandName>
+												<ExtendedTooltip name="ConflictsFindExtendedTooltip" id="453"/>
+											</Button>
+											<Button name="ConflictsCancelSearch" id="239">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.Conflicts.StandardCommand.CancelSearch</CommandName>
+												<ExtendedTooltip name="ConflictsCancelSearchExtendedTooltip" id="454"/>
+											</Button>
+											<Button name="OutputConflictsList" id="240">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.Conflicts.StandardCommand.OutputList</CommandName>
+												<ExtendedTooltip name="ConflictsOutputListExtendedTooltip" id="455"/>
+											</Button>
+											<Button name="ConflictsListSettings" id="155">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>true</OnlyInAllActions>
+												<CommandName>Form.Item.Conflicts.StandardCommand.ListSettings</CommandName>
+												<ExtendedTooltip name="ConflictsListSettingsExtendedTooltip" id="456"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="ConflictsChangeForm" id="346">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+										<ExtendedTooltip name="ConflictsChangeFormExtendedTooltip" id="457"/>
+									</Button>
+									<Button name="ConflictsHelp" id="362">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.StandardCommand.Help</CommandName>
+										<ExtendedTooltip name="ConflictsHelpExtendedTooltip" id="458"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="ConflictsExtendedTooltip" id="459"/>
+							<SearchStringAddition name="ConflictsSearchString" id="517">
+								<AdditionSource>
+									<Item>Conflicts</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ConflictsSearchStringContextMenu" id="518"/>
+								<ExtendedTooltip name="ConflictsSearchStringExtendedTooltip" id="519"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="ConflictsViewStatus" id="520">
+								<AdditionSource>
+									<Item>Conflicts</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ConflictsViewStatusContextMenu" id="521"/>
+								<ExtendedTooltip name="ConflictsViewStatusExtendedTooltip" id="522"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="ConflictsSearchControl" id="523">
+								<AdditionSource>
+									<Item>Conflicts</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="ConflictsSearchControlContextMenu" id="524"/>
+								<ExtendedTooltip name="ConflictsSearchControlExtendedTooltip" id="525"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="OnActivateRow">ConflictsOnActivateRow</Event>
+								<Event name="BeforeRowChange">ConflictsBeforeRowChange</Event>
+							</Events>
+							<ChildItems>
+								<LabelField name="ConflictsDate" id="332">
+									<DataPath>Conflicts.Date</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Conflict date</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Conflict occurrence date</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="ConflictsDateContextMenu" id="333"/>
+									<ExtendedTooltip name="ConflictsDateExtendedTooltip" id="460"/>
+								</LabelField>
+								<LabelField name="ConflictsRef" id="330">
+									<DataPath>Conflicts.Ref</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Catalog item (document) which there is a conflict</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="ConflictsRefContextMenu" id="331"/>
+									<ExtendedTooltip name="ConflictsRefExtendedTooltip" id="461"/>
+								</LabelField>
+								<LabelField name="ConflictsTypeString" id="301">
+									<DataPath>Conflicts.TypeString</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data kind</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Catalog (document) kind</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="ConflictsTypeStringContextMenu" id="302"/>
+									<ExtendedTooltip name="ConflictsTypeStringExtendedTooltip" id="462"/>
+								</LabelField>
+								<LabelField name="ConflictsOtherVersionAuthor" id="291">
+									<DataPath>Conflicts.OtherVersionAuthor</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data is received from other application</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The infobase or application from which the version is received</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="ConflictsOtherVersionAuthorContextMenu" id="292"/>
+									<ExtendedTooltip name="ConflictsOtherVersionAuthorExtendedTooltip" id="463"/>
+								</LabelField>
+								<LabelField name="ConflictsOtherVersionAccepted" id="299">
+									<DataPath>Conflicts.OtherVersionAccepted</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Received version status</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Status of version that is received from other application</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Format>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>BF=Declined; BT=Accepted</v8:content>
+										</v8:item>
+									</Format>
+									<ContextMenu name="ConflictsOtherVersionAcceptedContextMenu" id="300"/>
+									<ExtendedTooltip name="ConflictsOtherVersionAcceptedExtendedTooltip" id="464"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+						<InputField name="ConflictReason" id="353">
+							<DataPath>ConflictReason</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<TitleLocation>Top</TitleLocation>
+							<Height>4</Height>
+							<MultiLine>true</MultiLine>
+							<ContextMenu name="ConflictReasonContextMenu" id="354"/>
+							<ExtendedTooltip name="ConflictReasonExtendedTooltip" id="465"/>
+						</InputField>
+					</ChildItems>
+				</Page>
+				<Page name="PageDeclinedByProhibitionDate" id="50">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Declined due to date</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Page declined by prohibition date</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Ref>CommonPicture.DataSynchronizationDeclinedByDate</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</Picture>
+					<ExtendedTooltip name="PageDeclinedByProhibitionDateExtendedTooltip" id="466"/>
+					<ChildItems>
+						<LabelDecoration name="DeclinedItemsDecoration" id="178">
+							<Height>2</Height>
+							<TextColor>style:InformationText</TextColor>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>During data synchronization some data item were declined due to the data import prohibition date is
+set. As the result declined versions of catalog items (documents) occurred. To accept version regardless of any prohibitions, use the "Accept version" command.</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="DeclinedItemsDecorationContextMenu" id="179"/>
+							<ExtendedTooltip name="DeclinedItemsDecorationExtendedTooltip" id="467"/>
+						</LabelDecoration>
+						<Table name="DeclinedByDate" id="128">
+							<ReadOnly>true</ReadOnly>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<UseAlternationRowColor>true</UseAlternationRowColor>
+							<EnableStartDrag>true</EnableStartDrag>
+							<DataPath>DeclinedByDate</DataPath>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<AutoRefresh>false</AutoRefresh>
+							<AutoRefreshPeriod>60</AutoRefreshPeriod>
+							<Period>
+								<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+								<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+								<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+							</Period>
+							<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+							<RestoreCurrentRow>false</RestoreCurrentRow>
+							<TopLevelParent xsi:nil="true"/>
+							<ShowRoot>true</ShowRoot>
+							<AllowRootChoice>false</AllowRootChoice>
+							<UpdateOnDataChange>Auto</UpdateOnDataChange>
+							<ContextMenu name="DeclinedByDateContextMenu" id="129">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="DeclinedByDateContextMenuCompareWithDataInInfobase" id="150">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ShowDifferencesNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateContextMenuCompareWithDataInInfobaseExtendedTooltip" id="468"/>
+									</Button>
+									<Button name="DeclinedByDateContextMenuAcceptVersion" id="323">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.AcceptVersionNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateContextMenuAcceptVersionExtendedTooltip" id="469"/>
+									</Button>
+									<Button name="DeclinedByDateContextMenuChange" id="279">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="DeclinedByDateContextMenuChangeExtendedTooltip" id="470"/>
+									</Button>
+									<Button name="DeclinedByDateContextMenuOpenVersionNotAcceptedInThisApplication" id="339">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.OpenVersionNotAcceptedInThisApplication</CommandName>
+										<ExtendedTooltip name="DeclinedByDateContextMenuOpenVersionIsNotAcceptedInThisApplicationExtendedTooltip" id="471"/>
+									</Button>
+									<Button name="DeclinedByDateContextMenuOpenVersion" id="151">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.OpenVersionNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateOpenContextMenuVersionExtendedTooltip" id="472"/>
+									</Button>
+									<ButtonGroup name="DeclinedByDateContextMenuIgnoringGroup" id="322">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date context menu ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date context menu ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DeclinedByDateContextMenuIgnoringGroupExtendedTooltip" id="473"/>
+										<ChildItems>
+											<Button name="DeclinedByDateContextMenuIgnoreNotAccepted" id="319">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreNotAccepted</CommandName>
+												<ExtendedTooltip name="DeclinedByDateContextMenuIgnoreNotAcceptedExtendedTooltip" id="474"/>
+											</Button>
+											<Button name="DeclinedByDateContextMenuNotIgnoreNotAccepted" id="318">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.NotIgnoreNotAccepted</CommandName>
+												<ExtendedTooltip name="DeclinedByDateContextMenuNotIgnoreNotAcceptedExtendedTooltip" id="475"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="DeclinedByDateContextMenuCopyToClipboard" id="257">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Item.DeclinedByDate.StandardCommand.CopyToClipboard</CommandName>
+										<ExtendedTooltip name="DeclinedByDateContextMenuCopyToClipboardExtendedTooltip" id="476"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="DeclinedByDateCommandBar" id="130">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="DeclinedByDateCompareWithDataInInfobase" id="144">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ShowDifferencesNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateCompareWithInfobaseDataInExtendedTooltip" id="477"/>
+									</Button>
+									<Button name="DeclinedByDateAcceptVersion" id="320">
+										<Type>CommandBarButton</Type>
+										<Enabled>false</Enabled>
+										<CommandName>Form.Command.AcceptVersionNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateAcceptVersionExtendedTooltip" id="478"/>
+									</Button>
+									<Button name="DeclinedByDateChange" id="227">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.Change</CommandName>
+										<ExtendedTooltip name="DeclinedByDateChangeExtendedTooltip" id="479"/>
+									</Button>
+									<Button name="DeclinedByDateOpenVersion" id="143">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.Command.OpenVersionNotAccepted</CommandName>
+										<ExtendedTooltip name="DeclinedByDateOpenVersionExtendedTooltip" id="480"/>
+									</Button>
+									<ButtonGroup name="DeclinedByDateIgnoringGroup" id="315">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date ignoring group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date ignoring group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DeclinedByDateIgnoringGroupExtendedTooltip" id="481"/>
+										<ChildItems>
+											<Button name="DeclinedByDateIgnoreNotAccepted" id="311">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.IgnoreNotAccepted</CommandName>
+												<ExtendedTooltip name="DeclinedByDateIgnoreNotAcceptedExtendedTooltip" id="482"/>
+											</Button>
+											<Button name="DeclinedByDateNotIgnoreNotAccepted" id="313">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.NotIgnoreNotAccepted</CommandName>
+												<ExtendedTooltip name="DeclinedByDateNotIgnoreNotAcceptedExtendedTooltip" id="483"/>
+											</Button>
+											<Button name="DeclinedByDateShowIgnoredNotAccepted" id="343">
+												<Type>CommandBarButton</Type>
+												<OnlyInAllActions>false</OnlyInAllActions>
+												<CommandName>Form.Command.ShowIgnoredNotAccepted</CommandName>
+												<ExtendedTooltip name="DeclinedByDateShowIgnoredNotAcceptedExtendedTooltip" id="484"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="DeclinedByDateInternalGroup" id="153">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date internal group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Declined by date internal group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DeclinedByDateInternalGroupExtendedTooltip" id="485"/>
+										<ChildItems>
+											<Button name="DeclinedByRefreshDate" id="359">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.Refresh</CommandName>
+												<ExtendedTooltip name="DeclinedByDateRefreshExtendedTooltip" id="486"/>
+											</Button>
+											<Button name="DeclinedByDateFind" id="241">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.DeclinedByDate.StandardCommand.Find</CommandName>
+												<ExtendedTooltip name="DeclinedByDateFindExtendedTooltip" id="487"/>
+											</Button>
+											<Button name="DeclinedByDateCancelSearch" id="242">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.DeclinedByDate.StandardCommand.CancelSearch</CommandName>
+												<ExtendedTooltip name="DeclinedByDateCancelSearchExtendedTooltip" id="488"/>
+											</Button>
+											<Button name="DeclinedByDateOutputList" id="243">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.DeclinedByDate.StandardCommand.OutputList</CommandName>
+												<ExtendedTooltip name="DeclinedByDateOutputListExtendedTooltip" id="489"/>
+											</Button>
+											<Button name="DeclinedByDateListSettings" id="152">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.DeclinedByDate.StandardCommand.ListSettings</CommandName>
+												<ExtendedTooltip name="DeclinedByDateListSettingsExtendedTooltip" id="490"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="DeclinedByDateChangeForm" id="347">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+										<ExtendedTooltip name="DeclinedByDateChangeFormExtendedTooltip" id="491"/>
+									</Button>
+									<Button name="DeclinedByDateHelp" id="363">
+										<Type>CommandBarButton</Type>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.StandardCommand.Help</CommandName>
+										<ExtendedTooltip name="DeclinedByDateHelpExtendedTooltip" id="492"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="DeclinedByDateExtendedTooltip" id="493"/>
+							<SearchStringAddition name="DeclinedByDateSearchString" id="526">
+								<AdditionSource>
+									<Item>DeclinedByDate</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="DeclinedByDateSearchStringContextMenu" id="527"/>
+								<ExtendedTooltip name="DeclinedByDateSearchStringExtendedTooltip" id="528"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="DeclinedByDateViewStatus" id="529">
+								<AdditionSource>
+									<Item>DeclinedByDate</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="DeclinedByDateViewStatusContextMenu" id="530"/>
+								<ExtendedTooltip name="DeclinedByDateViewStatusExtendedTooltip" id="531"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="DeclinedByDateSearchControl" id="532">
+								<AdditionSource>
+									<Item>DeclinedByDate</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="DeclinedByDateSearchControlContextMenu" id="533"/>
+								<ExtendedTooltip name="DeclinedByDateSearchControlExtendedTooltip" id="534"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="OnActivateRow">DeclinedByDateOnActivateRow</Event>
+								<Event name="BeforeRowChange">DeclinedByDateBeforeRowChange</Event>
+							</Events>
+							<ChildItems>
+								<LabelField name="DeclinedByDateDate" id="334">
+									<DataPath>DeclinedByDate.Date</DataPath>
+									<ContextMenu name="DeclinedByDateDateContextMenu" id="335"/>
+									<ExtendedTooltip name="DeclinedByDateDateExtendedTooltip" id="494"/>
+								</LabelField>
+								<LabelField name="DeclinedByDateRef" id="220">
+									<DataPath>DeclinedByDate.Ref</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Items declined due to prohibition date</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="DeclinedByDateRefContextMenu" id="221"/>
+									<ExtendedTooltip name="DeclinedByDateRefExtendedTooltip" id="495"/>
+								</LabelField>
+								<LabelField name="DeclinedByDateTypeString" id="303">
+									<DataPath>DeclinedByDate.TypeString</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data kind</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data type</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="DeclinedByDateTypeStringContextMenu" id="304"/>
+									<ExtendedTooltip name="DeclinedByDateTypeStringExtendedTooltip" id="496"/>
+								</LabelField>
+								<LabelField name="DeclinedByDateOtherVersionAuthor" id="247">
+									<DataPath>DeclinedByDate.OtherVersionAuthor</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data is received from other application</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The infobase or application from which the version is received</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="DeclinedByDateOtherVersionAuthorContextMenu" id="248"/>
+									<ExtendedTooltip name="DeclinedByDateOtherVersionAuthorExtendedTooltip" id="497"/>
+								</LabelField>
+							</ChildItems>
+						</Table>
+						<InputField name="DeclinedByDateDetailedProhibitionReason" id="225">
+							<DataPath>Items.DeclinedByDate.CurrentData.ProhibitionReason</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data items were declined due to prohibition</v8:content>
+								</v8:item>
+							</Title>
+							<Height>4</Height>
+							<MultiLine>true</MultiLine>
+							<ContextMenu name="DeclinedByDateDetailedProhibitionReasonContextMenu" id="226"/>
+							<ExtendedTooltip name="DeclinedByDateDetailedProhibitionReasonExtendedTooltip" id="498"/>
+						</InputField>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="UnpostedDocuments" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Unposted documents</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>UnpostedDocuments.TypeString</Field>
+				<Field>UnpostedDocuments.Skipped</Field>
+				<Field>UnpostedDocuments.Ref</Field>
+				<Field>UnpostedDocuments.Reason</Field>
+				<Field>UnpostedDocuments.OccurrenceDate</Field>
+				<Field>UnpostedDocuments.InfobaseNode</Field>
+				<Field>UnpostedDocuments.DocumentNumber</Field>
+				<Field>UnpostedDocuments.DocumentDate</Field>
+				<Field>UnpostedDocuments.DeletionMark</Field>
+				<Field>1/5</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT ALLOWED
+	DataExchangeResults.ProblematicObjects AS Ref,
+	CASE
+		WHEN DataExchangeResults.DeletionMark
+			THEN 2
+		ELSE 0
+	END AS DeletionMark,
+	DataExchangeResults.DocumentNumber AS DocumentNumber,
+	DataExchangeResults.DocumentDate AS DocumentDate,
+	DataExchangeResults.InfobaseNode,
+	DataExchangeResults.OccurrenceDate,
+	DataExchangeResults.Reason,
+	DataExchangeResults.Skipped,
+	VALUETYPE(DataExchangeResults.ProblematicObjects) AS TypeString
+FROM
+	InformationRegister.DataExchangeResults AS DataExchangeResults
+WHERE
+	DataExchangeResults.ProblemType = VALUE(Enum.DataExchangeProblemTypes.UnpostedDocument)</QueryText>
+				<MainTable>InformationRegister.DataExchangeResults</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">Skipped</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:InaccessibleDataColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="Period" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Period</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:StandardPeriod</v8:Type>
+			</Type>
+			<Save>
+				<Field>Period</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="InfobaseNode" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sender</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:TypeSet>cfg:ExchangePlanRef</v8:TypeSet>
+			</Type>
+			<Save>
+				<Field>InfobaseNode</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="SearchString" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Search string</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+			<Save>
+				<Field>SearchString</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="BlankAttributes" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Blank attributes</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>BlankAttributes.TypeString</Field>
+				<Field>BlankAttributes.Skipped</Field>
+				<Field>BlankAttributes.Ref</Field>
+				<Field>BlankAttributes.Reason</Field>
+				<Field>BlankAttributes.OccurrenceDate</Field>
+				<Field>BlankAttributes.InfobaseNode</Field>
+				<Field>BlankAttributes.DeletionMark</Field>
+				<Field>6/5</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT ALLOWED
+	DataExchangeResults.ProblematicObjects As Ref,
+	CASE
+		WHEN DataExchangeResults.DeletionMark
+			THEN 4
+		ELSE 3
+	END AS DeletionMark,
+	DataExchangeResults.InfobaseNode,
+	DataExchangeResults.OccurrenceDate,
+	DataExchangeResults.Reason,
+	DataExchangeResults.Skipped,
+	VALUETYPE(DataExchangeResults.ProblematicObjects) AS TypeString
+FROM
+	InformationRegister.DataExchangeResults AS DataExchangeResults
+WHERE
+	DataExchangeResults.ProblemType = VALUE(Enum.DataExchangeProblemTypes.BlankAttributes)</QueryText>
+				<MainTable>InformationRegister.DataExchangeResults</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">Skipped</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:InaccessibleDataColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="Conflicts" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>Conflicts.VersionIgnored</Field>
+				<Field>Conflicts.TypeString</Field>
+				<Field>Conflicts.ThisVersionNumber</Field>
+				<Field>Conflicts.Ref</Field>
+				<Field>Conflicts.OtherVersionNumber</Field>
+				<Field>Conflicts.OtherVersionAuthor</Field>
+				<Field>Conflicts.OtherVersionAccepted</Field>
+				<Field>Conflicts.Date</Field>
+				<Field>7/8</Field>
+				<Field>7/6</Field>
+				<Field>7/3</Field>
+				<Field>7/23</Field>
+				<Field>7/20</Field>
+				<Field>7/11</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT ALLOWED
+	OtherApplicationVersion.VersionDate AS Date,
+	OtherApplicationVersion.Object AS Ref,
+	VALUETYPE(OtherApplicationVersion.Object) AS TypeString,
+	ThisApplicationVersion.VersionNumber AS ThisVersionNumber,
+	OtherApplicationVersion.VersionNumber AS OtherVersionNumber,
+	OtherApplicationVersion.VersionAuthor AS OtherVersionAuthor,
+	CASE
+		WHEN OtherApplicationVersion.ObjectVersionType = VALUE(Enum.ObjectVersionTypes.DataAcceptedDuringConflict)
+			THEN TRUE
+		ELSE FALSE
+	END AS OtherVersionAccepted,
+	OtherApplicationVersion.VersionIgnored AS VersionIgnored
+FROM
+	InformationRegister.ObjectVersions AS OtherApplicationVersion
+		LEFT JOIN InformationRegister.ObjectVersions AS ThisApplicationVersion
+		ON OtherApplicationVersion.Object = ThisApplicationVersion.Object
+			AND (OtherApplicationVersion.VersionNumber = ThisApplicationVersion.VersionNumber + 1)
+WHERE
+	Not(OtherApplicationVersion.ObjectVersionType &lt;&gt; VALUE(Enum.ObjectVersionTypes.DataAcceptedDuringConflict)
+				AND OtherApplicationVersion.ObjectVersionType &lt;&gt; VALUE(Enum.ObjectVersionTypes.DataNotAcceptedDuringConflict))</QueryText>
+				<MainTable>InformationRegister.ObjectVersions</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Date</dcsset:field>
+							<dcsset:orderType>Desc</dcsset:orderType>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">VersionIgnored</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:InaccessibleDataColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>OtherVersionAccepted</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemGroup">
+									<dcsset:groupType>AndGroup</dcsset:groupType>
+									<dcsset:item xsi:type="dcsset:FilterItemComparison">
+										<dcsset:left xsi:type="dcscor:Field">OtherVersionAccepted</dcsset:left>
+										<dcsset:comparisonType>Equal</dcsset:comparisonType>
+										<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+									</dcsset:item>
+									<dcsset:item xsi:type="dcsset:FilterItemComparison">
+										<dcsset:left xsi:type="dcscor:Field">VersionIgnored</dcsset:left>
+										<dcsset:comparisonType>Equal</dcsset:comparisonType>
+										<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+									</dcsset:item>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:UnacceptedVersion</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>OtherVersionAccepted</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">OtherVersionNumber</dcsset:left>
+									<dcsset:comparisonType>NotFilled</dcsset:comparisonType>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Text</dcscor:parameter>
+									<dcscor:value xsi:type="xs:string">Deleted</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="DeclinedByDate" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data declined by date</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<UseAlways>
+				<Field>DeclinedByDate.TypeString</Field>
+				<Field>DeclinedByDate.ThisVersionNumber</Field>
+				<Field>DeclinedByDate.Ref</Field>
+				<Field>DeclinedByDate.ProhibitionReason</Field>
+				<Field>DeclinedByDate.OtherVersionNumber</Field>
+				<Field>DeclinedByDate.OtherVersionAuthor</Field>
+				<Field>DeclinedByDate.NewObject</Field>
+				<Field>DeclinedByDate.Date</Field>
+				<Field>8/9</Field>
+				<Field>8/7</Field>
+				<Field>8/5</Field>
+				<Field>8/4</Field>
+				<Field>8/32</Field>
+				<Field>8/30</Field>
+				<Field>8/3</Field>
+				<Field>8/29</Field>
+				<Field>8/26</Field>
+				<Field>8/24</Field>
+				<Field>8/16</Field>
+				<Field>8/15</Field>
+				<Field>8/13</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT ALLOWED
+	UnacceptedVersion.VersionDate AS Date,
+	UnacceptedVersion.Object AS Ref,
+	UnacceptedVersion.Comment AS ProhibitionReason,
+	CASE
+		WHEN UnacceptedVersion.ObjectVersionType = VALUE(Enum.ObjectVersionTypes.DataDeclinedByEditProhibitionDateExistsInInfobase)
+			THEN FALSE
+		ELSE TRUE
+	END AS NewObject,
+	ISNULL(UnacceptedVersion.VersionNumber, 0) AS OtherVersionNumber,
+	UnacceptedVersion.VersionAuthor AS OtherVersionAuthor,
+	ISNULL(CurrentVersion.VersionNumber, 0) AS ThisVersionNumber,
+	VALUETYPE(UnacceptedVersion.Object) AS TypeString,
+	UnacceptedVersion.VersionIgnored
+FROM
+	InformationRegister.ObjectVersions AS UnacceptedVersion
+		LEFT JOIN InformationRegister.ObjectVersions AS CurrentVersion
+		ON UnacceptedVersion.Object = CurrentVersion.Object
+			AND (UnacceptedVersion.VersionNumber = CurrentVersion.VersionNumber + 1)
+WHERE
+	Not(UnacceptedVersion.ObjectVersionType &lt;&gt; VALUE(Enum.ObjectVersionTypes.DataDeclinedByEditProhibitionDateExistsInInfobase)
+				AND UnacceptedVersion.ObjectVersionType &lt;&gt; VALUE(Enum.ObjectVersionTypes.DataDeclinedByEditProhibitionDateNotExistInInfobase))</QueryText>
+				<MainTable>InformationRegister.ObjectVersions</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Date</dcsset:field>
+							<dcsset:orderType>Desc</dcsset:orderType>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">VersionIgnored</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:InaccessibleDataColor</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>Ref</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">NewObject</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>Text</dcscor:parameter>
+									<dcscor:value xsi:type="xs:string">Absent</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:item>
+							<dcsset:selection>
+								<dcsset:item>
+									<dcsset:field>OtherVersionNumber</dcsset:field>
+								</dcsset:item>
+								<dcsset:item>
+									<dcsset:field>OtherVersionAuthor</dcsset:field>
+								</dcsset:item>
+								<dcsset:item>
+									<dcsset:field>OtherVersionDate</dcsset:field>
+								</dcsset:item>
+							</dcsset:selection>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemComparison">
+									<dcsset:left xsi:type="dcscor:Field">VersionIgnored</dcsset:left>
+									<dcsset:comparisonType>Equal</dcsset:comparisonType>
+									<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:UnacceptedVersion</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="VersioningUsed" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Versioning used</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ShowIgnoredConflicts" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>ShowIgnoredConflicts</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ShowIgnoredBlank" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored unfilled items</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>ShowIgnoredBlank</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ShowIgnoredNotAccepted" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored declined items</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>ShowIgnoredNotAccepted</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ShowIgnoredUnposted" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored unposted documents</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>ShowIgnoredUnposted</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="ConflictReason" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Conflict resolution result</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="NodeList" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Node list</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="DynamicListFilterSettings" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Dynamic list filter settings</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="IgnoreDocument" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>IgnoreDocument</Action>
+		</Command>
+		<Command name="NotIgnoreDocument" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Do not ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel document ignoring</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>NotIgnoreDocument</Action>
+		</Command>
+		<Command name="ChangeSelectedDocuments" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Modify selected...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit selected documents</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeSelectedDocuments</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Refresh" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Refresh</Action>
+		</Command>
+		<Command name="PostDocument" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Post</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Post document</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Post</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>PostDocument</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="IgnoreObject" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore blank attributes</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>IgnoreObject</Action>
+		</Command>
+		<Command name="ChangeSelectedObjects" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Modify selected...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit selected data</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeSelectedObjects</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="NotIgnoreObject" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Do not ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel ignoring of blank attributes</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>NotIgnoreObject</Action>
+		</Command>
+		<Command name="OpenVersionNotAccepted" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show rejected version</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open declined version</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenVersionNotAccepted</Action>
+		</Command>
+		<Command name="ShowDifferencesNotAccepted" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show difference</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show differences in a report</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.ShowDifferences</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>ShowDifferencesNotAccepted</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="OpenVersionUpBeforeConflict" id="19">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show version created in this infobase</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open version created in this infobase</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenVersionUpBeforeConflict</Action>
+		</Command>
+		<Command name="ShowConflictDifference" id="20">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show difference</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show differences between data versions in this application and the other application</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.ShowDifferences</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>ShowConflictDifference</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Change" id="22">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Edit (or open) current item</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F2</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Change</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Change</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="IgnoreConflict" id="23">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Submit</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Review and confirm the result of the automatic conflict resolution.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationDataReceived</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>IgnoreConflict</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="IgnoreNotAccepted" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Ignore items that are declined due to prohibition date</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>IgnoreNotAccepted</Action>
+		</Command>
+		<Command name="NotIgnoreConflict" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Remove Review attribute</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Remove Reviewed attribute for the selected conflict</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>NotIgnoreConflict</Action>
+		</Command>
+		<Command name="NotIgnoreNotAccepted" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Do not ignore</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel ignoring of data items that are declined due to prohibited date</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>NotIgnoreNotAccepted</Action>
+		</Command>
+		<Command name="AcceptVersionNotAccepted" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Accept version</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Accept version regardless of any data import prohibitions</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AcceptVersionNotAccepted</Action>
+		</Command>
+		<Command name="OpenConflictVersion" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show version received from other infobase</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open version that is received from the other infobase</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenConflictVersion</Action>
+		</Command>
+		<Command name="OpenVersionNotAcceptedInThisApplication" id="21">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show version in this infobase</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open version in this application</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenVersionNotAcceptedInThisApplication</Action>
+		</Command>
+		<Command name="ShowIgnoredUnposted" id="24">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored items</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored documents</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowIgnoredUnposted</Action>
+		</Command>
+		<Command name="ShowIgnoredBlank" id="25">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored items</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored items</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowIgnoredBlank</Action>
+		</Command>
+		<Command name="ShowIgnoredConflicts" id="26">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show resolved conflicts</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show resolved conflicts</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowIgnoredConflicts</Action>
+		</Command>
+		<Command name="ShowIgnoredNotAccepted" id="27">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored items</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show ignored items</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ShowIgnoredNotAccepted</Action>
+		</Command>
+		<Command name="ChangeConflictResult" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Review and change the conflict resolution result on the opposite one.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChangeConflictResult</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="ExchangeNodes">
+			<Type/>
+		</Parameter>
+	</Parameters>
+</Form>

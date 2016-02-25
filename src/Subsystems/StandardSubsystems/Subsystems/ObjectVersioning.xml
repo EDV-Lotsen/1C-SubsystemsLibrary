@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Subsystem uuid="a8659e53-8c6b-4b0c-9736-fe93a91e4d69">
+		<Properties>
+			<Name>ObjectVersioning</Name>
+			<Synonym>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Object versioning</v8:content>
+				</v8:item>
+			</Synonym>
+			<Comment/>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
+			<IncludeInCommandInterface>false</IncludeInCommandInterface>
+			<Explanation/>
+			<Picture/>
+			<Content>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonPicture.VersionHistory</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectVersioningEvents</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Constant.UseObjectVersioning</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.ObjectVersioningModes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ObjectVersions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.ObjectVersioningSettings</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonCommand.ChangeHistory</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectVersioning</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectVersioningClient</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.ObjectVersioningModes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.UseSingleObjectVersioning</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOption.UseObjectVersioning</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.ReadObjectVersions</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">FunctionalOptionsParameter.VersionizedObjectType</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.AddedAttributeBackground</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.DeletedAttributeTitleBackground</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.ModifiedAttributeValueBackground</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.ModifiedAttributeValueColor</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">StyleItem.DeletedAttributeBackground</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.ObjectVersionTypes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Role.ReadObjectVersionInfo</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.DeleteVersionAuthorInfo</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">EventSubscription.WriteVersionOnDataExchange</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Report.ObjectVersionAnalysis</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">Enum.VersionLifetimes</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">4ac81b57-0da1-467e-b608-3c86a0816263</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">ScheduledJob.ClearingObsoleteObjectVersions</xr:Item>
+			</Content>
+		</Properties>
+		<ChildObjects/>
+	</Subsystem>
+</MetaDataObject>

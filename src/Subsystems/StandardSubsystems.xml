@@ -10,29 +10,42 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
-			<Content>
-				<xr:Item xsi:type="xr:MDObjectRef">ChartOfCharacteristicTypes.UsersSettings</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">InformationRegister.UserEmployees</xr:Item>
-			</Content>
+			<Content/>
 		</Properties>
 		<ChildObjects>
+			<Subsystem>AdditionalReportsAndDataProcessors</Subsystem>
+			<Subsystem>AddressClassifier</Subsystem>
+			<Subsystem>AttachedFiles</Subsystem>
 			<Subsystem>BaseFunctionality</Subsystem>
+			<Subsystem>CalendarSchedules</Subsystem>
 			<Subsystem>Companies</Subsystem>
 			<Subsystem>ContactInformation</Subsystem>
+			<Subsystem>Currencies</Subsystem>
 			<Subsystem>DataExchange</Subsystem>
+			<Subsystem>DataImportFromFile</Subsystem>
+			<Subsystem>DynamicConfigurationUpdateControl</Subsystem>
 			<Subsystem>EmailOperations</Subsystem>
+			<Subsystem>FileFunctions</Subsystem>
+			<Subsystem>FullTextSearch</Subsystem>
 			<Subsystem>GetFilesFromInternet</Subsystem>
-			<Subsystem>InfoBaseVersionUpdate</Subsystem>
+			<Subsystem>InfobaseVersionUpdate</Subsystem>
 			<Subsystem>ItemOrderSetup</Subsystem>
+			<Subsystem>LegitimateSoftwareCheck</Subsystem>
+			<Subsystem>ObjectAttributeEditProhibition</Subsystem>
 			<Subsystem>ObjectPrefixation</Subsystem>
+			<Subsystem>ObjectVersioning</Subsystem>
+			<Subsystem>PerformanceMonitor</Subsystem>
+			<Subsystem>Print</Subsystem>
+			<Subsystem>Properties</Subsystem>
+			<Subsystem>SaaSOperations</Subsystem>
 			<Subsystem>ScheduledJobs</Subsystem>
-			<Subsystem>ServiceMode</Subsystem>
 			<Subsystem>Users</Subsystem>
 			<Subsystem>UserSessions</Subsystem>
+			<Subsystem>WorkSchedules</Subsystem>
 		</ChildObjects>
 	</Subsystem>
 </MetaDataObject>

@@ -1,21 +1,44 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Width>50</Width>
+	<Height>10</Height>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
-		<ChildItems>
-			<Button name="UpdateCatalogData" id="2">
-				<Type>CommandBarButton</Type>
-				<CommandName>Form.Command.UpdateCatalogData</CommandName>
-				<ExtendedTooltip name="UpdateCatalogDataExtendedTooltip" id="3"/>
-			</Button>
-		</ChildItems>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
 	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
 	<ChildItems>
-		<Table name="List" id="4">
+		<UsualGroup name="UserSettingsGroup" id="21">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Custom settings folder</v8:content>
+				</v8:item>
+			</Title>
+			<VerticalStretch>false</VerticalStretch>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="22"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="23">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="24"/>
+		</CommandBar>
+		<Table name="List" id="1">
 			<CommandBarLocation>None</CommandBarLocation>
 			<ReadOnly>true</ReadOnly>
 			<DefaultItem>true</DefaultItem>
 			<ChangeRowSet>false</ChangeRowSet>
+			<Header>false</Header>
+			<HorizontalLines>false</HorizontalLines>
 			<UseAlternationRowColor>true</UseAlternationRowColor>
 			<InitialTreeView>ExpandTopLevel</InitialTreeView>
 			<EnableStartDrag>true</EnableStartDrag>
@@ -37,37 +60,41 @@
 			<ShowRoot>false</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="5"/>
-			<AutoCommandBar name="ListCommandBar" id="6">
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3">
 				<Autofill>false</Autofill>
 			</AutoCommandBar>
-			<ExtendedTooltip name="ListExtendedTooltip" id="7"/>
-			<SearchStringAddition name="ListSearchString" id="17">
+			<ExtendedTooltip name="ListExtendedTooltip" id="15"/>
+			<SearchStringAddition name="ListSearchString" id="25">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchStringRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchStringContextMenu" id="18"/>
-				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="19"/>
+				<ContextMenu name="ListSearchStringContextMenu" id="26"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="27"/>
 			</SearchStringAddition>
-			<ViewStatusAddition name="ListViewStatus" id="20">
+			<ViewStatusAddition name="ListViewStatus" id="28">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>ViewStatusRepresentation</Type>
 				</AdditionSource>
-				<ContextMenu name="ListViewStatusContextMenu" id="21"/>
-				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="22"/>
+				<ContextMenu name="ListViewStatusContextMenu" id="29"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="30"/>
 			</ViewStatusAddition>
-			<SearchControlAddition name="ListSearchControl" id="23">
+			<SearchControlAddition name="ListSearchControl" id="31">
 				<AdditionSource>
 					<Item>List</Item>
 					<Type>SearchControl</Type>
 				</AdditionSource>
-				<ContextMenu name="ListSearchControlContextMenu" id="24"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="25"/>
+				<ContextMenu name="ListSearchControlContextMenu" id="32"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="33"/>
 			</SearchControlAddition>
+			<Events>
+				<Event name="ValueChoice">ListValueChoice</Event>
+			</Events>
 			<ChildItems>
-				<LabelField name="Synonym" id="8">
+				<LabelField name="ListSynonym" id="4">
 					<DataPath>List.Synonym</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<Title>
@@ -76,26 +103,25 @@
 							<v8:content>Synonym</v8:content>
 						</v8:item>
 					</Title>
-					<ContextMenu name="SynonymContextMenu" id="9"/>
-					<ExtendedTooltip name="SynonymExtendedTooltip" id="10"/>
+					<ContextMenu name="ListSynonymContextMenu" id="5"/>
+					<ExtendedTooltip name="ListSynonymExtendedTooltip" id="16"/>
 				</LabelField>
-				<LabelField name="FullName" id="11">
+				<LabelField name="ListFullName" id="13">
 					<DataPath>List.FullName</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
-					<ContextMenu name="FullNameContextMenu" id="12"/>
-					<ExtendedTooltip name="FullNameExtendedTooltip" id="13"/>
+					<ContextMenu name="ListFullNameContextMenu" id="14"/>
+					<ExtendedTooltip name="ListFullNameExtendedTooltip" id="17"/>
 				</LabelField>
-				<CheckBoxField name="Used" id="14">
-					<DataPath>List.Used</DataPath>
+				<LabelField name="ListRef" id="18">
+					<DataPath>List.Ref</DataPath>
 					<UserVisible>
 						<xr:Common>false</xr:Common>
 					</UserVisible>
-					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="UsedContextMenu" id="15"/>
-					<ExtendedTooltip name="UsedExtendedTooltip" id="16"/>
-				</CheckBoxField>
+					<ContextMenu name="ListRefContextMenu" id="19"/>
+					<ExtendedTooltip name="ListRefExtendedTooltip" id="20"/>
+				</LabelField>
 			</ChildItems>
 		</Table>
 	</ChildItems>
@@ -106,13 +132,35 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<UseAlways>
-				<Field>List.Used</Field>
+				<Field>List.Ref</Field>
+				<Field>List.Parent</Field>
 				<Field>List.Description</Field>
-				<Field>List.CollectionOrder</Field>
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	IDs.Ref,
+	IDs.DataVersion,
+	IDs.DeletionMark,
+	CASE
+		WHEN SUBSTRING(IDs.Name, 0, 7) = "Delete"
+			THEN TRUE
+		ELSE FALSE
+	END AS FutureDeletionMark,
+	IDs.Predefined,
+	IDs.Parent,
+	IDs.Description,
+	IDs.CollectionOrder,
+	IDs.Name,
+	IDs.Synonym,
+	IDs.FullName,
+	IDs.FullSynonym,
+	IDs.WithoutData,
+	IDs.EmptyRefValue,
+	IDs.MetadataObjectKey
+	FROM
+			Catalog.MetadataObjectIDs AS IDs</QueryText>
 				<MainTable>Catalog.MetadataObjectIDs</MainTable>
 				<ListSettings>
 					<dcsset:filter>
@@ -120,47 +168,10 @@
 						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
 					</dcsset:filter>
 					<dcsset:order>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>Used</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>CollectionOrder</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>Parent</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
-						<dcsset:item xsi:type="dcsset:OrderItemField">
-							<dcsset:field>Synonym</dcsset:field>
-							<dcsset:orderType>Asc</dcsset:orderType>
-						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
 					</dcsset:order>
 					<dcsset:conditionalAppearance>
-						<dcsset:item>
-							<dcsset:selection/>
-							<dcsset:filter>
-								<dcsset:item xsi:type="dcsset:FilterItemComparison">
-									<dcsset:left xsi:type="dcscor:Field">Parent</dcsset:left>
-									<dcsset:comparisonType>Equal</dcsset:comparisonType>
-									<dcsset:right xsi:type="dcscor:DesignTimeValue">Catalog.MetadataObjectIDs.EmptyRef</dcsset:right>
-								</dcsset:item>
-								<dcsset:item xsi:type="dcsset:FilterItemComparison">
-									<dcsset:left xsi:type="dcscor:Field">Predefined</dcsset:left>
-									<dcsset:comparisonType>Equal</dcsset:comparisonType>
-									<dcsset:right xsi:type="xs:boolean">true</dcsset:right>
-								</dcsset:item>
-							</dcsset:filter>
-							<dcsset:appearance>
-								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
-									<dcscor:parameter>Font</dcscor:parameter>
-									<dcscor:value xsi:type="v8ui:Font" ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
-								</dcscor:item>
-							</dcsset:appearance>
-						</dcsset:item>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
 						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
 					</dcsset:conditionalAppearance>
@@ -169,22 +180,23 @@
 				</ListSettings>
 			</Settings>
 		</Attribute>
-	</Attributes>
-	<Commands>
-		<Command name="UpdateCatalogData" id="1">
+		<Attribute name="ChooseMetadataObjectGroups" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Update catalog data</v8:content>
+					<v8:content>Choose metadata object group</v8:content>
 				</v8:item>
 			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Update catalog data by metadata of the application</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Action>UpdateCatalogData</Action>
-		</Command>
-	</Commands>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Parameters>
+		<Parameter name="ChooseMetadataObjectGroups">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Parameter>
+	</Parameters>
 </Form>

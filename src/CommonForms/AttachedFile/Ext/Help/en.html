@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This form is used to view the attached file properties.  </p>
+<p>To open this form from the <a href="CommonForm.AttachedFiles/Help">attached file list</a>, click <img src="StdPicture.Properties"></img> <strong>Open</strong> (or press <strong>F2</strong>). </p>
+<h3>File properties</h3>
+<ul><li><strong>File name</strong> - full name of the file. This field is filled in automatically when the file is attached and file card is created. It can be modified manually; 
+</li><li><strong>Details</strong> - detailed file information; 
+</li><li><strong>Author</strong> - user who added the file; 
+</li><li><strong>Edited</strong> - user who last edited the file; 
+</li><li>
+<div><strong>Extension</strong> - file extension;</div>
+</li><li>
+<div><strong>Edits</strong> - user currently editing the file; </div>
+</li><li><strong>Created</strong> - file creation date; 
+</li><li><strong>Change date</strong> - date of the latest file data change (local time); 
+</li><li>
+<div><strong>Size (bytes)</strong> - file size.</div></li></ul><h3>Editing attached files</h3>
+<ul><li>
+<div>
+<div>In thin client, the <a href="CommonForm.SpreadsheetDocumentEditing/Help">spreadsheet document files (.mxl format<strong>) </strong>are edited</a> in an embedded form of the spreadsheet document editor. In web client, you need to download an application to edit the soreadsheet documents. For more information on editing spreadsheet documents in web client, <a href="InformationRegister.UserPrintTemplates/Help">follow this hyperlink. </a></div></div>
+</li><li>
+<div>
+<div>To edit files in other formats, you will need to have corresponding applications installed; for example, to edit files in Microsoft Word format, you will need to install Microsoft Word, etc.</div></div>
+</li><li>The <strong>Open</strong> command opens an attached file in an external application in editing mode (if the file was not locked) or in viewing mode (if the file is locked for editing by another user). 
+<div></div>
+<div></div>
+</li><li>
+<div>
+<div>The<strong> Edit</strong> command opens the attached file in editing mode and locks the file. The locked files are unavailable to other users for editing; they are marked in green in the attached files list.</div></div>
+</li><li>
+<div>The <strong>End edit </strong>command unlocks the attached file, saves it, and clears the "locked for editing" mark. When finished editing, save the file and close the external editing application.</div>
+</li><li>
+<div>
+<div>
+<div>The<strong> All actions - Cancel</strong> edit command unlocks the attached file without saving the changes, and clears the "locked for editing" mark. This is useful if you do not want to save the changes you made (for example, your changes contain errors).</div></div></div></li></ul><h3>Saving files</h3>
+<ul><li>
+<div>Execute the <strong>All actions - Save as</strong> command to save an attached file to a specified directory on a local or network disk.</div>
+</li><li>
+<div>To open file directory in Windows Explorer, execute the <strong>All actions - Open file directory in Windows Explorer</strong> command.</div></li></ul><h3>Updating files</h3>
+<ul><li>To update an attached file from the original file stored on hard disk (the source of the attached file), execute the <strong>All actions - Update from file on hard disk</strong> command.</li></ul><h3>DS and encryption</h3>
+<p>If you utilize digital signatures, the <strong>DS and encryption</strong> dropdown menu containing a set of commands for digital signature management will become available:</p>
+<ul><li>
+<div><strong>Sign</strong> - create a digital signature for the file. Before creating the digital signature, you will be offered to <a href="CommonForm.DigitalSignatureSetup/Help">select a DS certificate</a> from the list of available certificates. Alternately, you can select the certificate during application customization. The digitally signed files cannot be edited; they are marked with <img src="CommonPicture.SignedWithDS"></img> icon.</div>
+</li><li>
+<div><strong>Add DS from file</strong> - <a href="CommonForm.AddSignatureFromFile/Help">add a digital signature</a> to a file. This could be useful, for example, when the digital signature file was obtained after the signed file.</div>
+</li><li>
+<div><strong>Save with DS</strong> - <a href="CommonForm.SelectSignatures/Help">save digital signature</a> to a separate file on hard disk. This could be useful, for example, when you need to deliver a signed file to another user.</div>
+</li><li>
+<div><strong>Encrypt</strong> - <a href="CommonForm.SelectEncryptionCertificate/Help">encrypt</a> a file. Unlike file signing procedure, multiple certificates can be used for file encryption, for example, when you need to encrypt a file for several users. The encrypted files are marked with <img src="CommonPicture.Encrypted"></img> icon.</div>
+</li><li>
+<p><strong>Decrypt</strong> - <a href="CommonForm.EnterPasswordWithDetails/Help">decrypt</a> an encrypted file. To decrypt a file, you need to type in the private key access password.</p></li></ul><p>If you utilize DS and encryption, the following tabs will become available:</p>
+<h3>DS</h3>
+<p>This tab contains information on digital signature of the file:</p>
+<ul><li><strong>Signature author - </strong>user who signed the file; 
+</li><li><strong>Signature date</strong> - date when the file was signed; 
+</li><li><strong>Comment</strong> - additional information on the digital signature; 
+</li><li><strong>Status - </strong>whether the signature is genuine.</li></ul><p>Execute corresponding commands to:</p>
+<ul><li><strong>Sign </strong>a file; 
+</li><li><strong>Open signature</strong> - open a window with general properties of the selected file's DS certificate: issued by, issued to, certificate purpose, certificate expiration date; 
+</li><li><strong>Check</strong> if the signed file was changed using any or all DS certificates. To check this, select one or several digital signatures. If the digital signature of the stored file does not  match any of the DS certificates, this DS will be marked in red and its <strong>Status</strong> in list will be changed to <strong>Invalid</strong>. 
+</li><li><strong>Check all - </strong>check all digital signatures; 
+</li><li><strong>Save to file on hard disk - </strong>save DS to a file on hard disk; 
+</li><li><strong>Delete</strong> DS from file.</li></ul><h3>Encrypted for</h3>
+<ul><li>
+<div>This tab contains file encryption data:</div>
+</li><li>
+<div>This tab displays the list of certificates used to encrypt the file. Execute the <strong>Open DS certificate</strong> command or double-click a certificate to view its general properties: issued by, issued to, purpose, expiration date.</div></li></ul><h3>See also:</h3>
+<ul><li><a href="v8help://frame/form_common">Working with forms</a>.</li></ul></body></html>

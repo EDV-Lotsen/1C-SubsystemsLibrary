@@ -1,14 +1,16 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
+	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
 	If Parameters.Property("SelfTest") Then
 		Return;
 	EndIf;
 	
 	EventLogFilter = New Structure;
+	DefaultEventLogFilter = New Structure;
+	FilterValues =  GetEventLogFilterValues("Event").Event;
+	FileInfobase = CommonUse.FileInfobase();
 	
 	If Not IsBlankString(Parameters.User) Then
 		
@@ -29,60 +31,119 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		FilterByEvent = New ValueList;
 		If TypeOf(Parameters.EventLogMessageText) = Type("Array") Then
 			For Each Event In Parameters.EventLogMessageText Do
-				FilterByEvent.Add(Event, Event);
-			EndDo;
+				EventPresentation = FilterValues[Event];
+
+				FilterByEvent.Add(Event, EventPresentation); 
+			EndDo; 
 		Else
 			FilterByEvent.Add(Parameters.EventLogMessageText, Parameters.EventLogMessageText);
 		EndIf;
 		EventLogFilter.Insert("Event", FilterByEvent);
 	EndIf;
 	
-	If Parameters.Property("StartDate") Then
+	If ValueIsFilled(Parameters.StartDate) Then
 		EventLogFilter.Insert("StartDate", Parameters.StartDate);
 	EndIf;
 	
-	If Parameters.Property("EndDate") Then
+	If ValueIsFilled(Parameters.EndDate) Then
 		EventLogFilter.Insert("EndDate", Parameters.EndDate);
 	EndIf;
 	
-	If Parameters.Property("Data") Then
+	If Parameters.Data <> Undefined Then
 		EventLogFilter.Insert("Data", Parameters.Data);
 	EndIf;
 	
-	If Parameters.Property("Session") Then
+	If Parameters.Session <> Undefined Then
 		EventLogFilter.Insert("Session", Parameters.Session);
 	EndIf; 
+
+	// Level is a value list.
+
+	If Parameters.Level <> Undefined Then
+		EventLogFilter.Insert("Level", Parameters.Level);
+	EndIf;
 	
 	EventCountLimit = 200;
+		
+	DefaultFilter = DefaultFilter(FilterValues);
+	If Not EventLogFilter.Property("Event") Then
+		EventLogFilter.Insert("Event", DefaultFilter);
+	EndIf;
+	DefaultEventLogFilter.Insert("Event", DefaultFilter);
+	Items.SessionDataSeparationPresentation.Visible = Not CommonUseCached.CanUseSeparatedData();
 	
-	ReadEventLogOnCreateAtServer();
+	Criticality = "AllEvents";
+	
+	// Set ExecuteNotInBackground to True if the log must be recorded not in background.
+	ExecuteNotInBackground = Parameters.ExecuteNotInBackground;
 	
 EndProcedure
 
+&AtClient
+Procedure OnOpen(Cancel)
+	
+	RefreshCurrentList();
+	
+EndProcedure
+ 
+&AtClient
+Procedure OnClose()
+	
+	If JobID <> New  UUID("00000000-0000-0000-0000-000000000000") Then
+		OnCloseAtServer();
+	EndIf;
+	
+EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#EndRegion
+
+#Region  FormHeaderItemEventHandlers
 
 &AtClient
 Procedure EventCountLimitOnChange(Item)
 	
-	RefreshCurrentListExecute();
+#If WebClient Then
+	EventCountLimit = ?(EventCountLimit > 1000, 1000, EventCountLimit);
+#EndIf
+	
+	RefreshCurrentList();
 	
 EndProcedure
 
+&AtClient
+Procedure CriticalityOnChange(Item)
+	
+	If Criticality = "AllEvents" Then
+		EventLogFilter.Delete("Level");
+		RefreshCurrentList();
+	ElsIf Criticality = "Errors" Then
+		FilterByLevel = New ValueList;
+		FilterByLevel.Add("Error", "Error");
+		EventLogFilter.Delete("Level");
+		EventLogFilter.Insert("Level", FilterByLevel);
+		RefreshCurrentList();
+	ElsIf Criticality = "Warnings" Then
+		FilterByLevel = New ValueList;
+		FilterByLevel.Add("Warning", "Warning");
+		EventLogFilter.Delete("Level");
+		EventLogFilter.Insert("Level", FilterByLevel);
+		RefreshCurrentList();
+	EndIf;
+	
+EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF Event log TABLE
+#EndRegion
 
+#Region LogFormTableItemEventHandlers 
+ 
 &AtClient
 Procedure EventLogChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	EventLogClient.EventsChoice(
+	EventLogOperationsClient.EventsSelection(
 		Items.Log.CurrentData, 
 		Field, 
 		DateInterval, 
-		EventLogFilter
-	);
+		EventLogFilter);
 	
 EndProcedure
 
@@ -97,102 +158,28 @@ Procedure ChoiceProcessing(SelectedValue, ChoiceSource)
 			For Each ListItem In SelectedValue.Filter Do
 				EventLogFilter.Insert(ListItem.Presentation, ListItem.Value);
 			EndDo;
-			RefreshCurrentListExecute();
-			
+ 
+ 			If EventLogFilter.Property("Level")
+
+				And EventLogFilter.Level.Count() > 1  Then
+				Criticality = "";
+			EndIf;
+ 			RefreshCurrentList();
+		
 		EndIf;
 		
 	EndIf;
 	
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#Region FormCommandHandlers
+
 
 &AtClient
-Procedure RefreshCurrentList(Command) 
-	
-	RefreshCurrentListExecute();
-	
-EndProcedure
+Procedure RefreshCurrentList()
 
-&AtClient
-Procedure ClearFilter(Command)
-	
-	EventLogFilter = New FixedStructure;
-	RefreshCurrentListExecute();
-	
-EndProcedure
-
-&AtClient
-Procedure OpenDataForViewing(Command)
-	
-	EventLogClient.OpenDataForViewing(Items.Log.CurrentData);
-	
-EndProcedure
-
-&AtClient
-Procedure ViewCurrentEventInSeparateWindow(Command)
-	
-	EventLogClient.ViewCurrentEventInSeparateWindow(Items.Log.CurrentData);
-	
-EndProcedure
-
-&AtClient
-Procedure SetViewDateInterval(Command)
-	
-	If EventLogClient.SetViewDateInterval(
-			DateInterval, 
-			EventLogFilter
-		) Then
-		
-		RefreshCurrentListExecute();
-		
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure SetFilter(Command)
-	
-	FormFilter = New ValueList;
-	For Each KeyAndValue In EventLogFilter Do
-		FormFilter.Add(KeyAndValue.Value, KeyAndValue.Key);
-	EndDo;
-	
-	OpenForm(
-		"DataProcessor.EventLog.Form.EventLogFilter", 
-		New Structure("Filter", FormFilter), 
-		ThisForm
-	);
-	
-EndProcedure
-
-&AtClient
-Procedure SetFilterByValueInCurrentColumn(Command)
-	
-	ExcludeColumns = New Array;
-	ExcludeColumns.Add("Date");
-	
-	If EventLogClient.SetFilterByValueInCurrentColumn(
-			Items.Log.CurrentData, 
-			Items.Log.CurrentItem, 
-			EventLogFilter, 
-			ExcludeColumns
-		) Then
-		
-		RefreshCurrentListExecute();
-		
-	EndIf;
-	
-EndProcedure
-
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-&AtClient
-Procedure RefreshCurrentListExecute() 
 	
 	Items.Pages.CurrentPage = Items.LongActionIndicator;
 	
@@ -200,7 +187,8 @@ Procedure RefreshCurrentListExecute()
 	
 	IdleHandlerParameters = New Structure;
 	
-	If Not ExecutionResult.JobCompleted Then		
+	If Not ExecutionResult.JobCompleted Then
+
 		LongActionsClient.InitIdleHandlerParameters(IdleHandlerParameters);
 		AttachIdleHandler("Attachable_CheckJobExecution", 1, True);
 		CommonUseClientServer.SetSpreadsheetDocumentFieldState(Items.LongActionIndicatorField, "ReportCreation");
@@ -211,18 +199,118 @@ Procedure RefreshCurrentListExecute()
 	
 EndProcedure
 
+&AtClient
+Procedure ClearFilter()
+	
+	EventLogFilter =  DefaultEventLogFilter;
+	Criticality = "AllEvents";
+	RefreshCurrentList();
+	
+EndProcedure
+
+&AtClient
+Procedure OpenDataForViewing()
+	
+	EventLogOperationsClient.OpenDataForViewing(Items.Log.CurrentData);
+	
+EndProcedure
+
+&AtClient
+Procedure ViewCurrentEventInSeparateWindow()
+	
+	EventLogOperationsClient.ViewCurrentEventInSeparateWindow(Items.Log.CurrentData);
+	
+EndProcedure
+
+&AtClient
+Procedure SetViewDateInterval()
+	
+	Notification = New NotifyDescription("SetViewDateIntervalCompletion", ThisObject);
+	EventLogOperationsClient.SetViewDateInterval(DateInterval,  EventLogFilter, Notification)
+	
+EndProcedure
+
+&AtClient
+Procedure SetFilter()
+	
+	SetFilterOnClient();
+	
+EndProcedure
+
+&AtClient
+Procedure FilterPresentationClick(Item, StandardProcessing)
+	
+	StandardProcessing = False;
+	SetFilterOnClient();
+	
+EndProcedure
+
+&AtClient
+Procedure SetFilterByValueInCurrentColumn()
+	
+	ExcludeColumns = New Array;
+	ExcludeColumns.Add("Date");
+	
+	If EventLogOperationsClient.SetFilterByValueInCurrentColumn(
+			Items.Log.CurrentData, 
+			Items.Log.CurrentItem, 
+			EventLogFilter, 
+			ExcludeColumns
+		) Then
+		
+		RefreshCurrentList();
+		
+	EndIf;
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtClient
+Procedure SetViewDateIntervalCompletion(IntervalSet,  AdditionalParameters) Export
+	
+	If IntervalSet Then
+		RefreshCurrentList();
+	EndIf;
+	
+EndProcedure
+
+&AtServer
+Procedure OnCloseAtServer()
+	
+	LongActions.CancelJobExecution(JobID);
+	
+EndProcedure
+
+&AtServer
+Function DefaultFilter(EventList)
+	
+	DefaultFilter = New  ValueList;
+	
+	For Each LogEvent In EventList Do
+		
+		If LogEvent.Key = "_$Transaction$_.Commit"
+			Or LogEvent.Key = "_$Transaction$_.Begin"
+			Or LogEvent.Key = "_$Transaction$_.Rollback" Then
+			Continue;
+		EndIf;
+		
+		DefaultFilter.Add(LogEvent.Key, LogEvent.Value);
+		
+	EndDo;
+	
+	Return DefaultFilter;
+EndFunction
+
 &AtServer
 Function ReadEventLog()
 	
 	ReportParameters = ReportParameters();
 	
-	FileInfoBase = Undefined;
-	If Not CheckFilling() Then 
-		Return New Structure("JobCompleted", True);
-	EndIf;
-	
-	If FileInfoBase = Undefined Then
-		FileInfoBase = CommonUse.FileInfoBase();
+	If Not  CheckFilling() Then 
+		Return New  Structure("JobCompleted", True);
 	EndIf;
 	
 	LongActions.CancelJobExecution(JobID);
@@ -231,62 +319,57 @@ Function ReadEventLog()
 	
 	CommonUseClientServer.SetSpreadsheetDocumentFieldState(Items.LongActionIndicatorField, "DontUse");
 	
-	If FileInfoBase Then
-		StorageAddress = PutToTempStorage(Undefined, UUID);
-		EventLogServerCall.ReadEventLogEvents(ReportParameters, StorageAddress);
+	If FileInfobase
+		Or ExecuteNotInBackground Then
+		StorageAddress =  PutToTempStorage(Undefined,  UUID);
+		EventLogOperations.ReadEventLogEvents(ReportParameters, StorageAddress);
 		ExecutionResult = New Structure("JobCompleted", True);
 	Else
 		ExecutionResult = LongActions.ExecuteInBackground(
 			UUID, 
-			"EventLogServerCall.ReadEventLogEvents", 
+			"EventLogOperations.ReadEventLogEvents", 
 			ReportParameters, 
-			NStr("en = 'Updating event log.'"));
+			NStr("en = 'Updating the event log'"));
 						
 		StorageAddress = ExecutionResult.StorageAddress;
-		JobID = ExecutionResult.JobID;		
+		JobID =  ExecutionResult.JobID;		
 	EndIf;
 	
 	If ExecutionResult.JobCompleted Then
 		LoadPreparedData();
 	EndIf;
 	
-	EventLogServerCall.GenerateFilterPresentation(FilterPresentation, EventLogFilter);
+	EventLogOperations.GenerateFilterPresentation(FilterPresentation,  EventLogFilter,  DefaultEventLogFilter);
 	
 	Return ExecutionResult;
 	
 EndFunction
 
 &AtServer
-Procedure ReadEventLogOnCreateAtServer()
-	Items.Pages.CurrentPage = Items.EventLog;
-	ReportParameters = ReportParameters();
-	StorageAddress = PutToTempStorage(Undefined, UUID);
-	
-	EventLogServerCall.ReadEventLogEvents(ReportParameters, StorageAddress);
-	LoadPreparedData();
-	EventLogServerCall.GenerateFilterPresentation(FilterPresentation, EventLogFilter); 	
-EndProcedure
-
-&AtServer
 Function ReportParameters()
-	ReportParameters = New Structure;
+	ReportParameters = New  Structure;
 	ReportParameters.Insert("EventLogFilter", EventLogFilter);
 	ReportParameters.Insert("EventCountLimit", EventCountLimit);
 	ReportParameters.Insert("UUID", UUID);
 	ReportParameters.Insert("OwnerManager", DataProcessors.EventLog);
-	ReportParameters.Insert("AddAdditionalColumns", False);
-	ReportParameters.Insert("Log", FormAttributeToValue("Log"));
+	ReportParameters.Insert("AddAdditionalColumns",  False);
+	ReportParameters.Insert("Log",  FormAttributeToValue("Log"));
 
 	Return ReportParameters;
 EndFunction
 
 &AtServer
-Procedure LoadPreparedData()	
-	ExecutionResult = GetFromTempStorage(StorageAddress);
+Procedure LoadPreparedData()
+
+	ExecutionResult =  GetFromTempStorage(StorageAddress);
 	LogEvents = ExecutionResult.LogEvents;
 	
-	ValueToFormData(LogEvents, Log);	
-	JobID = Undefined; 	
+	EventLogOperations.PutDataToTempStorage(LogEvents,  UUID);
+	
+	ValueToFormData(LogEvents, Log);
+
+	JobID = Undefined;
+
 EndProcedure
 
 &AtClient
@@ -297,12 +380,12 @@ Procedure MoveToListEnd()
 EndProcedure 
 
 &AtClient
-Procedure Attachable_CheckJobExecution() 
+Procedure  Attachable_CheckJobExecution() 
 	
 	Try
-		If LongActions.JobCompleted(JobID) Then 
+		If JobCompleted(JobID) Then 
 			LoadPreparedData();
-			CommonUseClientServer.SetSpreadsheetDocumentFieldState(Items.LongActionIndicatorField, "DontUse");
+			CommonUseClientServer.SetSpreadsheetDocumentFieldState(Items.LongActionIndicatorField,  "DontUse");
 			Items.Pages.CurrentPage = Items.EventLog;
 			MoveToListEnd();
 		Else
@@ -319,3 +402,27 @@ Procedure Attachable_CheckJobExecution()
 		Raise;
 	EndTry;	
 EndProcedure
+
+&AtServerNoContext
+Function JobCompleted(JobID)
+	
+	Return LongActions.JobCompleted(JobID);
+	
+EndFunction
+
+&AtClient
+Procedure SetFilterOnClient()
+	
+	FormFilter = New ValueList;
+	For Each KeyAndValue  In EventLogFilter Do
+		FormFilter.Add(KeyAndValue.Value, KeyAndValue.Key);
+	EndDo;
+	
+	OpenForm(
+		"DataProcessor.EventLog.Form.EventLogFilter", 
+		New Structure("Filter, DefaultEvents", FormFilter, DefaultEventLogFilter.Event), 
+		ThisObject);
+	
+EndProcedure
+
+#EndRegion

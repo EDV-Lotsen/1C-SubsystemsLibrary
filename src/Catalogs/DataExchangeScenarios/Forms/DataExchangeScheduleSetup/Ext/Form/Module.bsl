@@ -1,14 +1,20 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	List.Parameters.Items[0].Value = Parameters.InfoBaseNode;
+  // Skipping the initialization to guarantee that the form 
+  // will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then
+		Return;
+	EndIf;
+	
+	List.Parameters.Items[0].Value = Parameters.InfobaseNode;
 	List.Parameters.Items[0].Use = True;
 	
-	Title = NStr("en = 'Data exchange scenario setup for: [InfoBaseNode]'");
-	Title = StrReplace(Title, "[InfoBaseNode]", String(Parameters.InfoBaseNode));
+	Title = NStr("en = 'Synchronization scenario setup for: [InfobaseNode]'");
+	Title = StrReplace(Title, "[InfobaseNode]", String(Parameters.InfobaseNode));
 	
 EndProcedure
 
@@ -23,11 +29,14 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF List TABLE 
+#EndRegion
+
+#Region ListFormTableItemEventHandlers
 
 &AtClient
 Procedure ListChoice(Item, SelectedRow, Field, StandardProcessing)
+	
+	StandardProcessing = False;
 	
 	CurrentData = Items.List.RowData(SelectedRow);
 	
@@ -51,15 +60,16 @@ Procedure ListChoice(Item, SelectedRow, Field, StandardProcessing)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
 Procedure Create(Command)
 	
-	FormParameters = New Structure("InfoBaseNode", Parameters.InfoBaseNode);
+	FormParameters = New Structure("InfobaseNode", Parameters.InfobaseNode);
 	
-	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisObject);
 	
 EndProcedure
 
@@ -75,7 +85,7 @@ Procedure EditDataExchangeScenario(Command)
 	FormParameters = New Structure;
 	FormParameters.Insert("Key", CurrentData.Ref);
 	
-	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisForm,,,, Undefined, FormWindowOpeningMode.LockWholeInterface);
+	OpenForm("Catalog.DataExchangeScenarios.ObjectForm", FormParameters, ThisObject);
 	
 EndProcedure
 
@@ -140,21 +150,21 @@ Procedure ExecuteScenario(Command)
 		Return;
 	EndIf;
 	
-	Message = NStr("en = 'Executing the data exchange by the %1 script...'");
+	Message = NStr("en = 'Synchronizing data according to %1 scenario...'");
 	Message = StringFunctionsClientServer.SubstituteParametersInString(Message, String(CurrentData.Ref));
 	
 	Status(Message);
 	
 	Cancel = False;
 	
-	// Starting the exchange
-	DataExchangeServer.ExecuteDataExchangeByDataExchangeScenario(Cancel, CurrentData.Ref);
+	// Starting synchronization
+	DataExchangeServerCall.ExecuteDataExchangeUsingDataExchangeScenario(Cancel, CurrentData.Ref);
 	
 	If Cancel Then
-		Message = NStr("en = 'Error executing the exchange script.'");
+		Message = NStr("en = 'Synchronization scenario completed with errors.'");
 		Picture = PictureLib.Error32;
 	Else
-		Message = NStr("en = 'The exchange script executed successfully.'");
+		Message = NStr("en = 'Synchronization scenario completed (no errors).'");
 		Picture = Undefined;
 	EndIf;
 	
@@ -162,8 +172,9 @@ Procedure ExecuteScenario(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 &AtServer
 Procedure EnableDisableScheduledJobAtServer(Ref)
@@ -182,11 +193,11 @@ Procedure EnableDisableExportAtServer(Val UseExportFlag, Val DataExchangeScenari
 	
 	If UseExportFlag Then
 		
-		Catalogs.DataExchangeScenarios.DeleteExportFromDataExchangeScenario(DataExchangeScenario, Parameters.InfoBaseNode);
+		Catalogs.DataExchangeScenarios.DeleteExportFromDataExchangeScenario(DataExchangeScenario, Parameters.InfobaseNode);
 		
 	Else
 		
-		Catalogs.DataExchangeScenarios.AddExportToDataExchangeScenarios(DataExchangeScenario, Parameters.InfoBaseNode);
+		Catalogs.DataExchangeScenarios.AddExportToDataExchangeScenarios(DataExchangeScenario, Parameters.InfobaseNode);
 		
 	EndIf;
 	
@@ -199,11 +210,11 @@ Procedure EnableDisableImportAtServer(Val UseImportFlag, Val DataExchangeScenari
 	
 	If UseImportFlag Then
 		
-		Catalogs.DataExchangeScenarios.DeleteImportFromDataExchangeScenario(DataExchangeScenario, Parameters.InfoBaseNode);
+		Catalogs.DataExchangeScenarios.DeleteImportFromDataExchangeScenario(DataExchangeScenario, Parameters.InfobaseNode);
 		
 	Else
 		
-		Catalogs.DataExchangeScenarios.AddImportToDataExchangeScenarios(DataExchangeScenario, Parameters.InfoBaseNode);
+		Catalogs.DataExchangeScenarios.AddImportToDataExchangeScenarios(DataExchangeScenario, Parameters.InfobaseNode);
 		
 	EndIf;
 	
@@ -219,3 +230,5 @@ Procedure EnableDisableImportExportAtServer(Val UsageFlag, Val DataExchangeScena
 	EnableDisableExportAtServer(UsageFlag, DataExchangeScenario);
 	
 EndProcedure
+
+#EndRegion

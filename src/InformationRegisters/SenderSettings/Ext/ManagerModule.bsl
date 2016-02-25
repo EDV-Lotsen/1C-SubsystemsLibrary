@@ -1,14 +1,15 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-// Determines end points that have the specified message channel in the 
-// current infobase.
+#Region InternalProceduresAndFunctions
+
+// Defines endpoints of the specified in the current infosystem massage channel.
 //
 // Parameters:
-// MessageChannel – String - message channel ID.
+//  MessageChannel - String. Targeted message channel ID.
 //
 // Returns:
-// Array of ExchangePlanRef.MessageExchange - array of end point items.
+//  Type: Array. Endpoints items array.
+//  Array contains items of ExchangePlanRef.MessageExchange type.
 //
 Function MessageChannelSubscribers(Val MessageChannel) Export
 	
@@ -26,3 +27,7 @@ Function MessageChannelSubscribers(Val MessageChannel) Export
 	
 	Return Query.Execute().Unload().UnloadColumn("Recipient");
 EndFunction
+
+#EndRegion
+
+#EndIf

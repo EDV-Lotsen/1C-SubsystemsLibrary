@@ -3,9 +3,11 @@
 	<Title>
 		<v8:item>
 			<v8:lang>en</v8:lang>
-			<v8:content>Event Log</v8:content>
+			<v8:content>Event log</v8:content>
 		</v8:item>
 	</Title>
+	<Width>120</Width>
+	<Height>15</Height>
 	<AutoTitle>false</AutoTitle>
 	<AutoFillCheck>false</AutoFillCheck>
 	<CommandBarLocation>Top</CommandBarLocation>
@@ -23,472 +25,15 @@
 		<ExcludedCommand>OK</ExcludedCommand>
 	</CommandSet>
 	<AutoCommandBar name="FormCommandBar" id="-1">
-		<ChildItems>
-			<ButtonGroup name="FilterCommands" id="105">
-				<Title>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Filter commands</v8:content>
-					</v8:item>
-				</Title>
-				<ToolTip>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Filter commands</v8:content>
-					</v8:item>
-				</ToolTip>
-				<ExtendedTooltip name="FilterCommandsExtendedTooltip" id="123"/>
-				<ChildItems>
-					<Button name="SetDateIntervalForViewing" id="108">
-						<Type>CommandBarButton</Type>
-						<CommandName>Form.Command.SetViewDateInterval</CommandName>
-						<ExtendedTooltip name="SetDateIntervalForViewingExtendedTooltip" id="124"/>
-					</Button>
-					<Button name="SetFilter" id="42">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.SetFilter</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="SetFilterExtendedTooltip" id="125"/>
-					</Button>
-					<Button name="SetFilterByValueInCurrentColumn" id="43">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.SetFilterByValueInCurrentColumn</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="SetFilterByValueInCurrentColumnExtendedTooltip" id="126"/>
-					</Button>
-					<Button name="ClearFilter" id="44">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.ClearFilter</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="ClearFilterExtendedTooltip" id="127"/>
-					</Button>
-				</ChildItems>
-			</ButtonGroup>
-			<Button name="ViewCurrentEventInSeparateWindow" id="38">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.ViewCurrentEventInSeparateWindow</CommandName>
-				<TextColor>style:ButtonTextColor</TextColor>
-				<BackColor>style:ButtonBackColor</BackColor>
-				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="ViewCurrentEventInSeparateWindowExtendedTooltip" id="128"/>
-			</Button>
-			<Button name="OpenDataForViewing" id="40">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Command.OpenDataForViewing</CommandName>
-				<TextColor>style:ButtonTextColor</TextColor>
-				<BackColor>style:ButtonBackColor</BackColor>
-				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="OpenDataForViewingExtendedTooltip" id="129"/>
-			</Button>
-			<ButtonGroup name="CommandRefresh" id="106">
-				<Title>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Command refresh</v8:content>
-					</v8:item>
-				</Title>
-				<ToolTip>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Command refresh</v8:content>
-					</v8:item>
-				</ToolTip>
-				<ExtendedTooltip name="CommandRefreshExtendedTooltip" id="130"/>
-				<ChildItems>
-					<Button name="RefreshCurrentList" id="46">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.RefreshCurrentList</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="RefreshCurrentListExtendedTooltip" id="131"/>
-					</Button>
-				</ChildItems>
-			</ButtonGroup>
-			<ButtonGroup name="SearchCommands" id="109">
-				<Title>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Search commands</v8:content>
-					</v8:item>
-				</Title>
-				<ToolTip>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Search commands</v8:content>
-					</v8:item>
-				</ToolTip>
-				<ExtendedTooltip name="SearchCommandsExtendedTooltip" id="132"/>
-				<ChildItems>
-					<Button name="FormFind" id="110">
-						<Type>CommandBarButton</Type>
-						<CommandName>Form.Item.Log.StandardCommand.Find</CommandName>
-						<ExtendedTooltip name="FormFindExtendedTooltip" id="133"/>
-					</Button>
-					<Button name="FormCancelSearch" id="111">
-						<Type>CommandBarButton</Type>
-						<CommandName>Form.Item.Log.StandardCommand.CancelSearch</CommandName>
-						<ExtendedTooltip name="FormCancelSearchExtendedTooltip" id="134"/>
-					</Button>
-				</ChildItems>
-			</ButtonGroup>
-			<Button name="CustomizeForm" id="104">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<OnlyInAllActions>false</OnlyInAllActions>
-				<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
-				<ExtendedTooltip name="CustomizeFormExtendedTooltip" id="135"/>
-			</Button>
-			<Button name="OutputList" id="82">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.Item.Log.StandardCommand.OutputList</CommandName>
-				<TextColor>style:ButtonTextColor</TextColor>
-				<BackColor>style:ButtonBackColor</BackColor>
-				<BorderColor>style:BorderColor</BorderColor>
-				<ExtendedTooltip name="OutputListExtendedTooltip" id="136"/>
-			</Button>
-		</ChildItems>
+		<Autofill>false</Autofill>
 	</AutoCommandBar>
 	<Events>
 		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnClose">OnClose</Event>
 	</Events>
 	<ChildItems>
-		<Table name="Log" id="48">
-			<Representation>List</Representation>
-			<CommandBarLocation>None</CommandBarLocation>
-			<ReadOnly>true</ReadOnly>
-			<SkipOnInput>false</SkipOnInput>
-			<ChangeRowSet>false</ChangeRowSet>
-			<ChangeRowOrder>false</ChangeRowOrder>
-			<SelectionMode>SingleRow</SelectionMode>
-			<InitialListView>End</InitialListView>
-			<Output>Enable</Output>
-			<DataPath>Log</DataPath>
-			<RowPictureDataPath>Log.PictureNumber</RowPictureDataPath>
-			<BorderColor>style:BorderColor</BorderColor>
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Event log</v8:content>
-				</v8:item>
-			</Title>
-			<CommandSet>
-				<ExcludedCommand>Copy</ExcludedCommand>
-				<ExcludedCommand>MoveUp</ExcludedCommand>
-				<ExcludedCommand>CopyToClipboard</ExcludedCommand>
-				<ExcludedCommand>EndEdit</ExcludedCommand>
-				<ExcludedCommand>Add</ExcludedCommand>
-				<ExcludedCommand>Change</ExcludedCommand>
-				<ExcludedCommand>MoveDown</ExcludedCommand>
-			</CommandSet>
-			<SearchStringLocation>None</SearchStringLocation>
-			<ViewStatusLocation>None</ViewStatusLocation>
-			<SearchControlLocation>None</SearchControlLocation>
-			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="LogContextMenu" id="49">
-				<ChildItems>
-					<ButtonGroup name="FilterGroupContext" id="107">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Filter group context</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Filter group context</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="FilterGroupContextExtendedTooltip" id="142"/>
-						<ChildItems>
-							<Button name="SetFilterByValueInCurrentColumnContext" id="98">
-								<Type>CommandBarButton</Type>
-								<SkipOnInput>false</SkipOnInput>
-								<CommandName>Form.Command.SetFilterByValueInCurrentColumn</CommandName>
-								<TextColor>style:ButtonTextColor</TextColor>
-								<BackColor>style:ButtonBackColor</BackColor>
-								<BorderColor>style:BorderColor</BorderColor>
-								<ExtendedTooltip name="SetFilterByValueInCurrentColumnContextExtendedTooltip" id="143"/>
-							</Button>
-							<Button name="JournalContextMenuClearFilter" id="113">
-								<Type>CommandBarButton</Type>
-								<CommandName>Form.Command.ClearFilter</CommandName>
-								<ExtendedTooltip name="JournalContextMenuClearFilterExtendedTooltip" id="144"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<Button name="ViewCurrentEventsInIndividualWindowContext" id="96">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.ViewCurrentEventInSeparateWindow</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="ViewCurrentEventsInIndividualWindowContextExtendedTooltip" id="145"/>
-					</Button>
-					<Button name="OpenDataForViewingContext" id="97">
-						<Type>CommandBarButton</Type>
-						<SkipOnInput>false</SkipOnInput>
-						<CommandName>Form.Command.OpenDataForViewing</CommandName>
-						<TextColor>style:ButtonTextColor</TextColor>
-						<BackColor>style:ButtonBackColor</BackColor>
-						<BorderColor>style:BorderColor</BorderColor>
-						<ExtendedTooltip name="OpenDataForViewingContextExtendedTooltip" id="146"/>
-					</Button>
-				</ChildItems>
-			</ContextMenu>
-			<AutoCommandBar name="LogCommandBar" id="50">
-				<Autofill>false</Autofill>
-			</AutoCommandBar>
-			<ExtendedTooltip name="LogExtendedTooltip" id="147"/>
-			<SearchStringAddition name="LogSearchString" id="171">
-				<AdditionSource>
-					<Item>Log</Item>
-					<Type>SearchStringRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="LogSearchStringContextMenu" id="172"/>
-				<ExtendedTooltip name="LogSearchStringExtendedTooltip" id="173"/>
-			</SearchStringAddition>
-			<ViewStatusAddition name="LogViewStatus" id="174">
-				<AdditionSource>
-					<Item>Log</Item>
-					<Type>ViewStatusRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="LogViewStatusContextMenu" id="175"/>
-				<ExtendedTooltip name="LogViewStatusExtendedTooltip" id="176"/>
-			</ViewStatusAddition>
-			<SearchControlAddition name="LogSearchControl" id="177">
-				<AdditionSource>
-					<Item>Log</Item>
-					<Type>SearchControl</Type>
-				</AdditionSource>
-				<ContextMenu name="LogSearchControlContextMenu" id="178"/>
-				<ExtendedTooltip name="LogSearchControlExtendedTooltip" id="179"/>
-			</SearchControlAddition>
-			<Events>
-				<Event name="Selection">EventLogChoice</Event>
-			</Events>
-			<ChildItems>
-				<InputField name="Date" id="51">
-					<DataPath>Log.Date</DataPath>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Date, Time</v8:content>
-						</v8:item>
-					</Title>
-					<Wrap>false</Wrap>
-					<BorderColor>style:BorderColor</BorderColor>
-					<ContextMenu name="DateContextMenu" id="52"/>
-					<ExtendedTooltip name="DateExtendedTooltip" id="148"/>
-				</InputField>
-				<ColumnGroup name="GroupUserComputerApplication" id="53">
-					<ExtendedTooltip name="GroupUserComputerApplicationExtendedTooltip" id="149"/>
-					<ChildItems>
-						<InputField name="UserName" id="54">
-							<DataPath>Log.UserName</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>User</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="UserNameContextMenu" id="55"/>
-							<ExtendedTooltip name="UserNameExtendedTooltip" id="150"/>
-						</InputField>
-						<InputField name="Computer" id="56">
-							<DataPath>Log.Computer</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Computer</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="ComputerContextMenu" id="57"/>
-							<ExtendedTooltip name="ComputerExtendedTooltip" id="151"/>
-						</InputField>
-						<ColumnGroup name="GroupApplication" id="58">
-							<Group>Horizontal</Group>
-							<ExtendedTooltip name="GroupApplicationExtendedTooltip" id="152"/>
-							<ChildItems>
-								<InputField name="ApplicationPresentation" id="59">
-									<DataPath>Log.ApplicationPresentation</DataPath>
-									<Title>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>Application</v8:content>
-										</v8:item>
-									</Title>
-									<Wrap>false</Wrap>
-									<BorderColor>style:BorderColor</BorderColor>
-									<ContextMenu name="ApplicationPresentationContextMenu" id="60"/>
-									<ExtendedTooltip name="ApplicationPresentationExtendedTooltip" id="153"/>
-								</InputField>
-								<InputField name="Session" id="80">
-									<DataPath>Log.Session</DataPath>
-									<Wrap>false</Wrap>
-									<BorderColor>style:BorderColor</BorderColor>
-									<ContextMenu name="SessionContextMenu" id="81"/>
-									<ExtendedTooltip name="SessionExtendedTooltip" id="154"/>
-								</InputField>
-							</ChildItems>
-						</ColumnGroup>
-					</ChildItems>
-				</ColumnGroup>
-				<ColumnGroup name="GroupServer" id="84">
-					<UserVisible>
-						<xr:Common>false</xr:Common>
-					</UserVisible>
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Group server</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Group server</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="GroupServerExtendedTooltip" id="155"/>
-					<ChildItems>
-						<InputField name="ServerName" id="85">
-							<DataPath>Log.ServerName</DataPath>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="ServerNameContextMenu" id="86"/>
-							<ExtendedTooltip name="ServerNameExtendedTooltip" id="156"/>
-						</InputField>
-						<InputField name="Port" id="89">
-							<DataPath>Log.Port</DataPath>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="PortContextMenu" id="90"/>
-							<ExtendedTooltip name="PortExtendedTooltip" id="157"/>
-						</InputField>
-						<InputField name="SyncPort" id="91">
-							<DataPath>Log.SyncPort</DataPath>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Sync IP port</v8:content>
-								</v8:item>
-							</ToolTip>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="SyncPortContextMenu" id="92"/>
-							<ExtendedTooltip name="SyncPortExtendedTooltip" id="158"/>
-						</InputField>
-					</ChildItems>
-				</ColumnGroup>
-				<ColumnGroup name="GroupEvent" id="63">
-					<ExtendedTooltip name="GroupEventExtendedTooltip" id="159"/>
-					<ChildItems>
-						<InputField name="EventPresentation" id="64">
-							<DataPath>Log.EventPresentation</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Event</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="EventPresentationContextMenu" id="65"/>
-							<ExtendedTooltip name="EventPresentationExtendedTooltip" id="160"/>
-						</InputField>
-						<InputField name="Comment" id="66">
-							<DataPath>Log.Comment</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Comment</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="CommentContextMenu" id="67"/>
-							<ExtendedTooltip name="CommentExtendedTooltip" id="161"/>
-						</InputField>
-					</ChildItems>
-				</ColumnGroup>
-				<ColumnGroup name="GroupTransaction" id="68">
-					<ExtendedTooltip name="GroupTransactionExtendedTooltip" id="162"/>
-					<ChildItems>
-						<InputField name="TransactionStatus" id="69">
-							<DataPath>Log.TransactionStatus</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Transaction status</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="TransactionStatusContextMenu" id="70"/>
-							<ExtendedTooltip name="TransactionStatusExtendedTooltip" id="163"/>
-						</InputField>
-						<InputField name="TransactionID" id="71">
-							<DataPath>Log.TransactionID</DataPath>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="TransactionIDContextMenu" id="72"/>
-							<ExtendedTooltip name="TransactionIDExtendedTooltip" id="164"/>
-						</InputField>
-					</ChildItems>
-				</ColumnGroup>
-				<ColumnGroup name="GroupData" id="73">
-					<ExtendedTooltip name="GroupDataExtendedTooltip" id="165"/>
-					<ChildItems>
-						<InputField name="MetadataPresentation" id="74">
-							<DataPath>Log.MetadataPresentation</DataPath>
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Metadata</v8:content>
-								</v8:item>
-							</Title>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="MetadataPresentationContextMenu" id="75"/>
-							<ExtendedTooltip name="MetadataPresentationExtendedTooltip" id="166"/>
-						</InputField>
-						<InputField name="Data" id="76">
-							<DataPath>Log.Data</DataPath>
-							<Wrap>false</Wrap>
-							<BorderColor>style:BorderColor</BorderColor>
-							<ContextMenu name="DataContextMenu" id="77"/>
-							<ExtendedTooltip name="DataExtendedTooltip" id="167"/>
-						</InputField>
-						<LabelField name="DataPresentation" id="78">
-							<DataPath>Log.DataPresentation</DataPath>
-							<ContextMenu name="DataPresentationContextMenu" id="79"/>
-							<ExtendedTooltip name="DataPresentationExtendedTooltip" id="168"/>
-						</LabelField>
-					</ChildItems>
-				</ColumnGroup>
-			</ChildItems>
-		</Table>
 		<UsualGroup name="FilterGroup" id="103">
 			<Title>
 				<v8:item>
@@ -505,33 +50,36 @@
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="FilterGroupExtendedTooltip" id="137"/>
+			<ExtendedTooltip name="FilterGroupExtendedTooltip" id="135"/>
 			<ChildItems>
-				<InputField name="NumberOfEventsDisplayed" id="101">
+				<InputField name="EventCountLimit" id="101">
 					<DataPath>EventCountLimit</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Number of Selected Events</v8:content>
+							<v8:content>Show</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Quantity of the last events selected from the specified interval</v8:content>
+							<v8:content>Number of the latest events to be selected from the date interval</v8:content>
 						</v8:item>
 					</ToolTip>
 					<HorizontalAlign>Right</HorizontalAlign>
+					<Width>8</Width>
 					<Wrap>false</Wrap>
+					<DropListButton>true</DropListButton>
 					<EditFormat>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>NZ=0</v8:content>
+							<v8:content>NG=0</v8:content>
 						</v8:item>
 					</EditFormat>
 					<ChooseType>false</ChooseType>
 					<TypeDomainEnabled>false</TypeDomainEnabled>
 					<MinValue xsi:type="xs:decimal">1</MinValue>
+					<MaxValue xsi:type="xs:decimal">10000</MaxValue>
 					<ChoiceList>
 						<xr:Item>
 							<xr:Presentation/>
@@ -540,7 +88,7 @@
 								<Presentation>
 									<v8:item>
 										<v8:lang>en</v8:lang>
-										<v8:content>200 events</v8:content>
+										<v8:content> 200 events</v8:content>
 									</v8:item>
 								</Presentation>
 								<Value xsi:type="xs:decimal">200</Value>
@@ -553,7 +101,7 @@
 								<Presentation>
 									<v8:item>
 										<v8:lang>en</v8:lang>
-										<v8:content>500 events</v8:content>
+										<v8:content> 500 events</v8:content>
 									</v8:item>
 								</Presentation>
 								<Value xsi:type="xs:decimal">500</Value>
@@ -566,7 +114,7 @@
 								<Presentation>
 									<v8:item>
 										<v8:lang>en</v8:lang>
-										<v8:content>1000 events</v8:content>
+										<v8:content> 1000 events</v8:content>
 									</v8:item>
 								</Presentation>
 								<Value xsi:type="xs:decimal">1000</Value>
@@ -586,12 +134,64 @@
 							</xr:Value>
 						</xr:Item>
 					</ChoiceList>
-					<ChoiceListButton>true</ChoiceListButton>
 					<BorderColor>style:BorderColor</BorderColor>
-					<ContextMenu name="NumberOfEventsDisplayedContextMenu" id="102"/>
-					<ExtendedTooltip name="NumberOfEventsDisplayedExtendedTooltip" id="138"/>
+					<ContextMenu name="EventCountLimitContextMenu" id="102"/>
+					<ExtendedTooltip name="EventCountLimitExtendedTooltip" id="136"/>
 					<Events>
 						<Event name="OnChange">EventCountLimitOnChange</Event>
+					</Events>
+				</InputField>
+				<InputField name="Criticality" id="170">
+					<DataPath>Criticality</DataPath>
+					<Width>15</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<DropListButton>true</DropListButton>
+					<ListChoiceMode>true</ListChoiceMode>
+					<ChoiceList>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Errors</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:string">Errors</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>Warnings</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:string">Warnings</Value>
+							</xr:Value>
+						</xr:Item>
+						<xr:Item>
+							<xr:Presentation/>
+							<xr:CheckState>0</xr:CheckState>
+							<xr:Value xsi:type="FormChoiceListDesTimeValue">
+								<Presentation>
+									<v8:item>
+										<v8:lang>en</v8:lang>
+										<v8:content>All events</v8:content>
+									</v8:item>
+								</Presentation>
+								<Value xsi:type="xs:string">AllEvents</Value>
+							</xr:Value>
+						</xr:Item>
+					</ChoiceList>
+					<ContextMenu name="CriticalityContextMenu" id="171"/>
+					<ExtendedTooltip name="CriticalityExtendedTooltip" id="172"/>
+					<Events>
+						<Event name="OnChange">CriticalityOnChange</Event>
 					</Events>
 				</InputField>
 				<LabelField name="FilterPresentation" id="35">
@@ -603,12 +203,16 @@
 						</v8:item>
 					</Title>
 					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Hiperlink>true</Hiperlink>
 					<ContextMenu name="FilterPresentationContextMenu" id="36"/>
-					<ExtendedTooltip name="FilterPresentationExtendedTooltip" id="139"/>
+					<ExtendedTooltip name="FilterPresentationExtendedTooltip" id="137"/>
+					<Events>
+						<Event name="Click">FilterPresentationClick</Event>
+					</Events>
 				</LabelField>
 			</ChildItems>
 		</UsualGroup>
-		<Pages name="Pages" id="114">
+		<Pages name="Pages" id="116">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -622,9 +226,9 @@
 				</v8:item>
 			</ToolTip>
 			<PagesRepresentation>None</PagesRepresentation>
-			<ExtendedTooltip name="PagesExtendedTooltip" id="140"/>
+			<ExtendedTooltip name="PagesExtendedTooltip" id="138"/>
 			<ChildItems>
-				<Page name="EventLog" id="115">
+				<Page name="EventLog" id="117">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -637,29 +241,516 @@
 							<v8:content>Event log</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="EventLogExtendedTooltip" id="141"/>
-				</Page>
-				<Page name="LongActionIndicator" id="116">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Long action indicator</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Long action indicator</v8:content>
-						</v8:item>
-					</ToolTip>
-					<Group>Horizontal</Group>
-					<ExtendedTooltip name="LongActionIndicatorExtendedTooltip" id="169"/>
+					<ExtendedTooltip name="EventLogExtendedTooltip" id="139"/>
 					<ChildItems>
-						<SpreadSheetDocumentField name="LongActionIndicatorField" id="121">
+						<Table name="Log" id="48">
+							<Representation>List</Representation>
+							<ReadOnly>true</ReadOnly>
+							<SkipOnInput>false</SkipOnInput>
+							<ChangeRowSet>false</ChangeRowSet>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<SelectionMode>SingleRow</SelectionMode>
+							<InitialListView>End</InitialListView>
+							<Output>Enable</Output>
+							<DataPath>Log</DataPath>
+							<RowPictureDataPath>Log.PictureNumber</RowPictureDataPath>
+							<RowsPicture>
+								<xr:Ref>CommonPicture.EventLogEventKindCollection</xr:Ref>
+								<xr:LoadTransparent>true</xr:LoadTransparent>
+								<xr:TransparentPixel x="30" y="2"/>
+							</RowsPicture>
+							<BorderColor>style:BorderColor</BorderColor>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Event log</v8:content>
+								</v8:item>
+							</Title>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>CopyToClipboard</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="LogContextMenu" id="49">
+								<ChildItems>
+									<ButtonGroup name="FilterGroupContext" id="107">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Filter group context</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Filter group context</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="FilterGroupContextExtendedTooltip" id="140"/>
+										<ChildItems>
+											<Button name="SetFilterByValueInCurrentColumnContext" id="98">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.SetFilterByValueInCurrentColumn</CommandName>
+												<TextColor>style:ButtonTextColor</TextColor>
+												<BackColor>style:ButtonBackColor</BackColor>
+												<BorderColor>style:BorderColor</BorderColor>
+												<ExtendedTooltip name="SetFilterByValueInCurrentColumnContextExtendedTooltip" id="141"/>
+											</Button>
+											<Button name="LogContextMenuClearFilter" id="113">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.ClearFilter</CommandName>
+												<ExtendedTooltip name="LogContextMenuClearFilterExtendedTooltip" id="142"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="ViewCurrentEventInSeparateWindowContext" id="96">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.ViewCurrentEventInSeparateWindow</CommandName>
+										<TextColor>style:ButtonTextColor</TextColor>
+										<BackColor>style:ButtonBackColor</BackColor>
+										<BorderColor>style:BorderColor</BorderColor>
+										<ExtendedTooltip name="ViewCurrentEventInSeparateWindowContextExtendedTooltip" id="143"/>
+									</Button>
+									<Button name="OpenDataForViewingContext" id="97">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.OpenDataForViewing</CommandName>
+										<TextColor>style:ButtonTextColor</TextColor>
+										<BackColor>style:ButtonBackColor</BackColor>
+										<BorderColor>style:BorderColor</BorderColor>
+										<ExtendedTooltip name="OpenDataForViewingContextExtendedTooltip" id="144"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="LogCommandBar" id="50">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<Button name="ViewCurrentEventInSeparateWindow" id="38">
+										<Type>CommandBarButton</Type>
+										<Representation>PictureAndText</Representation>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.ViewCurrentEventInSeparateWindow</CommandName>
+										<TextColor>style:ButtonTextColor</TextColor>
+										<BackColor>style:ButtonBackColor</BackColor>
+										<BorderColor>style:BorderColor</BorderColor>
+										<ExtendedTooltip name="ViewCurrentEventInSeparateWindowExtendedTooltip" id="126"/>
+									</Button>
+									<Button name="OpenDataForViewing" id="40">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Command.OpenDataForViewing</CommandName>
+										<TextColor>style:ButtonTextColor</TextColor>
+										<BackColor>style:ButtonBackColor</BackColor>
+										<BorderColor>style:BorderColor</BorderColor>
+										<ExtendedTooltip name="OpenDataForViewingExtendedTooltip" id="127"/>
+									</Button>
+									<ButtonGroup name="FilterCommands" id="105">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Filter commands</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Filter commands</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="FilterCommandsExtendedTooltip" id="121"/>
+										<ChildItems>
+											<Button name="SetViewDateInterval" id="108">
+												<Type>CommandBarButton</Type>
+												<Representation>PictureAndText</Representation>
+												<CommandName>Form.Command.SetViewDateInterval</CommandName>
+												<ExtendedTooltip name="SetViewDateIntervalExtendedTooltip" id="122"/>
+											</Button>
+											<Button name="SetFilter" id="42">
+												<Type>CommandBarButton</Type>
+												<Representation>PictureAndText</Representation>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.SetFilter</CommandName>
+												<TextColor>style:ButtonTextColor</TextColor>
+												<BackColor>style:ButtonBackColor</BackColor>
+												<BorderColor>style:BorderColor</BorderColor>
+												<ExtendedTooltip name="SetFilterExtendedTooltip" id="123"/>
+											</Button>
+											<Button name="SetFilterByValueInCurrentColumn" id="43">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.SetFilterByValueInCurrentColumn</CommandName>
+												<TextColor>style:ButtonTextColor</TextColor>
+												<BackColor>style:ButtonBackColor</BackColor>
+												<BorderColor>style:BorderColor</BorderColor>
+												<ExtendedTooltip name="SetFilterByValueInCurrentColumnExtendedTooltip" id="124"/>
+											</Button>
+											<Button name="ClearFilter" id="44">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.ClearFilter</CommandName>
+												<TextColor>style:ButtonTextColor</TextColor>
+												<BackColor>style:ButtonBackColor</BackColor>
+												<BorderColor>style:BorderColor</BorderColor>
+												<ExtendedTooltip name="ClearFilterExtendedTooltip" id="125"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="SearchCommands" id="109">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Search commands</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Search commands</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="SearchCommandsExtendedTooltip" id="130"/>
+										<ChildItems>
+											<Button name="FormFind" id="110">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.Log.StandardCommand.Find</CommandName>
+												<ExtendedTooltip name="FormFindExtendedTooltip" id="131"/>
+											</Button>
+											<Button name="FormCancelSearch" id="111">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Item.Log.StandardCommand.CancelSearch</CommandName>
+												<ExtendedTooltip name="FormCancelSearchExtendedTooltip" id="132"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="RefreshCommand" id="106">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Refresh command</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Refresh command</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="RefreshCommandExtendedTooltip" id="128"/>
+										<ChildItems>
+											<Button name="RefreshCurrentList" id="46">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.RefreshCurrentList</CommandName>
+												<TextColor>style:ButtonTextColor</TextColor>
+												<BackColor>style:ButtonBackColor</BackColor>
+												<BorderColor>style:BorderColor</BorderColor>
+												<ExtendedTooltip name="RefreshCurrentListExtendedTooltip" id="129"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="CustomizeForm" id="104">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<OnlyInAllActions>false</OnlyInAllActions>
+										<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+										<ExtendedTooltip name="CustomizeFormExtendedTooltip" id="133"/>
+									</Button>
+									<Button name="OutputList" id="82">
+										<Type>CommandBarButton</Type>
+										<SkipOnInput>false</SkipOnInput>
+										<CommandName>Form.Item.Log.StandardCommand.OutputList</CommandName>
+										<TextColor>style:ButtonTextColor</TextColor>
+										<BackColor>style:ButtonBackColor</BackColor>
+										<BorderColor>style:BorderColor</BorderColor>
+										<ExtendedTooltip name="OutputListExtendedTooltip" id="134"/>
+									</Button>
+									<Button name="LogHelp" id="173">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.StandardCommand.Help</CommandName>
+										<ExtendedTooltip name="LogHelpExtendedTooltip" id="174"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="LogExtendedTooltip" id="145"/>
+							<SearchStringAddition name="LogSearchString" id="181">
+								<AdditionSource>
+									<Item>Log</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="LogSearchStringContextMenu" id="182"/>
+								<ExtendedTooltip name="LogSearchStringExtendedTooltip" id="183"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="LogViewStatus" id="184">
+								<AdditionSource>
+									<Item>Log</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="LogViewStatusContextMenu" id="185"/>
+								<ExtendedTooltip name="LogViewStatusExtendedTooltip" id="186"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="LogSearchControl" id="187">
+								<AdditionSource>
+									<Item>Log</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="LogSearchControlContextMenu" id="188"/>
+								<ExtendedTooltip name="LogSearchControlExtendedTooltip" id="189"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">EventLogChoice</Event>
+							</Events>
+							<ChildItems>
+								<InputField name="Date" id="51">
+									<DataPath>Log.Date</DataPath>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Date, time</v8:content>
+										</v8:item>
+									</Title>
+									<Width>5</Width>
+									<Wrap>false</Wrap>
+									<BorderColor>style:BorderColor</BorderColor>
+									<ContextMenu name="DateContextMenu" id="52"/>
+									<ExtendedTooltip name="DateExtendedTooltip" id="146"/>
+								</InputField>
+								<InputField name="SessionDataSeparationPresentation" id="119">
+									<DataPath>Log.SessionDataSeparationPresentation</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="SessionDataSeparationPresentationContextMenu" id="120"/>
+									<ExtendedTooltip name="SessionDataSeparationPresentationExtendedTooltip" id="147"/>
+								</InputField>
+								<ColumnGroup name="UserComputerApplicationGroup" id="53">
+									<ExtendedTooltip name="UserComputerApplicationGroupExtendedTooltip" id="148"/>
+									<ChildItems>
+										<InputField name="UserName" id="54">
+											<DataPath>Log.UserName</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>User</v8:content>
+												</v8:item>
+											</Title>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="UserNameContextMenu" id="55"/>
+											<ExtendedTooltip name="UserNameExtendedTooltip" id="149"/>
+										</InputField>
+										<InputField name="Computer" id="56">
+											<DataPath>Log.Computer</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Computer</v8:content>
+												</v8:item>
+											</Title>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="ComputerContextMenu" id="57"/>
+											<ExtendedTooltip name="ComputerExtendedTooltip" id="150"/>
+										</InputField>
+										<ColumnGroup name="ApplicationGroup" id="58">
+											<Group>Horizontal</Group>
+											<ExtendedTooltip name="ApplicationGroupExtendedTooltip" id="151"/>
+											<ChildItems>
+												<InputField name="ApplicationPresentation" id="59">
+													<DataPath>Log.ApplicationPresentation</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Package</v8:content>
+														</v8:item>
+													</Title>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="ApplicationPresentationContextMenu" id="60"/>
+													<ExtendedTooltip name="ApplicationPresentationExtendedTooltip" id="152"/>
+												</InputField>
+												<InputField name="Session" id="80">
+													<DataPath>Log.Session</DataPath>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="SessionContextMenu" id="81"/>
+													<ExtendedTooltip name="SessionExtendedTooltip" id="153"/>
+												</InputField>
+											</ChildItems>
+										</ColumnGroup>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="ServerGroup" id="84">
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ExtendedTooltip name="ServerGroupExtendedTooltip" id="154"/>
+									<ChildItems>
+										<InputField name="ServerName" id="85">
+											<DataPath>Log.ServerName</DataPath>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="ServerNameContextMenu" id="86"/>
+											<ExtendedTooltip name="ServerNameExtendedTooltip" id="155"/>
+										</InputField>
+										<InputField name="Port" id="89">
+											<DataPath>Log.Port</DataPath>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="PortContextMenu" id="90"/>
+											<ExtendedTooltip name="PortExtendedTooltip" id="156"/>
+										</InputField>
+										<InputField name="SyncPort" id="91">
+											<DataPath>Log.SyncPort</DataPath>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Sync port</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="SyncPortContextMenu" id="92"/>
+											<ExtendedTooltip name="SyncPortExtendedTooltip" id="157"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="TransactionIDGroup" id="68">
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ExtendedTooltip name="TransactionIDGroupExtendedTooltip" id="161"/>
+									<ChildItems>
+										<InputField name="TransactionStatus" id="69">
+											<DataPath>Log.TransactionStatus</DataPath>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Transaction status</v8:content>
+												</v8:item>
+											</Title>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="TransactionStatusContextMenu" id="70"/>
+											<ExtendedTooltip name="TransactionStatusExtendedTooltip" id="162"/>
+										</InputField>
+										<InputField name="TransactionID" id="71">
+											<DataPath>Log.TransactionID</DataPath>
+											<Wrap>false</Wrap>
+											<BorderColor>style:BorderColor</BorderColor>
+											<ContextMenu name="TransactionIDContextMenu" id="72"/>
+											<ExtendedTooltip name="TransactionIDExtendedTooltip" id="163"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="EventAndDataGroup" id="175">
+									<ExtendedTooltip name="EventAndDataGroupExtendedTooltip" id="176"/>
+									<ChildItems>
+										<ColumnGroup name="EventAndMetadata" id="177">
+											<Group>Horizontal</Group>
+											<ExtendedTooltip name="EventAndMetadataExtendedTooltip" id="178"/>
+											<ChildItems>
+												<InputField name="EventPresentation" id="64">
+													<DataPath>Log.EventPresentation</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Event</v8:content>
+														</v8:item>
+													</Title>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="EventPresentationContextMenu" id="65"/>
+													<ExtendedTooltip name="EventPresentationExtendedTooltip" id="159"/>
+												</InputField>
+												<InputField name="MetadataPresentation" id="74">
+													<DataPath>Log.MetadataPresentation</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Metadata</v8:content>
+														</v8:item>
+													</Title>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="MetadataPresentationContextMenu" id="75"/>
+													<ExtendedTooltip name="MetadataPresentationExtendedTooltip" id="165"/>
+												</InputField>
+											</ChildItems>
+										</ColumnGroup>
+										<ColumnGroup name="CommentAndData" id="179">
+											<Group>InCell</Group>
+											<ExtendedTooltip name="CommentAndDataExtendedTooltip" id="180"/>
+											<ChildItems>
+												<InputField name="Data" id="76">
+													<DataPath>Log.Data</DataPath>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="DataContextMenu" id="77"/>
+													<ExtendedTooltip name="DataExtendedTooltip" id="166"/>
+												</InputField>
+												<InputField name="Comment" id="66">
+													<DataPath>Log.Comment</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Comment</v8:content>
+														</v8:item>
+													</Title>
+													<Wrap>false</Wrap>
+													<BorderColor>style:BorderColor</BorderColor>
+													<ContextMenu name="CommentContextMenu" id="67"/>
+													<ExtendedTooltip name="CommentExtendedTooltip" id="160"/>
+												</InputField>
+											</ChildItems>
+										</ColumnGroup>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="EventGroup" id="63">
+									<ExtendedTooltip name="EventGroupExtendedTooltip" id="158"/>
+								</ColumnGroup>
+								<ColumnGroup name="DataGroup" id="73">
+									<Visible>false</Visible>
+									<ExtendedTooltip name="DataGroupExtendedTooltip" id="164"/>
+									<ChildItems>
+										<LabelField name="DataPresentation" id="78">
+											<DataPath>Log.DataPresentation</DataPath>
+											<ContextMenu name="DataPresentationContextMenu" id="79"/>
+											<ExtendedTooltip name="DataPresentationExtendedTooltip" id="167"/>
+										</LabelField>
+									</ChildItems>
+								</ColumnGroup>
+							</ChildItems>
+						</Table>
+					</ChildItems>
+				</Page>
+				<Page name="LongActionIndicator" id="118">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action indicator</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action indicator</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="LongActionIndicatorExtendedTooltip" id="168"/>
+					<ChildItems>
+						<SpreadSheetDocumentField name="LongActionIndicatorField" id="114">
 							<DataPath>LongActionIndicatorField</DataPath>
 							<TitleLocation>None</TitleLocation>
-							<ContextMenu name="LongActionIndicatorFieldContextMenu" id="122"/>
-							<ExtendedTooltip name="LongActionIndicatorFieldExtendedTooltip" id="170"/>
+							<ContextMenu name="LongActionIndicatorFieldContextMenu" id="115"/>
+							<ExtendedTooltip name="LongActionIndicatorFieldExtendedTooltip" id="169"/>
 						</SpreadSheetDocumentField>
 					</ChildItems>
 				</Page>
@@ -703,7 +794,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Sync IP port</v8:content>
+							<v8:content>Sync port</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -754,7 +845,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>User Name</v8:content>
+							<v8:content>User name</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -769,7 +860,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Application Name</v8:content>
+							<v8:content>Application name</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -829,7 +920,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Main IP Port</v8:content>
+							<v8:content>Port</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -860,7 +951,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Data Presentation</v8:content>
+							<v8:content>Data presentation</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -875,7 +966,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Metadata Presentation</v8:content>
+							<v8:content>Metadata presentation</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -891,7 +982,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Application Presentation</v8:content>
+							<v8:content>Application presentation</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -906,7 +997,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Event Presentation</v8:content>
+							<v8:content>Event presentation</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -921,7 +1012,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Server Name</v8:content>
+							<v8:content>Server name</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -983,7 +1074,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Transaction Status</v8:content>
+							<v8:content>Transaction status</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -998,7 +1089,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Transaction</v8:content>
+							<v8:content>TransactionID</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -1028,7 +1119,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Picture Number</v8:content>
+							<v8:content>Picture number</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -1044,7 +1135,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Dates Address</v8:content>
+							<v8:content>Data address</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -1053,6 +1144,32 @@
 							<v8:Length>0</v8:Length>
 							<v8:AllowedLength>Variable</v8:AllowedLength>
 						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="SessionDataSeparationPresentation" id="24">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Session data separation</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="SessionDataSeparation" id="25">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Session data separation</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>v8:ValueListType</v8:Type>
 					</Type>
 				</Column>
 			</Columns>
@@ -1065,12 +1182,15 @@
 				</v8:item>
 			</Title>
 			<Type/>
+			<Save>
+				<Field>EventLogFilter</Field>
+			</Save>
 		</Attribute>
 		<Attribute name="EventCountLimit" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Number of Events to Display</v8:content>
+					<v8:content>Number of events to be shown</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1094,7 +1214,18 @@
 				<v8:Type>v8:StandardPeriod</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="JobID" id="6">
+		<Attribute name="LongActionIndicatorField" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action indicator field</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type xmlns:mxl="http://v8.1c.ru/8.2/data/spreadsheet">mxl:SpreadsheetDocument</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="JobID" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -1104,15 +1235,6 @@
 			<Type>
 				<v8:Type>v8:UUID</v8:Type>
 			</Type>
-		</Attribute>
-		<Attribute name="IdleHandlerParameters" id="8">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Idle handler parameters</v8:content>
-				</v8:item>
-			</Title>
-			<Type/>
 		</Attribute>
 		<Attribute name="StorageAddress" id="9">
 			<Title>
@@ -1129,15 +1251,59 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="LongActionIndicatorField" id="10">
+		<Attribute name="IdleHandlerParameters" id="10">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Long action indicator field</v8:content>
+					<v8:content>Idle handler parameters</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="DefaultEventLogFilter" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Default event log filter</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="FileInfobase" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>FileInfobase</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
-				<v8:Type xmlns:mxl="http://v8.1c.ru/8.2/data/spreadsheet">mxl:SpreadsheetDocument</v8:Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="Criticality" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Criticality</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ExecuteNotInBackground" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Execute not in background</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
 	</Attributes>
@@ -1146,17 +1312,17 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>View current events</v8:content>
+					<v8:content>Open</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>View current events in separate window</v8:content>
+					<v8:content>View current event in a separate window</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Picture>
-				<xr:Ref>StdPicture.Properties</xr:Ref>
+				<xr:Ref>0</xr:Ref>
 				<xr:LoadTransparent>true</xr:LoadTransparent>
 			</Picture>
 			<Action>ViewCurrentEventInSeparateWindow</Action>
@@ -1184,13 +1350,13 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set date interval for view</v8:content>
+					<v8:content>Interval</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Set date interval for view</v8:content>
+					<v8:content>Set view date interval</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Picture>
@@ -1242,7 +1408,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Disable filter</v8:content>
+					<v8:content>Clear filter</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -1288,17 +1454,38 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Parameter>
-		<Parameter name="EventEventLog">
+		<Parameter name="EventLogMessageText">
 			<Type/>
 		</Parameter>
-		<Parameter name="EventLogMessageText">
+		<Parameter name="ExecuteNotInBackground">
 			<Type>
-				<v8:Type>xs:string</v8:Type>
-				<v8:StringQualifiers>
-					<v8:Length>0</v8:Length>
-					<v8:AllowedLength>Variable</v8:AllowedLength>
-				</v8:StringQualifiers>
+				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+		</Parameter>
+		<Parameter name="StartDate">
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>DateTime</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="EndDate">
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>DateTime</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="Data">
+			<Type/>
+		</Parameter>
+		<Parameter name="Session">
+			<Type/>
+		</Parameter>
+		<Parameter name="Level">
+			<Type/>
 		</Parameter>
 	</Parameters>
 </Form>

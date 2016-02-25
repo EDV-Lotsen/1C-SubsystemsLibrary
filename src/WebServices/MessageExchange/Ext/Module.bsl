@@ -1,48 +1,60 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// Operation handlers.
+// Web service operation handlers
 
-// Corresponds to the DeliverMessages operation.
-//
+// Matches the DeliverMessages web service operation
 Function DeliverMessages(SenderCode, StreamStorage)
 	
 	SetPrivilegedMode(True);
 	
-	// Retrieving the reference to the sender 
-	Sender = ExchangePlans.MessageExchange.FindByCode(SenderCode);
+	// Getting the sender link
+	From = ExchangePlans.MessageExchange.FindByCode(SenderCode);
 	
-	If Sender.IsEmpty() Then
+	If From.IsEmpty() Then
 		
-		Raise NStr("en = 'End point connection settings are incorrect.'");
+		Raise NStr("en = 'Invalid endpoint connection settings.'");
 		
 	EndIf;
 	
 	ImportedMessages = Undefined;
+	DataReadPartially = False;
 	
 	// Importing messages to the infobase
-	MessageExchangeInternal.SerializeDataFromStream(Sender, StreamStorage.Get(), ImportedMessages);
+	MessageExchangeInternal.SerializeDataFromStream(
+		From,
+		StreamStorage.Get(),
+		ImportedMessages,
+		DataReadPartially);
 	
-	// Handling the message queue
-	If CommonUse.FileInfoBase() Then
+	// Processing message queue
+	If CommonUse.FileInfobase() Then
 		
-		MessageExchangeInternal.HandleSystemMessageQueue();
+		MessageExchangeInternal.ProcessSystemMessageQueue(ImportedMessages);
 		
 	Else
 		
 		BackgroundJobParameters = New Array;
 		BackgroundJobParameters.Add(ImportedMessages);
 		
-		BackgroundJobs.Execute("MessageExchangeInternal.HandleSystemMessageQueue", BackgroundJobParameters);
+		BackgroundJobs.Execute("MessageExchangeInternal.ProcessSystemMessageQueue", BackgroundJobParameters);
+		
+	EndIf;
+	
+	If DataReadPartially Then
+		
+		Raise NStr("en = 'Cannot deliver quick messages. Some quick messages
+              |are not delivered because of locked data areas!
+              |
+              |These messages will be processed within system messages queue.'");
 		
 	EndIf;
 	
 EndFunction
 
-// Corresponds to the GetInfoBaseParameters operation.
-//
-Function GetInfoBaseParameters(ThisEndPointDescription)
+// Matches the DeliverMessages web service operation
+Function GetInfobaseParameters(ThisEndpointDescription)
 	
 	SetPrivilegedMode(True);
 	
@@ -50,67 +62,80 @@ Function GetInfoBaseParameters(ThisEndPointDescription)
 		
 		ThisNodeObject = MessageExchangeInternal.ThisNode().GetObject();
 		ThisNodeObject.Code = String(New UUID());
-		ThisNodeObject.Description = ?(IsBlankString(ThisEndPointDescription),
+		ThisNodeObject.Description = ?(IsBlankString(ThisEndpointDescription),
 									MessageExchangeInternal.ThisNodeDefaultDescription(),
-									ThisEndPointDescription);
+									ThisEndpointDescription);
 		ThisNodeObject.Write();
 		
 	ElsIf IsBlankString(MessageExchangeInternal.ThisNodeDescription()) Then
 		
 		ThisNodeObject = MessageExchangeInternal.ThisNode().GetObject();
-		ThisNodeObject.Description = ?(IsBlankString(ThisEndPointDescription),
+		ThisNodeObject.Description = ?(IsBlankString(ThisEndpointDescription),
 									MessageExchangeInternal.ThisNodeDefaultDescription(),
-									ThisEndPointDescription);
+									ThisEndpointDescription);
 		ThisNodeObject.Write();
 		
 	EndIf;
 	
-	ThisPointParameters = CommonUse.GetAttributeValues(MessageExchangeInternal.ThisNode(), "Code, Description");
+	ThisPointParameters = CommonUse.ObjectAttributeValues(MessageExchangeInternal.ThisNode(), "Code, Description");
 	
 	Result = New Structure;
-	Result.Insert("Code", ThisPointParameters.Code);
-	Result.Insert("Description", ThisPointParameters.Description);
+	Result.Insert("Code",         ThisPointParameters.Code);
+	Result.Insert("Description",  ThisPointParameters.Description);
+	Result.Insert("Код",          ThisPointParameters.Code);
+	Result.Insert("Наименование", ThisPointParameters.Description);
 	
 	Return ValueToStringInternal(Result);
 EndFunction
 
-// Corresponds to the ConnectEndPoint operation.
-//
-Function ConnectEndPoint(Code, Description, RecipientConnectionSettingsString)
+// Matches the ConnectEndpoint web service operation
+Function ConnectEndpoint(Code, Description, RecipientConnectionSettingsString)
 	
 	Cancel = False;
 	
-	MessageExchangeInternal.ConnectEndPointAtReceiver(Cancel, Code, Description, ValueFromStringInternal(RecipientConnectionSettingsString));
+	MessageExchangeInternal.ConnectEndpointAtRecipient(Cancel, Code, Description, MessageExchangeInternal.ConvertRecipientConnectionSettings(ValueFromStringInternal(RecipientConnectionSettingsString)));
 	
 	Return Not Cancel;
 EndFunction
 
-// Corresponds to the UpdateConnectionSettings operation.
-//
+// Matches the UpdateConnectionSettings web service operation
 Function RefreshConnectionSettings(Code, ConnectionSettingsString)
 	
-	ConnectionSettings = ValueFromStringInternal(ConnectionSettingsString);
+	ConnectionSettings = MessageExchangeInternal.ConvertRecipientConnectionSettings(ValueFromStringInternal(ConnectionSettingsString));
 	
 	SetPrivilegedMode(True);
 	
-	EndPoint = ExchangePlans.MessageExchange.FindByCode(Code);
-	If EndPoint.IsEmpty() Then
-		Raise NStr("en = 'End point connection settings are incorrect'");
+	Endpoint = ExchangePlans.MessageExchange.FindByCode(Code);
+	If Endpoint.IsEmpty() Then
+		Raise NStr("en = 'Invalid endpoint connection settings.'");
 	EndIf;
 	
 	BeginTransaction();
 	Try
 		
-		//Updating connection settings
+		//updating connection settings
 		RecordStructure = New Structure;
-		RecordStructure.Insert("Node", EndPoint);
+		RecordStructure.Insert("Node", Endpoint);
 		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		RecordStructure.Insert("WSURL", ConnectionSettings.WSURL);
-		RecordStructure.Insert("WSUserName", ConnectionSettings.WSUserName);
-		RecordStructure.Insert("WSPassword", ConnectionSettings.WSPassword);
+		If Not ConnectionSettings.Property("WSURL") Then
+			RecordStructure.Insert("WSURL", ConnectionSettings.WSURLВебСервиса);
+		Else
+			RecordStructure.Insert("WSURL", ConnectionSettings.WSURL);
+		EndIf;
+		If Not ConnectionSettings.Property("WSUserName") Then
+			RecordStructure.Insert("WSUserName", ConnectionSettings.WSИмяПользователя);
+		Else
+			RecordStructure.Insert("WSUserName", ConnectionSettings.WSUserName);
+		EndIf;
+		If Not ConnectionSettings.Property("WSPassword") Then
+			RecordStructure.Insert("WSPassword", ConnectionSettings.WSПароль);
+		Else
+			RecordStructure.Insert("WSPassword", ConnectionSettings.WSPassword);
+		EndIf;
+		RecordStructure.Insert("WSRememberPassword", True);
 		
-		// Adding the record to the information register
+		// Adding information register record
 		InformationRegisters.ExchangeTransportSettings.UpdateRecord(RecordStructure);
 		
 		CommitTransaction();
@@ -121,42 +146,51 @@ Function RefreshConnectionSettings(Code, ConnectionSettingsString)
 	
 EndFunction
 
-// Corresponds to the SetLeadingEndPoint operation.
-//
-Function SetLeadingEndPoint(ThisEndPointCode, LeadingEndPointCode)
+// Matches the SetLeadingEndpoint web service operation
+Function SetLeadingEndpoint(ThisEndpointCode, LeadingEndpointCode)
 	
-	//MessageExchangeInternal.SetLeadingEndPointAtRecipient(ThisEndPointCode, LeadingEndPointCode);
+	MessageExchangeInternal.SetLeadingEndpointAtRecipient(ThisEndpointCode, LeadingEndpointCode);
 	
 EndFunction
 
-// Corresponds to the CheckConnectionAtRecipient operation.
-//
-Function CheckConnectionAtRecipient(ConnectionSettingsString, SenderCode)
+// Matches the TestConnectionAtRecipient web service operation
+Function TestConnectionAtRecipient(ConnectionSettingsString, SenderCode)
 	
 	SetPrivilegedMode(True);
 	
 	ErrorMessageString = "";
 	
-	WSProxy = MessageExchangeInternal.GetWSProxy(ValueFromStringInternal(ConnectionSettingsString), ErrorMessageString);
+	ConnectionSettingsStructure = ValueFromStringInternal(ConnectionSettingsString);
+	If Not ConnectionSettingsStructure.Property("WSURL") Then
+		ConnectionSettingsStructure.Insert("WSURL", ConnectionSettingsStructure.WSURLВебСервиса);
+	EndIf;
+	If Not ConnectionSettingsStructure.Property("WSUserName") Then
+		ConnectionSettingsStructure.Insert("WSUserName", ConnectionSettingsStructure.WSИмяПользователя);
+	EndIf;
+	If Not ConnectionSettingsStructure.Property("WSPassword") Then
+		ConnectionSettingsStructure.Insert("WSPassword", ConnectionSettingsStructure.WSПароль);
+	EndIf;
+	WSProxy = MessageExchangeInternal.GetWSProxy(ConnectionSettingsStructure, ErrorMessageString);
 	
 	If WSProxy = Undefined Then
 		Raise ErrorMessageString;
 	EndIf;
 	
-	WSProxy.CheckConnectionAtSender(SenderCode);
+	WSProxy.TestConnectionSender(SenderCode);
 	
 EndFunction
 
-// Corresponds to the CheckConnectionAtSender operation.
-//
-Function CheckConnectionAtSender(SenderCode)
+// Matches the TestConnectionAtSender web service operation
+Function TestConnectionAtSender(SenderCode)
 	
 	SetPrivilegedMode(True);
 	
 	If MessageExchangeInternal.ThisNodeCode() <> SenderCode Then
 		
-		Raise NStr("en = 'Recipient infobase connection settings correspond with another sender.'");
+		Raise NStr("en = 'Sender infobase connection settings indicate another recipient.'");
 		
-	EndIf;           
+	EndIf;
 	
 EndFunction
+
+#EndRegion

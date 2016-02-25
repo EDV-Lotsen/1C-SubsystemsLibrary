@@ -1,24 +1,24 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
 		Return;
 	EndIf;
 	
 	If Parameters.BackgroundJobProperties = Undefined Then
 		
-		BackgroundJobProperties = ScheduledJobsServer
+		BackgroundJobProperties = ScheduledJobsInternal
 			.GetBackgroundJobProperties(Parameters.ID);
 		
 		If BackgroundJobProperties =  Undefined Then
 			Raise(NStr("en = 'Background job is not found.'"));
 		EndIf;
 		
-		UserMessagesAndErrorDetails = ScheduledJobsServer.BackgroundJobMessagesAndErrorDescriptions(Parameters.ID);
+		UserMessagesAndErrorDetails = ScheduledJobsInternal.BackgroundJobMessagesAndErrorDescriptions(Parameters.ID);
 			
 		If ValueIsFilled(BackgroundJobProperties.ScheduledJobID) Then
 			
@@ -26,16 +26,16 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 				= BackgroundJobProperties.ScheduledJobID;
 			
 			ScheduledJobDescription
-				= ScheduledJobsServer.ScheduledJobPresentation(
+				= ScheduledJobsInternal.ScheduledJobPresentation(
 					BackgroundJobProperties.ScheduledJobID);
 		Else
-			ScheduledJobDescription  = ScheduledJobsServer.TextUndefined();
-			ScheduledJobID = ScheduledJobsServer.TextUndefined();
+			ScheduledJobDescription  = ScheduledJobsInternal.TextUndefined();
+			ScheduledJobID = ScheduledJobsInternal.TextUndefined();
 		EndIf;
 	Else
 		BackgroundJobProperties = Parameters.BackgroundJobProperties;
 		FillPropertyValues(
-			ThisForm,
+			ThisObject,
 			BackgroundJobProperties,
 			"UserMessagesAndErrorDetails, 
 			|ScheduledJobID, 
@@ -43,22 +43,19 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	EndIf;
 	
 	FillPropertyValues(
-		ThisForm,
+		ThisObject,
 		BackgroundJobProperties,
 		"ID, 
 		|Key, 
 		|Description, 
-		|Begin, 
+		|Beginning, 
 		|End, 
-		|Placement, 
+		|Location, 
 		|State, 
 		|MethodName");
+		
+	StandardSubsystemsServer.SetGroupTitleRepresentation(ThisObject);
 	
 EndProcedure
 
-
-
-
-
-
-
+#EndRegion

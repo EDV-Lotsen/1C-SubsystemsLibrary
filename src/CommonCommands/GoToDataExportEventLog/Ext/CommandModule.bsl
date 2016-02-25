@@ -1,9 +1,11 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+﻿
+#Region EventHandlers
 
 &AtClient
-Procedure CommandProcessing(InfoBaseNode, CommandExecuteParameters)
+Procedure CommandProcessing(InfobaseNode, CommandExecuteParameters)
 	
-	DataExchangeClient.GoToDataEventLog(InfoBaseNode, CommandExecuteParameters, "DataExport");
+	DataExchangeClient.GoToDataEventLog(InfobaseNode, CommandExecuteParameters, "DataExport");
 	
 EndProcedure
+
+#EndRegion

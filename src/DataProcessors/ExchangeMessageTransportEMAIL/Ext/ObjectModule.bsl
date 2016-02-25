@@ -1,19 +1,20 @@
-﻿Var ErrorMessageString Export;
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+Var ErrorMessageString Export;
 Var ErrorMessageStringEL Export;
 
-Var mErrorMessages; // map that contains predefined error messages
-Var mObjectName;		// metadata object name
+Var ErrorMessages; // map that contains predefined error messages
+Var ObjectName;		// metadata object name
 
-Var mTempExchangeMessageFile; // temporary exchange message file for importing and exporting data
-Var mTempExchangeMessageDirectory; // temporary exchange message directory
+Var TempExchangeMessageFile; // temporary exchange message file for importing and exporting data
+Var TempExchangeMessageDirectory; // temporary exchange message directory
 
-Var mMessageSubject;		// message subject pattern
-Var mSimpleBody;	// message body text with attached XML file
-Var mCompressedBody; // message body text with attached compressed file
-Var mBatchBody; // message body text with attached compressed file that contains a file set
+Var MessageSubject;		// message subject pattern
+Var SimpleBody;	// message body text with attached XML file
+Var CompressedBody;		// message body text with attached compressed file
+Var BatchBody;	// message body text with attached compressed file that contains a file set
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
 // Export internal procedures and functions.
@@ -21,7 +22,7 @@ Var mBatchBody; // message body text with attached compressed file that contains
 // Creates a temporary directory in the temporary file directory of the operating system user.
 // 
 //  Returns:
-//  Boolean - True if the directory was created successfully, otherwise is False. 
+//   Boolean - True if the directory was created successfully, otherwise is False.
 // 
 Function ExecuteActionsBeforeMessageProcessing() Export
 	
@@ -34,7 +35,7 @@ EndFunction
 // Sends the exchange message to the specified resource from the temporary exchange message directory.
 // 
 //  Returns:
-//  Boolean - True if the message was sent successfully, otherwise is False. 
+//   Boolean - True if the message was sent successfully, otherwise is False.
 // 
 Function SendMessage() Export
 	
@@ -50,10 +51,10 @@ Function SendMessage() Export
 	
 EndFunction
 
-// Receives an exchange message from the specified resource and puts it into the temporary exchange message directory.
-// 
+// Receives an exchange message from the specified resource and puts it into the temporary exchange message durectory.
+//
 //  Returns:
-//  Boolean - True if the message was received successfully, otherwise is False. 
+//   Boolean - True if the message was received successfully, otherwise is False.
 // 
 Function ReceiveMessage() Export
 	
@@ -69,10 +70,10 @@ Function ReceiveMessage() Export
 	
 EndFunction
 
-// Deletes the temporary exchange message directory after performing data import and export. 
-// 
+// Deletes the temporary exchange message directory after performing data import and export.
+//
 //  Returns:
-//  Boolean - True.
+//   Boolean - True.
 //
 Function ExecuteAfterMessageProcessingActions() Export
 	
@@ -85,9 +86,9 @@ Function ExecuteAfterMessageProcessingActions() Export
 EndFunction
 
 // Checking whether the specified resource contains an exchange message.
-// 
+//
 //  Returns:
-//  Boolean - True if the specified resource contains an exchange message, otherwise is False.
+//   Boolean - True if the specified resource contains an exchange message, False otherwise.
 //
 Function ExchangeMessageFileExists() Export
 	
@@ -101,7 +102,7 @@ Function ExchangeMessageFileExists() Export
 	DownloadParameters.Insert("GetHeaders", True);
 	
 	Try
-		MessageSet = Email.DownloadEmailMessages(EMAILAccount, DownloadParameters);
+		MessageSet = EmailOperations.DownloadEmailMessages(EMAILAccount, DownloadParameters);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(103);
@@ -109,9 +110,9 @@ Function ExchangeMessageFileExists() Export
 		Return False;
 	EndTry;
 	
-	For Each Email In MessageSet Do
+	For Each MailMessage In MessageSet Do
 		
-		If Upper(TrimAll(Email.Subject)) = Upper(TrimAll(mMessageSubject)) Then
+		If Upper(TrimAll(MailMessage.Subject)) = Upper(TrimAll(MessageSubject)) Then
 			
 			Return True;
 			
@@ -122,25 +123,25 @@ Function ExchangeMessageFileExists() Export
 	Return False;
 EndFunction
 
-// Initializes properties with initial values and constants
+// Initializes properties with initial values and constants.
 // 
 Procedure Initialization() Export
 	
 	InitMessages();
 	
-	mMessageSubject = "Exchange message (%1)"; //this string does not require localization
-	mMessageSubject = StringFunctionsClientServer.SubstituteParametersInString(mMessageSubject, MessageFileNamePattern);
+	MessageSubject = "Exchange message (%1)"; // this string does not require localization
+	MessageSubject = StringFunctionsClientServer.SubstituteParametersInString(MessageSubject, MessageFileNamePattern);
 	
-	mSimpleBody	= NStr("en = 'Data exchange message");
-	mCompressedBody	= NStr("en = 'Compressed data exchange message'");
-	mBatchBody	= NStr("en = 'Batch data exchange message'");
+	SimpleBody     = NStr("en = 'Data exchange message'");
+	CompressedBody = NStr("en = 'Compressed data exchange message'");
+	BatchBody      = NStr("en = 'Batch data exchange message'");
 	
 EndProcedure
 
 // Checking whether the connection to the specified resource can be established.
-// 
-// Returns:
-//  Boolean – True if connection can be established, otherwise is False.
+//
+//  Returns:
+//   Boolean - True if connection can be established, otherwise is False.
 //
 Function ConnectionIsSet() Export
 	
@@ -153,7 +154,7 @@ Function ConnectionIsSet() Export
 	
 	ErrorMessage = "";
 	AdditionalMessage = "";
-	Email.CheckSendReceiveEmailPossibility(EMAILAccount, Undefined, ErrorMessage, AdditionalMessage);
+	EmailOperationsInternal.CheckCanSendReceiveEmail(EMAILAccount, Undefined, ErrorMessage, AdditionalMessage);
 	
 	If ValueIsFilled(ErrorMessage) Then
 		GetErrorMessage(107);
@@ -168,20 +169,20 @@ EndFunction
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for retrieving properties.
 
-// Retrieves the exchange message file date.
+// Retrieves the exchange message file modification date.
 //
 // Returns:
-//  Date.
+//  Date - exchange message file modification date.
 //
 Function ExchangeMessageFileDate() Export
 	
 	Result = Undefined;
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		If mTempExchangeMessageFile.Exist() Then
+		If TempExchangeMessageFile.Exist() Then
 			
-			Result = mTempExchangeMessageFile.GetModificationTime();
+			Result = TempExchangeMessageFile.GetModificationTime();
 			
 		EndIf;
 		
@@ -194,15 +195,15 @@ EndFunction
 // Retrieves the full name of the exchange message file.
 //
 // Returns:
-//  String.
+//  String - full name of the exchange message file.
 //
 Function ExchangeMessageFileName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		Name = mTempExchangeMessageFile.FullName;
+		Name = TempExchangeMessageFile.FullName;
 		
 	EndIf;
 	
@@ -211,17 +212,17 @@ Function ExchangeMessageFileName() Export
 EndFunction
 
 // Retrieves the full name of the exchange message directory.
-// 
+//
 // Returns:
-//  String.
+//  String - full name of the exchange message directory.
 //
 Function ExchangeMessageDirectoryName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageDirectory) = Type("File") Then
+	If TypeOf(TempExchangeMessageDirectory) = Type("File") Then
 		
-		Name = mTempExchangeMessageDirectory.FullName;
+		Name = TempExchangeMessageDirectory.FullName;
 		
 	EndIf;
 	
@@ -234,20 +235,20 @@ EndFunction
 
 Function CreateTempExchangeMessageDirectory()
 	
-	mTempExchangeMessageDirectory = New File(CommonUseClientServer.GetFullFileName(TempFilesDir(), DataExchangeServer.TempExchangeMessageDirectory()));
-	
 	// Creating the temporary exchange message directory
 	Try
-		CreateDirectory(ExchangeMessageDirectoryName());
+		TempDirectoryName = DataExchangeServer.CreateTempExchangeMessageDirectory();
 	Except
 		GetErrorMessage(4);
 		SupplementErrorMessage(BriefErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	
+	TempExchangeMessageDirectory = New File(TempDirectoryName);
+	
 	MessageFileName = CommonUseClientServer.GetFullFileName(ExchangeMessageDirectoryName(), MessageFileNamePattern + ".xml");
 	
-	mTempExchangeMessageFile = New File(MessageFileName);
+	TempExchangeMessageFile = New File(MessageFileName);
 	
 	Return True;
 EndFunction
@@ -257,7 +258,7 @@ Function DeleteTempExchangeMessageDirectory()
 	Try
 		If Not IsBlankString(ExchangeMessageDirectoryName()) Then
 			DeleteFiles(ExchangeMessageDirectoryName());
-			mTempExchangeMessageDirectory = Undefined;
+			TempExchangeMessageDirectory = Undefined;
 		EndIf;
 	Except
 		Return False;
@@ -298,7 +299,7 @@ Function SendExchangeMessage()
 		
 		If Result Then
 			
-			// Checking that the exchange message size does not exceed the maximum allowed size
+			// Checking that the exchange message size does not exeed the maximum allowed size
 			If DataExchangeServer.ExchangeMessageSizeExceedsAllowed(ArchiveTempFileName, MaxMessageSize()) Then
 				GetErrorMessage(108);
 				Result = False;
@@ -309,7 +310,7 @@ Function SendExchangeMessage()
 		If Result Then
 			
 			Result = SendMessagebyEmail(
-									mCompressedBody,
+									CompressedBody,
 									OutgoingMessageFileName,
 									ArchiveTempFileName);
 			
@@ -319,7 +320,7 @@ Function SendExchangeMessage()
 		
 		If Result Then
 			
-			// Checking that the exchange message size does not exceed the maximum allowed size
+			// Checking that the exchange message size does not exeed the maximum allowed size
 			If DataExchangeServer.ExchangeMessageSizeExceedsAllowed(ExchangeMessageFileName(), MaxMessageSize()) Then
 				GetErrorMessage(108);
 				Result = False;
@@ -330,7 +331,7 @@ Function SendExchangeMessage()
 		If Result Then
 			
 			Result = SendMessagebyEmail(
-									mSimpleBody,
+									SimpleBody,
 									OutgoingMessageFileName,
 									ExchangeMessageFileName());
 			
@@ -345,12 +346,12 @@ EndFunction
 Function GetExchangeMessage()
 	
 	ExchangeMessageTable = New ValueTable;
-	ExchangeMessageTable.Columns.Add("ID", New TypeDescription("Array"));
+	ExchangeMessageTable.Columns.Add("UID", New TypeDescription("Array"));
 	ExchangeMessageTable.Columns.Add("PostDating", New TypeDescription("Date"));
 	
 	ColumnArray = New Array;
 	
-	ColumnArray.Add("ID");
+	ColumnArray.Add("UID");
 	ColumnArray.Add("PostDating");
 	ColumnArray.Add("Subject");
 	
@@ -359,7 +360,7 @@ Function GetExchangeMessage()
 	DownloadParameters.Insert("GetHeaders", True);
 	
 	Try
-		MessageSet = Email.DownloadEmailMessages(EMAILAccount, DownloadParameters);
+		MessageSet = EmailOperations.DownloadEmailMessages(EMAILAccount, DownloadParameters);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(103);
@@ -367,14 +368,14 @@ Function GetExchangeMessage()
 		Return False;
 	EndTry;
 	
-	For Each Email In MessageSet Do
+	For Each MailMessage In MessageSet Do
 		
-		If Upper(TrimAll(Email.Subject)) <> Upper(TrimAll(mMessageSubject)) Then
+		If Upper(TrimAll(MailMessage.Subject)) <> Upper(TrimAll(MessageSubject)) Then
 			Continue;
 		EndIf;
 		
 		NewRow = ExchangeMessageTable.Add();
-		FillPropertyValues(NewRow, Email);
+		FillPropertyValues(NewRow, MailMessage);
 		
 	EndDo;
 	
@@ -383,7 +384,7 @@ Function GetExchangeMessage()
 		GetErrorMessage(104);
 		
 		MessageString = NStr("en = 'The messages with %1 header are not found.'");
-		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, mMessageSubject);
+		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, MessageSubject);
 		SupplementErrorMessage(MessageString);
 		
 		Return False;
@@ -397,10 +398,10 @@ Function GetExchangeMessage()
 		
 		DownloadParameters = New Structure;
 		DownloadParameters.Insert("Columns", ColumnArray);
-		DownloadParameters.Insert("HeadersIDs", ExchangeMessageTable[0].ID);
+		DownloadParameters.Insert("HeadersIDs", ExchangeMessageTable[0].UID);
 		
 		Try
-			MessageSet = Email.DownloadEmailMessages(EMAILAccount, DownloadParameters);
+			MessageSet = EmailOperations.DownloadEmailMessages(EMAILAccount, DownloadParameters);
 		Except
 			ErrorText = DetailErrorDescription(ErrorInfo());
 			GetErrorMessage(105);
@@ -475,7 +476,7 @@ EndFunction
 
 Procedure GetErrorMessage(MessageNo)
 	
-	SetErrorMessageString(mErrorMessages[MessageNo]);
+	SetErrorMessageString(ErrorMessages[MessageNo]);
 	
 EndProcedure
 
@@ -486,7 +487,7 @@ Procedure SetErrorMessageString(Val Message)
 	EndIf;
 	
 	ErrorMessageString   = Message;
-	ErrorMessageStringEL = mObjectName + ": " + Message;
+	ErrorMessageStringEL = ObjectName + ": " + Message;
 	
 EndProcedure
 
@@ -496,7 +497,8 @@ Procedure SupplementErrorMessage(Message)
 	
 EndProcedure
 
-// The overridable function, returns the maximum allowed size of a message to be sent.
+// The overridable function, returns
+// the maximum allowed size of a message to be sent.
 // 
 Function MaxMessageSize()
 	
@@ -516,7 +518,7 @@ Function CompressOutgoingMessageFile()
 EndFunction
 
 ///////////////////////////////////////////////////////////////////////////////
-// Initialization
+// Initialization.
 
 Procedure InitMessages()
 	
@@ -527,31 +529,31 @@ EndProcedure
 
 Procedure ErrorMessageInitialization()
 	
-	mErrorMessages = New Map;
+	ErrorMessages = New Map;
 	
-	// Common error codes 
-	mErrorMessages.Insert(001, NStr("en = 'Exchange messages are not detected.'"));
-	mErrorMessages.Insert(002, NStr("en = 'Error unpacking the exchange message file.'"));
-	mErrorMessages.Insert(003, NStr("en = 'Error packing the exchange message file.'"));
-	mErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory.'"));
-	mErrorMessages.Insert(005, NStr("en = 'The archive does not contain the exchange message file.'"));
-	mErrorMessages.Insert(006, NStr("en = 'Exchange message was not sent: the maximum allowed message size is exceeded.'"));
+	// Common error codes
+	ErrorMessages.Insert(001, NStr("en = 'Exchange messages are not detected.'"));
+	ErrorMessages.Insert(002, NStr("en = 'Error unpacking the exchange message file.'"));
+	ErrorMessages.Insert(003, NStr("en = 'Error packing the exchange message file.'"));
+	ErrorMessages.Insert(004, NStr("en = 'Error creating the temporary directory.'"));
+	ErrorMessages.Insert(005, NStr("en = 'The archive does not contain the exchange message file.'"));
+	ErrorMessages.Insert(006, NStr("en = 'Exchange message was not sent: the maximum allowed message size is exceeded.'"));
 	
 	// Errors codes that are dependent on the transport kind
-	mErrorMessages.Insert(101, NStr("en = 'Initialization error: the exchange message transport email account is not specified.'"));
-	mErrorMessages.Insert(102, NStr("en = 'Error sending the email message.'"));
-	mErrorMessages.Insert(103, NStr("en = 'Error receiving message headers from the email server.'"));
-	mErrorMessages.Insert(104, NStr("en = 'Exchange messages were not found on the email server.'"));
-	mErrorMessages.Insert(105, NStr("en = 'Error receiving the message from the email server.'"));
-	mErrorMessages.Insert(106, NStr("en = 'Error saving the exchange message file to the hard disk.'"));
-	mErrorMessages.Insert(107, NStr("en = 'Errors occur when verifying account parameters.'"));
-	mErrorMessages.Insert(108, NStr("en = 'The maximum allowed exchange message size is exceeded.'"));
-	mErrorMessages.Insert(109, NStr("en = 'Error: no exchange message file is found in the email message.'"));
+	ErrorMessages.Insert(101, NStr("en = 'Initialization error: the exchange message transport email account is not specified.'"));
+	ErrorMessages.Insert(102, NStr("en = 'Error sending the email message.'"));
+	ErrorMessages.Insert(103, NStr("en = 'Error receiving message headers from the email server.'"));
+	ErrorMessages.Insert(104, NStr("en = 'Exchange messages were not found on the email server.'"));
+	ErrorMessages.Insert(105, NStr("en = 'Error receiving the message from the email server.'"));
+	ErrorMessages.Insert(106, NStr("en = 'Error saving the exchange message file to the hard disk.'"));
+	ErrorMessages.Insert(107, NStr("en = 'Errors occur when verifying account parameters.'"));
+	ErrorMessages.Insert(108, NStr("en = 'The maximum allowed exchange message size is exceeded.'"));
+	ErrorMessages.Insert(109, NStr("en = 'Error: no exchange message file is found in the email message.'"));
 	
 EndProcedure
 
 ///////////////////////////////////////////////////////////////////////////////
-// Procedures and functions for working with Email.
+// Procedures and functions for operating with email.
 
 Function SendMessagebyEmail(Body, OutgoingMessageFileName, PathToFile)
 	
@@ -560,13 +562,13 @@ Function SendMessagebyEmail(Body, OutgoingMessageFileName, PathToFile)
 						New BinaryData(PathToFile));
 	
 	MessageParameters = New Structure;
-	MessageParameters.Insert("Recipient", EMAILAccount.EmailAddress);
-	MessageParameters.Insert("Subject", mMessageSubject);
-	MessageParameters.Insert("Body", Body);
+	MessageParameters.Insert("Recipient",   EMAILAccount.EmailAddress);
+	MessageParameters.Insert("Subject",     MessageSubject);
+	MessageParameters.Insert("Body",        Body);
 	MessageParameters.Insert("Attachments", Attachments);
 	
 	Try
-		EmailOperations.SendMessage(EMAILAccount, MessageParameters);
+		EmailOperations.SendEmailMessage(EMAILAccount, MessageParameters);
 	Except
 		ErrorText = DetailErrorDescription(ErrorInfo());
 		GetErrorMessage(102);
@@ -584,8 +586,12 @@ EndFunction
 InitMessages();
 ErrorMessageInitialization();
 
-mTempExchangeMessageDirectory = Undefined;
-mTempExchangeMessageFile    = Undefined;
+TempExchangeMessageDirectory = Undefined;
+TempExchangeMessageFile    = Undefined;
 
-mObjectName = NStr("en = 'Data processor: %1'");
-mObjectName = StringFunctionsClientServer.SubstituteParametersInString(mObjectName, Metadata().Name);
+ObjectName = NStr("en = 'Data processor: %1'");
+ObjectName = StringFunctionsClientServer.SubstituteParametersInString(ObjectName, Metadata().Name);
+
+#EndRegion
+
+#EndIf

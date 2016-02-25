@@ -1,34 +1,72 @@
-﻿ 
+﻿
+#Region FormEventHandlers
+
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
+	If Parameters.Property("Autotest") Then // Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+		Return;
+	EndIf;
+	
+	SetUpAllExternalUsersGroupOrder(List);
+	
 	If Parameters.ChoiceMode Then
 		
-		Items.List.ChoiceMode = True;
-		// Filter of items not marked for deletion
-		FilterItem = List.Filter.Items.Add(Type("DataCompositionFilterItem"));
-		FilterItem.Use = True;
-		FilterItem.LeftValue = New DataCompositionField("DeletionMark");
-		FilterItem.RightValue = False;
-		FilterItem.ComparisonType = DataCompositionComparisonType.Equal;
-		FilterItem.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
+		PurposeUseKey = "SelectionPick";
+		WindowOpeningMode = FormWindowOpeningMode.LockOwnerWindow;
 		
-		FilterItem = List.Filter.Items.Add(Type("DataCompositionFilterItem"));
-		FilterItem.Use = True;
-		FilterItem.LeftValue = New DataCompositionField("Ref");
-		FilterItem.RightValue = New Array;
-		FilterItem.RightValue.Add(Catalogs.ExternalUserGroups.AllExternalUsers);
-		FilterItem.ComparisonType = DataCompositionComparisonType.NotInList;
-		FilterItem.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
+		Items.List.ChoiceMode = True;
+		
+		// Selecting items that are not marked for deletion.
+		CommonUseClientServer.SetDynamicListFilterItem(
+			List, "DeletionMark", False, , , True,
+			DataCompositionSettingsItemViewMode.Normal);
+		
+		// Excluding selection of All external users group as a parent.
+		CommonUseClientServer.SetDynamicListFilterItem(
+			List, "Ref", Catalogs.ExternalUserGroups.AllExternalUsers,
+			DataCompositionComparisonType.NotEqual, , Parameters.Property("ChooseParent"));
 		
 		If Parameters.CloseOnChoice = False Then
-			// Selection mode
-			Title = NStr("en='Pick up of the groups of external users'");
+			// Picking mode
+			Title = NStr("en = 'Pick external user groups'");
 			Items.List.MultipleChoice = True;
 			Items.List.SelectionMode = TableSelectionMode.MultiRow;
 		Else
-			Title = NStr("en='Select group of external users'");
+			Title = NStr("en = 'Select external user group'");
 		EndIf;
 	EndIf;
 	
+	CommonUseClientServer.MoveFiltersToDynamicList(ThisObject);
 EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure SetUpAllExternalUsersGroupOrder(List)
+	
+	Var Order;
+	
+	// Order.
+	Order = List.SettingsComposer.Settings.Order;
+	Order.UserSettingID = "DefaultOrder";
+	
+	Order.Items.Clear();
+	
+	OrderItem = Order.Items.Add(Type("DataCompositionOrderItem"));
+	OrderItem.Field = New DataCompositionField("Predefined");
+	OrderItem.OrderType = DataCompositionSortDirection.Desc;
+	OrderItem.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
+	OrderItem.Use = True;
+	
+	OrderItem = Order.Items.Add(Type("DataCompositionOrderItem"));
+	OrderItem.Field = New DataCompositionField("Description");
+	OrderItem.OrderType = DataCompositionSortDirection.Asc;
+	OrderItem.ViewMode = DataCompositionSettingsItemViewMode.Inaccessible;
+	OrderItem.Use = True;
+	
+EndProcedure
+
+#EndRegion

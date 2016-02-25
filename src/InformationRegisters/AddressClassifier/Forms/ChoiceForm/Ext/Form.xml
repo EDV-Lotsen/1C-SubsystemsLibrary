@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Height>13</Height>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<SaveDataInSettings>UseList</SaveDataInSettings>
+	<AutoTitle>false</AutoTitle>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>Cancel</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="73">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="74"/>
+		</UsualGroup>
+		<Table name="List" id="14">
+			<Representation>List</Representation>
+			<SkipOnInput>false</SkipOnInput>
+			<ChangeRowSet>false</ChangeRowSet>
+			<ChangeRowOrder>false</ChangeRowOrder>
+			<ChoiceMode>true</ChoiceMode>
+			<SelectionMode>SingleRow</SelectionMode>
+			<Header>false</Header>
+			<HorizontalLines>false</HorizontalLines>
+			<VerticalLines>false</VerticalLines>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<SearchOnInput>Use</SearchOnInput>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<BorderColor>style:BorderColor</BorderColor>
+			<CommandSet/>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>false</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="15">
+				<ChildItems>
+					<Button name="ListMenuSelect" id="31">
+						<Type>CommandBarButton</Type>
+						<DefaultButton>true</DefaultButton>
+						<CommandName>Form.Item.List.StandardCommand.Choose</CommandName>
+						<ExtendedTooltip name="ListMenuSelectExtendedTooltip" id="40"/>
+					</Button>
+					<Button name="ListCopyMenuToClipboard" id="32">
+						<Type>CommandBarButton</Type>
+						<CommandName>14:88078230-1f6b-415f-99e4-ad2ff73810cf</CommandName>
+						<ExtendedTooltip name="ListCopyMenuToClipboardExtendedTooltip" id="41"/>
+					</Button>
+					<ButtonGroup name="ListGroupMenuFind" id="33">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List group find</v8:content>
+							</v8:item>
+						</Title>
+						<ToolTip>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List group find</v8:content>
+							</v8:item>
+						</ToolTip>
+						<ExtendedTooltip name="ListGroupMenuFindExtendedTooltip" id="42"/>
+						<ChildItems>
+							<Button name="ListMenuFind" id="34">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.Find</CommandName>
+								<ExtendedTooltip name="ListMenuFindExtendedTooltip" id="43"/>
+							</Button>
+							<Button name="ListMenuCancelSearch" id="35">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.CancelSearch</CommandName>
+								<ExtendedTooltip name="ListMenuCancelSearchExtendedTooltip" id="44"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="ListCommandBar" id="16">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="ListSelect" id="22">
+						<Type>CommandBarButton</Type>
+						<DefaultButton>true</DefaultButton>
+						<CommandName>Form.Item.List.StandardCommand.Choose</CommandName>
+						<ExtendedTooltip name="ListSelectExtendedTooltip" id="45"/>
+					</Button>
+					<ButtonGroup name="ListGroupFind" id="29">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Find in list</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ListGroupFindExtendedTooltip" id="46"/>
+						<ChildItems>
+							<Button name="ListFind" id="23">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.Find</CommandName>
+								<ExtendedTooltip name="ListFindExtendedTooltip" id="47"/>
+							</Button>
+							<Button name="ListCancelSearch" id="24">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.CancelSearch</CommandName>
+								<ExtendedTooltip name="ListCancelSearchExtendedTooltip" id="48"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Button name="HideObsoleteAddresses" id="37">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>false</OnlyInAllActions>
+						<CommandName>Form.Command.HideObsoleteAddresses</CommandName>
+						<ExtendedTooltip name="HideObsoleteAddressesExtendedTooltip" id="49"/>
+					</Button>
+					<Button name="ListDisplayAlternateNames" id="71">
+						<Type>CommandBarButton</Type>
+						<Check>true</Check>
+						<CommandName>Form.Command.DisplayAlternateNames</CommandName>
+						<ExtendedTooltip name="ListDisplayAlternateNamesExtendedTooltip" id="72"/>
+					</Button>
+					<ButtonGroup name="ListGroupSettings" id="30">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>List settings</v8:content>
+							</v8:item>
+						</Title>
+						<ExtendedTooltip name="ListGroupSettingsExtendedTooltip" id="50"/>
+						<ChildItems>
+							<Button name="ListListSettings" id="25">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.ListSettings</CommandName>
+								<ExtendedTooltip name="ListListSettingsExtendedTooltip" id="51"/>
+							</Button>
+							<Button name="ListOutputList" id="26">
+								<Type>CommandBarButton</Type>
+								<CommandName>Form.Item.List.StandardCommand.OutputList</CommandName>
+								<ExtendedTooltip name="ListOutputListExtendedTooltip" id="52"/>
+							</Button>
+						</ChildItems>
+					</ButtonGroup>
+					<Button name="ListRefresh" id="27">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.List.StandardCommand.Refresh</CommandName>
+						<ExtendedTooltip name="ListRefreshExtendedTooltip" id="53"/>
+					</Button>
+					<Button name="ListHelp" id="36">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.StandardCommand.Help</CommandName>
+						<ExtendedTooltip name="ListHelpExtendedTooltip" id="54"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ListExtendedTooltip" id="55"/>
+			<SearchStringAddition name="ListSearchString" id="75">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="76"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="77"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="78">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="79"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="80"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="81">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="82"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="83"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="ValueChoice">ListValueChoice</Event>
+				<Event name="Selection">ListChoice</Event>
+			</Events>
+			<ChildItems>
+				<ColumnGroup name="GroupAddress" id="21">
+					<EnableContentChange>true</EnableContentChange>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Address</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="GroupAddressExtendedTooltip" id="56"/>
+					<ChildItems>
+						<PictureField name="DataIsCurrent" id="38">
+							<DataPath>List.DataIsCurrentPictureIndex</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>DataIsCurrent</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>None</TitleLocation>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.ContactInformationObsolete</xr:Ref>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="DataIsCurrentContextMenu" id="39"/>
+							<ExtendedTooltip name="DataIsCurrentExtendedTooltip" id="57"/>
+						</PictureField>
+						<InputField name="Description" id="17">
+							<DataPath>List.Description</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Name</v8:content>
+								</v8:item>
+							</Title>
+							<Width>1</Width>
+							<Wrap>false</Wrap>
+							<ChooseType>false</ChooseType>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="DescriptionContextMenu" id="18"/>
+							<ExtendedTooltip name="DescriptionExtendedTooltip" id="58"/>
+						</InputField>
+						<InputField name="Abbr" id="19">
+							<DataPath>List.Abbr</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Abbr</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>None</TitleLocation>
+							<Width>1</Width>
+							<Wrap>false</Wrap>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="AbbrContextMenu" id="20"/>
+							<ExtendedTooltip name="AbbrExtendedTooltip" id="59"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<LabelField name="Advanced" id="68">
+					<DataPath>List.Advanced</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Index, alternate names</v8:content>
+						</v8:item>
+					</Title>
+					<Width>1</Width>
+					<ContextMenu name="AdvancedContextMenu" id="69"/>
+					<ExtendedTooltip name="AdvancedExtendedTooltip" id="70"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.DataIsCurrentPictureIndex</Field>
+				<Field>List.DataIsCurrentFlag</Field>
+				<Field>List.Code</Field>
+				<Field>List.Advanced</Field>
+				<Field>List.AddressObjectCodeInCode</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>false</DynamicDataRead>
+				<QueryText>SELECT
+	InformationRegisterAddressClassifier.AddressItemType,
+	InformationRegisterAddressClassifier.AddressObjectCodeInCode,
+	InformationRegisterAddressClassifier.CountyCodeInCode,
+	InformationRegisterAddressClassifier.CityCodeInCode,
+	InformationRegisterAddressClassifier.SettlementCodeInCode,
+	InformationRegisterAddressClassifier.StreetCodeInCode,
+	InformationRegisterAddressClassifier.Code,
+	InformationRegisterAddressClassifier.Description,
+	InformationRegisterAddressClassifier.Abbr,
+	InformationRegisterAddressClassifier.PostalCode,
+	InformationRegisterAddressClassifier.AlternateNames,
+	InformationRegisterAddressClassifier.DataIsCurrentFlag,
+	
+	CASE 
+		WHEN InformationRegisterAddressClassifier.PostalCode LIKE "%[^ ]%" 
+			// Index is filled
+			THEN InformationRegisterAddressClassifier.PostalCode
+		ELSE ""
+	END
+	+ 
+	CASE 
+		WHEN InformationRegisterAddressClassifier.AlternateNames LIKE "%[^ ]%" THEN
+			// Alternate names are available
+			CASE
+				WHEN InformationRegisterAddressClassifier.PostalCode LIKE "%[^ ]%" THEN ", "
+				ELSE ""
+			END
+			+ InformationRegisterAddressClassifier.AlternateNames
+		ELSE
+			""
+	END AS Advanced,
+	
+	CASE 
+		WHEN InformationRegisterAddressClassifier.DataIsCurrentFlag &gt; 0
+		THEN 0
+		ELSE 1
+	END AS DataIsCurrentPictureIndex
+	FROM
+		InformationRegister.AddressClassifier AS InformationRegisterAddressClassifier</QueryText>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Description</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="Level" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Level</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="HideObsoleteAddresses" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hide obsolete addresses</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="UseSavedSettings" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Use saved settings</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DisplayAlternateNames" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Display alternate names</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="HideObsoleteAddresses" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hide obsolete addresses</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hide obsolete addresses</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>HideObsoleteAddresses</Action>
+		</Command>
+		<Command name="DisplayAlternateNames" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Alternate names</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Display alternate names</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>DisplayAlternateNames</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="State">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="County">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="City">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="Settlement">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="Street">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="Level">
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Any</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="HideObsoleteAddresses">
+			<Type/>
+		</Parameter>
+		<Parameter name="SettlementClassifierCode">
+			<Type/>
+		</Parameter>
+	</Parameters>
+</Form>

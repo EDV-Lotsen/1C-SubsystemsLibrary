@@ -1,39 +1,46 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // Base functionality subsystem.
 //
-//////////////////////////////////////////////////////////////////////////////// 
-
 ////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+ 
+#Region Interface
 
-// Splits the string on several strings by the separator. The separator can be any length.
+// Splits the string into several strings by the separator. The separator can be any length.
 //
 // Parameters:
-// String - String - text with separators;
-// Separator - String - text separator, at least 1 character;
-// SkipEmptyStrings - Boolean - flag that shows whether empty strings should be included in a result;
-// If this parameter has not been set, the function executes in compatibility with its earlier version mode:
-// - if space is used as a separator, empty strings are not included in the result, for 
-// other separators empty strings are included in the result.
-// - if String parameter does not contain significant characters (or it is an empty string)
-// and space is used as a separator, the function
-// returns an array with a single empty string value (""),
-// - if String parameter does not contain significant characters (or it is an empty string)
-// and any character except space is used as a separator, the function
-// returns an empty array.
+// String                - String - text with separators;
+// Separator             - String - separator, at least 1 character;
+// SkipEmptyStrings      - Boolean - flag that shows whether empty strings should be included
+//                         in a result;
+//                         If this parameter is not set, the function executes in compatibility
+//                         with its earlier version mode:
+//                          - if space is used as a separator, empty strings are not included  
+//                            in the result, for other separators empty strings are included in
+//                            the result.
+//                          - if String parameter does not contain significant characters (or 
+//                            it is an empty string) and space is used as a separator, the 
+//                            function returns an array with a single empty string value ("").
+//                          - if String parameter does not contain significant characters (or
+//                            it is an empty string) and any character except space is used as
+//                            a separator, the function returns an empty array.
+// TrimNonprintableChars - Boolean - flag that shows whether nonprintable characters in the 
+//                         beginning and in the end of the found substrings are trimmed.
 //
 // Returns:
-// Array - array of strings.
+//  Array - array of String.
 //
 // Examples:
-// SplitStringIntoSubstringArray(",One,Two,", ",") - returns an array of 5 elements, three of them are empty strings;
-// SplitStringIntoSubstringArray(",One,Two,", ",", True) - returns an array of 2 elements;
-// SplitStringIntoSubstringArray(" one two ", " ") - returns an array of 2 elements;
-// SplitStringIntoSubstringArray("") - returns an empty array;
-// SplitStringIntoSubstringArray("",,False) - returns an array with an empty string ("");
-// SplitStringIntoSubstringArray("", " ") - returns an array with an empty string ("");
+//  SplitStringIntoSubstringArray(",One,,Two,", ",")      - returns an array of 5 elements, 
+//                                                          three of them are empty strings;
+//  SplitStringIntoSubstringArray(",One,Two,", ",", True) - returns an array of 2 elements;
+//  SplitStringIntoSubstringArray(" one   two  ", " ")    - returns an array of 2 elements;
+//  SplitStringIntoSubstringArray("")                     - returns an empty array;
+//  SplitStringIntoSubstringArray("",,False)              - returns an array with an empty
+//                                                          string ("");
+//  SplitStringIntoSubstringArray("", " ")                - returns an array with an empty
+//                                                          string ("");
 //
-Function SplitStringIntoSubstringArray(Val String, Val Separator = ",", Val SkipEmptyStrings = Undefined) Export
+Function SplitStringIntoSubstringArray(Val String, Val Separator = ",", Val SkipEmptyStrings = Undefined, TrimNonprintableChars = False) Export
 	
 	Result = New Array;
 	
@@ -47,22 +54,29 @@ Function SplitStringIntoSubstringArray(Val String, Val Separator = ",", Val Skip
 			Return Result;
 		EndIf;
 	EndIf;
-	
-	
+		
 	Position = Find(String, Separator);
 	While Position > 0 Do
 		Substring = Left(String, Position - 1);
 		If Not SkipEmptyStrings Or Not IsBlankString(Substring) Then
-			Result.Add(Substring);
+ 			If TrimNonprintableChars Then
+				Result.Add(TrimAll(Substring));
+			Else
+				Result.Add(Substring);
+			EndIf;
 		EndIf;
 		String = Mid(String, Position + StrLen(Separator));
 		Position = Find(String, Separator);
 	EndDo;
 	
 	If Not SkipEmptyStrings Or Not IsBlankString(String) Then
-		Result.Add(String);
-	EndIf;
-	
+ 	If TrimNonprintableChars Then
+
+			Result.Add(TrimAll(String));
+		Else
+			Result.Add(String);
+		EndIf;
+	EndIf;	
 	Return Result;
 	
 EndFunction 
@@ -70,31 +84,40 @@ EndFunction
 // Merges strings from the array into a string with separators.
 //
 // Parameters:
-// Array - Array - array of strings to be merged into a single string;
-// Separator - String - any character set that will be used as a separator.
+// Array                 - Array - array of String to be merged into a single string;
+// Separator             - String - any character set that will be used as a separator.
+// TrimNonprintableChars - Boolean - flag that shows whether nonprintable characters in the 
+//                         beginning and in the end of the substrings are trimmed.
 //
 // Returns:
-// String - string with separators.
+//  String - string with separators.
 //
-Function GetStringFromSubstringArray(Array, Separator = ",") Export
+Function StringFromSubstringArray(Array, Separator = ",", TrimNonprintableChars = False) Export
 	
-	// The value that is returned
 	Result = "";
 	
-	For Each Element In Array Do
+	For Index = 0 to Array.UBound() Do
+		Substring = Array[Index];
 		
-		Substring = ?(TypeOf(Element) = Type("String"), Element, String(Element));
+		If TrimNonprintableChars Then
+			Substring = TrimAll(Substring);
+		EndIf;
 		
-		SubstringSeparator = ?(IsBlankString(Result), "", Separator);
+		If TypeOf(Substring) <> Type("String") Then
+			Substring = String(Substring);
+		EndIf;
 		
-		Result = Result + SubstringSeparator + Substring;
+		If Index > 0 Then
+			Result = Result + Separator;
+		EndIf;
 		
+		Result = Result + Substring;
 	EndDo;
 	
 	Return Result;
 	
 EndFunction
-
+ 
 // Determines whether the character is a separator.
 //
 // Parameters:
@@ -104,19 +127,18 @@ EndFunction
 // Returns:
 // Boolean - True if the character is a separator.
 //
-Function IsWordSeparator(CharCode, WordSeparators = "") Export
+Function IsWordSeparator(CharCode, WordSeparators = Undefined) Export
 	
-	If Not IsBlankString(WordSeparators) Then
-		
-		Return Find(WordSeparators, Char(CharCode)) > 0;
-		
-	Else
+ 	If WordSeparators <> Undefined Then
+
+		Return Find(WordSeparators,  Char(CharCode)) >  0;
+	 EndIf;
 		
 		Ranges = New Array;
 		Ranges.Add(New Structure("Min,Max", 48, 57)); 		// numerals
 		Ranges.Add(New Structure("Min,Max", 65, 90)); 		// capital Roman characters
-		Ranges.Add(New Structure("Min,Max", 97, 122)); 		// lowercase Roman characters
-		Ranges.Add(New Structure("Min,Max", 95, 95)); 		// the _ character
+		Ranges.Add(New Structure("Min,Max", 97, 122));   // lowercase Roman characters
+		Ranges.Add(New Structure("Min,Max", 95, 95)); 		// the underscore character (_)
 		
 		For Each Range In Ranges Do
 			If CharCode >= Range.Min And CharCode <= Range.Max Then
@@ -125,27 +147,25 @@ Function IsWordSeparator(CharCode, WordSeparators = "") Export
 		EndDo;
 		
 		Return True;
-		
-	EndIf;
 	
 EndFunction
 
 // Splits the string into several strings using a specified separator set.
-// If the WordSeparators parameter is not specified, any of the characters that are not Roman characters, 
-// Cyrillic characters, numeric characters, or the _ character are considered separators.
+// If the WordSeparators parameter is not specified, any of the characters that are not Roman  
+// characters, numeric characters, or the underscore character (_) are considered separators.
 //
 // Parameters:
-// String - String - string to be split into words;
+// String         - String - string to be split into words.
 // WordSeparators - String - string containing separator characters.
 //
 // Returns:
-// Array of values whose elements are obtained by splitting the string.
+//  Array of values whose elements are obtained by splitting the string.
 //
 // Example:
-// SplitStringIntoWordArray("one-@#two2_!three") returns an array of values: "one", "two2_", "three";
-// SplitStringIntoWordArray("one-@#two2_!three", "#@!_") returns an array of values: "one-", "two2", "three".
+//  SplitStringIntoWordArray("one-@#two2_!three") returns an array of values: "one", "two2_", "three";
+//  SplitStringIntoWordArray("one-@#two2_!three", "#@!_") returns an array of values: "one-", "two2", "three".
 //
-Function SplitStringIntoWordArray(Val String, WordSeparators = "") Export
+Function SplitStringIntoWordArray(Val String, WordSeparators = Undefined) Export
 	
 	Words = New Array;
 	
@@ -170,108 +190,74 @@ Function SplitStringIntoWordArray(Val String, WordSeparators = "") Export
 EndFunction
 
 // Substitutes the parameters in the string. The maximum number of the parameters is 9.
-// Parameters in the string are specified as %<parameter number>. Parameter numbering starts with 1.
+// Parameters in the string are specified as %<parameter number>. Parameter numbering starts
+// with 1.
 //
 // Parameters:
-// SubstitutionString – String – string pattern that includes parameters in the following format: %ParameterName;
-// Parameter<n> - String - parameter to be substituted.
+// SubstitutionString – String – string pattern that includes parameters in the following
+//                      format: %ParameterName;
+// Parameter<n>       - String - parameter to be substituted.
 //
 // Returns:
-// String – string with substituted parameters.
+//  String – string with substituted parameters.
 //
 // Example:
-// SubstituteParametersInString(NStr("en='%1 went to %2'"), "John", "a zoo") = "John went to a zoo".
+//  SubstituteParametersInString(NStr("en='%1 went to %2'"), "John", "a zoo") = "John went to a zoo".
 //
 Function SubstituteParametersInString(Val SubstitutionString,
 	Val Parameter1,	Val Parameter2 = Undefined, Val Parameter3 = Undefined,
 	Val Parameter4 = Undefined, Val Parameter5 = Undefined, Val Parameter6 = Undefined,
-	Val Parameter7 = Undefined, Val Parameter8 = Undefined, Val Parameter9 = Undefined) Export
-	
-	If SubstitutionString = Undefined Or StrLen(SubstitutionString) = 0 Then
-		Return "";
+	Val Parameter7 = Undefined, Val Parameter8 = Undefined, Val Parameter9 = Undefined) Export	
+ 
+ 	UseAlternativeAlgorithm = 
+
+		Find(Parameter1, "%")
+		Or Find(Parameter2, "%")
+		Or Find(Parameter3, "%")
+		Or Find(Parameter4, "%")
+		Or Find(Parameter5, "%")
+		Or Find(Parameter6, "%")
+		Or Find(Parameter7, "%")
+		Or Find(Parameter8, "%")
+		Or Find(Parameter9, "%");
+		
+	If UseAlternativeAlgorithm Then
+		SubstitutionString = SubstituteParametersInStringAlternativeAlgorithm(SubstitutionString, Parameter1,
+			Parameter2, Parameter3,  Parameter4, Parameter5,  Parameter6, Parameter7,  Parameter8, Parameter9);
+	Else
+		SubstitutionString = StrReplace(SubstitutionString, "%1",  Parameter1);
+		SubstitutionString = StrReplace(SubstitutionString, "%2",  Parameter2);
+		SubstitutionString = StrReplace(SubstitutionString, "%3",  Parameter3);
+		SubstitutionString = StrReplace(SubstitutionString, "%4",  Parameter4);
+		SubstitutionString = StrReplace(SubstitutionString, "%5",  Parameter5);
+		SubstitutionString = StrReplace(SubstitutionString, "%6",  Parameter6);
+		SubstitutionString = StrReplace(SubstitutionString, "%7",  Parameter7);
+		SubstitutionString = StrReplace(SubstitutionString, "%8",  Parameter8);
+		SubstitutionString = StrReplace(SubstitutionString, "%9",  Parameter9);
 	EndIf;
 	
-	Result = "";
-	StartPosition = 1;
-	Position = 1;
-	While Position <= StrLen(SubstitutionString) Do
-		StringChar = Mid(SubstitutionString, Position, 1);
-		If StringChar <> "%" Then
-			Position = Position + 1;
-			Continue;
-		EndIf;
-		Result = Result + Mid(SubstitutionString, StartPosition, Position - StartPosition);
-		Position = Position + 1;
-		StringChar = Mid(SubstitutionString, Position, 1);
-		
-		If StringChar = "%" Then
-			Position = Position + 1;
-			StartPosition = Position;
-			Result = Result + "%";
-			Continue;
-		EndIf;
-		
-		Try
-			ParameterNumber = Number(StringChar);
-		Except
-			Raise NStr("en='SubstitutionString source string has an invalid format: %'" + StringChar);
-		EndTry;
-		
-		If StringChar = "1" Then
-			ParameterValue = Parameter1;
-		ElsIf StringChar = "2" Then
-			ParameterValue = Parameter2;
-		ElsIf StringChar = "3" Then
-			ParameterValue = Parameter3;
-		ElsIf StringChar = "4" Then
-			ParameterValue = Parameter4;
-		ElsIf StringChar = "5" Then
-			ParameterValue = Parameter5;
-		ElsIf StringChar = "6" Then
-			ParameterValue = Parameter6;
-		ElsIf StringChar = "7" Then
-			ParameterValue = Parameter7;
-		ElsIf StringChar = "8" Then
-			ParameterValue = Parameter8;
-		ElsIf StringChar = "9" Then
-			ParameterValue = Parameter9;
-		Else
-			Raise NStr("en='SubstitutionString source string has an invalid format: %'" + ParameterValue);
-		EndIf;
-		If ParameterValue = Undefined Then
-			ParameterValue = "";
-		Else
-			ParameterValue = String(ParameterValue);
-		EndIf;
-		Result = Result + ParameterValue;
-		Position = Position + 1;
-		StartPosition = Position;
-	
-	EndDo;
-	
-	If (StartPosition <= StrLen(SubstitutionString)) Then
-		Result = Result + Mid(SubstitutionString, StartPosition, StrLen(SubstitutionString) - StartPosition + 1);
-	EndIf;
-	
-	Return Result;
+	Return SubstitutionString;	
 	
 EndFunction
 
-// Substitutes the parameters in the string. The number of the parameters in the string is unlimited.
+// Substitutes the parameters in the string. The number of the parameters in the string is
+// unlimited.
 // Parameters in the string are specified as %<parameter number>. Parameter numbering 
 // starts with 1.
 //
 // Parameters:
-// SubstitutionString – String – string pattern that includes parameters in the following format: %ParameterName;
-// ParameterArray - Array - array of strings that corresponds to the parameters in the substitution string.
+// SubstitutionString – String – string pattern that includes parameters in the following
+//                      format: %ParameterNumber;
+// ParameterArray     - Array - array of strings that corresponds to the parameters in the
+//                      substitution string.
 //
 // Returns:
-// String – string with substituted parameters.
+//  String – string with substituted parameters.
 //
 // Example:
-// ParameterArray = New Array;
-// ParameterArray = ParameterArray.Add("John");
-// ParameterArray = ParameterArray.Add("a zoo");
+//  ParameterArray = New Array;
+//  ParameterArray = ParameterArray.Add("John");
+//  ParameterArray = ParameterArray.Add("a zoo");
 //
 // String = SubstituteParametersInString(NStr("en='%1 went to %2'"), ParameterArray);
 //
@@ -283,7 +269,7 @@ Function SubstituteParametersInStringFromArray(Val SubstitutionString, Val Param
 	While Index > 0 Do
 		Value = ParameterArray[Index - 1];
 		If Not IsBlankString(Value) Then
-			ResultString = StrReplace(ResultString, "%" + Format(Index, "NG=0"), Value);
+			ResultString = StrReplace(ResultString, "%" + Format(Index, "NG="), Value);
 		EndIf;
 		Index = Index - 1;
 	EndDo;
@@ -292,13 +278,14 @@ Function SubstituteParametersInStringFromArray(Val SubstitutionString, Val Param
 	
 EndFunction
 
-// Substitutes parameter values for their names in the string pattern. Parameters in the string are enclosed in square brackets.
+// Substitutes parameter values for their names in the string pattern. Parameters in the string
+// are enclosed in square brackets.
 //
 // Parameters:
 //
-// StringPattern - String - string where values will be substituted;
-// ValuesToInsert - Structure - value structure where keys are parameter names without reserved characters
-// and values are values to be substituted.
+// StringPattern  - String - string where values is substituted;
+// ValuesToInsert - Structure - value structure where keys are parameter names without reserved 
+//                  characters and values are values to be substituted.
 //
 // Returns:
 // String - string with substituted values.
@@ -319,14 +306,16 @@ EndFunction
 //
 // Parameters:
 // ParameterString - String - string that contains parameters, each of them is a substring
-// in the following format: <Parameter name>=<Value>.
-// Substrings are separated from each other by the ; character.
-// If the value contains the space character, it must be enclosed in double quotation marks (").
+//                   in the following format: <Parameter name>=<Value>.
+//                   Substrings are separated from each other by the semicolon character (;).
+//                   If the value contains the space character, it must be enclosed in double 
+//                   quotation marks (").
 // Example:
-// "File=""c:\InfoBases\Trade""; Usr=""Director"";"
+// "File=""c:\Infobases\Trade""; Usr=""CEO"";"
 //
 // Returns:
-// Structure - parameter structure, where keys are parameter names, and values are parameter values.
+// Structure - parameter structure, where keys are parameter names, and values are parameter 
+//             values.
 //
 Function GetParametersFromString(Val ParameterString) Export
 	
@@ -353,11 +342,13 @@ Function GetParametersFromString(Val ParameterString) Export
 			
 		EndIf;
 		
-		Try
+	 	If Not IsBlankString(ParameterName) Then
+
+			
 			Result.Insert(ParameterName, ParameterValue);
-		Except
-		EndTry;
-		
+			
+
+		EndIf;
 	EndDo;
 	
 	Return Result;
@@ -366,13 +357,15 @@ EndFunction
 // Checks whether the string contains numeric characters only.
 //
 // Parameters:
-// CheckString - String - string to be checked;
-// IncludingLeadingZeros - Boolean - flag that shows whether the string to be checked can include leading zeros;
-// IncludingSpaces - Boolean - flag that shows whether the string to be checked can includes spaces.
+// CheckString           - String - string to be checked.
+// IncludingLeadingZeros - Boolean - flag that shows whether the string to be checked can
+//                         contain leading zeros. If it is True, leading zeroes are skipped.
+// IncludingSpaces       - Boolean - flag that shows whether the string to be checked can
+//                         contain spaces. If it is True, spaces are ignored.
 //
 // Returns:
-// True - string contains numeric characters only or is empty;
-// False - string contains not only numeric characters.
+//  Boolean - True if the string contains numeric characters only or is empty. False if the
+//            string contains other characters.
 //
 Function OnlyDigitsInString(Val CheckString, Val IncludingLeadingZeros = True, Val IncludingSpaces = True) Export
 	
@@ -380,49 +373,47 @@ Function OnlyDigitsInString(Val CheckString, Val IncludingLeadingZeros = True, V
 		Return False;
 	EndIf;
 	
-	If Not ValueIsFilled(CheckString) Then
+ 	If Not IncludingSpaces Then
+
+		CheckString = StrReplace(CheckString, "  ", "");
+	EndIf;
+		
+	If IsBlankString(CheckString) Then
 		Return True;
 	EndIf;
 	
-	If Not IncludingSpaces Then
-		CheckString = StrReplace(CheckString, " ", "");
-	EndIf;
-	
-	If Not IncludingLeadingZeros Then
-		FirstDigitNumber = 0;
-		For a = 1 to StrLen(CheckString) Do
-			FirstDigitNumber = FirstDigitNumber + 1;
-			CharCode = CharCode(Mid(CheckString, a, 1));
-			If CharCode <> 48 Then
-				Break;
-			EndIf;
+ 	If Not IncludingLeadingZeros Then
+
+		Position = 1;
+		// If an out-of-border symbol is taken, an empty string is returned
+		While Mid(CheckString, Position, 1) = "0" Do
+			Position = Position +  1;
+
 		EndDo;
-		CheckString = Mid(CheckString, FirstDigitNumber);
+		CheckString = Mid(CheckString, Position);
 	EndIf;
 	
-	For a = 1 to StrLen(CheckString ) Do
-		CharCode = CharCode(Mid(CheckString , a, 1));
-		If Not (CharCode >= 48 And CharCode <= 57) Then
-			Return False;
-		EndIf;
-	EndDo;
-	
-	Return True;
-	
+	// If the source string contains digits only, the result string after the replacement is empty.
+	// The string cannot be checked with IsBlankString because it can contain space characters.
+	Return StrLen(
+		StrReplace( StrReplace( StrReplace( StrReplace( StrReplace(
+		StrReplace( StrReplace( StrReplace( StrReplace( StrReplace( 
+			CheckString, "0", ""), "1", ""), "2", ""), "3", ""), "4", ""), "5", ""), "6", ""), "7", ""), "8", ""), "9", "")
+	) = 0;	
 EndFunction
 
 // Checks whether the string contains Roman characters only.
 //
 // Parameters:
-// WithWordSeparators - Boolean - flag that shows whether the string to be checked can includes word separators.
-// Available word separators are defined in the IsWordSeparator function;
-// AllowedChars - string to be checked.
+// WithWordSeparators - Boolean - flag that shows whether the string to be checked can include
+//                      word separators. Available word separators are defined in the
+//                      IsWordSeparator function;
+// AllowedChars       - string to be checked.
 //
 // Returns:
-// True - string contains only Roman characters or is empty;
-// False - string contains not only Roman characters.
+//  Boolean - True if string contains only Roman characters or is empty, otherwise is False.
 //
-Function OnlyRomanString(Val CheckString, Val WithWordSeparators = True, AllowedChars = "") Export
+Function OnlyLatinInString(Val CheckString, Val WithWordSeparators = True, AllowedChars = "") Export
 	
 	If TypeOf(CheckString) <> Type("String") Then
 		Return False;
@@ -432,16 +423,16 @@ Function OnlyRomanString(Val CheckString, Val WithWordSeparators = True, Allowed
 		Return True;
 	EndIf;
 	
-	ValidCharacterCodes = New Array;
+	ValidCharCodes = New Array;
 	
 	For a = 1 to StrLen(AllowedChars) Do
-		ValidCharacterCodes.Add(CharCode(Mid(AllowedChars, a, 1)));
+		ValidCharCodes.Add(CharCode(Mid(AllowedChars, a, 1)));
 	EndDo;
 	
 	For a = 1 to StrLen(CheckString) Do
 		CharCode = CharCode(Mid(CheckString, a, 1));
 		If ((CharCode < 65) Or (CharCode > 90 And CharCode < 97) Or (CharCode > 122))
-			And (ValidCharacterCodes.Find(CharCode) = Undefined) 
+			And (ValidCharCodes.Find(CharCode) = Undefined) 
 			And Not (Not WithWordSeparators And IsWordSeparator(CharCode)) Then
 			Return False;
 		EndIf;
@@ -454,10 +445,10 @@ EndFunction
 // Deletes double quotation marks from the beginning and the end of the string, if any.
 //
 // Parameters:
-// String - source string;
+//  String - source string;
 //
 // Returns:
-// String - string without double quotation marks.
+//  String - string without double quotation marks.
 //
 Function RemoveDoubleQuotationMarks(Val String) Export
 	
@@ -476,7 +467,7 @@ EndFunction
 // Deletes the specified number of characters from the end of the string.
 //
 // Parameters:
-// Text - String - string where the last characters will be deleted;
+// Text       - String - string where the last characters is deleted;
 // CharsCount - Number - the number of characters to be deleted.
 //
 Procedure DeleteLastCharsInString(Text, CharsCount) Export
@@ -489,16 +480,16 @@ EndProcedure
 //
 // Parameters:
 // String - String - string where search is performed;
-// Char - String - character that the string is searched for.
+// Char   - String - character or a group of characters to be found. 
 //
 // Returns:
 // Number - character position in the string. 
-// If the string does not contain the specified character, the function returns 0.
+//          If the string does not contain the specified character, the function returns 0.
 //
 Function FindCharFromEnd(Val String, Val Char) Export
 	
 	For Position = -StrLen(String) to -1 Do
-		If Mid(String, -Position, 1) = Char Then
+		If Mid(String, -Position, StrLen(Char)) = Char Then
 			Return -Position;
 		EndIf;
 	EndDo;
@@ -524,8 +515,11 @@ Function IsUUID(Val String) Export
 		Return False;
 	EndIf;
 	For Position = 1 to StrLen(String) Do
-		If CharCode(Pattern, Position) = 88 And ((CharCode(String, Position) < 48 Or CharCode(String, Position) > 57) And (CharCode(String, Position) < 97 Or CharCode(String, Position) > 102))
-			Or CharCode(Pattern, Position) = 45 And CharCode(String, Position) <> 45 Then
+ 		If CharCode(Pattern, Position) = 88 // X
+			And ((CharCode(String, Position) < 48 Or CharCode(String, Position) > 57)  // 0..9
+			And (CharCode(String, Position) < 97 Or CharCode(String, Position) > 102)  // a..f
+			And (CharCode(String, Position) < 65 Or CharCode(String, Position) > 70))  // A..F
+			Or CharCode(Pattern, Position) = 45 And CharCode(String, Position) <> 45 Then // -
 			Return False;
 		EndIf;
 	EndDo;
@@ -534,10 +528,10 @@ Function IsUUID(Val String) Export
 
 EndFunction
 
-// Generates a string with the specified length filled with the specified character.
+// Generates a string of the specified length filled with the specified character.
 //
 // Parameters:
-// Char - string - character used for filling.
+// Char         - String - character used for filling.
 // StringLength - Number - required length of the resulting string.
 //
 // Returns:
@@ -554,36 +548,36 @@ Function GenerateCharacterString(Val Char, Val StringLength) Export
 	
 EndFunction
 
-// Supplements the string to a specified length with characters on the left or on the right and returns it.
-// Insignificant characters on the left and on the right are deleted. By default, the function supplements a string with the 0 (zero) character on the left.
+// Supplements the string to a specified length with characters on the left or on the right and 
+// returns it.
+// Insignificant characters on the left and on the right are deleted. By default, the function
+// supplements a string with 0 (zero) characters on the left.
 //
 // Parameters:
-// String - String - source string to be supplemented with characters;
-// StringLength - Number - required string length;
-// Char - String - character used for supplementing the string;
-// Mode - String - Left or Right - indicates whether the string is supplemented on the left or on the right.
+//  String       - String - source string to be supplemented with characters;
+//  StringLength - Number - required string length;
+//  Char         - String - character used for supplementing the string;
+//  Mode         - String - Left or Right - indicates whether the string is supplemented on the
+//                 left or on the right.
 // 
 // Returns:
-// String - string supplemented with characters.
+//  String - string supplemented with characters.
 //
 // Example 1:
-// String = "1234"; StringLength = 10; Char = "0"; Mode = "Left"
-// Returns: "0000001234"
+//  String = "1234"; StringLength = 10; Char = "0"; Mode = "Left"
+//  Returns: "0000001234"
 //
 // Example 2:
-// String = " 1234 "; StringLength = 10; Char = "#"; Mode = "Right"
-// Returns: "1234######"
+//  String = " 1234 "; StringLength = 10; Char = "#"; Mode = "Right"
+//  Returns: "1234######"
 //
 Function SupplementString(Val String, Val StringLength, Val Char = "0", Val Mode = "Left") Export
 	
-	If IsBlankString(Char) Then
-		Char = "0";
-	EndIf;
-	
+
 	// The parameter must be a single character.
 	Char = Left(Char, 1);
 	
-	// Deleting spaces on the left and on the right of the the string
+	// Deleting spaces on the left and on the right of the string
 	String = TrimAll(String);
 	
 	CharToAddCount = StringLength - StrLen(String);
@@ -611,11 +605,12 @@ EndFunction
 // Deletes repeating characters on the left or on the right of the string.
 //
 // Parameters:
-// String - String - source string where repeating characters will be deleted;
-// Char - String - character to be deleted;
-// Mode - String - "Left" or "Right" - indicates whether characters are deleted on the left or on the right.
+//  String - String - source string where repeating characters is deleted;
+//  Char   - String - character to be deleted;
+//  Mode   - String - Left or Right - indicates whether characters are deleted on the left or
+//           on the right.
 // Returns:
-// String - truncated string.
+//  String - truncated string.
 //
 Function DeleteDuplicatedChars(Val String, Val Char, Val Mode = "Left") Export
 	
@@ -643,14 +638,15 @@ EndFunction
 // Replaces characters in the string.
 //
 // Parameters:
-// CharsToReplace - String - string of characters that will be replaced;
-// String - String - source string;
+// CharsToReplace   - String - string of characters to be replaced;
+// String           - String - source string;
 // ReplacementChars - String - string of characters for replacing CharsToReplace characters.
 // 
 // Returns:
-// String - string with character replaced.
+// String - string with characters replaced.
 //
-// Note: The function is intended for simple replacement scenarios, for example, for replacing the Ä character with the A character.
+// Note: The function is intended for simple replacement scenarios, for example, for replacing
+// the Ä character with the A character.
 // The function processes the passed string sequentially, therefore:
 // ReplaceOneCharsWithAnother("pd", "spider", "np") returns "sniper",
 // ReplaceOneCharsWithAnother("dr", "spider", "rd") does not return "spired".
@@ -670,13 +666,13 @@ EndFunction
 // Converting the Arabic number into a Roman one.
 //
 // Parameters:
-//	ArabicNumber	- integer from 0 to 999;
+// ArabicNumber	- integer from 0 to 999;
 //
 // Returns:
-//	String - number in Roman notation.
+// String - number in Roman notation.
 //
 // Example:
-//	ConvertNumberIntoRomanNotation(17) = "XVII".
+// ConvertNumberIntoRomanNotation(17) = "XVII".
 //
 Function ConvertNumberIntoRomanNotation(ArabicNumber) Export
 	
@@ -700,13 +696,13 @@ EndFunction
 // Converts the Roman number into an Arabic one.
 //
 // Parameters:
-//	RomanNumber - String - number in Roman notation;
+// RomanNumber - String - number in Roman notation;
 //
 // Returns:
-//	Number in Arabic notation.
+// Number in Arabic notation.
 //
 // Example:
-//	ConvertNumberIntoArabNotation("XVII") = 17.
+// ConvertNumberIntoArabNotation("XVII") = 17.
 //
 Function ConvertNumberIntoArabNotation(RomanNumber) Export
 	
@@ -751,22 +747,22 @@ Function ConvertNumberIntoArabNotation(RomanNumber) Export
 	
 EndFunction 
 
-// Returns a text presentation of a number with a unit of measurement in the correct form (singular or plural).
+// Returns a text presentation of the number with a unit of measurement in the correct form
+// (singular or plural).
 //
 // Parameters:
-// Number - Number - Any integer number.
-//	UnitOfMeasureInWordParameters - String - different spelling of a unit of measurement, separated by comma.
+//  Number                        - Number - any integer number.
+//  UnitOfMeasureInWordParameters - String - different spelling of a unit of measurement, 
+//                                  separated by comma.
 //
 // Returns:
-// String - text presentation of a unit of measurement and a number writen in digits.
+//  String - text presentation of the unit of measurement and a number written in digits.
 //
 // Examples:
-// NumberInDigitsUnitOfMeasurementInWords(23, "Hours,Minutes,Seconds") = "23 Minutes";
-// 	NumberInDigitsUnitOfMeasurementInWords(15, "Hours,Minutes,Seconds") = "15 Minutes".
+//  NumberInDigitsUnitOfMeasurementInWords(23, "Hour,Hours") = "23 Hours";
+//  NumberInDigitsUnitOfMeasurementInWords(1, "Minute,Minutes") = "1 Minute".
 //
 Function NumberInDigitsUnitOfMeasurementInWords(Val Number, Val UnitOfMeasureInWordParameters) Export
-
-	Raise("CHECK ON TEST");
 
 	Result = Format(Number,"NZ=0");
 	
@@ -785,20 +781,10 @@ Function NumberInDigitsUnitOfMeasurementInWords(Val Number, Val UnitOfMeasureInW
 		PresentationArray.Add(Value);
 	EndIf;	
 	
-	If Number >= 100 Then
-		Number = Number - Int(Number / 100)*100;
-	EndIf;
-	
-	If Number > 20 Then
-		Number = Number - Int(Number/10)*10;
-	EndIf;
-	
 	If Number = 1 Then
 		Result = Result + " " + PresentationArray[0];
-	ElsIf Number > 1 And Number < 5 Then
+	ElsIf Number > 1 Then
 		Result = Result + " " + PresentationArray[1];
-	Else
-		Result = Result + " " + PresentationArray[2];
 	EndIf;
 	
 	Return Result;	
@@ -808,10 +794,10 @@ EndFunction
 // Deletes HTML tags from the text and returns the unformatted text. 
 //
 // Parameters:
-// SourceText - String - HTML formatted text.
+//  SourceText - String - HTML formatted text.
 //
 // Returns:
-// String - free of tags, scripts, and headers text.
+//  String - free of tags, scripts, and headers text.
 //
 Function ExtractTextFromHTML(Val SourceText) Export
 	Result = "";
@@ -880,20 +866,21 @@ Function ExtractTextFromHTML(Val SourceText) Export
 	Return TrimAll(Result);
 EndFunction
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 // Converting the Arabic numerals into a Roman ones. 
 //
 // Parameters
-//	Digit - Number - numeral from 0 to 9;
-// RomanOne, RomanFive, RomanTen - String - characters representing Roman numerals.
+//  Digit                         - Number - numeral from 0 to 9;
+//  RomanOne, RomanFive, RomanTen - String - characters representing Roman numerals.
 //
 // Returns
-//	String - characters in the Roman notation.
+// String - characters in the Roman notation.
 //
 // Example: 
-//	ConvertDigitIntoRomanNotation(7,"I","V","X") = "VII".
+// ConvertDigitIntoRomanNotation(7,"I","V","X") = "VII".
 //
 Function ConvertDigitIntoRomanNotation(Digit, RomanOne, RomanFive, RomanTen)
 	
@@ -921,29 +908,49 @@ Function ConvertDigitIntoRomanNotation(Digit, RomanOne, RomanFive, RomanTen)
 	
 EndFunction
 
-// Internal use only.
-Function StringFromSubstringArray(Array, Separator = ",", TrimNotPrintableChars = False) Export
+// Substitutes parameters in the string for %1, %2, and so on.
+Function SubstituteParametersInStringAlternativeAlgorithm(Val SubstitutionString,
+	Val Parameter1, Val Parameter2 = Undefined, Val Parameter3 = Undefined,
+	Val Parameter4 = Undefined, Val Parameter5 = Undefined, Val Parameter6 = Undefined,
+	Val Parameter7 = Undefined, Val Parameter8 = Undefined, Val Parameter9 = Undefined)
 	
 	Result = "";
-	
-	For Index = 0 To Array.UBound() Do
-		Substring = Array[Index];
-		
-		If TrimNotPrintableChars Then
-			Substring = TrimAll(Substring);
+	Position = Find(SubstitutionString, "%");
+	While Position > 0 Do 
+		Result = Result + Left(SubstitutionString, Position - 1);
+		CharAfterPercent = Mid(SubstitutionString, Position + 1, 1);
+		ParameterToSubstitute = "";
+		If CharAfterPercent = "1" Then
+			ParameterToSubstitute =  Parameter1;
+		ElsIf CharAfterPercent = "2" Then
+			ParameterToSubstitute =  Parameter2;
+		ElsIf CharAfterPercent = "3" Then
+			ParameterToSubstitute =  Parameter3;
+		ElsIf CharAfterPercent = "4" Then
+			ParameterToSubstitute =  Parameter4;
+		ElsIf CharAfterPercent = "5" Then
+			ParameterToSubstitute =  Parameter5;
+		ElsIf CharAfterPercent = "6" Then
+			ParameterToSubstitute =  Parameter6;
+		ElsIf CharAfterPercent = "7" Then
+			ParameterToSubstitute =  Parameter7
+		ElsIf CharAfterPercent = "8" Then
+			ParameterToSubstitute =  Parameter8;
+		ElsIf CharAfterPercent = "9" Then
+			ParameterToSubstitute =  Parameter9;
 		EndIf;
-		
-		If TypeOf(Substring) <> Type("String") Then
-			Substring = String(Substring);
+		If ParameterToSubstitute = "" Then
+			Result = Result + "%";
+			SubstitutionString = Mid(SubstitutionString, Position + 1);
+		Else
+			Result = Result + ParameterToSubstitute;
+			SubstitutionString = Mid(SubstitutionString, Position + 2);
 		EndIf;
-		
-		If Index > 0 Then
-			Result = Result + Separator;
-		EndIf;
-		
-		Result = Result + Substring;
+		Position = Find(SubstitutionString, "%");
 	EndDo;
+	Result = Result + SubstitutionString;
 	
 	Return Result;
-	
 EndFunction
+ 
+#EndRegion

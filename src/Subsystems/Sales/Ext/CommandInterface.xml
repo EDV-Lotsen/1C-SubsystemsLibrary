@@ -1,239 +1,148 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <CommandInterface xmlns="http://v8.1c.ru/8.3/xcf/extrnprops" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<CommandsVisibility>
-		<Command name="Catalog.Currencies.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="InformationRegister.ItemLastCost.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.USTaxCategories1099.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.Addresses.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="ChartOfAccounts.ChartOfAccounts.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.Countries.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.Items.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="InformationRegister.ResponsiblePersons.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.States.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.Units.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Catalog.VATCodes.StandardCommand.OpenList">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="Document.CashSale.StandardCommand.OpenList">
+		<Command name="DocumentJournal.SalesDocuments.StandardCommand.OpenList">
 			<Visibility>
 				<xr:Common>true</xr:Common>
 			</Visibility>
 		</Command>
-		<Command name="InformationRegister.PriceList.StandardCommand.OpenList">
+		<Command name="Catalog.CounterpartySettlementAccounts.StandardCommand.OpenList">
+			<Visibility>
+				<xr:Common>false</xr:Common>
+			</Visibility>
+		</Command>
+		<Command name="AccumulationRegister.Sales.StandardCommand.OpenList">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="AccumulationRegister.Inventory.StandardCommand.OpenList">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Document.SalesOrder.StandardCommand.Create">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Document.ProductExpense.StandardCommand.Create">
 			<Visibility>
 				<xr:Common>true</xr:Common>
 			</Visibility>
 		</Command>
-		<Command name="Catalog.SalesTaxCodes.StandardCommand.OpenList">
+		<Command name="Catalog.Counterparties.StandardCommand.Create">
 			<Visibility>
 				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
-		<Command name="Report.ARAging.StandardCommand.Open">
+		<Command name="Catalog.Products.StandardCommand.Create">
 			<Visibility>
-				<xr:Common>false</xr:Common>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
-		<Command name="Report.SalesTransactionDetail.StandardCommand.Open">
+		<Command name="Catalog.Counterparties.StandardCommand.CreateFolder">
 			<Visibility>
 				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
-		<Command name="CommonForm.DocumentsPrinting.StandardCommand.Open">
+		<Command name="Catalog.Products.StandardCommand.CreateFolder">
 			<Visibility>
 				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Catalog.CounterpartySettlementAccounts.StandardCommand.Create">
+			<Visibility>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Report.SalesDynamics.StandardCommand.Open">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Report.WarehouseStockBalance.StandardCommand.Open">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
+		<Command name="Report.MutualSettlements.StandardCommand.Open">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
 	</CommandsVisibility>
 	<CommandsPlacement>
-		<Command name="Document.CashSale.StandardCommand.OpenList">
+		<Command name="DocumentJournal.SalesDocuments.StandardCommand.OpenList">
+			<CommandGroup>NavigationPanelImportant</CommandGroup>
+			<Placement>Auto</Placement>
+		</Command>
+		<Command name="AccumulationRegister.Sales.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
 			<Placement>Auto</Placement>
 		</Command>
-		<Command name="InformationRegister.PriceList.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
-			<Placement>Auto</Placement>
-		</Command>
-		<Command name="Catalog.SalesTaxCodes.StandardCommand.OpenList">
+		<Command name="AccumulationRegister.Inventory.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
 			<Placement>Auto</Placement>
 		</Command>
 	</CommandsPlacement>
 	<CommandsOrder>
+		<Command name="DocumentJournal.SalesDocuments.StandardCommand.OpenList">
+			<CommandGroup>NavigationPanelImportant</CommandGroup>
+		</Command>
 		<Command name="Document.SalesOrder.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
 		</Command>
-		<Command name="Document.SalesInvoice.StandardCommand.OpenList">
+		<Command name="Document.ProductExpense.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
 		</Command>
-		<Command name="Document.SalesReturn.StandardCommand.OpenList">
+		<Command name="Catalog.Counterparties.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
 		</Command>
-		<Command name="Enum.SalesTaxTypes.StandardCommand.OpenList">
+		<Command name="Catalog.Products.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
 		</Command>
-		<Command name="Enum.OrderStatuses.StandardCommand.OpenList">
+		<Command name="Catalog.CounterpartySettlementAccounts.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
 		</Command>
-		<Command name="Catalog.Currencies.StandardCommand.OpenList">
+		<Command name="Enum.SalesOrderStatuses.StandardCommand.OpenList">
 			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="InformationRegister.ItemLastCost.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.USTaxCategories1099.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.Addresses.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="ChartOfAccounts.ChartOfAccounts.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.Countries.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="AccountingRegister.GeneralJournal.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="AccumulationRegister.Inventory.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.Items.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.Locations.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="InformationRegister.ResponsiblePersons.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.States.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.Units.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="Catalog.VATCodes.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelOrdinary</CommandGroup>
-		</Command>
-		<Command name="CommonCommand.SalesTransactionDetail">
-			<CommandGroup>CommandGroup.Reports</CommandGroup>
-		</Command>
-		<Command name="CommonCommand.ARAging">
-			<CommandGroup>CommandGroup.Reports</CommandGroup>
-		</Command>
-		<Command name="Document.CashSale.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
-		</Command>
-		<Command name="InformationRegister.PriceList.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
-		</Command>
-		<Command name="Catalog.SalesTaxCodes.StandardCommand.OpenList">
-			<CommandGroup>NavigationPanelSeeAlso</CommandGroup>
 		</Command>
 		<Command name="Document.SalesOrder.StandardCommand.Create">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="Document.SalesInvoice.StandardCommand.Create">
+		<Command name="Document.ProductExpense.StandardCommand.Create">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="Document.SalesReturn.StandardCommand.Create">
+		<Command name="Catalog.Counterparties.StandardCommand.Create">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="Document.CashSale.StandardCommand.Create">
+		<Command name="Catalog.Products.StandardCommand.Create">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="InformationRegister.PriceList.StandardCommand.Create">
+		<Command name="Catalog.Counterparties.StandardCommand.CreateFolder">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="Catalog.SalesTaxCodes.StandardCommand.Create">
+		<Command name="Catalog.Products.StandardCommand.CreateFolder">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
-		<Command name="Catalog.Currencies.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="InformationRegister.ItemLastCost.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.USTaxCategories1099.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="ChartOfAccounts.ChartOfAccounts.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.Addresses.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.Countries.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.Items.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.Locations.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="InformationRegister.ResponsiblePersons.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.States.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.Units.StandardCommand.Create">
-			<CommandGroup>ActionsPanelCreate</CommandGroup>
-		</Command>
-		<Command name="Catalog.VATCodes.StandardCommand.Create">
+		<Command name="Catalog.CounterpartySettlementAccounts.StandardCommand.Create">
 			<CommandGroup>ActionsPanelCreate</CommandGroup>
 		</Command>
 	</CommandsOrder>
 	<GroupsOrder>
-		<Group>NavigationPanelImportant</Group>
 		<Group>NavigationPanelOrdinary</Group>
-		<Group>CommandGroup.Reports</Group>
-		<Group>NavigationPanelSeeAlso</Group>
 		<Group>ActionsPanelCreate</Group>
 	</GroupsOrder>
 </CommandInterface>

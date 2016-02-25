@@ -1,21 +1,20 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// Object prefixation subsystem.
+// Object prefixation subsystem
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// Sets the subscription source prefix according to the company prefix. 
-// The subscription source must contains Company header attribute of the
-// CatalogRef.Companies type.
+// Sets the subscription source prefix in accordance with the company prefix. 
+// The subscription source should contain 
+// the mandatory Company header attribute with the CatalogRef.Company type
 //
 // Parameters:
-//  Source             - any of the following objects: Catalog, Document, Chart of 
-//                       characteristic types, Business process, Task - subscription
-//                       event source. 
-//  StandardProcessing - Boolean - standard subscription processing flag.
-//  Prefix             - String - object prefix to be changed.
+// Source             - Subscription event source.
+//                      Any object from the set [Catalog, Document, 
+//                      Chart of characteristic types, Business process, Task]
+// StandardProcessing - Boolean - subscription standard processing flag
+// Prefix             - String  - object prefix that requires changing
 //
 Procedure SetCompanyPrefix(Source, StandardProcessing, Prefix) Export
 	
@@ -23,48 +22,50 @@ Procedure SetCompanyPrefix(Source, StandardProcessing, Prefix) Export
 	
 EndProcedure
 
-// Sets the subscription source prefix according to the infobase prefix. 
-// Source attributes have no extra restrictions.
+// Sets the subscription source prefix in accordance with the infobase prefix.
+// The source attributes are not restricted
 //
 // Parameters:
-// Source             - any of the following objects: Catalog, Document, Chart of 
-//                      characteristic types, Business process, Task - subscription
-//                      event source. 
-// StandardProcessing - Boolean - standard subscription processing flag.
-// Prefix             - String - object prefix to be changed.
+// Source             - Subscription event source.
+//                      Any object from the set [Catalog, Document, 
+//                      Chart of characteristic types, Business process, Task]
+// StandardProcessing - Boolean - subscription standard processing flag
+// Prefix             - String  - object prefix that requires changing
 //
-Procedure SetInfoBasePrefix(Source, StandardProcessing, Prefix) Export
+Procedure SetInfobasePrefix(Source, StandardProcessing, Prefix) Export
 	
 	SetPrefix(Source, Prefix, True, False);
 	
 EndProcedure
 
-// Sets the subscription source prefix according to the company and infobase prefixes. 
-// The subscription source must contains Company header attribute of the
-// CatalogRef.Companies type.
+// Sets the subscription source prefix in accordance with the infobase prefix and 
+// the company prefix.
+// The subscription source should contain
+// the mandatory Company header attribute with the CatalogRef.Company type
 //
 // Parameters:
-// Source             - any of the following objects: Catalog, Document, Chart of 
-//                      characteristic types, Business process, Task - subscription
-//                      event source. 
-// StandardProcessing - Boolean - standard subscription processing flag.
-// Prefix             - String - object prefix to be changed.
+//  Source            - Subscription event source.
+//                      Any object from the set [Catalog, Document, 
+//                      Chart of characteristic types, Business process, Task]
+// StandardProcessing - Boolean - subscription standard processing flag
+// Prefix             - String  - object prefix that requires changing
 //
-Procedure SetInfoBaseAndCompanyPrefix(Source, StandardProcessing, Prefix) Export
+Procedure SetInfobaseAndCompanyPrefix(Source, StandardProcessing, Prefix) Export
 	
 	SetPrefix(Source, Prefix, True, True);
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions for working with catalogs.
+// For catalogs
 
-// Checks whether the Company catalog item attribute was changed.
-// It the attribute was changed, the item code is reset to be specified again.
+// Ckecks whether the Catalog item company attribute is changed
+// If the Company attribute is changed, then the item code is reset to zero.
+// It eanbles item code resetting
 //
 // Parameters:
-//  Source - CatalogObject - subscription event source.
-//  Cancel - Boolean - cancel flag.
+//  Source - CatalogObject - subscription event source
+//  Cancel - Boolean       - cancellation flag
 // 
 Procedure CheckCatalogCodeByCompany(Source, Cancel) Export
 	
@@ -73,15 +74,16 @@ Procedure CheckCatalogCodeByCompany(Source, Cancel) Export
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions for working with business processes.
+// For business processes
 
-// Checks whether Date of the business process was changed.
-// If the date is not included in the previous period, the business process number is
-// reset to be specified again.
+// Ckecks whether the Business process date is changed
+// If the date is not included in the previous period, then the business process number 
+// is reset to zero.
+// It enables business process number resetting
 //
 // Parameters:
-//  Source - BusinessProcessObject - subscription event source.
-//  Cancel - Boolean - cancel flag.
+//  Source - BusinessProcessObject - subscription event source
+//  Cancel - Boolean               - cancellation flag
 // 
 Procedure CheckBusinessProcessNumberByDate(Source, Cancel) Export
 	
@@ -89,15 +91,15 @@ Procedure CheckBusinessProcessNumberByDate(Source, Cancel) Export
 	
 EndProcedure
 
-
-// Checks whether Date and Company of the business process were changed.
-// If the date is not included in the previous period or the Company attribute was 
-// changed, the business process number is reset to be specified again.
+// Ckecks whether the Document date or Business process company are changed
+// If the date is not included in the previous period or the Company attribute is changed, 
+// then the business process number is reset to zero.
+// It enables business process number resetting
 //
 // Parameters:
-//  Source - BusinessProcessObject - subscription event source.
-//  Cancel - Boolean - cancel flag.
-//  
+//  Source - BusinessProcessObject - subscription event source
+//  Cancel - Boolean               - cancellation flag
+// 
 Procedure CheckBusinessProcessNumberByDateAndCompany(Source, Cancel) Export
 	
 	CheckObjectNumberByDateAndCompany(Source);
@@ -105,16 +107,16 @@ Procedure CheckBusinessProcessNumberByDateAndCompany(Source, Cancel) Export
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions for working with documents.
+// For documents
 
-
-// Checks whether Date of the document was changed.
-// If the date is not included in the previous period, the document number is reset to 
-// be specified again.
+// Ckecks whether the Document date is changed
+// If the date is not included in the previous period, then the document number 
+// is reset to zero.
+// It eanbles document number resetting
 //
 // Parameters:
-// Source - BusinessProcessObject - subscription event source.
-// Cancel - Boolean - cancel flag.
+//  Source - DocumentObject - subscription event source
+//  Cancel - Boolean        - cancellation flag
 // 
 Procedure CheckDocumentNumberByDate(Source, Cancel, WriteMode, PostingMode) Export
 	
@@ -122,13 +124,14 @@ Procedure CheckDocumentNumberByDate(Source, Cancel, WriteMode, PostingMode) Expo
 	
 EndProcedure
 
-// Checks whether Date and Company of the document were changed.
-// If the date is not included in the previous period or the Company attribute was 
-// changed, the document number is reset to be specified again.
+// Ckecks whether the Document date or company are changed 
+// If the date is not included in the previous period or the Company attribute is changed, 
+// then the document number is reset to zero.
+// It enables document number resetting
 //
 // Parameters:
-// Source - BusinessProcessObject - subscription event source.
-// Cancel - Boolean - cancel flag.
+//  Source - DocumentObject - subscription event source
+//  Cancel - Boolean        - cancellation flag
 // 
 Procedure CheckDocumentNumberByDateAndCompany(Source, Cancel, WriteMode, PostingMode) Export
 	
@@ -136,31 +139,29 @@ Procedure CheckDocumentNumberByDateAndCompany(Source, Cancel, WriteMode, Posting
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
 
-Procedure SetPrefix(Source, Prefix, SetInfoBasePrefix, SetCompanyPrefix)
+#Region InternalProceduresAndFunctions
+
+Procedure SetPrefix(Source, Prefix, SetInfobasePrefix, SetCompanyPrefix)
 	
-	InfoBasePrefix = "";
+	InfobasePrefix = "";
 	CompanyPrefix  = "";
 	
-	If SetInfoBasePrefix
-		And ObjectPrefixationCached.HasInfoBasePrefixFunctionalOption() Then
+	If SetInfobasePrefix Then
 		
-		InfoBasePrefix = GetFunctionalOption("InfoBasePrefix");
+		ObjectReprefixation.OnInfobasePrefixDefinition(InfobasePrefix);
 		
-		SupplementStringWithZerosFromLeft(InfoBasePrefix, 2);
-		
+		SupplementStringWithZerosFromLeft(InfobasePrefix, 2);
 	EndIf;
 	
-	If SetCompanyPrefix
-		And ObjectPrefixationCached.HasFunctionalOptionCompanyPrefixes() Then
+	If SetCompanyPrefix Then
 		
 		If CompanyAttributeAvailable(Source) Then
 			
-			CompanyPrefix = "";//GetFunctionalOption("CompanyPrefixes", New Structure("Company", Source.Company));
-			
-			// If the company reference is empty
+			ObjectReprefixation.OnCompanyPrefixIdentification(
+				Source[AttributeNameCompany(Source.Metadata())], CompanyPrefix);
+			// if an empty ref to the company is passed
 			If CompanyPrefix = False Then
 				
 				CompanyPrefix = "";
@@ -170,14 +171,14 @@ Procedure SetPrefix(Source, Prefix, SetInfoBasePrefix, SetCompanyPrefix)
 		EndIf;
 		
 		SupplementStringWithZerosFromLeft(CompanyPrefix, 2);
-		
 	EndIf;
 	
-	MainPrefix = CompanyPrefix + InfoBasePrefix;
+	PrefixTemplate = "[OR][Infobase]-[Prefix]";
+	PrefixTemplate = StrReplace(PrefixTemplate, "[OR]", CompanyPrefix);
+	PrefixTemplate = StrReplace(PrefixTemplate, "[Infobase]", InfobasePrefix);
+	PrefixTemplate = StrReplace(PrefixTemplate, "[Prefix]", Prefix);
 	
-	Separator = "-";
-	
-	Prefix = MainPrefix + Separator + Prefix;
+	Prefix = PrefixTemplate;
 	
 EndProcedure
 
@@ -201,9 +202,9 @@ Procedure CheckObjectNumberByDate(Object)
 	|SELECT
 	|	ObjectHeader.Date AS Date
 	|FROM
-	|	" + ObjectMetadata.FullName() + " AS ObjectHeader
-	|WHERE
-	|	ObjectHeader.Ref = &Ref
+	|	" + ObjectMetadata.FullName() + " AS
+	|ObjectHeader
+	|WHERE ObjectHeader.Ref = &Ref
 	|";
 	
 	Query = New Query(QueryText);
@@ -212,10 +213,8 @@ Procedure CheckObjectNumberByDate(Object)
 	Selection = Query.Execute().Select();
 	Selection.Next();
 	
-	If Not ObjectPrefixation.IsObjectDatesOfSamePeriod(Selection.Date, Object.Date, Object.Ref) Then
-		
+	If Not ObjectPrefixationInternal.ObjectDatesInSamePeriod(Selection.Date, Object.Date, Object.Ref) Then
 		Object.Number = "";
-		
 	EndIf;
 	
 EndProcedure
@@ -228,7 +227,8 @@ Procedure CheckObjectNumberByDateAndCompany(Object)
 		Return;
 	EndIf;
 	
-	If ObjectPrefixation.ObjectDateOrCompanyChanged(Object.Ref, Object.Date, Object.Company, Object.Metadata().FullName()) Then
+	If ObjectPrefixationInternal.ObjectDateOrCompanyChanged(Object.Ref, Object.Date,
+		Object[AttributeNameCompany(Object.Metadata())], Object.Metadata().FullName()) Then
 		
 		Object.Number = "";
 		
@@ -246,7 +246,8 @@ Procedure CheckObjectCodeByCompany(Object)
 		Return;
 	EndIf;
 	
-	If ObjectPrefixation.ObjectCompanyChanged(Object.Ref, Object.Company, Object.Metadata().FullName()) Then
+	If ObjectPrefixationInternal.ObjectCompanyChanged(Object.Ref,	
+		Object[AttributeNameCompany(Object.Metadata())], Object.Metadata().FullName()) Then
 		
 		Object.Code = "";
 		
@@ -256,17 +257,33 @@ EndProcedure
 
 Function CompanyAttributeAvailable(Object)
 	
-	// Return value
+	// return value
 	Result = True;
 	
 	ObjectMetadata = Object.Metadata();
 	
-	If   (CommonUse.IsCatalog(ObjectMetadata)
+	If (CommonUse.IsCatalog(ObjectMetadata)
 		Or CommonUse.IsChartOfCharacteristicTypes(ObjectMetadata))
 		And ObjectMetadata.Hierarchical Then
 		
-		CompanyAttribute = ObjectMetadata.Attributes.Find("Company");
+		AttributeNameCompany = AttributeNameCompany(ObjectMetadata);
 		
+		CompanyAttribute = ObjectMetadata.Attributes.Find(AttributeNameCompany);
+		
+		If CompanyAttribute = Undefined Then
+			
+			If CommonUse.IsStandardAttribute(ObjectMetadata.StandardAttributes, AttributeNameCompany) Then
+				
+				// The standard attribute is always available both for the item and for the group.
+				Return True;
+				
+			EndIf;
+			
+			MessageString = NStr("en = 'The %2 attribute is not defined for the %1 metadata object.'");
+			MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, ObjectMetadata.FullName(), AttributeNameCompany);
+			Raise MessageString;
+		EndIf;
+			
 		If CompanyAttribute.Use = Metadata.ObjectProperties.AttributeUse.ForFolder And Not Object.IsFolder Then
 			
 			Result = False;
@@ -282,9 +299,23 @@ Function CompanyAttributeAvailable(Object)
 	Return Result;
 EndFunction
 
+// For internal use
+Function AttributeNameCompany(Object) Export
+	
+	If TypeOf(Object) = Type("MetadataObject") Then
+		FullName = Object.FullName();
+	Else
+		FullName = Object;
+	EndIf;
+	
+	Attribute = ObjectPrefixationCached.PrefixFormingAttributes().Get(FullName);
+	
+	If Attribute <> Undefined Then
+		Return Attribute;
+	EndIf;
+	
+	Return "Company";
+	
+EndFunction
 
-
-
-
-
-
+#EndRegion

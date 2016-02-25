@@ -1,8 +1,53 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="Form_CommandBar" id="1"/>
+	<AutoCommandBar name="Form_CommandBar" id="-1">
+		<Autofill>false</Autofill>
+	</AutoCommandBar>
 	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="27">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="28"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="29">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="30"/>
+			<ChildItems>
+				<Button name="FormCatalogEmailAccountsValidateAccount" id="22">
+					<Type>CommandBarButton</Type>
+					<OnlyInAllActions>false</OnlyInAllActions>
+					<CommandName>Catalog.EmailAccounts.Command.CheckAccount</CommandName>
+					<DataPath>Items.List.CurrentData.Ref</DataPath>
+					<ExtendedTooltip name="FormCatalogEmailAccountsValidateAccountExtendedTooltip" id="23"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
 		<Table name="List" id="2">
 			<Representation>List</Representation>
 			<CommandBarLocation>None</CommandBarLocation>
@@ -27,6 +72,7 @@
 			<ShowRoot>true</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
 			<ContextMenu name="List_ContextMenu" id="3"/>
 			<AutoCommandBar name="List_CommandBar" id="4"/>
 			<ExtendedTooltip name="ListExtendedTooltip" id="5"/>
@@ -52,10 +98,10 @@
 					<Type>SearchControl</Type>
 				</AdditionSource>
 				<ContextMenu name="ListSearchControlContextMenu" id="22"/>
-				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="23"/>
+				<ExtendedTooltip name="ListSearchExtendedTooltipControl" id="23"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<InputField name="Description" id="6">
+				<LabelField name="Description" id="6">
 					<DataPath>List.Description</DataPath>
 					<DefaultItem>true</DefaultItem>
 					<Title>
@@ -66,11 +112,10 @@
 					</Title>
 					<Width>30</Width>
 					<HorizontalStretch>true</HorizontalStretch>
-					<Wrap>false</Wrap>
 					<ContextMenu name="Description_ContextMenu" id="7"/>
 					<ExtendedTooltip name="DescriptionExtendedTooltip" id="8"/>
-				</InputField>
-				<InputField name="UserName" id="9">
+				</LabelField>
+				<LabelField name="UserName" id="9">
 					<DataPath>List.UserName</DataPath>
 					<Title>
 						<v8:item>
@@ -79,11 +124,10 @@
 						</v8:item>
 					</Title>
 					<Width>20</Width>
-					<Wrap>false</Wrap>
 					<ContextMenu name="UserName_ContextMenu" id="10"/>
 					<ExtendedTooltip name="UserNameExtendedTooltip" id="11"/>
-				</InputField>
-				<InputField name="EmailAddress" id="12">
+				</LabelField>
+				<LabelField name="EmailAddress" id="12">
 					<DataPath>List.EmailAddress</DataPath>
 					<Title>
 						<v8:item>
@@ -92,10 +136,17 @@
 						</v8:item>
 					</Title>
 					<Width>20</Width>
-					<Wrap>false</Wrap>
 					<ContextMenu name="EmailAddress_ContextMenu" id="13"/>
 					<ExtendedTooltip name="EmailAddressExtendedTooltip" id="14"/>
-				</InputField>
+				</LabelField>
+				<LabelField name="Ref" id="24">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="25"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="26"/>
+				</LabelField>
 			</ChildItems>
 		</Table>
 	</ChildItems>
@@ -105,6 +156,9 @@
 				<v8:Type>cfg:DynamicList</v8:Type>
 			</Type>
 			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.Ref</Field>
+			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>false</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>

@@ -1,0 +1,53 @@
+﻿<ValueTable xmlns="http://v8.1c.ru/8.1/data/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ValueTable">
+
+	<column>
+		<Name xsi:type="xs:string">RegionCode</Name>
+		<ValueType>
+			<Type>xs:decimal</Type>
+		</ValueType>
+	</column>
+	
+	<column>
+		<Name xsi:type="xs:string">Description</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>120</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+	
+	<column>
+		<Name xsi:type="xs:string">Abbr</Name>
+		<ValueType>
+			<Type>xs:string</Type>
+			<StringQualifiers>
+				<Length>10</Length>
+				<AllowedLength>Variable</AllowedLength>
+			</StringQualifiers>
+		</ValueType>
+	</column>
+	
+	<column>
+		<Name xsi:type="xs:string">PostalCode</Name>
+		<ValueType>
+			<Type>xs:decimal</Type>
+		</ValueType>
+	</column>
+	
+	<column>
+		<Name xsi:type="xs:string">ID</Name>
+		<ValueType>
+			<Type>UUID</Type>
+		</ValueType>
+	</column>
+
+	<index><column>RegionCode</column></index>
+	<index><column>Description</column></index>
+	<index><column>Description</column><column>Abbr</column></index>
+	<index><column>ID</column></index>
+
+	<row><Value>45</Value><Value>Alabama</Value>                              <Value>State</Value>    <Value>641000</Value><Value>4a3d970f-520e-46b9-b16c-50d4ca7535a8</Value></row>
+
+</ValueTable>

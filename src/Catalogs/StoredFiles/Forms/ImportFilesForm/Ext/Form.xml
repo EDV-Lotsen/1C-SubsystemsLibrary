@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockWholeInterface</WindowOpeningMode>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="Import" id="9">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<SkipOnInput>false</SkipOnInput>
+				<CommandName>Form.Command.Import</CommandName>
+				<ExtendedTooltip name="ImportExtendedTooltip" id="16"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<ChildItems>
+		<InputField name="Owner" id="1">
+			<DataPath>Owner</DataPath>
+			<Wrap>false</Wrap>
+			<AutoMarkIncomplete>true</AutoMarkIncomplete>
+			<ContextMenu name="OwnerContextMenu" id="2"/>
+			<ExtendedTooltip name="OwnerExtendedTooltip" id="17"/>
+		</InputField>
+		<Table name="FilesList" id="3">
+			<Representation>List</Representation>
+			<SkipOnInput>false</SkipOnInput>
+			<Header>false</Header>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<DataPath>FilesList</DataPath>
+			<RowPictureDataPath>FilesList.Picture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="FilesListContextMenu" id="4">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="AddFiles1" id="12">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.AddFiles</CommandName>
+						<ExtendedTooltip name="AddFiles1ExtendedTooltip" id="18"/>
+					</Button>
+					<Button name="AddDirectory1" id="13">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.AddDirectory</CommandName>
+						<ExtendedTooltip name="AddDirectory1ExtendedTooltip" id="19"/>
+					</Button>
+					<Button name="ContextMenuFilesListDelete" id="15">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Item.FilesList.StandardCommand.Delete</CommandName>
+						<ExtendedTooltip name="ContextMenuFilesListDeleteExtendedTooltip" id="20"/>
+					</Button>
+					<Button name="Import1" id="14">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.Import</CommandName>
+						<ExtendedTooltip name="Import1ExtendedTooltip" id="21"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="FilesListCommandBar" id="5">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="AddFiles" id="10">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.AddFiles</CommandName>
+						<ExtendedTooltip name="AddFilesExtendedTooltip" id="22"/>
+					</Button>
+					<Button name="AddDirectory" id="11">
+						<Type>CommandBarButton</Type>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Command.AddDirectory</CommandName>
+						<ExtendedTooltip name="AddDirectoryExtendedTooltip" id="23"/>
+					</Button>
+					<Button name="Delete" id="8">
+						<Type>CommandBarButton</Type>
+						<Representation>PictureAndText</Representation>
+						<SkipOnInput>false</SkipOnInput>
+						<CommandName>Form.Item.FilesList.StandardCommand.Delete</CommandName>
+						<ExtendedTooltip name="DeleteExtendedTooltip" id="24"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="FilesListExtendedTooltip" id="25"/>
+			<SearchStringAddition name="FilesListSearchString" id="27">
+				<AdditionSource>
+					<Item>FilesList</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesListSearchStringContextMenu" id="28"/>
+				<ExtendedTooltip name="FilesListSearchStringExtendedTooltip" id="29"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="FilesListViewStatus" id="30">
+				<AdditionSource>
+					<Item>FilesList</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesListViewStatusContextMenu" id="31"/>
+				<ExtendedTooltip name="FilesListViewStatusExtendedTooltip" id="32"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="FilesListSearchControl" id="33">
+				<AdditionSource>
+					<Item>FilesList</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="FilesListSearchControlContextMenu" id="34"/>
+				<ExtendedTooltip name="FilesListSearchControlExtendedTooltip" id="35"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="BeforeAddRow">FilesListBeforeAddRow</Event>
+			</Events>
+			<ChildItems>
+				<LabelField name="FilesListValue" id="6">
+					<DataPath>FilesList.Value</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<ContextMenu name="FilesListValueContextMenu" id="7"/>
+					<ExtendedTooltip name="FilesListValueExtendedTooltip" id="26"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Owner" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Owner</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:CatalogRef.Counterparties</v8:Type>
+				<v8:Type>cfg:CatalogRef.Products</v8:Type>
+			</Type>
+			<FillCheck>ShowError</FillCheck>
+		</Attribute>
+		<Attribute name="FilesList" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Files list</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ImportedFiles" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Imported files</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="AddFiles" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add files</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add files</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>AddFiles</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="AddDirectory" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add directory</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add directory</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CreateFolder</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>AddDirectory</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Import" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import and close</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ImportExecute</Action>
+		</Command>
+	</Commands>
+</Form>

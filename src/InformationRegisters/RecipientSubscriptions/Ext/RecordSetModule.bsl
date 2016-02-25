@@ -1,5 +1,6 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region EventHandlers
 
 Procedure BeforeWrite(Cancel, Replacing)
 	
@@ -25,3 +26,7 @@ Procedure BeforeWrite(Cancel, Replacing)
 	EndIf;
 	
 EndProcedure
+
+#EndRegion
+
+#EndIf

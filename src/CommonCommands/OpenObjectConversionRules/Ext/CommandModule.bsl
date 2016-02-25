@@ -1,18 +1,27 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// EVENT HANDLERS
+﻿
+#Region EventHandlers
 
 &AtClient
 Procedure CommandProcessing(CommandParameter, CommandExecuteParameters)
 	
-	// Calling the server
-	ExchangePlanName = DataExchangeCached.GetExchangePlanName(CommandParameter);
+	// Server call
+	ExchangePlanName = ExchangePlanName(CommandParameter);
 	
-	// Calling the server
+	// Server call
 	RuleKind = PredefinedValue("Enum.DataExchangeRuleKinds.ObjectConversionRules");
 	
 	Filter        = New Structure("ExchangePlanName, RuleKind", ExchangePlanName, RuleKind);
 	FillingValues = New Structure("ExchangePlanName, RuleKind", ExchangePlanName, RuleKind);
 	
-	DataExchangeClient.OpenInformationRegisterRecordFormByFilter(Filter, FillingValues, "DataExchangeRules", CommandExecuteParameters.Source);
+	DataExchangeClient.OpenInformationRegisterRecordFormByFilter(Filter, FillingValues, "DataExchangeRules", CommandExecuteParameters.Source, "ObjectConversionRules");
 	
 EndProcedure
+
+&AtServer
+Function ExchangePlanName(Val InfobaseNode)
+	
+	Return DataExchangeCached.GetExchangePlanName(InfobaseNode);
+	
+EndFunction
+
+#EndRegion

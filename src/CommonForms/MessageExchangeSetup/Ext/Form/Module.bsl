@@ -1,39 +1,39 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
 	
 	If CommonUseCached.DataSeparationEnabled()
 		And CommonUseCached.CanUseSeparatedData() Then
 		
 		CommonUseClientServer.MessageToUser(
-			NStr("en = 'Subsystem setup in the separated mode is not supported.'"),,,, Cancel
-		);
+			NStr("en = 'Subsystem setup is not supported on the share mode.'"),,,, Cancel);
 		Return;
 	EndIf;
 	
 	RefreshNodeStateList();
 	
 	SetPrivilegedMode(True);
-	ScheduledJob = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.SendReceiveSystemMessages);
-	SetPrivilegedMode(False);
 	
-	ScheduledJobID = String(ScheduledJob.UUID);
-	
-	UseScheduledJob = ScheduledJob.Use;
-	
-	Items.NodeStateListEnableDisableSendReceiveSystemMessagesSchedule.Check = UseScheduledJob;
+	Items.NodeStateListEnableDisableSendReceiveSystemMessagesSchedule.Check =
+		ScheduledJobsServer.GetScheduledJobUse(
+			Metadata.ScheduledJobs.SendReceiveSystemMessages);;
 	
 EndProcedure
 
 &AtClient
 Procedure NotificationProcessing(EventName, Parameter, Source)
 	
-	If EventName = MessageExchangeClient.SendReceiveEmailExecutedEventName()
-		Or EventName = MessageExchangeClient.EndPointFormClosedEventName()
-		Or EventName = MessageExchangeClient.EndPointAddedEventName()
-		Or EventName = MessageExchangeClient.EventNameLeadingEndPointSet()
+	If    EventName = MessageExchangeClient.EventNameSendAndReceiveMessageExecuted()
+		Or EventName = MessageExchangeClient.EndpointFormClosedEventName()
+		Or EventName = MessageExchangeClient.EndpointAddedEventName()
+		Or EventName = MessageExchangeClient.EventNameLeadingEndpointSet()
 		Then
 		
 		RefreshMonitorData();
@@ -42,30 +42,32 @@ Procedure NotificationProcessing(EventName, Parameter, Source)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
 
 &AtClient
 Procedure NodeStateListChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	ChangeEndPoint(Undefined);
+	ChangeEndpoint(Undefined);
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+#EndRegion
+
+#Region FormCommandHandlers
 
 &AtClient
-Procedure ConnectEndPoint(Command)
+Procedure ConnectEndpoint(Command)
 	
-	OpenForm("CommonForm.ConnectEndPoint",, ThisForm, 1);
+	OpenForm("CommonForm.ConnectEndpoint",, ThisObject, 1);
 	
 EndProcedure
 
 &AtClient
 Procedure SetupSubscriptions(Command)
 	
-	OpenForm("InformationRegister.RecipientSubscriptions.Form.ThisEndPointSubscriptionSetup",, ThisForm);
+	OpenForm("InformationRegister.RecipientSubscriptions.Form.ThisEndpointSubscriptionSetup",, ThisObject);
 	
 EndProcedure
 
@@ -77,7 +79,7 @@ Procedure SendAndReceiveMessages(Command)
 EndProcedure
 
 &AtClient
-Procedure ChangeEndPoint(Command)
+Procedure ChangeEndpoint(Command)
 	
 	CurrentData = Items.NodeStateList.CurrentData;
 	
@@ -85,7 +87,7 @@ Procedure ChangeEndPoint(Command)
 		Return;
 	EndIf;
 	
-	ShowValue(Undefined, CurrentData.InfoBaseNode);
+	ShowValue(, CurrentData.InfobaseNode);
 	
 EndProcedure
 
@@ -98,7 +100,7 @@ Procedure GoToDataExportEventLog(Command)
 		Return;
 	EndIf;
 	
-	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfoBaseNode, ThisForm, "DataExport");
+	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfobaseNode, ThisObject, "DataExport");
 	
 EndProcedure
 
@@ -111,18 +113,25 @@ Procedure GoToDataImportEventLog(Command)
 		Return;
 	EndIf;
 	
-	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfoBaseNode, ThisForm, "DataImport");
+	DataExchangeClient.GoToDataEventLogModally(CurrentData.InfobaseNode, ThisObject, "DataImport");
 	
 EndProcedure
 
 &AtClient
-Procedure SetupSystemMessageSendReceiveSchedule(Command)
+Procedure SetSystemMessageSendReceiveSchedule(Command)
 	
-	Dialog = New ScheduledJobDialog(ScheduledJobsClient.GetJobSchedule(ScheduledJobID));
+	Dialog = New ScheduledJobDialog(GetSchedule());
+	NotifyDescription = New NotifyDescription("SetSendReceiveSystemMessagesSchedule", ThisObject);
+	Dialog.Show(NotifyDescription);
 	
-	If Dialog.DoModal() Then
+EndProcedure
+
+&AtClient
+Procedure SetSendReceiveSystemMessagesSchedule(Schedule, AdditionalParameters) Export
+	
+	If Schedule <> Undefined Then
 		
-		ScheduledJobsClient.SetJobSchedule(ScheduledJobID, Dialog.Schedule);
+		SetSchedule(Schedule);
 		
 	EndIf;
 	
@@ -131,11 +140,7 @@ EndProcedure
 &AtClient
 Procedure EnableDisableSendReceiveSystemMessagesSchedule(Command)
 	
-	UseScheduledJob = Not UseScheduledJob;
-	
-	ScheduledJobsServer.SetScheduledJobUse(ScheduledJobID, UseScheduledJob);
-	
-	Items.NodeStateListEnableDisableSendReceiveSystemMessagesSchedule.Check = UseScheduledJob;
+	EnableDisableSendReceiveSystemMessagesScheduleAtServer();
 	
 EndProcedure
 
@@ -146,17 +151,73 @@ Procedure RefreshMonitor(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+&AtClient
+Procedure Detailed(Command)
+	
+	DetailedAtServer();
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure EnableDisableSendReceiveSystemMessagesScheduleAtServer()
+	
+	SetPrivilegedMode(True);
+	
+	Items.NodeStateListEnableDisableSendReceiveSystemMessagesSchedule.Check =
+		Not ScheduledJobsServer.GetScheduledJobUse(
+			Metadata.ScheduledJobs.SendReceiveSystemMessages);
+	
+	ScheduledJobsServer.SetUseScheduledJob(
+		Metadata.ScheduledJobs.SendReceiveSystemMessages,
+		Items.NodeStateListEnableDisableSendReceiveSystemMessagesSchedule.Check);
+
+EndProcedure
+
+&AtServerNoContext
+Function GetSchedule()
+	
+	SetPrivilegedMode(True);
+	
+	Return ScheduledJobsServer.GetJobSchedule(
+		Metadata.ScheduledJobs.SendReceiveSystemMessages);
+	
+EndFunction
+
+&AtServerNoContext
+Procedure SetSchedule(Val Schedule)
+	
+	SetPrivilegedMode(True);
+	
+	ScheduledJobsServer.SetJobSchedule(
+		Metadata.ScheduledJobs.SendReceiveSystemMessages,
+		Schedule);
+	
+EndProcedure
 
 &AtServer
 Procedure RefreshNodeStateList()
 	
+	NodeStateList.Clear();
+	
 	Array = New Array;
 	Array.Add("MessageExchange");
 	
-	// Updating data in the node state list
-	NodeStateList.Load(DataExchangeServer.DataExchangeMonitorTable(Array, "Leading"));
+	MonitorDataExchange = DataExchangeServer.DataExchangeMonitorTable(Array, "Leading,Locked");
+	
+	// Updating data in the list of node states
+	For Each Settings In MonitorDataExchange Do
+		
+		If Settings.Locked Then
+			Continue;
+		EndIf;
+		
+		FillPropertyValues(NodeStateList.Add(), Settings);
+		
+	EndDo;
 	
 EndProcedure
 
@@ -165,10 +226,10 @@ Procedure RefreshMonitorData()
 	
 	NodeStateListRowIndex = GetCurrentRowIndex("NodeStateList");
 	
-	// Updating the node state list on the server
+	// Updating monitor tables on the server
 	RefreshNodeStateList();
 	
-	// Determining the cursor position
+	// Specifying the cursor position
 	MoveCursor("NodeStateList", NodeStateListRowIndex);
 	
 EndProcedure
@@ -176,37 +237,37 @@ EndProcedure
 &AtClient
 Function GetCurrentRowIndex(TableName)
 	
-	// The return value
-	RowIndex = Undefined;
+	// Return value
+	LineIndex = Undefined;
 	
-	// Determining the cursor position during the monitor update
+	// Specifying the cursor position during the monitor update
 	CurrentData = Items[TableName].CurrentData;
 	
 	If CurrentData <> Undefined Then
 		
-		RowIndex = ThisForm[TableName].IndexOf(CurrentData);
+		LineIndex = ThisObject[TableName].IndexOf(CurrentData);
 		
 	EndIf;
 	
-	Return RowIndex;
+	Return LineIndex;
 EndFunction
 
 &AtClient
-Procedure MoveCursor(TableName, RowIndex)
+Procedure MoveCursor(TableName, LineIndex)
 	
-	If RowIndex <> Undefined Then
+	If LineIndex <> Undefined Then
 		
 		// Checking the cursor position once new data is received
-		If ThisForm[TableName].Count() <> 0 Then
+		If ThisObject[TableName].Count() <> 0 Then
 			
-			If RowIndex > ThisForm[TableName].Count() - 1 Then
+			If LineIndex > ThisObject[TableName].Count() - 1 Then
 				
-				RowIndex = ThisForm[TableName].Count() - 1;
+				LineIndex = ThisObject[TableName].Count() - 1;
 				
 			EndIf;
 			
-			// Determining the cursor position
-			Items[TableName].CurrentRow = ThisForm[TableName][RowIndex].GetID();
+			// Specifying the cursor position
+			Items[TableName].CurrentRow = ThisObject[TableName][LineIndex].GetID();
 			
 		EndIf;
 		
@@ -214,9 +275,14 @@ Procedure MoveCursor(TableName, RowIndex)
 	
 EndProcedure
 
+&AtServer
+Procedure DetailedAtServer()
+	
+	Items.DetailedNodeStateList.Check = Not Items.DetailedNodeStateList.Check;
+	
+	Items.NodeStateListLastImportDate.Visible = Items.DetailedNodeStateList.Check;
+	Items.NodeStateListLastExportDate.Visible = Items.DetailedNodeStateList.Check;
+	
+EndProcedure
 
-
-
-
-
-
+#EndRegion

@@ -14,7 +14,7 @@
 				<v8:Type>cfg:CatalogObject.ExternalUsers</v8:Type>
 			</Source>
 			<Event>OnWrite</Event>
-			<Handler>CommonModule.UsersEvents.UpdateExternalUserPresentation</Handler>
+			<Handler>CommonModule.UsersInternal.UpdateExternalUserPresentationOnWrite</Handler>
 		</Properties>
 	</EventSubscription>
 </MetaDataObject>

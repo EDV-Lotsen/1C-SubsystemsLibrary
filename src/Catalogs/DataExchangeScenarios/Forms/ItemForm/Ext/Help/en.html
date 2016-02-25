@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This scenario is intended to perform automated <a href="CommonForm.DataExchanges/Help">data synchronization</a> according to schedule. The scenario must be used to create a schedule, or to specify data sending and receiving procedure. </p>
+<p>The scenario can be used to send data or to receive data separately, but we recommend that you use it only to send and receive data together. We also recommend that you perform full data synchronization in a single scenario.</p>
+<h3>Setting up synchronization scenarios</h3>
+<p>Enter<strong> </strong>scenario <strong>Description</strong>. You should specify all databases participating in synchronization, as well as program revision, in order to make the purpose of this scenario clear to all users.</p>
+<p>Data synchronization scenario setup procedure is performed as follows:</p>
+<ul><li>Set a data synchronization scenario schedule. 
+<ul><li>Select the <strong>Auto scheduled</strong> check box. This will enable a hyperlink for selection (default value - <strong>Schedule not set</strong>). Click the hyperlink to set the <a href="v8help://mngbase/jobschedule.lf">schedule</a>. Once you confirm the schedule, the hyperlink will change to display the schedule contents.</li></ul></li><li>Select infobases participating in the data synchronization scenario (generally, a scenario includes data exchange - both sending and receiving data - with a single infobase). For each infobase, select connection method and current action (sending or receiving data). For this, click <strong>Add and fill </strong>in the relevant columns: 
+<ul><li><strong>Infobase - </strong> <strong>Select</strong> a data type. Then, select an infobase from the list. 
+</li><li><strong>Connection</strong> - select a connection method from the list (depends on the selected infobase properties); 
+</li><li><strong>Current action</strong> - click <img src="StdPicture.Select"></img>to <strong>Select</strong> <strong>Receive data</strong> or <strong>Send data</strong>; 
+</li><li><strong>Comment</strong> - type in a brief scenario description.</li></ul></li></ul><h3>Executing scenarios</h3>
+<p>Click <img src="CommonPicture.DataSynchronizationExecution"></img> <strong>Execute scenario</strong>. Data synchronization will be performed. All actions included in the scenario will be performed in order. After the data synchronization is complete, all failed data sending or receiving attempts will be marked with <img src="CommonPicture.DataExchangeStateError"></img> in the <strong>Infobase</strong> column. </p>
+<h3>See also:</h3>
+<ul><li><a href="Catalog.DataExchangeScenarios/Help">Data synchronization scenarios</a>; 
+</li><li><a href="v8help://frame/form_common">Working with forms</a>.</li></ul></body></html>

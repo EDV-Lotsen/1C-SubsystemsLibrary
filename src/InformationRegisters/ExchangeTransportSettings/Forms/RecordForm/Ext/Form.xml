@@ -1,36 +1,56 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Title>
-		<v8:item>
-			<v8:lang>en</v8:lang>
-			<v8:content>Exchange message transport parameters</v8:content>
-		</v8:item>
-	</Title>
-	<AutoTitle>false</AutoTitle>
+	<Width>78</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<CommandSet>
+		<ExcludedCommand>WriteAndClose</ExcludedCommand>
+		<ExcludedCommand>Copy</ExcludedCommand>
+		<ExcludedCommand>Delete</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FormWriteAndClose" id="184">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<CommandName>Form.Command.WriteAndClose</CommandName>
+				<ExtendedTooltip name="FormWriteAndCloseExtendedTooltip" id="185"/>
+			</Button>
+			<Button name="FormWrite" id="186">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Write</CommandName>
+				<ExtendedTooltip name="FormWriteExtendedTooltip" id="187"/>
+			</Button>
+			<Button name="RereadForm" id="188">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.StandardCommand.Reread</CommandName>
+				<ExtendedTooltip name="RereadFormExtendedTooltip" id="189"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
 	<Events>
+		<Event name="AfterWrite">AfterWrite</Event>
 		<Event name="OnOpen">OnOpen</Event>
+		<Event name="BeforeWrite">BeforeWrite</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<InputField name="DefaultExchangeMessageTransportKind" id="2">
+		<InputField name="DefaultExchangeMessageTransportKind" id="1">
 			<DataPath>Record.DefaultExchangeMessageTransportKind</DataPath>
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Default transport kind</v8:content>
+					<v8:content>Default connection</v8:content>
 				</v8:item>
 			</Title>
 			<Width>50</Width>
 			<HorizontalStretch>false</HorizontalStretch>
-			<ChoiceButton>false</ChoiceButton>
 			<ListChoiceMode>true</ListChoiceMode>
-			<ChoiceListButton>true</ChoiceListButton>
-			<ContextMenu name="DefaultExchangeMessageTransportKindContextMenu" id="3"/>
-			<ExtendedTooltip name="DefaultExchangeMessageTransportKindExtendedTooltip" id="4"/>
+			<ContextMenu name="DefaultExchangeMessageTransportKindContextMenu" id="2"/>
+			<ExtendedTooltip name="DefaultExchangeMessageTransportKindExtendedTooltip" id="121"/>
 		</InputField>
-		<Pages name="TransportKindPages" id="5">
+		<Pages name="TransportKindPages" id="47">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -40,29 +60,29 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Transport type pages.</v8:content>
+					<v8:content>Transport kind pages</v8:content>
 				</v8:item>
 			</ToolTip>
 			<PagesRepresentation>TabsOnLeftHorizontal</PagesRepresentation>
-			<ExtendedTooltip name="TransportKindPagesExtendedTooltip" id="6"/>
+			<ExtendedTooltip name="TransportKindPagesExtendedTooltip" id="122"/>
 			<ChildItems>
-				<Page name="TransportSettingsCOM" id="7">
+				<Page name="TransportSettingsCOM" id="48">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Direct connection to the correspondent infobase</v8:content>
+							<v8:content>Direct connection</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Direct connection to the correspondent infobase.</v8:content>
+							<v8:content>COM transport settings</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="TransportSettingsCOMExtendedTooltip" id="8"/>
+					<ExtendedTooltip name="TransportSettingsCOMExtendedTooltip" id="123"/>
 					<ChildItems>
-						<RadioButtonField name="COMInfoBaseOperationMode" id="9">
-							<DataPath>Record.COMInfoBaseOperationMode</DataPath>
+						<RadioButtonField name="COMInfobaseOperationMode" id="61">
+							<DataPath>Record.COMInfobaseOperationMode</DataPath>
 							<TitleLocation>None</TitleLocation>
 							<RadioButtonType>Auto</RadioButtonType>
 							<ColumnsCount>1</ColumnsCount>
@@ -74,7 +94,7 @@
 										<Presentation>
 											<v8:item>
 												<v8:lang>en</v8:lang>
-												<v8:content>Correspondent infobase in File mode</v8:content>
+												<v8:content>Correspondent infobase in file mode</v8:content>
 											</v8:item>
 										</Presentation>
 										<Value xsi:type="xs:decimal">0</Value>
@@ -87,20 +107,20 @@
 										<Presentation>
 											<v8:item>
 												<v8:lang>en</v8:lang>
-												<v8:content>Correspondent infobase in Client/server mode</v8:content>
+												<v8:content>Correspondent infobase in client/server mode</v8:content>
 											</v8:item>
 										</Presentation>
 										<Value xsi:type="xs:decimal">1</Value>
 									</xr:Value>
 								</xr:Item>
 							</ChoiceList>
-							<ContextMenu name="COMInfoBaseOperationModeContextMenu" id="10"/>
-							<ExtendedTooltip name="COMInfoBaseOperationModeExtendedTooltip" id="11"/>
+							<ContextMenu name="COMInfobaseOperationModeContextMenu" id="62"/>
+							<ExtendedTooltip name="COMInfobaseOperationModeExtendedTooltip" id="124"/>
 							<Events>
-								<Event name="OnChange">COMInfoBaseRunModeOnChange</Event>
+								<Event name="OnChange">COMInfobaseRunModeOnChange</Event>
 							</Events>
 						</RadioButtonField>
-						<Pages name="InfobaseRunModes" id="12">
+						<Pages name="InfobaseRunModes" id="63">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -110,13 +130,13 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Infobase run modes.</v8:content>
+									<v8:content>Infobase run modes</v8:content>
 								</v8:item>
 							</ToolTip>
 							<PagesRepresentation>None</PagesRepresentation>
-							<ExtendedTooltip name="InfobaseRunModesExtendedTooltip" id="13"/>
+							<ExtendedTooltip name="InfobaseRunModesExtendedTooltip" id="125"/>
 							<ChildItems>
-								<Page name="FileModePage" id="14">
+								<Page name="FileModePage" id="64">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
@@ -126,25 +146,25 @@
 									<ToolTip>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>File mode page.</v8:content>
+											<v8:content>File mode page</v8:content>
 										</v8:item>
 									</ToolTip>
-									<ExtendedTooltip name="FileModePageExtendedTooltip" id="15"/>
+									<ExtendedTooltip name="FileModePageExtendedTooltip" id="126"/>
 									<ChildItems>
-										<InputField name="COMInfoBaseDirectory" id="16">
-											<DataPath>Record.COMInfoBaseDirectory</DataPath>
+										<InputField name="COMInfobaseDirectory" id="57">
+											<DataPath>Record.COMInfobaseDirectory</DataPath>
 											<ChoiceButton>true</ChoiceButton>
 											<OpenButton>true</OpenButton>
-											<ContextMenu name="COMInfoBaseDirectoryContextMenu" id="17"/>
-											<ExtendedTooltip name="COMInfoBaseDirectoryExtendedTooltip" id="18"/>
+											<ContextMenu name="COMInfobaseDirectoryContextMenu" id="58"/>
+											<ExtendedTooltip name="COMInfobaseDirectoryExtendedTooltip" id="127"/>
 											<Events>
-												<Event name="StartChoice">COMInfoBaseDirectoryStartChoice</Event>
-												<Event name="Opening">COMInfoBaseDirectoryOpen</Event>
+												<Event name="StartChoice">COMInfobaseDirectoryStartChoice</Event>
+												<Event name="Opening">COMInfobaseDirectoryOpen</Event>
 											</Events>
 										</InputField>
 									</ChildItems>
 								</Page>
-								<Page name="ClientServerModePage" id="19">
+								<Page name="ClientServerModePage" id="65">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
@@ -154,12 +174,12 @@
 									<ToolTip>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Client/server mode page.</v8:content>
+											<v8:content>Client/server mode page</v8:content>
 										</v8:item>
 									</ToolTip>
-									<ExtendedTooltip name="ClientServerModePageExtendedTooltip" id="20"/>
+									<ExtendedTooltip name="ClientServerModePageExtendedTooltip" id="128"/>
 									<ChildItems>
-										<InputField name="COMPlatformServerName" id="21">
+										<InputField name="COMPlatformServerName" id="55">
 											<DataPath>Record.COMPlatformServerName</DataPath>
 											<Title>
 												<v8:item>
@@ -167,203 +187,228 @@
 													<v8:content>Server name</v8:content>
 												</v8:item>
 											</Title>
-											<ContextMenu name="COMPlatformServerNameContextMenu" id="22"/>
-											<ExtendedTooltip name="COMPlatformServerNameExtendedTooltip" id="23"/>
+											<ContextMenu name="COMPlatformServerNameContextMenu" id="56"/>
+											<ExtendedTooltip name="COMPlatformServerNameExtendedTooltip" id="129"/>
 										</InputField>
-										<InputField name="COMInfoBaseNameAtPlatformServer" id="24">
-											<DataPath>Record.COMInfoBaseNameAtPlatformServer</DataPath>
+										<InputField name="COMInfobaseNameAtPlatformServer" id="51">
+											<DataPath>Record.COMInfobaseNameAtPlatformServer</DataPath>
 											<Title>
 												<v8:item>
 													<v8:lang>en</v8:lang>
-													<v8:content>Infobase on server name</v8:content>
+													<v8:content>Infobase name on server</v8:content>
 												</v8:item>
 											</Title>
-											<ContextMenu name="COMInfoBaseNameAtPlatformServerContextMenu" id="25"/>
-											<ExtendedTooltip name="COMInfoBaseNameAtPlatformServerExtendedTooltip" id="26"/>
+											<ContextMenu name="COMInfobaseNameAtPlatformServerContextMenu" id="52"/>
+											<ExtendedTooltip name="COMInfobaseNameAtPlatformServerExtendedTooltip" id="130"/>
 										</InputField>
 									</ChildItems>
 								</Page>
 							</ChildItems>
 						</Pages>
-						<CheckBoxField name="COMOSAuthentication" id="27">
+						<CheckBoxField name="COMOSAuthentication" id="49">
 							<DataPath>Record.COMOSAuthentication</DataPath>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="COMOSAuthenticationContextMenu" id="28"/>
-							<ExtendedTooltip name="COMOSAuthenticationExtendedTooltip" id="29"/>
+							<ContextMenu name="COMOSAuthenticationContextMenu" id="50"/>
+							<ExtendedTooltip name="COMOSAuthenticationExtendedTooltip" id="131"/>
 							<Events>
 								<Event name="OnChange">COMOSAuthenticationOnChange</Event>
 							</Events>
 						</CheckBoxField>
-						<UsualGroup name="COMUserPasswordGroup" id="30">
-							<Title>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>COM user password group</v8:content>
-								</v8:item>
-							</Title>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>COM user password group.</v8:content>
-								</v8:item>
-							</ToolTip>
+						<UsualGroup name="COMUserPasswordGroup" id="66">
 							<Group>Horizontal</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="COMUserPasswordGroupExtendedTooltip" id="31"/>
+							<ExtendedTooltip name="COMUserPasswordGroupExtendedTooltip" id="132"/>
 							<ChildItems>
-								<InputField name="COMUserName" id="32">
+								<InputField name="COMUserName" id="53">
 									<DataPath>Record.COMUserName</DataPath>
-									<ContextMenu name="COMUserNameContextMenu" id="33"/>
-									<ExtendedTooltip name="COMUserNameExtendedTooltip" id="34"/>
+									<ContextMenu name="COMUserNameContextMenu" id="54"/>
+									<ExtendedTooltip name="COMUserNameExtendedTooltip" id="133"/>
 								</InputField>
-								<InputField name="COMUserPassword" id="35">
+								<InputField name="COMUserPassword" id="59">
 									<DataPath>Record.COMUserPassword</DataPath>
-									<ContextMenu name="COMUserPasswordContextMenu" id="36"/>
-									<ExtendedTooltip name="COMUserPasswordExtendedTooltip" id="37"/>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Password</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="COMUserPasswordContextMenu" id="60"/>
+									<ExtendedTooltip name="COMUserPasswordExtendedTooltip" id="134"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-						<UsualGroup name="Group2" id="38">
-							<Group>Horizontal</Group>
+						<LabelDecoration name="Decoration3" id="190">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration3ContextMenu" id="191"/>
+							<ExtendedTooltip name="Decoration3ExtendedTooltip" id="192"/>
+						</LabelDecoration>
+						<Button name="TestCOMConnection" id="67">
+							<Type>UsualButton</Type>
+							<CommandName>Form.Command.TestCOMConnection</CommandName>
+							<ExtendedTooltip name="TestCOMConnectionExtendedTooltip" id="136"/>
+						</Button>
+					</ChildItems>
+				</Page>
+				<Page name="TransportSettingsWS" id="89">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Internet</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>WS transport settings</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="TransportSettingsWSExtendedTooltip" id="138"/>
+					<ChildItems>
+						<InputField name="WSURL" id="90">
+							<DataPath>Record.WSURL</DataPath>
+							<ContextMenu name="WSURLContextMenu" id="91"/>
+							<ExtendedTooltip name="WSURLExtendedTooltip" id="139"/>
+						</InputField>
+						<UsualGroup name="Group6" id="112">
+							<Group>Vertical</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="Group2ExtendedTooltip" id="39"/>
+							<ExtendedTooltip name="Group6ExtendedTooltip" id="140"/>
 							<ChildItems>
-								<Button name="CheckCOMConnection" id="40">
-									<Type>UsualButton</Type>
-									<Width>20</Width>
-									<CommandName>Form.Command.CheckCOMConnection</CommandName>
-									<ExtendedTooltip name="CheckCOMConnectionExtendedTooltip" id="41"/>
-								</Button>
-								<Button name="FixExternalConnectionErrors" id="42">
-									<Type>UsualButton</Type>
-									<CommandName>Form.Command.FixExternalConnectionErrors</CommandName>
-									<ExtendedTooltip name="FixExternalConnectionErrorsExtendedTooltip" id="43"/>
-								</Button>
+								<InputField name="WSUserName" id="92">
+									<DataPath>Record.WSUserName</DataPath>
+									<Width>30</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<ContextMenu name="WSUserNameContextMenu" id="93"/>
+									<ExtendedTooltip name="WSUserNameExtendedTooltip" id="141"/>
+								</InputField>
+								<UsualGroup name="Group5" id="111">
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group5ExtendedTooltip" id="142"/>
+									<ChildItems>
+										<InputField name="WSPassword" id="94">
+											<DataPath>Record.WSPassword</DataPath>
+											<Width>30</Width>
+											<HorizontalStretch>false</HorizontalStretch>
+											<PasswordMode>true</PasswordMode>
+											<ContextMenu name="WSPasswordContextMenu" id="95"/>
+											<ExtendedTooltip name="WSPasswordExtendedTooltip" id="143"/>
+										</InputField>
+										<CheckBoxField name="WSRememberPassword" id="109">
+											<DataPath>Record.WSRememberPassword</DataPath>
+											<TitleLocation>Right</TitleLocation>
+											<CheckBoxType>Auto</CheckBoxType>
+											<ContextMenu name="WSRememberPasswordContextMenu" id="110"/>
+											<ExtendedTooltip name="WSRememberPasswordExtendedTooltip" id="144"/>
+										</CheckBoxField>
+									</ChildItems>
+								</UsualGroup>
 							</ChildItems>
 						</UsualGroup>
-					</ChildItems>
-				</Page>
-				<Page name="TransportSettingsWS" id="44">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over the Internet</v8:content>
-						</v8:item>
-					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over the Internet.</v8:content>
-						</v8:item>
-					</ToolTip>
-					<ExtendedTooltip name="TransportSettingsWSExtendedTooltip" id="45"/>
-					<ChildItems>
-						<InputField name="WSURL" id="46">
-							<DataPath>Record.WSURL</DataPath>
-							<ContextMenu name="WSURLContextMenu" id="47"/>
-							<ExtendedTooltip name="WSURLExtendedTooltip" id="48"/>
-						</InputField>
-						<InputField name="WSUserName" id="49">
-							<DataPath>Record.WSUserName</DataPath>
-							<ContextMenu name="WSUserNameContextMenu" id="50"/>
-							<ExtendedTooltip name="WSUserNameExtendedTooltip" id="51"/>
-						</InputField>
-						<InputField name="WSPassword" id="52">
-							<DataPath>Record.WSPassword</DataPath>
-							<PasswordMode>true</PasswordMode>
-							<ContextMenu name="WSPasswordContextMenu" id="53"/>
-							<ExtendedTooltip name="WSPasswordExtendedTooltip" id="54"/>
-						</InputField>
-						<Button name="CheckWSConnection" id="55">
-							<Type>UsualButton</Type>
-							<CommandName>Form.Command.CheckWSConnection</CommandName>
-							<ExtendedTooltip name="CheckWSConnectionExtendedTooltip" id="56"/>
+						<Button name="InternetAccessParameters" id="119">
+							<Type>Hyperlink</Type>
+							<CommandName>Form.Command.InternetAccessParameters</CommandName>
+							<ExtendedTooltip name="InternetAccessParametersExtendedTooltip" id="145"/>
 						</Button>
-						<CheckBoxField name="WSUseLargeDataTransfer" id="57">
-							<DataPath>Record.WSUseLargeDataTransfer</DataPath>
-							<TitleLocation>Right</TitleLocation>
-							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="WSUseLargeDataTransferContextMenu" id="58"/>
-							<ExtendedTooltip name="WSUseLargeDataTransferExtendedTooltip" id="59"/>
-						</CheckBoxField>
+						<LabelDecoration name="Decoration4" id="193">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration4ContextMenu" id="194"/>
+							<ExtendedTooltip name="Decoration4ExtendedTooltip" id="195"/>
+						</LabelDecoration>
+						<Button name="TestWSConnection" id="96">
+							<Type>UsualButton</Type>
+							<CommandName>Form.Command.TestWSConnection</CommandName>
+							<ExtendedTooltip name="TestWSConnectionExtendedTooltip" id="146"/>
+						</Button>
 					</ChildItems>
 				</Page>
-				<Page name="TransportSettingsFILE" id="60">
+				<Page name="TransportSettingsFILE" id="5">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over the network directory</v8:content>
+							<v8:content>Network folder</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over the network directory.</v8:content>
+							<v8:content>FILE transport settings</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="TransportSettingsFILEExtendedTooltip" id="61"/>
+					<ExtendedTooltip name="TransportSettingsFILEExtendedTooltip" id="148"/>
 					<ChildItems>
-						<InputField name="FILEDataExchangeDirectory" id="62">
+						<InputField name="FILEDataExchangeDirectory" id="8">
 							<DataPath>Record.FILEDataExchangeDirectory</DataPath>
 							<ChoiceButton>true</ChoiceButton>
 							<OpenButton>true</OpenButton>
-							<ContextMenu name="FILEDataExchangeDirectoryContextMenu" id="63"/>
-							<ExtendedTooltip name="FILEDataExchangeDirectoryExtendedTooltip" id="64"/>
+							<ContextMenu name="FILEDataExchangeDirectoryContextMenu" id="9"/>
+							<ExtendedTooltip name="FILEDataExchangeDirectoryExtendedTooltip" id="149"/>
 							<Events>
 								<Event name="StartChoice">FILEDataExchangeDirectoryStartChoice</Event>
 								<Event name="Opening">FILEDataExchangeDirectoryOpen</Event>
 							</Events>
 						</InputField>
-						<Button name="CheckFILEConnection" id="65">
-							<Type>UsualButton</Type>
-							<SkipOnInput>false</SkipOnInput>
-							<CommandName>Form.Command.CheckFILEConnection</CommandName>
-							<ExtendedTooltip name="CheckFILEConnectionExtendedTooltip" id="66"/>
-						</Button>
-						<UsualGroup name="Group1" id="67">
+						<UsualGroup name="Group1" id="100">
 							<Group>Vertical</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="Group1ExtendedTooltip" id="68"/>
+							<ExtendedTooltip name="Group1ExtendedTooltip" id="151"/>
 							<ChildItems>
-								<CheckBoxField name="FILECompressOutgoingMessageFile" id="69">
+								<CheckBoxField name="FILECompressOutgoingMessageFile" id="10">
 									<DataPath>Record.FILECompressOutgoingMessageFile</DataPath>
 									<TitleLocation>Right</TitleLocation>
 									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="FILECompressOutgoingMessageFileContextMenu" id="70"/>
-									<ExtendedTooltip name="FILECompressOutgoingMessageFileExtendedTooltip" id="71"/>
+									<ContextMenu name="FILECompressOutgoingMessageFileContextMenu" id="11"/>
+									<ExtendedTooltip name="FILECompressOutgoingMessageFileExtendedTooltip" id="152"/>
 								</CheckBoxField>
-								<InputField name="ExchangeMessageArchivePassword1" id="72">
+								<InputField name="ExchangeMessageArchivePassword1" id="101">
 									<DataPath>Record.ExchangeMessageArchivePassword</DataPath>
 									<Width>20</Width>
 									<HorizontalStretch>false</HorizontalStretch>
 									<PasswordMode>true</PasswordMode>
-									<ContextMenu name="ExchangeMessageArchivePassword1ContextMenu" id="73"/>
-									<ExtendedTooltip name="ExchangeMessageArchivePassword1ExtendedTooltip" id="74"/>
+									<ContextMenu name="ExchangeMessageArchivePassword1ContextMenu" id="102"/>
+									<ExtendedTooltip name="ExchangeMessageArchivePassword1ExtendedTooltip" id="153"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
+						<LabelDecoration name="Decoration5" id="196">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration5ContextMenu" id="197"/>
+							<ExtendedTooltip name="Decoration5ExtendedTooltip" id="198"/>
+						</LabelDecoration>
+						<LabelDecoration name="Decoration6" id="199">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration6ContextMenu" id="200"/>
+							<ExtendedTooltip name="Decoration6ExtendedTooltip" id="201"/>
+						</LabelDecoration>
+						<Button name="TestFILEConnection" id="42">
+							<Type>UsualButton</Type>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.TestFILEConnection</CommandName>
+							<ExtendedTooltip name="TestFILEConnectionExtendedTooltip" id="150"/>
+						</Button>
 					</ChildItems>
 				</Page>
-				<Page name="TransportSettingsFTP" id="75">
+				<Page name="TransportSettingsFTP" id="6">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over FTP resource</v8:content>
+							<v8:content>FTP resource</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over FTP resource.</v8:content>
+							<v8:content>FILE transport settings</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="TransportSettingsFTPExtendedTooltip" id="76"/>
+					<ExtendedTooltip name="TransportSettingsFTPExtendedTooltip" id="154"/>
 					<ChildItems>
-						<UsualGroup name="ServerPortGroup" id="77">
+						<UsualGroup name="ServerPortGroup" id="37">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -373,20 +418,20 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Server port group.</v8:content>
+									<v8:content>Server port group</v8:content>
 								</v8:item>
 							</ToolTip>
 							<Group>Horizontal</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="ServerPortGroupExtendedTooltip" id="78"/>
+							<ExtendedTooltip name="ServerPortGroupExtendedTooltip" id="155"/>
 							<ChildItems>
-								<InputField name="FTPConnectionPath" id="79">
+								<InputField name="FTPConnectionPath" id="14">
 									<DataPath>Record.FTPConnectionPath</DataPath>
-									<ContextMenu name="FTPConnectionPathContextMenu" id="80"/>
-									<ExtendedTooltip name="FTPConnectionPathExtendedTooltip" id="81"/>
+									<ContextMenu name="FTPConnectionPathContextMenu" id="15"/>
+									<ExtendedTooltip name="FTPConnectionPathExtendedTooltip" id="156"/>
 								</InputField>
-								<InputField name="FTPConnectionPort" id="82">
+								<InputField name="FTPConnectionPort" id="16">
 									<DataPath>Record.FTPConnectionPort</DataPath>
 									<EditFormat>
 										<v8:item>
@@ -394,12 +439,12 @@
 											<v8:content>NG=0</v8:content>
 										</v8:item>
 									</EditFormat>
-									<ContextMenu name="FTPConnectionPortContextMenu" id="83"/>
-									<ExtendedTooltip name="FTPConnectionPortExtendedTooltip" id="84"/>
+									<ContextMenu name="FTPConnectionPortContextMenu" id="17"/>
+									<ExtendedTooltip name="FTPConnectionPortExtendedTooltip" id="157"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-						<UsualGroup name="UserPasswordGroup" id="85">
+						<UsualGroup name="UserPasswordGroup" id="38">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -409,229 +454,181 @@
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>User password group.</v8:content>
+									<v8:content>User password group</v8:content>
 								</v8:item>
 							</ToolTip>
 							<Group>Horizontal</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="86"/>
+							<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="158"/>
 							<ChildItems>
-								<InputField name="FTPConnectionUser" id="87">
+								<InputField name="FTPConnectionUser" id="18">
 									<DataPath>Record.FTPConnectionUser</DataPath>
-									<ContextMenu name="FTPConnectionUserContextMenu" id="88"/>
-									<ExtendedTooltip name="FTPConnectionUserExtendedTooltip" id="89"/>
+									<ContextMenu name="FTPConnectionUserContextMenu" id="19"/>
+									<ExtendedTooltip name="FTPConnectionUserExtendedTooltip" id="159"/>
 								</InputField>
-								<InputField name="FTPConnectionPassword" id="90">
+								<InputField name="FTPConnectionPassword" id="22">
 									<DataPath>Record.FTPConnectionPassword</DataPath>
 									<PasswordMode>true</PasswordMode>
-									<ContextMenu name="FTPConnectionPasswordContextMenu" id="91"/>
-									<ExtendedTooltip name="FTPConnectionPasswordExtendedTooltip" id="92"/>
+									<ContextMenu name="FTPConnectionPasswordContextMenu" id="23"/>
+									<ExtendedTooltip name="FTPConnectionPasswordExtendedTooltip" id="160"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-						<InputField name="FTPConnectionMaxMessageSize" id="93">
-							<DataPath>Record.FTPConnectionMaxMessageSize</DataPath>
-							<ChoiceButton>true</ChoiceButton>
-							<ContextMenu name="FTPConnectionMaxMessageSizeContextMenu" id="94"/>
-							<ExtendedTooltip name="FTPConnectionMaxMessageSizeExtendedTooltip" id="95"/>
-						</InputField>
-						<CheckBoxField name="FTPConnectionPassiveConnection" id="96">
+						<UsualGroup name="Group7" id="113">
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group7ExtendedTooltip" id="161"/>
+							<ChildItems>
+								<InputField name="FTPConnectionMaxMessageSize" id="39">
+									<DataPath>Record.FTPConnectionMaxMessageSize</DataPath>
+									<ChoiceButton>true</ChoiceButton>
+									<ContextMenu name="FTPConnectionMaxMessageSizeContextMenu" id="40"/>
+									<ExtendedTooltip name="FTPConnectionMaxMessageSizeExtendedTooltip" id="162"/>
+								</InputField>
+								<LabelDecoration name="Decoration1" id="114">
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>kB (if it is 0, there are no restriction)</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="Decoration1ContextMenu" id="115"/>
+									<ExtendedTooltip name="Decoration1ExtendedTooltip" id="163"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<CheckBoxField name="FTPConnectionPassiveConnection" id="20">
 							<DataPath>Record.FTPConnectionPassiveConnection</DataPath>
 							<TitleLocation>Right</TitleLocation>
 							<CheckBoxType>Auto</CheckBoxType>
-							<ContextMenu name="FTPConnectionPassiveConnectionContextMenu" id="97"/>
-							<ExtendedTooltip name="FTPConnectionPassiveConnectionExtendedTooltip" id="98"/>
+							<ContextMenu name="FTPConnectionPassiveConnectionContextMenu" id="21"/>
+							<ExtendedTooltip name="FTPConnectionPassiveConnectionExtendedTooltip" id="164"/>
 						</CheckBoxField>
-						<Button name="CheckFTPConnection" id="99">
-							<Type>UsualButton</Type>
-							<SkipOnInput>false</SkipOnInput>
-							<CommandName>Form.Command.CheckFTPConnection</CommandName>
-							<ExtendedTooltip name="CheckFTPConnectionExtendedTooltip" id="100"/>
+						<Button name="InternetAccessParameters1" id="120">
+							<Type>Hyperlink</Type>
+							<CommandName>Form.Command.InternetAccessParameters</CommandName>
+							<ExtendedTooltip name="InternetAccessParameters1ExtendedTooltip" id="165"/>
 						</Button>
-						<UsualGroup name="Group3" id="101">
+						<UsualGroup name="Group3" id="103">
 							<Group>Vertical</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="Group3ExtendedTooltip" id="102"/>
+							<ExtendedTooltip name="Group3ExtendedTooltip" id="167"/>
 							<ChildItems>
-								<CheckBoxField name="FTPCompressOutgoingMessageFile" id="103">
+								<CheckBoxField name="FTPCompressOutgoingMessageFile" id="12">
 									<DataPath>Record.FTPCompressOutgoingMessageFile</DataPath>
 									<TitleLocation>Right</TitleLocation>
 									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="FTPCompressOutgoingMessageFileContextMenu" id="104"/>
-									<ExtendedTooltip name="FTPCompressOutgoingMessageFileExtendedTooltip" id="105"/>
+									<ContextMenu name="FTPCompressOutgoingMessageFileContextMenu" id="13"/>
+									<ExtendedTooltip name="FTPCompressOutgoingMessageFileExtendedTooltip" id="168"/>
 								</CheckBoxField>
-								<InputField name="ExchangeMessageArchivePassword" id="106">
+								<InputField name="ExchangeMessageArchivePassword" id="34">
 									<DataPath>Record.ExchangeMessageArchivePassword</DataPath>
 									<Width>20</Width>
 									<HorizontalStretch>false</HorizontalStretch>
 									<PasswordMode>true</PasswordMode>
-									<ContextMenu name="ExchangeMessageArchivePasswordContextMenu" id="107"/>
-									<ExtendedTooltip name="ExchangeMessageArchivePasswordExtendedTooltip" id="108"/>
+									<ContextMenu name="ExchangeMessageArchivePasswordContextMenu" id="35"/>
+									<ExtendedTooltip name="ExchangeMessageArchivePasswordExtendedTooltip" id="169"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
+						<LabelDecoration name="Decoration7" id="202">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration7ContextMenu" id="203"/>
+							<ExtendedTooltip name="Decoration7ExtendedTooltip" id="204"/>
+						</LabelDecoration>
+						<Button name="TestFTPConnection" id="41">
+							<Type>UsualButton</Type>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.TestFTPConnection</CommandName>
+							<ExtendedTooltip name="TestFTPConnectionExtendedTooltip" id="166"/>
+						</Button>
 					</ChildItems>
 				</Page>
-				<Page name="TransportSettingsEMAIL" id="109">
+				<Page name="TransportSettingsEMAIL" id="7">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over email</v8:content>
+							<v8:content>Email messages</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange over email.</v8:content>
+							<v8:content>FILE transport settings</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="TransportSettingsEMAILExtendedTooltip" id="110"/>
+					<ExtendedTooltip name="TransportSettingsEMAILExtendedTooltip" id="170"/>
 					<ChildItems>
-						<InputField name="EMAILAccount" id="111">
+						<InputField name="EMAILAccount" id="30">
 							<DataPath>Record.EMAILAccount</DataPath>
-							<ContextMenu name="EMAILAccountContextMenu" id="112"/>
-							<ExtendedTooltip name="EMAILAccountExtendedTooltip" id="113"/>
+							<ContextMenu name="EMAILAccountContextMenu" id="31"/>
+							<ExtendedTooltip name="EMAILAccountExtendedTooltip" id="171"/>
 						</InputField>
-						<InputField name="EMAILMaxMessageSize" id="114">
-							<DataPath>Record.EMAILMaxMessageSize</DataPath>
-							<ChoiceButton>true</ChoiceButton>
-							<ContextMenu name="EMAILMaxMessageSizeContextMenu" id="115"/>
-							<ExtendedTooltip name="EMAILMaxMessageSizeExtendedTooltip" id="116"/>
-						</InputField>
-						<Button name="CheckEMAILConnection" id="117">
-							<Type>UsualButton</Type>
-							<SkipOnInput>false</SkipOnInput>
-							<CommandName>Form.Command.CheckEMAILConnection</CommandName>
-							<ExtendedTooltip name="CheckEMAILConnectionExtendedTooltip" id="118"/>
-						</Button>
-						<UsualGroup name="Group4" id="119">
+						<UsualGroup name="Group8" id="116">
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group8ExtendedTooltip" id="172"/>
+							<ChildItems>
+								<InputField name="EMAILMaxMessageSize" id="26">
+									<DataPath>Record.EMAILMaxMessageSize</DataPath>
+									<ChoiceButton>true</ChoiceButton>
+									<ContextMenu name="EMAILMaxMessageSizeContextMenu" id="27"/>
+									<ExtendedTooltip name="EMAILMaxMessageSizeExtendedTooltip" id="173"/>
+								</InputField>
+								<LabelDecoration name="Decoration2" id="117">
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>kB (if it is 0, there are no restriction)</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="Decoration2ContextMenu" id="118"/>
+									<ExtendedTooltip name="Decoration2ExtendedTooltip" id="174"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="Group4" id="104">
 							<Group>Vertical</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="Group4ExtendedTooltip" id="120"/>
+							<ExtendedTooltip name="Group4ExtendedTooltip" id="176"/>
 							<ChildItems>
-								<CheckBoxField name="EMAILCompressOutgoingMessageFile" id="121">
+								<CheckBoxField name="EMAILCompressOutgoingMessageFile" id="28">
 									<DataPath>Record.EMAILCompressOutgoingMessageFile</DataPath>
 									<TitleLocation>Right</TitleLocation>
 									<CheckBoxType>Auto</CheckBoxType>
-									<ContextMenu name="EMAILCompressOutgoingMessageFileContextMenu" id="122"/>
-									<ExtendedTooltip name="EMAILCompressOutgoingMessageFileExtendedTooltip" id="123"/>
+									<ContextMenu name="EMAILCompressOutgoingMessageFileContextMenu" id="29"/>
+									<ExtendedTooltip name="EMAILCompressOutgoingMessageFileExtendedTooltip" id="177"/>
 								</CheckBoxField>
-								<InputField name="ExchangeMessageArchivePassword2" id="124">
+								<InputField name="ExchangeMessageArchivePassword2" id="105">
 									<DataPath>Record.ExchangeMessageArchivePassword</DataPath>
 									<Width>20</Width>
 									<HorizontalStretch>false</HorizontalStretch>
 									<PasswordMode>true</PasswordMode>
-									<ContextMenu name="ExchangeMessageArchivePassword2ContextMenu" id="125"/>
-									<ExtendedTooltip name="ExchangeMessageArchivePassword2ExtendedTooltip" id="126"/>
+									<ContextMenu name="ExchangeMessageArchivePassword2ContextMenu" id="106"/>
+									<ExtendedTooltip name="ExchangeMessageArchivePassword2ExtendedTooltip" id="178"/>
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
-					</ChildItems>
-				</Page>
-				<Page name="TransportSettingsCombi" id="127">
-					<Title>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Combined data exchange</v8:content>
-						</v8:item>
-					</Title>
-					<ExtendedTooltip name="TransportSettingsCombiExtendedTooltip" id="128"/>
-					<ChildItems>
-						<RadioButtonField name="CombiExchangeMessageTransportKind" id="129">
-							<DataPath>Record.CombiExchangeMessageTransportKind</DataPath>
-							<TitleLocation>None</TitleLocation>
-							<RadioButtonType>Auto</RadioButtonType>
-							<ColumnsCount>1</ColumnsCount>
-							<ChoiceList>
-								<xr:Item>
-									<xr:Presentation/>
-									<xr:CheckState>0</xr:CheckState>
-									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation>
-											<v8:item>
-												<v8:lang>en</v8:lang>
-												<v8:content>Transport over local or network directory</v8:content>
-											</v8:item>
-										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.ExchangeMessageTransportKinds.EnumValue.FILE</Value>
-									</xr:Value>
-								</xr:Item>
-								<xr:Item>
-									<xr:Presentation/>
-									<xr:CheckState>0</xr:CheckState>
-									<xr:Value xsi:type="FormChoiceListDesTimeValue">
-										<Presentation>
-											<v8:item>
-												<v8:lang>en</v8:lang>
-												<v8:content>Transport over FTP resource</v8:content>
-											</v8:item>
-										</Presentation>
-										<Value xsi:type="xr:DesignTimeRef">Enum.ExchangeMessageTransportKinds.EnumValue.FTP</Value>
-									</xr:Value>
-								</xr:Item>
-							</ChoiceList>
-							<ContextMenu name="CombiExchangeMessageTransportKindContextMenu" id="130"/>
-							<ExtendedTooltip name="CombiExchangeMessageTransportKindExtendedTooltip" id="131"/>
-						</RadioButtonField>
-						<InputField name="WSConnectionStringToCorrespondentInfoBase" id="132">
-							<DataPath>Record.WSURL</DataPath>
-							<ContextMenu name="WSConnectionStringToCorrespondentInfoBaseContextMenu" id="133"/>
-							<ExtendedTooltip name="WSConnectionStringToCorrespondentInfoBaseExtendedTooltip" id="134"/>
-						</InputField>
+						<LabelDecoration name="Decoration8" id="205">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration8ContextMenu" id="206"/>
+							<ExtendedTooltip name="Decoration8ExtendedTooltip" id="207"/>
+						</LabelDecoration>
+						<Button name="TestEMAILConnection" id="43">
+							<Type>UsualButton</Type>
+							<SkipOnInput>false</SkipOnInput>
+							<CommandName>Form.Command.TestEMAILConnection</CommandName>
+							<ExtendedTooltip name="TestEMAILConnectionExtendedTooltip" id="175"/>
+						</Button>
 					</ChildItems>
 				</Page>
 			</ChildItems>
 		</Pages>
-		<UsualGroup name="AdditionalSettings" id="135">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Additional settings</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Additional settings.</v8:content>
-				</v8:item>
-			</ToolTip>
-			<Group>Vertical</Group>
-			<Representation>StrongSeparation</Representation>
-			<ExtendedTooltip name="AdditionalSettingsExtendedTooltip" id="136"/>
-			<ChildItems>
-				<InputField name="DataImportTransactionItemCount" id="137">
-					<DataPath>Record.DataImportTransactionItemCount</DataPath>
-					<ContextMenu name="DataImportTransactionItemCountContextMenu" id="138"/>
-					<ExtendedTooltip name="DataImportTransactionItemCountExtendedTooltip" id="139"/>
-				</InputField>
-				<InputField name="DataExportTransactionItemCount" id="140">
-					<DataPath>Record.DataExportTransactionItemCount</DataPath>
-					<ContextMenu name="DataExportTransactionItemCountContextMenu" id="141"/>
-					<ExtendedTooltip name="DataExportTransactionItemCountExtendedTooltip" id="142"/>
-				</InputField>
-				<CheckBoxField name="ExecuteExchangeInDebugMode" id="143">
-					<DataPath>Record.ExecuteExchangeInDebugMode</DataPath>
-					<TitleLocation>Right</TitleLocation>
-					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="ExecuteExchangeInDebugModeContextMenu" id="144"/>
-					<ExtendedTooltip name="ExecuteExchangeInDebugModeExtendedTooltip" id="145"/>
-				</CheckBoxField>
-				<InputField name="ExchangeLogFileName" id="146">
-					<DataPath>Record.ExchangeLogFileName</DataPath>
-					<ChoiceButton>true</ChoiceButton>
-					<OpenButton>true</OpenButton>
-					<ContextMenu name="ExchangeLogFileNameContextMenu" id="147"/>
-					<ExtendedTooltip name="ExchangeLogFileNameExtendedTooltip" id="148"/>
-					<Events>
-						<Event name="StartChoice">ExchangeLogFileNameStartChoice</Event>
-						<Event name="Opening">ExchangeLogFileNameOpen</Event>
-					</Events>
-				</InputField>
-			</ChildItems>
-		</UsualGroup>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Record" id="1">
@@ -645,7 +642,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Connection to web service event log event</v8:content>
+					<v8:content>Event log message text of establishing connection to web service</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -658,96 +655,115 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="CheckFTPConnection" id="1">
+		<Command name="TestFTPConnection" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection</v8:content>
+					<v8:content>Test connection</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection over FTP resource.</v8:content>
+					<v8:content>Test connection over FTP source</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>CheckFTPConnection</Action>
+			<Action>TestFTPConnection</Action>
 		</Command>
-		<Command name="CheckFILEConnection" id="2">
+		<Command name="TestFILEConnection" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection</v8:content>
+					<v8:content>Test connection</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection over the local network directory.</v8:content>
+					<v8:content>Test connection to the network directory</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>CheckFILEConnection</Action>
+			<Action>TestFILEConnection</Action>
 		</Command>
-		<Command name="CheckEMAILConnection" id="3">
+		<Command name="TestEMAILConnection" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection</v8:content>
+					<v8:content>Test connection</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection over email.</v8:content>
+					<v8:content>Test connection over email.</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>CheckEMAILConnection</Action>
+			<Action>TestEMAILConnection</Action>
 		</Command>
-		<Command name="CheckCOMConnection" id="4">
+		<Command name="TestCOMConnection" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection</v8:content>
+					<v8:content>Test connection</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection to the correspondent infobase.</v8:content>
+					<v8:content>Test connection to the correspondent infobase</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>CheckCOMConnection</Action>
+			<Action>TestCOMConnection</Action>
 		</Command>
-		<Command name="CheckWSConnection" id="5">
+		<Command name="TestWSConnection" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection</v8:content>
+					<v8:content>Test connection</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Check connection to the correspondent infobase.</v8:content>
+					<v8:content>Test connection to the correspondent infobase</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>CheckWSConnection</Action>
+			<Action>TestWSConnection</Action>
 		</Command>
-		<Command name="FixExternalConnectionErrors" id="6">
+		<Command name="InternetAccessParameters" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fix errors of establishing the external connection</v8:content>
+					<v8:content>Internet access parameters</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Fix errors of establishing the external connection.</v8:content>
+					<v8:content>Internet access parameters</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>FixExternalConnectionErrors</Action>
-			<Representation>TextPicture</Representation>
+			<Action>InternetAccessParameters</Action>
+		</Command>
+		<Command name="WriteAndClose" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and close</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and close</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.WriteAndClose</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>WriteAndClose</Action>
+			<Representation>Text</Representation>
 		</Command>
 	</Commands>
 </Form>

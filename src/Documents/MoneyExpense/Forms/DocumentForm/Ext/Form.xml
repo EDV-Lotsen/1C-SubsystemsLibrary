@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<AutoTime>CurrentOrLast</AutoTime>
+	<UsePostingMode>Auto</UsePostingMode>
+	<RepostOnWrite>true</RepostOnWrite>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnReadAtServer">OnReadAtServer</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Company" id="16">
+			<DataPath>Object.Company</DataPath>
+			<Wrap>false</Wrap>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="CompanyContextMenu" id="17"/>
+			<ExtendedTooltip name="CompanyExtendedTooltip" id="18"/>
+			<Events>
+				<Event name="OnChange">CompanyOnChange</Event>
+			</Events>
+		</InputField>
+		<InputField name="Number" id="2">
+			<DataPath>Object.Number</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="NumberContextMenu" id="9"/>
+			<ExtendedTooltip name="NumberExtendedTooltip" id="19"/>
+		</InputField>
+		<InputField name="Date" id="3">
+			<DataPath>Object.Date</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="DateContextMenu" id="10"/>
+			<ExtendedTooltip name="DateExtendedTooltip" id="20"/>
+		</InputField>
+		<InputField name="Vendor" id="4">
+			<DataPath>Object.Vendor</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="VendorContextMenu" id="11"/>
+			<ExtendedTooltip name="VendorExtendedTooltip" id="21"/>
+		</InputField>
+		<InputField name="VendorSettlementAccount" id="5">
+			<DataPath>Object.VendorSettlementAccount</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<QuickChoice>true</QuickChoice>
+			<ChoiceParameterLinks>
+				<xr:Link>
+					<xr:Name>Owner</xr:Name>
+					<xr:DataPath xsi:type="xs:string">Object.Vendor</xr:DataPath>
+					<xr:ValueChange>Clear</xr:ValueChange>
+				</xr:Link>
+			</ChoiceParameterLinks>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="VendorSettlementAccountContextMenu" id="12"/>
+			<ExtendedTooltip name="VendorSettlementAccountExtendedTooltip" id="22"/>
+		</InputField>
+		<InputField name="SettlementAccount" id="6">
+			<DataPath>Object.SettlementAccount</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<CreateButton>false</CreateButton>
+			<QuickChoice>true</QuickChoice>
+			<ChoiceParameterLinks>
+				<xr:Link>
+					<xr:Name>Owner</xr:Name>
+					<xr:DataPath xsi:type="xs:string">Object.Company</xr:DataPath>
+					<xr:ValueChange>Clear</xr:ValueChange>
+				</xr:Link>
+			</ChoiceParameterLinks>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ContextMenu name="SettlementAccountContextMenu" id="13"/>
+			<ExtendedTooltip name="SettlementAccountExtendedTooltip" id="23"/>
+		</InputField>
+		<InputField name="Currency" id="7">
+			<DataPath>Object.Currency</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="CurrencyContextMenu" id="14"/>
+			<ExtendedTooltip name="CurrencyExtendedTooltip" id="24"/>
+		</InputField>
+		<InputField name="Amount" id="8">
+			<DataPath>Object.Amount</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="AmountContextMenu" id="15"/>
+			<ExtendedTooltip name="AmountExtendedTooltip" id="25"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DocumentObject.MoneyExpense</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+			<UseAlways>
+				<Field>Object.RegisterRecords</Field>
+			</UseAlways>
+		</Attribute>
+	</Attributes>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>AccumulationRegister.MutualSettlements.StandardCommand.OpenByRecorder</Command>
+				<Type>Auto</Type>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
+</Form>

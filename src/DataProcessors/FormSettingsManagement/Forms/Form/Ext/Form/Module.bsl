@@ -1,183 +1,53 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿//////////////////////////////////////////////////////////////////////
+// Helper procedures and functions
 
+// This procedure populates the information base users list
 &AtServer
-Procedure OnCreateAtServer(Cancel, StandardProcessing)
+Procedure FillUsersList()
 	
-	FillUserList();
-	User = UserName();
-	RefreshFormList();
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
-
-&AtClient
-Procedure UserOnChange(Item)
-	
-	RefreshFormList();
-	
-EndProcedure
-
-&AtClient
-Procedure SearchOnChange(Item)
-	
-	ApplyFilter();
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
-
-&AtClient
-Procedure RefreshExecute()
-	
-	RefreshFormList();
-	
-EndProcedure
-
-&AtClient
-Procedure CopyExecute()
-	
-	If Items.FilteredForms.SelectedRows.Count() = 0 Then
-		ShowMessageBox(,NStr("en = 'You should select settings to be copied.'"));
-		Return;
-	EndIf;
-	
-	UserList = Items.User.ChoiceList.Copy();
-	
-	If UserList.Count() = 0 Then
-		ShowMessageBox(,NStr("en = 'It is impossible to copy settings because there are no user accounts in the application.'"));
-		Return;
-	EndIf;
-	
-	ListItem = UserList.FindByValue(User);
-	If ListItem <> Undefined Then
-		UserList.Delete(ListItem);
-	EndIf;
-	
-	If UserList.CheckItems(NStr("en = 'Mark users to whom the settings will be copied.'")) Then
-		UsersTarget = New Array;
-		For Each Item In UserList Do
-			Items.User.ChoiceList.FindByValue(Item.Value).Mark = Item.Check;
-			If Item.Check Then
-				UsersTarget.Add(Item.Value);
-			EndIf;
-		EndDo;
-		
-		If UsersTarget.Count() = 0 Then
-			ShowMessageBox(,NStr("en = 'You should select users to whom the settings will be copied.'"));
-			Return;
-		EndIf;
-		
-		QuestionText = NStr("en = 'After you copy settings to a user,
-		|previous settings of this user will be lost. 
-		|Are you really want to copy settings to the selected users?'");
-		Response = Undefined;
-
-		ShowQueryBox(New NotifyDescription("CopyExecuteEnd", ThisObject, New Structure("UsersTarget", UsersTarget)), QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
-	EndIf;
-	
-EndProcedure
-
-&AtClient
-Procedure CopyExecuteEnd(QuestionResult, AdditionalParameters) Export
-	
-	UsersTarget = AdditionalParameters.UsersTarget;
-	
-	
-	Response = QuestionResult;
-	If Response = DialogReturnCode.No Then
-		Return;
-	EndIf;
-	
-	CopyAtServer(UsersTarget);
-	ShowUserNotification(NStr("en = 'Settings are copied'"));
-
-EndProcedure
-
-&AtClient
-Procedure DeleteExecute()
-	
-	If Items.FilteredForms.SelectedRows.Count() = 0 Then
-		
-		ShowMessageBox(,NStr("en = 'You should select settings to be deleted.'"));
-		Return;
-		
-	EndIf;
-	
-	QuestionText = NStr("en = 'After you delete settings, the form will be opened with default settings. 
-	|Are you really want to copy settings?'");
-	Response = Undefined;
-
-	ShowQueryBox(New NotifyDescription("DeleteExecuteEnd", ThisObject), QuestionText, QuestionDialogMode.YesNo,, DialogReturnCode.Yes);
-	
-EndProcedure
-
-&AtClient
-Procedure DeleteExecuteEnd(QuestionResult, AdditionalParameters) Export
-	
-	Response = QuestionResult;
-	If Response = DialogReturnCode.No Then
-		
-		Return;
-		
-	EndIf;
-	
-	DeleteAtServer();
-	
-	ShowUserNotification(NStr("en = 'Settings are deleted'"));
-
-EndProcedure
-
-&AtClient
-Procedure SearchExecute()
-	
-	ApplyFilter();
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-&AtServer
-Procedure FillUserList()
-	
-	SetPrivilegedMode(True);
 	UserList = InfoBaseUsers.GetUsers();
 	
-	For Each CurrentUser In UserList Do
+	If UserList.Count() > 0 Then
+ 
+		For Each CurUser In UserList Do
 		
-		Items.User.ChoiceList.Add(CurrentUser.Name);
+			Items.User.ChoiceList.Add(CurUser.Name);
 		
-	EndDo;
+		EndDo;
+ 
+	Else
+ 
+		Items.User.Enabled = False;
+		Items.Copy.Enabled = False;
+ 
+	EndIf;
 	
 EndProcedure
 
+// This procedure updates the list of saved forms settings
 &AtServer
 Procedure RefreshFormList()
 	
-	DataProcessor = FormAttributeToValue("Object");
-	FormsList = New ValueList;
-	DataProcessor.GetFormList(FormsList);
+	DataProcessor = FormDataToValue(Object, Type("DataProcessorObject.FormSettingsManagement"));
 	Forms.Clear();
-	DataProcessor.GetSavedSettingsList(FormsList, User, Forms);
-	
-	ApplyFilter();
+	DataProcessor.GetSavedSettingsList(User, Forms);
 	
 EndProcedure
 
+// This function gets the marked settings as an array
+//
+// Returns:
+//  Array names settings forms
 &AtServer
 Function GetSelectedSettingsArray()
 	
 	SettingsArray = New Array;
 	
-	SelectedItems = Items.FilteredForms.SelectedRows;
+	MarkedItems = Items.FilteredForms.SelectedRows;
 	
-	For Each SelectedItem In SelectedItems Do
+	For Each MarkedItem In MarkedItems Do
 		
-		SettingsArray.Add(Forms.FindByValue(FilteredForms.FindByID(SelectedItem).Value).Value);
+		SettingsArray.Add(Forms.FindByValue(FilteredForms.FindByID(MarkedItem).Value).Value);
 		
 	EndDo;
 	
@@ -185,28 +55,31 @@ Function GetSelectedSettingsArray()
 	
 EndFunction
 
+// This procedure copies the selected settings to the specified user
+// Parameters :
+//  UsersTarget - the user name, whom to copy settings
 &AtServer
 Procedure CopyAtServer(UsersTarget)
+
+	SettingsArrayToCopy = GetSelectedSettingsArray();
 	
-	SettingsToCopyArray = GetSelectedSettingsArray();
-	
-	DataProcessor = FormAttributeToValue("Object");
-	DataProcessor.CopyFormSettings(User, UsersTarget, SettingsToCopyArray);
-	
+	DataProcessor = FormDataToValue(Object, Type("DataProcessorObject.FormSettingsManagement"));
+	DataProcessor.CopyFormSettings(User, UsersTarget, SettingsArrayToCopy);
+		
 EndProcedure
 
+// Procedure removes selected Settings
 &AtServer
 Procedure DeleteAtServer()
 	
 	SettingsForDeletionArray = GetSelectedSettingsArray();
 	
-	DataProcessor = FormAttributeToValue("Object");
+	DataProcessor = FormDataToValue(Object, Type("DataProcessorObject.FormSettingsManagement"));
 	DataProcessor.DeleteFormSettings(User, SettingsForDeletionArray);
-	
-	RefreshFormList();
 	
 EndProcedure
 
+// This procedure applies the filter to the list of settings
 &AtServer
 Procedure ApplyFilter()
 	
@@ -214,7 +87,7 @@ Procedure ApplyFilter()
 	
 	For Each ItemForm In Forms Do
 		
-		If Search = "" or Find(Upper(ItemForm.Presentation), Upper(Search)) <> 0 Then
+		If SearchString = "" Or Find(Upper(ItemForm.Presentation), Upper(SearchString)) <> 0 Then
 			
 			FilteredForms.Add(ItemForm.Value, ItemForm.Presentation, ItemForm.Check, ItemForm.Picture);
 			
@@ -222,6 +95,166 @@ Procedure ApplyFilter()
 		
 	EndDo;
 	
-	ActiveSearch = Search;
+	AppliedSearch = SearchString;
+	
+EndProcedure
+
+//////////////////////////////////////////////////////////////////////
+// Commands handlers
+
+// Handler Commands Refresh
+&AtClient
+Procedure RefreshExecute()
+	
+	RefreshFormList();
+	ApplyFilter();
+	
+EndProcedure
+
+// The Copy to another user commend handler
+&AtClient
+Procedure CopyExecute()
+	
+	If Items.FilteredForms.SelectedRows.Count() = 0 Then
+		
+		ShowMessageBox( ,NStr("en = 'Choose settings to be to copied.'"));
+		Return;
+		
+	EndIf;
+	
+	UserChoiceList =  Items.User.ChoiceList.Copy();
+
+	UserChoiceList.Delete(
+		UserChoiceList.FindByValue(User));
+	
+	Notification =  New  NotifyDescription(
+		"CopyExecuteCompletion",
+		ThisObject,  UserChoiceList);
+	UserChoiceList.ShowCheckItems(Notification,
+		NStr("en = 'Select users which you want the settings to be copied.'"));
+EndProcedure
+
+&AtClient
+Procedure CopyExecuteCompletion(Result, UserList) Export
+ 
+	If Result <> Undefined Then	 
+ 
+		UsersTarget = New Array;
+
+		For Each Element In UserList Do
+			
+			Items.User.ChoiceList.FindByValue(Element.Value).Check = Element.Check;
+			If Element.Check Then
+				
+				UsersTarget.Add(Element.Value);
+				
+			EndIf;
+			
+		EndDo;
+		
+		If UsersTarget.Count() = 0 Then
+			
+			ShowMessageBox(,NStr("en = 'Select users which you want the settings to be copied.'"));
+			Return;
+			
+		EndIf;
+		
+		Activity = "ExecuteCopy";
+		ButtonList = New ValueList;
+		ButtonList.Add(Activity, NStr("en = 'Copy'"));
+		ButtonList.Add(DialogReturnCode.Cancel);
+		Context =  New Structure("Activity, UsersTarget", Activity,  UsersTarget);
+
+		Notification =  New NotifyDescription(
+			"CopyExecuteQueryCompletion",
+			ThisObject,  Context);
+		ShowQueryBox(Notification,
+			NStr("en = 'Once the settings is copied, the user form is opened with the settings been copied. The current form settings will be lost.'"),
+			ButtonList, , Activity);
+	EndIf;
+EndProcedure
+
+&AtClient
+Procedure CopyExecuteQueryCompletion(Result, Context) Export
+	If Result =  Context.Activity  Then
+		CopyAtServer(Context.UsersTarget);
+		ShowUserNotification(NStr("en = 'Settings copied'"));
+	EndIf;
+EndProcedure 
+
+// Delete command handler 
+&AtClient
+Procedure DeleteExecute()
+	
+	If Items.FilteredForms.SelectedRows.Count() = 0 Then
+		
+		ShowMessageBox(,NStr("en = 'Select settings to be deleted.'"));
+		Return;
+		
+	EndIf;
+	
+	Activity = "DeleteExecute";
+	ButtonList = New ValueList;
+	ButtonList.Add(Activity, NStr("en = 'Delete'"));
+	ButtonList.Add(DialogReturnCode.Cancel);
+Notification =  New  NotifyDescription(
+
+		"DeleteExeciteQueryCompletion",  ThisObject,  Activity);
+	ShowQueryBox(Notification,
+		NStr("en = 'Once the settings are deleted the form is opened with the default settings.'"),
+		ButtonList,  , Activity);
+	
+EndProcedure
+
+&AtClient
+Procedure  DeleteExeciteQueryCompletion(Result,  Activity)  Export
+	If  Result =  Activity Then
+		DeleteAtServer();
+		RefreshFormList();
+		ApplyFilter();
+		
+		ShowUserNotification(NStr("en = 'Settings deleted'"));
+	EndIf;
+EndProcedure 
+
+// Search command handler
+&AtClient
+Procedure SearchExecute()
+	
+	ApplyFilter();
+	
+EndProcedure
+
+//////////////////////////////////////////////////////////////////////
+// Form events handlers
+
+// Create form event handler
+&AtServer
+Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	
+	FillUsersList();
+	User = UserName();
+	RefreshFormList();
+	ApplyFilter();
+	
+EndProcedure
+
+//////////////////////////////////////////////////////////////////////
+// The controls event handlers
+
+// The user name change handler
+&AtClient
+Procedure UserOnChange(Element)
+	
+	RefreshFormList();
+	ApplyFilter();
+	
+EndProcedure
+
+// Search string change handler
+&AtClient
+Procedure SearchOnChange(Element)
+	
+	ApplyFilter();
 	
 EndProcedure

@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<Catalog uuid="1de2738a-4a17-46e4-bf75-11545a0fd583">
+	<Catalog uuid="2ce6a72f-d84f-4911-b820-dada3614149e">
 		<InternalInfo>
 			<xr:GeneratedType name="CatalogObject.States" category="Object">
-				<xr:TypeId>2adfb162-7ec7-4e74-a06d-01573d15ca45</xr:TypeId>
-				<xr:ValueId>f6e27007-e595-4d5d-b047-fdb95a5945e4</xr:ValueId>
+				<xr:TypeId>adbc10b3-8d20-4b2a-84c8-69413fb46b8f</xr:TypeId>
+				<xr:ValueId>c17c6afb-c1e6-4fb5-8c80-3ea76f8dc164</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogRef.States" category="Ref">
-				<xr:TypeId>ecb26303-049a-441b-a94b-19f7bff43c60</xr:TypeId>
-				<xr:ValueId>b43cc48b-01ca-4426-b826-0d8f8d43da03</xr:ValueId>
+				<xr:TypeId>818eea46-c476-482b-8098-1dfe45cd6ab4</xr:TypeId>
+				<xr:ValueId>162a8aa6-ccea-470c-946d-920d4c9ddf29</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogSelection.States" category="Selection">
-				<xr:TypeId>28565089-856e-49a7-92b8-34a69f1d597f</xr:TypeId>
-				<xr:ValueId>0528c348-c855-4264-8077-796fa171c0a7</xr:ValueId>
+				<xr:TypeId>c65c23b5-b87e-49e1-80db-b3a568b1583c</xr:TypeId>
+				<xr:ValueId>602d7363-769a-4977-822d-3da1ecb9c98e</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogList.States" category="List">
-				<xr:TypeId>c2dd33e2-7927-4c91-85e5-90d72f7c2c72</xr:TypeId>
-				<xr:ValueId>f6ab8acd-6e6f-439a-9b5d-d5931ae1cef7</xr:ValueId>
+				<xr:TypeId>1f864419-ae2f-4149-9475-801522e49b3b</xr:TypeId>
+				<xr:ValueId>61c14c42-d399-43ea-a870-6f3f827d7817</xr:ValueId>
 			</xr:GeneratedType>
 			<xr:GeneratedType name="CatalogManager.States" category="Manager">
-				<xr:TypeId>07a7ce20-b099-456c-bf77-7a6f4a0d547b</xr:TypeId>
-				<xr:ValueId>ba369b83-584e-4ae7-bcd5-b53913dcfc20</xr:ValueId>
+				<xr:TypeId>98d40571-f3ce-45dd-9f0c-7883ad92ee3c</xr:TypeId>
+				<xr:ValueId>2c440a64-cd10-4430-8c81-e353b6b08594</xr:ValueId>
 			</xr:GeneratedType>
 		</InternalInfo>
 		<Properties>
@@ -40,13 +40,13 @@
 			<UseStandardCommands>true</UseStandardCommands>
 			<Owners/>
 			<SubordinationUse>ToItems</SubordinationUse>
-			<CodeLength>2</CodeLength>
-			<DescriptionLength>50</DescriptionLength>
+			<CodeLength>9</CodeLength>
+			<DescriptionLength>25</DescriptionLength>
 			<CodeType>String</CodeType>
 			<CodeAllowedLength>Variable</CodeAllowedLength>
 			<CodeSeries>WholeCatalog</CodeSeries>
-			<CheckUnique>false</CheckUnique>
-			<Autonumbering>false</Autonumbering>
+			<CheckUnique>true</CheckUnique>
+			<Autonumbering>true</Autonumbering>
 			<DefaultPresentation>AsDescription</DefaultPresentation>
 			<StandardAttributes>
 				<xr:StandardAttribute name="PredefinedDataName">
@@ -251,7 +251,7 @@
 				</xr:StandardAttribute>
 				<xr:StandardAttribute name="Code">
 					<xr:LinkByType/>
-					<xr:FillChecking>ShowError</xr:FillChecking>
+					<xr:FillChecking>DontCheck</xr:FillChecking>
 					<xr:MultiLine>false</xr:MultiLine>
 					<xr:FillFromFillingValue>false</xr:FillFromFillingValue>
 					<xr:CreateOnInput>Auto</xr:CreateOnInput>
@@ -284,13 +284,13 @@
 				<xr:Field>Catalog.States.StandardAttribute.Description</xr:Field>
 				<xr:Field>Catalog.States.StandardAttribute.Code</xr:Field>
 			</InputByString>
-			<SearchStringModeOnInputByString>Begin</SearchStringModeOnInputByString>
+			<SearchStringModeOnInputByString>AnyPart</SearchStringModeOnInputByString>
 			<FullTextSearchOnInputByString>DontUse</FullTextSearchOnInputByString>
 			<ChoiceDataGetModeOnInputByString>Directly</ChoiceDataGetModeOnInputByString>
-			<DefaultObjectForm>Catalog.States.Form.ItemForm</DefaultObjectForm>
+			<DefaultObjectForm/>
 			<DefaultFolderForm/>
-			<DefaultListForm>Catalog.States.Form.ListForm</DefaultListForm>
-			<DefaultChoiceForm>Catalog.States.Form.ChoiceForm</DefaultChoiceForm>
+			<DefaultListForm/>
+			<DefaultChoiceForm/>
 			<DefaultFolderChoiceForm/>
 			<AuxiliaryObjectForm/>
 			<AuxiliaryFolderForm/>
@@ -300,7 +300,7 @@
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<BasedOn/>
 			<DataLockFields/>
-			<DataLockControlMode>Managed</DataLockControlMode>
+			<DataLockControlMode>Automatic</DataLockControlMode>
 			<FullTextSearch>Use</FullTextSearch>
 			<ObjectPresentation>
 				<v8:item>
@@ -309,55 +309,27 @@
 				</v8:item>
 			</ObjectPresentation>
 			<ExtendedObjectPresentation/>
-			<ListPresentation/>
-			<ExtendedListPresentation/>
-			<Explanation/>
+			<ListPresentation>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>States</v8:content>
+				</v8:item>
+			</ListPresentation>
+			<ExtendedListPresentation>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>States</v8:content>
+				</v8:item>
+			</ExtendedListPresentation>
+			<Explanation>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>States</v8:content>
+				</v8:item>
+			</Explanation>
 			<CreateOnInput>Use</CreateOnInput>
 			<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
 		</Properties>
-		<ChildObjects>
-			<Attribute uuid="9e543627-b1f1-4e49-8166-f5488f52fdca">
-				<Properties>
-					<Name>Country</Name>
-					<Synonym>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Country</v8:content>
-						</v8:item>
-					</Synonym>
-					<Comment/>
-					<Type>
-						<v8:Type>cfg:CatalogRef.Countries</v8:Type>
-					</Type>
-					<PasswordMode>false</PasswordMode>
-					<Format/>
-					<EditFormat/>
-					<ToolTip/>
-					<MarkNegatives>false</MarkNegatives>
-					<Mask/>
-					<MultiLine>false</MultiLine>
-					<ExtendedEdit>false</ExtendedEdit>
-					<MinValue xsi:nil="true"/>
-					<MaxValue xsi:nil="true"/>
-					<FillFromFillingValue>false</FillFromFillingValue>
-					<FillValue xsi:nil="true"/>
-					<FillChecking>DontCheck</FillChecking>
-					<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
-					<ChoiceParameterLinks/>
-					<ChoiceParameters/>
-					<QuickChoice>Auto</QuickChoice>
-					<CreateOnInput>Auto</CreateOnInput>
-					<ChoiceForm/>
-					<LinkByType/>
-					<ChoiceHistoryOnInput>Auto</ChoiceHistoryOnInput>
-					<Use>ForItem</Use>
-					<Indexing>DontIndex</Indexing>
-					<FullTextSearch>Use</FullTextSearch>
-				</Properties>
-			</Attribute>
-			<Form>ItemForm</Form>
-			<Form>ListForm</Form>
-			<Form>ChoiceForm</Form>
-		</ChildObjects>
+		<ChildObjects/>
 	</Catalog>
 </MetaDataObject>

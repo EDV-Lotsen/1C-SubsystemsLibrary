@@ -1,0 +1,1692 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Sending data to the %1</v8:content>
+		</v8:item>
+	</Title>
+	<Width>70</Width>
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoTitle>false</AutoTitle>
+	<Customizable>false</Customizable>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>Cancel</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="BeforeClose">BeforeClose</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnClose">OnClose</Event>
+	</Events>
+	<ChildItems>
+		<Pages name="MainPanel" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main panel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<VerticalStretch>true</VerticalStretch>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="MainPanelExtendedTooltip" id="333"/>
+			<ChildItems>
+				<Page name="ModifyExportContent" id="280">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export content modification</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Export content modification</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="ModifyExportContentExtendedTooltip" id="334"/>
+					<ChildItems>
+						<UsualGroup name="DetailsGroup" id="444">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Details group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Details group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="DetailsGroupExtendedTooltip" id="445"/>
+							<ChildItems>
+								<PictureDecoration name="Decoration4" id="446">
+									<Width>2</Width>
+									<Height>1</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.Information</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="Decoration4ContextMenu" id="447"/>
+									<ExtendedTooltip name="Decoration4ExtendedTooltip" id="448"/>
+								</PictureDecoration>
+								<LabelDecoration name="Decoration5" id="449">
+									<VerticalStretch>false</VerticalStretch>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Sent data content is defined automatically according to the general rules that are specified in settings of data synchronization between two applications.
+In addition to the data that is sent automatically, you can add data manually. However, data will be added only if it matches the restrictions that are specified in the general rules.</v8:content>
+										</v8:item>
+									</Title>
+									<ContextMenu name="Decoration5ContextMenu" id="450"/>
+									<ExtendedTooltip name="Decoration5ExtendedTooltip" id="451"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="DataExchangeSetupGroup" id="284">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data exchange setup group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data exchange setup group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="DataExchangeSetupGroupExtendedTooltip" id="336"/>
+							<ChildItems>
+								<UsualGroup name="ExportAdditionVariants" id="285">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export addition variants</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export addition variants</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Width>85</Width>
+									<HorizontalStretch>false</HorizontalStretch>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="ExportAdditionVariantsExtendedTooltip" id="337"/>
+									<ChildItems>
+										<UsualGroup name="StandardAdditionVariantNo" id="452">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant no</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant no</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="StandardAdditionVariantNoExtendedTooltip" id="453"/>
+											<ChildItems>
+												<RadioButtonField name="ExportAdditionExportVariant0" id="286">
+													<DataPath>ExportAddition.ExportVariant</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<VerticalAlign>Top</VerticalAlign>
+													<RadioButtonType>Auto</RadioButtonType>
+													<ColumnsCount>1</ColumnsCount>
+													<ChoiceList>
+														<xr:Item>
+															<xr:Presentation/>
+															<xr:CheckState>0</xr:CheckState>
+															<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																<Presentation>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Do not add.</v8:content>
+																	</v8:item>
+																</Presentation>
+																<Value xsi:type="xs:decimal">0</Value>
+															</xr:Value>
+														</xr:Item>
+													</ChoiceList>
+													<ContextMenu name="ExportAdditionExportVariant0ContextMenu" id="287"/>
+													<ExtendedTooltip name="ExportExportVariant0ExtendedAdditionOfTooltip" id="338"/>
+													<Events>
+														<Event name="OnChange">ExportAdditionExportVariantOnChange</Event>
+													</Events>
+												</RadioButtonField>
+												<UsualGroup name="Group1" id="494">
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="Group1ExtendedTooltip" id="495"/>
+													<ChildItems>
+														<LabelDecoration name="Decoration1" id="499">
+															<Width>3</Width>
+															<ContextMenu name="Decoration1ContextMenu" id="500"/>
+															<ExtendedTooltip name="Decoration1ExtendedTooltip" id="501"/>
+														</LabelDecoration>
+														<LabelDecoration name="StandardAdditionVariantNoExplanation" id="496">
+															<TextColor>style:InformationText</TextColor>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Standard addition variant no explanation</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="StandardAdditionVariantNoExplanationContextMenu" id="497"/>
+															<ExtendedTooltip name="StandardAdditionVariantNoExplanationExtendedTooltip" id="498"/>
+														</LabelDecoration>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</UsualGroup>
+										<UsualGroup name="StandardAdditionVariantDocuments" id="454">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant documents</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant documents</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="StandardAdditionVariantDocumentsExtendedTooltip" id="455"/>
+											<ChildItems>
+												<RadioButtonField name="ExportAdditionExportVariant1" id="288">
+													<DataPath>ExportAddition.ExportVariant</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<VerticalAlign>Top</VerticalAlign>
+													<RadioButtonType>Auto</RadioButtonType>
+													<ColumnsCount>1</ColumnsCount>
+													<ChoiceList>
+														<xr:Item>
+															<xr:Presentation/>
+															<xr:CheckState>0</xr:CheckState>
+															<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																<Presentation>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Add documents:</v8:content>
+																	</v8:item>
+																</Presentation>
+																<Value xsi:type="xs:decimal">1</Value>
+															</xr:Value>
+														</xr:Item>
+													</ChoiceList>
+													<ContextMenu name="ExportAdditionExportVariant1ContextMenu" id="289"/>
+													<ExtendedTooltip name="ExportAdditionExportVariant1ExtendedTooltip" id="339"/>
+													<Events>
+														<Event name="OnChange">ExportAdditionExportVariantOnChange</Event>
+													</Events>
+												</RadioButtonField>
+												<UsualGroup name="AllDocumentsFilterGroup" id="290">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>All documents filter group</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>All documents filter group</v8:content>
+														</v8:item>
+													</ToolTip>
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="AllDocumentsFilterGroupExtendedTooltip" id="340"/>
+													<ChildItems>
+														<LabelDecoration name="Decoration21" id="291">
+															<Width>3</Width>
+															<ContextMenu name="Decoration21ContextMenu" id="292"/>
+															<ExtendedTooltip name="Decoration21ExtendedTooltip" id="341"/>
+														</LabelDecoration>
+														<UsualGroup name="Group9" id="293">
+															<HorizontalStretch>false</HorizontalStretch>
+															<Group>Vertical</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="Group9ExtendedTooltip" id="342"/>
+															<ChildItems>
+																<LabelDecoration name="StandardAdditionVariantDocumentsExplanation" id="502">
+																	<TextColor>style:InformationText</TextColor>
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Standard addition variant documents explanation</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ContextMenu name="StandardAdditionVariantDocumentsExplanationContextMenu" id="503"/>
+																	<ExtendedTooltip name="StandardAdditionVariantDocumentsExplanationExtendedTooltip" id="504"/>
+																</LabelDecoration>
+																<UsualGroup name="Group8" id="294">
+																	<Group>Horizontal</Group>
+																	<Representation>None</Representation>
+																	<ShowTitle>false</ShowTitle>
+																	<ExtendedTooltip name="Group8ExtendedTooltip" id="343"/>
+																	<ChildItems>
+																		<LabelDecoration name="Decoration11" id="295">
+																			<Title formatted="false">
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>For period:</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="Decoration11ContextMenu" id="296"/>
+																			<ExtendedTooltip name="Decoration11ExtendedTooltip" id="344"/>
+																		</LabelDecoration>
+																		<InputField name="ExportAdditionGeneralDocumentPeriod" id="297">
+																			<DataPath>ExportAddition.AllDocumentsFilterPeriod</DataPath>
+																			<TitleLocation>None</TitleLocation>
+																			<Width>35</Width>
+																			<HorizontalStretch>false</HorizontalStretch>
+																			<ClearButton>true</ClearButton>
+																			<ContextMenu name="ExportAdditionGeneralDocumentPeriodContextMenu" id="298"/>
+																			<ExtendedTooltip name="ExportAdditionGeneralDocumentPeriodExtendedTooltip" id="345"/>
+																		</InputField>
+																	</ChildItems>
+																</UsualGroup>
+																<UsualGroup name="Group10" id="299">
+																	<HorizontalStretch>true</HorizontalStretch>
+																	<Group>Horizontal</Group>
+																	<Representation>None</Representation>
+																	<ShowTitle>false</ShowTitle>
+																	<ExtendedTooltip name="Group10ExtendedTooltip" id="346"/>
+																	<ChildItems>
+																		<LabelDecoration name="Decoration13" id="300">
+																			<Title formatted="false">
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>With filter:</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="Decoration13ContextMenu" id="301"/>
+																			<ExtendedTooltip name="Decoration13ExtendedTooltip" id="347"/>
+																		</LabelDecoration>
+																		<LabelDecoration name="ExportAdditionGeneralDocumentFilter" id="302">
+																			<Height>1</Height>
+																			<Title formatted="false">
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>All documents</v8:content>
+																				</v8:item>
+																			</Title>
+																			<Hyperlink>true</Hyperlink>
+																			<TitleHeight>1</TitleHeight>
+																			<ContextMenu name="ExportAdditionGeneralDocumentFilterContextMenu" id="303"/>
+																			<ExtendedTooltip name="ExportAdditionGeneralDocumentFilterExtendedTooltip" id="348"/>
+																			<Events>
+																				<Event name="Click">ExportAdditionGeneralDocumentFilterClick</Event>
+																			</Events>
+																		</LabelDecoration>
+																		<Button name="ExportAdditionGeneralFilterClearing" id="304">
+																			<Type>UsualButton</Type>
+																			<Representation>Picture</Representation>
+																			<Width>2</Width>
+																			<Height>1</Height>
+																			<CommandName>Form.Command.ExportAdditionGeneralFilterClearing</CommandName>
+																			<ExtendedTooltip name="ExportAdditionGeneralFilterClearingExtendedTooltip" id="349"/>
+																		</Button>
+																	</ChildItems>
+																</UsualGroup>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</UsualGroup>
+										<UsualGroup name="StandardAdditionVariantArbitrary" id="456">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant arbitrary</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Standard addition variant arbitrary</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="StandardAdditionVariantArbitraryExtendedTooltip" id="457"/>
+											<ChildItems>
+												<RadioButtonField name="ExportAdditionExportVariant2" id="305">
+													<DataPath>ExportAddition.ExportVariant</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<VerticalAlign>Top</VerticalAlign>
+													<RadioButtonType>Auto</RadioButtonType>
+													<ColumnsCount>1</ColumnsCount>
+													<ChoiceList>
+														<xr:Item>
+															<xr:Presentation/>
+															<xr:CheckState>0</xr:CheckState>
+															<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																<Presentation>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Add data:</v8:content>
+																	</v8:item>
+																</Presentation>
+																<Value xsi:type="xs:decimal">2</Value>
+															</xr:Value>
+														</xr:Item>
+													</ChoiceList>
+													<ContextMenu name="ExportAdditionExportVariant2ContextMenu" id="306"/>
+													<ExtendedTooltip name="ExportAdditionExportVariant2ExtendedTooltip" id="350"/>
+													<Events>
+														<Event name="OnChange">ExportAdditionExportVariantOnChange</Event>
+													</Events>
+												</RadioButtonField>
+												<UsualGroup name="Group14" id="505">
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="Group14ExtendedTooltip" id="506"/>
+													<ChildItems>
+														<LabelDecoration name="Decoration27" id="507">
+															<Width>3</Width>
+															<ContextMenu name="Decoration27ContextMenu" id="508"/>
+															<ExtendedTooltip name="Decoration27ExtendedTooltip" id="509"/>
+														</LabelDecoration>
+														<LabelDecoration name="StandardAdditionVariantArbitraryExplanation" id="510">
+															<TextColor>style:InformationText</TextColor>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Standard addition variant arbitrary explanation</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="StandardAdditionVariantArbitraryExplanationContextMenu" id="511"/>
+															<ExtendedTooltip name="StandardAdditionVariantArbitraryExplanationExtendedTooltip" id="512"/>
+														</LabelDecoration>
+													</ChildItems>
+												</UsualGroup>
+												<UsualGroup name="DetailedFilterGroup" id="307">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Detailed filter group</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Detailed filter group</v8:content>
+														</v8:item>
+													</ToolTip>
+													<HorizontalStretch>true</HorizontalStretch>
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="DetailedFilterGroupExtendedTooltip" id="351"/>
+													<ChildItems>
+														<LabelDecoration name="Decoration22" id="308">
+															<Width>3</Width>
+															<ContextMenu name="Decoration22ContextMenu" id="309"/>
+															<ExtendedTooltip name="Decoration22ExtendedTooltip" id="352"/>
+														</LabelDecoration>
+														<LabelDecoration name="Decoration23" id="310">
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>With filter:</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="Decoration23ContextMenu" id="311"/>
+															<ExtendedTooltip name="Decoration23ExtendedTooltip" id="353"/>
+														</LabelDecoration>
+														<UsualGroup name="Group11" id="312">
+															<Group>Horizontal</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="Group11ExtendedTooltip" id="354"/>
+															<ChildItems>
+																<LabelDecoration name="ExportAdditionDetailedFilter" id="313">
+																	<Height>1</Height>
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Additional data is not selected</v8:content>
+																		</v8:item>
+																	</Title>
+																	<Hyperlink>true</Hyperlink>
+																	<ContextMenu name="ExportAdditionDetailedFilterContextMenu" id="314"/>
+																	<ExtendedTooltip name="ExportAdditionDetailedFilterExtendedTooltip" id="355"/>
+																	<Events>
+																		<Event name="Click">ExportAdditionDetailedFilterClick</Event>
+																	</Events>
+																</LabelDecoration>
+																<Button name="ExportAdditionDetailedFilterClearing" id="315">
+																	<Type>UsualButton</Type>
+																	<Representation>Picture</Representation>
+																	<Width>2</Width>
+																	<Height>1</Height>
+																	<CommandName>Form.Command.ExportAdditionDetailedFilterClearing</CommandName>
+																	<ExtendedTooltip name="ExportAdditionDetailedFilterClearingExtendedTooltip" id="356"/>
+																</Button>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</UsualGroup>
+										<UsualGroup name="CustomAdditionVariant" id="458">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Custom addition variant</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Custom addition variant</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="CustomAdditionVariantExtendedTooltip" id="459"/>
+											<ChildItems>
+												<RadioButtonField name="ExportAdditionNodeExportVariant" id="460">
+													<DataPath>ExportAddition.ExportVariant</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<VerticalAlign>Top</VerticalAlign>
+													<RadioButtonType>Auto</RadioButtonType>
+													<ColumnsCount>1</ColumnsCount>
+													<ChoiceList>
+														<xr:Item>
+															<xr:Presentation/>
+															<xr:CheckState>0</xr:CheckState>
+															<xr:Value xsi:type="FormChoiceListDesTimeValue">
+																<Presentation>
+																	<v8:item>
+																		<v8:lang>en</v8:lang>
+																		<v8:content>Node settings data:</v8:content>
+																	</v8:item>
+																</Presentation>
+																<Value xsi:type="xs:decimal">3</Value>
+															</xr:Value>
+														</xr:Item>
+													</ChoiceList>
+													<ContextMenu name="ExportAdditionNodeExportVariantContextMenu" id="461"/>
+													<ExtendedTooltip name="ExportAdditionNodeExportVariantExtendedTooltip" id="462"/>
+													<Events>
+														<Event name="OnChange">ExportAdditionExportVariantOnChange</Event>
+													</Events>
+												</RadioButtonField>
+												<LabelDecoration name="ExportAdditionExportVariantNodeString" id="463">
+													<Visible>false</Visible>
+													<Title formatted="false">
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Export addition export variant node string</v8:content>
+														</v8:item>
+													</Title>
+													<ContextMenu name="ExportAdditionExportVariantNodeStringContextMenu" id="464"/>
+													<ExtendedTooltip name="ExportAdditionExportVariantNodeStringExtendedTooltip" id="465"/>
+												</LabelDecoration>
+												<UsualGroup name="CustomFilterGroup" id="466">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Custom filter group</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Custom filter group</v8:content>
+														</v8:item>
+													</ToolTip>
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="CustomFilterGroupExtendedTooltip" id="467"/>
+													<ChildItems>
+														<LabelDecoration name="DecorationCustomGroupIndent" id="468">
+															<Width>3</Width>
+															<ContextMenu name="CustomDecorationGroupIndentContextMenu" id="469"/>
+															<ExtendedTooltip name="CustomDecorationGroupIndentExtendedTooltip" id="470"/>
+														</LabelDecoration>
+														<UsualGroup name="Group15" id="471">
+															<Group>Vertical</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="Group15ExtendedTooltip" id="472"/>
+															<ChildItems>
+																<LabelDecoration name="CustomAdditionVariantExplanation" id="473">
+																	<TextColor>style:InformationText</TextColor>
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Custom addition variant explanation</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ContextMenu name="CustomAdditionVariantExplanationContextMenu" id="474"/>
+																	<ExtendedTooltip name="CustomAdditionVariantExplanationExtendedTooltip" id="475"/>
+																</LabelDecoration>
+																<UsualGroup name="Group6" id="476">
+																	<Group>Horizontal</Group>
+																	<Representation>None</Representation>
+																	<ShowTitle>false</ShowTitle>
+																	<ExtendedTooltip name="Group6ExtendedTooltip" id="477"/>
+																	<ChildItems>
+																		<UsualGroup name="ExportPeriodNodeScenarioGroup" id="478">
+																			<Title>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Export period node scenario group</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ToolTip>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Export period node scenario group</v8:content>
+																				</v8:item>
+																			</ToolTip>
+																			<HorizontalStretch>false</HorizontalStretch>
+																			<Group>Horizontal</Group>
+																			<Representation>None</Representation>
+																			<ShowTitle>false</ShowTitle>
+																			<ExtendedTooltip name="ExportPeriodNodeScenarioGroupExtendedTooltip" id="479"/>
+																			<ChildItems>
+																				<LabelDecoration name="Decoration16" id="480">
+																					<Title formatted="false">
+																						<v8:item>
+																							<v8:lang>en</v8:lang>
+																							<v8:content>For period:</v8:content>
+																						</v8:item>
+																					</Title>
+																					<ContextMenu name="Decoration16ContextMenu" id="481"/>
+																					<ExtendedTooltip name="Decoration16ExtendedTooltip" id="482"/>
+																				</LabelDecoration>
+																				<InputField name="ExportAdditionNodeScenarioFilterPeriod" id="483">
+																					<DataPath>ExportAddition.NodeScenarioFilterPeriod</DataPath>
+																					<TitleLocation>None</TitleLocation>
+																					<Width>29</Width>
+																					<HorizontalStretch>false</HorizontalStretch>
+																					<ClearButton>false</ClearButton>
+																					<ContextMenu name="ExportAdditionNodeScenarioFilterPeriodContextMenu" id="484"/>
+																					<ExtendedTooltip name="ExportAdditionNodeScenarioFilterPeriodExtendedTooltip" id="485"/>
+																					<Events>
+																						<Event name="OnChange">ExportAdditionNodeScenarioFilterPeriodOnChange</Event>
+																						<Event name="Clearing">ExportAdditionNodeScenarioFilterPeriodClearing</Event>
+																					</Events>
+																				</InputField>
+																			</ChildItems>
+																		</UsualGroup>
+																	</ChildItems>
+																</UsualGroup>
+																<InputField name="ExportAdditionNodeScenarioFilterPresentation" id="488">
+																	<DataPath>ExportAddition.NodeScenarioFilterPresentation</DataPath>
+																	<TitleLocation>None</TitleLocation>
+																	<Width>50</Width>
+																	<Height>3</Height>
+																	<HorizontalStretch>false</HorizontalStretch>
+																	<MultiLine>true</MultiLine>
+																	<TextEdit>false</TextEdit>
+																	<BackColor>style:FormBackColor</BackColor>
+																	<ContextMenu name="ExportAdditionNodeScenarioFilterPresentationContextMenu" id="489"/>
+																	<ExtendedTooltip name="ExportAdditionNodeScenarioFilterPresentationExtendedTooltip" id="490"/>
+																</InputField>
+																<LabelDecoration name="ExportAdditionFilterByNodeScenario" id="491">
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Change filter parameters</v8:content>
+																		</v8:item>
+																	</Title>
+																	<Hyperlink>true</Hyperlink>
+																	<ContextMenu name="ExportAdditionFilterByNodeScenarioContextMenu" id="492"/>
+																	<ExtendedTooltip name="ExportAdditionFilterByNodeScenarioExtendedTooltip" id="493"/>
+																	<Events>
+																		<Event name="Click">ExportAdditionFilterByNodeScenarioClick</Event>
+																	</Events>
+																</LabelDecoration>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<LabelDecoration name="Decoration24" id="316">
+							<VerticalStretch>true</VerticalStretch>
+							<ContextMenu name="Decoration24ContextMenu" id="317"/>
+							<ExtendedTooltip name="Decoration24ExtendedTooltip" id="357"/>
+						</LabelDecoration>
+						<UsualGroup name="StandardSettingsVariantImportGroup" id="318">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Standard settings variant import group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Standard settings variant import group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="StandardSettingsVariantImportGroupExtendedTooltip" id="358"/>
+							<ChildItems>
+								<Button name="ExportAdditionExportContent" id="320">
+									<Type>Hyperlink</Type>
+									<Representation>PictureAndText</Representation>
+									<CommandName>Form.Command.ExportAdditionExportContent</CommandName>
+									<ExtendedTooltip name="ExportAdditionExportContentExtendedTooltip" id="360"/>
+								</Button>
+								<UsualGroup name="Group13" id="319">
+									<Group>Horizontal</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group13ExtendedTooltip" id="359"/>
+									<ChildItems>
+										<Button name="ExportAdditionFilterHistory" id="321">
+											<Type>UsualButton</Type>
+											<Representation>PictureAndText</Representation>
+											<CommandName>Form.Command.ExportAdditionFilterHistory</CommandName>
+											<ExtendedTooltip name="ExportAdditionFilterHistoryExtendedTooltip" id="361"/>
+										</Button>
+										<LabelDecoration name="Decoration25" id="325">
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Save settings or select previously saved settings item.</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="Decoration25ContextMenu" id="326"/>
+											<ExtendedTooltip name="Decoration25ExtendedTooltip" id="364"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<LabelDecoration name="Decoration26" id="327">
+							<VerticalStretch>true</VerticalStretch>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Click Next to send data</v8:content>
+								</v8:item>
+							</Title>
+							<VerticalAlign>Bottom</VerticalAlign>
+							<ContextMenu name="Decoration26ContextMenu" id="328"/>
+							<ExtendedTooltip name="Decoration26ExtendedTooltip" id="365"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+				<Page name="WaitingForExport" id="417">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>End</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Waiting for export</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="WaitingForExportExtendedTooltip" id="418"/>
+					<ChildItems>
+						<LabelDecoration name="Decoration2" id="430">
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data synchronization</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration2ContextMenu" id="431"/>
+							<ExtendedTooltip name="Decoration2ExtendedTooltip" id="432"/>
+						</LabelDecoration>
+						<UsualGroup name="Group7" id="419">
+							<VerticalStretch>false</VerticalStretch>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group7ExtendedTooltip" id="420"/>
+							<ChildItems>
+								<PictureDecoration name="Decoration45" id="421">
+									<Width>8</Width>
+									<Height>3</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.DataSynchronizationLongAction48</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="Decoration45ContextMenu" id="422"/>
+									<ExtendedTooltip name="Decoration45ExtendedTooltip" id="423"/>
+								</PictureDecoration>
+								<LabelDecoration name="Decoration46" id="424">
+									<VerticalStretch>true</VerticalStretch>
+									<Font ref="style:TextFont" height="10" kind="StyleItem"/>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Synchronization in progress. This can take several minutes.
+Please wait...</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Center</VerticalAlign>
+									<ContextMenu name="Decoration46ContextMenu" id="425"/>
+									<ExtendedTooltip name="Decoration46ExtendedTooltip" id="426"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
+				<Page name="End" id="121">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>End</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>End</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="EndExtendedTooltip" id="366"/>
+					<ChildItems>
+						<LabelDecoration name="Decoration3" id="433">
+							<Font ref="sys:DefaultGUIFont" height="10" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data synchronization</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="Decoration3ContextMenu" id="434"/>
+							<ExtendedTooltip name="Decoration3ExtendedTooltip" id="435"/>
+						</LabelDecoration>
+						<UsualGroup name="SuccessfullyCompletedGroup" id="192">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Successfully completed group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Successfully completed group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<VerticalStretch>false</VerticalStretch>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="SuccessfullyCompletedGroupExtendedTooltip" id="367"/>
+							<ChildItems>
+								<PictureDecoration name="Decoration43" id="193">
+									<Width>8</Width>
+									<Height>3</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.Information32</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="Decoration43ContextMenu" id="194"/>
+									<ExtendedTooltip name="Decoration43ExtendedTooltip" id="368"/>
+								</PictureDecoration>
+								<LabelDecoration name="Decoration44" id="195">
+									<VerticalStretch>true</VerticalStretch>
+									<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data synchronization is completed successfully.</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Center</VerticalAlign>
+									<ContextMenu name="Decoration44ContextMenu" id="196"/>
+									<ExtendedTooltip name="Decoration44ExtendedTooltip" id="369"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="CompletedWithErrorsGroup" id="436">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Done group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Done group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<VerticalStretch>false</VerticalStretch>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="CompletedWithErrorsGroupExtendedTooltip" id="437"/>
+							<ChildItems>
+								<PictureDecoration name="Decoration47" id="438">
+									<Width>8</Width>
+									<Height>3</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.Error32</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="Decoration47ContextMenu" id="439"/>
+									<ExtendedTooltip name="Decoration47ExtendedTooltip" id="440"/>
+								</PictureDecoration>
+								<LabelDecoration name="Decoration48" id="441">
+									<VerticalStretch>true</VerticalStretch>
+									<Font ref="sys:DefaultGUIFont" height="10" kind="WindowsFont"/>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Errors occurred during data synchronization.</v8:content>
+										</v8:item>
+									</Title>
+									<VerticalAlign>Center</VerticalAlign>
+									<ContextMenu name="Decoration48ContextMenu" id="442"/>
+									<ExtendedTooltip name="Decoration48ExtendedTooltip" id="443"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+						<LabelDecoration name="NextLabel2" id="126">
+							<Height>3</Height>
+							<VerticalStretch>true</VerticalStretch>
+							<Title formatted="false">
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Click Done to complete.</v8:content>
+								</v8:item>
+							</Title>
+							<VerticalAlign>Bottom</VerticalAlign>
+							<ContextMenu name="NextLabel2ContextMenu" id="127"/>
+							<ExtendedTooltip name="NextLabel2ExtendedTooltip" id="370"/>
+						</LabelDecoration>
+					</ChildItems>
+				</Page>
+			</ChildItems>
+		</Pages>
+		<UsualGroup name="NavigationPanelBorder" id="51">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel border</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Navigation panel border</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Vertical</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="NavigationPanelBorderExtendedTooltip" id="371"/>
+			<ChildItems>
+				<Pages name="NavigationPanel" id="1">
+					<EnableContentChange>true</EnableContentChange>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation panel</v8:content>
+						</v8:item>
+					</Title>
+					<PagesRepresentation>None</PagesRepresentation>
+					<ExtendedTooltip name="NavigationPanelExtendedTooltip" id="372"/>
+					<ChildItems>
+						<Page name="NavigationPageStart" id="7">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation start page</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageStartExtendedTooltip" id="373"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar1" id="400">
+									<ExtendedTooltip name="LeftCommandBar1ExtendedTooltip" id="401"/>
+									<ChildItems>
+										<Button name="BackCommand" id="72">
+											<Type>CommandBarButton</Type>
+											<Visible>false</Visible>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommandExtendedTooltip" id="375"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel1" id="397">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel1ContextMenu" id="398"/>
+									<ExtendedTooltip name="IndentCommandPanel1ExtendedTooltip" id="399"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar1" id="70">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar1ExtendedTooltip" id="374"/>
+									<ChildItems>
+										<Button name="NextCommand" id="71">
+											<Type>CommandBarButton</Type>
+											<DefaultButton>true</DefaultButton>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommandExtendedTooltip" id="376"/>
+										</Button>
+										<Button name="CancelCommand" id="73">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommandExtendedTooltip" id="377"/>
+										</Button>
+										<Button name="Help" id="91">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="HelpExtendedTooltip" id="378"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageContinuation" id="8">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page continuation</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageContinuationExtendedTooltip" id="379"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar2" id="405">
+									<ExtendedTooltip name="LeftCommandBar2ExtendedTooltip" id="406"/>
+									<ChildItems>
+										<Button name="BackCommand1" id="76">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand1ExtendedTooltip" id="381"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel2" id="402">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel2ContextMenu" id="403"/>
+									<ExtendedTooltip name="IndentCommandPanel2ExtendedTooltip" id="404"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar2" id="75">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar2ExtendedTooltip" id="380"/>
+									<ChildItems>
+										<Button name="NextCommand1" id="77">
+											<Type>CommandBarButton</Type>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.NextCommand</CommandName>
+											<ExtendedTooltip name="NextCommand1ExtendedTooltip" id="382"/>
+										</Button>
+										<Button name="CancelCommand1" id="78">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand1ExtendedTooltip" id="383"/>
+										</Button>
+										<Button name="Help1" id="92">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help1ExtendedTooltip" id="384"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageEnd" id="9">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>End navigation page</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageEndExtendedTooltip" id="385"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar3" id="410">
+									<ExtendedTooltip name="LeftCommandBar3ExtendedTooltip" id="411"/>
+									<ChildItems>
+										<Button name="BackCommand2" id="81">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand2ExtendedTooltip" id="387"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel3" id="407">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel3ContextMenu" id="408"/>
+									<ExtendedTooltip name="IndentCommandPanel3ExtendedTooltip" id="409"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar3" id="80">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar3ExtendedTooltip" id="386"/>
+									<ChildItems>
+										<Button name="DoneCommand" id="90">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.DoneCommand</CommandName>
+											<ExtendedTooltip name="DoneCommandExtendedTooltip" id="388"/>
+										</Button>
+										<Button name="CancelCommand2" id="83">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand2ExtendedTooltip" id="389"/>
+										</Button>
+										<Button name="Help2" id="93">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help2ExtendedTooltip" id="390"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+						<Page name="NavigationPageWait" id="63">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Navigation page wait</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="NavigationPageWaitExtendedTooltip" id="391"/>
+							<ChildItems>
+								<CommandBar name="LeftCommandBar4" id="415">
+									<ExtendedTooltip name="LeftCommandBar4ExtendedTooltip" id="416"/>
+									<ChildItems>
+										<Button name="BackCommand3" id="86">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<ExtendedTooltip name="BackCommand3ExtendedTooltip" id="393"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+								<LabelDecoration name="IndentCommandPanel4" id="412">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="IndentCommandPanel4ContextMenu" id="413"/>
+									<ExtendedTooltip name="IndentCommandPanel4ExtendedTooltip" id="414"/>
+								</LabelDecoration>
+								<CommandBar name="RightCommandBar4" id="85">
+									<EnableContentChange>true</EnableContentChange>
+									<HorizontalLocation>Right</HorizontalLocation>
+									<ExtendedTooltip name="RightCommandBar4ExtendedTooltip" id="392"/>
+									<ChildItems>
+										<Button name="NextCommand3" id="87">
+											<Type>CommandBarButton</Type>
+											<Enabled>false</Enabled>
+											<DefaultItem>true</DefaultItem>
+											<CommandName>Form.Command.BackCommand</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Next &gt;</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="NextCommand3ExtendedTooltip" id="394"/>
+										</Button>
+										<Button name="CancelCommand3" id="88">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.CancelCommand</CommandName>
+											<ExtendedTooltip name="CancelCommand3ExtendedTooltip" id="395"/>
+										</Button>
+										<Button name="Help3" id="94">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.Help</CommandName>
+											<ExtendedTooltip name="Help3ExtendedTooltip" id="396"/>
+										</Button>
+									</ChildItems>
+								</CommandBar>
+							</ChildItems>
+						</Page>
+					</ChildItems>
+				</Pages>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.InteractiveDataExchangeWizardSaaS</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="GoToNumber" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>3</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="GoToTable" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Go to table</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="GoToNumber" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go to number</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>3</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="MainPageName" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Main page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="DecorationPageName" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Decoration page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="NavigationPageName" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Navigation page name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="OnOpenHandlerName" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>On open handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoNextHandlerName" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go next handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="GoBackHandlerName" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Go back handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LongAction" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="LongActionHandlerName" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Long action handler name</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ExportAddition" id="27">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Export addition</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>cfg:DataProcessorObject.InteractiveExportModification</v8:Type>
+			</Type>
+			<Columns>
+				<AdditionalColumns table="ExportAddition.AdditionalRegistration">
+					<Column name="FullMetadataName" id="1">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Full metadata name</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+					<Column name="Filter" id="2">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Filter</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>dcsset:Filter</v8:Type>
+						</Type>
+					</Column>
+					<Column name="Period" id="3">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Period</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>v8:StandardPeriod</v8:Type>
+						</Type>
+					</Column>
+					<Column name="SelectPeriod" id="4">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Period selection</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:boolean</v8:Type>
+						</Type>
+					</Column>
+					<Column name="Presentation" id="5">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Presentation</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+					<Column name="FilterString" id="6">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Filter as string</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+					<Column name="Quantity" id="7">
+						<Title>
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>Quantity</v8:content>
+							</v8:item>
+						</Title>
+						<Type>
+							<v8:Type>xs:string</v8:Type>
+							<v8:StringQualifiers>
+								<v8:Length>0</v8:Length>
+								<v8:AllowedLength>Variable</v8:AllowedLength>
+							</v8:StringQualifiers>
+						</Type>
+					</Column>
+				</AdditionalColumns>
+			</Columns>
+		</Attribute>
+		<Attribute name="ExportAdditionSettingsPresentation" id="34">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Current settings</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ForceCloseForm" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Force close form</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="LongActionState" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Long action state</v8:content>
+				</v8:item>
+			</Title>
+			<Type/>
+		</Attribute>
+		<Attribute name="CompositionSchemaAddress" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Composition schema address</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="NextCommand" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Next &gt;</v8:content>
+				</v8:item>
+			</Title>
+			<Action>NextCommand</Action>
+		</Command>
+		<Command name="BackCommand" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>&lt; Back</v8:content>
+				</v8:item>
+			</Title>
+			<Action>BackCommand</Action>
+		</Command>
+		<Command name="CancelCommand" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</Title>
+			<Action>CancelCommand</Action>
+		</Command>
+		<Command name="DoneCommand" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Done</v8:content>
+				</v8:item>
+			</Title>
+			<Action>DoneCommand</Action>
+		</Command>
+		<Command name="ExportAdditionFilterHistory" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Previously saved export options</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.ReportSettings</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportAdditionFilterHistory</Action>
+		</Command>
+		<Command name="ExportAdditionDetailedFilterClearing" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clears the detailed filter.</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Detailed filter clearing.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Clear</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportAdditionDetailedFilterClearing</Action>
+		</Command>
+		<Command name="ExportAdditionGeneralFilterClearing" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear general filter</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Clear general filter</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Clear</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportAdditionGeneralFilterClearing</Action>
+		</Command>
+		<Command name="ExportAdditionExportContent" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sent data content report</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open the sent data content report</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Report</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ExportAdditionExportContent</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="ExchangePlanName">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="CorrespondentDataArea">
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>7</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="CorrespondentDescription">
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Parameter>
+		<Parameter name="CorrespondentEndpoint">
+			<Type>
+				<v8:Type>cfg:ExchangePlanRef.MessageExchange</v8:Type>
+			</Type>
+		</Parameter>
+		<Parameter name="DenyExportOnlyChanged">
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+	</Parameters>
+</Form>

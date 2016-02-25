@@ -1,181 +1,162 @@
-﻿
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Users subsystem.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
-// Returns the current user or current external user that corresponds 
-// to the authorized infobase user.
-// 
-// Returns:
-// CatalogRef.Users, CatalogRef.ExternalUsers.
-//
+////////////////////////////////////////////////////////////////////////////////
+// Main procedures and functions.
+
+// See the function with the same name in the UsersClientServer common module.
 Function AuthorizedUser() Export
 	
-	SetPrivilegedMode(True);
-	
-	Return ?(ValueIsFilled(SessionParameters.CurrentUser), SessionParameters.CurrentUser, SessionParameters.CurrentExternalUser);
+	Return UsersClientServer.AuthorizedUser();
 	
 EndFunction
 
-// Returns the current ordinary user that corresponds to the authorized infobase user.
-//
-// If an external user corresponds to the authorized infobase user, an empty reference
-// is returned.
-//
-// Returns:
-//  CatalogRef.Users
-//
+// See the function with the same name in the UsersClientServer common module.
 Function CurrentUser() Export
 	
-	SetPrivilegedMode(True);
-	
-	Return SessionParameters.CurrentUser;
+	Return UsersClientServer.CurrentUser();
 	
 EndFunction
 
-// Checks whether the current or specified user is a full access user.
-
-// A user is a full access user if
-//  a) the infobase user list is not empty and:
-//   - in the local mode (without data separation), the user has the FullAccess role 
-//   and the infobase administrator role,
-//   - in the service mode (with data separation), the user has the FullAccess role.
-//  b) the infobase user list is empty and the main configuration role is not specified 
-//   or specified as FullAccess.
-//
-// Parameters: 
-//  User                            - Undefined - if the current infobase user will be
-//                                    checked.
-//                                  - CatalogRef.Users, CatalogRef.ExternalUsers - if
-//                                    the user that will be checked must be found by
-//                                    UUID.
-//                                    Note: if the infobase user is not found, False 
-//                                    will be returned.
-//                                  - InfoBaseUser - if the specified infobase user 
-//                                    will be checked.
-//  CheckSystemAdministrationRights - Boolean - flag that shows whether an  
-//                                    administrative role existence will be checked. 
-//                                    The default value is False.
-//  ForPrivilegedMode               - Boolean - if it is set to True, the function 
-//                                    returns True when the privileged mode is on.
-//                                    The default value is True.
-//
+// Checks whether the current user or the specified user has full access rights.
+//  
+// A user has full access rights if:
+// a) the infobase user list is not empty and the user has the FullAccess
+// role and the administrative role
+// (provided that CheckSystemAdministrationRights is True), 
+// b) the infobase user list is empty and the default role is either not specified or FullAccess.
+// 
+// Parameters:
+//  User - Undefined - check the the current infobase user.
+//       - CatalogRef.Users, CatalogRef.ExternalUsers - search for infobase
+//        user by UUID that is stored in the InfobaseUserID attribute.
+//        Returns False if the infobase user is not found.
+//       - InfobaseUser - checks the infobase user that is passed to the function.
+// 
+//  CheckSystemAdministrationRights - Boolean - if True, checks whether the
+//         user has the administrative role.
+// 
+//  ForPrivilegedMode - Boolean - if True, for the current user the function returns True (provided that privileged mode is set).
+// 
 // Returns:
-//  Boolean.
+//  Boolean - if True, the user has full access rights.
 //
-Function InfoBaseUserWithFullAccess(User = Undefined,
+Function InfobaseUserWithFullAccess(User = Undefined,
                                     CheckSystemAdministrationRights = False,
                                     ForPrivilegedMode = True) Export
 	
-	If ForPrivilegedMode And PrivilegedMode() Then
-		Return True;
-	EndIf;
+	PrivilegedModeSet = PrivilegedMode();
 	
 	SetPrivilegedMode(True);
+	Properties = CheckedInfobaseUserProperties(User);
+	IBUser = Properties.IBUser;
 	
-	If User = Undefined Or User = AuthorizedUser() Then
-		InfoBaseUser = InfoBaseUsers.CurrentUser();
-		
-	ElsIf TypeOf(User) = Type("InfoBaseUser") Then
-		InfoBaseUser = User;
-		
-	Else
-		// The specified user is not the current one
-		InfoBaseUser = InfoBaseUsers.FindByUUID(
-			CommonUse.GetAttributeValue(User, "InfoBaseUserID"));
-		
-		If InfoBaseUser = Undefined Then
+	CheckFullAccessRole = Not CheckSystemAdministrationRights;
+	CheckSystemAdministratorRole = CheckSystemAdministrationRights;
+	
+	If IBUser = Undefined Then
+		Return False;
+	ElsIf Not Properties.IsCurrentInfobaseUser Then
+		// Checking roles for the saved infobase user if the user to be checked
+   // is not the current one.
+		If CheckFullAccessRole
+		   And Not IBUser.Roles.Contains(Metadata.Roles.FullAccess) Then
 			Return False;
 		EndIf;
-	EndIf;
-	
-	If InfoBaseUser.UUID <> InfoBaseUsers.CurrentUser().UUID Then
-		
-		// Checking roles of the written infobase user if this user is not the current one.
-		If CheckSystemAdministrationRights Then
-			Return InfoBaseUser.Roles.Contains(FullAdministratorRole())
-		Else
-			Return InfoBaseUser.Roles.Contains(Metadata.Roles.FullAccess)
+		If CheckSystemAdministratorRole
+		   And Not IBUser.Roles.Contains(FullAdministratorRole(True)) Then
+			Return False;
 		EndIf;
+		Return True;
 	Else
-		If ValueIsFilled(InfoBaseUser.Name) Then
-			
-			// Checking roles in the current session but not in the written infobase user
-			// if the current user is specified.
-			If CheckSystemAdministrationRights Then
-				Return IsInRole(FullAdministratorRole())
-			Else
-				Return IsInRole(Metadata.Roles.FullAccess)
-			EndIf;
-		Else
-			// Checking the main configuration role if the infobase user is not specified: 
-			// it must be set to FullAccess or Undefined.
-			If Metadata.DefaultRoles.Count() = 0 
-			   Or Metadata.DefaultRoles.Contains(Metadata.Roles.FullAccess) Then
-				Return True;
-			Else
-				Return False;
-			EndIf;
+		If ForPrivilegedMode And PrivilegedModeSet Then
+			Return True;
 		EndIf;
+		
+		If StandardSubsystemsCached.PrivilegedModeSetOnStart() Then
+			// User has full access rights if the client application runs withthe
+     // UsePrivilegedMode parameter (provided that privileged mode is set).
+			Return True;
+		EndIf;
+		
+		If Not ValueIsFilled(IBUser.Name) And Metadata.DefaultRoles.Count() = 0 Then
+			// If the default roles collection is empty and the user is not specified, the user has full access rights (as in the privileged mode).
+			Return True;
+		EndIf;
+		
+		If Not ValueIsFilled(IBUser.Name)
+		   And PrivilegedModeSet
+		   And AccessRight("Administration", Metadata, IBUser) Then
+			// If the user is not specified and has the Administration right and privileged mode is set, the user has full access rights.
+			Return True;
+		EndIf;
+		
+		// Checking roles of the current infobase user (the current session
+   //roles are checked instead of the user roles that are saved to the Infobase).
+		If CheckFullAccessRole
+		   And Not IsInRole(Metadata.Roles.FullAccess) Then
+			Return False;
+		EndIf;
+		If CheckSystemAdministratorRole
+		   And Not IsInRole(FullAdministratorRole(True)) Then
+			Return False;
+		EndIf;
+		Return True;
 	EndIf;
 	
 EndFunction
 
-// Shows whether even one of the specified roles is available or the user (current or  
-// specified) has full access.
+// Returns True if at least one of the specified roles is available for the
+// user, or the user has full access rights.
 //
 // Parameters:
-//  RoleNames - String - names of roles, separated by comma, whose availability will be
-//              checked.
-//  User      - Undefined - if the current infobase user will be checked.
-//            - CatalogRef.Users, CatalogRef.ExternalUsers - if the user that will be 
-//              chacked must be found by UUID.
-//              Note: if the infobase user is not found, False will be returned.
-//            - InfoBaseUser - if the specified infobase user will be checked.
+//  RoleNames          - String - names of roles whose availability is
+//                       checked, separated by commas.
+//
+//  User               - Undefined - check the the current infobase user.
+//                     - CatalogRef.Users, CatalogRef.ExternalUsers - search
+//                       for infobase user by UUID that is stored in the 
+//                       InfobaseUserID attribute. Returns False if the
+//                       infobase user is not found.
+//                     - InfobaseUser - checks the infobase user that is
+//                       passed to the function.
+//
+//  ForPrivilegedMode - Boolean - if True, for the current user the function
+//                      returns True (provided that privileged mode is set).
 //
 // Returns:
-//  Boolean - True if even one of the roles is available or the 
-//            InfoBaseUserWithFullAccess function returns true.
+//  Boolean - True if at least one of the roles is available or the
+//            InfobaseUserWithFullAccess(User) function returns True.
 //
-Function RolesAvailable(Val RoleNames, User = Undefined) Export
+Function RolesAvailable(RoleNames,
+                     User = Undefined,
+                     ForPrivilegedMode = True) Export
 	
-	If InfoBaseUserWithFullAccess(User) Then
+	If InfobaseUserWithFullAccess(User, , ForPrivilegedMode) Then
 		Return True;
 	EndIf;
 	
 	SetPrivilegedMode(True);
+	Properties = CheckedInfobaseUserProperties(User);
+	IBUser = Properties.IBUser;
 	
-	If User = Undefined Or User = AuthorizedUser() Then
-		InfoBaseUser = InfoBaseUsers.CurrentUser();
-		
-	ElsIf TypeOf(User) = Type("InfoBaseUser") Then
-		InfoBaseUser = User;
-		
-	Else
-		// The specified user is not the current one
-		InfoBaseUser = InfoBaseUsers.FindByUUID(
-			CommonUse.GetAttributeValue(User, "InfoBaseUserID"));
-		
-		If InfoBaseUser = Undefined Then
-			Return False;
-		EndIf;
+	If IBUser = Undefined Then
+		Return False;
 	EndIf;
-	
-	IsCurrentInfoBaseUser = InfoBaseUser.UUID = InfoBaseUsers.CurrentUser().UUID;
 	
 	RoleNameArray = StringFunctionsClientServer.SplitStringIntoSubstringArray(RoleNames);
 	For Each RoleName In RoleNameArray Do
 		
-		If IsCurrentInfoBaseUser Then
+		If Properties.IsCurrentInfobaseUser Then
 			If IsInRole(TrimAll(RoleName)) Then
 				Return True;
 			EndIf;
 		Else
-			If InfoBaseUser.Roles.Contains(Metadata.Roles.Find(TrimAll(RoleName))) Then
+			If IBUser.Roles.Contains(Metadata.Roles.Find(TrimAll(RoleName))) Then
 				Return True;
 			EndIf;
 		EndIf;
@@ -185,176 +166,88 @@ Function RolesAvailable(Val RoleNames, User = Undefined) Export
 	
 EndFunction
 
-// Is used when updating and initial filling of the infobase.
-// 1) Creates the first administrator and sets a correspondence between them and a 
-//    new or existent user from the User catalog.
-// 2) Sets a correspondence between the administrator that is specified in the Account  
-//    parameter and a new or existent user from the User catalog.
+// Checks whether an infobase user has at least one authentication kind.
 //
 // Parameters:
-//  Account          - InfoBaseUser, Optional - is used to set a correspondence between 
-//                     the existent administrator and a new or existent user from the
-//                     User catalog. 
+//  InfobaseUserDetails - UUID - infobase user UUID.
+//                      - Structure - contains 3 authentication properties:
+//                             * StandardAuthentication - Boolean
+//                             * OSAuthentication       - Boolean
+//                             * OpenIDAuthentication   - Boolean
+//                       - InfobaseUser
+//                       - CatalogRef.Users
+//                       - CatalogRef.ExternalUsers
 //
 // Returns:
-//  Undefined        - if the user that corresponds to the infobase user with 
-//                     administrative rights already exists. 
-//  CatalogRef.Users - User that corresponds to the first administrator or the
-//                     administrator that is specified in the Account parameter.
+//  Boolean - True if at least one authentication property value is True.
 //
-Function CreateFirstAdministrator(Account = Undefined) Export
+Function CanLogOnToApplication(InfobaseUserDetails) Export
 	
-	// Adding the administrator (administrator has full rights).
-	If Account = Undefined Then
+	SetPrivilegedMode(True);
+	
+	UUID = Undefined;
+	
+	If TypeOf(InfobaseUserDetails) = Type("CatalogRef.Users")
+	 Or TypeOf(InfobaseUserDetails) = Type("CatalogRef.ExternalUsers") Then
 		
-		If CommonUseCached.DataSeparationEnabled() Then
-			Return Undefined;
+		UUID = CommonUse.ObjectAttributeValue(
+			InfobaseUserDetails, "InfobaseUserID");
+		
+		If TypeOf(InfobaseUserDetails) <> Type("UUID") Then
+			Return False;
 		EndIf;
 		
-		// If the user with administrative rights is already exists, 
-		// there is no need to create the administrator again.
-		Account = Undefined;
+	ElsIf TypeOf(InfobaseUserDetails) = Type("UUID") Then
+		UUID = InfobaseUserDetails;
+	EndIf;
 	
-		SetPrivilegedMode(True);
-		AllInfoBaseUsers = InfoBaseUsers.GetUsers();
-		SetPrivilegedMode(False);
-		For Each InfoBaseUser In AllInfoBaseUsers Do
-			If InfoBaseUserWithFullAccess(InfoBaseUser) Then
-				Return Undefined;
-			EndIf;
-		EndDo;
-		If Account = Undefined Then
-			SetPrivilegedMode(True);
-			Account = InfoBaseUsers.CreateUser();
-			Account.Name     = "Administrator";
-			Account.FullName = Account.Name;
-			Account.Roles.Clear();
-			Account.Roles.Add(Metadata.Roles.FullAccess);
-			If Not CommonUseCached.DataSeparationEnabled() Then
-				FullAdministratorRole = FullAdministratorRole();
-				If Not Account.Roles.Contains(FullAdministratorRole) Then
-					Account.Roles.Add(FullAdministratorRole);
-				EndIf;
-			EndIf;
-			Account.Write();
-			SetPrivilegedMode(False);
+	If UUID <> Undefined Then
+		IBUser = InfobaseUsers.FindByUUID(UUID);
+		
+		If IBUser = Undefined Then
+			Return False;
 		EndIf;
 	Else
-		FindAmbiguousInfoBaseUsers(, Account.UUID);
+		IBUser = InfobaseUserDetails;
 	EndIf;
 	
-	If UserByIDExists(Account.UUID) Then
-		User = Catalogs.Users.FindByAttribute("InfoBaseUserID", Account.UUID);
-		// The administrator cannot correspond to an external user. Clearing this correspondence.
-		If Not ValueIsFilled(User) Then
-			ExternalUser = Catalogs.ExternalUsers.FindByAttribute("InfoBaseUserID", Account.UUID);
-			ExternalUserObject = ExternalUser.GetObject();
-			ExternalUserObject.DataExchange.Load = True;
-			ExternalUserObject.Write();
-		EndIf;
-	EndIf;
-	
-	If Not ValueIsFilled(User) Then
-		User = Catalogs.Users.FindByDescription(Account.FullName);
-		If ValueIsFilled(User)
-		   And ValueIsFilled(User.InfoBaseUserID)
-		   And User.InfoBaseUserID <> Account.UUID
-		   And InfoBaseUsers.FindByUUID(User.InfoBaseUserID) <> Undefined Then
-			User = Undefined;
-		EndIf;
-	EndIf;
-	
-	If Not ValueIsFilled(User) Then
-		User = Catalogs.Users.CreateItem();
-		UserCreated = True;
-	Else
-		User = User.GetObject();
-		UserCreated = False;
-	EndIf;
-	User.InfoBaseUserID = Account.UUID;
-	User.Description = Account.FullName;
-	User.DataExchange.Load = True;
-	User.Write();
-	If UserCreated Then
-		UpdateUserGroupContent(Catalogs.UserGroups.AllUsers);
-	EndIf;
-	
-	UsersOverridable.OnWriteFirstAdministrator(User.Ref);
-	
-	Return User.Ref;
+	Return IBUser.StandardAuthentication
+		Or IBUser.OSAuthentication
+		Or IBUser.OpenIDAuthentication;
 	
 EndFunction
 
-// Returns a role that provides system administrative rights.
-//
-// Returns:
-//  MetadataObject: Role.
-//
-Function FullAdministratorRole() Export
-	
-	FullAdministratorRole = Metadata.Roles.FullAdministrator;
-	
-	If StandardSubsystemsOverridable.IsBaseConfigurationVersion() Then
-		FullAdministratorRole = Metadata.Roles.FullAccess;
-	EndIf;
-	
-	UsersOverridable.ChangeFullAdministratorRole(FullAdministratorRole);
-	
-	Return FullAdministratorRole;
-	
-EndFunction
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions used in managed forms
 
-// Returns a Users catalog user that corresponds to the infobase user with the 
-// specified name.
-// Administrative rights are required for this search. If the current user does not 
-// have administrative rights, it is allowed to search a user for the current infobase
-// user only.
-// 
-// Parameters:
-//  UserName - String - infobase user name.
-//
-// Returns:
-//  CatalogRef.Users          - if the user is found.
-//  Catalogs.Users.EmptyRef() - if the infobase user is found.
-//  Undefined                 - if the user is not found.
-//
-Function FindByName(Val IBUserName) Export
-	
-	InfoBaseUser = InfoBaseUsers.FindByName(IBUserName);
-	
-	If InfoBaseUser = Undefined Then
-		Return Undefined;
-	Else
-		FindAmbiguousInfoBaseUsers(, InfoBaseUser.UUID);
-		Return Catalogs.Users.FindByAttribute("InfoBaseUserID", InfoBaseUser.UUID);
-	EndIf;
-	
-EndFunction
-
-// Returns a list of users, user groups, external users, and external user groups that
-// are not marked for deletion.
-// Is used in TextEditEnd and AutoComplete event handlers.
+// Returns a list of users, user groups, external users, and external user groups that are not marked for deletion.
+//  Used in TextEditEnd and AutoComplete event handlers.
 //
 // Parameters:
-//  Text                   - String - text typed by user.
-//  IcludingGroups         - Boolean - flag that shows whether user groups and   
-//                           external user groups will be included. If the   
-//                           UseUserGroups functional option is disabled, the function 
-//                           ignores this parameter.
-//  IncludingExternalUsers - Undefined or Boolean - if it is Undefined, the return 
-//                           value of the ExternalUsers.UseExternalUsers function is
-//                           used.
-//  NoUsers                - Boolean - flag that shows whether the Users catalog items 
-//                           will be excluded from the result.
+//  Text                  - String - characters entered by the user.
 //
-Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val IncludingExternalUsers = Undefined, NoUsers = False) Export
+//  IncludeGroups         - Boolean - if True, user groups and external user
+//                          group also be included in the function result.
+//                          This parameter is ignored if the UseUserGroups
+//                          functional option is disabled.
+//
+//  IncludingExternalUsers - Undefined, Boolean - if Undefined, the
+//                           ExternalUsers.UseExternalUsers() function
+//                           result is used.
+//
+//  NoUsers                - Boolean - if True, items of the Users catalog
+//                           are excluded from the function result.
+//
+Function GenerateUserSelectionData(Val Text,
+                                             Val IncludeGroups = True,
+                                             Val IncludingExternalUsers = Undefined,
+                                             Val NoUsers = False) Export
 	
-	IcludingGroups = IcludingGroups And GetFunctionalOption("UseUserGroups");
+	IncludeGroups = IncludeGroups And GetFunctionalOption("UseUserGroups");
 	
 	Query = New Query;
 	Query.SetParameter("Text", Text + "%");
-	Query.SetParameter("IcludingGroups", IcludingGroups);
-	Query.SetParameter("EmptyUUID", New UUID("00000000-0000-0000-0000-000000000000"));
+	Query.SetParameter("IncludeGroups", IncludeGroups);
 	Query.Text = 
 	"SELECT ALLOWED
 	|	VALUE(Catalog.Users.EmptyRef) AS Ref,
@@ -364,21 +257,18 @@ Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val Includi
 	|	FALSE";
 	
 	If Not NoUsers Then
-		Query.Text = Query.Text + " UNION ALL" +
+		Query.Text = Query.Text + " UNION ALL " +
 		"SELECT
 		|	Users.Ref,
 		|	Users.Description,
-		|	CASE
-		|		WHEN Users.InfoBaseUserID = &EmptyUUID
-		|			THEN 4
-		|		ELSE 1
-		|	END AS PictureNumber
+		|	1 AS PictureNumber
 		|FROM
 		|	Catalog.Users AS Users
 		|WHERE
-		|	(NOT Users.DeletionMark)
+		|	NOT Users.DeletionMark
 		|	AND Users.Description LIKE &Text
 		|	AND Users.NotValid = FALSE
+		|	AND Users.Internal = FALSE
 		|
 		|UNION ALL
 		|
@@ -389,26 +279,23 @@ Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val Includi
 		|FROM
 		|	Catalog.UserGroups AS UserGroups
 		|WHERE
-		|	&IcludingGroups
-		|	AND (NOT UserGroups.DeletionMark)
+		|	&IncludeGroups
+		|	AND NOT UserGroups.DeletionMark
 		|	AND UserGroups.Description LIKE &Text";
 	EndIf;
 	
 	If TypeOf(IncludingExternalUsers) <> Type("Boolean") Then
 		IncludingExternalUsers = ExternalUsers.UseExternalUsers();
 	EndIf;
-	IncludingExternalUsers = IncludingExternalUsers And AccessRight("Read", Metadata.Catalogs.ExternalUsers);
+	IncludingExternalUsers = IncludingExternalUsers
+	                            And AccessRight("Read", Metadata.Catalogs.ExternalUsers);
 	
 	If IncludingExternalUsers Then
-		Query.Text = Query.Text + " UNION ALL" +
+		Query.Text = Query.Text + " UNION ALL " +
 		"SELECT
 		|	ExternalUsers.Ref,
 		|	ExternalUsers.Description,
-		|	CASE
-		|		WHEN ExternalUsers.InfoBaseUserID = &EmptyUUID
-		|			THEN 10
-		|		ELSE 7
-		|	END AS PictureNumber
+		|	7 AS PictureNumber
 		|FROM
 		|	Catalog.ExternalUsers AS ExternalUsers
 		|WHERE
@@ -425,7 +312,7 @@ Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val Includi
 		|FROM
 		|	Catalog.ExternalUserGroups AS ExternalUserGroups
 		|WHERE
-		|	&IcludingGroups
+		|	&IncludeGroups
 		|	AND (NOT ExternalUserGroups.DeletionMark)
 		|	AND ExternalUserGroups.Description LIKE &Text";
 	EndIf;
@@ -442,31 +329,39 @@ Function GenerateUserChoiceData(Val Text, Val IcludingGroups = True, Val Includi
 	
 EndFunction
 
-// Fills picture numbers of users, user groups, external users, and external user groups.
-//
+// The FillUserPictureNumbers procedure fills picture numbers of users, user groups, external users, and external user groups.
+// 
 // Parameters:
-//  Table                               - FormDataCollection or FormDataTree.
-//  UserFieldName                       - String - name of a field that contains
-//                                        a reference to a user, user group, external
-//                                        user, or external user group.
-//  PictureNumberFieldName              - String - name of a field that contains the
-//                                        picture number to be set.
-//  RowID                               - Undefined or Number - string ID (not a serial
-//                                        number). If it is Undefined, picture numbers
-//                                        for all rows will be filled.
-//  ProcessSecondAndThirdLevelHierarchy - Boolean - flag that shows whether second and
-//                                        third levels of hierarchy will be processed.
+//  Table                  - FormDataCollection, FormDataTree - the list to
+//                           be filled.
+//  UserFieldName          - String - name of the field that contains a
+//                           reference to user, user group, external user,
+//                           or external user group.
+//  PictureNumberFieldName - String - name of the field containing the
+//                           picture number.
+//  RowID                  - Undefined, Number - row ID (not a serial
+//                           number). If it is Undefined, picture numbers
+//                           are filled for all rows.
 //
-Procedure FillUserPictureNumbers(Val Table, Val UserFieldName, Val PictureNumberFieldName, Val RowID = Undefined, Val ProcessSecondAndThirdLevelHierarchy = False) Export
+Procedure FillUserPictureNumbers(Val Table,
+                                               Val UserFieldName,
+                                               Val PictureNumberFieldName,
+                                               Val RowID = Undefined,
+                                               Val ProcessSecondAndThirdLevelHierarchy = False) Export
 	
 	SetPrivilegedMode(True);
 	
 	If RowID = Undefined Then
 		RowArray = Undefined;
-	Else
-		SelectedRow = Table.FindByID(RowID);
+		
+	ElsIf TypeOf(RowID) = Type("Array") Then
 		RowArray = New Array;
-		RowArray.Add(SelectedRow);
+		For Each ID In RowID Do
+			RowArray.Add(Table.FindByID(ID));
+		EndDo;
+	Else
+		RowArray = New Array;
+		RowArray.Add(Table.FindByID(RowID));
 	EndIf;
 	
 	If TypeOf(Table) = Type("FormDataTree") Then
@@ -486,9 +381,20 @@ Procedure FillUserPictureNumbers(Val Table, Val UserFieldName, Val PictureNumber
 				EndDo;
 			EndIf;
 		EndDo;
+	ElsIf TypeOf(Table) = Type("FormDataCollection") Then
+		If RowArray = Undefined Then
+			RowArray = Table;
+		EndIf;
+		UserTable = New ValueTable;
+		UserTable.Columns.Add(UserFieldName, Metadata.InformationRegisters.UserGroupContent.Dimensions.UserGroup.Type);
+		For Each Row In RowArray Do
+			UserTable.Add()[UserFieldName] = Row[UserFieldName];
+		EndDo;
 	Else
+		If RowArray = Undefined Then
+			RowArray = Table;
+		EndIf;
 		UserTable = Table.Unload(RowArray, UserFieldName);
-		RowArray = Table;
 	EndIf;
 	
 	Query = New Query(StrReplace(
@@ -509,11 +415,7 @@ Procedure FillUserPictureNumbers(Val Table, Val UserFieldName, Val PictureNumber
 	|			THEN CASE
 	|					WHEN CAST(Users.User AS Catalog.Users).DeletionMark
 	|						THEN 0
-	|					ELSE CASE
-	|							WHEN CAST(Users.User AS Catalog.Users).InfoBaseUserID = &EmptyUUID
-	|								THEN 4
-	|							ELSE 1
-	|						END
+	|					ELSE 1
 	|				END
 	|		WHEN VALUETYPE(Users.User) = TYPE(Catalog.UserGroups)
 	|			THEN CASE
@@ -525,11 +427,7 @@ Procedure FillUserPictureNumbers(Val Table, Val UserFieldName, Val PictureNumber
 	|			THEN CASE
 	|					WHEN CAST(Users.User AS Catalog.ExternalUsers).DeletionMark
 	|						THEN 6
-	|					ELSE CASE
-	|							WHEN CAST(Users.User AS Catalog.ExternalUsers).InfoBaseUserID = &EmptyUUID
-	|								THEN 10
-	|							ELSE 7
-	|						END
+	|					ELSE 7
 	|				END
 	|		WHEN VALUETYPE(Users.User) = TYPE(Catalog.ExternalUserGroups)
 	|			THEN CASE
@@ -542,39 +440,151 @@ Procedure FillUserPictureNumbers(Val Table, Val UserFieldName, Val PictureNumber
 	|FROM
 	|	Users AS Users", "UserFieldName", UserFieldName));
 	Query.SetParameter("Users", UserTable);
-	Query.SetParameter("EmptyUUID", New UUID("00000000-0000-0000-0000-000000000000"));
 	PictureNumbers = Query.Execute().Unload();
 	
-	If RowID = Undefined Then
-		For Each Row In RowArray Do
-			Row[PictureNumberFieldName] = PictureNumbers.Find(Row[UserFieldName], "User").PictureNumber;
-			If ProcessSecondAndThirdLevelHierarchy Then
-				For Each Row2 In Row.GetItems() Do
-					Row2[PictureNumberFieldName] = PictureNumbers.Find(Row2[UserFieldName], "User").PictureNumber;
-					For Each Row3 In Row2.GetItems() Do
-						Row3[PictureNumberFieldName] = PictureNumbers.Find(Row3[UserFieldName], "User").PictureNumber;
-					EndDo;
-				EndDo;
-			EndIf;
-		EndDo;
-	Else
-		SelectedRow[PictureNumberFieldName] = PictureNumbers.Find(SelectedRow[UserFieldName], "User").PictureNumber;
+	For Each Row In RowArray Do
+		FoundRow = PictureNumbers.Find(Row[UserFieldName], "User");
+		Row[PictureNumberFieldName] = ?(FoundRow = Undefined, -2, FoundRow.PictureNumber);
 		If ProcessSecondAndThirdLevelHierarchy Then
-			For Each Row2 In SelectedRow.GetItems() Do
-				Row2[PictureNumberFieldName] = PictureNumbers.Find(Row2[UserFieldName], "User").PictureNumber;
+			For Each Row2 In Row.GetItems() Do
+				FoundRow = PictureNumbers.Find(Row2[UserFieldName], "User");
+				Row2[PictureNumberFieldName] = ?(FoundRow = Undefined, -2, FoundRow.PictureNumber);
 				For Each Row3 In Row2.GetItems() Do
-					Row3[PictureNumberFieldName] = PictureNumbers.Find(Row3[UserFieldName], "User").PictureNumber;
+					FoundRow = PictureNumbers.Find(Row3[UserFieldName], "User");
+					Row3[PictureNumberFieldName] = ?(FoundRow = Undefined, -2, FoundRow.PictureNumber);
 				EndDo;
 			EndDo;
 		EndIf;
-	EndIf;
+	EndDo;
 	
 EndProcedure
 
-// Sets the UseUserGroups constant value to True
-// if there are one or more user groups in the catalog.
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions used for infobase update
+
+// The procedure is used for infobase update and initial filling. It does one of the following:
+// 1) Creates the first administrator and maps it to a new user or an
+//    existing item of the Users catalog.
+// 2) Maps the administrator that is specified in the InfobaseUser
+//    parameter to a new user or an existing Users catalog item.
 //
-// Is used when updating the infobase.
+// Parameters:
+//  IBUser - InfobaseUser - used for mapping an existing administrator to a
+//           new user or an existing Users catalog item.
+//
+// Returns:
+//  Undefined        - a User catalog item that is mapped to the infobase
+//                     user with administrative rights already exists.
+//  CatalogRef.Users - a User catalog item that is mapped to the first
+//                     administrator or the administrator specified in the
+//                     InfobaseUser parameter.
+//
+Function CreateAdministrator(IBUser = Undefined) Export
+	
+	SetPrivilegedMode(True);
+	
+	// Adding administrator (system administrator, full access).
+	If IBUser = Undefined Then
+		
+		If CommonUseCached.DataSeparationEnabled() Then
+			Return Undefined;
+		EndIf;
+		
+		// If a user with administrative rights exists, there is no need to create another administrator.
+		IBUser = Undefined;
+	
+		InfobaseUsers = InfobaseUsers.GetUsers();
+		For Each CurrentInfobaseUser In InfobaseUsers Do
+			If InfobaseUserWithFullAccess(CurrentInfobaseUser,, False) Then
+				Return Undefined;
+			EndIf;
+		EndDo;
+		
+		If IBUser = Undefined Then
+			IBUser = InfobaseUsers.CreateUser();
+			IBUser.Name     = "Administrator";
+			IBUser.FullName = IBUser.Name;
+			IBUser.Roles.Clear();
+			IBUser.Roles.Add(Metadata.Roles.FullAccess);
+			
+			If Not CommonUseCached.DataSeparationEnabled() Then
+				FullAdministratorRole = FullAdministratorRole();
+				
+				If Not IBUser.Roles.Contains(FullAdministratorRole) Then
+					IBUser.Roles.Add(FullAdministratorRole);
+				EndIf;
+			EndIf;
+			IBUser.Write();
+		EndIf;
+	Else
+		If Not IBUser.Roles.Contains(Metadata.Roles.FullAccess)
+		 Or Not IBUser.Roles.Contains(Users.FullAdministratorRole()) Then
+		
+			Return Undefined;
+		EndIf;
+		
+		FindAmbiguousInfobaseUsers(, IBUser.UUID);
+	EndIf;
+	
+	If UsersInternal.UserByIDExists(
+	         IBUser.UUID) Then
+		
+		User = Catalogs.Users.FindByAttribute(
+			"InfobaseUserID", IBUser.UUID);
+		
+		// If the administrator is mapped to an external user, it is an error and clearing the mapping is required.
+		If Not ValueIsFilled(User) Then
+			
+			ExternalUser = Catalogs.ExternalUsers.FindByAttribute(
+				"InfobaseUserID", IBUser.UUID);
+			
+			ExternalUserObject = ExternalUser.GetObject();
+			ExternalUserObject.InfobaseUserID = Undefined;
+			ExternalUserObject.DataExchange.Load = True;
+			ExternalUserObject.Write();
+		EndIf;
+	EndIf;
+	
+	If Not ValueIsFilled(User) Then
+		User = Catalogs.Users.FindByDescription(IBUser.FullName);
+		
+		If ValueIsFilled(User)
+		   And ValueIsFilled(User.InfobaseUserID)
+		   And User.InfobaseUserID <> IBUser.UUID
+		   And InfobaseUsers.FindByUUID(
+		         User.InfobaseUserID) <> Undefined Then
+			
+			User = Undefined;
+		EndIf;
+	EndIf;
+	
+	If Not ValueIsFilled(User) Then
+		User = Catalogs.Users.CreateItem();
+		UserCreated = True;
+	Else
+		User = User.GetObject();
+		UserCreated = False;
+	EndIf;
+	
+	User.Description = IBUser.FullName;
+	
+	InfobaseUserDetails = New Structure;
+	InfobaseUserDetails.Insert("Action", "Write");
+	InfobaseUserDetails.Insert(
+		"UUID", IBUser.UUID);
+	
+	User.AdditionalProperties.Insert(
+		"InfobaseUserDetails", InfobaseUserDetails);
+	
+	User.Write();
+	
+	Return User.Ref;
+	
+EndFunction
+
+// Sets the UseUserGroups constant value to True if at least one user group exists in the catalog.
+//
+// The procedure is used during infobase update.
 //
 Procedure IfUserGroupsExistSetUse() Export
 	
@@ -603,136 +613,750 @@ Procedure IfUserGroupsExistSetUse() Export
 	
 EndProcedure
 
-// Returns an empty structure of infobase user details.
+////////////////////////////////////////////////////////////////////////////////
+// Procedures and functions for infobase user operations
+
+// Returns the full name of the user that is not specified (to be displayed in the user interface).
+Function UnspecifiedUserFullName() Export
+	
+	Return NStr("en = '<Not specified>'");
+	
+EndFunction
+
+// Checks whether the infobase user is mapped to an item of the Users catalog or the ExternalUsers catalog.
+// 
+// Parameters:
+//  IBUser   - String - infobase user name.
+//           - UUID - infobase user UUID.
+//           - InfobaseUser -
+//
+//  Account  - InfobaseUser - (return value).
 //
 // Returns:
-//  Structure with the following fields:
-//   InfoBaseUserUUID                   - UUID.
-//   InfoBaseUserName                   - String.
-//   InfoBaseUserFullName               - String.
+//  Boolean  - True if the infobase user exists and its ID is used 
+//             either in the Users catalog or in the ExternalUsers catalog.
 //
-//   InfoBaseUserStandardAuthentication - Boolean.
-//   InfoBaseUserShowInList             - Boolean.
-//   InfoBaseUserPassword               - Undefined.
-//   InfoBaseUserStoredPasswordValue    - Undefined.
-//   InfoBaseUserPasswordIsSet          - Boolean.
-//   InfoBaseUserCannotChangePassword   - Boolean.
-//   InfoBaseUserOSAuthentication       - Boolean.
-//   InfoBaseUserOSUser                 - String.
-//   InfoBaseUserDefaultInterface       - String - name of an interface from the
-//                                        Metadata.Interfaces collection.
-//   InfoBaseUserRunMode                - String - possible values: "Auto",
-//                                        "OrdinaryApplication",
-//                                        "ManagedApplication".
-//   InfoBaseUserLanguage               - String - name of a language from
-//                                        the Metadata.Languages collection.
-//
-Function NewInfoBaseUserInfo() Export
+Function InfobaseUserIsOccupied(IBUser, Account = Undefined) Export
 	
-	// Preparing the return structure
+	SetPrivilegedMode(True);
+	
+	If TypeOf(IBUser) = Type("String") Then
+		Account = InfobaseUsers.FindByName(IBUser);
+		
+	ElsIf TypeOf(IBUser) = Type("UUID") Then
+		Account = InfobaseUsers.FindByUUID(IBUser);
+	Else
+		Account = IBUser;
+	EndIf;
+	
+	If Account = Undefined Then
+		Return False;
+	EndIf;
+	
+	Return UsersInternal.UserByIDExists(
+		Account.UUID);
+	
+EndFunction
+
+// Returns an empty structure that describes infobase user properties.
+//
+// Returns:
+//  Structure - with the following properties:
+//   * UUID                   - UUID
+//   * Name                   - String
+//   * FullName               - String
+//
+//   * OpenIDAuthentication   - Boolean
+//
+//   * StandardAuthentication - Boolean
+//   * ShowInList             - Boolean
+//   * Password               - Undefined
+//   * StoredPasswordValue    - Undefined
+//   * PasswordIsSet          - Boolean
+//   * CannotChangePassword   - Boolean
+//
+//   * OSAuthentication       - Boolean
+//   * OSUser                 - String - this structure item is ignored in
+//                              the training version of the platform.
+//
+//   * DefaultInterface       - Undefined
+//                            - String - interface name from the
+//                              Metadata.Interfaces collection.
+//
+//   * RunMode                - Undefined
+//                            - String - values: "Auto", 
+//                              "OrdinaryApplication", "ManagedApplication".
+//   * Language               - Undefined
+//                            - String - language name from the
+//                              Metadata.Languages collection.
+//
+//   * Role                   - Undefined -
+//                            - Array - values of the following type:
+//                                * String - role names from the
+//                                  Metadata.Roles collection.
+//
+Function NewInfobaseUserInfo() Export
+	
+	// Preparing the data structure for storing the return value
 	Properties = New Structure;
-	Properties.Insert("InfoBaseUserUUID",   New UUID("00000000-0000-0000-0000-000000000000"));
-	Properties.Insert("InfoBaseUserName",                   "");
-	Properties.Insert("InfoBaseUserFullName",               "");
-	Properties.Insert("InfoBaseUserStandardAuthentication", False);
-	Properties.Insert("InfoBaseUserShowInList",             False);
-	Properties.Insert("InfoBaseUserPassword",               Undefined);
-	Properties.Insert("InfoBaseUserStoredPasswordValue",    Undefined);
-	Properties.Insert("InfoBaseUserPasswordIsSet",          False);
-	Properties.Insert("InfoBaseUserCannotChangePassword",   False);
-	Properties.Insert("InfoBaseUserOSAuthentication",       False);
-	Properties.Insert("InfoBaseUserOSUser",                 "");
-	Properties.Insert("InfoBaseUserDefaultInterface",       ?(Metadata.DefaultInterface = Undefined, "", Metadata.DefaultInterface.Name));
-	Properties.Insert("InfoBaseUserRunMode",                "Auto");
-	Properties.Insert("InfoBaseUserLanguage",               ?(Metadata.DefaultLanguage = Undefined, "", Metadata.DefaultLanguage.Name));
+	
+	Properties.Insert("UUID",
+		New UUID("00000000-0000-0000-0000-000000000000"));
+	
+	Properties.Insert("Name",                   "");
+	Properties.Insert("FullName",               "");
+	Properties.Insert("OpenIDAuthentication",   False);
+	Properties.Insert("StandardAuthentication", False);
+	Properties.Insert("ShowInList",             False);
+	Properties.Insert("OldPassword",            Undefined);
+	Properties.Insert("Password",               Undefined);
+	Properties.Insert("StoredPasswordValue",    Undefined);
+	Properties.Insert("PasswordIsSet",          False);
+	Properties.Insert("CannotChangePassword",   False);
+	Properties.Insert("OSAuthentication",       False);
+	Properties.Insert("OSUser",                 "");
+	
+	Properties.Insert("DefaultInterface",
+		?(Metadata.DefaultInterface = Undefined, "", Metadata.DefaultInterface.Name));
+	
+	Properties.Insert("RunMode",               "Auto");
+	
+	Properties.Insert("Language",
+		?(Metadata.DefaultLanguage = Undefined, "", Metadata.DefaultLanguage.Name));
+	
+	Properties.Insert("Roles",                 Undefined);
 	
 	Return Properties;
 	
 EndFunction
 
-// Searches for infobase user IDs that are used more than once and
-// raises an exception or returns found IDs for arbitrary processing.
+// Gets infobase user properties for the infobase user found by string ID or UUID.
 //
 // Parameters:
-//  User           - Undefined - all users and external users will be checked.
-//                 - CatalogRef.Users Or CatalogRef.ExternalUsers - only the specified
-//                   user will be checked.
-//  InfoBaseUserID - Undefined - all infobase user IDs will be checked.
-//                 - UUID - only the specified ID will be checked.
-//  FoundIDs       - Undefined - exception is raised if errors are found.
-//                 - Map - the passed map is filled if errors are found. The map
-//                   contains the following key and value:
-//                    Key - ambiguous infobase user ID.
-//                    Value - array of users and external users.
+//  ID               - Undefined, String, UUID - user ID.
+//  Properties       - Structure - see the list of properties in the
+//                     NewInfobaseUserInfo() function.
+//  ErrorDescription - String - contains error details if the user cannot be read.
 //
-Procedure FindAmbiguousInfoBaseUsers(Val User = Undefined, Val InfoBaseUserID = Undefined, Val FoundIDs = Undefined) Export
+// Returns:
+//  Boolean - if True, the user is read, otherwise see ErrorDescription.
+//
+Function ReadInfobaseUser(Val ID,
+                                Properties = Undefined,
+                                ErrorDescription = "",
+                                IBUser = Undefined) Export
+	
+	Properties = NewInfobaseUserInfo();
+	
+	Properties.Roles = New Array;
+	
+	If TypeOf(ID) = Type("UUID") Then
+		
+		If CommonUseCached.DataSeparationEnabled()
+		   And CommonUseCached.SessionWithoutSeparators()
+		   And CommonUseCached.CanUseSeparatedData()
+		   And ID = InfobaseUsers.CurrentUser().UUID Then
+			
+			IBUser = InfobaseUsers.CurrentUser();
+		Else
+			IBUser = InfobaseUsers.FindByUUID(ID);
+		EndIf;
+		
+	ElsIf TypeOf(ID) = Type("String") Then
+		IBUser = InfobaseUsers.FindByName(ID);
+	Else
+		IBUser = Undefined;
+	EndIf;
+	
+	If IBUser = Undefined Then
+		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'Infobase user %1 is not found.'"), ID);
+		Return False;
+	EndIf;
+	
+	CopyInfobaseUserProperties(Properties, IBUser);
+	
+	Return True;
+	
+EndFunction
+
+// Overwrites properties of the infobase user that is found by string ID or
+// UUID, or creates a new infobase user (if an attempt to create an existing
+// user is made, the function raises an exception).
+//
+// Parameters:
+//  ID                 - String, UUID - user ID.
+//
+//  PropertiesToUpdate - Structure - see the list of properties in the
+//                       NewInfobaseUserInfo() function.
+//                       If this property is not set, the read value or the 
+//                       initial value is used instead.
+//                       The following structure properties are used in an 
+//                       unusual way:
+//      * UUID         - Undefined - return value, it is set after the 
+//                       infobase user is written.
+//      * OldPassword  - Undefined, String - if the specified
+//                       password does not match the existing
+//                       one, an exception is raised. 
+//
+//  CreateNew         - False  - no further actions.
+//                    - Undefined, True - creates а new infobase user if
+//                      IBUser is not found by the specified ID.
+//                      If the parameter value is True and the infobase user
+//                      is found by the specified ID, an exception is raised.
+//
+//  ErrorDescription - String - contains error details if the user cannot be read.
+//
+// Returns:
+//  Boolean - if True, the user is written, otherwise see ErrorDescription.
+//
+Function WriteInfobaseUser(Val ID,
+                               Val PropertiesToUpdate,
+                               Val CreateNew = False,
+                               ErrorDescription = "",
+                               IBUser = Undefined) Export
+	
+	IBUser = Undefined;
+	OldProperties = Undefined;
+	
+	PreliminaryRead = ReadInfobaseUser(
+		ID, OldProperties, ErrorDescription, IBUser);
+	
+	If Not PreliminaryRead Then
+		
+		If CreateNew = Undefined Or CreateNew = True Then
+			IBUser = InfobaseUsers.CreateUser();
+		Else
+			Return False;
+		EndIf;
+	ElsIf CreateNew = True Then
+		ErrorDescription = ErrorDetailsOnWriteInfobaseUser(
+			NStr("en = 'Cannot create infobase user %1 because it already exists.'"),
+			OldProperties.Name,
+			OldProperties.UUID);
+		Return False;
+	Else
+		If PropertiesToUpdate.Property("OldPassword")
+		   And TypeOf(PropertiesToUpdate.OldPassword) = Type("String") Then
+			
+			OldPasswordSame = False;
+			
+			UsersInternal.StoredStringPasswordValue(
+				PropertiesToUpdate.OldPassword,
+				OldProperties.UUID,
+				OldPasswordSame);
+			
+			If NOT OldPasswordSame Then
+				ErrorDescription = ErrorDetailsOnWriteInfobaseUser(
+					NStr("en = 'Cannot write infobase user %1 because you specified an incorrect old password.'"),
+					OldProperties.Name,
+					OldProperties.UUID);
+				Return False;
+			EndIf;
+		EndIf;
+	EndIf;
+	
+	// Preparing new property values.
+	NewProperties = CommonUseClientServer.CopyStructure(OldProperties);
+	
+	For Each KeyAndValue In NewProperties Do
+		
+		If PropertiesToUpdate.Property(KeyAndValue.Key)
+		   And PropertiesToUpdate[KeyAndValue.Key] <> Undefined Then
+		
+			NewProperties[KeyAndValue.Key] = PropertiesToUpdate[KeyAndValue.Key];
+		EndIf;
+	EndDo;
+	
+	CopyInfobaseUserProperties(IBUser, NewProperties);
+	
+	If CommonUseCached.DataSeparationEnabled() Then
+		IBUser.ShowInList = False;
+	EndIf;
+	
+	// Attempting to write a new or modified infobase user.
+	Try
+		UsersInternal.WriteInfobaseUser(IBUser);
+	Except
+		ErrorDescription = ErrorDetailsOnWriteInfobaseUser(
+			NStr("en = 'Cannot write user %1 to the infobase:
+			           |
+			           |%2.'"),
+			IBUser.Name,
+			?(PreliminaryRead, OldProperties.UUID, Undefined),
+			ErrorInfo());
+		Return False;
+	EndTry;
+	
+	If ValueIsFilled(OldProperties.Name)
+	   And OldProperties.Name <> NewProperties.Name Then
+		// Copying settings.
+		UsersInternal.CopyUserSettings(
+			OldProperties.Name, NewProperties.Name, True);
+	EndIf;
+	
+	UsersOverridable.OnWriteInfobaseUser(OldProperties, NewProperties);
+	
+	If CreateNew = Undefined Or CreateNew = True Then
+		UsersInternal.SetInitialSettings(NewProperties.Name);
+	EndIf;
+	
+	PropertiesToUpdate.Insert("UUID", IBUser.UUID);
+	Return True;
+	
+EndFunction
+
+// Deletes the specified infobase user.
+//
+// Parameters:
+//  ID               - String - infobase user name.
+//                   - UUID - infobase user UUID.
+//
+//  ErrorDescription - String - (return value) if user deletion is
+//                     unsuccessful, contains the error details.
+//
+// Returns:
+//  Boolean - if True, the user is deleted, otherwise see ErrorDescription.
+//
+Function DeleteInfobaseUser(Val ID,
+                              ErrorDescription = "",
+                              IBUser = Undefined) Export
+	
+	IBUser     = Undefined;
+	Properties = Undefined;
+	
+	If Not ReadInfobaseUser(ID, Properties, ErrorDescription, IBUser) Then
+		Return False;
+	Else
+		Try
+			
+			Handlers = CommonUse.InternalEventHandlers("StandardSubsystems.Users\BeforeWriteInfobaseUser");
+			For Each Handler In Handlers Do
+				Handler.Module.BeforeWriteInfobaseUser(IBUser.UUID);
+			EndDo;
+			
+			IBUser.Delete();
+			
+		Except
+			ErrorDescription = ErrorDetailsOnWriteInfobaseUser(
+				NStr("en = 'Cannot delete infobase user %1:
+				           |
+				           |%2.'"),
+				IBUser.Name,
+				IBUser.UUID,
+				ErrorInfo());
+			Return False;
+		EndTry;
+	EndIf;
+	
+	UsersOverridable.AfterInfobaseUserDelete(Properties);
+	
+	Return True;
+	
+EndFunction
+
+// Copies infobase user properties and performs conversion to/from string ID
+// for the following properties: default interface, language, run mode, and roles.
+// 
+//  Properties that do not exist in the source or in the target are not copied.
+// 
+//  The Password and StoredPasswordValue properties are not copied if they
+//  have Undefined values in the source.
+// 
+//  If Target type is InfobaseUser, the OSAuthentication,
+//  StandardAuthentication, OpenIDAuthentication, and OSUser properties are
+//  not copied if the values in the source and the target are equal.
+// 
+//  The UUID, PasswordIsSet, and OldPassword properties are not copied if
+//  Target type is InfobaseUser.
+// 
+//  The conversion is performed if the Source type or the Target type is InfobaseUser.
+// 
+// Parameters:
+//  Target             - Structure, InfobaseUser, FormDataCollection - 
+//                       property subset returned by the 
+//                       InfobaseUserDetails() function.
+// 
+//  Source             - Structure, InfobaseUser, FormDataCollection - same
+//                       as Target, but types are reversed: when the
+//                       Target type is structure, the Source type is not structure.
+// 
+//  CopiedProperties    - String - list of properties to copy, separated by
+//                        commas (without a prefix).
+//  PropertiesToExclude - String - list of properties that should not be
+//                        copied (without a prefix), separated by commas.
+//  PropertyPrefix      - String - initial name for Source or Target if its 
+//                        type is NOT structure.
+//
+Procedure CopyInfobaseUserProperties(Target,
+                                            Source,
+                                            CopiedProperties = "",
+                                            PropertiesToExclude = "",
+                                            PropertyPrefix = "") Export
+	
+	AllProperties = NewInfobaseUserInfo();
+	
+	If ValueIsFilled(CopiedProperties) Then
+		CopiedPropertiesStructure = New Structure(CopiedProperties);
+	Else
+		CopiedPropertiesStructure = AllProperties;
+	EndIf;
+	
+	If ValueIsFilled(PropertiesToExclude) Then
+		ExcludedPropertiesStructure = New Structure(PropertiesToExclude);
+	Else
+		ExcludedPropertiesStructure = New Structure;
+	EndIf;
+	
+	If UsersInternal.IsTrainingPlatform() Then
+		ExcludedPropertiesStructure.Insert("OSAuthentication");
+		ExcludedPropertiesStructure.Insert("OSUser");
+	EndIf;
+	
+	PasswordIsSet = False;
+	
+	For Each KeyAndValue In AllProperties Do
+		Property = KeyAndValue.Key;
+		
+		If Not CopiedPropertiesStructure.Property(Property)
+		 Or ExcludedPropertiesStructure.Property(Property) Then
+		
+			Continue;
+		EndIf;
+		
+		If TypeOf(Source) = Type("InfobaseUser") Then
+			
+			If Property = "Password"
+			 Or Property = "OldPassword" Then
+				
+				PropertyValue = Undefined;
+				
+			ElsIf Property = "DefaultInterface" Then
+				PropertyValue = ?(Source.DefaultInterface = Undefined,
+				                     "",
+				                     Source.DefaultInterface.Name);
+			
+			ElsIf Property = "RunMode" Then
+				ValueFullName = GetPredefinedValueFullName(Source.RunMode);
+				PropertyValue = Mid(ValueFullName, Find(ValueFullName, ".") + 1);
+				
+			ElsIf Property = "Language" Then
+				PropertyValue = ?(Source.Language = Undefined,
+				                     "",
+				                     Source.Language.Name);
+				
+			ElsIf Property = "Roles" Then
+				
+				TempStructure = New Structure("Roles", New ValueTable);
+				FillPropertyValues(TempStructure, Target);
+				If TypeOf(TempStructure.Roles) = Type("ValueTable") Then
+					Continue;
+				ElsIf TempStructure.Roles = Undefined Then
+					Target.Roles = New Array;
+				Else
+					Target.Roles.Clear();
+				EndIf;
+				
+				For Each Role In Source.Roles Do
+					Target.Roles.Add(Role.Name);
+				EndDo;
+				
+				Continue;
+			Else
+				PropertyValue = Source[Property];
+			EndIf;
+			
+			PropertyFullName = PropertyPrefix + Property;
+			TempStructure = New Structure(PropertyFullName, PropertyValue);
+			FillPropertyValues(Target, TempStructure);
+		Else
+			If TypeOf(Source) = Type("Structure") Then
+				If Source.Property(Property) Then
+					PropertyValue = Source[Property];
+				Else
+					Continue;
+				EndIf;
+			Else
+				PropertyFullName = PropertyPrefix + Property;
+				TempStructure = New Structure(PropertyFullName, New ValueTable);
+				FillPropertyValues(TempStructure, Source);
+				PropertyValue = TempStructure[PropertyFullName];
+				If TypeOf(PropertyValue) = Type("ValueTable") Then
+					Continue;
+				EndIf;
+			EndIf;
+			
+			If TypeOf(Target) = Type("InfobaseUser") Then
+			
+				If Property = "UUID"
+				 Or Property = "OldPassword"
+				 Or Property = "PasswordIsSet" Then
+					
+					Continue;
+					
+				ElsIf Property = "OpenIDAuthentication"
+				      Or Property = "StandardAuthentication"
+				      Or Property = "OSAuthentication"
+				      Or Property = "OSUser" Then
+					
+					If Target[Property] <> PropertyValue Then
+						Target[Property] = PropertyValue;
+					EndIf;
+					
+				ElsIf Property = "Password" Then
+					If PropertyValue <> Undefined Then
+						Target.Password = PropertyValue;
+						PasswordIsSet = True;
+					EndIf;
+					
+				ElsIf Property = "StoredPasswordValue" Then
+					If PropertyValue <> Undefined
+					   And Not PasswordIsSet Then
+						Target.StoredPasswordValue = PropertyValue;
+					EndIf;
+					
+				ElsIf Property = "DefaultInterface" Then
+					If TypeOf(PropertyValue) = Type("String") Then
+						Target.DefaultInterface = Metadata.Interfaces.Find(PropertyValue);
+					Else
+						Target.DefaultInterface = Undefined;
+					EndIf;
+				
+				ElsIf Property = "RunMode" Then
+					If PropertyValue = "Auto"
+					 Or PropertyValue = "OrdinaryApplication"
+					 Or PropertyValue = "ManagedApplication" Then
+						
+						Target.RunMode = ClientRunMode[PropertyValue];
+					Else
+						Target.RunMode = ClientRunMode.Auto;
+					EndIf;
+					
+				ElsIf Property = "Language" Then
+					If TypeOf(PropertyValue) = Type("String") Then
+						Target.Language = Metadata.Languages.Find(PropertyValue);
+					Else
+						Target.Language = Undefined;
+					EndIf;
+					
+				ElsIf Property = "Roles" Then
+					Target.Roles.Clear();
+					If PropertyValue <> Undefined Then
+						For Each RoleName In PropertyValue Do
+							Role = Metadata.Roles.Find(RoleName);
+							If Role <> Undefined Then
+								Target.Roles.Add(Role);
+							EndIf;
+						EndDo;
+					EndIf;
+				Else
+					If Property = "Name"
+					   And Target[Property] <> PropertyValue Then
+					
+						If StrLen(PropertyValue) > 64 Then
+							Raise StringFunctionsClientServer.SubstituteParametersInString(
+								NStr("en = 'Error writing infobase user. The user name (which is used for logging on to the infobase): %1 exceeds 64 characters.'"),
+								PropertyValue);
+							
+						ElsIf Find(PropertyValue, ":") > 0 Then
+							Raise StringFunctionsClientServer.SubstituteParametersInString(
+								NStr("en = 'Error writing infobase user. The user name (which is used for logging on to the infobase): %1 contains an illegal character "":"".'"),
+								PropertyValue);
+						EndIf;
+					EndIf;
+					Target[Property] = Source[Property];
+				EndIf;
+			Else
+				If Property = "Roles" Then
+					
+					TempStructure = New Structure("Roles", New ValueTable);
+					FillPropertyValues(TempStructure, Target);
+					If TypeOf(TempStructure.Roles) = Type("ValueTable") Then
+						Continue;
+					ElsIf TempStructure.Roles = Undefined Then
+						Target.Roles = New Array;
+					Else
+						Target.Roles.Clear();
+					EndIf;
+					
+					If Source.Roles <> Undefined Then
+						For Each Role In Source.Roles Do
+							Target.Roles.Add(Role.Name);
+						EndDo;
+					EndIf;
+					Continue;
+					
+				ElsIf TypeOf(Source) = Type("Structure") Then
+					PropertyFullName = PropertyPrefix + Property;
+				Else
+					PropertyFullName = Property;
+				EndIf;
+				TempStructure = New Structure(PropertyFullName, PropertyValue);
+				FillPropertyValues(Target, TempStructure);
+			EndIf;
+		EndIf;
+	EndDo;
+	
+EndProcedure
+
+// Returns an item of the Users catalog that is mapped to the specified
+// infobase user.
+//  Searching for the user requires administrative rights. If the current
+//  user has no administrative rights, only searching for the Users catalog
+//  item mapped to the current user is allowed.
+// 
+// Parameters:
+//  NameLogon - String - infobase user name (which is used for logging on
+//  to the infobase).
+//
+// Returns:
+//  CatalogRef.Users          - if user is found.
+//  Catalogs.Users.EmptyRef() - if infobase user is found.
+//  Undefined                 - if infobase user is not found.
+//
+Function FindByName(Val NameLogon) Export
+	
+	IBUser = InfobaseUsers.FindByName(NameLogon);
+	
+	If IBUser = Undefined Then
+		Return Undefined;
+	Else
+		FindAmbiguousInfobaseUsers(, IBUser.UUID);
+		
+		Return Catalogs.Users.FindByAttribute(
+			"InfobaseUserID",
+			IBUser.UUID);
+	EndIf;
+	
+EndFunction
+
+// Returns the role that grants administrative rights.
+//
+// Parameters:
+//  ForCheck - Boolean - return the role used for checking (not for
+//             setting).
+//             For base versions, the role used for setting is
+//             SystemAdministrator, while the role used for checking can be
+//             FullAccess with the Administration right.
+//
+// Returns:
+//  MetadataObject - Role.
+//
+Function FullAdministratorRole(ForCheck = False) Export
+	
+	FullAdministratorRole = Metadata.Roles.FullAdministrator;
+	
+	If ForCheck
+	   And AccessRight("Administration", Metadata, Metadata.Roles.FullAccess)
+	   And StandardSubsystemsServer.IsBaseConfigurationVersion() Then
+	
+		FullAdministratorRole = Metadata.Roles.FullAccess;
+	EndIf;
+	
+	Return FullAdministratorRole;
+	
+EndFunction
+
+// Searches for infobase user IDs that are used more than once and either
+// raises an exception or returns the list of found infobase users.
+//
+// Parameters:
+//  User         - Undefined - search in all users and external users.
+//               - CatalogRef.Users, CatalogRef.ExternalUsers - search
+//                 in the specified catalog only.
+//
+//  UUID          - Undefined - check all infobase user IDs.
+//                - UUID - check the specified ID only.
+//
+//  FoundIDs      - Undefined - if errors are found, raise an exception.
+//                - Map - if errors are found, fill the map passed to the procedure:
+//                   * Key   - ambiguous infobase user ID.
+//                   * Value - an array containing users and external users.
+//
+//  ServiceUserID - Boolean - if False, check InfobaseUserID, otherwise
+//                  check SaaSUserID.
+//
+Procedure FindAmbiguousInfobaseUsers(Val User = Undefined,
+                                            Val UUID = Undefined,
+                                            Val FoundIDs = Undefined,
+                                            Val ServiceUserID = False) Export
 	
 	SetPrivilegedMode(True);
 	
-	If TypeOf(InfoBaseUserID) <> Type("UUID") Then
-		InfoBaseUserID = New UUID("00000000-0000-0000-0000-000000000000");
+	If TypeOf(UUID) <> Type("UUID") Then
+		UUID =
+			New UUID("00000000-0000-0000-0000-000000000000");
 	EndIf;
 	
 	Query = New Query;
 	Query.SetParameter("User", User);
-	Query.SetParameter("InfoBaseUserID", InfoBaseUserID);
-	Query.SetParameter("EmptyUUID",  New UUID("00000000-0000-0000-0000-000000000000"));
+	Query.SetParameter("UUID", UUID);
+	
+	Query.SetParameter("EmptyUUID",
+		New UUID("00000000-0000-0000-0000-000000000000"));
+	
 	Query.Text =
 	"SELECT
-	|	UserIDs.InfoBaseUserID,
+	|	UserIDs.InfobaseUserID AS AmbiguousID,
 	|	UserIDs.User
 	|FROM
 	|	(SELECT
-	|		Users.InfoBaseUserID AS InfoBaseUserID,
+	|		Users.InfobaseUserID,
 	|		Users.Ref AS User
 	|	FROM
 	|		Catalog.Users AS Users
 	|	
-	|	UNION
+	|	UNION ALL
 	|	
 	|	SELECT
-	|		ExternalUsers.InfoBaseUserID,
+	|		ExternalUsers.InfobaseUserID,
 	|		ExternalUsers.Ref
 	|	FROM
 	|		Catalog.ExternalUsers AS ExternalUsers) AS UserIDs
 	|WHERE
-	|	UserIDs.InfoBaseUserID IN
+	|	UserIDs.InfobaseUserID IN
 	|			(SELECT
-	|				UserIDs.InfoBaseUserID
+	|				UserIDs.InfobaseUserID
 	|			FROM
 	|				(SELECT
-	|					Users.InfoBaseUserID AS InfoBaseUserID,
+	|					Users.InfobaseUserID,
 	|					Users.Ref AS User
 	|				FROM
 	|					Catalog.Users AS Users
 	|				WHERE
-	|					Users.InfoBaseUserID <> &EmptyUUID
+	|					Users.InfobaseUserID <> &EmptyUUID
 	|					AND NOT(&User <> UNDEFINED
 	|							AND Users.Ref <> &User)
-	|					AND NOT(&InfoBaseUserID <> &EmptyUUID
-	|							AND Users.InfoBaseUserID <> &InfoBaseUserID)
+	|					AND NOT(&UUID <> &EmptyUUID
+	|							AND Users.InfobaseUserID <> &UUID)
 	|		
 	|				UNION ALL
 	|		
 	|				SELECT
-	|					ExternalUsers.InfoBaseUserID,
+	|					ExternalUsers.InfobaseUserID,
 	|					ExternalUsers.Ref
 	|				FROM
 	|					Catalog.ExternalUsers AS ExternalUsers
 	|				WHERE
-	|					ExternalUsers.InfoBaseUserID <> &EmptyUUID
+	|					ExternalUsers.InfobaseUserID <> &EmptyUUID
 	|					AND NOT(&User <> UNDEFINED
 	|							AND ExternalUsers.Ref <> &User)
-	|					AND NOT(&InfoBaseUserID <> &EmptyUUID
-	|							AND ExternalUsers.InfoBaseUserID <> &InfoBaseUserID)
+	|					AND NOT(&UUID <> &EmptyUUID
+	|							AND ExternalUsers.InfobaseUserID <> &UUID)
 	|				) AS UserIDs
 	|			GROUP BY
-	|						UserIDs.InfoBaseUserID
+	|						UserIDs.InfobaseUserID
 	|			HAVING
-	|				КОЛИЧЕСТВО(UserIDs.User) > 1)
+	|				COUNT(UserIDs.User) > 1)
 	|
 	|ORDER BY
-	|	UserIDs.InfoBaseUserID";
+	|	UserIDs.InfobaseUserID";
+	
+	If ServiceUserID Then
+		Query.Text = StrReplace(Query.Text,
+			"InfobaseUserID",
+			"ServiceUserID");
+	EndIf;
 	
 	Data = Query.Execute().Unload();
 	
@@ -744,32 +1368,43 @@ Procedure FindAmbiguousInfoBaseUsers(Val User = Undefined, Val InfoBaseUserID = 
 	CurrentAmbiguousID = Undefined;
 	
 	For Each Row In Data Do
-		NewInfoBaseUserID = False;
-		If Row.InfoBaseUserID <> CurrentAmbiguousID Then
-			NewInfoBaseUserID = True;
-			CurrentAmbiguousID = Row.InfoBaseUserID;
+		
+		NewUUID = False;
+		If Row.AmbiguousID <> CurrentAmbiguousID Then
+			NewUUID = True;
+			CurrentAmbiguousID = Row.AmbiguousID;
 			If TypeOf(FoundIDs) = Type("Map") Then
 				CurrentUsers = New Array;
 				FoundIDs.Insert(CurrentAmbiguousID, CurrentUsers);
 			Else
-				CurrentInfoBaseUser = InfoBaseUsers.FindByUUID(CurrentAmbiguousID);
-				If CurrentInfoBaseUser = Undefined Then
-					IBUserName = NStr("en = '<not found>'");
-				Else
-					IBUserName = CurrentInfoBaseUser.Name;
+				CurrentInfobaseUser = InfobaseUsers.CurrentUser();
+				
+				If CurrentInfobaseUser.UUID <> CurrentAmbiguousID Then
+					CurrentInfobaseUser =
+						InfobaseUsers.FindByUUID(
+							CurrentAmbiguousID);
 				EndIf;
+				
+				If CurrentInfobaseUser = Undefined Then
+					NameLogon = NStr("en = '<not found>'");
+				Else
+					NameLogon = CurrentInfobaseUser.Name;
+				EndIf;
+				
 				ErrorDescription = ErrorDescription
 					+ StringFunctionsClientServer.SubstituteParametersInString(
-						NStr("en = 'More then one database users correspond
-						          |to the infobase user %1 with ID %2:'"),
-						IBUserName,
+						?(ServiceUserID,
+						NStr("en = 'Multiple items of the Users catalog match the SaaS user ID %2'"),
+						NStr("en = 'Multiple items of the Users catalog match the infobase user %1 with ID %2'") ),
+						NameLogon,
 						CurrentAmbiguousID);
 			EndIf;
 		EndIf;
+		
 		If TypeOf(FoundIDs) = Type("Map") Then
 			CurrentUsers.Add(Row.User);
 		Else
-			If Not NewInfoBaseUserID Then
+			If NOT NewUUID Then
 				ErrorDescription = ErrorDescription + ",";
 			EndIf;
 			ErrorDescription = ErrorDescription
@@ -788,1211 +1423,109 @@ Procedure FindAmbiguousInfoBaseUsers(Val User = Undefined, Val InfoBaseUserID = 
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL INTERFACE
-
-// Fills the CurrentUser Or CurrentExternalUser session parameter with a user value 
-// that is found by the infobase user on behalf of which the session is run.
-// If the user is not found and the current user is a user with full access, 
-// a new user will be created in the catalog. If the user is not found and the current
-// user is not a user with full access, an exception will be raised.
+// Returns the stored value of the password passed to the function.
 //
-Procedure SetSessionParameters(Val ParameterName, AssignedParameters) Export
-	
-	SetPrivilegedMode(True);
-	
-	UserNotFound = False;
-	CreateUser  = False;
-	RefNew = Undefined;
-	
-	If IsBlankString(InfoBaseUsers.CurrentUser().Name) Then
-		
-		SessionParameters.CurrentExternalUser = Catalogs.ExternalUsers.EmptyRef();
-		
-		UnspecifiedUserProperties = UnspecifiedUserProperties();
-		
-		UserName       = UnspecifiedUserProperties.FullName;
-		UserFullName = UnspecifiedUserProperties.FullName;
-		RefNew          = UnspecifiedUserProperties.StandardRef;
-		
-		If UnspecifiedUserProperties.Ref = Undefined Then
-			UserNotFound = True;
-			CreateUser  = True;
-			InfoBaseUserID = "";
-		Else
-			SessionParameters.CurrentUser = UnspecifiedUserProperties.Ref;
-		EndIf;
-	Else
-		InfoBaseUserID = InfoBaseUsers.CurrentUser().UUID;
-		
-		FindAmbiguousInfoBaseUsers(, InfoBaseUserID);
-		
-		Query = New Query;
-		Query.Parameters.Insert("InfoBaseUserID", InfoBaseUserID);
-		
-		Query.Text =
-		"SELECT TOP 1
-		|	Users.Ref AS Ref
-		|FROM
-		|	Catalog.Users AS Users
-		|WHERE
-		|	Users.InfoBaseUserID = &InfoBaseUserID";
-		UsersResult = Query.Execute();
-		
-		Query.Text =
-		"SELECT TOP 1
-		|	ExternalUsers.Ref AS Ref
-		|FROM
-		|	Catalog.ExternalUsers AS ExternalUsers
-		|WHERE
-		|	ExternalUsers.InfoBaseUserID = &InfoBaseUserID";
-		ResultExternalUsers = Query.Execute();
-		
-		If Not ResultExternalUsers.IsEmpty() Then
-			
-			Selection = ResultExternalUsers.Select();
-			Selection.Next();
-			SessionParameters.CurrentUser         = Catalogs.Users.EmptyRef();
-			SessionParameters.CurrentExternalUser = Selection.Ref;
-			
-			If Not ExternalUsers.UseExternalUsers() Then
-			
-				ErrorMessageText = NStr("en = 'External users are disabled.'");
-				Raise ErrorMessageText;
-			EndIf;
-		Else
-			SessionParameters.CurrentExternalUser = Catalogs.ExternalUsers.EmptyRef();
-			
-			If UsersResult.IsEmpty() Then
-				If InfoBaseUserWithFullAccess(,,False) Then
-					
-					CurrentUser        = InfoBaseUsers.CurrentUser();
-					UserName           = CurrentUser.Name;
-					UserFullName       = CurrentUser.FullName;
-					InfoBaseUserID     = CurrentUser.UUID;
-					UserByDescription  = UserRefByFullDescription(UserFullName);
-					
-					If UserByDescription = Undefined Then
-						UserNotFound = True;
-						CreateUser  = True;
-					Else
-						SessionParameters.CurrentUser = UserByDescription;
-					EndIf;
-				Else
-					UserNotFound = True;
-				EndIf;
-			Else
-				Selection = UsersResult.Select();
-				Selection.Next();
-				SessionParameters.CurrentUser = Selection.Ref;
-			EndIf;
-		EndIf;
-	EndIf;
-	
-	If CreateUser Then
-		
-		BeginTransaction();
-		
-		StandardSubsystemsOverridable.RegisterSharedUser();
-		
-		If RefNew = Undefined Then
-			RefNew = Catalogs.Users.GetRef();
-		EndIf;
-		SessionParameters.CurrentUser = RefNew;
-		
-		NewUser = Catalogs.Users.CreateItem();
-		NewUser.InfoBaseUserID = InfoBaseUserID;
-		NewUser.Description    = UserFullName;
-		NewUser.SetNewObjectRef(RefNew);
-		
-		Try
-			NewUser.Write();
-		Except
-			ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(
-			                           NStr("en = 'Authorization failed.
-                                        |The user %1 is not found in the Users catalog.
-                                        |
-                                        |Please contact your infobase administrator.
-                                        |Error adding a user to the catalog.
-                                        |%2'"),
-			                           UserName,
-			                           BriefErrorDescription(ErrorInfo()) );
-			Raise ErrorMessageText;
-		EndTry;
-		
-		CommitTransaction();
-	
-	ElsIf UserNotFound Then
-		Raise UserNotFoundInCatalogMessageText(UserName);
-	EndIf;
-	
-	AssignedParameters.Add(ParameterName);
-	
-EndProcedure
-
-// Is called when starting the application to check whether authorization can be
-// performed. Calls filling the CurrentUser and CurrentExternalUser session parameters.
+// Parameters:
+//  Password - String - password whose stored value is retrieved.
 //
 // Returns:
-// String - error message text, if it is not empty, the application must be closed.
+//  String - stored password value.
 //
-Function AuthenticateCurrentUser() Export
+Function StoredPasswordStringValue(Val Password) Export
 	
-	SetPrivilegedMode(True);
-	
-	CurrentUser = InfoBaseUsers.CurrentUser();
-	CheckUserRights(CurrentUser);
-	
-	StandardSubsystemsOverridable.RegisterSharedUser();
-	
-	If IsBlankString(CurrentUser.Name)
-	 Or UserByIDExists(CurrentUser.UUID) Then
-		// The default user is authorizing 
-		// or InfoBaseUser is not found in the catalog.
-		Return "";
-	EndIf;
-	
-	If CommonUseCached.DataSeparationEnabled()
-		And CurrentUser.DataSeparation.Count() = 0 Then
-		
-		
-		BeginTransaction();
-		
-		// The user is a shared one, an item in the current data area must be created
-		UserObject = Catalogs.Users.CreateItem();
-		UserObject.Description = CurrentUser.Name;
-		UserObject.InfoBaseUserID = CurrentUser.UUID;
-		UserObject.Write();
-		
-		CommitTransaction();
-		SetPrivilegedMode(False);
-		
-		Return "";
-	EndIf;
-	
-	// Creating an administrator or preparing an error message text
-	ErrorMessageText = "";
-	CreateAdministratorRequired = False;
-	
-	AllInfoBaseUsers = InfoBaseUsers.GetUsers();
-	
-	If AllInfoBaseUsers.Count() = 1 Or InfoBaseUserWithFullAccess(, True, False) Then
-		// The administrator that was created in the designer mode is authorizing
-		CreateAdministratorRequired = True;
-	Else
-		// The ordinary user that was created in the designer mode is authorizing
-		ErrorMessageText = UserNotFoundInCatalogMessageText(CurrentUser.Name);
-	EndIf;
-	
-	If CreateAdministratorRequired Then
-		//
-		If IsInRole(Metadata.Roles.FullAccess)
-			And IsInRole(FullAdministratorRole()) Then
-			//
-			User = CreateFirstAdministrator(CurrentUser);
-			//
-			Comment = NStr("en = 'The application is being started on behalf of the user with
-				                 |the Full access role that was not registered in the user list.
-				                 |The user has been registered in the user list automatically.
-				                 |
-				                 |It is recommended that you do not use the designer mode to
-				                 |customize user profiles. Use the Users list instead.'");
-			UsersOverridable.AfterWriteAdministratorOnAuthorization(Comment);
-			WriteLogEvent(
-					NStr("en = 'Users. Administrator registered in Users catalog'", Metadata.DefaultLanguage.LanguageCode),
-					EventLogLevel.Warning,
-					Metadata.Catalogs.Users,
-					User,
-					Comment);
-		Else
-			ErrorMessageText = NStr("en = 'The application cannot be started on behalf of the
-				                     |user with administrative rights because this user is not
-				                     |registered in the user list.
-				                     |
-				                     |It is recommended that you do not use the designer mode to
-				                     |customize user profiles. Use the Users list instead.'");
-		EndIf;
-	EndIf;
-	
-	Return ErrorMessageText;
+	Return UsersInternal.StoredStringPasswordValue(Password);
 	
 EndFunction
 
-////////////////////////////////////////////////////////////////////////////////
-// Infobase update.
+#EndRegion
 
-// Adds update handlers required to this subsystem to the Handlers list. 
-// 
+#Region InternalProceduresAndFunctions
+
+////////////////////////////////////////////////////////////////////////////////
+// AUXILIARY PROCEDURES AND FUNCTIONS
+
+// Generates a brief error description for displaying to users and also
+// writes error details to the event log if WriteToLog is True.
+//
 // Parameters:
-// Handlers - ValueTable - see InfoBaseUpdate.NewUpdateHandlerTable function for details.
-// 
-Procedure RegisterUpdateHandlers(Handlers) Export
+//  ErrorPattern   - Template that contains parameter %1 for infobase
+//                   user presentation and parameter %2 for error details.
+//
+//  NameLogon      - Infobase user name for logging on to the application.
+//
+//  InfobaseUserID - Undefined, UUID.
+//
+//  ErrorInfo      - ErrorInfo.
+//
+//  WriteToLog     - Boolean. If True, error details are written to the 
+//                   event log.
+//
+// Returns:
+//  String - error details for displaying to users.
+//
+Function ErrorDetailsOnWriteInfobaseUser(ErrorPattern,
+                                              NameLogon,
+                                              InfobaseUserID,
+                                              ErrorInfo = Undefined,
+                                              WriteToLog = True)
 	
-	Handler = Handlers.Add();
-	Handler.Version = "1.0.5.2";
-	Handler.Procedure = "Users.FillUserIDs";
-	
-	Handler = Handlers.Add();
-	Handler.Version = "1.0.5.15";
-	Handler.Procedure = "Users.FillUserGroupContentRegister";
-	
-	Handler = Handlers.Add();
-	Handler.Version = "1.0.6.5";
-	Handler.Procedure = "ExternalUsers.FillExternalUserGroupContent";
-	
-	Handler = Handlers.Add();
-	Handler.Version = "1.0.6.5";
-	Handler.Procedure = "ExternalUsers.ForExternalUsersCreateInfoBaseUsers";
-	
-EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-Function CreateFirstAdministratorRequired(Val InfoBaseUserInfoStructure, QuestionText = Undefined) Export
-	
-	If CommonUseCached.DataSeparationEnabled()
-		And CommonUseCached.CanUseSeparatedData() Then
-		
-		Return False;
+	If WriteToLog Then
+		WriteLogEvent(
+			NStr("en = 'Users.Error writing infobase user'",
+			     CommonUseClientServer.DefaultLanguageCode()),
+			EventLogLevel.Error,
+			,
+			,
+			StringFunctionsClientServer.SubstituteParametersInString(
+				ErrorPattern,
+				"""" + NameLogon + """ ("
+				+ ?(ValueIsFilled(InfobaseUserID),
+					NStr("en = 'New user'"),
+					String(InfobaseUserID))
+				+ ")",
+				?(ErrorInfo = Undefined,
+				  "",
+				  DetailErrorDescription(ErrorInfo))));
 	EndIf;
 	
-	SetPrivilegedMode(True);
-	
-	If InfoBaseUsers.GetUsers().Count() = 0 Then
-		
-		If InfoBaseUserInfoStructure.Property("InfoBaseUserRoles") Then
-			Roles = InfoBaseUserInfoStructure.InfoBaseUserRoles;
-		Else
-			Roles = New Array;
-		EndIf;
-		
-		If UsersOverridable.RoleEditProhibition()
-			Or Roles.Find("FullAccess") = Undefined
-			Or Roles.Find(FullAdministratorRole().Name) = Undefined Then
-			
-			// Preparing a question text that will be used when writing the first administrator
-			QuestionText  = NStr("en='The user you want to add is the first infobase user. "
-"This user will be automatically included into the"
-"Administrators access group. '");
-			UsersOverridable.QuestionTextBeforeWriteFirstAdministrator(QuestionText);
-			Return True;
-		EndIf;
-	EndIf;
-	
-	Return False;
+	Return StringFunctionsClientServer.SubstituteParametersInString(
+		ErrorPattern,
+		"""" + NameLogon + """",
+		?(ErrorInfo = Undefined,
+		  "",
+		  BriefErrorDescription(ErrorInfo)));
 	
 EndFunction
 
-// Returns the access level for editing the current user property.
-//
-// Returns: 
-// String.
-//  It can take one of the following values:
-//   "FullAccess"     - any user properties can be changed.
-//   "ListManagement" - user list but not user rights can be changed.
-//   "ChangeCurrent"  - following properties of the current user can be changed:  
-//                       "Name", "Password", and "Language".
-//   "AccessDenied"   - no user properties can be changed.
-//
-Function GetEditInfoBaseUserPropertiesAccessLevel() Export
-	
-	If InfoBaseUserWithFullAccess() Then
-		Return "FullAccess";
-		
-	ElsIf IsInRole(Metadata.Roles.AddEditUsers) Then
-		Return "ListManagement";
-		
-	ElsIf IsInRole(Metadata.Roles.ChangingCurrentUser) Then
-		Return "ChangeCurrent";
-	Else
-		Return "AccessDenied";
-	EndIf;
-	
-EndFunction
+// For the InfobaseUserWithFullAccess() function and the RolesAvailable() function
 
-// For internal use only.
-//
-Function UnspecifiedUserFullName() Export
-	
-	Return NStr("en='<Not specified>'");
-	
-EndFunction
-
-// For internal use only.
-//
-Function UnspecifiedUserProperties() Export
-	
-	SetPrivilegedMode(True);
+Function CheckedInfobaseUserProperties(User)
 	
 	Properties = New Structure;
+	Properties.Insert("CurrentInfobaseUser", InfobaseUsers.CurrentUser());
+	Properties.Insert("IBUser", Undefined);
 	
-	// A reference to the found catalog item that corresponds to an unspecified user.
-	Properties.Insert("Ref", Undefined);
-	
-	// A reference that is used for searching and creating an unspecified user in
-	// the Users catalog.
-	Properties.Insert("StandardRef", Catalogs.Users.GetRef(
-		New UUID("aa00559e-ad84-4494-88fd-f0826edc46f0")));
-	
-	// A full name that is set to a Users catalog item when creating a non-existent
-	// unspecified user.
-	Properties.Insert("FullName", UnspecifiedUserFullName());
-	
-	// A full name that is used to provide the old way of unspecified user search 
-	// (supporting old versions). There is no need to change this name.
-	Properties.Insert("FullNameForSearch", NStr("en = '<Not specified>'"));
-	
-	// Search by UUID
-	Query = New Query;
-	Query.SetParameter("Ref", Properties.StandardRef);
-	Query.Text =
-	"SELECT TOP 1
-	|	TRUE AS TrueValue
-	|FROM
-	|	Catalog.Users AS Users
-	|WHERE
-	|	Users.Ref = &Ref";
-	
-	If Query.Execute().IsEmpty() Then
-		Query.SetParameter("FullName", Properties.FullNameForSearch);
-		Query.Text =
-		"SELECT TOP 1
-		|	Users.Ref
-		|FROM
-		|	Catalog.Users AS Users
-		|WHERE
-		|	Users.Description = &FullName";
-		Result = Query.Execute();
+	If TypeOf(User) = Type("InfobaseUser") Then
+		Properties.Insert("IBUser", User);
 		
-		If Not Result.IsEmpty() Then
-			Selection = Result.Select();
-			Selection.Next();
-			Properties.Ref = Selection.Ref;
-		EndIf;
+	ElsIf User = Undefined Or User = AuthorizedUser() Then
+		Properties.Insert("IBUser", Properties.CurrentInfobaseUser);
 	Else
-		Properties.Ref = Properties.StandardRef;
+		// User passed to the function is not the current user.
+		If ValueIsFilled(User) Then
+			Properties.Insert("IBUser", InfobaseUsers.FindByUUID(
+				CommonUse.ObjectAttributeValue(User, "InfobaseUserID")));
+		EndIf;
+	EndIf;
+	
+	If Properties.IBUser <> Undefined Then
+		Properties.Insert("IsCurrentInfobaseUser",
+			Properties.IBUser.UUID
+				= Properties.CurrentInfobaseUser.UUID);
 	EndIf;
 	
 	Return Properties;
 	
 EndFunction
 
-// Reads infobase user properties by string ID or UUID.
-//
-// Parameters:
-//  ID              - Undefined, String, UUID.
-//  Properties      - Structure with the following fields:
-//                     InfoBaseUserUUID                   - UUID.
-//                     InfoBaseUserName                   - String.
-//                     InfoBaseUserFullName               - String.
-//                     InfoBaseUserStandardAuthentication - Boolean.
-//                     InfoBaseUserShowInList             - Boolean.
-//                     InfoBaseUserPassword               - Undefined.
-//                     InfoBaseUserStoredPasswordValue    - String.
-//                     InfoBaseUserPasswordIsSet          - Boolean.
-//                     InfoBaseUserCannotChangePassword   - Boolean.
-//                     InfoBaseUserOSAuthentication       - Boolean.
-//                     InfoBaseUserOSUser                 - String.
-//                     InfoBaseUserDefaultInterface       - String - interface 
-//                                                          name from the 
-//                                                          Metadata.Interfaces
-//                                                          collection.
-//                     InfoBaseUserRunMode                - String - possible 
-//                                                          values are: "Auto",
-//                                                          "OrdinaryApplication",
-//                                                          "ManagedApplication".
-//                     InfoBaseUserLanguage               - String - language name
-//                                                          from the 
-//                                                          Metadata.Languages
-//                                                          collection.
-//  Roles            - Array of String - role names from the Metadata.Roles collection.
-//  
-//  ErrorDescription - String -  contains error details if reading failed.
-//
-// Returns:
-//  Boolean          - True if reading finished successfully, otherwise is False.
-//
-Function ReadInfoBaseUser(Val ID, Properties = Undefined, Roles = Undefined, ErrorDescription = "", InfoBaseUser = Undefined) Export
-	
-	Properties = NewInfoBaseUserInfo();
-	
-	Roles = New Array;
-	
-	If TypeOf(ID) = Type("UUID") Then
-		InfoBaseUser = InfoBaseUsers.FindByUUID(ID);
-	ElsIf TypeOf(ID) = Type("String") Then
-		InfoBaseUser = InfoBaseUsers.FindByName(ID);
-	Else
-		InfoBaseUser = Undefined;
-	EndIf;
-	
-	If InfoBaseUser = Undefined Then
-		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'The infobase user with %1 ID is not found.'"), ID);
-		Return False;
-	EndIf;
-	
-	Properties.InfoBaseUserUUID                   = InfoBaseUser.UUID;
-	Properties.InfoBaseUserName                   = InfoBaseUser.Name;
-	Properties.InfoBaseUserFullName               = InfoBaseUser.FullName;
-	Properties.InfoBaseUserStandardAuthentication = InfoBaseUser.StandardAuthentication;
-	Properties.InfoBaseUserShowInList             = InfoBaseUser.ShowInList;
-	Properties.InfoBaseUserStoredPasswordValue    = InfoBaseUser.StoredPasswordValue;
-	Properties.InfoBaseUserPasswordIsSet          = InfoBaseUser.PasswordIsSet;
-	Properties.InfoBaseUserCannotChangePassword   = InfoBaseUser.CannotChangePassword;
-	Properties.InfoBaseUserOSAuthentication       = InfoBaseUser.OSAuthentication;
-	Properties.InfoBaseUserOSUser                 = InfoBaseUser.OSUser;
-	Properties.InfoBaseUserDefaultInterface       = ?(InfoBaseUser.DefaultInterface = Undefined, "", InfoBaseUser.DefaultInterface.Name);
-	ValueFullNameRunMode                          = GetPredefinedValueFullName(InfoBaseUser.RunMode);
-	Properties.InfoBaseUserRunMode                = Mid(ValueFullNameRunMode, Find(ValueFullNameRunMode, ".") + 1);
-	Properties.InfoBaseUserLanguage               = ?(InfoBaseUser.Language = Undefined, "", InfoBaseUser.Language.Name);
-	
-	For Each Role In InfoBaseUser.Roles Do
-		Roles.Add(Role.Name);
-	EndDo;
-	
-	Return True;
-	
-EndFunction
-
-// Checks whether infobase user detail structure is filled correctly. 
-// Sets the Cancel parameter to True if an error is found.
-// Sends error messages.
-//
-// Parameters:
-//  InfoBaseUserInfoStructure - Structure - infobase user details to be checked. 
-//  Cancel                    - Boolean - flag that shows whether execution must be
-//                                        canceled. 
-//
-// Returns:
-//  Boolean - flag that shows that no errors were found.
-//
-Function CheckInfoBaseUserInfoStructureFilling(Val InfoBaseUserInfoStructure, Cancel) Export
-	
-	If InfoBaseUserInfoStructure.Property("InfoBaseUserName") Then
-	
-		If IsBlankString(InfoBaseUserInfoStructure.InfoBaseUserName) Then
-			
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The infobase user name is not specified.'"),
-				,
-				"InfoBaseUserName",
-				,
-				Cancel);
-		EndIf;
-		
-	EndIf;
-	
-	If InfoBaseUserInfoStructure.Property("InfoBaseUserPassword") Then
-		
-		If InfoBaseUserInfoStructure.InfoBaseUserPassword <> Undefined
-			And InfoBaseUserInfoStructure.InfoBaseUserPassword <> InfoBaseUserInfoStructure.PasswordConfirmation Then
-			
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The password and password confirmation do not match.'"),
-				,
-				"Password",
-				,
-				Cancel);
-		EndIf;
-		
-	EndIf;
-	
-	If InfoBaseUserInfoStructure.Property("InfoBaseUserOSUser") Then
-		
-		If Not IsBlankString(InfoBaseUserInfoStructure.InfoBaseUserOSUser) Then
-			
-			SetPrivilegedMode(True);
-			Try
-				InfoBaseUser = InfoBaseUsers.CreateUser();
-				InfoBaseUser.OSUser = InfoBaseUserInfoStructure.InfoBaseUserOSUser;
-			Except
-				CommonUseClientServer.MessageToUser(
-					NStr("en = 'The OS user must be specified in the following format:
-					           |""\\DomainName\UserName"".'"),
-					,
-					"InfoBaseUserOSUser",
-					,
-					Cancel);
-			EndTry;
-			SetPrivilegedMode(False);
-		EndIf;
-		
-	EndIf;
-	
-	Return Not Cancel;
-	
-EndFunction
-
-// Overwrites properties of the infobase user that is found by string ID or UUID
-// or creates a new infobase user (if user already exists creating a new one will
-// raise an error).
-//
-// Parameters:
-// ID                - String, UUID.
-// ChangedProperties - Structure - if this parameter is not set, the default or read 
-//                     value will be used. The structure contains the following
-//                     parameters:
-//                      InfoBaseUserUUID                   - Undefined - the return
-//                                                           value, it is set after
-//                                                           writing the infobase
-//                                                           user). 
-//                      InfoBaseUserName                   - Undefined, String.
-//                      InfoBaseUserFullName               - Undefined, String.
-//                      InfoBaseUserStandardAuthentication - Undefined, Boolean.
-//                      InfoBaseUserShowInList             - Undefined, Boolean
-//                      InfoBaseUserPassword               - Undefined, String.
-//                      InfoBaseUserStoredPasswordValue    - Undefined, String.
-//                      InfoBaseUserPasswordIsSet          - Undefined, Boolean.
-//                      InfoBaseUserCannotChangePassword   - Undefined, Boolean
-//                      InfoBaseUserOSAuthentication       - Undefined, Boolean.
-//                      InfoBaseUserOSUser                 - Undefined, String.
-//                      InfoBaseUserDefaultInterface       - Undefined, String -
-//                                                           interface name from the
-//                                                           Metadata.Interfaces
-//                                                           collection.
-//                      InfoBaseUserRunMode                - Undefined, String - it can
-//                                                           take one of the following
-//                                                           values: "Auto",
-//                                                           "OrdinaryApplication",
-//                                                           "ManagedApplication".
-//                      InfoBaseUserLanguage               - Undefined, String -
-//                                                           language name from the
-//                                                           Metadata.Languages
-//                                                           collection.
-//  NewRoles         - Undefined, Array of String - role names from the Metadata.Roles
-//                     collection.
-//  ErrorDescription - String - contains error details if overwriting failed.
-//
-// Returns:
-//  Boolean          - True if overwriting finished successfully, otherwise is False.
-//
-Function WriteIBUser(Val ID, Val ChangedProperties, Val NewRoles, Val CreateNew = False, ErrorDescription = "") Export
-	
-	InfoBaseUser = Undefined;
-	OldProperties = Undefined;
-	
-	PreliminaryRead = ReadInfoBaseUser(ID, OldProperties, , ErrorDescription, InfoBaseUser);
-	
-	If Not PreliminaryRead Then
-		
-		If CreateNew = Undefined Or CreateNew = True Then
-			InfoBaseUser = InfoBaseUsers.CreateUser();
-		Else
-			Return False;
-		EndIf;
-	ElsIf CreateNew = True Then
-		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'The infobase user %1 cannot be created because this user is already exists.'"),
-				ID);
-		Return False;
-	EndIf;
-	
-	// Preparing new property values
-	NewProperties = CommonUseClientServer.CopyStructure(OldProperties);
-	
-	For Each KeyAndValue In NewProperties Do
-		If ChangedProperties.Property(KeyAndValue.Key) And ChangedProperties[KeyAndValue.Key] <> Undefined Then
-			NewProperties[KeyAndValue.Key] = ChangedProperties[KeyAndValue.Key];
-		EndIf;
-	EndDo;
-	
-	If NewRoles <> Undefined Then
-		Roles = NewRoles;
-	EndIf;
-	
-	// Setting new property values
-	InfoBaseUser.Name                   = NewProperties.InfoBaseUserName;
-	InfoBaseUser.FullName               = NewProperties.InfoBaseUserFullName;
-	InfoBaseUser.StandardAuthentication = NewProperties.InfoBaseUserStandardAuthentication;
-	
-	If CommonUseCached.DataSeparationEnabled() Then
-		InfoBaseUser.ShowInList = False;
-	Else
-		InfoBaseUser.ShowInList = NewProperties.InfoBaseUserShowInList;
-	EndIf;
-	
-	If NewProperties.InfoBaseUserPassword <> Undefined Then
-		InfoBaseUser.Password            = NewProperties.InfoBaseUserPassword;
-	ElsIf NewProperties.InfoBaseUserStoredPasswordValue <> Undefined Then
-		InfoBaseUser.StoredPasswordValue = NewProperties.InfoBaseUserStoredPasswordValue
-	EndIf;
-	
-	InfoBaseUser.CannotChangePassword = NewProperties.InfoBaseUserCannotChangePassword;
-	InfoBaseUser.OSAuthentication     = NewProperties.InfoBaseUserOSAuthentication;
-	InfoBaseUser.OSUser               = NewProperties.InfoBaseUserOSUser;
-	
-	If ValueIsFilled(NewProperties.InfoBaseUserDefaultInterface) Then
-		InfoBaseUser.DefaultInterface = Metadata.Interfaces[NewProperties.InfoBaseUserDefaultInterface];
-	Else
-		InfoBaseUser.DefaultInterface = Undefined;
-	EndIf;
-	
-	If ValueIsFilled(NewProperties.InfoBaseUserRunMode) Then
-		InfoBaseUser.RunMode = ClientRunMode[NewProperties.InfoBaseUserRunMode];
-	EndIf;
-	
-	If ValueIsFilled(NewProperties.InfoBaseUserLanguage) Then
-		InfoBaseUser.Language = Metadata.Languages[NewProperties.InfoBaseUserLanguage];
-	Else
-		InfoBaseUser.Language = Undefined;
-	EndIf;
-	
-	If NewRoles <> Undefined Then
-		InfoBaseUser.Roles.Clear();
-		For Each Role In NewRoles Do
-			InfoBaseUser.Roles.Add(Metadata.Roles[Role]);
-		EndDo;
-	EndIf;
-	
-	// Adding the FullAccess role if there is a first user with the empty role list
-	If Not CommonUseCached.DataSeparationEnabled()
-		And InfoBaseUsers.GetUsers().Count() = 0 Then
-		
-		If Not InfoBaseUser.Roles.Contains(Metadata.Roles.FullAccess) Then
-		
-			InfoBaseUser.Roles.Add(Metadata.Roles.FullAccess);
-		EndIf;
-		
-		If Not InfoBaseUser.Roles.Contains(FullAdministratorRole()) Then
-		
-			InfoBaseUser.Roles.Add(FullAdministratorRole());
-		EndIf;
-	EndIf;
-	
-	// Attempting to write the new or changed infobase user
-	Try
-		WriteInfoBaseUser(InfoBaseUser);
-	Except
-		ErrorInfo = ErrorInfo();
-		If ErrorInfo.Cause = Undefined Then
-			ErrorDescription = ErrorInfo.Description;
-		Else
-			ErrorDescription = ErrorInfo.Cause.Description;
-		EndIf;
-		ErrorDescription = NStr("en = 'Error writing the infobase user:'") + Chars.LF + ErrorDescription;
-		
-		WriteLogEvent(NStr("en = 'Users'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
-			DetailErrorDescription(ErrorInfo));
-		
-		Return False;
-	EndTry;
-	
-	UsersOverridable.OnWriteInfoBaseUser(OldProperties, NewProperties);
-	
-	ChangedProperties.Insert("InfoBaseUserUUID", InfoBaseUser.UUID);
-	Return True;
-	
-EndFunction
-
-// Writes the specified infobase user taking into account the data separation mode.
-// If data separation is enabled, rights of the user to be written is checked before writing.
-//
-// Parameters:
-// InfoBaseUser - InfoBaseUser - object to be written.
-//
-Procedure WriteInfoBaseUser(InfoBaseUser) Export
-	
-	If CommonUseCached.DataSeparationEnabled() Then
-		
-		If StandardSubsystemsOverridable.IsSharedInfoBaseUser(InfoBaseUser.UUID) Then
-			Raise(NStr("en = 'Shared users cannot be written when data separation is enabled.'"))
-		EndIf;
-		
-	EndIf;
-	
-	CheckUserRights(InfoBaseUser);
-	
-	InfoBaseUser.Write();
-
-EndProcedure
-
-// Verifying rights of the specified infobase user in data separation mode.
-// Parameters:
-//  InfoBaseUser - InfoBaseUser.
-//
-Procedure CheckUserRights(InfoBaseUser) Export
-	
-	If CommonUseCached.DataSeparationEnabled() Then
-		
-		If InfoBaseUser.DataSeparation.Count() > 0 Then
-			
-			InaccessibleRights = UsersServerCached.InaccessibleRightsByUserType(
-				Enums.UserTypes.DataAreaUser);
-				
-			InaccessibleRole = Undefined;
-			
-			For Each Role In InfoBaseUser.Roles Do
-				
-				AvailableForChangesSharedData = UsersServerCached.SharedDataAvailableForChanges(Role.Name);
-				
-				If AvailableForChangesSharedData.Count() > 0 Then
-					InaccessibleRole = Role;
-					
-					Writer = New XMLWriter;
-					Writer.SetString();
-					XDTOSerializer.WriteXML(Writer, AvailableForChangesSharedData);
-					TableAsString = Writer.Close();
-					
-					WriteLogEvent(
-						NStr("en = 'Users.Writing'", Metadata.DefaultLanguage.LanguageCode),
-						EventLogLevel.Error,
-						,
-						InfoBaseUser,
-						NStr("en = 'The role that provides common data editing is set for the separated user:'") + TableAsString);
-				EndIf;
-					
-				For Each Right In InaccessibleRights Do
-					
-					If AccessRight(Right, Metadata, Role) Then
-						InaccessibleRole = Role;
-						
-						MessagePattern = NStr("en = 'The role that provides the %1 right is set for the separated user.'");
-						MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Right);
-						
-						WriteLogEvent(
-							NStr("en = 'Users.Writing'", Metadata.DefaultLanguage.LanguageCode),
-							EventLogLevel.Error,
-							,
-							InfoBaseUser,
-							MessageText);
-					EndIf;
-				EndDo;
-			EndDo;
-			
-			If InaccessibleRole <> Undefined Then
-				MessagePattern = NStr("en = 'The %1 role cannot be set for separated users.'");
-				Raise StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, InaccessibleRole.Presentation());
-			EndIf;
-			
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
-// Deletes the specified infobase user.
-//
-// Parameters:
-//  ID - String or UUID - infobase user name or UUID.
-//  ErrorDescription    - String - contains error details if deletion failed.
-//
-// Returns:
-//  Boolean              - True if deletion completed successfully, otherwise is False.
-//
-Function DeleteInfoBaseUser(Val ID, ErrorDescription = "") Export
-	
-	If CommonUseCached.DataSeparationEnabled()
-		And StandardSubsystemsOverridable.IsSharedInfoBaseUser(ID) Then
-		
-		Raise(NStr("en = 'Shared users cannot be deleted when data separation is enabled.'"));
-	EndIf;
-	
-	InfoBaseUser = Undefined;
-	Properties   = Undefined;
-	Roles        = Undefined;
-	
-	If Not ReadInfoBaseUser(ID, Properties, Roles, ErrorDescription, InfoBaseUser) Then
-		Return False;
-	Else
-		Try
-			InfoBaseUser.Delete();
-		Except
-			ErrorDescription = NStr("en = 'Error deleting the infobase user:'") + Chars.LF + ErrorInfo().Cause.Details;
-			Return False;
-		EndTry;
-	EndIf;
-	
-	UsersOverridable.AfterInfoBaseUserDelete(Properties);
-	
-	Return True;
-	
-EndFunction
-
-// Checks whether the infobase user exists.
-//
-// Parameters:
-//  ID - String or UUID - infobase user name or UUID.
-//
-// Returns:
-//  Boolean.
-//
-Function InfoBaseUserExists(Val ID) Export
-	
-	SetPrivilegedMode(True);
-	
-	If TypeOf(ID) = Type("UUID") Then
-		InfoBaseUser = InfoBaseUsers.FindByUUID(ID);
-	Else
-		InfoBaseUser = InfoBaseUsers.FindByName(ID);
-	EndIf;
-	
-	If InfoBaseUser = Undefined Then
-		Return False;
-	Else
-		Return True;
-	EndIf;
-	
-EndFunction
-
-// Checks whether the item exists in the Users catalog or the ExternalUsers catalog
-// by infobase user UUID.
-// Does not check how many users or external users correspond to the infobase user.
-//
-// Parameters:
-//  UUID         - infobase user UUID.
-//  RefToCurrent - CatalogRef.Users, CatalogRef.ExternalUsers - reference to be
-//                 excluded from the search. 
-//                 Undefined - searching among all catalog items.
-//
-// Returns:
-//  Boolean.
-//
-Function UserByIDExists(UUID, RefToCurrent = Undefined) Export
-	
-	SetPrivilegedMode(True);
-	
-	Query = New Query;
-	Query.Text = 
-	"SELECT
-	|	TRUE AS TrueValue
-	|FROM
-	|	Catalog.Users AS Users
-	|WHERE
-	|	Users.InfoBaseUserID = &UUID
-	|	AND Users.Ref <> &RefToCurrent
-	|
-	|UNION ALL
-	|
-	|SELECT
-	|	TRUE
-	|FROM
-	|	Catalog.ExternalUsers AS ExternalUsers
-	|WHERE
-	|	ExternalUsers.InfoBaseUserID = &UUID
-	|	AND ExternalUsers.Ref <> &RefToCurrent";
-	Query.SetParameter("RefToCurrent", RefToCurrent);
-	Query.SetParameter("UUID", UUID);
-	
-	If Not Query.Execute().IsEmpty() Then
-		FindAmbiguousInfoBaseUsers(, UUID);
-		Return True;
-	EndIf;
-	
-	Return False;
-	
-EndFunction
-
-// Checks whether InfoBaseUser corresponds to the item of the Users catalog or
-// the ExternalUsers catalog.
-// 
-// Parameters:
-//  UserName - String - infobase user name.
-//
-// Returns:
-//  Boolean.
-//
-Function InfoBaseUserAssigned(Val UserName) Export
-	
-	SetPrivilegedMode(True);
-	
-	InfoBaseUser = InfoBaseUsers.FindByName(UserName);
-	
-	If InfoBaseUser = Undefined Then
-		Return True;
-	EndIf;
-	
-	If UserByIDExists(InfoBaseUser.UUID) Then
-		Return False;
-	Else
-		Return True;
-	EndIf
-	
-EndFunction
-
-// Is used in UpdateUserGroupContent and UpdateExternalUserGroupContent procedures.
-//
-// Parameters:
-//  Table - metadata object full name.
-//
-// Returns:
-//  ValueTable with Ref and Parent fields.
-//
-Function ParentGroupTable(Table) Export
-	
-	// Preparing the parent group table
-	Query = New Query(
-	"SELECT
-	|	TableGroups.Ref,
-	|	TableGroups.Parent
-	|FROM
-	|	" + Table + " AS TableGroups");
-	ItemTable = Query.Execute().Unload();
-	ItemTable.Indexes.Add("Parent");
-	ParentGroupTable = ItemTable.Copy(New Array);
-	
-	For Each ItemDetails In ItemTable Do
-		ParentGroupDetails = ParentGroupTable.Add();
-		ParentGroupDetails.Parent = ItemDetails.Ref;
-		ParentGroupDetails.Ref    = ItemDetails.Ref;
-		FillParentGroups(ItemDetails.Ref, ItemDetails.Ref, ItemTable, ParentGroupTable);
-	EndDo;
-	
-	Return ParentGroupTable;
-	
-EndFunction
-
-// Updates the user group content taking the UserGroupContent information register
-// hierarchy into account.
-// Register data is used in the user list form and in the user choice form.
-// Register data can be used for improving query performance, as there is no need to
-// process the hierarchy.
-// 
-// Parameters:
-//  UserGroup - CatalogRef.UserGroups.
-//
-Procedure UpdateUserGroupContent(Val UserGroup) Export
-	
-	If Not ValueIsFilled(UserGroup) Then
-		Return;
-	EndIf;
-	
-	SetPrivilegedMode(True);
-	
-	// Preparing parent groups
-	Query = New Query(
-	"SELECT
-	|	ParentGroupTable.Parent,
-	|	ParentGroupTable.Ref
-	|INTO ParentGroupTable
-	|FROM
-	|	&ParentGroupTable AS ParentGroupTable");
-	Query.SetParameter("ParentGroupTable", ParentGroupTable("Catalog.UserGroups"));
-	Query.TempTablesManager = New TempTablesManager;
-	Query.Execute();
-	
-	// Processing the current group and each parent group
-	While Not UserGroup.IsEmpty() Do
-		
-		Query.SetParameter("UserGroup", UserGroup);
-		
-		If UserGroup <> Catalogs.UserGroups.AllUsers Then
-			// Deleting relations of deleted users.
-			Query.Text =
-			"SELECT DISTINCT
-			|	UserGroupContent.User
-			|FROM
-			|	InformationRegister.UserGroupContent AS UserGroupContent
-			|		LEFT JOIN Catalog.UserGroups.Content AS UserGroupContent2
-			|			INNER JOIN ParentGroupTable AS ParentGroupTable
-			|			ON (ParentGroupTable.Ref = UserGroupContent2.Ref)
-			|				AND (ParentGroupTable.Parent = &UserGroup)
-			|		ON (UserGroupContent.UserGroup = &UserGroup)
-			|			AND (UserGroupContent2.User = UserGroupContent.User)
-			|WHERE
-			|	UserGroupContent.UserGroup = &UserGroup
-			|	AND UserGroupContent2.Ref IS NULL ";
-			DeletedFromGroupUsers = Query.Execute().Select();
-			RecordManager = InformationRegisters.UserGroupContent.CreateRecordManager();
-			While DeletedFromGroupUsers.Next() Do
-				RecordManager.UserGroup = UserGroup;
-				RecordManager.User      = DeletedFromGroupUsers.User;
-				RecordManager.Delete();
-			EndDo;
-		EndIf;
-		
-		// Adding relations of added users.
-		If UserGroup = Catalogs.UserGroups.AllUsers Then
-			Query.Text =
-			"SELECT
-			|	VALUE(Catalog.UserGroups.AllUsers) AS UserGroup,
-			|	Users.Ref AS User
-			|FROM
-			|	Catalog.Users AS Users
-			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-			|			ON (UserGroupContent.UserGroup = VALUE(Catalog.UserGroups.AllUsers))
-			|			AND (UserGroupContent.User = Users.Ref)
-			|WHERE
-			|	UserGroupContent.User IS NULL 
-			|
-			|UNION
-			|
-			|SELECT
-			|	Users.Ref,
-			|	Users.Ref
-			|FROM
-			|	Catalog.Users AS Users
-			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-			|			ON (UserGroupContent.UserGroup = Users.Ref)
-			|			AND (UserGroupContent.User = Users.Ref)
-			|WHERE
-			|	UserGroupContent.User IS NULL ";
-		Else
-			Query.Text =
-			"SELECT DISTINCT
-			|	&UserGroup AS UserGroup,
-			|	UserGroupContent.User
-			|FROM
-			|	Catalog.UserGroups.Content AS UserGroupContent
-			|		INNER JOIN ParentGroupTable AS ParentGroupTable
-			|		ON (ParentGroupTable.Ref = UserGroupContent.Ref)
-			|			AND (ParentGroupTable.Parent = &UserGroup)
-			|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent2
-			|		ON (UserGroupContent2.UserGroup = &UserGroup)
-			|			AND (UserGroupContent2.User = UserGroupContent.User)
-			|WHERE
-			|	UserGroupContent.User IS NULL ";
-		EndIf;
-		UsersAddedToGroup = Query.Execute().Unload();
-		If UsersAddedToGroup.Count() > 0 Then
-			RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
-			RecordSet.Load(UsersAddedToGroup);
-			RecordSet.Write(False); // Adding missing relation records
-		EndIf;
-		
-		UserGroup = CommonUse.GetAttributeValue(UserGroup, "Parent");
-	EndDo;
-	
-EndProcedure
-
-// For internal use only.
-//
-Function GetStoredPasswordValueByPassword(Val Password) Export
-	
-	SetPrivilegedMode(True);
-	
-	BeginTransaction();
-	TempInfobaseUser = InfoBaseUsers.CreateUser();
-	TempInfobaseUser.StandardAuthentication = True;
-	TempInfobaseUser.Name = New UUID;
-	TempInfobaseUser.Password = Password;
-	TempInfobaseUser.Write();
-	
-	TempInfobaseUser = InfoBaseUsers.FindByUUID(TempInfobaseUser.UUID);
-	
-	StoredPasswordValue = TempInfobaseUser.StoredPasswordValue;
-	RollbackTransaction();
-	
-	Return StoredPasswordValue;
-	
-EndFunction
-
-////////////////////////////////////////////////////////////////////////////////
-// Auxiliary procedures and functions
-
-Function UserNotFoundInCatalogMessageText(UserName)
-	
-	If ExternalUsers.UseExternalUsers() Then
-		ErrorMessageText = NStr("en = 'Authorization failed. The application will be closed.
-		                              |The user %1 is not found in the Users and External
-		                              |users catalogs.
-		                              |Please contact your infobase administrator.'");
-	Else
-		ErrorMessageText = NStr("en = 'Authorization failed. The application will be closed.
-		                              |The user %1 is not found in the Users catalog.
-		                              |Please contact your infobase administrator.'");
-	EndIf;
-	
-	ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageText, UserName);
-	
-	Return ErrorMessageText;
-	
-EndFunction
-
-Procedure FillParentGroups(Val Parent, Val CurrentParent, Val ItemTable, Val ParentTable)
-	
-	ParentGroupDetails = ItemTable.FindRows(New Structure("Parent", CurrentParent));
-	For Each GroupDetails In ParentGroupDetails Do
-		ParentGroupDetails = ParentTable.Add();
-		ParentGroupDetails.Parent = Parent;
-		ParentGroupDetails.Ref   = GroupDetails.Ref;
-		FillParentGroups(Parent, GroupDetails.Ref, ItemTable, ParentTable);
-	EndDo;
-	
-EndProcedure
-
-Function UserRefByFullDescription(FullName)
-	
-	SetPrivilegedMode(True);
-	
-	Query = New Query;
-	Query.Text = "SELECT Ref AS Ref
-					|FROM
-					|	Catalog.Users AS Users
-					|WHERE
-					|	Users.Description = &FullName";
-	Query.SetParameter("FullName", FullName);
-	
-	QueryResult = Query.Execute();
-	
-	If QueryResult.IsEmpty() Then
-		Return Undefined;
-	EndIf;
-	
-	Selection = QueryResult.Select();
-	Selection.Next();
-	
-	User = Selection.Ref;
-	
-	If InfoBaseUserAssigned(User.InfoBaseUserID) Then
-		Return User;
-	EndIf;
-	
-	Return Undefined;
-	
-EndFunction
-
-////////////////////////////////////////////////////////////////////////////////
-// Infobase update
-
-// Is called when updating the configuration to the version 1.0.5.2
-// Attempts to fill InfoBaseUserID property of each User catalog item.
-//
-Procedure FillUserIDs() Export
-	
-	SetPrivilegedMode(True);
-	
-	FindAmbiguousInfoBaseUsers();
-	
-	UserList = Catalogs.Users.Select();
-	
-	AllInfoBaseUsers = InfoBaseUsers.GetUsers();
-	UnspecifiedUserProperties = UnspecifiedUserProperties();
-	
-	While UserList.Next() Do
-		User = UserList.Ref;
-		
-		If Not ValueIsFilled(User.InfoBaseUserID)
-		   And User <> UnspecifiedUserProperties.Ref Then
-			
-			UserFullName = TrimAll(User.Description);
-			For Each InfoBaseUser In AllInfoBaseUsers Do
-				If UserFullName = TrimAll(Left(InfoBaseUser.FullName, Metadata.Catalogs.Users.DescriptionLength))
-				   And Not UserByIDExists(InfoBaseUser.UUID) Then
-					UserObject = User.GetObject();
-					UserObject.InfoBaseUserID = InfoBaseUser.UUID;
-					UserObject.Write();
-					Continue;
-				EndIf;
-			EndDo;
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-// Is called when updating the configuration to the version 1.0.5.15
-// Overwrites all users.
-// Can be called for the version 1.0.5.15 and later.
-//
-Procedure FillUserGroupContentRegister() Export
-	
-	SetPrivilegedMode(True);
-	
-	Selection = Catalogs.Users.Select();
-	While Selection.Next() Do
-		
-		Object = Selection.GetObject();
-		Object.Write();
-		
-	EndDo;
-	
-EndProcedure
+#EndRegion

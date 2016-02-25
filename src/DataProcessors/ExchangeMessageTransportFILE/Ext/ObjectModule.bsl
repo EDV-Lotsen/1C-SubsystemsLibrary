@@ -1,23 +1,24 @@
-﻿Var ErrorMessageString Export;
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+Var ErrorMessageString Export;
 Var ErrorMessageStringEL Export;
 
-Var mErrorMessages; // map that contains error messages
-Var mObjectName; // metadata object name
+Var ErrorMessages; // map that contains error messages
+Var ObjectName; // metadata object name
 
-Var mTempExchangeMessageFile; // temporary exchange message file for importing and exporting data 
-Var mTempExchangeMessageDirectory; // temporary exchange message directory
-Var mDataExchangeDirectory; // network exchange message directory
+Var TempExchangeMessageFile; // temporary exchange message file for importing and exporting data
+Var TempExchangeMessageDirectory; // temporary exchange message directory
+Var DataExchangeDirectory; // network exchange message directory
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
-////////////////////////////////////////////////////////////////////////////////
-// Export internal procedures and functions.
+// Export internal procedures and functions
 
 // Creates a temporary directory in the temporary file directory of the operating system user.
 // 
-// Returns:
-//  Boolean – True if the directory was created successfully, otherwise is False.
+//  Returns:
+//   Boolean - True if the directory was created successfully, otherwise is False.
 // 
 Function ExecuteActionsBeforeMessageProcessing() Export
 	
@@ -29,8 +30,8 @@ EndFunction
 
 // Sends the exchange message to the specified resource from the temporary exchange message directory.
 // 
-// Returns:
-//  Boolean – True if the message was sent successfully, otherwise is False.
+//  Returns:
+//   Boolean - True if the message was sent successfully, otherwise is False.
 // 
 Function SendMessage() Export
 	
@@ -54,10 +55,10 @@ Function SendMessage() Export
 	
 EndFunction
 
-// Receives an exchange message from the specified resource and puts it into the temporary exchange message directory.
+// Receives an exchange message from the specified resource and puts it into the temporary exchange message durectory.
 //
-// Returns:
-//  Boolean – True if the message was received successfully, otherwise is False.
+//  Returns:
+//   Boolean - True if the message was received successfully, otherwise is False.
 // 
 Function ReceiveMessage() Export
 	
@@ -73,9 +74,9 @@ Function ReceiveMessage() Export
 EndFunction
 
 // Deletes the temporary exchange message directory after performing data import and export.
-//
-// Returns:
-//  Boolean - True.
+// 
+//  Returns:
+//   Boolean - True.
 //
 Function ExecuteAfterMessageProcessingActions() Export
 	
@@ -92,8 +93,8 @@ EndFunction
 
 // Checking whether the specified resource contains an exchange message.
 // 
-// Returns:
-//  Boolean - True if the specified resource contains an exchange message, otherwise is False.
+//  Returns:
+//   Boolean - True if the specified resource contains an exchange message, False otherwise.
 //
 Function ExchangeMessageFileExists() Export
 	
@@ -102,18 +103,17 @@ Function ExchangeMessageFileExists() Export
 EndFunction
 
 // Initializes properties with initial values and constants.
-// 
+//
 Procedure Initialization() Export
 	
-	mDataExchangeDirectory = New File(FILEDataExchangeDirectory);
+	DataExchangeDirectory = New File(FILEDataExchangeDirectory);
 	
 EndProcedure
 
 // Checking whether the connection to the specified resource can be established.
-//
-// Returns:
-//  Boolean – True if the connection to the specified resource can be established, 
-//            otherwise is False.
+// 
+//  Returns:
+//   Boolean - True if the connection to the specified resource can be established, False otherwise.
 //
 Function ConnectionIsSet() Export
 	
@@ -124,7 +124,7 @@ Function ConnectionIsSet() Export
 		GetErrorMessage(1);
 		Return False;
 		
-	ElsIf Not mDataExchangeDirectory.Exist() Then
+	ElsIf Not DataExchangeDirectory.Exist() Then
 		
 		GetErrorMessage(2);
 		Return False;
@@ -151,15 +151,15 @@ EndFunction
 // Retrieves the full name of the exchange message file.
 //
 // Returns:
-//  String.
+//  String - full name of the exchange message file.
 //
 Function ExchangeMessageFileName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		Name = mTempExchangeMessageFile.FullName;
+		Name = TempExchangeMessageFile.FullName;
 		
 	EndIf;
 	
@@ -170,15 +170,15 @@ EndFunction
 // Retrieves the full name of the exchange message directory.
 //
 // Returns:
-//  String.
+//  String - full name of the exchange message directory.
 //
 Function ExchangeMessageDirectoryName() Export
 	
 	Name = "";
 	
-	If TypeOf(mTempExchangeMessageDirectory) = Type("File") Then
+	If TypeOf(TempExchangeMessageDirectory) = Type("File") Then
 		
-		Name = mTempExchangeMessageDirectory.FullName;
+		Name = TempExchangeMessageDirectory.FullName;
 		
 	EndIf;
 	
@@ -186,19 +186,18 @@ Function ExchangeMessageDirectoryName() Export
 	
 EndFunction
 
-
 // Retrieves the full name of the data exchange directory (local or network).
 //
 // Returns:
-//  String.
+//  String - full name of the data exchange directory (local or network).
 //
 Function DataExchangeDirectoryName() Export
 	
 	Name = "";
 	
-	If TypeOf(mDataExchangeDirectory) = Type("File") Then
+	If TypeOf(DataExchangeDirectory) = Type("File") Then
 		
-		Name = mDataExchangeDirectory.FullName;
+		Name = DataExchangeDirectory.FullName;
 		
 	EndIf;
 	
@@ -206,21 +205,20 @@ Function DataExchangeDirectoryName() Export
 	
 EndFunction
 
-
-// Retrieves the exchange message file date.
+// Retrieves the exchange message file modification date.
 //
 // Returns:
-//  Date.
+//  Date - exchange message file modification date.
 //
 Function ExchangeMessageFileDate() Export
 	
 	Result = Undefined;
 	
-	If TypeOf(mTempExchangeMessageFile) = Type("File") Then
+	If TypeOf(TempExchangeMessageFile) = Type("File") Then
 		
-		If mTempExchangeMessageFile.Exist() Then
+		If TempExchangeMessageFile.Exist() Then
 			
-			Result = mTempExchangeMessageFile.GetModificationTime();
+			Result = TempExchangeMessageFile.GetModificationTime();
 			
 		EndIf;
 		
@@ -236,28 +234,26 @@ Function CreateTempExchangeMessageDirectory()
 	
 	If UseTempDirectoryForSendingAndReceivingMessages Then
 		
-		TempDirectoryName = CommonUseClientServer.GetFullFileName(TempFilesDir(), DataExchangeServer.TempExchangeMessageDirectory());
-		
-		mTempExchangeMessageDirectory = New File(TempDirectoryName);
-		
 		// Creating the temporary exchange message directory
 		Try
-			CreateDirectory(ExchangeMessageDirectoryName());
+			TempDirectoryName = DataExchangeServer.CreateTempExchangeMessageDirectory();
 		Except
 			GetErrorMessage(6);
 			SupplementErrorMessage(BriefErrorDescription(ErrorInfo()));
 			Return False;
 		EndTry;
 		
+		TempExchangeMessageDirectory = New File(TempDirectoryName);
+		
 	Else
 		
-		mTempExchangeMessageDirectory = New File(DataExchangeDirectoryName());
+		TempExchangeMessageDirectory = New File(DataExchangeDirectoryName());
 		
 	EndIf;
 	
 	MessageFileName = CommonUseClientServer.GetFullFileName(ExchangeMessageDirectoryName(), MessageFileNamePattern + ".xml");
 	
-	mTempExchangeMessageFile = New File(MessageFileName);
+	TempExchangeMessageFile = New File(MessageFileName);
 	
 	Return True;
 EndFunction
@@ -270,7 +266,7 @@ Function DeleteTempExchangeMessageDirectory()
 			
 			DeleteFiles(ExchangeMessageDirectoryName());
 			
-			mTempExchangeMessageDirectory = Undefined;
+			TempExchangeMessageDirectory = Undefined;
 			
 		EndIf;
 		
@@ -296,7 +292,7 @@ Function SendExchangeMessage()
 		
 		Try
 			
-			Archiver = New ZipFileWriter(ArchiveTempFileName, ExchangeMessageArchivePassword, "Exchange message file");
+			Archiver = New ZipFileWriter(ArchiveTempFileName, ExchangeMessageArchivePassword, NStr("en = 'Exchange message file'"));
 			Archiver.Add(ExchangeMessageFileName());
 			Archiver.Write();
 			
@@ -334,7 +330,7 @@ Function GetExchangeMessage()
 	
 	ExchangeMessageFileTable = New ValueTable;
 	ExchangeMessageFileTable.Columns.Add("File", New TypeDescription("File"));
-	ExchangeMessageFileTable.Columns.Add("ModifiedAt");
+	ExchangeMessageFileTable.Columns.Add("Modified");
 	
 	FoundFileArray = FindFiles(DataExchangeDirectoryName(), MessageFileNamePattern + ".*", False);
 	
@@ -358,11 +354,11 @@ Function GetExchangeMessage()
 			
 		EndIf;
 		
-		// The file is a required exchange message.
-   // Adding the file to the table.
-		TableRow            = ExchangeMessageFileTable.Add();
-		TableRow.File       = CurrentFile;
-		TableRow.ModifiedAt = CurrentFile.GetModificationTime();
+		// The file is a required exchange message 
+   // Adding the file to the table
+		TableRow          = ExchangeMessageFileTable.Add();
+		TableRow.File     = CurrentFile;
+		TableRow.Modified = CurrentFile.GetModificationTime();
 		
 	EndDo;
 	
@@ -370,11 +366,11 @@ Function GetExchangeMessage()
 		
 		GetErrorMessage(3);
 		
-		MessageString = NStr("en = 'Data exchange directory is %1.'");
+		MessageString = NStr("en = 'Data exchange directory is %1'");
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, DataExchangeDirectoryName());
 		SupplementErrorMessage(MessageString);
 		
-		MessageString = NStr("en = 'Exchange message file name is %1 or %2.'");
+		MessageString = NStr("en = 'Exchange message file name is %1 or %2'");
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, MessageFileNamePattern + ".xml", MessageFileNamePattern + ".zip");
 		SupplementErrorMessage(MessageString);
 		
@@ -382,7 +378,7 @@ Function GetExchangeMessage()
 		
 	Else
 		
-		ExchangeMessageFileTable.Sort("ModifiedAt Desc");
+		ExchangeMessageFileTable.Sort("Modified Desc");
 		
 		// Getting the latest exchange message file from the table
 		IncomingMessageFile = ExchangeMessageFileTable[0].File;
@@ -394,7 +390,7 @@ Function GetExchangeMessage()
 			// Getting the temporary archive file name
 			ArchiveTempFileName = CommonUseClientServer.GetFullFileName(ExchangeMessageDirectoryName(), MessageFileNamePattern + ".zip");
 			
-			// Copy the archive file from the network directory to the temporary one.
+			// Copy the archive file from the network directory to the temporary one
 			If Not ExecuteFileCopying(IncomingMessageFile.FullName, ArchiveTempFileName) Then
 				Return False;
 			EndIf;
@@ -419,7 +415,7 @@ Function GetExchangeMessage()
 			
 		Else
 			
-			// Copying the file of the incoming message from the exchange directory to the temporary file directory
+			// Copy the file of the incoming message from the exchange directory to the temporary file directory
 			If UseTempDirectoryForSendingAndReceivingMessages And Not ExecuteFileCopying(IncomingMessageFile.FullName, ExchangeMessageFileName()) Then
 				
 				Return False;
@@ -436,14 +432,14 @@ EndFunction
 Function CreateCheckFile()
 	
 	TextDocument = New TextDocument;
-	TextDocument.AddLine(NStr("en = 'Temporary test file'"));
+	TextDocument.AddLine(NStr("en = 'Temporary file for checking access to directory'"));
 	
 	Try
 		
 		TextDocument.Write(CommonUseClientServer.GetFullFileName(DataExchangeDirectoryName(), FlagTempFileName()));
 		
 	Except
-		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(DataExchangeServer.EventLogMessageTextDataExchange(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	
@@ -457,7 +453,7 @@ Function DeleteCheckFiles()
 		DeleteFiles(DataExchangeDirectoryName(), FlagTempFileName());
 		
 	Except
-		WriteLogEvent(NStr("en = 'Data exchange'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(DataExchangeServer.EventLogMessageTextDataExchange(), EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
 		Return False;
 	EndTry;
 	
@@ -465,10 +461,10 @@ Function DeleteCheckFiles()
 EndFunction
 
 Function ExecuteFileCopying(Val SourceFileName, Val TargetFileName)
-	// Copying the file
 	
 	Try
 		
+		DeleteFiles(TargetFileName);
 		FileCopy(SourceFileName, TargetFileName);
 		
 	Except
@@ -478,7 +474,6 @@ Function ExecuteFileCopying(Val SourceFileName, Val TargetFileName)
 							SourceFileName,
 							TargetFileName,
 							BriefErrorDescription(ErrorInfo()));
-		
 		SetErrorMessageString(MessageString);
 		
 		Return False
@@ -491,18 +486,18 @@ EndFunction
 
 Procedure GetErrorMessage(MessageNo)
 	
-	SetErrorMessageString(mErrorMessages[MessageNo])
+	SetErrorMessageString(ErrorMessages[MessageNo])
 	
 EndProcedure
 
 Procedure SetErrorMessageString(Val Message)
 	
 	If Message = Undefined Then
-		Message = "Internal error";
+		Message = NStr("en = 'Internal error'");
 	EndIf;
 	
 	ErrorMessageString   = Message;
-	ErrorMessageStringEL = mObjectName + ": " + Message;
+	ErrorMessageStringEL = ObjectName + ": " + Message;
 	
 EndProcedure
 
@@ -528,7 +523,7 @@ Function FlagTempFileName()
 EndFunction
 
 ///////////////////////////////////////////////////////////////////////////////
-// Initialization.
+// Initialization
 
 Procedure InitMessages()
 	
@@ -539,18 +534,18 @@ EndProcedure
 
 Procedure ErrorMessageInitialization()
 	
-	mErrorMessages = New Map;
-	mErrorMessages.Insert(1, NStr("en = 'Connection error: The data exchange directory is not specified.'"));
-	mErrorMessages.Insert(2, NStr("en = 'Connection error: The data exchange directory does not exist.'"));
+	ErrorMessages = New Map;
+	ErrorMessages.Insert(1, NStr("en = 'Connection error: The data exchange directory is not specified.'"));
+	ErrorMessages.Insert(2, NStr("en = 'Connection error: The data exchange directory does not exist.'"));
 	
-	mErrorMessages.Insert(3, NStr("en = 'No message file with data was found in the exchange directory.'"));
-	mErrorMessages.Insert(4, NStr("en = 'Error unpacking the exchange message file.'"));
-	mErrorMessages.Insert(5, NStr("en = 'Error packing the exchange message file.'"));
-	mErrorMessages.Insert(6, NStr("en = 'Error creating the temporary directory.'"));
-	mErrorMessages.Insert(7, NStr("en = 'The archive does not contain the exchange message file.'"));
+	ErrorMessages.Insert(3, NStr("en = 'No message file with data was found in the exchange directory.'"));
+	ErrorMessages.Insert(4, NStr("en = 'Error unpacking the exchange message file.'"));
+	ErrorMessages.Insert(5, NStr("en = 'Error packing the exchange message file.'"));
+	ErrorMessages.Insert(6, NStr("en = 'Error creating the temporary directory'"));
+	ErrorMessages.Insert(7, NStr("en = 'The archive does not contain the exchange message file'"));
 	
-	mErrorMessages.Insert(8, NStr("en = 'Error saving the file to the data exchange directory. Check user access rights to the directory.'"));
-	mErrorMessages.Insert(9, NStr("en = 'Error deleting the file from data exchange directory. Check user access rights to the directory.'"));
+	ErrorMessages.Insert(8, NStr("en = 'Error saving the file to the data exchange directory. Check user access rights to the directory.'"));
+	ErrorMessages.Insert(9, NStr("en = 'Error deleting the file from the data exchange directory. Check user access rights to the directory.'"));
 	
 EndProcedure
 
@@ -560,8 +555,12 @@ EndProcedure
 InitMessages();
 ErrorMessageInitialization();
 
-mTempExchangeMessageDirectory = Undefined;
-mTempExchangeMessageFile    = Undefined;
+TempExchangeMessageDirectory = Undefined;
+TempExchangeMessageFile    = Undefined;
 
-mObjectName = NStr("en = 'Data processor: %1'");
-mObjectName = StringFunctionsClientServer.SubstituteParametersInString(mObjectName, Metadata().Name);
+ObjectName = NStr("en = 'Data processor: %1'");
+ObjectName = StringFunctionsClientServer.SubstituteParametersInString(ObjectName, Metadata().Name);
+
+#EndRegion
+
+#EndIf

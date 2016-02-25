@@ -1,32 +1,45 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<CommandBarLocation>Bottom</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<CommandSet>
+		<ExcludedCommand>No</ExcludedCommand>
+		<ExcludedCommand>CustomizeForm</ExcludedCommand>
+		<ExcludedCommand>SaveValues</ExcludedCommand>
+		<ExcludedCommand>Close</ExcludedCommand>
+		<ExcludedCommand>Abort</ExcludedCommand>
+		<ExcludedCommand>Retry</ExcludedCommand>
+		<ExcludedCommand>Yes</ExcludedCommand>
+		<ExcludedCommand>RestoreValues</ExcludedCommand>
+		<ExcludedCommand>Ignore</ExcludedCommand>
+		<ExcludedCommand>OK</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<HorizontalAlign>Right</HorizontalAlign>
-		<Autofill>false</Autofill>
 		<ChildItems>
-			<Button name="OK" id="2">
+			<Button name="OK" id="8">
 				<Type>CommandBarButton</Type>
 				<DefaultButton>true</DefaultButton>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.OKButton</CommandName>
-				<ExtendedTooltip name="OKExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="OKExtendedTooltip" id="43"/>
 			</Button>
-			<Button name="Cancel" id="4">
+			<Button name="CancelButton" id="34">
 				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<CommandName>Form.StandardCommand.Cancel</CommandName>
-				<ExtendedTooltip name="CancelExtendedTooltip" id="5"/>
+				<CommandName>Form.Command.CancelButton</CommandName>
+				<ExtendedTooltip name="CancelButtonExtendedTooltip" id="44"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
 	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
 		<Event name="OnOpen">OnOpen</Event>
+		<Event name="BeforeClose">BeforeClose</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<RadioButtonField name="ProxyServerUseVariants" id="6">
+		<RadioButtonField name="ProxyServerUseVariants" id="20">
 			<DataPath>ProxyServerUseVariant</DataPath>
 			<TitleLocation>None</TitleLocation>
 			<RadioButtonType>Auto</RadioButtonType>
@@ -72,13 +85,13 @@
 					</xr:Value>
 				</xr:Item>
 			</ChoiceList>
-			<ContextMenu name="ProxyServerUseVariantsContextMenu" id="7"/>
-			<ExtendedTooltip name="ProxyServerUseVariantsExtendedTooltip" id="8"/>
+			<ContextMenu name="ProxyServerUseVariantsContextMenu" id="21"/>
+			<ExtendedTooltip name="ProxyServerUseVariantsExtendedTooltip" id="45"/>
 			<Events>
-				<Event name="OnChange">UseSystemProxySettingsOnChange</Event>
+				<Event name="OnChange">ProxyServerUseVariantsOnChange</Event>
 			</Events>
 		</RadioButtonField>
-		<UsualGroup name="ProxyParameters" id="9">
+		<UsualGroup name="ProxyParameters" id="18">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -88,15 +101,15 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Proxy parameters.</v8:content>
+					<v8:content>Proxy parameters</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Group>Vertical</Group>
 			<Representation>NormalSeparation</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ProxyParametersExtendedTooltip" id="10"/>
+			<ExtendedTooltip name="ProxyParametersExtendedTooltip" id="46"/>
 			<ChildItems>
-				<UsualGroup name="ServerAddressGroup" id="11">
+				<UsualGroup name="ServerAddressGroup" id="19">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -106,31 +119,43 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Server address group.</v8:content>
+							<v8:content>Server address group</v8:content>
 						</v8:item>
 					</ToolTip>
 					<Group>Horizontal</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="ServerAddressGroupExtendedTooltip" id="12"/>
+					<ExtendedTooltip name="ServerAddressGroupExtendedTooltip" id="47"/>
 					<ChildItems>
-						<InputField name="ProxyServer" id="13">
+						<InputField name="ProxyServer" id="9">
 							<DataPath>Server</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>IP address or proxy server name</v8:content>
+								</v8:item>
+							</ToolTip>
 							<Wrap>false</Wrap>
-							<ContextMenu name="ProxyServerContextMenu" id="14"/>
-							<ExtendedTooltip name="ProxyServerExtendedTooltip" id="15"/>
+							<ContextMenu name="ProxyServerContextMenu" id="10"/>
+							<ExtendedTooltip name="ProxyServerExtendedTooltip" id="48"/>
 						</InputField>
-						<InputField name="Port" id="16">
+						<InputField name="Port" id="1">
 							<DataPath>Port</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Proxy server port</v8:content>
+								</v8:item>
+							</ToolTip>
 							<Wrap>false</Wrap>
 							<MinValue xsi:type="xs:decimal">0</MinValue>
 							<MaxValue xsi:type="xs:decimal">65535</MaxValue>
-							<ContextMenu name="PortContextMenu" id="17"/>
-							<ExtendedTooltip name="PortExtendedTooltip" id="18"/>
+							<ContextMenu name="PortContextMenu" id="2"/>
+							<ExtendedTooltip name="PortExtendedTooltip" id="49"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="UserPasswordGroup" id="19">
+				<UsualGroup name="UserPasswordGroup" id="22">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -140,36 +165,79 @@
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>User password group.</v8:content>
+							<v8:content>User password group</v8:content>
 						</v8:item>
 					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="20"/>
+					<ExtendedTooltip name="UserPasswordGroupExtendedTooltip" id="50"/>
 					<ChildItems>
-						<InputField name="User" id="21">
+						<InputField name="User" id="5">
 							<DataPath>User</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Proxy server authorization login</v8:content>
+								</v8:item>
+							</ToolTip>
 							<Wrap>false</Wrap>
-							<ContextMenu name="UserContextMenu" id="22"/>
-							<ExtendedTooltip name="UserExtendedTooltip" id="23"/>
+							<ContextMenu name="UserContextMenu" id="6"/>
+							<ExtendedTooltip name="UserExtendedTooltip" id="51"/>
 						</InputField>
-						<InputField name="Password" id="24">
+						<InputField name="Password" id="3">
 							<DataPath>Password</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Proxy server authorization password</v8:content>
+								</v8:item>
+							</ToolTip>
 							<Wrap>false</Wrap>
 							<PasswordMode>true</PasswordMode>
-							<ContextMenu name="PasswordContextMenu" id="25"/>
-							<ExtendedTooltip name="PasswordExtendedTooltip" id="26"/>
+							<ContextMenu name="PasswordContextMenu" id="4"/>
+							<ExtendedTooltip name="PasswordExtendedTooltip" id="52"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<CheckBoxField name="BypassProxyForLocalURLs" id="27">
-					<DataPath>BypassProxyForLocalURLs</DataPath>
-					<TitleLocation>Right</TitleLocation>
-					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="BypassProxyForLocalURLsContextMenu" id="28"/>
-					<ExtendedTooltip name="BypassProxyForLocalURLsExtendedTooltip" id="29"/>
-				</CheckBoxField>
+				<UsualGroup name="AdditionalParametersGroup" id="25">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Additional parameters</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Additional parameters group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="AdditionalParametersGroupExtendedTooltip" id="53"/>
+					<ChildItems>
+						<CheckBoxField name="BypassProxyOnLocal" id="11">
+							<DataPath>BypassProxyOnLocal</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="BypassProxyForLocalURLsContextMenu" id="12"/>
+							<ExtendedTooltip name="BypassProxyForLocalURLsExtendedTooltip" id="54"/>
+						</CheckBoxField>
+						<LabelDecoration name="IndentDecoration" id="27">
+							<HorizontalStretch>true</HorizontalStretch>
+							<VerticalStretch>false</VerticalStretch>
+							<ContextMenu name="IndentDecorationContextMenu" id="28"/>
+							<ExtendedTooltip name="IndentDecorationExtendedTooltip" id="55"/>
+						</LabelDecoration>
+						<Button name="AdditionalProxyServerParameters" id="26">
+							<Type>UsualButton</Type>
+							<CommandName>Form.Command.AdditionalProxyServerParameters</CommandName>
+							<ExtendedTooltip name="AdditionalProxyServerParametersExtendedTooltip" id="56"/>
+						</Button>
+					</ChildItems>
+				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
 	</ChildItems>
@@ -188,6 +256,7 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="Password" id="2">
 			<Title>
@@ -203,6 +272,7 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="Port" id="3">
 			<Title>
@@ -219,6 +289,7 @@
 					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
 				</v8:NumberQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="Server" id="4">
 			<Title>
@@ -234,8 +305,9 @@
 					<v8:AllowedLength>Variable</v8:AllowedLength>
 				</v8:StringQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="BypassProxyForLocalURLs" id="5">
+		<Attribute name="BypassProxyOnLocal" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -245,19 +317,20 @@
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
 		<Attribute name="ProxySettingsAtClient" id="6">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Proxy settings at client</v8:content>
+					<v8:content>Proxy settings on client</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="ProxyServerUseVariant" id="7">
+		<Attribute name="ProxyServerUseVariant" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -272,8 +345,9 @@
 					<v8:AllowedSign>Any</v8:AllowedSign>
 				</v8:NumberQualifiers>
 			</Type>
+			<SavedData>true</SavedData>
 		</Attribute>
-		<Attribute name="UseSystemSettings" id="8">
+		<Attribute name="UseSystemSettings" id="9">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -284,11 +358,137 @@
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="UseProxy" id="9">
+		<Attribute name="UseProxy" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
 					<v8:content>Use proxy</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ExceptionServers" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Exception servers</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="OneProxyForAllProtocols" id="11">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>One proxy for all protocols</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="HTTPServer" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Server address</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="HTTPPort" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Port</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="HTTPSServer" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Server address</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="FTPServer" id="15">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Server address</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="HTTPSPort" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Port</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="FTPPort" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Port</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="AttemptedSavingSettingsToFile" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Attempted saving settings to file</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -306,6 +506,36 @@
 			</Title>
 			<Action>OKButton</Action>
 			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="AdditionalProxyServerParameters" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Advanced</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Additional proxy server parameters</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>AdditionalProxyServerParameters</Action>
+		</Command>
+		<Command name="CancelButton" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Cancel button</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>CancelButton</Action>
 		</Command>
 	</Commands>
 	<Parameters>

@@ -1,36 +1,41 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	If Parameters.Property("SelfTest") Then
+  // Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
+	If Parameters.Property("SelfTest") Then 
 		Return;
 	EndIf;
 	
-	Date = Parameters.Date;
-	UserName = Parameters.UserName;
+	Date                    = Parameters.Date;
+	UserName                = Parameters.UserName;
 	ApplicationPresentation = Parameters.ApplicationPresentation;
-	Computer = Parameters.Computer;
-	Event = Parameters.Event;
-	EventPresentation = Parameters.EventPresentation;
-	Comment = Parameters.Comment;
-	MetadataPresentation = Parameters.MetadataPresentation;
-	Data = Parameters.Data;
-	DataPresentation = Parameters.DataPresentation;
-	TransactionID = Parameters.TransactionID;
-	TransactionStatus = Parameters.TransactionStatus;
-	Session = Parameters.Session;
-	ServerName = Parameters.ServerName;
-	Port = Parameters.Port;
-	SyncPort = Parameters.SyncPort;
+	Computer                = Parameters.Computer;
+	Event                   = Parameters.Event;
+	EventPresentation       = Parameters.EventPresentation;
+	Comment                 = Parameters.Comment;
+	MetadataPresentation    = Parameters.MetadataPresentation;
+	Data                    = Parameters.Data;
+	DataPresentation        = Parameters.DataPresentation;
+	TransactionID           = Parameters.TransactionID;
+	TransactionStatus       = Parameters.TransactionStatus;
+	Session                 = Parameters.Session;
+	ServerName              = Parameters.ServerName;
+	Port                    = Parameters.Port;
+	SyncPort                = Parameters.SyncPort;
 	
-	// Enabling open buttion for the metadata list 
+ 	If Parameters.Property("SessionDataSeparation") Then
+
+		SessionDataSeparation = Parameters.SessionDataSeparation;
+	EndIf;
+	
+	// Enabling the open button for the metadata list 
 	If TypeOf(MetadataPresentation) = Type("ValueList") Then
 		Items.MetadataPresentation.OpenButton = True;
 		Items.AccessMetadataPresentation.OpenButton = True;
 		Items.AccessRightRejectionMetadataPresentation.OpenButton = True;
-		Items.AccessActionRejectionMetadataPresentation.OpenButton = True;
+		Items.AccessActionDeniedMetadataPresentation.OpenButton = True;
 	EndIf;
 	
 	// Processing special event data
@@ -38,7 +43,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	Items.AccessRightDeniedData.Visible = False;
 	Items.AccessActionDeniedData.Visible = False;
 	Items.AuthenticationData.Visible = False;
-	Items.InfoBaseUserData.Visible = False;
+	Items.InfobaseUserData.Visible = False;
 	Items.SimpleData.Visible = False;
 	Items.DataPresentations.PagesRepresentation = FormPagesRepresentation.None;
 	
@@ -85,11 +90,11 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		 or Event = "_$User$_.New"
 		 or Event = "_$User$_.Update" Then
 		EventData = GetFromTempStorage(Parameters.DataAddress);
-		Items.DataPresentations.CurrentPage = Items.InfoBaseUserData;
-		Items.InfoBaseUserData.Visible = True;
-		InfoBaseUserProperties = New ValueTable;
-		InfoBaseUserProperties.Columns.Add("Name");
-		InfoBaseUserProperties.Columns.Add("Value");
+		Items.DataPresentations.CurrentPage = Items.InfobaseUserData;
+		Items.InfobaseUserData.Visible = True;
+		InfobaseUserProperties = New ValueTable;
+		InfobaseUserProperties.Columns.Add("Name");
+		InfobaseUserProperties.Columns.Add("Value");
 		RoleArray = Undefined;
 		If EventData <> Undefined Then
 			For Each KeyAndValue In EventData Do
@@ -97,19 +102,19 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 					RoleArray = KeyAndValue.Value;
 					Continue;
 				EndIf;
-				NewRow = InfoBaseUserProperties.Add();
+				NewRow = InfobaseUserProperties.Add();
 				NewRow.Name = KeyAndValue.Key;
 				NewRow.Value = KeyAndValue.Value;
 			EndDo;
 		EndIf;
-		CreateFormTable("InfoBaseUserPropertyTable", "DataTable", InfoBaseUserProperties);
+		CreateFormTable("InfobaseUserPropertyTable", "DataTable", InfobaseUserProperties);
 		If RoleArray <> Undefined Then
 			IBUserRoles = New ValueTable;
 			IBUserRoles.Columns.Add("Role",, NStr("en = 'Role'"));
 			For Each CurrentRole In RoleArray Do
 				IBUserRoles.Add().Role = CurrentRole;
 			EndDo;
-			CreateFormTable("InfoBaseUserRoleTable", "Roles", IBUserRoles);
+			CreateFormTable("InfobaseUserRoleTable", "Roles", IBUserRoles);
 		EndIf;
 		Items.Comment.VerticalStretch = False;
 		Items.Comment.Height = 1;
@@ -119,12 +124,18 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Items.SimpleData.Visible = True;
 	EndIf;
 	
+ 	Items.SessionDataSeparation.Visible = Not CommonUseCached.CanUseSeparatedData();
+
+	
+	StandardSubsystemsServer.SetGroupTitleRepresentation(ThisObject, "DataGroup EventGroup ConnectionGroup  TransactionIDGroup");
+ 
 EndProcedure
 
+#EndRegion
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
 
+#Region FormHeaderItemEventHandlers
+ 
 &AtClient
 Procedure MetadataPresentationOpening(Item, StandardProcessing)
 	
@@ -132,20 +143,30 @@ Procedure MetadataPresentationOpening(Item, StandardProcessing)
 	
 EndProcedure
 
+ &AtClient
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF AccessActionDeniedDataTable TABLE
+Procedure SessionDataSeparationOpening(Item, StandardProcessing)
+	
+	ShowValue(, SessionDataSeparation);
+	
+EndProcedure
+
+#EndRegion
+
+#Region AccessActionDeniedDataTableFormTableItemEventHandlers
 
 &AtClient
 Procedure DataTableChoice(Item, SelectedRow, Field, StandardProcessing)
 	
-	ShowValue(, Item.CurrentData[Mid(Field.Name, StrLen(Item.Name)+1)]);
+	ShowValue(, Item.CurrentData[Mid(Field.Name,  StrLen(Item.Name)+1)]);
 	
 EndProcedure
 
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+ #EndRegion
+
+
+#Region InternalProceduresAndFunctions
 
 Procedure CreateFormTable(Val FormTableFieldName, Val AttributeNameFormDataCollection, Val ValueTable)
 	
@@ -171,4 +192,4 @@ Procedure CreateFormTable(Val FormTableFieldName, Val AttributeNameFormDataColle
 	
 EndProcedure
 
-
+#EndRegion

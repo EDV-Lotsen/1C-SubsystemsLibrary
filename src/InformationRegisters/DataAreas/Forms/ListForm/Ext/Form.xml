@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
 	<ChildItems>
-		<Table name="List" id="2">
+		<Table name="List" id="1">
 			<Representation>List</Representation>
 			<CommandBarLocation>None</CommandBarLocation>
 			<DefaultItem>true</DefaultItem>
@@ -28,11 +28,11 @@
 			<ShowRoot>true</ShowRoot>
 			<AllowRootChoice>false</AllowRootChoice>
 			<UpdateOnDataChange>Auto</UpdateOnDataChange>
-			<ContextMenu name="ListContextMenu" id="3"/>
-			<AutoCommandBar name="ListCommandBar" id="4">
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3">
 				<Autofill>false</Autofill>
 			</AutoCommandBar>
-			<ExtendedTooltip name="ListExtendedTooltip" id="5"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="23"/>
 			<SearchStringAddition name="ListSearchString" id="24">
 				<AdditionSource>
 					<Item>List</Item>
@@ -58,41 +58,63 @@
 				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="32"/>
 			</SearchControlAddition>
 			<ChildItems>
-				<LabelField name="DataArea" id="6">
-					<DataPath>List.DataArea</DataPath>
+				<LabelField name="DataArea" id="4">
+					<DataPath>List.DataAreaAuxiliaryData</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="DataAreaContextMenu" id="7"/>
-					<ExtendedTooltip name="DataAreaExtendedTooltip" id="8"/>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data area</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="DataAreaContextMenu" id="5"/>
+					<ExtendedTooltip name="DataAreaExtendedTooltip" id="33"/>
 				</LabelField>
-				<LabelField name="Presentation" id="9">
+				<LabelField name="Presentation" id="16">
 					<DataPath>List.Presentation</DataPath>
-					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="PresentationContextMenu" id="10"/>
-					<ExtendedTooltip name="PresentationExtendedTooltip" id="11"/>
+					<ContextMenu name="PresentationContextMenu" id="17"/>
+					<ExtendedTooltip name="PresentationExtendedTooltip" id="34"/>
 				</LabelField>
-				<LabelField name="State" id="12">
-					<DataPath>List.State</DataPath>
+				<LabelField name="Status" id="6">
+					<DataPath>List.Status</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="StateContextMenu" id="13"/>
-					<ExtendedTooltip name="StateExtendedTooltip" id="14"/>
+					<ContextMenu name="StatusContextMenu" id="7"/>
+					<ExtendedTooltip name="StatusExtendedTooltip" id="35"/>
 				</LabelField>
-				<LabelField name="Repeat" id="15">
+				<LabelField name="Repeat" id="8">
 					<DataPath>List.Repeat</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="RepeatContextMenu" id="16"/>
-					<ExtendedTooltip name="RepeatExtendedTooltip" id="17"/>
+					<ContextMenu name="RepeatContextMenu" id="9"/>
+					<ExtendedTooltip name="RepeatExtendedTooltip" id="36"/>
 				</LabelField>
-				<LabelField name="TimeZone" id="18">
-					<DataPath>List.TimeZone</DataPath>
+				<CheckBoxField name="ProcessingError" id="12">
+					<DataPath>List.ProcessingError</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="TimezoneContextMenu" id="19"/>
-					<ExtendedTooltip name="TimezoneExtendedTooltip" id="20"/>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ProcessingErrorContextMenu" id="13"/>
+					<ExtendedTooltip name="ProcessingErrorExtendedTooltip" id="37"/>
+				</CheckBoxField>
+				<LabelField name="TimeZone" id="19">
+					<DataPath>List.TimeZone</DataPath>
+					<ContextMenu name="TimeZoneContextMenu" id="20"/>
+					<ExtendedTooltip name="TimeZoneExtendedTooltip" id="38"/>
 				</LabelField>
-				<LabelField name="ExportID" id="21">
+				<LabelField name="Prefix" id="21">
+					<DataPath>List.Prefix</DataPath>
+					<ContextMenu name="PrefixContextMenu" id="22"/>
+					<ExtendedTooltip name="PrefixExtendedTooltip" id="39"/>
+				</LabelField>
+				<LabelField name="ExportID" id="10">
 					<DataPath>List.ExportID</DataPath>
 					<DefaultItem>true</DefaultItem>
-					<ContextMenu name="ExportIDContextMenu" id="22"/>
-					<ExtendedTooltip name="ExportIDExtendedTooltip" id="23"/>
+					<ContextMenu name="ExportIDContextMenu" id="11"/>
+					<ExtendedTooltip name="ExportIDExtendedTooltip" id="40"/>
+				</LabelField>
+				<LabelField name="Option" id="14">
+					<DataPath>List.Option</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<ContextMenu name="OptionContextMenu" id="15"/>
+					<ExtendedTooltip name="OptionExtendedTooltip" id="41"/>
 				</LabelField>
 			</ChildItems>
 		</Table>
@@ -104,8 +126,26 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<Settings xsi:type="DynamicList">
-				<ManualQuery>false</ManualQuery>
+				<ManualQuery>true</ManualQuery>
 				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	DataAreaInformationRegister.DataAreaAuxiliaryData,
+	DataAreaInformationRegister.Status,
+	DataAreaInformationRegister.Repeat,
+	DataAreaInformationRegister.ExportID,
+	DataAreaInformationRegister.ProcessingError,
+	DataAreaInformationRegister.Option,
+	DataAreaPresentation.Value AS Presentation,
+	DataAreaTimeZone.Value AS TimeZone,
+	DataAreaPrefix.Value AS Prefix
+FROM
+	InformationRegister.DataAreas AS DataAreaInformationRegister
+		LEFT JOIN Constant.DataAreaPresentation AS DataAreaPresentation
+			ON DataAreaInformationRegister.DataAreaAuxiliaryData = DataAreaPresentation.DataAreaAuxiliaryData
+		LEFT JOIN Constant.DataAreaTimeZone AS DataAreaTimeZone
+			ON DataAreaInformationRegister.DataAreaAuxiliaryData = DataAreaTimeZone.DataAreaAuxiliaryData
+		LEFT JOIN Constant.DataAreaPrefix AS DataAreaPrefix
+			ON DataAreaInformationRegister.DataAreaAuxiliaryData = DataAreaPrefix.DataAreaAuxiliaryData</QueryText>
 				<MainTable>InformationRegister.DataAreas</MainTable>
 				<ListSettings>
 					<dcsset:filter>

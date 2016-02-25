@@ -6,17 +6,24 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data exchange scripts</v8:content>
+					<v8:content>Synchronization scripts</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
 			<Group>FormNavigationPanelImportant</Group>
 			<Representation>Auto</Representation>
-			<ToolTip/>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization scenarios</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Picture/>
 			<Shortcut/>
 			<IncludeHelpInContents>false</IncludeHelpInContents>
-			<CommandParameterType/>
+			<CommandParameterType>
+				<v8:Type>cfg:ExchangePlanRef.DemoExchangeInDIB</v8:Type>
+			</CommandParameterType>
 			<ParameterUseMode>Single</ParameterUseMode>
 			<ModifiesData>false</ModifiesData>
 		</Properties>

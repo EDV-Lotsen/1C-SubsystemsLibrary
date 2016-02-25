@@ -1,10 +1,34 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.17801"></meta></head><body>
-<p>The <strong>Currencies </strong>list stores currencies that you use for transactions. </p>
-<p>The <strong>Currencies </strong>list is only available if the <strong>Multicurrency</strong> check box is selected in Accounting settings.</p>
-<p><strong>To add a currency</strong></p>
-<ol><li>In the <strong>Lists</strong> section, click <strong>Currencies</strong> and then click <strong>Create</strong>. 
-</li><li>Enter or select the following: 
-<ul><li><strong>Currency code.</strong> The unique currency identifier, for example EUR. 
-</li><li><strong>Symbol.</strong> The currency symbol, for example €. 
-</li><li><strong>Default A/R account.</strong> The default A/R account for transactions in this currency.  
-</li><li><strong>Default A/P account.</strong> The default A/P account for transactions in this currency.  </li></ul></li><li>Click<strong> Write and close.</strong></li></ol></body></html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18163"></meta></head><body>
+<p>This list is used to manage currencies used in the application. The required currencies can be picked from the <a href="Catalog.Currencies.Form.PickCurrenciesFromClassifier/Help">Currency classifier</a> (recommended) or entered manually.</p>
+<p>The currency list is accessible from the <strong>Reference data </strong>section. </p>
+<p>The list includes:</p>
+<ul><li>
+<div><strong>Numeric code</strong> - a unique numeric ID compliant with international standards. It is used to identify currencies when downloading exchange rate data from the Internet sources.</div>
+</li><li>
+<div><strong>Alphabetic code</strong> - a brief currency name compliant with international standards.</div>
+</li><li>
+<div><strong>Currency name</strong> - full name of the currency.</div>
+</li><li>
+<div><strong>Rate</strong> - <a href="InformationRegister.CurrencyRates/Help"></a>exchange rate for today.</div>
+</li><li>
+<div><strong>Unit conversion factor</strong> - set to 1 by default. This parameter is not displayed. Unit conversion factors are used for currencies with extremely low exchange rates against US dollar (below 1:10 000). For example, the exchange rate of Viet Nam dong is 4.5826 USD per 100 000 VND. This field includes three subcolumns:</div>
+<ul><li>
+<div><strong>USD per</strong> - logical connective.</div>
+</li><li>
+<div><strong>Unit conversion factor</strong> - exchange rate multiplier ratio.</div>
+</li><li>
+<div><strong>Brief name</strong> - alphabetic code of the currency</div></li></ul></li></ul><h3>Adding currencies from Currency classifier</h3>
+<ul><li>
+<div>Click <strong>Pick from classifier</strong>. This is a recommended method to add currencies, as it ensures correct currency data input. </div>
+</li><li>
+<div>The following fields wil be filled in automatically: <strong>Name, Numeric code, Alphabetic code</strong>. The <strong>Download from Internet</strong> check box will be selected automatically if exchange rates for this currency can be downloaded from online sources.</div></li></ul><h3>Adding currencies manually</h3>
+<ul><li>
+<div>Click <strong>Create</strong>. </div>
+</li><li>
+<div>Fill in the <a href="Catalog.Currencies.Form.ItemForm/Help">currency data</a>.</div></li></ul><h3>Importing exchange rates</h3>
+<ul><li>
+<div>To start <a href="DataProcessor.CurrencyRateImport/Help">importing exchange rates</a> from online sources, click <strong>Import currency rates</strong>. </div>
+</li><li>
+<div>A predefined <a href="DataProcessor.ScheduledAndBackgroundJobs/Help">scheduled job</a> named <strong>Exchange rate import</strong> is available in the application for automated download of exchange rates from online sources.</div></li></ul><h3>See also:</h3>
+<ul><li>
+<div><a href="v8help://frame/form_common">Working with forms</a>.</div></li></ul></body></html>

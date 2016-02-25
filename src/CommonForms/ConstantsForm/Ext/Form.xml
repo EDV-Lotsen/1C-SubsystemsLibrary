@@ -1,0 +1,695 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<AutoCommandBar name="" id="-1"/>
+	<ChildItems>
+		<CheckBoxField name="AccountingByWarehouses" id="1">
+			<DataPath>ConstantsSet.AccountingByWarehouses</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="AccountingByWarehousesContextMenu" id="2"/>
+			<ExtendedTooltip name="AccountingByWarehousesExtendedTooltip" id="3"/>
+		</CheckBoxField>
+		<InputField name="AddressForRestoringAccountPassword" id="4">
+			<DataPath>ConstantsSet.AddressForRestoringAccountPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="AddressForRestoringAccountPasswordContextMenu" id="5"/>
+			<ExtendedTooltip name="AddressForRestoringAccountPasswordExtendedTooltip" id="6"/>
+		</InputField>
+		<CheckBoxField name="AutomaticallySetUpPermissionsInSecurityProfiles" id="7">
+			<DataPath>ConstantsSet.AutomaticallySetUpPermissionsInSecurityProfiles</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="AutomaticallySetUpPermissionsInSecurityProfilesContextMenu" id="8"/>
+			<ExtendedTooltip name="AutomaticallySetUpPermissionsInSecurityProfilesExtendedTooltip" id="9"/>
+		</CheckBoxField>
+		<InputField name="AuxiliaryServiceManagerUserName" id="10">
+			<DataPath>ConstantsSet.AuxiliaryServiceManagerUserName</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="AuxiliaryServiceManagerUserNameContextMenu" id="11"/>
+			<ExtendedTooltip name="AuxiliaryServiceManagerUserNameExtendedTooltip" id="12"/>
+		</InputField>
+		<InputField name="AuxiliaryServiceManagerUserPassword" id="13">
+			<DataPath>ConstantsSet.AuxiliaryServiceManagerUserPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="AuxiliaryServiceManagerUserPasswordContextMenu" id="14"/>
+			<ExtendedTooltip name="AuxiliaryServiceManagerUserPasswordExtendedTooltip" id="15"/>
+		</InputField>
+		<CheckBoxField name="BackUpDataArea" id="16">
+			<DataPath>ConstantsSet.BackUpDataArea</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="BackUpDataAreaContextMenu" id="17"/>
+			<ExtendedTooltip name="BackUpDataAreaExtendedTooltip" id="18"/>
+		</CheckBoxField>
+		<CheckBoxField name="BackupSupported" id="19">
+			<DataPath>ConstantsSet.BackupSupported</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="BackupSupportedContextMenu" id="20"/>
+			<ExtendedTooltip name="BackupSupportedExtendedTooltip" id="21"/>
+		</CheckBoxField>
+		<CheckBoxField name="CopyDataAreasFromPrototype" id="22">
+			<DataPath>ConstantsSet.CopyDataAreasFromPrototype</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="CopyDataAreasFromPrototypeContextMenu" id="23"/>
+			<ExtendedTooltip name="CopyDataAreasFromPrototypeExtendedTooltip" id="24"/>
+		</CheckBoxField>
+		<InputField name="DataAreaKey" id="25">
+			<DataPath>ConstantsSet.DataAreaKey</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaKeyContextMenu" id="26"/>
+			<ExtendedTooltip name="DataAreaKeyExtendedTooltip" id="27"/>
+		</InputField>
+		<InputField name="DataAreaOpenDocumentFileExtensionList" id="28">
+			<DataPath>ConstantsSet.DataAreaOpenDocumentFileExtensionList</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaOpenDocumentFileExtensionListContextMenu" id="29"/>
+			<ExtendedTooltip name="DataAreaOpenDocumentFileExtensionListExtendedTooltip" id="30"/>
+		</InputField>
+		<InputField name="DataAreaPrefix" id="31">
+			<DataPath>ConstantsSet.DataAreaPrefix</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaPrefixContextMenu" id="32"/>
+			<ExtendedTooltip name="DataAreaPrefixExtendedTooltip" id="33"/>
+		</InputField>
+		<InputField name="DataAreaPresentation" id="34">
+			<DataPath>ConstantsSet.DataAreaPresentation</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaPresentationContextMenu" id="35"/>
+			<ExtendedTooltip name="DataAreaPresentationExtendedTooltip" id="36"/>
+		</InputField>
+		<InputField name="DataAreaTimeZone" id="37">
+			<DataPath>ConstantsSet.DataAreaTimeZone</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataAreaTimeZoneContextMenu" id="38"/>
+			<ExtendedTooltip name="DataAreaTimeZoneExtendedTooltip" id="39"/>
+		</InputField>
+		<CheckBoxField name="DataChangesRecorded" id="40">
+			<DataPath>ConstantsSet.DataChangesRecorded</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="DataChangesRecordedContextMenu" id="41"/>
+			<ExtendedTooltip name="DataChangesRecordedExtendedTooltip" id="42"/>
+		</CheckBoxField>
+		<InputField name="DataExchangeMessageDirectoryForLinux" id="43">
+			<DataPath>ConstantsSet.DataExchangeMessageDirectoryForLinux</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataExchangeMessageDirectoryForLinuxContextMenu" id="44"/>
+			<ExtendedTooltip name="DataExchangeMessageDirectoryForLinuxExtendedTooltip" id="45"/>
+		</InputField>
+		<InputField name="DataExchangeMessageDirectoryForWindows" id="46">
+			<DataPath>ConstantsSet.DataExchangeMessageDirectoryForWindows</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataExchangeMessageDirectoryForWindowsContextMenu" id="47"/>
+			<ExtendedTooltip name="DataExchangeMessageDirectoryForWindowsExtendedTooltip" id="48"/>
+		</InputField>
+		<InputField name="DataImportTransactionItemCount" id="49">
+			<DataPath>ConstantsSet.DataImportTransactionItemCount</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DataImportTransactionItemCountContextMenu" id="50"/>
+			<ExtendedTooltip name="DataImportTransactionItemCountExtendedTooltip" id="51"/>
+		</InputField>
+		<InputField name="DistributedInfobaseNodePrefix" id="52">
+			<DataPath>ConstantsSet.DistributedInfobaseNodePrefix</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="DistributedInfobaseNodePrefixContextMenu" id="53"/>
+			<ExtendedTooltip name="DistributedInfobaseNodePrefixExtendedTooltip" id="54"/>
+		</InputField>
+		<CheckBoxField name="DontUseSeparationByDataAreas" id="55">
+			<DataPath>ConstantsSet.DontUseSeparationByDataAreas</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="DontUseSeparationByDataAreasContextMenu" id="56"/>
+			<ExtendedTooltip name="DontUseSeparationByDataAreasExtendedTooltip" id="57"/>
+		</CheckBoxField>
+		<CheckBoxField name="DontUseSeveralCompanies" id="58">
+			<DataPath>ConstantsSet.DontUseSeveralCompanies</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="DontUseSeveralCompaniesContextMenu" id="59"/>
+			<ExtendedTooltip name="DontUseSeveralCompaniesExtendedTooltip" id="60"/>
+		</CheckBoxField>
+		<InputField name="EmailMessageSenderName" id="61">
+			<DataPath>ConstantsSet.EmailMessageSenderName</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="EmailMessageSenderNameContextMenu" id="62"/>
+			<ExtendedTooltip name="EmailMessageSenderNameExtendedTooltip" id="63"/>
+		</InputField>
+		<CheckBoxField name="EnablePerformanceMeasurements" id="64">
+			<DataPath>ConstantsSet.EnablePerformanceMeasurements</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="EnablePerformanceMeasurementsContextMenu" id="65"/>
+			<ExtendedTooltip name="EnablePerformanceMeasurementsExtendedTooltip" id="66"/>
+		</CheckBoxField>
+		<CheckBoxField name="ExtractFileTextsAtServer" id="67">
+			<DataPath>ConstantsSet.ExtractFileTextsAtServer</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="ExtractFileTextsAtServerContextMenu" id="68"/>
+			<ExtendedTooltip name="ExtractFileTextsAtServerExtendedTooltip" id="69"/>
+		</CheckBoxField>
+		<InputField name="FileExchangeDirectorySaaS" id="70">
+			<DataPath>ConstantsSet.FileExchangeDirectorySaaS</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="FileExchangeDirectorySaaSContextMenu" id="71"/>
+			<ExtendedTooltip name="FileExchangeDirectorySaaSExtendedTooltip" id="72"/>
+		</InputField>
+		<InputField name="FileExchangeDirectorySaaSLinux" id="73">
+			<DataPath>ConstantsSet.FileExchangeDirectorySaaSLinux</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="FileExchangeDirectorySaaSLinuxContextMenu" id="74"/>
+			<ExtendedTooltip name="FileExchangeDirectorySaaSLinuxExtendedTooltip" id="75"/>
+		</InputField>
+		<InputField name="FileTransferBlockSize" id="76">
+			<DataPath>ConstantsSet.FileTransferBlockSize</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="FileTransferBlockSizeContextMenu" id="77"/>
+			<ExtendedTooltip name="FileTransferBlockSizeExtendedTooltip" id="78"/>
+		</InputField>
+		<CheckBoxField name="HandlingShopEquipment" id="79">
+			<DataPath>ConstantsSet.HandlingShopEquipment</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="HandlingShopEquipmentContextMenu" id="80"/>
+			<ExtendedTooltip name="HandlingShopEquipmentExtendedTooltip" id="81"/>
+		</CheckBoxField>
+		<InputField name="IMAPPassword" id="82">
+			<DataPath>ConstantsSet.IMAPPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="IMAPPasswordContextMenu" id="83"/>
+			<ExtendedTooltip name="IMAPPasswordExtendedTooltip" id="84"/>
+		</InputField>
+		<InputField name="IMAPPort" id="85">
+			<DataPath>ConstantsSet.IMAPPort</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="IMAPPortContextMenu" id="86"/>
+			<ExtendedTooltip name="IMAPPortExtendedTooltip" id="87"/>
+		</InputField>
+		<CheckBoxField name="IMAPSecureAuthenticationOnly" id="88">
+			<DataPath>ConstantsSet.IMAPSecureAuthenticationOnly</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="IMAPSecureAuthenticationOnlyContextMenu" id="89"/>
+			<ExtendedTooltip name="IMAPSecureAuthenticationOnlyExtendedTooltip" id="90"/>
+		</CheckBoxField>
+		<InputField name="IMAPServerAddress" id="91">
+			<DataPath>ConstantsSet.IMAPServerAddress</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="IMAPServerAddressContextMenu" id="92"/>
+			<ExtendedTooltip name="IMAPServerAddressExtendedTooltip" id="93"/>
+		</InputField>
+		<InputField name="IMAPUser" id="94">
+			<DataPath>ConstantsSet.IMAPUser</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="IMAPUserContextMenu" id="95"/>
+			<ExtendedTooltip name="IMAPUserExtendedTooltip" id="96"/>
+		</InputField>
+		<InputField name="InfobaseID" id="97">
+			<DataPath>ConstantsSet.InfobaseID</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InfobaseIDContextMenu" id="98"/>
+			<ExtendedTooltip name="InfobaseIDExtendedTooltip" id="99"/>
+		</InputField>
+		<InputField name="InfobaseSecurityProfile" id="100">
+			<DataPath>ConstantsSet.InfobaseSecurityProfile</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InfobaseSecurityProfileContextMenu" id="101"/>
+			<ExtendedTooltip name="InfobaseSecurityProfileExtendedTooltip" id="102"/>
+		</InputField>
+		<InputField name="InfobaseUsageMode" id="103">
+			<DataPath>ConstantsSet.InfobaseUsageMode</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InfobaseUsageModeContextMenu" id="104"/>
+			<ExtendedTooltip name="InfobaseUsageModeExtendedTooltip" id="105"/>
+		</InputField>
+		<InputField name="InstantMessageSendingLocked" id="106">
+			<DataPath>ConstantsSet.InstantMessageSendingLocked</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InstantMessageSendingLockedContextMenu" id="107"/>
+			<ExtendedTooltip name="InstantMessageSendingLockedExtendedTooltip" id="108"/>
+		</InputField>
+		<InputField name="InternalServiceManagerURL" id="109">
+			<DataPath>ConstantsSet.InternalServiceManagerURL</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InternalServiceManagerURLContextMenu" id="110"/>
+			<ExtendedTooltip name="InternalServiceManagerURLExtendedTooltip" id="111"/>
+		</InputField>
+		<InputField name="InternetMailTimeout" id="112">
+			<DataPath>ConstantsSet.InternetMailTimeout</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InternetMailTimeoutContextMenu" id="113"/>
+			<ExtendedTooltip name="InternetMailTimeoutExtendedTooltip" id="114"/>
+		</InputField>
+		<CheckBoxField name="IsStandaloneWorkstation" id="115">
+			<DataPath>ConstantsSet.IsStandaloneWorkstation</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="IsStandaloneWorkstationContextMenu" id="116"/>
+			<ExtendedTooltip name="IsStandaloneWorkstationExtendedTooltip" id="117"/>
+		</CheckBoxField>
+		<InputField name="LastClientSessionStartDate" id="118">
+			<DataPath>ConstantsSet.LastClientSessionStartDate</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="LastClientSessionStartDateContextMenu" id="119"/>
+			<ExtendedTooltip name="LastClientSessionStartDateExtendedTooltip" id="120"/>
+		</InputField>
+		<InputField name="LastPerformanceMeasurementExportDateUTC" id="121">
+			<DataPath>ConstantsSet.LastPerformanceMeasurementExportDateUTC</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="LastPerformanceMeasurementExportDateUTCContextMenu" id="122"/>
+			<ExtendedTooltip name="LastPerformanceMeasurementExportDateUTCExtendedTooltip" id="123"/>
+		</InputField>
+		<InputField name="LastStandaloneWorkstationPrefix" id="124">
+			<DataPath>ConstantsSet.LastStandaloneWorkstationPrefix</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="LastStandaloneWorkstationPrefixContextMenu" id="125"/>
+			<ExtendedTooltip name="LastStandaloneWorkstationPrefixExtendedTooltip" id="126"/>
+		</InputField>
+		<CheckBoxField name="LoadDataExchangeMessage" id="127">
+			<DataPath>ConstantsSet.LoadDataExchangeMessage</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="LoadDataExchangeMessageContextMenu" id="128"/>
+			<ExtendedTooltip name="LoadDataExchangeMessageExtendedTooltip" id="129"/>
+		</CheckBoxField>
+		<InputField name="LockMessageOnConfigurationUpdate" id="130">
+			<DataPath>ConstantsSet.LockMessageOnConfigurationUpdate</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="LockMessageOnConfigurationUpdateContextMenu" id="131"/>
+			<ExtendedTooltip name="LockMessageOnConfigurationUpdateExtendedTooltip" id="132"/>
+		</InputField>
+		<InputField name="MasterNode" id="133">
+			<DataPath>ConstantsSet.MasterNode</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MasterNodeContextMenu" id="134"/>
+			<ExtendedTooltip name="MasterNodeExtendedTooltip" id="135"/>
+		</InputField>
+		<InputField name="MaxActiveBackgroundJobCount" id="136">
+			<DataPath>ConstantsSet.MaxActiveBackgroundJobCount</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MaxActiveBackgroundJobCountContextMenu" id="137"/>
+			<ExtendedTooltip name="MaxActiveBackgroundJobCountExtendedTooltip" id="138"/>
+		</InputField>
+		<InputField name="MaxActiveBackgroundJobExecutionTime" id="139">
+			<DataPath>ConstantsSet.MaxActiveBackgroundJobExecutionTime</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MaxActiveBackgroundJobExecutionTimeContextMenu" id="140"/>
+			<ExtendedTooltip name="MaxActiveBackgroundJobExecutionTimeExtendedTooltip" id="141"/>
+		</InputField>
+		<InputField name="MaxDataAreaFileSize" id="142">
+			<DataPath>ConstantsSet.MaxDataAreaFileSize</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MaxDataAreaFileSizeContextMenu" id="143"/>
+			<ExtendedTooltip name="MaxDataAreaFileSizeExtendedTooltip" id="144"/>
+		</InputField>
+		<InputField name="MaxFileSize" id="145">
+			<DataPath>ConstantsSet.MaxFileSize</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="MaxFileSizeContextMenu" id="146"/>
+			<ExtendedTooltip name="MaxFileSizeExtendedTooltip" id="147"/>
+		</InputField>
+		<InputField name="NewExchangePlanNodeCode" id="148">
+			<DataPath>ConstantsSet.NewExchangePlanNodeCode</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="NewExchangePlanNodeCodeContextMenu" id="149"/>
+			<ExtendedTooltip name="NewExchangePlanNodeCodeExtendedTooltip" id="150"/>
+		</InputField>
+		<InputField name="OpenDocumentFileExtensionList" id="151">
+			<DataPath>ConstantsSet.OpenDocumentFileExtensionList</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="OpenDocumentFileExtensionListContextMenu" id="152"/>
+			<ExtendedTooltip name="OpenDocumentFileExtensionListExtendedTooltip" id="153"/>
+		</InputField>
+		<InputField name="ORMCachedValueRefreshDate" id="154">
+			<DataPath>ConstantsSet.ORMCachedValueRefreshDate</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ORMCachedValueRefreshDateContextMenu" id="155"/>
+			<ExtendedTooltip name="ORMCachedValueRefreshDateExtendedTooltip" id="156"/>
+		</InputField>
+		<InputField name="PerformanceMonitorRecordPeriod" id="157">
+			<DataPath>ConstantsSet.PerformanceMonitorRecordPeriod</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="PerformanceMonitorRecordPeriodContextMenu" id="158"/>
+			<ExtendedTooltip name="PerformanceMonitorRecordPeriodExtendedTooltip" id="159"/>
+		</InputField>
+		<InputField name="POP3Password" id="160">
+			<DataPath>ConstantsSet.POP3Password</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="POP3PasswordContextMenu" id="161"/>
+			<ExtendedTooltip name="POP3PasswordExtendedTooltip" id="162"/>
+		</InputField>
+		<InputField name="POP3Port" id="163">
+			<DataPath>ConstantsSet.POP3Port</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="POP3PortContextMenu" id="164"/>
+			<ExtendedTooltip name="POP3PortExtendedTooltip" id="165"/>
+		</InputField>
+		<CheckBoxField name="POP3SecureAuthenticationOnly" id="166">
+			<DataPath>ConstantsSet.POP3SecureAuthenticationOnly</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="POP3SecureAuthenticationOnlyContextMenu" id="167"/>
+			<ExtendedTooltip name="POP3SecureAuthenticationOnlyExtendedTooltip" id="168"/>
+		</CheckBoxField>
+		<InputField name="POP3ServerAddress" id="169">
+			<DataPath>ConstantsSet.POP3ServerAddress</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="POP3ServerAddressContextMenu" id="170"/>
+			<ExtendedTooltip name="POP3ServerAddressExtendedTooltip" id="171"/>
+		</InputField>
+		<InputField name="POP3User" id="172">
+			<DataPath>ConstantsSet.POP3User</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="POP3UserContextMenu" id="173"/>
+			<ExtendedTooltip name="POP3UserExtendedTooltip" id="174"/>
+		</InputField>
+		<InputField name="ProhibitedDataAreaFileExtensionList" id="175">
+			<DataPath>ConstantsSet.ProhibitedDataAreaFileExtensionList</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ProhibitedDataAreaFileExtensionListContextMenu" id="176"/>
+			<ExtendedTooltip name="ProhibitedDataAreaFileExtensionListExtendedTooltip" id="177"/>
+		</InputField>
+		<InputField name="ProhibitedFileExtensionList" id="178">
+			<DataPath>ConstantsSet.ProhibitedFileExtensionList</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ProhibitedFileExtensionListContextMenu" id="179"/>
+			<ExtendedTooltip name="ProhibitedFileExtensionListExtendedTooltip" id="180"/>
+		</InputField>
+		<CheckBoxField name="ProhibitImportFilesByExtension" id="181">
+			<DataPath>ConstantsSet.ProhibitImportFilesByExtension</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="ProhibitImportFilesByExtensionContextMenu" id="182"/>
+			<ExtendedTooltip name="ProhibitImportFilesByExtensionExtendedTooltip" id="183"/>
+		</CheckBoxField>
+		<CheckBoxField name="RetryDataExchangeMessageImportBeforeStart" id="184">
+			<DataPath>ConstantsSet.RetryDataExchangeMessageImportBeforeStart</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="RetryDataExchangeMessageImportBeforeStartContextMenu" id="185"/>
+			<ExtendedTooltip name="RetryDataExchangeMessageImportBeforeStartExtendedTooltip" id="186"/>
+		</CheckBoxField>
+		<InputField name="ServiceManagerEndpoint" id="187">
+			<DataPath>ConstantsSet.ServiceManagerEndpoint</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ServiceManagerEndpointContextMenu" id="188"/>
+			<ExtendedTooltip name="ServiceManagerEndpointExtendedTooltip" id="189"/>
+		</InputField>
+		<InputField name="SMTPPassword" id="190">
+			<DataPath>ConstantsSet.SMTPPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SMTPPasswordContextMenu" id="191"/>
+			<ExtendedTooltip name="SMTPPasswordExtendedTooltip" id="192"/>
+		</InputField>
+		<InputField name="SMTPPort" id="193">
+			<DataPath>ConstantsSet.SMTPPort</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SMTPPortContextMenu" id="194"/>
+			<ExtendedTooltip name="SMTPPortExtendedTooltip" id="195"/>
+		</InputField>
+		<CheckBoxField name="SMTPSecureAuthenticationOnly" id="196">
+			<DataPath>ConstantsSet.SMTPSecureAuthenticationOnly</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SMTPSecureAuthenticationOnlyContextMenu" id="197"/>
+			<ExtendedTooltip name="SMTPSecureAuthenticationOnlyExtendedTooltip" id="198"/>
+		</CheckBoxField>
+		<InputField name="SMTPServerAddress" id="199">
+			<DataPath>ConstantsSet.SMTPServerAddress</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SMTPServerAddressContextMenu" id="200"/>
+			<ExtendedTooltip name="SMTPServerAddressExtendedTooltip" id="201"/>
+		</InputField>
+		<InputField name="SMTPUser" id="202">
+			<DataPath>ConstantsSet.SMTPUser</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SMTPUserContextMenu" id="203"/>
+			<ExtendedTooltip name="SMTPUserExtendedTooltip" id="204"/>
+		</InputField>
+		<CheckBoxField name="SSLIMAP" id="205">
+			<DataPath>ConstantsSet.SSLIMAP</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SSLIMAPContextMenu" id="206"/>
+			<ExtendedTooltip name="SSLIMAPExtendedTooltip" id="207"/>
+		</CheckBoxField>
+		<CheckBoxField name="SSLPOP3" id="208">
+			<DataPath>ConstantsSet.SSLPOP3</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SSLPOP3ContextMenu" id="209"/>
+			<ExtendedTooltip name="SSLPOP3ExtendedTooltip" id="210"/>
+		</CheckBoxField>
+		<CheckBoxField name="SSLSMTP" id="211">
+			<DataPath>ConstantsSet.SSLSMTP</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SSLSMTPContextMenu" id="212"/>
+			<ExtendedTooltip name="SSLSMTPExtendedTooltip" id="213"/>
+		</CheckBoxField>
+		<CheckBoxField name="StoreFilesInVolumesOnHardDisk" id="214">
+			<DataPath>ConstantsSet.StoreFilesInVolumesOnHardDisk</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="StoreFilesInVolumesOnHardDiskContextMenu" id="215"/>
+			<ExtendedTooltip name="StoreFilesInVolumesOnHardDiskExtendedTooltip" id="216"/>
+		</CheckBoxField>
+		<InputField name="SubordinateDIBNodeSettings" id="217">
+			<DataPath>ConstantsSet.SubordinateDIBNodeSettings</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SubordinateDIBNodeSettingsContextMenu" id="218"/>
+			<ExtendedTooltip name="SubordinateDIBNodeSettingsExtendedTooltip" id="219"/>
+		</InputField>
+		<CheckBoxField name="SubordinateDIBNodeSetupCompleted" id="220">
+			<DataPath>ConstantsSet.SubordinateDIBNodeSetupCompleted</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SubordinateDIBNodeSetupCompletedContextMenu" id="221"/>
+			<ExtendedTooltip name="SubordinateDIBNodeSetupCompletedExtendedTooltip" id="222"/>
+		</CheckBoxField>
+		<CheckBoxField name="SynchronizeDataWithWebApplicationOnExit" id="223">
+			<DataPath>ConstantsSet.SynchronizeDataWithWebApplicationOnExit</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SynchronizeDataWithWebApplicationOnExitContextMenu" id="224"/>
+			<ExtendedTooltip name="SynchronizeDataWithWebApplicationOnExitExtendedTooltip" id="225"/>
+		</CheckBoxField>
+		<CheckBoxField name="SynchronizeDataWithWebApplicationOnStart" id="226">
+			<DataPath>ConstantsSet.SynchronizeDataWithWebApplicationOnStart</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="SynchronizeDataWithWebApplicationOnStartContextMenu" id="227"/>
+			<ExtendedTooltip name="SynchronizeDataWithWebApplicationOnStartExtendedTooltip" id="228"/>
+		</CheckBoxField>
+		<InputField name="SystemTitle" id="229">
+			<DataPath>ConstantsSet.SystemTitle</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="SystemTitleContextMenu" id="230"/>
+			<ExtendedTooltip name="SystemTitleExtendedTooltip" id="231"/>
+		</InputField>
+		<InputField name="TextFileExtensionList" id="232">
+			<DataPath>ConstantsSet.TextFileExtensionList</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="TextFileExtensionListContextMenu" id="233"/>
+			<ExtendedTooltip name="TextFileExtensionListExtendedTooltip" id="234"/>
+		</InputField>
+		<CheckBoxField name="UseAdditionalDataAndAttributes" id="235">
+			<DataPath>ConstantsSet.UseAdditionalDataAndAttributes</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseAdditionalDataAndAttributesContextMenu" id="236"/>
+			<ExtendedTooltip name="UseAdditionalDataAndAttributesExtendedTooltip" id="237"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseAdditionalReportsAndDataProcessors" id="238">
+			<DataPath>ConstantsSet.UseAdditionalReportsAndDataProcessors</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseAdditionalReportsAndDataProcessorsContextMenu" id="239"/>
+			<ExtendedTooltip name="UseAdditionalReportsAndDataProcessorsExtendedTooltip" id="240"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseCommonAdditionalDataAndAttributes" id="241">
+			<DataPath>ConstantsSet.UseCommonAdditionalDataAndAttributes</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseCommonAdditionalDataAndAttributesContextMenu" id="242"/>
+			<ExtendedTooltip name="UseCommonAdditionalDataAndAttributesExtendedTooltip" id="243"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseCommonAdditionalValues" id="244">
+			<DataPath>ConstantsSet.UseCommonAdditionalValues</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseCommonAdditionalValuesContextMenu" id="245"/>
+			<ExtendedTooltip name="UseCommonAdditionalValuesExtendedTooltip" id="246"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDataSynchronization" id="247">
+			<DataPath>ConstantsSet.UseDataSynchronization</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDataSynchronizationContextMenu" id="248"/>
+			<ExtendedTooltip name="UseDataSynchronizationExtendedTooltip" id="249"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDataSynchronizationInLocalMode" id="250">
+			<DataPath>ConstantsSet.UseDataSynchronizationInLocalMode</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDataSynchronizationInLocalModeContextMenu" id="251"/>
+			<ExtendedTooltip name="UseDataSynchronizationInLocalModeExtendedTooltip" id="252"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDataSynchronizationSaaS" id="253">
+			<DataPath>ConstantsSet.UseDataSynchronizationSaaS</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDataSynchronizationSaaSContextMenu" id="254"/>
+			<ExtendedTooltip name="UseDataSynchronizationSaaSExtendedTooltip" id="255"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDataSynchronizationSaaSWithLocalApplication" id="256">
+			<DataPath>ConstantsSet.UseDataSynchronizationSaaSWithLocalApplication</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDataSynchronizationSaaSWithLocalApplicationContextMenu" id="257"/>
+			<ExtendedTooltip name="UseDataSynchronizationSaaSWithLocalApplicationExtendedTooltip" id="258"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDataSynchronizationSaaSWithWebApplication" id="259">
+			<DataPath>ConstantsSet.UseDataSynchronizationSaaSWithWebApplication</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDataSynchronizationSaaSWithWebApplicationContextMenu" id="260"/>
+			<ExtendedTooltip name="UseDataSynchronizationSaaSWithWebApplicationExtendedTooltip" id="261"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseDigitalSignatures" id="262">
+			<DataPath>ConstantsSet.UseDigitalSignatures</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseDigitalSignaturesContextMenu" id="263"/>
+			<ExtendedTooltip name="UseDigitalSignaturesExtendedTooltip" id="264"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseExternalUsers" id="265">
+			<DataPath>ConstantsSet.UseExternalUsers</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseExternalUsersContextMenu" id="266"/>
+			<ExtendedTooltip name="UseExternalUsersExtendedTooltip" id="267"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseFullTextSearch" id="268">
+			<DataPath>ConstantsSet.UseFullTextSearch</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseFullTextSearchContextMenu" id="269"/>
+			<ExtendedTooltip name="UseFullTextSearchExtendedTooltip" id="270"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseIMAP" id="271">
+			<DataPath>ConstantsSet.UseIMAP</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseIMAPContextMenu" id="272"/>
+			<ExtendedTooltip name="UseIMAPExtendedTooltip" id="273"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseMultipleBusinessCalendars" id="274">
+			<DataPath>ConstantsSet.UseMultipleBusinessCalendars</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseMultipleBusinessCalendarsContextMenu" id="275"/>
+			<ExtendedTooltip name="UseMultipleBusinessCalendarsExtendedTooltip" id="276"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseObjectVersioning" id="277">
+			<DataPath>ConstantsSet.UseObjectVersioning</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseObjectVersioningContextMenu" id="278"/>
+			<ExtendedTooltip name="UseObjectVersioningExtendedTooltip" id="279"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseOfflineModeSaaS" id="280">
+			<DataPath>ConstantsSet.UseOfflineModeSaaS</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseOfflineModeSaaSContextMenu" id="281"/>
+			<ExtendedTooltip name="UseOfflineModeSaaSExtendedTooltip" id="282"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseSecurityProfiles" id="283">
+			<DataPath>ConstantsSet.UseSecurityProfiles</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseSecurityProfilesContextMenu" id="284"/>
+			<ExtendedTooltip name="UseSecurityProfilesExtendedTooltip" id="285"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseSeparationByDataAreas" id="286">
+			<DataPath>ConstantsSet.UseSeparationByDataAreas</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseSeparationByDataAreasContextMenu" id="287"/>
+			<ExtendedTooltip name="UseSeparationByDataAreasExtendedTooltip" id="288"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseSeveralCompanies" id="289">
+			<DataPath>ConstantsSet.UseSeveralCompanies</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseSeveralCompaniesContextMenu" id="290"/>
+			<ExtendedTooltip name="UseSeveralCompaniesExtendedTooltip" id="291"/>
+		</CheckBoxField>
+		<CheckBoxField name="UseUserGroups" id="292">
+			<DataPath>ConstantsSet.UseUserGroups</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="UseUserGroupsContextMenu" id="293"/>
+			<ExtendedTooltip name="UseUserGroupsExtendedTooltip" id="294"/>
+		</CheckBoxField>
+		<CheckBoxField name="WriteInfobaseUpdateDetailsToEventLog" id="295">
+			<DataPath>ConstantsSet.WriteInfobaseUpdateDetailsToEventLog</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="WriteInfobaseUpdateDetailsToEventLogContextMenu" id="296"/>
+			<ExtendedTooltip name="WriteInfobaseUpdateDetailsToEventLogExtendedTooltip" id="297"/>
+		</CheckBoxField>
+		<InputField name="ForumManagementURL" id="298">
+			<DataPath>ConstantsSet.ForumManagementURL</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ForumManagementURLContextMenu" id="299"/>
+			<ExtendedTooltip name="ForumManagementURLExtendedTooltip" id="300"/>
+		</InputField>
+		<InputField name="InformationCenterForumUserName" id="301">
+			<DataPath>ConstantsSet.InformationCenterForumUserName</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InformationCenterForumUserNameContextMenu" id="302"/>
+			<ExtendedTooltip name="InformationCenterForumUserNameExtendedTooltip" id="303"/>
+		</InputField>
+		<InputField name="InformationCenterForumPassword" id="304">
+			<DataPath>ConstantsSet.InformationCenterForumPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="InformationCenterForumPasswordContextMenu" id="305"/>
+			<ExtendedTooltip name="InformationCenterForumPasswordExtendedTooltip" id="306"/>
+		</InputField>
+		<InputField name="ServiceAgentUserPassword" id="307">
+			<DataPath>ConstantsSet.ServiceAgentUserPassword</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ServiceAgentUserPasswordContextMenu" id="308"/>
+			<ExtendedTooltip name="ServiceAgentUserPasswordExtendedTooltip" id="309"/>
+		</InputField>
+		<InputField name="ServiceAgentAddress" id="310">
+			<DataPath>ConstantsSet.ServiceAgentAddress</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ServiceAgentAddressContextMenu" id="311"/>
+			<ExtendedTooltip name="ServiceAgentAddressExtendedTooltip" id="312"/>
+		</InputField>
+		<InputField name="ServiceAgentUserName" id="313">
+			<DataPath>ConstantsSet.ServiceAgentUserName</DataPath>
+			<EditMode>EnterOnInput</EditMode>
+			<ContextMenu name="ServiceAgentUserNameContextMenu" id="314"/>
+			<ExtendedTooltip name="ServiceAgentUserNameExtendedTooltip" id="315"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="ConstantsSet" id="1">
+			<Type>
+				<v8:Type>cfg:ConstantsSet</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+			<UseAlways>
+				<Field>ConstantsSet.InfobaseUsageMode.Ref</Field>
+			</UseAlways>
+		</Attribute>
+	</Attributes>
+</Form>

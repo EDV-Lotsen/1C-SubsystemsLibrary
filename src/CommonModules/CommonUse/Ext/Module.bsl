@@ -18,8 +18,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERFACE
+#Region Interface
 
 ////////////////////////////////////////////////////////////////////////////////
 // Common procedures and functions for working with infobase data.
@@ -28,102 +27,126 @@
 // object reference.
 // 
 // If access to any of the attributes is denied, an exception is raised.
-// To be able to read attribute values irrespective of current user rights,
+// To be able to read attribute values irrespective of current user rights, 
 // turn privileged mode on.
 // 
-// Parameters:
-// Ref - Reference - reference to a catalog, a document, or any other infobase object;
-// AttributeNames - String or Structure - If AttributeNames is a string, it 
-// contains attribute names separated by commas.
-// Example: "Code, Description, Parent".
-// If AttributeNames is a structure, its keys are used for resulting structure keys, 
-// and its values are field names. If a value is empty, it is considered
-// equal to the key.
-// 
-// Returns:
-// Structure where keys are the same as in AttributeNames, and values are the retrieved field values.
+// Is not intended for retrieving empty reference attribute values.
 //
-Function GetAttributeValues(Ref, AttributeNames) Export
-
-	If TypeOf(AttributeNames) = Type("Structure") Then
-		AttributeStructure = AttributeNames;
-	ElsIf TypeOf(AttributeNames) = Type("String") Then
-		AttributeStructure = New Structure(AttributeNames);;
+// Parameters:
+//  Ref        - AnyRef - reference to the object whose attribute values are retrieved.
+//  Attributes - String - attribute names separated with commas, formatted according to
+//               structure requirements 
+//               Example: "Code, Description, Parent".
+//             - Structure, FixedStructure -  keys are field aliases used for resulting
+//               structure keys, values (optional) are field names. If a value is empty, it
+//               is considered equal to the key.
+//             - Array, FixedArray - attribute names formatted according to structure
+//               property requirements.
+//
+// Returns:
+//  Structure - contains names (keys) and values of the requested attributes.
+//              If the string of the requested attributes is empty, an empty structure is returned.
+//              If an empty reference is passed as the object reference, all return attribute
+//              will be Undefined.
+//
+Function ObjectAttributeValues(Ref, Val Attributes) Export
+	
+	If TypeOf(Attributes) = Type("String") Then
+		If IsBlankString(Attributes) Then
+			Return New Structure;
+		EndIf;
+		Attributes = StringFunctionsClientServer.SplitStringIntoSubstringArray(Attributes, ",", True);
+	EndIf;
+	
+	AttributeStructure = New Structure;
+	If TypeOf(Attributes) = Type("Structure") Or TypeOf(Attributes) = Type("FixedStructure") Then
+		AttributeStructure = Attributes;
+	ElsIf TypeOf(Attributes) = Type("Array") Or TypeOf(Attributes) = Type("FixedArray") Then
+		For Each Attribute In Attributes Do
+			AttributeStructure.Insert(StrReplace(Attribute, ".", ""), Attribute);
+		EndDo;
 	Else
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Invalid AttributeNames type: %1.'"), 
-			String(TypeOf(AttributeNames)));
+			NStr("en = 'Invalid Attributes parameter type: %1'"),
+			String(TypeOf(Attributes)));
 	EndIf;
-
+	
 	FieldTexts = "";
 	For Each KeyAndValue In AttributeStructure Do
-		FieldName = ?(ValueIsFilled(KeyAndValue.Value), TrimAll(KeyAndValue.Value), TrimAll(KeyAndValue.Key));
+		FieldName   = ?(ValueIsFilled(KeyAndValue.Value),
+		              TrimAll(KeyAndValue.Value),
+		              TrimAll(KeyAndValue.Key));
+		
 		Alias = TrimAll(KeyAndValue.Key);
-		FieldTexts = FieldTexts + ?(IsBlankString(FieldTexts), "", ",") + "
-			|	" + FieldName + " AS " + Alias;
+		
+		FieldTexts  = FieldTexts + ?(IsBlankString(FieldTexts), "", ",") + "" + FieldName + " AS " + Alias;
 	EndDo;
-
-	Query = New Query(
-		"SELECT
-		|" + FieldTexts + "
-		|FROM
-		|	" + Ref.Metadata().FullName() + " AS AliasForSpecifiedTable
-		|WHERE
-		|	AliasForSpecifiedTable.Ref = &Ref
-		|");
+	
+	Query = New Query;
 	Query.SetParameter("Ref", Ref);
+	Query.Text =
+	"SELECT
+	|" + FieldTexts + " FROM " + Ref.Metadata().FullName() + " AS SpecifiedTableAlias
+	| WHERE
+	| SpecifiedTableAlias.Ref = &Ref
+	|";
 	Selection = Query.Execute().Select();
 	Selection.Next();
-
+	
 	Result = New Structure;
 	For Each KeyAndValue In AttributeStructure Do
 		Result.Insert(KeyAndValue.Key);
 	EndDo;
 	FillPropertyValues(Result, Selection);
-
+	
 	Return Result;
+	
 EndFunction
 
 // Returns an attribute value read from the infobase by object reference.
 // 
 // If access to the attribute is denied, an exception is raised.
-// To be able to read the attribute value irrespective of current user rights,
-// turn privileged mode on.
+// To be able to read the attribute value irrespective of current user rights, 
+// turn the privileged mode on.
+// 
+// Is not intended for retrieving empty reference attribute values.
 // 
 // Parameters:
-// Ref - AnyRef- reference to a catalog, a document, or any other infobase object;
-// AttributeName - String, for example, "Code".
+//  Ref           - AnyRef - reference to a catalog, a document, or any other infobase object.
+//  AttributeName - String - for example, "Code".
 // 
 // Returns:
-// Arbitrary. It depends on the type of the read attribute.
-//
-Function GetAttributeValue(Ref, AttributeName) Export
+//  Arbitrary. It depends on the type of the read attribute.
+
+// 
+Function ObjectAttributeValue(Ref, AttributeName) Export
 	
-	Result = GetAttributeValues(Ref, AttributeName);
-	Return Result[AttributeName];
+	Result = ObjectAttributeValues(Ref, AttributeName);
+	Return Result[StrReplace(AttributeName, ".", "")];
 	
-EndFunction 
+EndFunction
+ 
 
 // Returns a map that contains attribute values of several objects read from the infobase.
 // 
-
 // If access to any of the attributes is denied, an exception is raised.
-// To be able to read attribute values irrespective of current user rights,
+// To be able to read attribute values irrespective of current user rights, 
 // turn privileged mode on.
 // 
+// Is not intended for retrieving empty reference attribute values.
+// 
 // Parameters:
-// RefArray - array of references to objects of the same type (it is important
-// that all referenced objects have the same type);
-
-// AttributeNames - String - it must contains attribute names separated by commas.
-// 			These attributes will be used for keys in the resulting structures.
-// 			Example: "Code, Description, Parent".
+//  RefArray       - array of references to objects of the same type (it is important that all
+//                   referenced objects have the same type);
+//  AttributeNames - String - it must contains attribute names separated with commas.
+// 			             These attributes will be used for keys in the resulting structures.
+// 			             Example: "Code, Description, Parent".
 // 
 // Returns:
-// Map where keys are object references, and values are structures that contains
-// 			AttributeNames as keys and attribute values as values.
-//
-Function ObjectAttributeValues(RefArray, AttributeNames) Export
+//  Map where keys are object references, and values are structures that
+//  contains AttributeNames as keys and attribute values as values.
+// 
+Function ObjectsAttributeValues(RefArray, AttributeNames) Export
 	
 	AttributeValues = New Map;
 	If RefArray.Count() = 0 Then
@@ -133,11 +156,8 @@ Function ObjectAttributeValues(RefArray, AttributeNames) Export
 	Query = New Query;
 	Query.Text =
 		"SELECT
-		|	Ref, " + AttributeNames + "
-		|FROM
-		|	" + RefArray[0].Metadata().FullName() + " AS Table
-		|WHERE
-		|	Table.Ref IN (&RefArray)";
+		|	Ref AS Ref, " + AttributeNames + "FROM" + RefArray[0].Metadata().FullName() + " AS Table
+		| WHERE Table.Ref IN (&RefArray)";
 	Query.SetParameter("RefArray", RefArray);
 	
 	Selection = Query.Execute().Select();
@@ -154,20 +174,22 @@ EndFunction
 // Returns values of a specific attribute for several objects read from the infobase.
 // 
 // If access to the attribute is denied, an exception is raised.
-// To be able to read attribute values irrespective of current user rights,
+// To be able to read attribute values irrespective of current user rights, 
 // turn privileged mode on.
 // 
+// Is not intended for retrieving empty reference attribute values.
+// 
 // Parameters:
-// RefArray - array of references to objects of the same type (it is important that all
-// referenced objects have the same type);
+//  RefArray     - array of references to objects of the same type (it is important that all
+//                 referenced objects have the same type);
 // AttributeName - String - for example, "Code".
 // 
 // Returns:
-// Map where keys are object references, and values are attribute values.
-//
-Function ObjectAttributeValue(RefArray, AttributeName) Export
+//  Map where keys are object references, and values are attribute values.
+// 
+Function ObjectsAttributeValue(RefArray, AttributeName) Export
 	
-	AttributeValues = ObjectAttributeValues(RefArray, AttributeName);
+	AttributeValues = ObjectsAttributeValues(RefArray, AttributeName);
 	For Each Item In AttributeValues Do
 		AttributeValues[Item.Key] = Item.Value[AttributeName];
 	EndDo;
@@ -179,37 +201,35 @@ EndFunction
 // Checks whether the documents are posted.
 //
 // Parameters:
-// Documents - Array - documents to be checked.
+//  Documents - Array - documents to be checked.
 //
 // Returns:
-// Array - unposted documents from the Documents array.
+//  Array - unposted documents from the Documents array.
 //
+
 Function CheckDocumentsPosted(Val Documents) Export
 	
 	Result = New Array;
 	
 	QueryPattern = 	
 		"SELECT
-		|	Document.Ref AS Ref
+		|	SpecifiedTableAlias.Ref AS Ref
 		|FROM
-		|	&DocumentName AS Document
+		|	&DocumentName AS SpecifiedTableAlias
 		|WHERE
-		|	Document.Ref IN(&DocumentArray)
-		|	AND (NOT Document.Posted)";
+		|	SpecifiedTableAlias.Ref IN(&DocumentArray)
+		|	And Not SpecifiedTableAlias.Posted";
 	
 	UnionAllText =
-		"
-		|
-		|UNION ALL
-		|
-		|";
+		"UNION ALL";
 		
 	DocumentNames = New Array;
 	For Each Document In Documents Do
-		DocumentName = Document.Metadata().FullName();
-		If DocumentNames.Find(DocumentName) = Undefined
-		 And Metadata.Documents.Contains(Metadata.FindByFullName(DocumentName)) Then	
-			DocumentNames.Add(DocumentName);
+		DocumentMetadata = Document.Metadata();
+		If DocumentNames.Find(DocumentMetadata.FullName()) = Undefined
+			And Metadata.Documents.Contains(DocumentMetadata)
+			And DocumentMetadata.Posting = Metadata.ObjectProperties.Posting.Allow Then
+				DocumentNames.Add(DocumentMetadata.FullName());
 		EndIf;
 	EndDo;
 	
@@ -237,38 +257,33 @@ EndFunction
 // Attempts to post the documents.
 //
 // Parameters:
-//	Documents - Array - documents to be posted.
+// Documents - Array - documents to be posted.
 //
 // Returns:
-//	Array - array of structures with the following fields:
-//									Ref - unposted document;
-//									ErrorDescription - posting error text.
+// Array - array of structures with the following fields:
+// 								Ref              - unposted document;
+// 								ErrorDescription - posting error text.
 //
 Function PostDocuments(Documents) Export
-	
+
 	UnpostedDocuments = New Array;
 	
 	For Each DocumentRef In Documents Do
 		
 		CompletedSuccessfully = False;
 		DocumentObject = DocumentRef.GetObject();
-		If DocumentObject.FillCheck() Then
+		If DocumentObject.CheckFilling() Then
 			Try
 				DocumentObject.Write(DocumentWriteMode.Posting);
 				CompletedSuccessfully = True;
 			Except
 				ErrorPresentation = BriefErrorDescription(ErrorInfo());
-				ErrorMessageText = NStr("en = 'Error posting the document: %1.'");
-				ErrorMessageText = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageText, ErrorPresentation);
-				WriteLogEvent(NStr("en = 'Posting documents before printing.'", Metadata.DefaultLanguage.LanguageCode),
-					EventLogLevel.Information, DocumentObject.Metadata(), DocumentRef, 
-					DetailErrorDescription(ErrorInfo()));
 			EndTry;
 		Else
 			ErrorPresentation = NStr("en = 'Document fields are not filled.'");
 		EndIf;
 		
-		If Not CompletedSuccessfully Then
+		If NOT CompletedSuccessfully Then
 			UnpostedDocuments.Add(New Structure("Ref,ErrorDescription", DocumentRef, ErrorPresentation));
 		EndIf;
 		
@@ -276,21 +291,22 @@ Function PostDocuments(Documents) Export
 	
 	Return UnpostedDocuments;
 	
-EndFunction 
-
+EndFunction
+ 
 // Checks whether there are references to the object in the infobase.
 //
 // Parameters:
-// Ref - Array of AnyRef.
-//
-// SearchInServiceObjects - Boolean - default value is False.
-// If it is set to True, the list of search exceptions for references
-// will not be taken into account.
-//
+//  Ref                     - AnyRef,
+//                          - Array of AnyRef.
+//  SearchInInternalObjects - Boolean - default value is False.
+//                            If it is set to True, the list of search exceptions for 
+//                            references will not be taken into account.
+//  OtherExceptions         - Array - full names of metadata objects to be also excluded from
+//                            the reference search.
 // Returns:
-// Boolean.
+//  Boolean.
 //
-Function HasReferencesToObjectInInfoBase(Val RefOrRefArray, Val SearchInServiceObjects = False) Export
+Function ReferencesToObjectFound(Val RefOrRefArray, Val SearchInInternalObjects = False,  OtherExceptions = Undefined) Export
 	
 	SetPrivilegedMode(True);
 	
@@ -302,38 +318,493 @@ Function HasReferencesToObjectInInfoBase(Val RefOrRefArray, Val SearchInServiceO
 	EndIf;
 	
 	RefsTable = FindByRef(RefArray);
+	RefsTable.Columns[0].Name = "SourceRef";
+	RefsTable.Columns[1].Name = "FoundItemReference";
+	RefsTable.Columns[2].Name = "FoundMetadata";
 	
-	If Not SearchInServiceObjects Then
-		
-		ServiceObjects = GetOverallRefSearchExceptionList();
+	If NOT SearchInInternalObjects Then
+		RefSearchExclusions = GetOverallRefSearchExceptionList();
 		Exceptions = New Array;
 		
-		For Each ReferenceDetails In RefsTable Do
-			If ServiceObjects.Find(ReferenceDetails.Metadata.FullName()) <> Undefined Then
-				Exceptions.Add(ReferenceDetails);
+		For Each TableRow In RefsTable Do
+			SearchException = RefSearchExclusions[TableRow.FoundMetadata];
+			If SearchException = "*" Then
+				Exceptions.Add(TableRow);
 			EndIf;
 		EndDo;
 		
-		For Each ExceptionString In Exceptions Do
-			RefsTable.Delete(ExceptionString);
+		For Each TableRow In Exceptions Do
+			RefsTable.Delete(TableRow);
 		EndDo;
 	EndIf;
 	
+	If TypeOf(OtherExceptions) = Type("Array") Then
+		RefSearchExclusions = New Map;
+		Exceptions = New Array;
+		
+		For Each FullName In OtherExceptions Do
+			MetadataObject = Metadata.FindByFullName(FullName);
+			If MetadataObject <> Undefined Then
+				RefSearchExclusions.Insert(MetadataObject, "*");
+			EndIf;
+		EndDo;
+		
+		For Each TableRow In RefsTable Do
+			SearchException = RefSearchExclusions[TableRow.FoundMetadata];
+			If SearchException = "*" Then
+				Exceptions.Add(TableRow);
+			EndIf;
+		EndDo;
+		
+		For Each TableRow In Exceptions Do
+			RefsTable.Delete(TableRow);
+		EndDo;
+	EndIf;
 	
 	Return RefsTable.Count() > 0;
 	
 EndFunction
 
-////////////////////////////////////////////////////////////////////////////////
-// Common server procedures and functions for working with applied types and value collections.
-
-// Gets a name of the enumeration value (enumeration value is a metadata object).
+// Replaces references in the entire configuration. There is an option to delete all unused
+// references after the replacement.
+// References are replaced in transactions by the object to be changed and its relations but
+// not by the analyzing reference.
 //
 // Parameters:
-// Value - enumeration value whose name will be retrieved.
+//  ReplacementCouples - Map - Key is a reference to be found, Value is a reference to be
+//                       substituted. References to themselves and empty search references are
+//                       ignored.
+//  Parameters         - Structure - replacement parameters. Can include the following fields:
+//                        * DeletionMethod            - String - deletion method marker. Can
+//                                                      take the following values:
+//                                                       "Directly" - If after the replacement 
+//                                                                    the reference is not 
+//                                                                    used, it is deleted
+//                                                                    directly.
+//                                                       "Mark"     - If after the replacement
+//                                                                    the reference is not
+//                                                                    used, it is marked for
+//                                                                    deletion.
+//                                                      Any other value means no deletion is
+//                                                      required.
+//                                                      The default value is an empty string.
+//                        * ConsiderBusinessLogic     - Boolean - flag that shows whether the
+//                                                      business logic must be taken int
+//                                                      accounts when writing objects.
+//                                                      The default value is True.
+//
+//                        * ReplacePairsInTransaction - Boolean - If True, the transaction
+//                                                      covers all replacements for one pair of
+//                                                      references.
+//                                                      False means each reference replacement
+//                                                      in a single object is executed in a
+//                                                      separate transaction.
+//                                                      The default value is True.
+//                        * WriteInPrivilegedMode     - Boolean - If True, the data is written
+//                                                      in the privileged mode, otherwise the
+//                                                      current rights are taken into account.
+//                                                      The default value is False.
+//     ResultAddress   - String - optional address in a temporary storage where a copy of the
+//                       replacement result is saved.
+//
+// Returns - ValueTable - details on unsuccessful replacements (errors) with the following
+//           columns:
+//            * Ref                     - AnyRef - reference that cannot be replaced.
+//            * ErrorObject             - Arbitrary - Object - error cause.
+//            * ErrorObjectPresentation - String - string presentation of the error object.
+//            * ErrorType               - String - error type marker. Possible options:
+//                                         "LockError"   - some objects were locked during the
+//                                                         reference processing.
+//                                         "DataChanged" - data was changed by other user
+//                                                         during the processing.
+//                                         "WriteError"  - cannot write the object.
+//                                         "UnknownData" - data not planned to be analyzed was
+//                                                         found during the replacement
+//                                                         process. The replacement is not
+//                                                         completed.
+//            * ErrorText               - String - Detailed error description.
+//
+Function ReplaceReferences(Val ReplacementCouples, Val Parameters = Undefined, Val ResultAddress = "") Export
+	
+	// Default values
+	ReplacementParameters = New Structure;
+	ReplacementParameters.Insert("DeleteDirectly",        False); 
+	ReplacementParameters.Insert("MarkForDeletion",       False); 
+	ReplacementParameters.Insert("ControlOnWrite",        True); 
+	ReplacementParameters.Insert("WriteInPrivilegedMode", False);
+	
+	LongTransaction = True;
+	
+	If Parameters <> Undefined Then
+		ParameterValue = Undefined;
+		
+		If Parameters.Property("DeletionMethod", ParameterValue) Then
+			If ParameterValue = "Directly" Then
+				ReplacementParameters.DeleteDirectly  = True;
+				ReplacementParameters.MarkForDeletion = False;
+			ElsIf ParameterValue = "Mark" Then
+				ReplacementParameters.DeleteDirectly  = False;
+				ReplacementParameters.MarkForDeletion = True;
+			EndIf;
+		EndIf;
+		
+		If Parameters.Property("ConsiderBusinessLogic", ParameterValue) Then
+			If ParameterValue = True Then
+				ReplacementParameters.ControlOnWrite = True;
+			ElsIf ParameterValue = False Then
+				ReplacementParameters.ControlOnWrite = False;
+			EndIf;
+		EndIf;
+		
+		If Parameters.Property("ReplacePairsInTransaction", ParameterValue) Then
+			If ParameterValue = True Then
+				LongTransaction = True;
+			ElsIf ParameterValue = False Then
+				LongTransaction = False;
+			EndIf;
+		EndIf;
+		
+		If Parameters.Property("WriteInPrivilegedMode", ParameterValue) Then
+			If ParameterValue = True Then
+				ReplacementParameters.WriteInPrivilegedMode = True;
+			ElsIf ParameterValue = False Then
+				ReplacementParameters.WriteInPrivilegedMode = False;
+			EndIf;
+		EndIf;
+		
+	EndIf;
+	
+	StringType = New TypeDescription("String");
+
+	ReplacementResult = New ValueTable;
+	ReplacementResult.Columns.Add("Ref");
+	ReplacementResult.Columns.Add("ErrorObject");
+	ReplacementResult.Columns.Add("ErrorObjectPresentation", StringType);
+	ReplacementResult.Columns.Add("ErrorType", StringType);
+	ReplacementResult.Columns.Add("ErrorText", StringType);
+	ReplacementResult.Indexes.Add("Ref");
+	ReplacementResult.Indexes.Add("Ref, ErrorObject, ErrorType");
+	
+	MetadataCache = New Map;
+	
+	ReferenceList = New Array;
+	For Each KeyValue In ReplacementCouples Do
+		CurrentRef = KeyValue.Key;
+		DestinationRef = KeyValue.Value;
+		
+		If CurrentRef = DestinationRef Or CurrentRef.IsEmpty() Then
+			// Do not replacing references with themselves and empty strings
+			Continue;
+		EndIf;
+		
+		ReferenceList.Add(CurrentRef);
+	EndDo;
+	
+	SearchTable = UsageInstances(ReferenceList);
+	
+	// Replacements for each object reference is executed in the following order: "Constant",
+	// "Object", "Set".
+	// At the same time, an empty string in this column is a flag that means the replacement is
+	// not required or was already made.
+	SearchTable.Columns.Add("ReplacementKey", StringType);
+	SearchTable.Indexes.Add("Ref, ReplacementKey");
+	SearchTable.Indexes.Add("Data, ReplacementKey");
+	
+	// Auxiliary data
+	SearchTable.Columns.Add("DestinationRef");
+	
+	Configuration = New Structure;
+	Configuration.Insert("AllRefsType",   AllRefsTypeDescription() );
+	Configuration.Insert("MetaConstants", Metadata.Constants);
+	Configuration.Insert("RecordKeyType", RecordKeysTypeDescription() );
+	
+	// Defining the processing order and validating items that can be handled
+	ReplacementToProcess = New Array;
+	For Each CurrentRef In ReferenceList Do
+		DestinationRef = ReplacementCouples[CurrentRef];
+		
+		MarkupResult = Undefined; 
+		MarkUsageInstances(Configuration, CurrentRef, DestinationRef, SearchTable, MarkupResult);
+		
+		If MarkupResult.MarkupErrors.Count() = 0 Then
+			ReplacementToProcess.Add(CurrentRef);
+			
+		Else
+			// Unknown replacement types are found, skipping the reference to prevent data from incoherence
+			For Each Error In MarkupResult.MarkupErrors Do
+				ErrorObjectPresentation = String(Error.Object);
+				AddReplacementResult(ReplacementResult, CurrentRef, 
+					ReplacementErrorDetails("UnknownData", Error.Object, ErrorObjectPresentation, Error.Text)
+				);
+			EndDo;
+			
+		EndIf;
+		
+	EndDo;
+	
+	If LongTransaction Then
+		For Each Ref In ReplacementToProcess Do
+			ReplaceReferenceInLongTransaction(ReplacementResult, Ref, ReplacementParameters, SearchTable);
+		EndDo;
+	Else
+		ReplaceReferenceInShortTransactions(ReplacementResult, ReplacementParameters, ReplacementToProcess, SearchTable);
+	EndIf;
+	
+	If NOT IsBlankString(ResultAddress) Then
+		PutToTempStorage(ReplacementResult, ResultAddress);
+	EndIf;
+	
+	Return ReplacementResult;
+EndFunction
+
+
+// Retrieves all places where references are used.
+// If any of the references is not used, it will not be presented in the result table.
+// 
+// Parameters:
+//     ReferenceSet  - Array - references whose usage instances are searched.
+//     ResultAddress - String - optional address in a temporary storage where a copy of the
+//                     replacement result is saved.
+// 
+// Returns:
+//     ValueTable - consists of the following columns:
+//       * Ref              - AnyRef         - Reference to be analyzed.
+//       * Data             - Arbitrary      - Data that contains the reference to be analyzed.
+//       * Metadata         - MetadataObject - Metadata of the found data.
+//       * DataPresentation - String - Presentation of the data that contains the reference to
+//                            be analyzed.
+//       * RefType          - Type - Type of the reference to be analyzed.
+//       * AuxiliaryData    - Boolean - True if the data is used by the reference to be 
+//                            analyzed as auxiliary data (leading dimension and so on).
+//
+Function UsageInstances(Val ReferenceSet, Val ResultAddress = "") Export
+	
+	UsageInstances = New ValueTable;
+	
+	SetPrivilegedMode(True);
+	UsageInstances = FindByRef(ReferenceSet);
+	
+	UsageInstances.Columns.Add("DataPresentation", New TypeDescription("String"));
+	UsageInstances.Columns.Add("RefType");
+	UsageInstances.Columns.Add("AuxiliaryData", New TypeDescription("Boolean"));
+	
+	UsageInstances.Indexes.Add("Ref");
+	UsageInstances.Indexes.Add("Data");
+	UsageInstances.Indexes.Add("AuxiliaryData");
+	UsageInstances.Indexes.Add("Ref, AuxiliaryData");
+	
+	RecordKeysType = RecordKeysTypeDescription();
+	AllRefsType    = AllRefsTypeDescription();
+	
+	MetaSequences = Metadata.Sequences;
+	MetaConstants = Metadata.Constants;
+	MetaDocuments = Metadata.Documents;
+	
+	AuxiliaryMetadata = GetOverallRefSearchExceptionList();
+	
+	DimensionCache = New Map;
+	
+	For Each Row In UsageInstances Do
+		Ref      = Row.Ref;
+		Data     = Row.Data;
+		Meta     = Row.Metadata;
+		DataType = TypeOf(Data);
+		
+		AuxiliaryDataPath = AuxiliaryMetadata[Meta];
+		
+		If AuxiliaryDataPath = Undefined Then
+			IsAuxiliaryData = (Ref = Data);
+			
+		ElsIf AuxiliaryDataPath = "*" Then
+			IsAuxiliaryData = True;
+			
+		ElsIf RecordKeysType.ContainsType(DataType) Then
+			IsAuxiliaryData = False;
+			For Each DataRow In Data Do
+				If Ref = EvaluateDataValueByPath(DataRow, AuxiliaryDataPath) Then
+					IsAuxiliaryData = True;
+					Break;
+				EndIf;
+			EndDo;
+			
+		Else
+			IsAuxiliaryData = (Ref = EvaluateDataValueByPath(Data, AuxiliaryDataPath) );
+			
+		EndIf;
+		
+		If MetaDocuments.Contains(Meta) Then
+			Presentation = String(Data);
+			
+		ElsIf MetaConstants.Contains(Meta) Then
+			Presentation = Meta.Presentation() + " (" + NStr("en = 'constant'") + ")";
+			
+		ElsIf MetaSequences.Contains(Meta) Then
+			Presentation = Meta.Presentation() + " (" + NStr("en = 'sequence'") + ")";
+			
+		ElsIf DataType = Undefined Then
+			Presentation = String(Data);
+			
+		ElsIf AllRefsType.ContainsType(DataType) Then
+			MetaObjectPresentation = New Structure("ObjectPresentation");
+			FillPropertyValues(MetaObjectPresentation, Meta);
+			If IsBlankString(MetaObjectPresentation.ObjectPresentation) Then
+				MetaPresentation = Meta.Presentation();
+			Else
+				MetaPresentation = MetaObjectPresentation.ObjectPresentation;
+			EndIf;
+			Presentation = String(Data);
+			If NOT IsBlankString(MetaPresentation) Then
+				Presentation = Presentation + " (" + MetaPresentation + ")";
+			EndIf;
+			
+		ElsIf RecordKeysType.ContainsType(DataType) Then
+			Presentation = Meta.RecordPresentation;
+			If IsBlankString(Presentation) Then
+				Presentation = Meta.Presentation();
+			EndIf;
+			
+			DimensionDescription = "";
+			For Each KeyValue In SetDimensionDescription(Meta, DimensionCache) Do
+				Value = Data[KeyValue.Key];
+				Details = KeyValue.Value;
+				If Value = Ref Then
+					If Details.Master Then
+						IsAuxiliaryData = True;
+					EndIf;
+				EndIf;
+				Format = Details.Format; 
+				DimensionDescription = DimensionDescription + "," 
+					+ Details.Presentation + " """ + ?(Format = Undefined, String(Value), Format(Value, Format)) + """";
+			EndDo;
+			DimensionDescription = Mid(DimensionDescription, 3);
+			
+			If NOT IsBlankString(DimensionDescription) Then
+				Presentation = Presentation + " (" + DimensionDescription + ")";
+			EndIf;
+			
+		Else
+			Presentation = String(Data);
+			
+		EndIf;
+		
+		Row.DataPresentation = Presentation;
+		Row.AuxiliaryData    = IsAuxiliaryData;
+		Row.RefType          = TypeOf(Row.Ref);
+	EndDo;
+	
+	If NOT IsBlankString(ResultAddress) Then
+		PutToTempStorage(UsageInstances, ResultAddress);
+	EndIf;
+	
+	Return UsageInstances;
+EndFunction
+
+// Searches for duplicates for the specified values.
+//
+// Parameters:
+//     SearchArea           - String - data table name (full metadata name) of the search area.
+//                            For example "Catalog.ProductsAndServices". The search are
+//                            supported in catalogs, charts of characteristic types, 
+//                            calculation types, charts of accounts.
+//     Item                 - Arbitrary - object with data of the item whose duplicates are
+//                            searched.
+//     AdditionalParameters - Arbitrary - parameter to be passed to manager event handlers.
 //
 // Returns:
-// String - name of the enumeration value.
+//     ValueTable - contains rows with descriptions of duplicates.
+// 
+Function FindItemDuplicates(Val SearchArea, Val SampleObject, Val AdditionalParameters) Export
+	
+	SearchForDuplicatesParameters = New Structure;
+	SearchForDuplicatesParameters.Insert("PrefilterComposer");
+	SearchForDuplicatesParameters.Insert("AreaToSearchForDuplicates", SearchArea);
+	SearchForDuplicatesParameters.Insert("TakeAppliedRulesIntoAccount", True);
+	
+	// From parameters
+	SearchForDuplicatesParameters.Insert("SearchRules", New ValueTable);
+	SearchForDuplicatesParameters.SearchRules.Columns.Add("Attribute", New TypeDescription("String"));
+	SearchForDuplicatesParameters.SearchRules.Columns.Add("Rule",  New TypeDescription("String"));
+	
+	// See DataProcessor.SearchAndDeletionOfDuplicates
+	SearchForDuplicatesParameters.PrefilterComposer = New DataCompositionSettingsComposer;
+	MetaArea = Metadata.FindByFullName(SearchArea);
+	AvailableFilterAttributes = AvailableFilterMetaAttributeNames(MetaArea.StandardAttributes);
+	AvailableFilterAttributes = ?(IsBlankString(AvailableFilterAttributes), ",", AvailableFilterAttributes)
+		+ AvailableFilterMetaAttributeNames(MetaArea.Attributes);
+	
+	CompositionSchema = New DataCompositionSchema;
+	DataSource = CompositionSchema.DataSources.Add();
+	DataSource.DataSourceType = "Local";
+	
+	DataSet = CompositionSchema.DataSets.Add(Type("DataCompositionSchemaDataSetQuery"));
+	DataSet.Query = "SELECT " + Mid(AvailableFilterAttributes, 2) + " FROM" + SearchArea;
+	DataSet.AutoFillAvailableFields = True;
+	
+	SearchForDuplicatesParameters.PrefilterComposer.Initialize( New DataCompositionAvailableSettingsSource(CompositionSchema) );
+	
+	// Calling the applied script
+	SearchProcessing = DataProcessors.SearchAndDeletionOfDuplicates.Create();
+	
+	SearchAreaManager = SearchProcessing.SearchForDuplicatesAreaManager(SearchArea);
+	UseAppliedRules = SearchProcessing.HasSearchForDuplicatesAreaAppliedRules(SearchAreaManager);
+	If UseAppliedRules Then
+		AppliedParameters = New Structure;
+		AppliedParameters.Insert("SearchRules",        SearchForDuplicatesParameters.SearchRules);
+		AppliedParameters.Insert("FilterComposer",    SearchForDuplicatesParameters.PrefilterComposer);
+		AppliedParameters.Insert("CompareRestrictions", New Array);
+		AppliedParameters.Insert("ItemCountForCompare", 1500);
+		
+		SearchAreaManager.SearchForDuplicatesParameters(AppliedParameters, AdditionalParameters);
+		
+		SearchForDuplicatesParameters.Insert("AdditionalParameters", AdditionalParameters);
+	EndIf;
+	
+	DuplicateGroups = SearchProcessing.DuplicateGroups(SearchForDuplicatesParameters, SampleObject);
+	Result = DuplicateGroups.DuplicateTable;
+	
+	// Only one group, returning the requiring items
+	For Each Row In Result.FindRows(New Structure("Parent", Undefined)) Do
+		Result.Delete(Row);
+	EndDo;
+	EmptyRef = SearchAreaManager.EmptyRef();
+	For Each Row In Result.FindRows(New Structure("Ref", EmptyRef)) Do
+		Result.Delete(Row);
+	EndDo;
+	
+	Return Result; 
+EndFunction
+
+// Returns a type description that includes all configuration reference types.
+//
+Function AllRefsTypeDescription() Export
+	
+	Return New TypeDescription(New TypeDescription(New TypeDescription(New TypeDescription(New TypeDescription(
+		New TypeDescription(New TypeDescription(New TypeDescription(New TypeDescription(
+			   Catalogs.AllRefsType(),
+			   Documents.AllRefsType().Types()
+			), ExchangePlans.AllRefsType().Types()
+			), Enums.AllRefsType().Types()
+			), ChartsOfCharacteristicTypes.AllRefsType().Types()
+			), ChartsOfAccounts.AllRefsType().Types()
+			), ChartsOfCalculationTypes.AllRefsType().Types()
+			), BusinessProcesses.AllRefsType().Types()
+			), BusinessProcesses.RoutePointsAllRefsType().Types()
+			), Tasks.AllRefsType().Types()
+		);
+	
+EndFunction
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Common procedures and functions for handling applied types and value collection
+
+// Retrieves the name of the enumeration value as a metadata object.
+//
+// Parameters:
+//  Value - value of the enumeration whose name is retrieved.
+//
+// Returns:
+//  String - enumeration value name as a metadata object.
 //
 Function EnumValueName(Value) Export
 	
@@ -349,8 +820,8 @@ EndFunction
 // If an element from the source array is already present, it is not added.
 //
 // Parameters:
-// DestinationArray – Array – array to be filled with unique values;
-// SourceArray – Array – array of values for filling DestinationArray.
+//  DestinationArray – Array – array to be filled with unique values;
+//  SourceArray      – Array – array of values for filling DestinationArray.
 //
 Procedure FillArrayWithUniqueValues(DestinationArray, SourceArray) Export
 	
@@ -369,16 +840,16 @@ Procedure FillArrayWithUniqueValues(DestinationArray, SourceArray) Export
 	
 EndProcedure
 
-// Deletes AttributeArray elements that match to object attribute names from 
+// Deletes AttributeArray elements that match object attribute names from 
 // the NoncheckableAttributeArray array.
-// The procedure is intended for use in FillCheckProcessing event handlers.
+// The procedure is intended to be used in FillCheckProcessing event handlers.
 //
 // Parameters:
-//	AttributeArray - Array of strings that contain names of object attributes;
-//	NoncheckableAttributeArray - Array of string that contain names of object attributes
-// that are excluded from checking.
+// AttributeArray             - Array of String - contains names of object attributes;
+// NoncheckableAttributeArray - Array of String - contains names of object attributes
+//                              excluded from checking.
 //
-Procedure DeleteNoncheckableAttributesFromArray(AttributeArray, NoncheckableAttributeArray) Export
+Procedure DeleteNoCheckAttributesFromArray(AttributeArray, NoncheckableAttributeArray) Export
 	
 	For Each ArrayElement In NoncheckableAttributeArray Do
 	
@@ -392,36 +863,34 @@ Procedure DeleteNoncheckableAttributesFromArray(AttributeArray, NoncheckableAttr
 EndProcedure
 
 //	Converts the value table into an array.
-//	Use this function to pass data that is received on the server as a value table 
-//	to the client. This is only possible if all of values
-//	from the value table can be passed to the client.
+//	Use this function to pass data  received on the server as a value table to the client.
+//	This is only possible if all of values from the value table can be passed to the client.
 //
-//	The resulting array contains structures that duplicate 
-//	value table row structures.
+//	The resulting array contains structures that duplicate value table row structures.
 //
 //	It is recommended that you do not use this procedure to convert value tables
 //	with a large number of rows.
 //
 //	Parameters: 
-// ValueTable.
+//	  ValueTable - ValueTable.
 //
 //	Returns:
-// Array.
+//	  Array.
 //
 Function ValueTableToArray(ValueTable) Export
 	
 	Array = New Array();
-	StructureAsString = "";
+	StructureString = "";
 	CommaRequired = False;
 	For Each Column In ValueTable.Columns Do
 		If CommaRequired Then
-			StructureAsString = StructureAsString + ",";
+			StructureString = StructureString + ",";
 		EndIf;
-		StructureAsString = StructureAsString + Column.Name;
+		StructureString = StructureString + Column.Name;
 		CommaRequired = True;
 	EndDo;
 	For Each String In ValueTable Do
-		NewRow = New Structure(StructureAsString);
+		NewRow = New Structure(StructureString);
 		FillPropertyValues(NewRow, String);
 		Array.Add(NewRow);
 	EndDo;
@@ -429,16 +898,14 @@ Function ValueTableToArray(ValueTable) Export
 
 EndFunction
 
-// Creates a structure with properties whose names 
-// match the value table column names
-// of the passed row, and
-// fills this structure with values from the row.
+// Creates a structure with properties whose names match the value table column names
+// of the passed row. Fills this structure with values from the row.
 // 
 // Parameters:
-// ValueTableRow - ValueTableRow.
+//  ValueTableRow - ValueTableRow.
 //
 // Returns:
-// Structure.
+//  Structure.
 //
 Function ValueTableRowToStructure(ValueTableRow) Export
 	
@@ -451,50 +918,11 @@ Function ValueTableRowToStructure(ValueTableRow) Export
 	
 EndFunction
 
-Function GetStructureKeysAsString(Structure, Separator = ",") Export
-	
-	Result = "";
-	
-	For Each Item In Structure Do
-		
-		SeparatorChar = ?(IsBlankString(Result), "", Separator);
-		
-		Result = Result + SeparatorChar + Item.Key;
-		
-	EndDo;
-	
-	Return Result;
-EndFunction
-
-// Gets a string of structure keys separated by the separator character.
-//
-// Parameters:
-//	Structure - Structure - structure whose keys will be converted into a string;
-//	Separator - String - separator that will be inserted between the keys.
-//
-// Returns:
-//	String - string of structure keys separated by the separator character.
-//
-Function StructureKeysToString(Structure, Separator = ",") Export
-	
-	Result = "";
-	
-	For Each Item In Structure Do
-		
-		SeparatorChar = ?(IsBlankString(Result), "", Separator);
-		
-		Result = Result + SeparatorChar + Item.Key;
-		
-	EndDo;
-	
-	Return Result;
-EndFunction
-
 // Creates a structure that matches the information register record manager. 
 // 
 // Parameters:
-// RecordManager - InformationRegisterRecordManager;
-// RegisterMetadata - information register metadata.
+//  RecordManager    - InformationRegisterRecordManager;
+//  RegisterMetadata - information register metadata.
 //
 Function StructureByRecordManager(RecordManager, RegisterMetadata) Export
 	
@@ -520,11 +948,11 @@ EndFunction
 // Creates an array and copies values from the row collection column into this array.
 //
 // Parameters:
-//	RowCollection - collection where iteration using For each ... In ... Do operator 
-//		is available;
-//	ColumnName - String - name of the collection field to be retrieved;
-//	UniqueValuesOnly - Boolean, optional - if it is True, the resulting array
-//	will contain unique values only. 
+// RowCollection    - collection where iteration using For each ... In ... Do operator 
+//                    is available;
+// ColumnName       - String - name of the collection field to be retrieved;
+// UniqueValuesOnly - Boolean, optional - if True, the resulting array will contain unique
+//                     values only. 
 //
 Function UnloadColumn(RowCollection, ColumnName, UniqueValuesOnly = False) Export
 
@@ -545,11 +973,11 @@ Function UnloadColumn(RowCollection, ColumnName, UniqueValuesOnly = False) Expor
 	
 EndFunction
 
-// Converts XML text into a value table.
+// Converts XML text into a structure with value tables.
 // The function creates table columns based on the XML description.
 //
 // Parameters:
-// XMLText - text in the XML format.
+//  XML - text in the XML format.
 //
 // XML schema:
 //<?xml version="1.0" encoding="utf-8"?>
@@ -561,8 +989,8 @@ EndFunction
 //		 <xs:complexType>
 //			<xs:attribute name="Code" type="xs:integer" use="required" />
 //			<xs:attribute name="Name" type="xs:string" use="required" />
-//			<xs:attribute name="Abbreviation" type="xs:string" use="required" />
-//			<xs:attribute name="PostalCode" type="xs:string" use="required" />
+//			<xs:attribute name="Abbr" type="xs:string" use="required" />
+//			<xs:attribute name="Index" type="xs:string" use="required" />
 //		 </xs:complexType>
 //		</xs:element>
 //	 </xs:sequence>
@@ -572,25 +1000,29 @@ EndFunction
 // </xs:element>
 //</xs:schema>
 //
-// See examples of XML files in the demo configuration.
-// 
 // Example:
 // ClassifierTable = ReadXMLToTable(InformationRegisters.AddressClassifier.
 // GetTemplate("AddressClassifierUnits").GetText());
 //
 // Returns:
-// ValueTable.
+//  Structure - with the following fields: 
+//    * TableName - String.
+//    * Data      - ValueTable.
 //
-Function ReadXMLToTable(XMLText) Export
+Function ReadXMLToTable(Val XML) Export
 	
-	Reader = New XMLReader;
-	Reader.SetString(XMLText);
+	If TypeOf(XML) <> Type("XMLReader") Then
+		Reader = New XMLReader;
+		Reader.SetString(XML);
+	Else
+		Reader = XML;
+	EndIf;
 	
 	// Reading the first node and checking it
 	If Not Reader.Read() Then
-		Raise("XML is empty.");
+			Raise NStr("en = 'XML is empty'");
 	ElsIf Reader.Name <> "Items" Then
-		Raise("Error in the XML structure.");
+		Raise NStr("en = 'Error in the XML structure'");
 	EndIf;
 	
 	// Getting table details and creating the table
@@ -606,10 +1038,12 @@ Function ReadXMLToTable(XMLText) Export
 	// Filling the table with values
 	While Reader.Read() Do
 		
-		If Reader.NodeType <> XMLNodeType.StartElement Then
+		If Reader.NodeType = XMLNodeType.EndElement AND Reader.Name = "Items" Then
+			Break;
+		ElsIf Reader.NodeType <> XMLNodeType.StartElement Then
 			Continue;
 		ElsIf Reader.Name <> "Item" Then
-			Raise("Error in the XML structure.");
+			Raise NStr("en = 'Error in the XML structure'");
 		EndIf;
 		
 		NewRow = ValueTable.Add();
@@ -631,25 +1065,28 @@ EndFunction
 
 // Compares two row collections. 
 // Both collections must meet the following requirements:
-//	- iteration using For each ... In ... Do operator is available;
-//	- both collections include all columns that are passed to the ColumnNames parameter.
+// - iteration using For each ... In ... Do operator is available;
+// - both collections include all columns that are passed to the ColumnNames parameter.
 // If ColumnNames is empty, all columns included in one of the collections must be included 
 // into the other one and vice versa.
 //
 // Parameters:
-//	RowsCollection1 - collection that meets the requirements listed above;
-//	RowsCollection2 - collection that meets the requirements listed above;
-//	ColumnNames - String separated by commas - names of columns 
-//						whose values will be compared. 
-//						This parameter is optional for collections
-//						that allow retrieving their column names:
-//						ValueTable, ValueList, Map, and Structure.
-//						If this parameter is not specified, values of all columns
-//						will be compared. For collections of other types,
-//						this parameter is mandatory.
-//	ExcludingColumns	- names of columns whose values are not compared. Optional.
-//	IncludingRowOrder - Boolean - If it is True, the collections are considered 
-//						equal only if they have identical row order.
+// RowsCollection1   - ValueCollection - collection that meets the requirements listed above;
+// RowsCollection2   - ValueCollection - collection that meets the requirements listed above;
+// ColumnNames       - String - names of columns separated with commas 
+// 					            whose values will be compared. 
+// 					            This parameter is optional for collections
+// 					            that allow retrieving their column names:
+// 					            ValueTable, ValueList, Map, and Structure.
+// 					            If this parameter is not specified, values of all columns
+// 					            will be compared. For collections of other types,
+// 					            this parameter is mandatory.
+// ExcludingColumns  - String - names of columns whose values are not compared. Optional.
+// IncludingRowOrder - Boolean - If True, the collections are considered 
+// 					            equal only if they have identical row order.
+//
+// Returns:
+//  Boolean.
 //
 Function IdenticalCollections(RowsCollection1, RowsCollection2, ColumnNames = "", ExcludingColumns = "", IncludingRowOrder = False) Export
 	
@@ -738,7 +1175,7 @@ Function IdenticalCollections(RowsCollection1, RowsCollection2, ColumnNames = ""
 			CollectionRowCount2 = 0;
 		EndIf;
 		
-		// Number of rows must be the same in both collections
+		// Number of rows must be equal in both collections
 		If CollectionRowCount1 <> CollectionRowCount2 Then
 			Return False;
 		EndIf;
@@ -763,12 +1200,12 @@ Function IdenticalCollections(RowsCollection1, RowsCollection2, ColumnNames = ""
 			
 			FillPropertyValues(FilterParameters, FilterRow);
 			If FilterRows.FindRows(FilterParameters).Count() > 0 Then
-				// Row with such field values is already checked
+				// The row with such field values is already checked
 				Continue;
 			EndIf;
 			FillPropertyValues(FilterRows.Add(), FilterRow);
 			
-			// Calculating rows in the first collection
+			// Calculating the number of rows in the first collection
 			CollectionRowsFound1 = 0;
 			For Each CollectionRow1 In RowsCollection1 Do
 				RowFits = True;
@@ -783,7 +1220,7 @@ Function IdenticalCollections(RowsCollection1, RowsCollection2, ColumnNames = ""
 				EndIf;
 			EndDo;
 			
-			// Calculating rows in the second collection
+			// Calculating the number of rows in the second collection
 			CollectionRowsFound2 = 0;
 			For Each CollectionRow2 In RowsCollection2 Do
 				RowFits = True;
@@ -834,63 +1271,265 @@ Function IdenticalCollections(RowsCollection1, RowsCollection2, ColumnNames = ""
 	
 EndFunction
 
+// Compares data of a complex structure taking nesting into account.
+//
+// Parameters:
+//  Data1 - Structure ,   FixedStructure -
+//        - Map,          FixedMap -
+//        - Array,        FixedArray - 
+//        - ValueStorage, ValueTable -
+//        - Simple types - that can be compared for equality, for example, String, Number, Boolean.
+//
+//  Data2 - Arbitrary - same types that the Data1 parameter has.
+//
+// Returns:
+//  Boolean.
+//
+Function IsEqualData(Data1, Data2) Export
+	
+	If TypeOf(Data1) <> TypeOf(Data2) Then
+		Return False;
+	EndIf;
+	
+	If TypeOf(Data1) = Type("Structure")
+	 Or TypeOf(Data1) = Type("FixedStructure") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		For Each KeyAndValue In Data1 Do
+			OldValue = Undefined;
+			
+			If NOT Data2.Property(KeyAndValue.Key, OldValue)
+			 Or NOT IsEqualData(KeyAndValue.Value, OldValue) Then
+			
+				Return False;
+			EndIf;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("Map")
+	      Or TypeOf(Data1) = Type("FixedMap") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		NewMapKeys = New Map;
+		
+		For Each KeyAndValue In Data1 Do
+			NewMapKeys.Insert(KeyAndValue.Key, True);
+			OldValue = Data2.Get(KeyAndValue.Key);
+			
+			If NOT IsEqualData(KeyAndValue.Value, OldValue) Then
+				Return False;
+			EndIf;
+		EndDo;
+		
+		For Each KeyAndValue In Data2 Do
+			If NewMapKeys[KeyAndValue.Key] = Undefined Then
+				Return False;
+			EndIf;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("Array")
+	      Or TypeOf(Data1) = Type("FixedArray") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		Index = Data1.Count()-1;
+		While Index >= 0 Do
+			If NOT IsEqualData(Data1.Get(Index), Data2.Get(Index)) Then
+				Return False;
+			EndIf;
+			Index = Index - 1;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("ValueTable") Then
+		
+		If Data1.Count() <> Data2.Count() Then
+			Return False;
+		EndIf;
+		
+		If Data1.Columns.Count() <> Data2.Columns.Count() Then
+			Return False;
+		EndIf;
+		
+		For Each Column In Data1.Columns Do
+			If Data2.Columns.Find(Column.Name) = Undefined Then
+				Return False;
+			EndIf;
+			
+			Index = Data1.Count()-1;
+			While Index >= 0 Do
+				If NOT IsEqualData(Data1[Index][Column.Name], Data2[Index][Column.Name]) Then
+					Return False;
+				EndIf;
+				Index = Index - 1;
+			EndDo;
+		EndDo;
+		
+		Return True;
+		
+	ElsIf TypeOf(Data1) = Type("ValueStorage") Then
+	
+		If NOT IsEqualData(Data1.Get(), Data2.Get()) Then
+			Return False;
+		EndIf;
+		
+		Return True;
+	EndIf;
+	
+	Return Data1 = Data2;
+	
+EndFunction
+
+// Fixes data of the Structure, Map, and Array types taking nesting into account.
+//
+// Parameters:
+//  Data           - Structure, Map, Array - collection, whose values are primitive types,
+//                   value storages, or cannot be changed. The following value types are
+//                   supported: Boolean, String, Number, Date, Undefined, UUID, Null, Type,
+//                              ValueStorage, CommonModule, MetadataObject, XDTOValueType,
+//                              XDTODataObjectType, AnyRef.
+//
+//  RaiseException - Boolean - initial value is True. If it is False and there is data that
+//                   cannot be fixed, no exception is raised but as much data as possible is
+//                   fixed.
+//
+// Returns:
+//  Fixed data, similar to the data passed in the Data parameter.
+// 
+Function FixedData(Data, RaiseException = True) Export
+	
+	If TypeOf(Data) = Type("Array") Then
+		Array = New Array;
+		
+		Index = Data.Count() - 1;
+		
+		For Each Value In Data Do
+			
+			If TypeOf(Value) = Type("Structure")
+			 Or TypeOf(Value) = Type("Map")
+			 Or TypeOf(Value) = Type("Array") Then
+				
+				Array.Add(FixedData(Value, RaiseException));
+			Else
+				If RaiseException Then
+					CheckDataFixed(Value, True);
+				EndIf;
+				Array.Add(Value);
+			EndIf;
+		EndDo;
+		
+		Return New FixedArray(Array);
+		
+	ElsIf TypeOf(Data) = Type("Structure")
+	      Or TypeOf(Data) = Type("Map") Then
+		
+		If TypeOf(Data) = Type("Structure") Then
+			Collection = New Structure;
+		Else
+			Collection = New Map;
+		EndIf;
+		
+		For Each KeyAndValue In Data Do
+			Value = KeyAndValue.Value;
+			
+			If TypeOf(Value) = Type("Structure")
+			 Or TypeOf(Value) = Type("Map")
+			 Or TypeOf(Value) = Type("Array") Then
+				
+				Collection.Insert(
+					KeyAndValue.Key, FixedData(Value, RaiseException));
+			Else
+				If RaiseException Then
+					CheckDataFixed(Value, True);
+				EndIf;
+				Collection.Insert(KeyAndValue.Key, Value);
+			EndIf;
+		EndDo;
+		
+		If TypeOf(Data) = Type("Structure") Then
+			Return New FixedStructure(Collection);
+		Else
+			Return New FixedMap(Collection);
+		EndIf;
+		
+	ElsIf RaiseException Then
+		CheckDataFixed(Data);
+	EndIf;
+	
+	Return Data;
+	
+EndFunction
+
+// Clones the XDTO object.
+//
+// Parameters:
+//  Factory - XDTOFactory - factory that created the source object.
+//  Object  - XDTODataObject  - object, whose copy will be create.
+//
+// Returns:
+//  XDTODataObject - copy of the source XDTO object
+//
+Function CopyXDTO(Val Factory, Val Object) Export
+	
+	Write = New XMLWriter;
+	Write.SetString();
+	Factory.WriteXML(Write, Object, , , , XMLTypeAssignment.Explicit);
+	
+	XMLPresentation = Write.Close();
+	
+	Reader = New XMLReader;
+	Reader.SetString(XMLPresentation);
+	
+	Return Factory.ReadXML(Reader, Object.Type());
+	
+EndFunction
+
+// Returns XML presentation of the XDTO type.
+//
+// Parameters:
+//  XDTOType - XDTODataObjectType, XDTOValueType - XDTO type whose XML presentation will be retrieved
+//
+// Returns:
+//  String - XML presentation of the XDTO type.
+//
+Function XDTOTypePresentation(XDTOType) Export
+	
+	Return XDTOSerializer.XMLString(New XMLExpandedName(XDTOType.NamespaceURI, XDTOType.Name))
+	
+EndFunction
+
 ////////////////////////////////////////////////////////////////////////////////
 // Math procedures and functions
 
-// Distributes the amount according to the weight coefficients.
+// Distributes the amount according to the specified coefficients.
 //
 // Parameters:
-//		SrcAmount - amount to be distributed; 
-//		CoeffArray - array of weight coefficients; 
-//		Precision - rounding precision. Optional.
+// 	AmountToDistribute       - Number - amount to be distributed; 
+// 	DistributionCoefficients - Array - weight coefficients; 
+// 	Accuracy                 - rounding accuracy. Optional.
 //
-//	Returns:
-//		AmountArray - Array - array that has the same length as the coefficient array 
-//			dimension. It contains amounts calculated according to the distribution coefficients
-// If distribution cannot be performed (amount = 0, number of coefficients = 0,
-// or coefficient sum = 0), the return value is Undefined.
+// Returns:
+// 	Array - array of the distributed amounts.
+//           It contains amounts calculated according to the distribution coefficients
+//           If distribution cannot be performed (amount = 0, number of coefficients = 0,
+//           or coefficient sum = 0), the return value is Undefined.
 //
-Function DistributeAmountProportionallyCoefficients(Val SrcAmount, CoeffArray, Val Precision = 2) Export
+
+Function DistributeAmountProportionallyCoefficients(Val AmountToDistribute, DistributionCoefficients, Val Accuracy = 2) Export
 	
-	If CoeffArray.Count() = 0 Or Not ValueIsFilled(SrcAmount) Then
-		Return Undefined;
-	EndIf;
-	
-	MaxIndex = 0;
-	MaxVal = 0;
-	DistribAmount = 0;
-	AmountCoeff = 0;
-	
-	For K = 0 to CoeffArray.Count() - 1 Do
-		
-		AbsNumber = ?(CoeffArray[K] > 0, CoeffArray[K], - CoeffArray[K]);
-		
-		If MaxVal < AbsNumber Then
-			MaxVal = AbsNumber;
-			MaxIndex = K;
-		EndIf;
-		
-		AmountCoeff = AmountCoeff + CoeffArray[K];
-		
-	EndDo;
-	
-	If AmountCoeff = 0 Then
-		Return Undefined;
-	EndIf;
-	
-	AmountArray = New Array(CoeffArray.Count());
-	
-	For K = 0 to CoeffArray.Count() - 1 Do
-		AmountArray[K] = Round(SrcAmount * CoeffArray[K] / AmountCoeff, Precision, 1);
-		DistribAmount = DistribAmount + AmountArray[K];
-	EndDo;
-	
-	// Adding rounding error to the AmountArray element with maximum weight.
-	If Not DistribAmount = SrcAmount Then
-		AmountArray[MaxIndex] = AmountArray[MaxIndex] + SrcAmount - DistribAmount;
-	EndIf;
-	
-	Return AmountArray;
+	Return CommonUseClientServer.DistributeAmountProportionallyCoefficients(AmountToDistribute, DistributionCoefficients, Accuracy);
 	
 EndFunction
 
@@ -906,293 +1545,232 @@ Function COMConnectorName() Export
 		SystemInfo.AppVersion, ".");
 	Return "v" + VersionSubstrings[0] + VersionSubstrings[1] + ".COMConnector";
 	
-EndFunction	
+EndFunction
 
-// Establishes an external connection to an infobase by passed connection parameters,
+
+// Returns the CLSID COM class for working with 1C:Enterprise 8 through a COM connection.
+//
+// Parameters:
+//  COMConnectorName - String - name of the COM class for working with 1C:Enterprise 8 through
+//                     a COM connection.
+//
+// Returns:
+//  String - string presentation of CLSID.
+//
+Function COMConnectorID(Val COMConnectorName) Export
+	
+	If COMConnectorName = "v83.COMConnector" Then
+	
+		Return "181E893D-73A4-4722-B61D-D604B3D67D47";
+		
+	EndIf;
+	
+	ErrorMessage = NStr("en = 'CLSID for the %1 class is not specified'");
+	ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessage, COMConnectorName);
+	Raise ErrorMessage;
+	
+EndFunction
+
+// Establishes an external connection to the infobase by passed connection parameters,
 // and returns this connection.
 // 
 // Parameters:
-// Parameters - Structure - contains parameters for establishing an external connection to an infobase.
-// The structure must contain the following keys (see the CommonUseClientServer.ExternalConnectionParameterStructure function for details):
-//
-//	 InfoBaseOperationMode - Number - infobase operation mode: 0 for the file mode, 1 for the client/server mode;
-//	 InfoBaseDirectory - String - infobase directory, used in the file mode;
-//	 PlatformServerName - String - platform server name, used in the client/server mode;
-//	 InfoBaseNameAtPlatformServer - String - infobase name at the platform server;
-//	 OSAuthentication - Boolean - flag that shows whether the infobase user is selected based on the operating system user;
-//	 UserName - String - infobase user name;
-//	 UserPassword - String - infobase user password;
+//  Parameters        - Structure - contains parameters for establishing an external connection 
+//                      to the infobase.
+//                      See the CommonUseClientServer.ExternalConnectionParameterStructure
+//                      function for details:
+//                       * InfobaseOperationMode        - Number - infobase operation mode: 0 
+//                                                        for the file mode, 1 for the
+//                                                        client/server mode;
+//                       * InfobaseDirectory            - String - infobase directory, used in 
+//                                                        the file mode;
+//                       * PlatformServerName           - String - platform server name, used 
+//                                                        in the client/server mode;
+//                       * InfobaseNameAtPlatformServer - String - infobase name at the 
+//                                                        platform server;
+//                       * OSAuthentication             - Boolean - flag that shows whether the
+//                                                        infobase user is selected based on 
+//                                                        the operating system user;
+//                       * UserName                     - String - infobase user name;
+//                       * UserPassword                 - String - infobase user password.
 // 
-// ErrorMessageString – String – optional. If an error occurs when establishing
-// an external connection, the error message text is returned to this parameter.
+// ErrorMessageString – String – optional. If an error occurs when establishing the external
+//                      connection, the error message text is returned to this parameter.
 //
 // Returns:
-// COM object - if the external connection has been established successfully;
-// Undefined - if the external connection has not been established.
-// 
-Function SetExternalConnection(Parameters, ErrorMessageString = "", ErrorAttachingAddIn = False) Export
+//  COM object - if the external connection has been established successfully;
+//  Undefined  - if the external connection has not been established.
+//
+Function EstablishExternalConnection(Parameters, ErrorMessageString = "", ErrorAttachingAddIn = False) Export
+	Result = EstablishExternalConnectionWithInfobase(Parameters);
+	ErrorAttachingAddIn = Result.ErrorAttachingAddIn;
+	ErrorMessageString  = Result.DetailedErrorDetails;
 	
-	// The return value (COM object)
-	Connection = Undefined;
+	Return Result.Connection;
+EndFunction
+
+
+// Establishes an external connection to the infobase by passed connection parameters,
+// and returns a pointer to this connection.
+// 
+// Parameters:
+//  Parameters        - Structure - contains parameters for establishing an external connection 
+//                      to the infobase.
+//                      See the CommonUseClientServer.ExternalConnectionParameterStructure
+//                      function for details:
+//                       * InfobaseOperationMode        - Number - infobase operation mode: 0 
+//                                                        for the file mode, 1 for the
+//                                                        client/server mode;
+//                       * InfobaseDirectory            - String - infobase directory, used in 
+//                                                        the file mode;
+//                       * PlatformServerName           - String - platform server name, used 
+//                                                        in the client/server mode;
+//                       * InfobaseNameAtPlatformServer - String - infobase name at the 
+//                                                        platform server;
+//                       * OSAuthentication             - Boolean - flag that shows whether the
+//                                                        infobase user is selected based on 
+//                                                        the operating system user;
+//                       * UserName                     - String - infobase user name;
+//                       * UserPassword                 - String - infobase user password.
+// 
+// ErrorMessageString – String – optional. If an error occurs when establishing the external
+//                      connection, the error message text is returned to this parameter.
+// 
+// Returns:
+//  Structure:
+//    * Connection           - COMObject, Undefined - COM object pointer or Undefined if a
+//                             connection error occurred;
+//    * BriefErrorDetails    - String - brief error description;
+//    * DetailedErrorDetails - String - detailed error description;
+//    * ErrorAttachingAddIn  - Boolean - COM connection error flag.
+//
+Function EstablishExternalConnectionWithInfobase(Parameters) Export
+	
+	Result = New Structure("Connection, BriefErrorDetails, DetailedErrorDetails, ErrorAttachingAddIn",
+	Undefined, "", "", False);
+	
+	If IsLinuxServer() Then
+		Result.Connection = Undefined;
+		Result.DetailedErrorDetails = NStr("en = 'A direct connection to the infobase is not supported on a server that runs Linux.'");
+		Result.BriefErrorDetails = Result.DetailedErrorDetails;
+		Return Result;
+	EndIf;
 	
 	Try
-		COMConnector = New COMObject(COMConnectorName()); // "V82.COMConnector"
+		COMConnector = New COMObject(COMConnectorName()); // "V83.COMConnector"
 	Except
-		ErrorMessageString = NStr("en = 'Error while establishing the external connection: %1'");
-		ErrorMessageString = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, DetailErrorDescription(ErrorInfo()));
-		ErrorAttachingAddIn = True;
-		Return Undefined;
+		Information = ErrorInfo();
+		ErrorMessageString = NStr("en = 'Cannot establish a connection to another application: %1'");
+		
+		Result.ErrorAttachingAddIn  = True;
+		Result.DetailedErrorDetails = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, DetailErrorDescription(Information));
+		Result.BriefErrorDetails    = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, BriefErrorDescription(Information));
+		
+		Return Result;
 	EndTry;
 	
-	If Parameters.InfoBaseOperationMode = 0 Then
-		
-		If IsBlankString(Parameters.InfoBaseDirectory) Then
-			
-			ErrorMessageString = NStr("en = 'The infobase directory is not specified.'");
-			Return Undefined;
-			
-		EndIf;
-		
-		If Parameters.OSAuthentication Then
-			
-			ConnectionString = "File = ""&InfoBaseDirectory""";
-			
-			ConnectionString = StrReplace(ConnectionString, "&InfoBaseDirectory", Parameters.InfoBaseDirectory);
-			
-		Else
-			
-			ConnectionString = "File = ""&InfoBaseDirectory""; Usr = ""&UserName""; Pwd = ""&UserPassword""";
-			
-			ConnectionString = StrReplace(ConnectionString, "&InfoBaseDirectory", Parameters.InfoBaseDirectory);
-			ConnectionString = StrReplace(ConnectionString, "&UserName", Parameters.UserName);
-			ConnectionString = StrReplace(ConnectionString, "&UserPassword", Parameters.UserPassword);
-			
-		EndIf;
-		
-	Else // Client/server mode
-		
-		If IsBlankString(Parameters.PlatformServerName)
-			Or IsBlankString(Parameters.InfoBaseNameAtPlatformServer) Then
-			
-			ErrorMessageString = NStr("en = 'The mandatory connection parameters (server name and infobase name)are not specified.'");
-			Return Undefined;
+	If Parameters.InfobaseOperationMode = 0 Then
+		// File mode
+		If IsBlankString(Parameters.InfobaseDirectory) Then
+			ErrorMessageString = NStr("en = 'The infobase directory location is not set.'");
+			Result.DetailedErrorDetails = ErrorMessageString;
+			Result.BriefErrorDetails   = ErrorMessageString;
+			Return Result;
 			
 		EndIf;
 		
 		If Parameters.OSAuthentication Then
+			ConnectionString = "File = ""&InfobaseDirectory""";
 			
-			ConnectionString = "Srvr = &PlatformServerName; Ref = &InfoBaseNameAtPlatformServer";
-			
-			ConnectionString = StrReplace(ConnectionString, "&PlatformServerName", Parameters.PlatformServerName);
-			ConnectionString = StrReplace(ConnectionString, "&InfoBaseNameAtPlatformServer", Parameters.InfoBaseNameAtPlatformServer);
+			ConnectionString = StrReplace(ConnectionString, "&InfobaseDirectory", Parameters.InfobaseDirectory);
 			
 		Else
+			ConnectionString = "File = ""&InfobaseDirectory""; Usr = ""&UserName""; Pwd = ""&UserPassword""";
 			
-			ConnectionString = "Srvr = &PlatformServerName; Ref = &InfoBaseNameAtPlatformServer; Usr = ""&UserName""; Pwd = ""&UserPassword""";
+			ConnectionString = StrReplace(ConnectionString, "&InfobaseDirectory", Parameters.InfobaseDirectory);
+			ConnectionString = StrReplace(ConnectionString, "&UserName",           Parameters.UserName);
+			ConnectionString = StrReplace(ConnectionString, "&UserPassword",        Parameters.UserPassword);
 			
-			ConnectionString = StrReplace(ConnectionString, "&PlatformServerName", Parameters.PlatformServerName);
-			ConnectionString = StrReplace(ConnectionString, "&InfoBaseNameAtPlatformServer", Parameters.InfoBaseNameAtPlatformServer);
-			ConnectionString = StrReplace(ConnectionString, "&UserName", Parameters.UserName);
-			ConnectionString = StrReplace(ConnectionString, "&UserPassword", Parameters.UserPassword);
+		EndIf;
+		
+	Else 
+		// Client/server mode
+		If IsBlankString(Parameters.PlatformServerName) Or IsBlankString(Parameters.InfobaseNameAtPlatformServer) Then
+			ErrorMessageString = NStr("en = 'The mandatory connection parameters are not set: ""Server name""; ""Infobase name on the server"".'");
+			
+			Result.DetailedErrorDetails = ErrorMessageString;
+			Result.BriefErrorDetails   = ErrorMessageString;
+			Return Result;
+			
+		EndIf;
+		
+		If Parameters.OSAuthentication Then
+			ConnectionString = "Srvr = ""&PlatformServerName""; Ref = ""&InfobaseNameAtPlatformServer"";";
+			
+			ConnectionString = StrReplace(ConnectionString, "&PlatformServerName",                     Parameters.PlatformServerName);
+			ConnectionString = StrReplace(ConnectionString, "&InfobaseNameAtPlatformServer", Parameters.InfobaseNameAtPlatformServer);
+			
+		Else
+			ConnectionString = "Srvr = ""&PlatformServerName""; Ref = ""&InfobaseNameAtPlatformServer""; Usr = ""&UserName""; Pwd = ""&UserPassword""";
+			
+			ConnectionString = StrReplace(ConnectionString, "&PlatformServerName",                     Parameters.PlatformServerName);
+			ConnectionString = StrReplace(ConnectionString, "&InfobaseNameAtPlatformServer", Parameters.InfobaseNameAtPlatformServer);
+			ConnectionString = StrReplace(ConnectionString, "&UserName",                             Parameters.UserName);
+			ConnectionString = StrReplace(ConnectionString, "&UserPassword",                          Parameters.UserPassword);
 			
 		EndIf;
 		
 	EndIf;
 	
 	Try
-		Connection = COMConnector.Connect(ConnectionString);
+		Result.Connection = COMConnector.Connect(ConnectionString);
 	Except
+		Information = ErrorInfo();
+		ErrorMessageString = NStr("en = 'Cannot establish a connection to another application: %1'");
 		
-		ErrorAttachingAddIn = True;
+		Result.ErrorAttachingAddIn = True;
+		Result.DetailedErrorDetails     = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, DetailErrorDescription(Information));
+		Result.BriefErrorDetails       = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, BriefErrorDescription(Information));
 		
-		DetailErrorDescription = DetailErrorDescription(ErrorInfo());
-		
-		ErrorMessageString = NStr("en = 'Error establishing the external connection: %1'");
-		ErrorMessageString = StringFunctionsClientServer.SubstituteParametersInString(ErrorMessageString, DetailErrorDescription);
-		Return Undefined;
 	EndTry;
 	
-	Return Connection;
+	Return Result;
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
-// Auxiliary procedures and functions.
-
-// Executes the export procedure by name.
-//
-// Parameters
-// ExportProcedureName – String – export procedure name in the following format:
-//										 <object name>.<procedure name> where <object name> is 
-// 										a common module or an object manager module.
-// Parameters - Array - parameters for passing to the <ExportProcedureName> procedure
-// ordered by their positions in the array;
-// DataArea - Number - data area where the procedure will be executed.
-// 
-// Example:
-// ExecuteSafely("MyCommonModule.MyProcedure"); 
-//
-Procedure ExecuteSafely(ExportProcedureName, Parameters = Undefined, DataArea = Undefined) Export
-	
-	// Checking the ExportProcedureName format. 
-	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(ExportProcedureName, ".");
-	If NameParts.Count() <> 2 And NameParts.Count() <> 3 Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Invalid format of the ExportProcedureName parameter %1.'"),
-			ExportProcedureName);
-	EndIf;
-
-	ObjectName = NameParts[0];
-	If NameParts.Count() = 2 And Metadata.CommonModules.Find(ObjectName) = Undefined Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Invalid format of the ExportProcedureName parameter %1.'"),
-			ExportProcedureName);
-	EndIf;
-		
-	If NameParts.Count() = 3 Then
-		ValidTypeNames = New Array;
-		ValidTypeNames.Add(Upper(TypeNameConstants()));
-		ValidTypeNames.Add(Upper(TypeNameInformationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameAccumulationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameAccountingRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameCalculationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameCatalogs()));
-		ValidTypeNames.Add(Upper(TypeNameDocuments()));
-		ValidTypeNames.Add(Upper(TypeNameReports()));
-		ValidTypeNames.Add(Upper(TypeNameDataProcessors()));
-		ValidTypeNames.Add(Upper(TypeNameBusinessProcesses()));
-		ValidTypeNames.Add(Upper(TypeNameTasks()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfAccounts()));
-		ValidTypeNames.Add(Upper(TypeNameExchangePlans()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfCharacteristicTypes()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfCalculationTypes()));
-		TypeName = Upper(NameParts[0]);
-		If ValidTypeNames.Find(TypeName) = Undefined Then
-			Raise StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Invalid format of the ExportProcedureName parameter %1.'"),
-				ExportProcedureName);
-		EndIf;
-	EndIf;
-	
-	MethodName = NameParts[NameParts.UBound()];
-	TempStructure = New Structure;
-	Try
-		TempStructure.Insert(MethodName);
-	Except
-		WriteLogEvent(NStr("en = 'Safe method execution.'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , ,
-			DetailErrorDescription(ErrorInfo()));
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Invalid format of the ExportProcedureName parameter %1.'"),
-			ExportProcedureName);
-	EndTry;
-	
-	ParametersString = "";
-	If Parameters <> Undefined And Parameters.Count() > 0 Then
-		For Index = 0 to Parameters.UBound() Do 
-			ParametersString = ParametersString + "Parameters[" + Index + "],";
-		EndDo;
-		ParametersString = Mid(ParametersString, 1, StrLen(ParametersString) - 1);
-	EndIf;
-	
-	If CommonUseCached.DataSeparationEnabled() Then
-		If Not CommonUseCached.SessionWithoutSeparator() Then
-			If DataArea = Undefined Then
-				DataArea = SessionSeparatorValue();
-			Else 
-				If DataArea <> SessionSeparatorValue() Then
-					Raise(NStr("en = 'It is not allowed to process data from another data area in this session.'"));
-				EndIf;
-			EndIf;
-		EndIf;
-		If DataArea <> Undefined
-			And (Not UseSessionSeparator() Or DataArea <> SessionSeparatorValue()) Then
-			SetSessionSeparation(True, DataArea);
-		EndIf;
-	EndIf;
-	
-	Execute ExportProcedureName + "(" + ParametersString + ")";
-	
-EndProcedure
-
-// Checks the validity of the export procedure name before passing it
-// to the Execute operator. If the name is invalid,
-// an exception is raised.
-//
-Function CheckExportProcedureName(Val ExportProcedureName, MessageText) Export
-	
-	// Checking ExportProcedureName format preconditions
-	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(ExportProcedureName, ".");
-	If NameParts.Count() <> 2 And NameParts.Count() <> 3 Then
-		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'The ExportProcedureName parameter has incorrect format %1.'"),
-			ExportProcedureName);
-		Return False;
-	EndIf;
-
-	ObjectName = NameParts[0];
-	If NameParts.Count() = 2 And Metadata.CommonModules.Find(ObjectName) = Undefined Then
-		MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'The ExportProcedureName parameter has incorrect format %1.'"),
-			ExportProcedureName);
-		Return False;
-	EndIf;
-		
-	If NameParts.Count() = 3 Then
-		ValidTypeNames = New Array;
-		ValidTypeNames.Add(Upper(TypeNameConstants()));
-		ValidTypeNames.Add(Upper(TypeNameInformationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameAccumulationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameAccountingRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameCalculationRegisters()));
-		ValidTypeNames.Add(Upper(TypeNameCatalogs()));
-		ValidTypeNames.Add(Upper(TypeNameDocuments()));
-		ValidTypeNames.Add(Upper(TypeNameBusinessProcesses()));
-		ValidTypeNames.Add(Upper(TypeNameTasks()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfAccounts()));
-		ValidTypeNames.Add(Upper(TypeNameExchangePlans()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfCharacteristicTypes()));
-		ValidTypeNames.Add(Upper(TypeNameChartsOfCalculationTypes()));
-		TypeName = Upper(NameParts[0]);
-		If ValidTypeNames.Find(TypeName) = Undefined Then
-			MessageText = StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'The ExportProcedureName parameter has incorrect format %1.'"),
-				ExportProcedureName);
-			Return False;
-		EndIf;
-	EndIf;
-	
-	Return True;
-	
-EndFunction
+// Auxiliary procedures and functions
 
 // Determines the infobase mode: file (True) or client/server (False).
-// This function requires the InfoBaseConnectionString parameter. 
+// This function uses the InfobaseConnectionString parameter. 
 // You can specify this parameter explicitly.
 //
 // Parameters:
-// InfoBaseConnectionString - String - if this parameter is empty, 
+// InfobaseConnectionString - String - if this parameter is empty, 
 // the connection string of the current infobase connection is used.
 //
 // Returns:
 // Boolean.
 //
-Function FileInfoBase(Val InfoBaseConnectionString = "") Export
+Function FileInfobase(Val InfobaseConnectionString = "") Export
 			
-	If IsBlankString(InfoBaseConnectionString) Then
-		InfoBaseConnectionString = InfoBaseConnectionString();
+	If IsBlankString(InfobaseConnectionString) Then
+		InfobaseConnectionString = InfobaseConnectionString();
 	EndIf;
-	Return Find(Upper(InfoBaseConnectionString), "FILE=") = 1;
+	Return Find(Upper(InfobaseConnectionString), "FILE=") = 1;
 	
 EndFunction 
-
-// Resets session parameters to Undefined. 
+ 
+// Resets session parameters to Not set. 
 // 
 // Parameters: 
-// ClearingParameters - String - names of session parameters to be cleared separated by commas;
-// Exceptions - String - names of the session parameters to be preserved separated by commas.
+// ClearingParameters - String - names of session parameters to be cleared separated with
+//                      commas;
+// Exceptions         - String - names of the session parameters to be preserved separated with 
+//                      commas.
 //
 Procedure ClearSessionParameters(ClearingParameters = "", Exceptions = "") Export
-	
-	ExceptionArray = StringFunctionsClientServer.SplitStringIntoSubstringArray(Exceptions);
+	  
+	ExceptionArray             = StringFunctionsClientServer.SplitStringIntoSubstringArray(Exceptions);
 	ParametersForClearingArray = StringFunctionsClientServer.SplitStringIntoSubstringArray(ClearingParameters);
 	
 	If ParametersForClearingArray.Count() = 0 Then
@@ -1202,6 +1780,12 @@ Procedure ClearSessionParameters(ClearingParameters = "", Exceptions = "") Expor
 			EndIf;
 		EndDo;
 	EndIf;
+	
+	Index = ParametersForClearingArray.Find("ClientParametersOnServer");
+	If Index > 0 Then
+		ParametersForClearingArray.Delete(Index);
+	EndIf;
+	
 	SessionParameters.Clear(ParametersForClearingArray);
 	
 EndProcedure
@@ -1217,12 +1801,19 @@ EndProcedure
 Function SubjectString(SubjectRef) Export
 	
 	Result = "";
-	StandardSubsystemsOverridable.SetSubjectPresentation(SubjectRef, Result); 
-	CommonUseOverridable.SetSubjectPresentation(SubjectRef, Result); 
+	
+	EventHandlers = InternalEventHandlers(
+		"StandardSubsystems.BaseFunctionality\SubjectPresentationOnDefine");
+	
+	For Each Handler In EventHandlers Do
+		Handler.Module.SubjectPresentationOnDefine(SubjectRef, Result);
+	EndDo;
+	
+	CommonUseOverridable.SetSubjectPresentation(SubjectRef, Result);
 	
 	If IsBlankString(Result) Then
-		If SubjectRef = Undefined Or SubjectRef.Empty() Then
-			Result = NStr("en = 'not specified");
+		If SubjectRef = Undefined Or SubjectRef.IsEmpty() Then
+			Result = NStr("en = 'not set'");
 		ElsIf Metadata.Documents.Contains(SubjectRef.Metadata()) Then
 			Result = String(SubjectRef);
 		Else
@@ -1239,32 +1830,27 @@ Function SubjectString(SubjectRef) Export
 	
 EndFunction
 
-// Merges reference search exceptions.
-//
+// Generates a map to delete objects.
 Function GetOverallRefSearchExceptionList() Export
 	
-	OverallRefExclusionArray = New Array;
+	RefSearchExclusions = New Map;
 	
-	FillArrayWithUniqueValues(OverallRefExclusionArray, StandardSubsystemsOverridable.RefSearchExclusions());
-	FillArrayWithUniqueValues(OverallRefExclusionArray, CommonUseOverridable.GetRefSearchExceptions());
+	ExceptionArray = New Array;
+	EventHandlers = InternalEventHandlers(
+		"StandardSubsystems.BaseFunctionality\OnAddReferenceSearchException");
+	For Each Handler In EventHandlers Do
+		Handler.Module.OnAddReferenceSearchException(ExceptionArray);
+	EndDo;
+	AddRefSearchExclusions(RefSearchExclusions, ExceptionArray);
 	
-	Return OverallRefExclusionArray;
+	//ExceptionArray = CommonUseOverridable.GetRefSearchExceptions();
+	//AddRefSearchExclusions(RefSearchExclusions, ExceptionArray);
 	
-EndFunction
+	ExceptionArray = New Array;
+	CommonUseOverridable.OnAddReferenceSearchException(ExceptionArray);
+	AddRefSearchExclusions(RefSearchExclusions, ExceptionArray);
 
-// Creates a map that stores the table of correspondence between separated and shared data types.
-//
-// Returns:
-// ValueTable - data type map.
-//
-Function GetSeparatedAndSharedDataMapTable() Export
-	
-	Result = StandardSubsystemsOverridable.SeparatedAndSharedDataMapTable();
-	If Result = Undefined Then
-		Return New ValueTable;
-	Else
-		Return Result;
-	EndIf;
+	Return RefSearchExclusions;
 	
 EndFunction
 
@@ -1275,10 +1861,10 @@ EndFunction
 // objects themselves, sets of register records, and the constant value manager.
 //
 // Parameters:
-// Value – Arbitrary - value to be serialized into an XML string.
+//  Value – Arbitrary - value to be serialized into an XML string.
 //
 // Returns:
-// String - resulting string.
+//  String - resulting string.
 //
 Function ValueToXMLString(Value) Export
 	
@@ -1296,10 +1882,10 @@ EndFunction
 // objects themselves, sets of register records, and the constant value manager.
 //
 // Parameters:
-// XMLString – serialized string.
+//  XMLString – serialized string.
 //
 // Returns:
-// String - resulting string.
+//  String - resulting string.
 //
 Function ValueFromXMLString(XMLString) Export
 	
@@ -1309,10 +1895,57 @@ Function ValueFromXMLString(XMLString) Export
 	Return XDTOSerializer.ReadXML(XMLReader);
 EndFunction
 
+// Returns an XML presentation of the XDTO object.
+//
+// Parameters:
+//  XDTODataObject - XDTODataObject - object, whose XML presentation will be generated.
+//  Factory        - XDTOFactory - factory used for generating the XML presentation.
+//                   If the parameter is not specified, the global XDTO factory is used.
+//
+// Returns: 
+//   String - XML presentation of the XDTO object.
+//
+Function XDTODataObjectIntoXMLString(Val XDTODataObject, Val Factory = Undefined) Export
+	
+	If Factory = Undefined Then
+		Factory = XDTOFactory;
+	EndIf;
+	
+	Write = New XMLWriter();
+	Write.SetString();
+	Factory.WriteXML(Write, XDTODataObject, , , , XMLTypeAssignment.Explicit);
+	
+	Return Write.Close();
+	
+EndFunction
+
+// Generates an XDTO object by the XML presentation.
+//
+// Parameters:
+//  XMLLine - String      - XML presentation of the XDTO object.
+//  Factory - XDTOFactory - factory used to generate the XDTO object.
+//            If the parameter is not, the global XDTO factory is used.
+//
+// Returns: 
+//   XDTODataObject.
+//
+Function XDTODataObjectFromXMLString(Val XMLLine, Val Factory = Undefined) Export
+	
+	If Factory = Undefined Then
+		Factory = XDTOFactory;
+	EndIf;
+	
+	Reader = New XMLReader;
+	Reader.SetString(XMLLine);
+	
+	Return Factory.ReadXML(Reader);
+	
+EndFunction
+
 // Generates a query search string from the source string.
 //
 // Parameters:
-//	SearchString - String - source string that contains characters prohibited in queries. 	
+// SearchString - String - source string that contains characters prohibited in queries. 	
 //
 // Returns:
 // String - resulting string.
@@ -1330,6 +1963,324 @@ Function GenerateSearchQueryString(Val SearchString) Export
 	
 EndFunction
 
+// Returns the WSProxy object created using the passed parameters.
+//
+// Parameters:
+//  WSDLAddress  - String - wsdl location.
+//  NamespaceURI - String - web service namespace URI.
+//  ServiceName  - String - service name.
+//  EndpointName - String - if not specified, it is generated as <ServiceName>Soap.
+//  UserName     - String - user name for logging on to the server.
+//  Password     - String - User password.
+//  Timeout      - Number - timeout for operations executed through the proxy. 
+//
+// Returns:
+//  WSProxy
+//
+Function WSProxy(Val WSDLAddress,
+	Val NamespaceURI,
+	Val ServiceName,
+	Val EndpointName = "",
+	Val UserName,
+	Val Password,
+	Val Timeout = Undefined,
+	Val ProbingCallRequired = False) Export
+
+	If ProbingCallRequired AND Timeout <> Undefined AND Timeout > 20 Then
+		
+		WSProxyPing = CommonUseCached.WSProxy(
+			WSDLAddress,
+			NamespaceURI,
+			ServiceName,
+			EndpointName,
+			UserName,
+			Password,
+			3);
+		
+		Try
+			WSProxyPing.Ping();
+		Except
+			WriteLogEvent(NStr("en = 'WSProxy'", CommonUseClientServer.DefaultLanguageCode()),
+				EventLogLevel.Error,,, DetailErrorDescription(ErrorInfo()));
+			Raise;
+		EndTry;
+		
+	EndIf;
+	
+	Return CommonUseCached.WSProxy(
+		WSDLAddress,
+		NamespaceURI,
+		ServiceName,
+		EndpointName,
+		UserName,
+		Password,
+		Timeout);
+	
+EndFunction
+
+// Defines whether the metadata object is enabled by functional options.
+//
+// Parameters:
+//   MetadataObject - MetadataObject - metadata object to be checked.
+//
+// Returns: 
+//  Boolean - True if the object is enabled.
+//
+Function MetadataObjectEnabledByFunctionalOptions(MetadataObject) Export
+	Return CommonUseCached.ObjectsEnabledByOption()[MetadataObject] <> False;
+EndFunction
+
+// Sets or clears the deletion mark for all objects subordinated to the "owner".
+//
+// Parameters:
+//  Owner        - ExchangePlanRef, CatalogRef, DocumentRef - reference to the object that is an owner of the objects to be marked for deletion.
+//
+//  DeletionMark - Boolean - flag that shows whether deletion marks of all subordinate objects must be set/cleared.
+//
+Procedure SetDeletionMarkForSubordinateObjects(Val Owner, Val DeletionMark) Export
+	
+	BeginTransaction();
+	Try
+		
+		ReferenceList = New Array;
+		ReferenceList.Add(Owner);
+		References = FindByRef(ReferenceList);
+		
+		For Each Ref In References Do
+			
+			If ReferenceTypeValue(Ref[1]) Then
+				
+				Ref[1].GetObject().SetDeletionMark(DeletionMark);
+				
+			EndIf;
+			
+		EndDo;
+		
+		CommitTransaction();
+	Except
+		RollbackTransaction();
+		Raise;
+	EndTry;
+	
+EndProcedure
+
+
+// Tries to execute a query in several attempts.
+// Is used for reading fast-changing data outside a transaction.
+// If it is called in a transaction, leads to an error.
+//
+// Parameters:
+//  Query - Query - query to be executed.
+//
+// Returns:
+//  QueryResult - query execution result.
+//
+Function ExecuteQueryOutsideTransaction(Val Query) Export
+	
+	If TransactionActive() Then
+		Raise(NStr("en = 'Transaction is active. Cannot execute a query outside a transaction.'"));
+	EndIf;
+	
+	AttemptCount = 0;
+	
+	Result = Undefined;
+	While True Do
+		Try
+			Result = Query.Execute(); // Reading outside a transaction, the following error can occur:
+			                          // Could not continue scan with NOLOCK due to data movement.
+			                          // In this case, attempt to read one more time.
+			Break;
+		Except
+			AttemptCount = AttemptCount + 1;
+			If AttemptCount = 5 Then
+				Raise;
+			EndIf;
+		EndTry;
+	EndDo;
+	
+	Return Result;
+	
+EndFunction
+
+// Returns common basic functionality parameters.
+//
+// Returns: 
+//  Structure - structure with the following properties:
+//   * PersonalSettingsFormName        - String - name of a forms intended for editing personal
+//                                       settings.
+//                                       Previously, it was defined in
+//                                       CommonUseOverridable.PersonalSettingsFormName;
+//   * LowestPlatformVersion           - String - full platform version number for starting the
+//                                       application. For example, "8.3.4.365".
+//                                       Previously, it was defined in
+//                                       CommonUseOverridable.GetMinRequiredPlatformVersion.
+//   * MustExit                        - Boolean - initial value is False.
+//   * AskConfirmationOnExit           - Boolean - default value is True. If False, the exit
+//                                       confirmation is not requested when exiting the
+//                                       application, if it is not clearly enabled in the
+//                                       personal application settings.
+//   * DisableMetadataObjectIDsCatalog - Boolean - disables MetadataObjectIDs catalog filling,
+//                                       procedures of catalog item importing and exporting in
+//                                       DIB nodes.
+//                                       You can use it for the partial embedding of certain
+//                                       library functions into configuration without enabling
+//                                       the support.
+//
+Function CommonBaseFunctionalityParameters() Export
+		
+CommonParameters = New Structure;
+	CommonParameters.Insert("PersonalSettingsFormName", "");
+	CommonParameters.Insert("LowestPlatformVersion", "8.3.4.365");
+	CommonParameters.Insert("MustExit", True); // Blocking the startup if the version is lower that the required one
+	CommonParameters.Insert("AskConfirmationOnExit", True);
+	CommonParameters.Insert("DisableMetadataObjectIDsCatalog", False);
+	
+	CommonUseOverridable.BaseFunctionalityCommonParametersOnDefine(CommonParameters);
+	
+	Return CommonParameters;
+	
+EndFunction
+
+// Determines whether this infobase is a subordinate node of a distributed infobase (DIB).
+//
+// Returns: 
+//  Boolean
+//
+Function IsSubordinateDIBNode() Export
+	
+	SetPrivilegedMode(True);
+	
+	Return ExchangePlans.MasterNode() <> Undefined;
+	
+EndFunction
+
+// Returns True the infobase configuration of the subordinate DIB node must be updated.
+// In the master node always returns False.
+//
+// Returns: 
+//  Boolean
+//
+Function DIBSubordinateNodeConfigurationUpdateRequired() Export
+	
+	Return IsSubordinateDIBNode() AND ConfigurationChanged();
+	
+EndFunction
+
+// Returns True if the current session runs on a Linux server.
+//
+// Returns:
+//  Boolean - True if the server runs Linux.
+//
+Function IsLinuxServer() Export
+	
+	SystemInfo = New SystemInfo;
+	Return SystemInfo.PlatformType = PlatformType.Linux_x86 Or SystemInfo.PlatformType = PlatformType.Linux_x86_64;
+	
+EndFunction
+
+// Is intended to be inserted into the beginning of the OnCreateAtServer handler of the managed
+// forms that are placed at the desktop.
+//
+// Prevents the form opening in the following special cases:
+//  - if the desktop is opened before the infobase data update is complete (to prevent reading
+//    obsolete data);
+//  - if the user attempts to log on to a separated infobase with the unset DataAreaMainData 
+//    separator value (to prevent reading separated data from a shared session);
+//
+// Do not use it in forms that is used before the system start and in forms that are intended
+// to be used in shared sessions.
+//
+// Parameters:
+//  Form               - ManagedForm - reference to the form to be created.
+//  Cancel             - Boolean - parameter passed to the OnCreateAtServer form handler.
+//  StandardProcessing - Boolean - parameter passed to the OnCreateAtServer form handler.
+//
+// Returns:
+//  Boolean - False if the form creation cancellation flag is set.
+//
+Function OnCreateAtServer(Form, Cancel, StandardProcessing) Export
+	
+	If CommonUseCached.DataSeparationEnabled()
+		AND NOT CommonUseCached.CanUseSeparatedData() Then
+		Cancel = True;
+		Return False;
+	EndIf;
+	
+	If Form.Parameters.Property("Autotest") Then
+		// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+		Return False;
+	EndIf;
+	
+	SetPrivilegedMode(True);
+	If SessionParameters.ClientParametersOnServer.Get("HideDesktopOnStart") <> Undefined Then
+		Cancel = True;
+		Return False;
+	EndIf;
+	SetPrivilegedMode(False);
+	
+	Return True;
+	
+EndFunction
+
+// Performs actions before continue executing a scheduled job handler.
+//
+// For example, checks whether a scheduled job handler can be executed.
+// If the administrator has not been disabled the execution of scheduled jobs before an
+// infobase update completion, the handler execution must be stopped.
+// 
+Procedure ScheduledJobOnStart() Export
+	
+	If StandardSubsystemsServer.ApplicationParametersUpdateRequired() Then
+		Raise
+			NStr("en = 'The application is being updated. Cannot log on to the application now.
+			           |We recommend that you disable scheduled job execution when updating the infobase.'");
+	EndIf;
+	
+	SetPrivilegedMode(True);
+	
+	If NOT CommonUseCached.DataSeparationEnabled()
+	   AND ExchangePlans.MasterNode() = Undefined
+	   AND ValueIsFilled(Constants.MasterNode.Get()) Then
+		
+		Raise
+			NStr("en = 'Cannot log on to the application while the connection to the master node is not established.
+			           |We recommend that you disable scheduled job execution when recovering the infobase.'");
+	EndIf;
+	
+EndProcedure
+
+// Returns the configuration revision number.
+// The revision is two first digits of a full configuration version.
+// For example, the version "1.2.3.4" means the revision is "1.2".
+//
+// Returns:
+//  String - configuration revision number.
+//
+Function ConfigurationRevision() Export
+	
+	Result = "";
+	ConfigurationVersion = Metadata.Version;
+	
+	Position = Find(ConfigurationVersion, ".");
+	If Position > 0 Then
+		Result = Left(ConfigurationVersion, Position);
+		ConfigurationVersion = Mid(ConfigurationVersion, Position + 1);
+		Position = Find(ConfigurationVersion, ".");
+		If Position > 0 Then
+			Result = Result + Left(ConfigurationVersion, Position - 1);
+		Else
+			Result = "";
+		EndIf;
+	EndIf;
+	
+	If IsBlankString(Result) Then
+		Result = Metadata.Version;
+	EndIf;
+	
+	Return Result;
+	
+EndFunction
+
 ////////////////////////////////////////////////////////////////////////////////
 // Procedures and functions for working with forms.
 //
@@ -1337,9 +2288,9 @@ EndFunction
 // Fills a form attribute of the ValueTree type.
 //
 // Parameters:
-// TreeItemCollection – form attribute of the ValueTree type;
-// 							 It will be filled with values from the ValueTree parameter.
-// ValueTree – ValueTree – data for filling TreeItemCollection.
+//  TreeItemCollection – FormDataTree - form attribute of the ValueTree type;
+//                       It will be filled with values from the ValueTree parameter.
+//  ValueTree          – ValueTree – data for filling TreeItemCollection.
 //
 Procedure FillFormDataTreeItemCollection(TreeItemCollection, ValueTree) Export
 	
@@ -1358,15 +2309,15 @@ Procedure FillFormDataTreeItemCollection(TreeItemCollection, ValueTree) Export
 	EndDo;
 	
 EndProcedure
-
+ 
 // Gets a picture for displaying it on a page that contains the comment. 
 // The picture will be displayed if the comment text is not empty.
 //
 // Parameters
-// Comment - String - comment text.
+//  Comment - String - comment text.
 //
 // Returns:
-// Picture - picture to be displayed on a page that contains the comment.
+//  Picture - picture to be displayed on a page that contains the comment.
 //
 Function GetCommentPicture(Comment) Export
 	
@@ -1384,15 +2335,16 @@ EndFunction
 // Procedures and functions for working with types, metadata objects, and their string presentations.
 
 // Gets the configuration metadata tree with the specified filter by metadata objects.
-//
+// 
 // Parameters:
 // Filter – Structure – contains filter item values.
-//						If this parameter is specified, the metadata tree will be retrieved according to the filter value; 
-//						Key - String – metadata item property name;
-//						Value - Array – array of filter values.
-//
+// 					If this parameter is specified, the metadata tree will be retrieved according to the
+//          filter value; 
+// 					 Key   - String – metadata item property name;
+// 					 Value - Array – array of filter values.
+// 
 // Example of initializing the Filter variable:
-//
+// 
 // Array = New Array;
 // Array.Add("Constant.UseDataExchange");
 // Array.Add("Catalog.Currencies");
@@ -1413,20 +2365,20 @@ Function GetConfigurationMetadataTree(Filter = Undefined) Export
 	MetadataObjectCollections.Columns.Add("Picture");
 	MetadataObjectCollections.Columns.Add("ObjectPicture");
 	
-	NewMetadataObjectCollectionRow("Constants", "Constants", PictureLib.Constant, PictureLib.Constant, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("Catalogs", "Catalogs", PictureLib.Catalog, PictureLib.Catalog, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("Documents", "Documents", PictureLib.Document, PictureLib.DocumentObject, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("ChartsOfCharacteristicTypes", "Charts of characteristic types", PictureLib.ChartOfCharacteristicTypes, PictureLib.ChartOfCharacteristicTypesObject, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("ChartsOfAccounts", "Charts of accounts", PictureLib.ChartOfAccounts, PictureLib.ChartOfAccountsObject, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("ChartsOfCalculationTypes", "Charts of calculation types", PictureLib.ChartOfCharacteristicTypes, PictureLib.ChartOfCharacteristicTypesObject, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("InformationRegisters", "Information registers", PictureLib.InformationRegister, PictureLib.InformationRegister, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("AccumulationRegisters", "Accumulation registers", PictureLib.AccumulationRegister, PictureLib.AccumulationRegister, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("AccountingRegisters", "Accounting registers", PictureLib.AccountingRegister, PictureLib.AccountingRegister, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("CalculationRegisters", "Calculation registers", PictureLib.CalculationRegister, PictureLib.CalculationRegister, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("BusinessProcesses", "Business processes", PictureLib.BusinessProcess, PictureLib.BusinessProcessObject, MetadataObjectCollections);
-	NewMetadataObjectCollectionRow("Tasks", "Tasks", PictureLib.Task, PictureLib.TaskObject, MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("Constants",                   NStr("en = 'Constants'"),                      PictureLib.Constant,                   PictureLib.Constant,                         MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("Catalogs",                    NStr("en = 'Catalogs'"),                       PictureLib.Catalog,                    PictureLib.Catalog,                          MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("Documents",                   NStr("en = 'Documents'"),                      PictureLib.Document,                   PictureLib.DocumentObject,                    MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("ChartsOfCharacteristicTypes", NStr("en = 'Charts of characteristic types'"), PictureLib.ChartOfCharacteristicTypes, PictureLib.ChartOfCharacteristicTypesObject, MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("ChartsOfAccounts",            NStr("en = 'Charts of accounts'"),             PictureLib.ChartOfAccounts,            PictureLib.ChartOfAccountsObject,            MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("ChartsOfCalculationTypes",    NStr("en = 'Charts of calculation types'"),    PictureLib.ChartOfCalculationTypes,    PictureLib.ChartOfCalculationTypesObject,   MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("InformationRegisters",        NStr("en = 'Information registers'"),          PictureLib.InformationRegister,        PictureLib.InformationRegister,              MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("AccumulationRegisters",       NStr("en = 'Accumulation registers'"),         PictureLib.AccumulationRegister,       PictureLib.AccumulationRegister,             MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("AccountingRegisters",         NStr("en = 'Accounting registers'"),           PictureLib.AccountingRegister,         PictureLib.AccountingRegister,               MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("CalculationRegisters",        NStr("en = 'Calculation registers'"),          PictureLib.CalculationRegister,        PictureLib.CalculationRegister,               MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("BusinessProcesses",           NStr("en = 'Business processes'"),             PictureLib.BusinessProcess,            PictureLib.BusinessProcessObject,          MetadataObjectCollections);
+	NewMetadataObjectCollectionRow("Tasks",                       NStr("en = 'Tasks'"),                          PictureLib.Task,                       PictureLib.TaskObject,                 MetadataObjectCollections);
 	
-	// The return value 
+	// Return value
 	MetadataTree = New ValueTree;
 	MetadataTree.Columns.Add("Name");
 	MetadataTree.Columns.Add("FullName");
@@ -1436,44 +2388,33 @@ Function GetConfigurationMetadataTree(Filter = Undefined) Export
 	For Each CollectionRow In MetadataObjectCollections Do
 		
 		TreeRow = MetadataTree.Rows.Add();
-		
 		FillPropertyValues(TreeRow, CollectionRow);
-		
 		For Each MetadataObject In Metadata[CollectionRow.Name] Do
 			
-			// ============================ {Filter}
 			If UseFilter Then
 				
 				ObjectPassedFilter = True;
-				
 				For Each FilterItem In Filter Do
 					
 					Value = ?(Upper(FilterItem.Key) = Upper("FullName"), MetadataObject.FullName(), MetadataObject[FilterItem.Key]);
-					
 					If FilterItem.Value.Find(Value) = Undefined Then
-						
 						ObjectPassedFilter = False;
-						
 						Break;
-						
 					EndIf;
 					
 				EndDo;
 				
-				If Not ObjectPassedFilter Then
-					
+				If NOT ObjectPassedFilter Then
 					Continue;
-					
 				EndIf;
 				
 			EndIf;
-			// ============================ {Filter}
 			
 			MOTreeRow = TreeRow.Rows.Add();
-			MOTreeRow.Name = MetadataObject.Name;
+			MOTreeRow.Name     = MetadataObject.Name;
 			MOTreeRow.FullName = MetadataObject.FullName();
-			MOTreeRow.Synonym = MetadataObject.Synonym;
-			MOTreeRow.Picture = CollectionRow.ObjectPicture;
+			MOTreeRow.Synonym  = MetadataObject.Synonym;
+			MOTreeRow.Picture  = CollectionRow.ObjectPicture;
 			
 		EndDo;
 		
@@ -1488,13 +2429,9 @@ Function GetConfigurationMetadataTree(Filter = Undefined) Export
 		For ReverseIndex = 1 to CollectionItemCount Do
 			
 			CurrentIndex = CollectionItemCount - ReverseIndex;
-			
 			TreeRow = MetadataTree.Rows[CurrentIndex];
-			
 			If TreeRow.Rows.Count() = 0 Then
-				
 				MetadataTree.Rows.Delete(CurrentIndex);
-				
 			EndIf;
 			
 		EndDo;
@@ -1505,78 +2442,61 @@ Function GetConfigurationMetadataTree(Filter = Undefined) Export
 	
 EndFunction
 
-// Returns detailed information about the configuration 
-// (detailed information is a configuration metadata property).
-//
-// Returns: 
-// String - string with detailed information about the configuration.
-//
-Function GetConfigurationDetails() Export
-	
-	Return Metadata.DetailedInformation;
-	
-EndFunction
-
-// Get the infobase presentation for displaying it to the user.
+// Gets the infobase presentation for displaying it to the user.
 //
 // Returns:
-// String - infobase presentation. 
+//  String - infobase presentation. 
 //
 // Result example:
-// - if the infobase operates in the file mode: \\FileServer\1C_ib
-// - if the infobase operates in the client/server mode: ServerName:1111 / Information_base_name
+// - if the infobase runs in the file mode: \\FileServer\1C_ib
+// - if the infobase runs in the client/server mode: ServerName:1111 / infobase_name
 //
-Function GetInfoBasePresentation() Export
+Function GetInfobasePresentation() Export
 	
-	InfoBaseConnectionString = InfoBaseConnectionString();
+	InfobaseConnectionString = InfobaseConnectionString();
 	
-	If FileInfoBase(InfoBaseConnectionString) Then
-		PathToDB = Mid(InfoBaseConnectionString, 6, StrLen(InfoBaseConnectionString) - 6);
-	Else
-		// Adding the infobase name to the server name 
-		SearchPosition = Find(Upper(InfoBaseConnectionString), "SRVR=");
+	If FileInfobase(InfobaseConnectionString) Then
+		Return Mid(InfobaseConnectionString, 6, StrLen(InfobaseConnectionString) - 6);
+	EndIf;
 		
-		If SearchPosition <> 1 Then
-			Return Undefined;
-		EndIf;
-		
-		SemicolonPosition = Find(InfoBaseConnectionString, ";");
-		CopyStartPosition = 6 + 1;
-		CopyingEndPosition = SemicolonPosition - 2; 
-		
-		ServerName = Mid(InfoBaseConnectionString, CopyStartPosition, CopyingEndPosition - CopyStartPosition + 1);
-		
-		InfoBaseConnectionString = Mid(InfoBaseConnectionString, SemicolonPosition + 1);
-		
-		// Server name position
-		SearchPosition = Find(Upper(InfoBaseConnectionString), "REF=");
-		
-		If SearchPosition <> 1 Then
-			Return Undefined;
-		EndIf;
-		
-		CopyStartPosition = 6;
-		SemicolonPosition = Find(InfoBaseConnectionString, ";");
-		CopyingEndPosition = SemicolonPosition - 2; 
-		
-		InfoBaseNameAtServer = Mid(InfoBaseConnectionString, CopyStartPosition, CopyingEndPosition - CopyStartPosition + 1);
-		
-		PathToDB = ServerName + "/ " + InfoBaseNameAtServer;
-		
+	// Adding the infobase name to the server name
+	SearchPosition = Find(Upper(InfobaseConnectionString), "SRVR=");
+	If SearchPosition <> 1 Then
+		Return Undefined;
 	EndIf;
 	
+	SemicolonPosition = Find(InfobaseConnectionString, ";");
+	CopyStartPosition = 6 + 1;
+	CopyingEndPosition = SemicolonPosition - 2; 
+	
+	ServerName = Mid(InfobaseConnectionString, CopyStartPosition, CopyingEndPosition - CopyStartPosition + 1);
+	
+	InfobaseConnectionString = Mid(InfobaseConnectionString, SemicolonPosition + 1);
+	
+	// Server name position
+	SearchPosition = Find(Upper(InfobaseConnectionString), "REF=");
+	If SearchPosition <> 1 Then
+		Return Undefined;
+	EndIf;
+	
+	CopyStartPosition = 6;
+	SemicolonPosition = Find(InfobaseConnectionString, ";");
+	CopyingEndPosition = SemicolonPosition - 2; 
+	
+	InfobaseNameAtServer = Mid(InfobaseConnectionString, CopyStartPosition, CopyingEndPosition - CopyStartPosition + 1);
+	PathToDB = ServerName + "/ " + InfobaseNameAtServer;
 	Return PathToDB;
 	
 EndFunction
 
 // Returns a string of configuration metadata object attributes of the specified type.
-//
+// 
 // Parameters:
-// Ref – AnyRef – reference to the infobase item whose attibutes will be retrieved;
-// Type – Type – attribute value type.
+//  Ref  – AnyRef – reference to the infobase item whose attributes will be retrieved;
+//  Type – Type – attribute value type.
 // 
 // Returns:
-// String – string with configuration metadata object attributes separated by commas.
+//  String – string with configuration metadata object attributes separated with commas.
 //
 Function AttributeNamesByType(Ref, Type) Export
 	
@@ -1585,7 +2505,7 @@ Function AttributeNamesByType(Ref, Type) Export
 	
 	For Each Attribute In ObjectMetadata.Attributes Do
 		If Attribute.Type.ContainsType(Type) Then
-			Result = Result + ?(IsBlankString(Result), "", ", ") + Attribute.Name;
+			Result = Result + ?(IsBlankString(Result), "", ",") + Attribute.Name;
 		EndIf;
 	EndDo;
 	
@@ -1593,7 +2513,7 @@ Function AttributeNamesByType(Ref, Type) Export
 EndFunction
 
 // Returns a name of the base type by the passed metadata object value.
-//
+// 
 // Parameters:
 // MetadataObject - metadata object for determining the base type.
 // 
@@ -1646,7 +2566,14 @@ Function BaseTypeNameByMetadataObject(MetadataObject) Export
 		
 	ElsIf Metadata.DocumentJournals.Contains(MetadataObject) Then
 		Return TypeNameDocumentJournals();
-		
+
+	ElsIf Metadata.Sequences.Contains(MetadataObject) Then
+		Return SequenceTypeName();
+
+			ElsIf Metadata.ScheduledJobs.Contains(MetadataObject) Then
+		Return ScheduledJobTypeName();
+
+				
 	Else
 		
 		Return "";
@@ -1657,73 +2584,105 @@ EndFunction
 
 // Returns an object manager by the full metadata object name.
 //
-// This function does not process business process route points.
+// Restriction: This function does not handle business process route points.
 //
 // Parameters:
-// FullName - String - metadata object full name,
-// for example: "Catalog.Companies".
+//  FullName - String - metadata object full name,
+//             for example: "Catalog.Companies".
 //
 // Returns:
 // ObjectManager (CatalogManager, DocumentManager, and so on). 
 //
 Function ObjectManagerByFullName(FullName) Export
+	Var MOClass, MOName, Manager;
 	
 	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(FullName, ".");
 	
-	MOClass = NameParts[0];
-	MOName = NameParts[1];
+	If NameParts.Count() >= 2 Then
+		MOClass = NameParts[0];
+		MOName  = NameParts[1];
+	EndIf;
 	
-	If Upper(MOClass) = "EXCHANGEPLAN" Then
-		Return ExchangePlans[MOName];
+	If    Upper(MOClass) = "EXCHANGEPLAN" Then
+		Manager = ExchangePlans;
 		
 	ElsIf Upper(MOClass) = "CATALOG" Then
-		Return Catalogs[MOName];
+		Manager = Catalogs;
 		
 	ElsIf Upper(MOClass) = "DOCUMENT" Then
-		Return Documents[MOName];
+		Manager = Documents;
 		
 	ElsIf Upper(MOClass) = "DOCUMENTJOURNAL" Then
-		Return DocumentJournals[MOName];
+		Manager = DocumentJournals;
 		
 	ElsIf Upper(MOClass) = "ENUM" Then
-		Return Enums[MOName];
+		Manager = Enums;
 		
 	ElsIf Upper(MOClass) = "REPORT" Then
-		Return Reports[MOName];
+		Manager = Reports;
 		
 	ElsIf Upper(MOClass) = "DATAPROCESSOR" Then
-		Return DataProcessors[MOName];
+		Manager = DataProcessors;
 		
 	ElsIf Upper(MOClass) = "CHARTOFCHARACTERISTICTYPES" Then
-		Return ChartsOfCharacteristicTypes[MOName];
+		Manager = ChartsOfCharacteristicTypes;
 		
 	ElsIf Upper(MOClass) = "CHARTOFACCOUNTS" Then
-		Return ChartsOfAccounts[MOName];
+		Manager = ChartsOfAccounts;
 		
 	ElsIf Upper(MOClass) = "CHARTOFCALCULATIONTYPES" Then
-		Return ChartsOfCalculationTypes[MOName];
+		Manager = ChartsOfCalculationTypes;
 		
 	ElsIf Upper(MOClass) = "INFORMATIONREGISTER" Then
-		Return InformationRegisters[MOName];
+		Manager = InformationRegisters;
 		
 	ElsIf Upper(MOClass) = "ACCUMULATIONREGISTER" Then
-		Return AccumulationRegisters[MOName];
+		Manager = AccumulationRegisters;
 		
 	ElsIf Upper(MOClass) = "ACCOUNTINGREGISTER" Then
-		Return AccountingRegisters[MOName];
+		Manager = AccountingRegisters;
 		
 	ElsIf Upper(MOClass) = "CALCULATIONREGISTER" Then
-		Return CalculationRegisters[MOName];
+		If NameParts.Count() = 2 Then
+			// Calculation register
+			Manager = CalculationRegisters;
+		Else
+			SubordinateMOClass = NameParts[2];
+			SubordinateMOName = NameParts[3];
+			If Upper(SubordinateMOClass) = "RECALCULATION" Then
+				// Recalculation
+				Try
+					Manager = CalculationRegisters[MOName].Recalculations;
+					MOName = SubordinateMOName;
+				Except
+					Manager = Undefined;
+				EndTry;
+			EndIf;
+		EndIf;
 		
 	ElsIf Upper(MOClass) = "BUSINESSPROCESS" Then
-		Return BusinessProcesses[MOName];
+		Manager = BusinessProcesses;
 		
 	ElsIf Upper(MOClass) = "TASK" Then
-		Return Tasks[MOName];
-	Else
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Unknown type of metadata object %1.'"), MOClass);
+		Manager = Tasks;
+		
+	ElsIf Upper(MOClass) = "CONSTANT" Then
+		Manager = Constants;
+		
+	ElsIf Upper(MOClass) = "SEQUENCE" Then
+		Manager = Sequences;
 	EndIf;
+	
+	If Manager <> Undefined Then
+		Try
+			Return Manager[MOName];
+		Except
+			Manager = Undefined;
+		EndTry;
+	EndIf;
+	
+	Raise StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en = 'Unknown metadata object type: %1.'"), FullName);
 	
 EndFunction
 
@@ -1732,41 +2691,41 @@ EndFunction
 // This function does not process business process route points.
 //
 // Parameters:
-// Ref - Reference - object reference (catalog item, document, and so on).
+//  Ref - AnyRef - object reference (catalog item, document, and so on).
 //
 // Returns:
-// ObjectManager (CatalogManager, DocumentManager, and so on). 
+//  ObjectManager (CatalogManager, DocumentManager, and so on). 
 //
 Function ObjectManagerByRef(Ref) Export
 	
 	ObjectName = Ref.Metadata().Name;
-	ReferenceType = TypeOf(Ref);
+	RefType = TypeOf(Ref);
 	
-	If Catalogs.AllRefsType().ContainsType(ReferenceType) Then
+	If Catalogs.AllRefsType().ContainsType(RefType) Then
 		Return Catalogs[ObjectName];
 		
-	ElsIf Documents.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf Documents.AllRefsType().ContainsType(RefType) Then
 		Return Documents[ObjectName];
 		
-	ElsIf BusinessProcesses.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf BusinessProcesses.AllRefsType().ContainsType(RefType) Then
 		Return BusinessProcesses[ObjectName];
 		
-	ElsIf ChartsOfCharacteristicTypes.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf ChartsOfCharacteristicTypes.AllRefsType().ContainsType(RefType) Then
 		Return ChartsOfCharacteristicTypes[ObjectName];
 		
-	ElsIf ChartsOfAccounts.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf ChartsOfAccounts.AllRefsType().ContainsType(RefType) Then
 		Return ChartsOfAccounts[ObjectName];
 		
-	ElsIf ChartsOfCalculationTypes.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf ChartsOfCalculationTypes.AllRefsType().ContainsType(RefType) Then
 		Return ChartsOfCalculationTypes[ObjectName];
 		
-	ElsIf Tasks.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf Tasks.AllRefsType().ContainsType(RefType) Then
 		Return Tasks[ObjectName];
 		
-	ElsIf ExchangePlans.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf ExchangePlans.AllRefsType().ContainsType(RefType) Then
 		Return ExchangePlans[ObjectName];
 		
-	ElsIf Enums.AllRefsType().ContainsType(ReferenceType) Then
+	ElsIf Enums.AllRefsType().ContainsType(RefType) Then
 		Return Enums[ObjectName];
 	Else
 		Return Undefined;
@@ -1775,19 +2734,19 @@ Function ObjectManagerByRef(Ref) Export
 EndFunction
 
 // Checks whether the infobase record exists by its reference.
-//
+// 
 // Parameters:
-// AnyRef - any infobase reference value.
+//  AnyRef - any infobase reference value.
 // 
 // Returns:
-// True if the record exists;
-// False if the record does not exist.
+//  True if the record exists;
+//  False if the record does not exist.
 //
 Function RefExists(AnyRef) Export
 	
 	QueryText = "
 	|SELECT
-	|	Ref
+	|	Ref AS Ref
 	|FROM
 	|	[TableName]
 	|WHERE
@@ -1809,29 +2768,29 @@ EndFunction
 // Returns a metadata object kind name 
 // by the object reference.
 //
-// This function does not process business process route points.
+// Restriction: This function does not handle business process route points.
 //
 // Parameters:
-// Ref - Reference - object reference (catalog item, document, and so on).
+//  Ref - AnyRef - object reference (catalog item, document, and so on).
 //
 // Returns:
-// String - metadata object kind name ("Catalog", "Document", and so on).
+//  String - metadata object kind name ("Catalog", "Document", and so on).
 //
 Function ObjectKindByRef(Ref) Export
 	
 	Return ObjectKindByType(TypeOf(Ref));
 	
-EndFunction 
-
+EndFunction
+ 
 // Returns a metadata object kind name by the object type.
 //
-// This function does not process business process route points.
+// Restriction: This function does not handle business process route points.
 //
 // Parameters:
-// Type - applied object type.
+//  Type - Type - applied object type.
 //
 // Returns:
-// String - metadata object kind name ("Catalog", "Document", and so on).
+//  String - metadata object kind name ("Catalog", "Document", and so on).
 //
 Function ObjectKindByType(Type) Export
 	
@@ -1868,18 +2827,18 @@ Function ObjectKindByType(Type) Export
 	
 	EndIf;
 	
-EndFunction 
+EndFunction
 
 // Returns full metadata object name by the passed reference value.
-// Example:
-// "Catalog.Items";
-// "Document.Invoice".
-//
+// Examples:
+//  "Catalog.Items";
+//  "Document.Invoice".
+// 
 // Parameters:
-// Ref - AnyRef - value of the reference whose infobase table name will be retrieved.
+//  Ref - AnyRef - value of the reference whose infobase table name will be retrieved.
 // 
 // Returns:
-// String - full metadata object name.
+//  String - full metadata object name.
 //
 Function TableNameByRef(Ref) Export
 	
@@ -1887,69 +2846,30 @@ Function TableNameByRef(Ref) Export
 	
 EndFunction
 
-// Checks whether the value has a reference type.
+// Checks whether the value is a reference type value.
 //
 // Parameters:
-// Value - Any;
+//  Value - Any;
 //
 // Returns:
-// Boolean - True if the value has a reference type.
+//  Boolean - True if the value has a reference type.
 //
 Function ReferenceTypeValue(Value) Export
 	
-	If Value = Undefined Then
-		Return False;
-	EndIf;
-	
-	If Catalogs.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If Documents.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If Enums.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If ChartsOfCharacteristicTypes.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If ChartsOfAccounts.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If ChartsOfCalculationTypes.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If BusinessProcesses.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If BusinessProcesses.RoutePointsAllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If Tasks.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	If ExchangePlans.AllRefsType().ContainsType(TypeOf(Value)) Then
-		Return True;
-	EndIf;
-	
-	Return False;
+	Return IsReference(TypeOf(Value));
 	
 EndFunction
 
-// Checks whether the type is a reference type.
+// Checking whether the passed type is a reference data type.
+// "Undefined" returned False.
+//
+// Returns:
+//  Boolean.
 //
 Function IsReference(Type) Export
 	
-	Return Catalogs.AllRefsType().ContainsType(Type)
+	Return Type <> Type("Undefined") 
+		AND (Catalogs.AllRefsType().ContainsType(Type)
 		Or Documents.AllRefsType().ContainsType(Type)
 		Or Enums.AllRefsType().ContainsType(Type)
 		Or ChartsOfCharacteristicTypes.AllRefsType().ContainsType(Type)
@@ -1958,35 +2878,49 @@ Function IsReference(Type) Export
 		Or BusinessProcesses.AllRefsType().ContainsType(Type)
 		Or BusinessProcesses.RoutePointsAllRefsType().ContainsType(Type)
 		Or Tasks.AllRefsType().ContainsType(Type)
-		Or ExchangePlans.AllRefsType().ContainsType(Type);
+		Or ExchangePlans.AllRefsType().ContainsType(Type));
 	
 EndFunction
 
-// Checks whether the object is a folder.
+// Checks whether the object is an item group.
 //
 // Parameters:
-// Object - items belonging to catalogs or charts of characteristic types only.
+//  Object - AnyRef, Object - object to be validated.
+//
+// Returns:
+//  Boolean.
 //
 Function ObjectIsFolder(Object) Export
 	
-	ObjectMetadata = Object.Metadata();
+	If ReferenceTypeValue(Object) Then
+		Ref = Object;
+	Else
+		Ref = Object.Ref;
+	EndIf;
 	
-	If IsCatalog(ObjectMetadata)
-	And Not (ObjectMetadata.Hierarchical And ObjectMetadata.HierarchyType = Metadata.ObjectProperties.HierarchyType.HierarchyFoldersAndItems) Then
+	ObjectMetadata = Ref.Metadata();
+	
+	If IsCatalog(ObjectMetadata) Then
+		
+		If NOT ObjectMetadata.Hierarchical
+		 Or ObjectMetadata.HierarchyType
+		     <> Metadata.ObjectProperties.HierarchyType.HierarchyFoldersAndItems Then
+			
+			Return False;
+		EndIf;
+		
+	ElsIf NOT IsChartOfCharacteristicTypes(ObjectMetadata) Then
+		Return False;
+		
+	ElsIf NOT ObjectMetadata.Hierarchical Then
 		Return False;
 	EndIf;
 	
-	If ReferenceTypeValue(Object) Then
+	If Ref <> Object Then
 		Return Object.IsFolder;
 	EndIf;
 	
-	Ref = Object.Ref;
-	
-	If Not ValueIsFilled(Ref) Then
-		Return False;
-	EndIf;
-	
-	Return GetAttributeValue(Ref, "IsFolder");
+	Return ObjectAttributeValue(Ref, "IsFolder") = True;
 	
 EndFunction
 
@@ -1998,9 +2932,10 @@ EndFunction
 // ID = CommonUse.MetadataObjectID("Catalog.Companies");
 //
 // Supported metadata objects:
-// - Subsystems (manually through predefined items)
-// - Roles
+// - Subsystems (you have to program renaming for it)
+// - Roles (have to program renaming for it)
 // - ExchangePlans
+// - Constants
 // - Catalogs
 // - Documents
 // - DocumentJournals
@@ -2020,19 +2955,15 @@ EndFunction
 // for details.
 //
 // Parameters:
-// MetadataObjectName - MetadataObject
-// - type that can be used 
-// in Metadata.FindByType();
-// - String - full metadata object name
-// that can be used 
-// in Metadata.FindByFullName().
+//  MetadataObjectName - MetadataObject - configuration metadata object;
+//                     - Type - type that can be used in Metadata.FindByType();
+//                     - String - full metadata object name that can be used 
+//                       in Metadata.FindByFullName().
 //
 // Returns:
-// CatalogRef.MetadataObjectIDs.
+//  CatalogRef.MetadataObjectIDs.
 //
 Function MetadataObjectID(MetadataObjectName) Export
-	
-	SetPrivilegedMode(True);
 	
 	MetadataObjectDescriptionType = TypeOf(MetadataObjectName);
 	If MetadataObjectDescriptionType = Type("Type") Then
@@ -2042,120 +2973,35 @@ Function MetadataObjectID(MetadataObjectName) Export
 			Raise StringFunctionsClientServer.SubstituteParametersInString(
 				NStr("en = 'Error executing CommonUse.MetadataObjectID().
 				 |
-				 |Мetadata object is not found by its type:
+				 |Metadata object is not found by its type:
 				 |%1.'"),
+
 				MetadataObjectName);
 		Else
-			Table = MetadataObject.FullName();
+			MetadataObjectFullName = MetadataObject.FullName();
 		EndIf;
 		
 	ElsIf MetadataObjectDescriptionType = Type("String") Then
-		Table = MetadataObjectName;
+		MetadataObjectFullName = MetadataObjectName;
 	Else
-		Table = MetadataObjectName.FullName();
+		MetadataObjectFullName = MetadataObjectName.FullName();
 	EndIf;
 	
-	Query = New Query;
-	Query.SetParameter("FullName", Table);
-	Query.Text =
-	"SELECT
-	|	IDs.Ref,
-	|	IDs.MetadataObjectKey,
-	|	IDs.FullName
-	|FROM
-	|	Catalog.MetadataObjectIDs AS IDs
-	|WHERE
-	|	IDs.FullName = &FullName
-	|	AND IDs.Used";
-	
-	Data = Query.Execute().Unload();
-	If Data.Count() = 0 Then
-		// Perhaps the full name is specified with error if ID is not found by the full name. 
-		If MetadataObjectDescriptionType = Type("String")
-		 And Metadata.FindByFullName(MetadataObjectName) = Undefined Then
-			Raise StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Error executing CommonUse.MetadataObjectID().
-				 |
-				 |The metadata object is not found by its full name:
-				 |%1.'"),
-				MetadataObjectName);
-		EndIf;
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing CommonUse.MetadataObjectID().
-			 |
-			 |The ID for the %1 metadata object 
-			 |is not found 
-			 |in the Metadata objects IDs catalog.
-			 |
-			 |If the catalog was not updated during the infobase update,
-			 |you have to update it manually:
-			 |All functions -> Catalog. Metadata object IDs ->
-			 |Update catalog data command.
-			 |
-			 |Some metadata objects can be added to the catalog only as
-			 |a predefined items, for example, subsystems.'"),
-			Table);
-	ElsIf Data.Count() > 1 Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing CommonUse.MetadataObjectID().
-			 |
-			 |Several IDs for the %1 metadata object 
-			 |is found 
-			 |in the Metadata objects IDs catalog.
-			 |
-			 |Catalog data is incorrect. If the catalog was not updated 
-			 |during the infobase update, you have to update it manually:
-			 |All functions -> Catalog. Metadata object IDs ->
-			 |Update catalog data command.'"),
-			Table);
-	EndIf;
-	
-	// Checking whether metadata object key corresponds to the full metadata object name
-	CheckResult = Catalogs.MetadataObjectIDs.MetadataObjectKeyCorrespondsFullName(Data[0]);
-	If CheckResult.NotCorresponds Then
-		If CheckResult.MetadataObject = Undefined Then
-			Raise StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Error executing CommonUse.MetadataObjectID().
-				 |
-				 |The ID for the %1 metadata object is 
-				 |found in the Metadata objects IDs catalog,
-				 |but it corresponds to the deleted metadata object.
-				 |
-				 |Catalog data is incorrect. If the catalog was not updated 
-				 |during the infobase update, you have to update it manually:
-				 |All functions -> Catalog. Metadata object IDs ->
-				 |Update catalog data command.'"),
-				Table);
-		Else
-			Raise StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Error executing CommonUse.MetadataObjectID().
-				 |
-				 |The ID for the %1 metadata object is 
-				 |found in the Metadata objects IDs catalog
-				 |but it corresponds to the %2 metadata object.
-				 |
-				 |Catalog data is incorrect. If the catalog was not updated 
-				 |during the infobase update, you have to update it manually:
-				 |All functions -> Catalog. Metadata object IDs ->
-				 |Update catalog data command.'"),
-				Table,
-				CheckResult.MetadataObject);
-		EndIf;
-	EndIf;
-	
-	Return Data[0].Ref;
+	Return StandardSubsystemsCached.MetadataObjectID(MetadataObjectFullName);
 	
 EndFunction
 
 // Returns a metadata object by the passed ID.
 //
 // Parameters:
-// ID - CatalogRef.MetadataObjectIDs
+//  ID - CatalogRef.MetadataObjectIDs
 //
 // Returns:
-// MetadataObject
+//  MetadataObject
 //
 Function MetadataObjectByID(ID) Export
+	
+	StandardSubsystemsCached.CatalogMetadataObjectIDsUsageCheck(True);
 	
 	SetPrivilegedMode(True);
 	
@@ -2163,31 +3009,24 @@ Function MetadataObjectByID(ID) Export
 	Query.SetParameter("Ref", ID);
 	Query.Text =
 	"SELECT
-	|	IDs.Ref,
+	|	IDs.Ref AS Ref,
 	|	IDs.MetadataObjectKey,
 	|	IDs.FullName,
-	|	IDs.Used
+	|	IDs.DeletionMark
 	|FROM
 	|	Catalog.MetadataObjectIDs AS IDs
-	|WHERE
+	|Where
 	|	IDs.Ref = &Ref";
 	
 	Data = Query.Execute().Unload();
 	
 	If Data.Count() = 0 Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			 NStr("en = 'Error executing CommonUse.MetadataObjectByID().
-			 |
-			 |The %1 ID 
-			 |is not found in the Metadata objects IDs catalog.
-			 |
-			 |If the catalog was not updated during the infobase update,
-			 |you have to update it manually:
-			 |All Functions -> Catalog. Metadata object IDs ->
-			 |Update catalog data command.
-			 |
-			 |Some metadata objects can be added to the catalog only as
-			 |a predefined items, for example, subsystems.'"),
+			NStr("en = 'Error executing CommonUse.MetadataObjectByID().
+			           |
+			           |The %1 ID
+			           |is not found in the Metadata objects IDs catalog.'")
+			+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 			String(ID));
 	EndIf;
 	
@@ -2197,63 +3036,46 @@ Function MetadataObjectByID(ID) Export
 		If CheckResult.MetadataObject = Undefined Then
 			If CheckResult.MetadataObjectKey = Undefined Then
 				Raise StringFunctionsClientServer.SubstituteParametersInString(
-					 NStr("en = 'Error executing CommonUse.MetadataObjectByID().
-					 |
-					 |The %1 ID 
-					 |is found in the Metadata objects IDs catalog
-					 |but it corresponds to the nonexistent metadata object
-					 |%2.
-					 |
-					 |If the catalog was not updated during the infobase update,
-					 |you have to update it manually:
-					 |All functions -> Catalog. Metadata object IDs ->
-					 |Update catalog data command.'"),
+					NStr("en = Error executing CommonUse.MetadataObjectByID().
+					           |
+					           |The %1 ID
+					           |is found in the Metadata objects IDs catalog but it corresponds to
+					           |the metadata object that does not exist:
+					           |%2.'")
+					+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 					String(ID),
 					Data[0].FullName);
 			Else
 				Raise StringFunctionsClientServer.SubstituteParametersInString(
-					NStr("en = 'Error executing CommonUse.MetadataObjectByID().
-					 |
-					 |The %1 ID
-					 |is found in the Metadata objects IDs catalog,
-					 |but it corresponds to the deleted metadata object.
-					 |
-					 |Catalog data is incorrect. If the catalog was not updated 
-					 |during the infobase update, you have to update it manually:
-					 |All functions -> Catalog. Metadata object IDs ->
-					 |Update catalog data command.'"),
+					NStr("en = Error executing CommonUse.MetadataObjectByID().
+					           |
+					           |The %1 ID
+					           |is found in the Metadata objects IDs catalog, but it corresponds to
+					           |the deleted metadata object.'")
+					+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 					String(ID));
 			EndIf;
 		Else
 			Raise StringFunctionsClientServer.SubstituteParametersInString(
 				NStr("en = 'Error executing CommonUse.MetadataObjectByID().
-				 |
-				 |The %1 ID
-				 |is found in the Metadata objects IDs catalog,
-				 |but it corresponds to the %2 metadata object
-				 |whose full name is different from the full name specified in the ID.
-				 |
-				 |If the catalog was not updated during the infobase update,
-				 |you have to update it manually:
-				 |All functions -> Catalog. Metadata object IDs ->
-				 |Update catalog data command.'"),
+				           |
+				           |The %1 ID
+				           |is found in the Metadata objects IDs catalog, but it corresponds to 
+				           |the %2 metadata object whose full name is different from
+				           |the full name specified in the ID.'")
+				+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 				String(ID),
 				CheckResult.MetadataObject.FullName());
 		EndIf;
 	EndIf;
 	
-	If Not Data[0].Used Then
+	If Data[0].DeletionMark Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'Error executing CommonUse.MetadataObjectByID().
-			 |
-			 |The %1 ID
-			 |is found in the Metadata objects IDs catalog,
-			 |but the Used attribute value is False.
-			 |
-			 |If the catalog was not updated during the infobase update,
-			 |you have to update it manually:
-			 |All functions -> Catalog. Metadata object IDs ->
-			 |Update catalog data command.'"),
+			NStr("en = Error executing CommonUse.MetadataObjectByID().
+			           |
+			           |The %1 ID is found in the Metadata objects IDs catalog, but
+			           |its deletion mark is set to True.'")
+			+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 			String(ID));
 	EndIf;
 	
@@ -2261,76 +3083,106 @@ Function MetadataObjectByID(ID) Export
 	
 EndFunction
 
-// You should use this procedure only in the 
-// CommonUseOverridable.FillPresetMetadataObjectIDs()
-// procedure for specifying preset IDs.
+// To be used in the RenamedMetadataObjectsOnAdd procedure of the CommonUseOverridable common
+// module for defining the metadata object renaming.
 // 
 // Parameters:
-// IDs - BaseFunctionality subsystem passes this parameter value to the procedure;
-// IDString - String - UUID that is set to the metadata object; 
-// MetadataObject - ID will be preset for this metadata object.
-//
-Procedure AddID(IDs, IDString, MetadataObject) Export
+//   Total              - Structure - is passed to the procedure by the BaseFunctionality subsystem.
+//   InfobaseVersion    - String - renaming must be performed when updating to this version.
+//   OldFullName        - String - old full metadata object name to be renamed rename.
+//   NewFullName        - String - new full metadata object name to be renamed rename.
+//   LibraryID          - String - internal ID of the library where InfobaseVersion belongs.
+//                                 Does not required for a base configuration.
+// 
+Procedure AddRenaming(Total, InfobaseVersion, OldFullName, NewFullName, LibraryID = "") Export
 	
-	Try
-		ID = Catalogs.MetadataObjectIDs.GetRef(New UUID(IDString));
-	Except
-		ID = Undefined;
-	EndTry;
+	StandardSubsystemsCached.CatalogMetadataObjectIDsUsageCheck();
 	
-	If TypeOf(MetadataObject) <> Type("MetadataObject") Then
+	OldCollectionName = Upper(CollectionName(OldFullName));
+	NewCollectionName = Upper(CollectionName(NewFullName));
+	
+	ErrorTitle =
+		NStr("en = 'Error in the RenamedMetadataObjectsOnAdd procedure of the CommonUseOverridable common module.'");
+	
+	If OldCollectionName <> NewCollectionName Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing
-			 |CommonUseOverridable.FillPresetMetadataObjectIDs() 
-			 |
-			 |The metadata object for the %1 ID is not filled.'"),
-			IDString);
+			ErrorTitle + Chars.LF + Chars.LF
+			+ NStr("en = 'The type names of the renamed metadata object do not match.
+			             |Former type: %1,
+ 			            |new type: %2.'"),
+			OldFullName,
+			NewFullName);
 	EndIf;
 	
-	FullName = MetadataObject.FullName();
-	
-	If Not ValueIsFilled(ID) Then
+	If Total.CollectionsWithoutKey[OldCollectionName] = Undefined Then
+		
+		AllowedTypeList = "";
+		For Each KeyAndValue In Total.CollectionsWithoutKey Do
+			AllowedTypeList = AllowedTypeList + KeyAndValue.Value + "," + Chars.LF;
+		EndDo;
+		AllowedTypeList = TrimR(AllowedTypeList);
+		AllowedTypeList = ?(ValueIsFilled(AllowedTypeList),
+			Left(AllowedTypeList, StrLen(AllowedTypeList) - 1), "");
+		
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing
-			 |CommonUseOverridable.FillPresetMetadataObjectIDs() 
-			 |
-			 |There is an error in the %1 ID string
-			 |that is specified for
-			 |the %2 metadata object.'"),
-			IDString,
-			FullName);
+			ErrorTitle + Chars.LF + Chars.LF
+			+ NStr("en = 'The %1 metadata object type does not require renaming description, because details on this metadata objects are updated automatically.
+			             |
+			             |Only the following types require renaming to be described:
+			             |%2.'"),
+			OldFullName,
+			NewFullName,
+			AllowedTypeList);
 	EndIf;
 	
-	If IDs.Find(FullName, "FullName") <> Undefined Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing
-			 |CommonUseOverridable.FillPresetMetadataObjectIDs() 
-			 |
-			 |An ID for the %1 metadata object
-			 |is already set.'"),
-			FullName);
+	If ValueIsFilled(LibraryID) Then
+		Library = Upper(LibraryID) <> Upper(Metadata.Name);
+	Else
+		LibraryID = Metadata.Name;
+		Library = False;
 	EndIf;
 	
-	If IDs.Find(ID, "ID") <> Undefined Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'Error executing
-			 |CommonUseOverridable.FillPresetMetadataObjectIDs() 
-			 |
-			 |The %1 ID is already set
-			 |for the %2 metadata object.'"),
-			IDString,
-			FullName);
+	LibraryOrder = Total.LibrariesOrder[LibraryID];
+	If LibraryOrder = Undefined Then
+		LibraryOrder = Total.LibrariesOrder.Count();
+		Total.LibrariesOrder.Insert(LibraryID, LibraryOrder);
 	EndIf;
 	
-	IDInfo = IDs.Add();
-	IDInfo.FullName = FullName;
-	IDInfo.ID = ID;
+	LibVersion = Total.LibraryVersions[LibraryID];
+	If LibVersion = Undefined Then
+		LibVersion = InfobaseUpdateInternal.InfobaseVersion(LibraryID);
+		Total.LibraryVersions.Insert(LibraryID, LibVersion);
+	EndIf;
+	
+	If LibVersion = "0.0.0.0" Then
+		// Does not required during initial renaming filling.
+		Return;
+	EndIf;
+	
+	Result = CommonUseClientServer.CompareVersions(InfobaseVersion, LibVersion);
+	If Result > 0 Then
+		VersionParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(InfobaseVersion, ".");
+		
+		DetailsOnRenaming = Total.Table.Add();
+		DetailsOnRenaming.LibraryOrder  = LibraryOrder;
+		DetailsOnRenaming.VersionPart1  = Number(VersionParts[0]);
+		DetailsOnRenaming.VersionPart2  = Number(VersionParts[1]);
+		DetailsOnRenaming.VersionPart3  = Number(VersionParts[2]);
+		DetailsOnRenaming.VersionPart4  = Number(VersionParts[3]);
+		DetailsOnRenaming.OldFullName   = OldFullName;
+		DetailsOnRenaming.NewFullName   = NewFullName;
+		DetailsOnRenaming.AdditionOrder = Total.Table.IndexOf(DetailsOnRenaming);
+	EndIf;
 	
 EndProcedure
 
 // Returns a string presentation of the type. 
-// In case of reference types the function returns a presentation in the following format: "CatalogRef.ObjectName" or "DocumentRef.ObjectName".
+// In case of reference types the function returns a presentation in the following format:
+// "CatalogRef.ObjectName" or "DocumentRef.ObjectName".
 // For other types it transforms the type to a string, for example, "Number".
+//
+// Returns:
+//  String.
 //
 Function TypePresentationString(Type) Export
 	
@@ -2385,8 +3237,12 @@ EndFunction
 // Checks whether the type description contains only one value type and it 
 // is equal to the specified type.
 //
+// Parameters:
+//   TypeDescription - TypeDescription - type collection to be checked;
+//   ValueType       - Type - type to be checked.
+//
 // Returns:
-// Boolean.
+//   Boolean - True if match.
 //
 Function TypeDescriptionContainsType(TypeDescription, ValueType) Export
 	
@@ -2401,23 +3257,23 @@ EndFunction
 
 // Checks whether the catalog has the tabular section.
 //
-//Parameters
-// CatalogName - String - name of the catalog to be checked.
-// TabularSectionName - String - name of the tabular section whose existence will be checked.
+// Parameters:
+//  CatalogName        - String - name of the catalog to be checked.
+//  TabularSectionName - String - name of the tabular section whose existence will be checked.
 //
-//Returns:
-// Boolean - True if the catalog has the tabular section, otherwise is False.
+// Returns:
+//  Boolean - True if the catalog has the tabular section, otherwise is False.
 //
-//Example:
-// If Not CommonUse.CatalogHasTabularSection(CatalogName, "ContactInformation") Then
-// 	Return;
-// EndIf;
+// Example:
+//  If Not CommonUse.CatalogHasTabularSection(CatalogName, "ContactInformation") Then
+//  	Return;
+//  EndIf;
 //
 Function CatalogHasTabularSection(CatalogName, TabularSectionName) Export
 	
 	Return (Metadata.Catalogs[CatalogName].TabularSections.Find(TabularSectionName) <> Undefined);
 	
-EndFunction 
+EndFunction
 
 // Generates an extended object presentation.
 // An extended object presentation contains an object presentation, a code, and a description.
@@ -2425,15 +3281,15 @@ EndFunction
 // then the function returns a standard object presentation generated by the platform.
 //
 // An example of the returning value:
-// "Counterparty 0A-0001234, Telecom"
+// "Counterparty 0A-0001234, Telecom LLC"
 //
 // Parameters:
-// Object. Type: CatalogRef,
-//				ChartOfAccountsRef,
-//				ExchangePlanRef,
-//				ChartOfCharacteristicTypesRef,
-//				ChartOfCalculationTypesRef.
-// The object whose extended presentation will be generated.
+// Object - CatalogRef,
+//        - ChartOfAccountsRef,
+//        - ExchangePlanRef,
+//        - ChartOfCharacteristicTypesRef,
+//        - ChartOfCalculationTypesRef.
+//          The object whose extended presentation is be generated.
 //
 // Returns:
 // String - extended object presentation.
@@ -2451,16 +3307,16 @@ Function ExtendedObjectPresentation(Object) Export
 		Or BaseTypeName = TypeNameChartsOfCalculationTypes()
 		Then
 		
-		If IsStandardAttribute(MetadataObject.StandardAttributes, "Code")
-			And IsStandardAttribute(MetadataObject.StandardAttributes, "Description") Then
+		If  IsStandardAttribute(MetadataObject.StandardAttributes, "Code")
+			AND IsStandardAttribute(MetadataObject.StandardAttributes, "Description") Then
 			
-			AttributeValues = GetAttributeValues(Object, "Code, Description");
+			AttributeValues = ObjectAttributeValues(Object, "Code, Description");
 			
 			ObjectPresentation = ?(IsBlankString(MetadataObject.ObjectPresentation), 
 										?(IsBlankString(MetadataObject.Synonym), MetadataObject.Name, MetadataObject.Synonym
 										),
-									MetadataObject.ObjectPresentation
-			);
+									MetadataObject.ObjectPresentation);
+
 			
 			Result = "[ObjectPresentation] [Code], [Description]";
 			Result = StrReplace(Result, "[ObjectPresentation]", ObjectPresentation);
@@ -2483,13 +3339,14 @@ Function ExtendedObjectPresentation(Object) Export
 EndFunction
 
 // Returns a flag that shows whether the attribute is a standard attribute.
-//
+// 
 // Parameters:
-// StandardAttributes – StandardAttributeDescriptions - collection whose types and values describe standard attibutes;
-// AttributeName – String – attribute to be checked.
+//  StandardAttributes – StandardAttributeDescriptions - collection whose types and values
+//                       describe standard attributes;
+//  AttributeName      – String – attribute to be checked.
 // 
 // Returns:
-// Boolean. True if attribute is a standard attribute, otherwise is False.
+//  Boolean. True if attribute is a standard attribute, otherwise is False.
 //
 Function IsStandardAttribute(StandardAttributes, AttributeName) Export
 	
@@ -2508,16 +3365,17 @@ Function IsStandardAttribute(StandardAttributes, AttributeName) Export
 EndFunction
 
 // Gets a value table with the required property information of all metadata object attributes.
-// Gets property values of standard and custom attributes (Custom attributes are attributes created in the designer mode.)
+// Gets property values of standard and custom attributes (Custom attributes are attributes
+// created in Designer mode.)
 //
 // Parameters:
-// MetadataObject - metadata object whose attribute property values will be retrieved.
-// For example: Metadata.Document.Invoice;
-// Properties - String - attribute properties separated by commas whose values will be retrieved.
-// For example: "Name, Type, Synonym, ToolTip".
+//  MetadataObject - MetadataObject - metadata object whose attribute property values is retrieved.
+//                   For example: Metadata.Document.Invoice;
+//  Properties     - String - attribute properties separated by commas whose values is retrieved.
+//                   For example: "Name, Type, Synonym, ToolTip".
 //
 // Returns:
-// ValueTable - returning value table.
+//  ValueTable - returning value table.
 //
 Function GetObjectPropertyInfoTable(MetadataObject, Properties) Export
 	
@@ -2554,13 +3412,13 @@ EndFunction
 // Returns a common attribute content item usage state.
 //
 // Parameters:
-// ContentItem - MetadataObject - common attribute content item 
-// whose usage will be checked;
-// CommonAttributeMetadata - MetadataObject - common attribute metadata 
-// whose ContentItem usage will be checked.
+//  ContentItem             - MetadataObject - common attribute content item 
+//                           whose usage will be checked;
+//  CommonAttributeMetadata - MetadataObject - common attribute metadata 
+//                           whose ContentItem usage will be checked.
 //
 // Returns:
-// Boolean - True if the content item is used, otherwise is False.
+//  Boolean - True if the content item is used, otherwise is False.
 //
 Function CommonAttributeContentItemUsed(Val ContentItem, Val CommonAttributeMetadata) Export
 	
@@ -2577,12 +3435,14 @@ EndFunction
 // Returns a flag that shows whether the metadata object is used in a common separators.
 //
 // Parameters:
-// MetadataObject - String; MetadataObject - if metadata object is specified by the string, the function calls the CommonUseCached module.
+//  MetadataObject - String; MetadataObject - if metadata object is specified by the string,
+//                   the function calls the CommonUseCached module.
+//  Separator      - String - name common attribute separator that is searched.
 //
 // Returns:
-// Boolean - True if the metadata object is used in one or more common separators.
+//  Boolean - True if the metadata object is used in one or more common separators.
 //
-Function IsSeparatedMetadataObject(Val MetadataObject) Export
+Function IsSeparatedMetadataObject(Val MetadataObject, Val Separator) Export
 	
 	If TypeOf(MetadataObject) = Type("String") Then
 		MetadataObjectFullName = MetadataObject;
@@ -2590,9 +3450,101 @@ Function IsSeparatedMetadataObject(Val MetadataObject) Export
 		MetadataObjectFullName = MetadataObject.FullName();
 	EndIf;
 	
-	SeparatedMetadataObjects = CommonUseCached.SeparatedMetadataObjects();
+	SeparatedMetadataObjects = CommonUseCached.SeparatedMetadataObjects(Separator);
 	Return SeparatedMetadataObjects.Get(MetadataObjectFullName) <> Undefined;
 	
+EndFunction
+
+// Returns the name of the predefined item by the specified reference.
+// To be used instead of the obsolete GetPredefinedItemName method in configurations made for
+// the platform 8.2.
+//
+// Parameters:
+//  Ref - AnyRef - reference to the predefined item.
+//
+// Returns:
+//  String - predefined item name.
+//
+Function PredefinedName(Val Ref) Export
+	
+	Return ObjectAttributeValue(Ref, "PredefinedDataName");
+	
+EndFunction
+
+// Constructor of the TypeDescription object that contains the String type.
+//
+// Parameters:
+//  StringLength - Number.
+//
+// ReturnValue:
+//  TypeDescription.
+//
+Function StringTypeDescription(StringLength) Export
+
+	Array = New Array;
+	Array.Add(Type("String"));
+
+	StringQualifier = New StringQualifiers(StringLength, AllowedLength.Variable);
+
+	Return New TypeDescription(Array, , StringQualifier);
+
+EndFunction
+
+// Constructor of the TypeDescription object that contains the Number type.
+//
+// Parameters:
+//  DigitCapacity - Number - total number of number digits (the number of digits in the integer
+//                  part plus the number of digits in the fractional part).
+//  FractionDigits - Number - number of fractional part digits.
+//  NumberSign    - AllowedSign - allowed number sign.
+//
+// ReturnValue:
+//  TypeDescription.
+//
+Function NumberTypeDescription(DigitCapacity, FractionDigits = 0, NumberSign = Undefined) Export
+
+	If NumberSign = Undefined Then
+		NumberQualifier = New NumberQualifiers(DigitCapacity, FractionDigits);
+	Else
+		NumberQualifier = New NumberQualifiers(DigitCapacity, FractionDigits, NumberSign);
+	EndIf;
+
+	Return New TypeDescription("Number", NumberQualifier);
+
+EndFunction
+
+// Constructor of the TypeDescription object that contains the Date type.
+//
+// Parameters:
+//  DateFractions - DateFractions - set of Date type value usage options.
+//
+// ReturnValue:
+//  TypeDescription.
+//
+Function DateTypeDescription(DateFractions) Export
+
+	Array = New Array;
+	Array.Add(Type("Date"));
+
+	DateQualifier = New DateQualifiers(DateFractions);
+
+	Return New TypeDescription(Array, , , DateQualifier);
+
+EndFunction
+
+// Checks whether the attribute with the passed name exists among the object attributes.
+//
+// Parameters:
+//  AttributeName  - String - Attribute name;
+//  ObjectMetadata - MetadataObject - object, where the attribute is searched.
+//
+// Returns:
+//  Boolean.
+//
+Function HasObjectAttribute(AttributeName, ObjectMetadata) Export
+
+	Return NOT (ObjectMetadata.Attributes.Find(AttributeName) = Undefined);
+
 EndFunction
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2602,186 +3554,186 @@ EndFunction
 // Reference data types. 
 
 // Checks whether the metadata object belongs to the Document type.
-//
+// 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata object belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsDocument(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameDocuments();
+	Return Metadata.Documents.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Catalog type.
-//
+// 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsCatalog(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameCatalogs();
+	Return Metadata.Catalogs.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Enumeration type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsEnum(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameEnums();
+	Return Metadata.Enums.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Exchange plan type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsExchangePlan(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameExchangePlans();
+	Return Metadata.ExchangePlans.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Chart of characteristic types type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsChartOfCharacteristicTypes(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameChartsOfCharacteristicTypes();
+	Return Metadata.ChartsOfCharacteristicTypes.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Business process type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsBusinessProcess(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameBusinessProcesses();
+	Return Metadata.BusinessProcesses.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Task type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsTask(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameTasks();
+	Return Metadata.Tasks.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Chart of accounts type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsChartOfAccounts(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameChartsOfAccounts();
+	Return Metadata.ChartsOfAccounts.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Chart of calculation types type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsChartOfCalculationTypes(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameChartsOfCalculationTypes();
+	Return Metadata.ChartsOfCalculationTypes.Contains(MetadataObject);
 	
 EndFunction
 
 // Registers
 
-// Checks whether the metadata object belongs to the information register type.
+// Checks whether the metadata object belongs to the Information register type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsInformationRegister(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameInformationRegisters();
+	Return Metadata.InformationRegisters.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Accumulation register type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsAccumulationRegister(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameAccumulationRegisters();
+	Return Metadata.AccumulationRegisters.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Accounting register type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsAccountingRegister(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameAccountingRegisters();
+	Return Metadata.AccountingRegisters.Contains(MetadataObject);
 	
 EndFunction
 
 // Checks whether the metadata object belongs to the Calculation register type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsCalculationRegister(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameCalculationRegisters();
+	Return Metadata.CalculationRegisters.Contains(MetadataObject);
 	
 EndFunction
 
@@ -2790,14 +3742,14 @@ EndFunction
 // Checks whether the metadata object belongs to the Constant type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsConstant(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameConstants();
+	Return Metadata.Constants.Contains(MetadataObject);
 	
 EndFunction
 
@@ -2806,14 +3758,46 @@ EndFunction
 // Checks whether the metadata object belongs to the Document journal type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsDocumentJournal(MetadataObject) Export
 	
-	Return BaseTypeNameByMetadataObject(MetadataObject) = TypeNameDocumentJournals();
+	Return Metadata.DocumentJournals.Contains(MetadataObject);
+	
+EndFunction
+
+// Sequences.
+
+// Checks whether the metadata object belongs to the Sequence type.
+// 
+// Parameters:
+//  MetadataObject – metadata object to be checked.
+// 
+// Returns:
+//  Boolean.
+//
+Function IsSequence(MetadataObject) Export
+	
+	Return Metadata.Sequences.Contains(MetadataObject);
+	
+EndFunction
+
+// ScheduledJobs
+
+// Checks whether the metadata object belongs to the Scheduled job type.
+// 
+// Parameters:
+//  MetadataObject – metadata object to be checked.
+// 
+// Returns:
+//  Boolean.
+//
+Function IsScheduledJob(MetadataObject) Export
+	
+	Return Metadata.ScheduledJobs.Contains(MetadataObject);
 	
 EndFunction
 
@@ -2822,42 +3806,45 @@ EndFunction
 // Checks whether the metadata object belongs to a register type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsRegister(MetadataObject) Export
 	
-	BaseTypeName = BaseTypeNameByMetadataObject(MetadataObject);
-	
-	Return BaseTypeName = TypeNameInformationRegisters()
-		Or BaseTypeName = TypeNameAccumulationRegisters()
-		Or BaseTypeName = TypeNameAccountingRegisters()
-		Or BaseTypeName = TypeNameCalculationRegisters();
-	
+	Return Metadata.AccountingRegisters.Contains(MetadataObject)
+		Or Metadata.AccumulationRegisters.Contains(MetadataObject)
+		Or Metadata.CalculationRegisters.Contains(MetadataObject)
+		Or Metadata.InformationRegisters.Contains(MetadataObject);
+		
 EndFunction
 
 // Checks whether the metadata object belongs to a reference type.
 // 
 // Parameters:
-// MetadataObject – metadata object to be checked.
+//  MetadataObject – metadata object to be checked.
 // 
 // Returns:
-// Boolean - True if the metadata objects belongs to the specified type, otherwise is False.
+//  Boolean.
 //
 Function IsReferenceTypeObject(MetadataObject) Export
 	
-	BaseTypeName = BaseTypeNameByMetadataObject(MetadataObject);
-	
-	Return BaseTypeName = TypeNameCatalogs()
-		Or BaseTypeName = TypeNameDocuments()
-		Or BaseTypeName = TypeNameBusinessProcesses()
-		Or BaseTypeName = TypeNameTasks()
-		Or BaseTypeName = TypeNameChartsOfAccounts()
-		Or BaseTypeName = TypeNameExchangePlans()
-		Or BaseTypeName = TypeNameChartsOfCharacteristicTypes()
-		Or BaseTypeName = TypeNameChartsOfCalculationTypes();
+	MetadataObjectName = MetadataObject.FullName();
+	Position = Find(MetadataObjectName, ".");
+	If Position > 0 Then 
+		BaseTypeName = Left(MetadataObjectName, Position - 1);
+		Return BaseTypeName = "Catalog"
+			Or BaseTypeName = "Document"
+			Or BaseTypeName = "BusinessProcess"
+			Or BaseTypeName = "Task"
+			Or BaseTypeName = "ChartOfAccounts"
+			Or BaseTypeName = "ExchangePlan"
+			Or BaseTypeName = "ChartOfCharacteristicTypes"
+			Or BaseTypeName = "ChartOfCalculationTypes";
+	Else
+		Return False;
+	EndIf;
 	
 EndFunction
 
@@ -2867,7 +3854,7 @@ EndFunction
 // Returns a value for identification of the Information registers type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameInformationRegisters() Export
 	
@@ -2878,7 +3865,7 @@ EndFunction
 // Returns a value for identification of the Accumulation registers type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameAccumulationRegisters() Export
 	
@@ -2889,7 +3876,7 @@ EndFunction
 // Returns a value for identification of the Accounting registers type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameAccountingRegisters() Export
 	
@@ -2900,7 +3887,7 @@ EndFunction
 // Returns a value for identification of the Calculation registers type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameCalculationRegisters() Export
 	
@@ -2922,7 +3909,7 @@ EndFunction
 // Returns a value for identification of the Catalogs type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameCatalogs() Export
 	
@@ -2944,7 +3931,7 @@ EndFunction
 // Returns a value for identification of the Reports type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameReports() Export
 	
@@ -2955,7 +3942,7 @@ EndFunction
 // Returns a value for identification of the Data processors type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameDataProcessors() Export
 	
@@ -2966,7 +3953,7 @@ EndFunction
 // Returns a value for identification of the Exchange plans type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameExchangePlans() Export
 	
@@ -2977,7 +3964,7 @@ EndFunction
 // Returns a value for identification of the Charts of characteristic types type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameChartsOfCharacteristicTypes() Export
 	
@@ -2988,7 +3975,7 @@ EndFunction
 // Returns a value for identification of the Business processes type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameBusinessProcesses() Export
 	
@@ -2999,7 +3986,7 @@ EndFunction
 // Returns a value for identification of the Tasks type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameTasks() Export
 	
@@ -3010,7 +3997,7 @@ EndFunction
 // Returns a value for identification of the Charts of accounts type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameChartsOfAccounts() Export
 	
@@ -3021,7 +4008,7 @@ EndFunction
 // Returns a value for identification of the Charts of calculation types type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameChartsOfCalculationTypes() Export
 	
@@ -3043,7 +4030,7 @@ EndFunction
 // Returns a value for identification of the Document journals type. 
 //
 // Returns:
-// String.
+//  String.
 //
 Function TypeNameDocumentJournals() Export
 	
@@ -3051,14 +4038,45 @@ Function TypeNameDocumentJournals() Export
 	
 EndFunction
 
+// Returns a value for identification of the Sequences type. 
+//
+// Returns:
+//  String.
+//
+Function SequenceTypeName() Export
+	
+	Return "Sequences";
+	
+EndFunction
+
+// Returns a value for identification of the Sequences type. 
+//
+// Returns:
+//  String.
+//
+Function ScheduledJobTypeName() Export
+	
+	Return "ScheduledJobs";
+	
+EndFunction
+
 ////////////////////////////////////////////////////////////////////////////////
 // Saving, reading, and deleting settings from storages.
 
 // Saves settings to the common settings storage.
-// 
+//
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Save method. 
-// See StorageSave() procedure parameters for details. 
+//   ObjectKey                 - String - settings object key.
+//   SettingsKey               - String - key of the settings to be saved.
+//   Value                     - Arbitrary - settings to be saved in a storage. 
+//   SettingsDescription       - SettingsDescription - auxiliary settings data.
+//   UserName                  - String - name of a user whose settings are saved.
+//                               If it is not specified, current user settings are saved.
+//   NeedToRefreshCachedValues - Boolean - flag that shows whether cashes of Cashed modules
+//                               must be reset.
+//
+// See also:
+//   "StandardSettingsStorageManager.Save" in Syntax Assistant.
 //
 Procedure CommonSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 	SettingsDescription = Undefined, UserName = Undefined, 
@@ -3071,16 +4089,28 @@ Procedure CommonSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 		Value,
 		SettingsDescription,
 		UserName,
-		NeedToRefreshCachedValues
-	);
+		NeedToRefreshCachedValues);
 	
 EndProcedure
 
 // Loads settings from the common settings storage.
 //
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Load method. 
-// See StorageLoad() procedure parameters for details. 
+//   ObjectKey           - String - settings object key.
+//   SettingsKey         - String - optional. A key of the settings to be saved.
+//   DefaultValue        - Arbitrary - optional. The value to be substituted if the settings
+//                         cannot be loaded.
+//   SettingsDescription - SettingsDescription - optional. When reading the settings value,
+//                         auxiliary settings data is written to this parameter.
+//   UserName            - String - optional. A name of a user whose settings are loaded.
+//                         If it is not specified, current user settings are loaded.
+//
+// Returns: 
+//   Arbitrary - settings loaded from the storage.
+//   Undefined - if settings are not found and the DefaultValue parameter is not specified.
+//
+// See also:
+//   "StandardSettingsStorageManager.Load" in Syntax Assistant.
 //
 Function CommonSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
 	SettingsDescription = Undefined, UserName = Undefined) Export
@@ -3091,16 +4121,22 @@ Function CommonSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = U
 		SettingsKey,
 		DefaultValue,
 		SettingsDescription,
-		UserName
-	);
+		UserName);
 	
 EndFunction
 
-// Deletes settings from the common settings storage.
-// 
+// Deletes the settings item from the common settings storage.
+//
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Delete method. 
-// See StorageDelete() procedure parameters for details. 
+//   ObjectKey   - String - settings object key. 
+//               - Undefined - settings for all objects are deleted.
+//   SettingsKey - String - key of the settings to be saved.
+//               - Undefined - settings and all keys are deleted.
+//   UserName    - String - name of a user whose settings are deleted.
+//               - Undefined - settings of all users are deleted.
+//
+// See also:
+//   "StandardSettingsStorageManager.Delete" in Syntax Assistant.
 //
 Procedure CommonSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 	
@@ -3108,18 +4144,17 @@ Procedure CommonSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 		CommonSettingsStorage,
 		ObjectKey,
 		SettingsKey,
-		UserName
-	);
+		UserName);
 	
 EndProcedure
 
-// Saves an array of user settings to StructureArray. 
+// Saves the array of user settings to StructureArray. 
 // Can be called on client.
 // 
 // Parameters:
-// StructureArray - Array - Array of Structure with the following fields:
-// Object, Setting, Value;
-// NeedToRefreshCachedValues - Boolean - flag that shows whether reusable values will be updated.
+//  StructureArray            - Array - Array of Structure with the following fields:
+//                              Object, SettingsItem, Value;
+//  NeedToRefreshCachedValues - Boolean - flag that shows whether cached values will be updated.
 //
 Procedure CommonSettingsStorageSaveArray(StructureArray,
 	NeedToRefreshCachedValues = False) Export
@@ -3128,8 +4163,8 @@ Procedure CommonSettingsStorageSaveArray(StructureArray,
 		Return;
 	EndIf;
 	
-	For Each Element In StructureArray Do
-		CommonSettingsStorage.Save(Element.Object, Element.Setting, Element.Value);
+	For Each Item In StructureArray Do
+		CommonSettingsStorage.Save(Item.Object, SettingsKey(Item.Settings), Item.Value);
 	EndDo;
 	
 	If NeedToRefreshCachedValues Then
@@ -3139,11 +4174,11 @@ Procedure CommonSettingsStorageSaveArray(StructureArray,
 EndProcedure
 
 // Saves the StructureArray user settings array and updates 
-// reusable values. Can be called on client.
+// cached values. Can be called on client.
 // 
 // Parameters:
-// StructureArray - Array - Array of Structure with the following fields:
-// Object, Setting, Value.
+//  StructureArray - Array - Array of Structure with the following fields:
+//                    Object, SettingsItem, Value.
 //
 Procedure CommonSettingsStorageSaveArrayAndRefreshCachedValues(StructureArray) Export
 	
@@ -3151,12 +4186,12 @@ Procedure CommonSettingsStorageSaveArrayAndRefreshCachedValues(StructureArray) E
 	
 EndProcedure
 
-// Saves settings to the common settings storage and updates 
-// reusable values.
+// Saves the settings item to the common settings storage and updates 
+// cached values.
 // 
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Save method. 
-// See StorageSave() procedure parameters for details. 
+//  Corresponds to the CommonSettingsStorage.Save method. 
+//  See StorageSave() procedure parameters for details. 
 //
 Procedure CommonSettingsStorageSaveAndRefreshCachedValues(ObjectKey, SettingsKey, Value) Export
 	
@@ -3164,11 +4199,20 @@ Procedure CommonSettingsStorageSaveAndRefreshCachedValues(ObjectKey, SettingsKey
 	
 EndProcedure
 
-// Saves settings to the common settings storage.
-// 
+// Saves settings item to the system settings storage.
+//
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Save method. 
-// See StorageSave() procedure parameters for details. 
+//   ObjectKey                 - String - settings object key.
+//   SettingsKey               - String - key of the settings to be saved.
+//   Value                     - Arbitrary - settings to be saved in a storage. 
+//   SettingsDescription       - SettingsDescription - auxiliary settings data.
+//   UserName                  - String - name of a user whose settings are saved.
+//                               If it is not specified, current user settings are saved.
+//   NeedToRefreshCachedValues - Boolean - flag that shows whether cashes of Cashed modules
+//                               must be reset.
+//
+// See also:
+//   "StandardSettingsStorageManager.Save" in Syntax Assistant.
 //
 Procedure SystemSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 	SettingsDescription = Undefined, UserName = Undefined, 
@@ -3181,16 +4225,29 @@ Procedure SystemSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 		Value,
 		SettingsDescription, 
 		UserName, 
-		NeedToRefreshCachedValues
-	);
+		NeedToRefreshCachedValues);
 	
 EndProcedure
 
-// Loads settings from the common settings storage.
+
+// Loads settings item from the system settings storage.
 //
-// Parameters: 
-// Corresponds to the CommonSettingsStorage.Load method. 
-// See StorageLoad() procedure parameters for details. 
+// Parameters:
+//   ObjectKey           - String - settings object key.
+//   SettingsKey         - String - Optional. key of the settings to be saved.
+//   DefaultValue        - Arbitrary - Optional.
+//                         The value to be substituted if the settings cannot be loaded.
+//   SettingsDescription - SettingsDescription - Optional. When reading the settings value,
+//                         auxiliary settings data is written to this parameter.
+//   UserName            - String - Optional. The name of a user whose settings are loaded.
+//                         If it is not specified, current user settings are loaded.
+//
+// Returns: 
+//   Arbitrary - settings loaded from the storage.
+//   Undefined - if settings are not found and the DefaultValue parameter is not specified.
+//
+// See also:
+//   "StandardSettingsStorageManager.Load" in Syntax Assistant.
 //
 Function SystemSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
 	SettingsDescription = Undefined, UserName = Undefined) Export
@@ -3201,16 +4258,23 @@ Function SystemSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = U
 		SettingsKey, 
 		DefaultValue, 
 		SettingsDescription, 
-		UserName
-	);
+		UserName);
 	
 EndFunction
 
-// Deletes settings from the common settings storage.
+
+// Deletes settings item from the system settings storage.
 //
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Delete method. 
-// See StorageDelete() procedure parameters for details. 
+//   ObjectKey   - String - settings object key. 
+//               - Undefined - Settings for all objects are deleted.
+//   SettingsKey - String - key of the settings to be saved.
+//               - Undefined - Settings and all keys are deleted.
+//   UserName    - String - name of a user whose settings are deleted.
+//               - Undefined - Settings of all users are deleted.
+//
+// See also:
+//   "StandardSettingsStorageManager.Delete" in Syntax Assistant.
 //
 Procedure SystemSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 	
@@ -3218,16 +4282,24 @@ Procedure SystemSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 		SystemSettingsStorage,
 		ObjectKey,
 		SettingsKey,
-		UserName
-	);
+		UserName);
 	
 EndProcedure
 
-// Saves settings to the form data settings storage.
-// 
+// Saves settings item to the form data settings storage.
+//
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Save method. 
-// See StorageSave() procedure parameters for details. 
+//   ObjectKey                 - String - settings object key.
+//   SettingsKey               - String - key of the settings to be saved.
+//   Value                     - Arbitrary - settings to be saved in a storage. 
+//   SettingsDescription       - SettingsDescription - auxiliary settings data.
+//   UserName                  - String - name of a user whose settings are saved.
+//                               If it is not specified, current user settings are saved.
+//   NeedToRefreshCachedValues - Boolean - flag that shows whether cashes of Cashed modules
+//                               must be reset.
+//
+// See also:
+//   "StandardSettingsStorageManager.Save" in Syntax Assistant.
 //
 Procedure FormDataSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 	SettingsDescription = Undefined, UserName = Undefined, 
@@ -3240,16 +4312,28 @@ Procedure FormDataSettingsStorageSave(ObjectKey, SettingsKey = "", Value,
 		Value,
 		SettingsDescription, 
 		UserName, 
-		NeedToRefreshCachedValues
-	);
+		NeedToRefreshCachedValues);
 	
 EndProcedure
 
-// Loads settings from the form data settings storage.
+// Loads settings item from the form data settings storage.
 //
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Load method. 
-// See StorageLoad() procedure parameters for details. 
+//   ObjectKey           - String - settings object key.
+//   SettingsKey         - String - Optional. key of the settings to be saved.
+//   DefaultValue        - Arbitrary - Optional.
+//                         The value to be substituted if the settings cannot be loaded.
+//   SettingsDescription - SettingsDescription - Optional. When reading the settings value,
+//                         auxiliary settings data is written to this parameter.
+//   UserName            - String - Optional. The name of a user whose settings are loaded.
+//                         If it is not specified, current user settings are loaded.
+//
+// Returns: 
+//   Arbitrary - settings loaded from the storage.
+//   Undefined - if settings are not found and the DefaultValue parameter is not specified.
+//
+// See also:
+//   "StandardSettingsStorageManager.Load" in Syntax Assistant.
 //
 Function FormDataSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue = Undefined, 
 	SettingsDescription = Undefined, UserName = Undefined) Export
@@ -3260,16 +4344,23 @@ Function FormDataSettingsStorageLoad(ObjectKey, SettingsKey = "", DefaultValue =
 		SettingsKey, 
 		DefaultValue, 
 		SettingsDescription, 
-		UserName
-	);
+		UserName);
 	
 EndFunction
 
-// Deletes settings from the form data settings storage.
+
+// Deletes settings item from the form data settings storage.
 //
 // Parameters:
-// Corresponds to the CommonSettingsStorage.Delete method. 
-// See StorageDelete() procedure parameters for details. 
+//   ObjectKey   - String - settings object key. 
+//               - Undefined - Settings for all objects are deleted.
+//   SettingsKey - String - key of the settings to be saved.
+//               - Undefined - Settings and all keys are deleted.
+//   UserName    - String - Name of a user whose settings are deleted.
+//               - Undefined - Settings of all users are deleted.
+//
+// See also:
+//   "StandardSettingsStorageManager.Delete" in Syntax Assistant.
 //
 Procedure FormDataSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 	
@@ -3277,32 +4368,34 @@ Procedure FormDataSettingsStorageDelete(ObjectKey, SettingsKey, UserName) Export
 		FormDataSettingsStorage,
 		ObjectKey,
 		SettingsKey,
-		UserName
-	);
+		UserName);
 	
 EndProcedure
 
-// Saves settings to the settings storage through its manager.
-// 
+// Saves settings item to the settings storage through its manager.
+//
 // Parameters:
-// StorageManager - StandardSettingsStorageManager - storage where settings will be saved;
-// ObjectKey - String - settings object key; 
-// For details, see Settings automatically saved in system storage help topic;
-// SettingsKey - String - saved settings key;
-// Value - contains settings to be saved in the storage.
-// SettingsDescription - SettingsDescription - contains information about settings.
-// UserName - String - user name whose settings will be saved.
-// If this parameter is not specified, current user settings will be saved.
-// NeedToRefreshCachedValues - Boolean.
+//   StorageManager            - StandardSettingsStorageManager - Storage where the settings saved.
+//   ObjectKey                 - String - settings object key.
+//   SettingsKey               - String - key of the settings to be saved.
+//   Value                     - Arbitrary - settings to be saved in a storage. 
+//   SettingsDescription       - SettingsDescription - auxiliary settings data.
+//   UserName                  - String - name of a user whose settings are saved.
+//                               If it is not specified, current user settings are saved.
+//   NeedToRefreshCachedValues - Boolean - flag that shows whether cashes of Cashed modules must be reset.
+//
+// See. also:
+//   "StandardSettingsStorageManager.Save" in Syntax Assistant.
+//   "Settings that are automatically saved to the system storage" in Syntax Assistant.
 //
 Procedure StorageSave(StorageManager, ObjectKey, SettingsKey, Value,
 	SettingsDescription, UserName, NeedToRefreshCachedValues)
 	
-	If Not AccessRight("SaveUserData", Metadata) Then
+	If NOT AccessRight("SaveUserData", Metadata) Then
 		Return;
 	EndIf;
 	
-	StorageManager.Save(ObjectKey, SettingsKey, Value, SettingsDescription, UserName);
+	StorageManager.Save(ObjectKey, SettingsKey(SettingsKey), Value, SettingsDescription, UserName);
 	
 	If NeedToRefreshCachedValues Then
 		RefreshReusableValues();
@@ -3310,69 +4403,213 @@ Procedure StorageSave(StorageManager, ObjectKey, SettingsKey, Value,
 	
 EndProcedure
 
-// Loads settings from the settings storage through its manager.
+// Loads settings item from the settings storage through its manager.
 //
 // Parameters:
-// StorageManager - StandardSettingsStorageManager - settings will be loaded from this storage;
-// ObjectKey - String - settings object key; 
-// For details, see Settings automatically saved in system storage help topic;
-// SettingsKey - String - loading settings key;
-// DefaultValue - value to be loaded if settings are not found.
-// SettingsDescription - SettingsDescription - settings description can be retrieved through this parameter.
-// UserName - String - user name whose settings will be loaded.
-// If this parameter is not specified, current user settings will be loaded.
-// 
+//   StorageManager      - StandardSettingsStorageManager - storage from which the settings
+//                         item is loaded.
+//   ObjectKey           - String - settings object key.
+//   SettingsKey         - String - Optional. The key of the settings to be saved.
+//   DefaultValue        - Arbitrary - Optional. The value to be substituted if the settings
+//                         cannot be loaded.
+//   SettingsDescription - SettingsDescription - Optional. When reading the settings value, 
+//                         auxiliary settings data is written to this parameter.
+//   UserName            - String - Optional. name of a user whose settings are loaded.
+//                         If it is not specified, current user settings are loaded.
+//
 // Returns: 
-// Loaded from storage settings. Undefined if settings is not found and DefaultValue is Undefined.
-// 
+//   Arbitrary - settings loaded from the storage.
+//   Undefined - if settings are not found and the DefaultValue parameter is not specified.
+//
+// See also:
+//   "StandardSettingsStorageManager.Load" in Syntax Assistant.
+//   "Settings that are automatically saved to the system storage" in Syntax Assistant.
+//
 Function StorageLoad(StorageManager, ObjectKey, SettingsKey, DefaultValue,
 	SettingsDescription, UserName)
 	
 	Result = Undefined;
 	
 	If AccessRight("SaveUserData", Metadata) Then
-		Result = StorageManager.Load(ObjectKey, SettingsKey, SettingsDescription, UserName);
+		Result = StorageManager.Load(ObjectKey, SettingsKey(SettingsKey), SettingsDescription, UserName);
 	EndIf;
 	
-	If (Result = Undefined) And (DefaultValue <> Undefined) Then
+	If Result = Undefined Then
 		Result = DefaultValue;
+	Else
+		SetPrivilegedMode(True);
+		If DeleteDeadReferences(Result) Then
+			Result = DefaultValue;
+		EndIf;
 	EndIf;
-
+	
 	Return Result;
+EndFunction
+
+
+// Deletes dead references from a variable.
+//
+// Parameters:
+//   RefOrCollection - AnyRef, Arbitrary - object to be checked or collection to be cleared.
+//
+// Returns: 
+//   Boolean - 
+//    * True  - if the RefOrCollection of a reference type and the object are not found in the infobase.
+//    * False - when the RefOrCollection of a reference type or the object are found in the infobase.
+//
+Function DeleteDeadReferences(RefOrCollection)
+	
+	Type = TypeOf(RefOrCollection);
+	
+	If Type = Type("Undefined")
+		Or Type = Type("Boolean")
+		Or Type = Type("String")
+		Or Type = Type("Number")
+		Or Type = Type("Date") Then // Optimization - often used primitive types.
+		
+		Return False; // Not a reference.
+		
+	ElsIf Type = Type("Array") Then
+		
+		Count = RefOrCollection.Count();
+		For Number = 1 To Count Do
+			ReverseIndex = Count - Number;
+			Value = RefOrCollection[ReverseIndex];
+			If DeleteDeadReferences(Value) Then
+				RefOrCollection.Delete(ReverseIndex);
+			EndIf;
+		EndDo;
+		
+		Return False; // Not a reference.
+		
+	ElsIf Type = Type("Structure")
+		Or Type = Type("Map") Then
+		
+		For Each KeyAndValue In RefOrCollection Do
+			Value = KeyAndValue.Value;
+			If DeleteDeadReferences(Value) Then
+				RefOrCollection.Insert(KeyAndValue.Key, Undefined);
+			EndIf;
+		EndDo;
+		
+		Return False; // Not a reference.
+		
+	ElsIf IsReference(Type) Then
+		
+		If ObjectAttributeValue(RefOrCollection, "Ref") = Undefined Then
+			RefOrCollection = Undefined;
+			Return True; // Dead reference.
+		Else
+			Return False; // Object found.
+		EndIf;
+		
+	Else
+		
+		Return False; // Not a reference.
+		
+	EndIf;
 	
 EndFunction
 
-// Deletes settings from the settings storage using the settings storage manager.
+
+// Deletes settings item from the settings storage through its manager.
 //
 // Parameters:
-// StorageManager - StandardSettingsStorageManager - storage where settings will be deleted;
-// ObjectKey - String - settings object key;
-// If this parameter is Undefined, all object settings will be deleted.
-// SettingsKey - String - deleting settings key;
-// If this parameter is Undefined, settings with any key will be deleted.
-// UserName - String - user name whose settings will be deleted;
-// If this parameter is not specified, all user settings will be deleted.
-// 
+//   StorageManager - StandardSettingsStorageManager - storage where the settings item is deleted.
+//   ObjectKey   - String - settings object key. 
+//               - Undefined - Settings for all objects are deleted.
+//   SettingsKey - String - key of the settings to be saved.
+//               - Undefined - Settings and all keys are deleted.
+//   UserName    - String - Name of a user whose settings are deleted.
+//               - Undefined - Settings of all users are deleted.
+//
+// See also:
+//   "StandardSettingsStorageManager.Delete" in Syntax Assistant.
+//   "Settings that are automatically saved to the system storage" in Syntax Assistant.
+//
 Procedure StorageDelete(StorageManager, ObjectKey, SettingsKey, UserName)
 	
 	If AccessRight("SaveUserData", Metadata) Then
-		StorageManager.Delete(ObjectKey, SettingsKey, UserName);
+		StorageManager.Delete(ObjectKey, SettingsKey(SettingsKey), UserName);
 	EndIf;
 	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
-// Functions for working with spreadsheet documents.
+// Functions for setting up the working date
+
+// Saves user working date settings.
+//
+// Parameters:
+//  NewWorkingDate - Date - date to be set as a user working date.
+//  UserName       - String - name of a user whose working date will be set.
+//                   If it is not set, the current user working date will be set.
+//			
+Procedure SetUserWarkingDate(NewWorkingDate, UserName = Undefined) Export
+
+	ObjectKey = Upper("WorkingDate");
+	
+	CommonSettingsStorageSave(ObjectKey, , NewWorkingDate, , UserName);
+
+EndProcedure
+
+// Returns the user working date settings value.
+//
+// Parameters:
+//  UserName - String - name of a user whose working date is requested.
+//             If it is not set, the current user working date will be set.
+//
+// Returns:
+//  Date - user working date settings value or an empty date if the date is not set.
+//
+Function UserWorkingDate(UserName = Undefined) Export
+
+	ObjectKey = Upper("WorkingDate");
+
+	Result = CommonSettingsStorageLoad(ObjectKey, , '0001-01-01', , UserName);
+	
+	If TypeOf(Result) <> Type("Date") Then
+		Result = '0001-01-01';
+	EndIf;
+	
+	Return Result;
+	
+EndFunction
+
+// Returns the user working date settings value or the current session date if the user working
+// date is not set.
+//
+// Parameters:
+//  UserName - String - name of a user whose working date is requested.
+//             If it is not set, the current user working date will be set.
+//
+// Returns:
+//  Date - user working date settings value or the current session date if the user date is not set.
+//
+Function CurrentUserDate(UserName = Undefined) Export
+
+	Result = UserWorkingDate(UserName);
+	
+	If NOT ValueIsFilled(Result) Then
+		Result = CurrentSessionDate();
+	EndIf;
+	
+	Return BegOfDay(Result);
+	
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions for handling spreadsheet documents.
 
 // Checks whether the passed spreadsheet document fits a single page in the print layout.
 //
 // Parameters
-// Spreadsheet – Spreadsheet document;
-// AreasToPut – Array of Table or Spreadsheet document to be checked;
-// ResultOnError - result to be returned in case of error.
+//  Spreadsheet   - SpreadsheetDocument – spreadsheet document;
+//  AreasToPut    – Array, SpreadsheetDocument - to be checked;
+//  ResultOnError - Boolean - result to be returned in case of error.
 //
 // Returns:
-// Boolean – flag that shows whether the passed spreadsheet document fits a single page.
+//  Boolean – flag that shows whether the passed spreadsheet document fits a single page.
 //
 Function SpreadsheetDocumentFitsPage(Spreadsheet, AreasToPut, ResultOnError = True) Export
 
@@ -3382,99 +4619,10 @@ Function SpreadsheetDocumentFitsPage(Spreadsheet, AreasToPut, ResultOnError = Tr
 		Return ResultOnError;
 	EndTry;
 
-EndFunction 
-
-////////////////////////////////////////////////////////////////////////////////
-// Functions for working with the event log.
-
-// Batch record of messages to the event log.
-// 
-// Parameters: 
-// EventsForEventLog - Array of Structure - global client variable. 
-// Each structure is a message to be recorded in the event log.
-// This variable will be cleared after recording.
-//
-Procedure WriteEventsToEventLog(EventsForEventLog) Export
-	
-	If TypeOf(EventsForEventLog) <> Type("ValueList") Then
-		Return;
-	EndIf;	
-	
-	If EventsForEventLog.Count() = 0 Then
-		Return;
-	EndIf;
-	
-	For Each LogMessage In EventsForEventLog Do
-		MessagesValue = LogMessage.Value;
-		EventName = MessagesValue.EventName;
-		EventLevel = EventLevelByPresentation(MessagesValue.LevelPresentation);
-		EventDate = CurrentSessionDate();
-		If MessagesValue.Property("EventDate") And ValueIsFilled(MessagesValue.EventDate) Then
-			EventDate = MessagesValue.EventDate;
-		EndIf;
-		Comment = String(EventDate) + " " + MessagesValue.Comment;
-		WriteLogEvent(EventName, EventLevel,,, Comment);
-	EndDo;
-	EventsForEventLog.Clear();
-	
-EndProcedure
-
-// Enables event log usage.
-//
-// Parameters: 
-// LevelList - Value list - names of event log levels to be enabled. 
-//
-Procedure EnableUseEventLog(LevelList = Undefined) Export
-	SetPrivilegedMode(True);
-	Try
-		SetExclusiveMode(True);
-		LevelArray = New Array();
-		
-		If LevelList = Undefined Then
-			LevelArray.Add(EventLogLevel.Information);
-			LevelArray.Add(EventLogLevel.Error);
-			LevelArray.Add(EventLogLevel.Warning);
-			LevelArray.Add(EventLogLevel.Note);
-		Else
-			LevelArray = LogEventLevelsByString(LevelList);
-		EndIf;
-			
-		SetEventLogUsing(LevelArray);	
-		SetExclusiveMode(False);
-	Except
-		SetPrivilegedMode(False);	
-		Raise
-	EndTry;
-	SetPrivilegedMode(False);	
-EndProcedure
-
-// Checks whether event recording to the event log is enabled.
-//
-// Parameters: 
-// CheckList - ValueList - list of string presentations of event log usage modes to be checked.
-//					If it is Undefined, then all modes are checked.
-//
-// Returns:
-// True if the specified modes are enabled, otherwise is False.
-//
-Function EventLogEnabled(CheckList = Undefined) Export	
-	ModeArray = GetEventLogUsing();
-	If CheckList = Undefined Then
-		Return ModeArray.Count() = 4 ;
-	Else
-		ModeNameArray = StringFunctionsClientServer.SplitStringIntoSubstringArray(CheckList);
-		For Each Name In ModeNameArray Do
-			CurrentModeToCheck = EventLevelByPresentation(Name);
-			If ModeArray.Find(CurrentModeToCheck) = Undefined Then
-				Return False;
-			EndIf;
-		EndDo;
-	EndIf;
-	Return True;
 EndFunction
-
+ 
 ////////////////////////////////////////////////////////////////////////////////
-// Common procedures and function for working in data separation mode.
+// Common procedures and functions for working in the data separation mode.
 
 // Enables the exclusive infobase (data area) access mode.
 //
@@ -3483,17 +4631,29 @@ EndFunction
 // on lock namespaces of all metadata object that are included in the DataArea separator.
 //
 // In other cases (for example, in case of the local mode) the procedure enables the exclusive mode.
-// 
-Procedure LockInfoBase() Export
+//
+// Parameters:
+//   CheckNoOtherSessions - Boolean - flag that shows whether a search for other user sessions
+//                          with the same separator value must be performed.
+//                          If other sessions are found an exception will be raised.
+//                          The parameter is used only when the application runs in the service
+//                          mode.
+//
+Procedure LockInfobase(Val CheckNoOtherSessions = True) Export
 	
 	If Not CommonUseCached.DataSeparationEnabled() 
 		Or Not CommonUseCached.CanUseSeparatedData() Then
 		
-		If Not ExclusiveMode() Then
+		If NOT ExclusiveMode() Then
 			SetExclusiveMode(True);
 		EndIf;
 	Else
-		StandardSubsystemsOverridable.LockCurrentDataArea();
+		If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+			SaasOperationsModule = CommonModule("SaaSOperations");
+			SaasOperationsModule.LockCurrentDataArea(CheckNoOtherSessions);
+		Else
+			Raise(NStr("en = 'The ""SaaS operations"" subsystem is not available'"));
+		EndIf;
 	EndIf;
 		
 EndProcedure
@@ -3507,85 +4667,114 @@ EndProcedure
 //
 // In other cases (for example, in case of the local mode) the procedure disables the exclusive mode.
 //
-Procedure UnlockInfoBase() Export
+Procedure UnlockInfobase() Export
 	
-	If Not CommonUseCached.DataSeparationEnabled() 
-		Or Not CommonUseCached.CanUseSeparatedData() Then
+	If NOT CommonUseCached.DataSeparationEnabled() 
+		Or NOT CommonUseCached.CanUseSeparatedData() Then
 		
 		If ExclusiveMode() Then
 			SetExclusiveMode(False);
 		EndIf;
 	Else
-		StandardSubsystemsOverridable.UnlockCurrentDataArea();
+		If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+			SaasOperationsModule = CommonModule("SaaSOperations");
+			SaasOperationsModule.UnlockCurrentDataArea();
+		Else
+			Raise(NStr("en = 'The ""SaaS operations"" subsystem is not available'"));
+		EndIf;
 	EndIf;
 	
 EndProcedure
 
+// Sets session separation.
+//
+// Parameters:
+//   Use      - Boolean - flag that shows whether the DataArea separator is used in the session.
+//   DataArea - Number - DataArea separator value
+//
 Procedure SetSessionSeparation(Val Use, Val DataArea = Undefined) Export
 	
-	StandardSubsystemsOverridable.SetSessionSeparation(Use, DataArea);
+	SessionSeparationOnSet(Use, DataArea);
 	
 EndProcedure
 
 // Returns a value of the current data area separator.
-// If the value is not set, an error is raised.
+// If the value is not set an error is raised.
 // 
 // Returns: 
-// Separator value type - value of the current data area separator.
+//   Separator value type - value of the current data area separator. 
 // 
 Function SessionSeparatorValue() Export
 	
-	If Not CommonUseCached.DataSeparationEnabled() Then
+	If NOT CommonUseCached.DataSeparationEnabled() Then
 		Return 0;
 	Else
-		Return StandardSubsystemsOverridable.SessionSeparatorValue();
+		SeparatorValue = Undefined;
+		SessionSeparatorValueOnSet(SeparatorValue);
+		Return SeparatorValue;
 	EndIf;
 	
 EndFunction
 
+// Returns the flag that shows whether DataArea separator is used.
+// 
+// Returns: 
+//   Boolean - True if the separator is used.
+// 
 Function UseSessionSeparator() Export
 	
-	Return StandardSubsystemsOverridable.UseSessionSeparator();
+	UseSeparator = Undefined;
+	UseSessionSeparatorOnGet(UseSeparator);
+	Return UseSeparator;
 	
 EndFunction
 
 // Initializes the infobase separation.
 // 
 // Parameters:
-// TurnOnDataSeparation - Boolean - flag that shows whether 
-// the infobase separation will be enabled.
+//  TurnOnDataSeparation - Boolean - flag that shows whether 
+//                         the infobase separation will be enabled.
 //
-Procedure SetInfoBaseSeparationParameters(Val TurnOnDataSeparation = False) Export
+Procedure SetInfobaseSeparationParameters(Val TurnOnDataSeparation = False) Export
 	
-	SetPrivilegedMode(True);
-
-	Constants.UseSeparationByDataAreas.Set(TurnOnDataSeparation);
+	If TurnOnDataSeparation Then
+		Constants.UseSeparationByDataAreas.Set(True);
+	Else
+		Constants.UseSeparationByDataAreas.Set(False);
+	EndIf;
 	
 EndProcedure
 
-// Sets values of two additional constants.
-// Constant names are strictly regulated and have to fit the following patterns:
-// <Main constant name>ServiceMode
-// <Main constant name>LocalMode
+// Writes the value of a reference type separated with AuxiliaryDataSeparator switching the
+// session separator during the writing.
 //
 // Parameters:
-// Value – Boolean – main constant value;
-// ConstantName – String – main constant name.
+//  AuxiliaryDataObject - AnyRef, ObjectDeletion - object of a reference type or ObjectDeletion.
 //
-Procedure SetAdditionalConstantValues(Val Value, Val ConstantName) Export
+Procedure WriteAuxiliaryData(AuxiliaryDataObject) Export
 	
-	If Value = True Then
-		
-		DataSeparationEnabled = CommonUseCached.DataSeparationEnabled();
-		
-		Constants[ConstantName + "ServiceMode"].Set(DataSeparationEnabled);
-		Constants[ConstantName + "LocalMode"].Set(Not DataSeparationEnabled);
-		
+	If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		SaasOperationsModule = CommonModule("SaaSOperations");
+		SaasOperationsModule.WriteAuxiliaryData(AuxiliaryDataObject);
 	Else
-		
-		Constants[ConstantName + "ServiceMode"].Set(False);
-		Constants[ConstantName + "LocalMode"].Set(False);
-		
+		AuxiliaryDataObject.Write();
+	EndIf;
+	
+EndProcedure
+
+// Deletes the value of a reference type separated with AuxiliaryDataSeparator switching the
+// session separator during the writing.
+//
+// Parameters:
+//  AuxiliaryDataObject - AnyRef - reference type value.
+//
+Procedure DeleteAuxiliaryData(AuxiliaryDataObject) Export
+	
+	If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		SaasOperationsModule = CommonModule("SaaSOperations");
+		SaasOperationsModule.DeleteAuxiliaryData(AuxiliaryDataObject);
+	Else
+		AuxiliaryDataObject.Delete();
 	EndIf;
 	
 EndProcedure
@@ -3596,26 +4785,37 @@ EndProcedure
 // Returns an array of version numbers supported by the remote system interface.
 //
 // Parameters:
-// ConnectionParameters - Structure:
-//							- URL - String - service URL. It must be supplied and cannot be empty;
-//							- UserName - String - service user name;
-//							- Password - String - service user password;
-// InterfaceName - String.
+//  URL           - String - service URL - interface versioning web service URL;
+//  UserName      - String - service user name;
+//  Password      - String - service user password;
+//  InterfaceName - String - interface name.
 //
 // Returns:
-// FixedArray - Array of String - each string contains interface version number presentation. For example, "1.0.2.1".
+//  FixedArray - Array of String - each string contains interface version number presentation.
+//               For example, "1.0.2.1".
 //
 // Example:
-//	 ConnectionParameters = New Structure;
-//	 ConnectionParameters.Insert("URL", "http://vsrvx/sm");
-//	 ConnectionParameters.Insert("UserName", "Doe");
-//	 VersionArray = GetInterfaceVersions(ConnectionParameters, "FileTransferServer");
+//  ConnectionParameters = New Structure;
+//  ConnectionParameters.Insert("URL", "http://vsrvx/sm");
+//  ConnectionParameters.Insert("UserName", "Doe");
+//  VersionArray = GetInterfaceVersions(ConnectionParameters, "FileTransferService");
 //
 // Note: when getting versions, a cache is used. It updates once a day.
 // If you need to update the cache, you have to delete corresponding records from the
 // ProgramInterfaceCache information register.
 //
-Function GetInterfaceVersions(Val ConnectionParameters, Val InterfaceName) Export
+Function GetInterfaceVersions(Val Address, Val User, Val Password = Undefined, Val Interface = Undefined) Export
+	
+	If TypeOf(Address) = Type("Structure") Then
+		ConnectionParameters = Address;
+		InterfaceName = User;
+	Else
+		ConnectionParameters = New Structure;
+		ConnectionParameters.Insert("URL", Address);
+		ConnectionParameters.Insert("UserName", User);
+		ConnectionParameters.Insert("Password", Password);
+		InterfaceName = Interface;
+	EndIf;
 	
 	If Not ConnectionParameters.Property("URL") 
 		Or Not ValueIsFilled(ConnectionParameters.URL) Then
@@ -3623,42 +4823,43 @@ Function GetInterfaceVersions(Val ConnectionParameters, Val InterfaceName) Expor
 		Raise(NStr("en = 'Service URL is not specified.'"));
 	EndIf;
 	
-	ReceptionParameters = New Array;
-	ReceptionParameters.Add(ConnectionParameters);
-	ReceptionParameters.Add(InterfaceName);
+	ReceivingParameters = New Array;
+	ReceivingParameters.Add(ConnectionParameters);
+	ReceivingParameters.Add(InterfaceName);
 	
 	Return CommonUseCached.GetVersionCacheData(
 		VersionCacheRecordID(ConnectionParameters.URL, InterfaceName), 
 		Enums.ProgramInterfaceCacheDataTypes.InterfaceVersions, 
-		ValueToXMLString(ReceptionParameters),
+		ValueToXMLString(ReceivingParameters),
 		True);
 	
 EndFunction
 
-// Returns an array of version numbers supported by the interface of a system that is connected via the external connection.
+// Returns an array of version numbers supported by the interface of a system that is connected
+// via the external connection.
 //
 // Parameters:
-// ExternalConnection - COM connection object that is used for working with a correspondent;
-// InterfaceName - String.
+//  ExternalConnection - COMObject - COM connection object that is used for working with a correspondent;
+//  InterfaceName      - String.
 //
 // Returns:
-// FixedArray - Array of String - each string contains interface version number presentation. For example, "1.0.2.1".
+// FixedArray - Array of String - each string contains interface version number presentation.
+//              For example, "1.0.2.1".
 //
 // Example:
 // Parameters = ...
-// ExternalConnection = CommonUse.SetExternalConnection(Parameters);
+// ExternalConnection = CommonUse.EstablishExternalConnection(Parameters);
 // VersionArray = CommonUse.GetInterfaceVersionsViaExternalConnection(ExternalConnection, "DataExchange");
 //
 Function GetInterfaceVersionsViaExternalConnection(ExternalConnection, Val InterfaceName) Export
-	
 	Try
 		XMLInterfaceVersions = ExternalConnection.StandardSubsystemsServer.SupportedVersions(InterfaceName);
 	Except
-		MessageString = NStr("en = 'Correspondent does not support interface versioning.
-			|Error details: %1'"
-		);
+		MessageString = NStr("en = 'The correspondent does not support interface versioning.
+			|Error details: %1'");
 		MessageString = StringFunctionsClientServer.SubstituteParametersInString(MessageString, DetailErrorDescription(ErrorInfo()));
-		WriteLogEvent(NStr("en = 'Getting interface versions'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error,,, MessageString);
+		WriteLogEvent(NStr("en = 'Getting interface versions'", CommonUseClientServer.DefaultLanguageCode()),
+			EventLogLevel.Error, , , MessageString);
 		
 		Return New FixedArray(New Array);
 	EndTry;
@@ -3667,139 +4868,300 @@ Function GetInterfaceVersionsViaExternalConnection(ExternalConnection, Val Inter
 EndFunction
 
 // Deletes version cache records that contain the specified
-// substring in IDs. You can use, for example, a name of an interface that is not used any more in 
-// the configuration as a substring.
+// substring in IDs. It can be, for example, a name of an interface that is not used any   
+// more in the configuration as a substring.
 //
 // Parameters:
-// IDSearchSubstring - String - ID search substring. It cannot contain 
-// the % character, the _ character, and the [ character.
+//  IDSearchSubstring - String - ID search substring. It cannot contain percent (%),
+//  underscore (_), and left bracket ([).
 //
 Procedure VersionCacheRecordDeletion(Val IDSearchSubstring) Export
 	
 	BeginTransaction();
 	
-	DataLock = New DataLock;
-	DataLock.Add("InformationRegister.ProgramInterfaceCache");
-	DataLock.Lock();
-	
-	Query = New Query;
-	Query.Text =
-	"SELECT
-	|	ProgramInterfaceCache.ID AS ID,
-	|	ProgramInterfaceCache.DataType AS DataType
-	|FROM
-	|	InformationRegister.ProgramInterfaceCache AS ProgramInterfaceCache
-	|WHERE
-	|	ProgramInterfaceCache.ID LIKE ""%" + GenerateSearchQueryString(IDSearchSubstring) + "%""
-	|		ESCAPE ""~""";
-	Result = Query.Execute();
-	Selection = Result.Select();
-	While Selection.Next() Do
-		Record = InformationRegisters.ProgramInterfaceCache.CreateRecordManager();
-		Record.ID = Selection.ID;
-		Record.DataType = Selection.DataType;
-		Record.Delete();
-	EndDo;
-	
-	CommitTransaction();
+	Try
+		
+		DataLock = New DataLock;
+		DataLock.Add("InformationRegister.ProgramInterfaceCache");
+		SearchSubstring = GenerateSearchQueryString(IDSearchSubstring);
+
+		QueryText =
+			"SELECT
+			|	CacheTable.ID AS ID,
+			|	CacheTable.DataType AS DataType
+			|FROM
+			|	InformationRegister.ProgramInterfaceCache AS CacheTable
+			|Where
+			|	CacheTable.ID Like ""%" + SearchSubstring + "%""
+			|		ESCAPE ""~""";
+		
+		Query = New Query(QueryText);
+		Result = Query.Execute();
+		Selection = Result.Select();
+		While Selection.Next() Do
+			
+			Write = InformationRegisters.ProgramInterfaceCache.CreateRecordManager();
+			Write.ID = Selection.ID;
+			Write.DataType = Selection.DataType;
+			
+			Write.Delete();
+			
+		EndDo;
+		
+		CommitTransaction();
+	Except
+		
+		RollbackTransaction();
+		Raise;
+		
+	EndTry;
 	
 EndProcedure
+
+///////////////////////////////////////////////////////////////////////////////
+// Procedures and functions for processing and calling optional subsystems.
+
+// Returns True if the "functional" subsystem exists.
+// Is intended for calling optional subsystems (condition call).
+//
+// The subsystem is referred to as "functional" if its "Include in command interface" check box 
+// is cleared.
+//
+// Parameters:
+//  FullSubsystemName - String - full name of the subsystem metadata object without
+//                      "Subsystem." and with character case taken into account.
+//                      For example: "StandardSubsystems.ReportOptions".
+//
+// Example:
+//
+//  If CommonUse.SubsystemExists("StandardSubsystem.ReportOptions") Then 
+//    ReportOptionsModuleClient = CommonUseClient.CommonModule("ReportOptionsClient"));
+//  	ReportOptionsModuleClient.<Method name>();
+//  EndIf;
+//
+// Returns:
+//  Boolean.
+//
+Function SubsystemExists(FullSubsystemName) Export
+	
+	SubsystemNames = StandardSubsystemsCached.SubsystemNames();
+	Return SubsystemNames.Get(FullSubsystemName) <> Undefined;
+	
+EndFunction
+
+// Returns a reference to the common module by the name.
+//
+// Parameters:
+//   Name - String - common module name, for example: CommonUse, CommonUseClient.
+//
+// Returns:
+//  CommonModule.
+//
+Function CommonModule(Name) Export
+	
+	If Metadata.CommonModules.Find(Name) <> Undefined Then
+		Module = SafeMode.EvaluateInSafeMode(Name);
+	ElsIf StrOccurrenceCount(Name, ".") = 1 Then
+		Return ServerManagerModule(Name);
+	Else
+		Module = Undefined;
+	EndIf;
+	
+	If TypeOf(Module) <> Type("CommonModule") Then
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'The %1 common module is not found.'"), Name);
+	EndIf;
+	
+	Return Module;
+	
+EndFunction
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 ////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+// Getting handlers of server events.
 
-Function EventLevelByPresentation(LevelPresentation)
-	If LevelPresentation = "Information" Then
-		Return EventLogLevel.Information;
-	ElsIf LevelPresentation = "Error" Then
-		Return EventLogLevel.Error;
-	ElsIf LevelPresentation = "Warning" Then
-		Return EventLogLevel.Warning; 
-	ElsIf LevelPresentation = "Note" Then
-		Return EventLogLevel.Note;
-	EndIf;	
+// Returns a structure used for adding a mandatory event.
+//
+// Returns:
+//  Structure - 
+//    * EventName - String - event presentation.
+//                  Example: "StandardSubsystems.InfobaseVersionUpdate\OnAddUpdateHandlers".
+//
+//    * Required - Boolean - if True, this events requires handler declaration.
+//
+Function NewEvent() Export
+	
+	Return New Structure("Name, Required", "", False);
+
 EndFunction
 
-Function LogEventLevelsByString(LevelList)
-	LevelNameArray = StringFunctionsClientServer.SplitStringIntoSubstringArray(LevelList);
-	LevelArray = New Array;
-	For Each Name In LevelNameArray Do
-		LevelArray.Add(EventLevelByPresentation(Name));
-	EndDo;
-	Return LevelArray;
+// Returns handlers of the specified server event.
+//
+// Parameters:
+//  Event  - String, for example, "StandardSubsystems.InfobaseVersionUpdate\OnAddUpdateHandlers".
+//
+// Returns:
+//  FixedArray - of FixedStructure with the following properties:
+//    * Version - String - handler version, for example, "2.1.3.4". An empty string is returned
+//                if the version is not specified.
+//    * Module  - CommonModule - common server module.
+// 
+Function EventHandlers(Event) Export
+	
+	Return StandardSubsystemsCached.ServerEventHandlers(Event, False);
+	
 EndFunction
 
-Procedure NewMetadataObjectCollectionRow(Name, Synonym, Picture, ObjectPicture, Tab)
+// Returns handlers of the specified internal server event.
+//
+// Parameters:
+//  Event - String - for example, "StandardSubsystems.BaseFunctionality\SupportedInterfaceVersionsOnDefine".
+//
+// Returns:
+//  FixedArray with values of the FixedStructure type with the following properties:
+//    * Version - String - handler version, for example, "2.1.3.4". An empty string is returned
+//                         if the version is not specified.
+//    * Module  - CommonModule - common server module.
+// 
+Function InternalEventHandlers(Event) Export
 	
-	NewRow = Tab.Add();
-	NewRow.Name = Name;
-	NewRow.Synonym = Synonym;
-	NewRow.Picture = Picture;
-	NewRow.ObjectPicture = ObjectPicture;
+	Return StandardSubsystemsCached.ServerEventHandlers(Event, True);
 	
-EndProcedure
+EndFunction
 
-Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceptionParameters) Export
+// Updates data in the version cache.
+//
+// Parameters:
+//  ID                  - String - cache record ID.
+//  DataType            - EnumRef.ProgramInterfaceCacheDataTypes - type of data to be update.
+//  ReceivingParameters - Array - additional options of getting data to the cache.
+//
+Procedure RefreshVersionCacheData(Val ID, Val DataType, Val ReceivingParameters) Export
 	
 	SetPrivilegedMode(True);
 	
 	Query = New Query;
 	Query.Text =
-	"SELECT
-	|	ProgramInterfaceCache.UpdateDate AS UpdateDate,
-	|	ProgramInterfaceCache.Data AS Data,
-	|	ProgramInterfaceCache.DataType AS DataType
-	|FROM
-	|	InformationRegister.ProgramInterfaceCache AS ProgramInterfaceCache
-	|WHERE
-	|	ProgramInterfaceCache.ID = &ID
-	|	AND ProgramInterfaceCache.DataType = &DataType";
+		"SELECT
+		|	CacheTable.UpdateDate AS UpdateDate,
+		|	CacheTable.Data AS Data,
+		|	CacheTable.DataType AS DataType
+		|FROM
+		|	InformationRegister.ProgramInterfaceCache AS CacheTable
+		|Where
+		|	CacheTable.ID = &ID
+		|	AND CacheTable.DataType = &DataType";
 	ID = ID;
 	Query.SetParameter("ID", ID);
 	Query.SetParameter("DataType", DataType);
 	
 	BeginTransaction();
 	
-	DataLock = New DataLock;
-	LockItem = DataLock.Add("InformationRegister.ProgramInterfaceCache");
-	LockItem.SetValue("ID", ID);
-	LockItem.SetValue("DataType", DataType);
-	DataLock.Lock();
+	LockingError = False;
 	
-	Result = Query.Execute();
-	
-	// Making sure that the data requires to be updated
-	If Not Result.IsEmpty() Then
-		Selection = Result.Select();
-		Selection.Next();
-		If Not VersionCacheRecordObsolete(Selection) Then
-			// The data is relevant
-			RollbackTransaction();
-			Return;
+	Try
+		
+		KeyStructure = New Structure("ID, DataType", ID, DataType);
+		RecordKey = InformationRegisters.ProgramInterfaceCache.CreateRecordKey(KeyStructure);
+		Try
+			LockDataForEdit(RecordKey);
+		Except
+			// The data is being updated from another session
+			LockingError = True;
+			Raise;
+		EndTry;
+		
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("InformationRegister.ProgramInterfaceCache");
+		LockItem.SetValue("ID", ID);
+		LockItem.SetValue("DataType", DataType);
+		DataLock.Lock();
+		
+		Result = Query.Execute();
+		
+		// Making sure the data must be updated
+		If NOT Result.IsEmpty() Then
+			Selection = Result.Select();
+			Selection.Next();
+			If NOT VersionCacheRecordObsolete(Selection) Then
+				// Data is up-to-date
+				RollbackTransaction();
+				Return;
+			EndIf;
 		EndIf;
-	EndIf;
-	
-	If DataType = Enums.ProgramInterfaceCacheDataTypes.InterfaceVersions Then
-		Data = GetInterfaceVersionsToCache(ReceptionParameters[0], ReceptionParameters[1]);
-	ElsIf DataType = Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails Then
-		Data = GetWSDL(ReceptionParameters[0], ReceptionParameters[1], ReceptionParameters[2]);
-	Else
-		TextTemplate = NStr("en = 'Unknown version cache data type: %1'");
-		MessageText = StringFunctionsClientServer.SubstituteParametersInString(TextTemplate, DataType);
-		Raise(MessageText);
-	EndIf;
-	
-	RecordManager = InformationRegisters.ProgramInterfaceCache.CreateRecordManager();
-	RecordManager.ID = ID;
-	RecordManager.DataType = DataType;
-	RecordManager.UpdateDate = CurrentUniversalDate();
-	RecordManager.Data = New ValueStorage(Data);
-	RecordManager.Write();
-	
-	CommitTransaction();
+		
+		Set = InformationRegisters.ProgramInterfaceCache.CreateRecordSet();
+		
+		Set.Filter.ID.Set(ID);
+		Set.Filter.DataType.Set(DataType);
+		
+		Write = Set.Add();
+		Write.ID = ID;
+		Write.DataType = DataType;
+		Write.UpdateDate = CurrentUniversalDate();
+		
+		If NOT CommonUseCached.DataSeparationEnabled() Or NOT CommonUseCached.CanUseSeparatedData() Then
+		
+			Data = PrepareVersionCacheData(DataType, ReceivingParameters);
+			Write.Data = New ValueStorage(Data);
+			
+		Else
+			
+			Set.AdditionalProperties.Insert("ReceivingParameters", ReceivingParameters);
+			
+		EndIf;
+		
+		Set.Write();
+		
+		CommitTransaction();
+		
+	Except
+		
+		RollbackTransaction();
+		
+		If LockingError Then
+			Return;
+		Else
+			Raise;
+		EndIf;
+		
+	EndTry;
 	
 EndProcedure
 
+// Prepares the data for the interface cache.
+//
+// Parameters:
+//  DataType            - EnumRef.ProgramInterfaceCacheDataTypes - type of data to be update.
+//  ReceivingParameters - Array - additional options of getting data to the cache.
+//
+Function PrepareVersionCacheData(Val DataType, Val ReceivingParameters) Export
+	
+	If DataType = Enums.ProgramInterfaceCacheDataTypes.InterfaceVersions Then
+		Data = GetInterfaceVersionsToCache(ReceivingParameters[0], ReceivingParameters[1]);
+	ElsIf DataType = Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails Then
+		Data = GetWSDL(ReceivingParameters[0], ReceivingParameters[1], ReceivingParameters[2], ReceivingParameters[3]);
+	Else
+		TextPattern = NStr("en = 'Unknown version cache data type: %1'");
+		MessageText = StringFunctionsClientServer.SubstituteParametersInString(TextPattern, DataType);
+		Raise(MessageText);
+	EndIf;
+	
+	Return Data;
+	
+EndFunction
+
+// Returns a flag that shows whether the version cache record is obsolete.
+//
+// Parameters:
+//  Record - InformationRegisterRecordManager.ProgramInterfaceCache - record to be checked.
+//
+// Returns:
+//  Boolean - flag that shows whether the record is obsolete.
+//
 Function VersionCacheRecordObsolete(Val Record) Export
 	
 	If Record.DataType = Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails Then
@@ -3810,24 +5172,132 @@ Function VersionCacheRecordObsolete(Val Record) Export
 	
 EndFunction
 
+// Generates a version cache record ID based on a server address and a resource name.
+//
+// Parameters:
+//  Address - String - server address.
+//  Name    - String - resource name.
+//
+// Returns:
+//  String - version cache record ID. 
+//
 Function VersionCacheRecordID(Val Address, Val Name) Export
 	
 	Return Address + "|" + Name;
 	
 EndFunction
 
+// Returns the WSDefinitions object created with the passed parameters.
+//
+// Comment: during the Definition retrieving the function uses the cache that is
+// updated when the configuration version is changed. If you need to update cached
+// value before this time (for example, in debug purposes), delete the respective 
+// records from the ProgramInterfaceCache information register.
+//
+// Parameters:
+//  WSDLAddress - String - wsdl location.
+//  UserName    - String - user name for log on to the server.
+//  Password    - String - user password.
+//  Timeout    - Number  - wsdl retrieving timeout
+//
+// Returns:
+//  WSDefinitions
+ 
+//
+Function WSDefinitions(Val WSDLAddress, Val UserName, Val Password, Val Timeout = 10) Export
+	
+	If NOT SubsystemExists("StandardSubsystems.GetFilesFromInternet") Then
+		Return New WSDefinitions(WSDLAddress, UserName, Password, ,Timeout);
+	EndIf;
+	
+	ReceivingParameters = New Array;
+	ReceivingParameters.Add(WSDLAddress);
+	ReceivingParameters.Add(UserName);
+	ReceivingParameters.Add(Password);
+	ReceivingParameters.Add(Timeout);
+	
+	WSDLData = CommonUseCached.GetVersionCacheData(
+		WSDLAddress, 
+		Enums.ProgramInterfaceCacheDataTypes.WebServiceDetails, 
+		ValueToXMLString(ReceivingParameters),
+		False);
+		
+	WSDLFileName = GetTempFileName("wsdl");
+	
+	WSDLData.Write(WSDLFileName);
+	
+	Definitions = New WSDefinitions(WSDLFileName);
+	
+	Try
+		DeleteFiles(WSDLFileName);
+	Except
+		WriteLogEvent(NStr("en = 'Getting WSDL'", CommonUseClientServer.DefaultLanguageCode()),
+			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
+	EndTry;
+	
+	Return Definitions;
+EndFunction
+
+// Returns the WSProxy object created using the passed parameters.
+//
+// Parameters:
+//  WSDLAddress  - String - wsdl location.
+//  NamespaceURI - String - web service namespace URI.
+//  ServiceName  - String - service name.
+//  EndpointName - String - if not specified, it is generated as <ServiceName>Soap.
+//  UserName     - String - user name for logging on to the server.
+//  Password     - String - User password.
+//  Timeout      - Number - timeout for operations executed through the proxy. 
+//
+// Returns:
+//  WSProxy.
+//
+Function InnerWSProxy(Val WSDLAddress, Val NamespaceURI, Val ServiceName,
+	Val EndpointName = "", Val UserName, Val Password,
+	Val Timeout = Undefined) Export
+	
+	WSDefinitions = CommonUseCached.WSDefinitions(WSDLAddress, UserName, Password);
+	
+	If IsBlankString(EndpointName) Then
+		EndpointName = ServiceName + "Soap";
+	EndIf;
+	
+	InternetProxy = Undefined;
+	If SubsystemExists("StandardSubsystems.GetFilesFromInternet") Then
+		GetFilesFromInternetClientServerModule = CommonModule("GetFilesFromInternetClientServer");
+		InternetProxy = GetFilesFromInternetClientServerModule.GetProxy(WSDLAddress);
+	EndIf;
+	
+	Proxy = New WSProxy(WSDefinitions, NamespaceURI, ServiceName, EndpointName, InternetProxy, Timeout);
+	Proxy.User     = UserName;
+	Proxy.Password = Password;
+	
+	Return Proxy;
+EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// AUXILIARY PROCEDURES AND FUNCTIONS
+
+Procedure NewMetadataObjectCollectionRow(Name, Synonym, Picture, ObjectPicture, Tab)
+	
+	NewRow = Tab.Add();
+	NewRow.Name          = Name;
+	NewRow.Synonym       = Synonym;
+	NewRow.Picture       = Picture;
+	NewRow.ObjectPicture = ObjectPicture;
+	
+EndProcedure
+
 Function GetInterfaceVersionsToCache(Val ConnectionParameters, Val InterfaceName)
 	
-	StandardSubsystemsOverridable.ConvertServiceConnectionParameters(ConnectionParameters, InterfaceName);
-	
-	If Not ConnectionParameters.Property("URL") 
-		Or Not ValueIsFilled(ConnectionParameters.URL) Then
+	If NOT ConnectionParameters.Property("URL") 
+		Or NOT ValueIsFilled(ConnectionParameters.URL) Then
 		
-		Raise(NStr("en = 'Service URL is not specified.'"));
+		Raise(NStr("en = 'Service URL is not set.'"));
 	EndIf;
 	
 	If ConnectionParameters.Property("UserName")
-		And ValueIsFilled(ConnectionParameters.UserName) Then
+		AND ValueIsFilled(ConnectionParameters.UserName) Then
 		
 		UserName = ConnectionParameters.UserName;
 		
@@ -3842,10 +5312,10 @@ Function GetInterfaceVersionsToCache(Val ConnectionParameters, Val InterfaceName
 		UserPassword = Undefined;
 	EndIf;
 	
-	ServiceAddress = ConnectionParameters.URL + "/ws/InterfaceVersioning?wsdl";
+	ServiceURL = ConnectionParameters.URL + "/ws/InterfaceVersion?wsdl";
 	
-	VersioningProxy = CommonUseCached.GetWSProxy(ServiceAddress, "http://1c-dn.com/SaaS/1.0/WS",
-		"InterfaceVersioning", , UserName, UserPassword);
+	VersioningProxy = WSProxy(ServiceURL, "http://www.1c.ru/SaaS/1.0/WS",
+		"InterfaceVersion", , UserName, UserPassword, 3);
 		
 	XDTOArray = VersioningProxy.GetVersions(InterfaceName);
 	If XDTOArray = Undefined Then
@@ -3857,18 +5327,20 @@ Function GetInterfaceVersionsToCache(Val ConnectionParameters, Val InterfaceName
 	
 EndFunction
 
-Function GetWSDL(Val Address, Val UserName, Val Password)
+Function GetWSDL(Val Address, Val UserName, Val Password, Val Timeout)
 	
-	ReceptionParameters = New Structure;
-	If Not IsBlankString(UserName) Then
-		ReceptionParameters.Insert("User", UserName);
-		ReceptionParameters.Insert("Password", Password);
+	ReceivingParameters = New Structure;
+	If NOT IsBlankString(UserName) Then
+		ReceivingParameters.Insert("User", UserName);
+		ReceivingParameters.Insert("Password", Password);
 	EndIf;
+	ReceivingParameters.Insert("Timeout", Timeout);
 	
 	FileDetails = Undefined;
-	StandardSubsystemsOverridable.DownloadFileAtServer(Address, ReceptionParameters, FileDetails);
 	
-	If Not FileDetails.State Then
+	FileOnDownloadOnServer(Address, ReceivingParameters, FileDetails);
+	
+	If NOT FileDetails.Status Then
 		Raise(NStr("en = 'Error getting the Web service description file:'") + Chars.LF + FileDetails.ErrorMessage)
 	EndIf;
 	
@@ -3878,7 +5350,7 @@ Function GetWSDL(Val Address, Val UserName, Val Password)
 		MessagePattern = NStr("en = 'Error getting the Web service description file:
 			|The received file does not contain any service descriptions.
 			|
-			|Possible, the description file address is specified incorrectly:
+			|Perhaps, the description file address is specified incorrectly:
 			|%1'");
 		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Address);
 		Raise(MessageText);
@@ -3890,355 +5362,27 @@ Function GetWSDL(Val Address, Val UserName, Val Password)
 	Try
 		DeleteFiles(FileDetails.Path);
 	Except
-		WriteLogEvent(NStr("en = 'TempFileDeletion'", Metadata.DefaultLanguage.LanguageCode), EventLogLevel.Error, , , 
-			DetailErrorDescription(ErrorInfo()));
+		WriteLogEvent(NStr("en = 'Getting WSDL'", CommonUseClientServer.DefaultLanguageCode()),
+			EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
 	EndTry;
 	
 	Return FileData;
 	
 EndFunction
 
-// Internal use only.
-Function SubsystemExists(FullSubsystemName) Export
+Function CollectionName(FullName)
 	
-	SubsystemNames = StandardSubsystemsCached.SubsystemNames();
-	Return SubsystemNames.Get(FullSubsystemName) <> Undefined;
+	DotPosition = Find(FullName, ".");
 	
-EndFunction
-
-// Internal use only.
-Function IsSubordinateDIBNode() Export
-	
-	SetPrivilegedMode(True);
-	
-	Return ExchangePlans.MasterNode() <> Undefined;
-	
-EndFunction
-
-// Internal use only.
-Function SubordinateDIBNodeConfigurationUpdateRequired() Export
-	
-	Return IsSubordinateDIBNode() And ConfigurationChanged();
-	
-EndFunction
-
-// Internal use only.
-Function CommonModule(Name) Export
-	
-	If Metadata.CommonModules.Find(Name) <> Undefined Then
-		Module = SafeMode.EvaluateInSafeMode(Name);
-	ElsIf StrOccurrenceCount(Name, ".") = 1 Then
-		Return ManagerServerModule(Name);
-	Else
-		Module = Undefined;
+	If DotPosition > 0 Then
+		Return Left(FullName, DotPosition - 1);
 	EndIf;
 	
-	If TypeOf(Module) <> Type("CommonModule") Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en='%1 common module not found.'"), Name);
-	EndIf;
-	
-	Return Module;
+	Return "";
 	
 EndFunction
 
-// Internal use only.
-Function ManagerServerModule(Name)
-	ObjectFound = False;
-	                  
-	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(Name, ".");
-	If NameParts.Count() = 2 Then
-		
-		TypeName = Upper(NameParts[0]);
-		ObjectName = NameParts[1];
-		
-		If TypeName = Upper(TypeNameConstants()) Then
-			If Metadata.Constants.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameInformationRegisters()) Then
-			If Metadata.InformationRegisters.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameAccumulationRegisters()) Then
-			If Metadata.AccumulationRegisters.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameAccountingRegisters()) Then
-			If Metadata.AccountingRegisters.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameCalculationRegisters()) Then
-			If Metadata.CalculationRegisters.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameCatalogs()) Then
-			If Metadata.Catalogs.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameDocuments()) Then
-			If Metadata.Documents.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameReports()) Then
-			If Metadata.Reports.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameDataProcessors()) Then
-			If Metadata.DataProcessors.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameBusinessProcesses()) Then
-			If Metadata.BusinessProcesses.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameDocumentJournals()) Then
-			If Metadata.DocumentJournals.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameTasks()) Then
-			If Metadata.Tasks.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameChartsOfAccounts()) Then
-			If Metadata.ChartsOfAccounts.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameExchangePlans()) Then
-			If Metadata.ExchangePlans.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameChartsOfCharacteristicTypes()) Then
-			If Metadata.ChartsOfCharacteristicTypes.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		ElsIf TypeName = Upper(TypeNameChartsOfCalculationTypes()) Then
-			If Metadata.ChartsOfCalculationTypes.Find(ObjectName) <> Undefined Then
-				ObjectFound = True;
-			EndIf;
-		EndIf;
-		
-	EndIf;
-	
-	If Not ObjectFound Then
-		Raise StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en='The %1 metadata object is not found"
-"or obtaining of the manager module for this object is not supported.'"), Name);
-	EndIf;
-	
-	Module = SafeMode.EvaluateInSafeMode(Name);
-	
-	Return Module;
-EndFunction
-
-// Internal use only.
-Function CommonBaseFunctionalityParameters() Export
-	
-	CommonParameters = New Structure;
-	CommonParameters.Insert("PersonalSettingsFormName", "");
-	CommonParameters.Insert("LowestPlatformVersion", "8.3.4.365");
-	CommonParameters.Insert("MustExit", True);
-	CommonParameters.Insert("AskConfirmationOnExit", True);
-	CommonParameters.Insert("DisableMetadataObjectIDsCatalog", False);
-	
-	CommonUseOverridable.BasicFunctionalityCommonParametersOnDefine(CommonParameters);
-	
-	CommonUseOverridable.PersonalSettingsFormName(CommonParameters.PersonalSettingsFormName);
-	CommonUseOverridable.GetMinRequiredPlatformVersion(CommonParameters);
-	
-	Return CommonParameters;
-	
-EndFunction
-
-// Internal use only.
-Function IsEqualData(Data1, Data2) Export
-	
-	If TypeOf(Data1) <> TypeOf(Data2) Then
-		Return False;
-	EndIf;
-	
-	If TypeOf(Data1) = Type("Structure")
-	 Or TypeOf(Data1) = Type("FixedStructure") Then
-		
-		If Data1.Count() <> Data2.Count() Then
-			Return False;
-		EndIf;
-		
-		For Each KeyAndValue In Data1 Do
-			OldValue = Undefined;
-			
-			If Not Data2.Property(KeyAndValue.Key, OldValue)
-			 Or Not IsEqualData(KeyAndValue.Value, OldValue) Then
-			
-				Return False;
-			EndIf;
-		EndDo;
-		
-		Return True;
-		
-	ElsIf TypeOf(Data1) = Type("Map")
-	      Or TypeOf(Data1) = Type("FixedMap") Then
-		
-		If Data1.Count() <> Data2.Count() Then
-			Return False;
-		EndIf;
-		
-		NewMapKeys = New Map;
-		
-		For Each KeyAndValue In Data1 Do
-			NewMapKeys.Insert(KeyAndValue.Key, True);
-			OldValue = Data2.Get(KeyAndValue.Key);
-			
-			If Not IsEqualData(KeyAndValue.Value, OldValue) Then
-				Return False;
-			EndIf;
-		EndDo;
-		
-		For Each KeyAndValue In Data2 Do
-			If NewMapKeys[KeyAndValue.Key] = Undefined Then
-				Return False;
-			EndIf;
-		EndDo;
-		
-		Return True;
-		
-	ElsIf TypeOf(Data1) = Type("Array")
-	      Or TypeOf(Data1) = Type("FixedArray") Then
-		
-		If Data1.Count() <> Data2.Count() Then
-			Return False;
-		EndIf;
-		
-		Index = Data1.Count()-1;
-		While Index >= 0 Do
-			If Not IsEqualData(Data1.Get(Index), Data2.Get(Index)) Then
-				Return False;
-			EndIf;
-			Index = Index - 1;
-		EndDo;
-		
-		Return True;
-		
-	ElsIf TypeOf(Data1) = Type("ValueTable") Then
-		
-		If Data1.Count() <> Data2.Count() Then
-			Return False;
-		EndIf;
-		
-		If Data1.Columns.Count() <> Data2.Columns.Count() Then
-			Return False;
-		EndIf;
-		
-		For Each Column In Data1.Columns Do
-			If Data2.Columns.Find(Column.Name) = Undefined Then
-				Return False;
-			EndIf;
-			
-			Index = Data1.Count()-1;
-			While Index >= 0 Do
-				If Not IsEqualData(Data1[Index][Column.Name], Data2[Index][Column.Name]) Then
-					Return False;
-				EndIf;
-				Index = Index - 1;
-			EndDo;
-		EndDo;
-		
-		Return True;
-		
-	ElsIf TypeOf(Data1) = Type("ValueStorage") Then
-	
-		If Not IsEqualData(Data1.Get(), Data2.Get()) Then
-			Return False;
-		EndIf;
-		
-		Return True;
-	EndIf;
-	
-	Return Data1 = Data2;
-	
-EndFunction
-
-// Internal use only.
-Function EventHandlers(Event) Export
-	
-	Return StandardSubsystemsCached.ServerEventHandlers(Event, False);
-	
-EndFunction
-
-// Internal use only.
-Function InternalEventHandlers(Event) Export
-	
-	Return StandardSubsystemsCached.ServerEventHandlers(Event, True);
-	
-EndFunction
-
-// Internal use only.
-Function FixedData(Data, RaiseException = True) Export
-	
-	If TypeOf(Data) = Type("Array") Then
-		Array = New Array;
-		
-		Index = Data.Count() - 1;
-		
-		For Each Value In Data Do
-			
-			If TypeOf(Value) = Type("Structure")
-			 Or TypeOf(Value) = Type("Map")
-			 Or TypeOf(Value) = Type("Array") Then
-				
-				Array.Add(FixedData(Value, RaiseException));
-			Else
-				If RaiseException Then
-					CheckDataIsFixed(Value, True);
-				EndIf;
-				Array.Add(Value);
-			EndIf;
-		EndDo;
-		
-		Return New FixedArray(Array);
-		
-	ElsIf TypeOf(Data) = Type("Structure")
-	      Or TypeOf(Data) = Type("Map") Then
-		
-		If TypeOf(Data) = Type("Structure") Then
-			Collection = New Structure;
-		Else
-			Collection = New Map;
-		EndIf;
-		
-		For Each KeyAndValue In Data Do
-			Value = KeyAndValue.Value;
-			
-			If TypeOf(Value) = Type("Structure")
-			 Or TypeOf(Value) = Type("Map")
-			 Or TypeOf(Value) = Type("Array") Then
-				
-				Collection.Insert(
-					KeyAndValue.Key, FixedData(Value, RaiseException));
-			Else
-				If RaiseException Then
-					CheckDataIsFixed(Value, True);
-				EndIf;
-				Collection.Insert(KeyAndValue.Key, Value);
-			EndIf;
-		EndDo;
-		
-		If TypeOf(Data) = Type("Structure") Then
-			Return New FixedStructure(Collection);
-		Else
-			Return New FixedMap(Collection);
-		EndIf;
-		
-	ElsIf RaiseException Then
-		CheckDataIsFixed(Data);
-	EndIf;
-	
-	Return Data;
-	
-EndFunction
-
-// Internal use only.
-Procedure CheckDataIsFixed(Data, DataInFixedTypeValue = False)
+Procedure CheckDataFixed(Data, DataInFixedTypeValue = False)
 	
 	DataType = TypeOf(Data);
 	
@@ -4272,39 +5416,1688 @@ Procedure CheckDataIsFixed(Data, DataInFixedTypeValue = False)
 	EndIf;
 	
 	Raise StringFunctionsClientServer.SubstituteParametersInString(
-		NStr("en='Error in FixedData function of CommonUse module."
-"Data of %1 type can not be fixed.'"),
+		NStr("en = 'Error in CommonUse.FixedData:
+		           |Data of the %1 type cannot be fixed.'"),
 		String(DataType) );
 	
 EndProcedure
 
-// Internal use only.
-Function OnCreateAtServer(Form, Cancel, StandardProcessing) Export
-	
-	If CommonUseCached.DataSeparationEnabled()
-		And Not CommonUseCached.CanUseSeparatedData() Then
-		Cancel = True;
-		Return False;
+Procedure AddRefSearchExclusions(RefSearchExclusions, ExceptionArray)
+	For Each ArrayElement In ExceptionArray Do
+		If TypeOf(ArrayElement) = Type("String") Then
+			MetadataItem = Metadata.FindByFullName(ArrayElement);
+		Else
+			MetadataItem = ArrayElement;
+		EndIf;
+		
+		MetadataParent = MetadataItem.Parent();
+		
+		// Registering a whole metadata object to be struck off (all references it can contain).
+		If TypeOf(MetadataParent) = Type("ConfigurationMetadataObject") Then
+			RefSearchExclusions.Insert(MetadataItem, "*");
+			Continue;
+		EndIf;
+		
+		// Registering the metadata object attribute to be struck off.
+		RelativePathToAttribute = MetadataItem.Name;
+		ParentParent = MetadataParent.Parent();
+		While TypeOf(ParentParent) <> Type("ConfigurationMetadataObject") Do
+			RelativePathToAttribute = MetadataParent.Name + "." + RelativePathToAttribute;
+			MetadataParent = ParentParent;
+			ParentParent   = MetadataParent.Parent();
+		EndDo;
+		
+		PathsToAttributes = RefSearchExclusions.Get(MetadataParent);
+		If PathsToAttributes = Undefined Then
+			PathsToAttributes = New Array;
+		ElsIf PathsToAttributes = "*" Then
+			Continue; // Skipping if the entire metadata object has already been struck off.
+		EndIf;
+		PathsToAttributes.Add(RelativePathToAttribute);
+		
+		RefSearchExclusions.Insert(MetadataParent, PathsToAttributes);
+	EndDo;
+EndProcedure
+
+// Returns a settings key string within a valid length.
+// Checks the length of the passed string. If it exceeds 128, converts its end according to the
+// MD5 algorithm into a short alternative. As the result, the string becomes 128 character
+// length.
+// If the original string is less then 128 characters, it is returned as is.
+//
+// Parameters:
+//  String - String - string of an arbitrary length.
+//
+Function SettingsKey(Val String)
+	Result = String;
+	If StrLen(String) > 128 Then // A key longer than 128 characters raises an exception when accessing the settings storage
+		Result = Left(String, 96);
+		DataHashing = New DataHashing(HashFunction.MD5);
+		DataHashing.Append(Mid(String, 97));
+		Result = Result + StrReplace(DataHashing.HashSum, " ", "");
 	EndIf;
-	
-	If Form.Parameters.Property("AutoTest") Then
-		Return False;
-	EndIf;
-	
-	SetPrivilegedMode(True);
-	If SessionParameters.ClientParametersAtServer.Get("HideDesktopOnStart") <> Undefined Then
-		Cancel = True;
-		Return False;
-	EndIf;
-	SetPrivilegedMode(False);
-	
-	Return True;
-	
+	Return Result;
 EndFunction
 
-// Internal use only.
-Function DefaultLanguageCode() Export
+// Returns a server manager module by the object name.
+Function ServerManagerModule(Name)
+	ObjectFound = False;
 	
-	Return Metadata.DefaultLanguage.LanguageCode;
+	NameParts = StringFunctionsClientServer.SplitStringIntoSubstringArray(Name, ".");
+	If NameParts.Count() = 2 Then
+		
+		KindName = Upper(NameParts[0]);
+		ObjectName = NameParts[1];
+		
+		If KindName = Upper(TypeNameConstants()) Then
+			If Metadata.Constants.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameInformationRegisters()) Then
+			If Metadata.InformationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameAccumulationRegisters()) Then
+			If Metadata.AccumulationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameAccountingRegisters()) Then
+			If Metadata.AccountingRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameCalculationRegisters()) Then
+			If Metadata.CalculationRegisters.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameCatalogs()) Then
+			If Metadata.Catalogs.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameDocuments()) Then
+			If Metadata.Documents.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameReports()) Then
+			If Metadata.Reports.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameDataProcessors()) Then
+			If Metadata.DataProcessors.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameBusinessProcesses()) Then
+			If Metadata.BusinessProcesses.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameDocumentJournals()) Then
+			If Metadata.DocumentJournals.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameTasks()) Then
+			If Metadata.Tasks.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameChartsOfAccounts()) Then
+			If Metadata.ChartsOfAccounts.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameExchangePlans()) Then
+			If Metadata.ExchangePlans.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameChartsOfCharacteristicTypes()) Then
+			If Metadata.ChartsOfCharacteristicTypes.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		ElsIf KindName = Upper(TypeNameChartsOfCalculationTypes()) Then
+			If Metadata.ChartsOfCalculationTypes.Find(ObjectName) <> Undefined Then
+				ObjectFound = True;
+			EndIf;
+		EndIf;
+		
+	EndIf;
 	
+	If NOT ObjectFound Then
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'The ""%1"" metadata object is not found or does not have a module manager.'"), Name);
+	EndIf;
+	
+	Module = SafeMode.EvaluateInSafeMode(Name);
+	
+	Return Module;
 EndFunction
+
+////////////////////////////////////////////////////////////////////////////////
+// Handlers of conditional calls of other subsystems
+
+// Gets a file from the internet via HTTP(S) or FTP and saves it to a temporary file.
+//
+// Parameters:
+// URL                 - String - file URL in the following format:
+//                       [Protocol://]<Server>/<Path to file on server>;
+// ReceivingParameters - structure with the following properties:
+//                        PathForSaving     - String - path on the 1C:Enterprise server
+//                                            (including a file name) for
+//                                            saving the downloaded file;
+//                        User              - String - account used for connecting to the HTTP
+//                                            or FTP server;
+//                        Password          - String - password used for connecting to the HTTP
+//                                            or FTP server;
+//                        Port              - Number - port used for connecting to the HTTP or
+//                                            FTP server; 
+//                        SecureConnection  - Boolean - in case of HTTP this flag shows
+//                                            whether a secure HTTPS connection is used;
+//                        PassiveConnection - Boolean - in case of FTP this flag shows 
+//                                            whether the connection mode is passive or active;
+// Returns:
+//  Structure with the following properties:
+//   State        - Boolean - this key is always present in the structure, it can have the
+//                  following values:
+//                   True  - function execution completed successfully;
+//                   False - function execution failed;
+//                   Path  - String - path to the file on the 1C:Enterprise server. This
+//                           key is used only 
+//                           if State is True.
+//   ErrorMessage - String - error message if State is False.
+//
+Procedure FileOnDownloadOnServer(Val Address, Val ReceivingParameters, ReturnValue)
+	
+	If SubsystemExists("StandardSubsystems.GetFilesFromInternet") Then
+		GetFilesFromInternetModule = CommonModule("GetFilesFromInternet");
+		ReturnValue = GetFilesFromInternetModule.DownloadFileAtServer(Address, ReceivingParameters);
+	EndIf;
+	
+EndProcedure
+
+// Sets session separation.
+//
+// Parameters:
+// Use      - Boolean - flag that shows whether the DataArea separator is used in the session.
+// DataArea - Number - DataArea separator value
+//
+Procedure SessionSeparationOnSet(Val Use, Val DataArea = Undefined)
+	
+	If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		SaasOperationsModule = CommonModule("SaaSOperations");
+		SaasOperationsModule.SetSessionSeparation(Use, DataArea);
+	EndIf;
+	
+EndProcedure
+
+// Returns a value of the current data area separator.
+// If the value is not set an error is raised.
+// 
+// Parameters:
+//  SeparatorValue - The value of the current data area separator. Return value.
+//
+Procedure SessionSeparatorValueOnSet(SeparatorValue)
+	
+	If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		SaasOperationsModule = CommonModule("SaaSOperations");
+		SeparatorValue = SaasOperationsModule.SessionSeparatorValue();
+	Else
+		Raise(NStr("en = 'The ""SaaS operations"" subsystem is not available'"));
+	EndIf;
+	
+EndProcedure
+
+// Returns the flag that shows whether DataArea separator is used.
+// 
+// Parameters:
+// UseSeparator - Boolean - True if separation is used, otherwise returns False. Return value.
+// 
+Procedure UseSessionSeparatorOnGet(UseSeparator) Export
+	
+	If SubsystemExists("StandardSubsystems.SaaSOperations") Then
+		SaasOperationsModule = CommonModule("SaaSOperations");
+		UseSeparator = SaasOperationsModule.UseSessionSeparator();
+	Else
+		Raise(NStr("en = 'The ""SaaS operations"" subsystem is not available'"));
+	EndIf;
+	
+EndProcedure
+
+////////////////////////////////////////////////////////////////////////////////
+// AUXILIARY PROCEDURES AND FUNCTIOS (Reference replacement)
+
+Function RecordKeysTypeDescription()
+	
+	AddedTypes = New Array;
+	For Each Meta In Metadata.InformationRegisters Do
+		AddedTypes.Add(Type("InformationRegisterRecordKey." + Meta.Name));
+	EndDo;
+	For Each Meta In Metadata.AccumulationRegisters Do
+		AddedTypes.Add(Type("AccumulationRegisterRecordKey." + Meta.Name));
+	EndDo;
+	For Each Meta In Metadata.AccountingRegisters Do
+		AddedTypes.Add(Type("AccountingRegisterRecordKey." + Meta.Name));
+	EndDo;
+	For Each Meta In Metadata.CalculationRegisters Do
+		AddedTypes.Add(Type("CalculationRegisterRecordKey." + Meta.Name));
+	EndDo;
+	
+	Return New TypeDescription(AddedTypes); 
+EndFunction
+
+Procedure MarkUsageInstances(Val Configuration, Val Ref, Val DestinationRef, Val SearchTable, MarkupResult = Undefined)
+	SetPrivilegedMode(True);
+
+	RecordKeyType = Configuration.RecordKeyType;
+	MetaConstants = Configuration.MetaConstants;
+	AllRefsType   = Configuration.AllRefsType;
+	RecordKeyType = Configuration.RecordKeyType;
+	
+	// Setting the order of known objects and checking whether there are unidentified ones
+	RefFilter = New Structure("Ref, ReplacementKey", Ref, "");
+	
+	MarkupResult = New Structure;
+	MarkupResult.Insert("UsageInstances", SearchTable.FindRows(RefFilter) );
+	MarkupResult.Insert("MarkupErrors",   New Array);
+	
+	For Each UsageInstance In MarkupResult.UsageInstances Do
+		InstancesMetadata = UsageInstance.Metadata;
+		
+		If UsageInstance.AuxiliaryData Then
+			// Skipping dependent data
+			Continue;
+			
+		ElsIf MetaConstants.Contains(InstancesMetadata) Then
+			UsageInstance.ReplacementKey = "Constant";
+			UsageInstance.DestinationRef = DestinationRef;
+			
+		Else
+			DataType = TypeOf(UsageInstance.Data);
+			If AllRefsType.ContainsType(DataType) Then
+				UsageInstance.ReplacementKey = "Object";
+				UsageInstance.DestinationRef = DestinationRef;
+				
+			ElsIf RecordKeyType.ContainsType(DataType) Then
+				UsageInstance.ReplacementKey = "RecordKey";
+				UsageInstance.DestinationRef = DestinationRef;
+				
+			Else
+				// Unknown object for reference replacement
+				Text = NStr("en = 'Unknown data type (%1) for replacing %2'");
+				Text = StrReplace(Text, "%1", String(UsageInstance.Data));
+				Text = StrReplace(Text, "%2", String(Ref));
+				MarkupResult.MarkupErrors.Add(
+					New Structure("Object, Text", UsageInstance.Data, Text));
+				
+				Break;
+			EndIf;
+		EndIf;
+	EndDo;
+	
+EndProcedure
+
+Procedure ReplaceInConstant(Results, Val UsageInstance, Val WriteParameters, Val InnerTransaction = True)
+	SetPrivilegedMode(True);
+	
+	Data = UsageInstance.Data;
+	Meta = UsageInstance.Metadata;
+	
+	DataPresentation = String(Data);
+	
+	// Performing all replacement of the data in the same time
+	Filter = New Structure("Data, ReplacementKey", Data, "Constant");
+	RowsToProcess = UsageInstance.Owner().FindRows(Filter);
+	
+	ActionState = "";
+	
+	If InnerTransaction Then
+		BeginTransaction();
+		
+		DataLock = New DataLock;
+		DataLock.Add(Meta.FullName());
+	
+		Try
+			DataLock.Lock();
+		Except
+			// Adding the record to the unsuccessful lock attempt result
+			Error = NStr("en = 'Cannot lock the %1 constant'");
+			Error = StrReplace(Error, "%1", DataPresentation);
+			
+			ActionState = "LockError";
+		EndTry;
+		
+	EndIf;	// Need of locking
+	
+	If ActionState = "" Then
+		Manager = Constants[Meta.Name].CreateValueManager();
+		Manager.Read();
+		
+		ReplacementPerformed = True;
+		For Each Row In RowsToProcess Do
+			If Manager.Value = Row.Ref Then
+				Manager.Value = Row.DestinationRef;
+				ReplacementPerformed = True;
+			EndIf;
+		EndDo;
+		
+		If ReplacementPerformed Then
+			// Attempting to save
+			If Not WriteParameters.WriteInPrivilegedMode Then
+				SetPrivilegedMode(False);
+			EndIf;
+			
+			Try
+				WriteObject(Manager, WriteParameters);
+			Except
+				// Saving the cause
+				Information = ErrorInfo();
+				WriteLogEvent(ReferenceReplacementEventLogMessageText(),
+					EventLogLevel.Error, Meta, DetailErrorDescription(Information));
+				
+				// Adding a record to the record error result
+				ErrorDescription = BriefErrorDescription(Information);
+				If IsBlankString(ErrorDescription) Then
+					ErrorDescription = Information.Details;
+				EndIf;
+				
+				Error = NStr("en = 'Cannot write %1 by the following reason: %2'");
+				Error = StrReplace(Error, "%1", DataPresentation);
+				Error = StrReplace(Error, "%2", ErrorDescription);
+				
+				For Each Row In RowsToProcess Do
+					AddReplacementResult(Results, Row.Ref, 
+						ReplacementErrorDetails("WritingError", Data, DataPresentation, Error)
+					);
+				EndDo;
+				
+				ActionState = "WritingError";
+			EndTry;
+			
+			If NOT WriteParameters.WriteInPrivilegedMode Then
+				SetPrivilegedMode(True);
+			EndIf;
+			
+		EndIf;
+	EndIf;
+	
+	If InnerTransaction Then
+		If ActionState = "" Then
+			CommitTransaction();
+		Else
+			RollbackTransaction();
+		EndIf;
+	EndIf;
+	
+	// Marking as processed
+	For Each Row In RowsToProcess Do
+		Row.ReplacementKey = "";
+	EndDo;
+
+EndProcedure
+
+Procedure ReplaceInObject(Results, Val UsageInstance, Val WriteParameters, Val InnerTransaction = True)
+	SetPrivilegedMode(True);
+	
+	Data = UsageInstance.Data;
+	Meta   = UsageInstance.Metadata;
+	
+	DataPresentation = String(Data);
+	
+	// Performing all replacement of the data in the same time
+	Filter = New Structure("Data, ReplacementKey", Data, "Object");
+	RowsToProcess = UsageInstance.Owner().FindRows(Filter);
+	
+	SequenceDescription       = SequenceDescription(Meta);
+	RegisterRecordDescription = RegisterRecordDescription(Meta);
+
+	ActionState = "";
+	
+	If InnerTransaction Then
+		// Process all connected data at the same time
+		BeginTransaction();
+		
+		DataLock = New DataLock;
+		
+		// The item
+		DataLock.Add(Meta.FullName()).SetValue("Ref", Data);
+		
+		// RegisterRecords 
+		For Each Item In RegisterRecordDescription Do
+			// Everything by the recorder
+			DataLock.Add(Item.LockSpace + ".RecordSet").SetValue("Recorder", Data);
+			
+			// All candidates are dimensions for saving the results
+			For Each KeyValue In Item.MeasurementList Do
+				DimensionType  = KeyValue.Value;
+				For Each UsageInstance In RowsToProcess Do
+					CurrentRef = UsageInstance.Ref;
+					If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+						DataLock.Add(Item.LockSpace).SetValue(KeyValue.Key, UsageInstance.Ref);
+					EndIf;
+				EndDo;
+			EndDo;
+		EndDo;
+		
+		// Sequences
+		For Each Item In SequenceDescription Do
+			DataLock.Add(Item.LockSpace).SetValue("Recorder", Data);
+			
+			For Each KeyValue In Item.MeasurementList Do
+				DimensionType = KeyValue.Value;
+				For Each UsageInstance In RowsToProcess Do
+					CurrentRef = UsageInstance.Ref;
+					If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+						DataLock.Add(Item.LockSpace).SetValue(KeyValue.Key, CurrentRef);
+					EndIf;
+				EndDo;
+			EndDo;
+		EndDo;
+		
+		Try
+			DataLock.Lock();
+		Except
+			// Adding the record to the unsuccessful lock attempt result
+			Error = NStr("en = 'Cannot lock one or several objects from the %1 list'");
+			Error = StrReplace(Error, "%1", LockListDescription(DataLock));
+			For Each Row In RowsToProcess Do
+				AddReplacementResult(Results, Row.Ref, 
+					ReplacementErrorDetails("LockError", Data, DataPresentation, Error)
+				);
+			EndDo;
+			
+			ActionState = "LockError";
+		EndTry;
+		
+	EndIf;	// Need of locking
+	
+	If ActionState = "" Then
+		WritingObjects = ModifiedObjectsOnReplaceInObject(Data, RowsToProcess, RegisterRecordDescription, SequenceDescription);
+		
+		// Attempting to save, the object goes last
+		If Not WriteParameters.WriteInPrivilegedMode Then
+			SetPrivilegedMode(False);
+		EndIf;
+		
+		Try
+			If WriteParameters.DontCheck Then
+				// Writing without the business logic control
+				For Each KeyValue In WritingObjects Do
+					WriteObject(KeyValue.Key, WriteParameters);
+				EndDo;
+				
+			Else
+				// First writing iteration without the control to fix loop references
+				WriteParameters.DontCheck = True;
+				For Each KeyValue In WritingObjects Do
+					WriteObject(KeyValue.Key, WriteParameters);
+				EndDo;
+				
+				// Second writing iteration with the control
+				WriteParameters.DontCheck = False;
+				For Each KeyValue In WritingObjects Do
+					WriteObject(KeyValue.Key, WriteParameters);
+				EndDo;
+			EndIf;
+			
+		Except
+			// Saving the cause
+			Information = ErrorInfo();
+			WriteLogEvent(ReferenceReplacementEventLogMessageText(),
+				EventLogLevel.Error, Meta, DetailErrorDescription(Information));
+				
+			ErrorDescription = BriefErrorDescription(Information);
+			If IsBlankString(ErrorDescription) Then
+				ErrorDescription = Information.Details;
+			EndIf;
+			
+			// Adding a record to the record error result
+			Error = NStr("en = 'Cannot write %1 by the following reason: %2'");
+			Error = StrReplace(Error, "%1", DataPresentation);
+			Error = StrReplace(Error, "%2", ErrorDescription);
+			
+			For Each Row In RowsToProcess Do
+				AddReplacementResult(Results, Row.Ref, 
+					ReplacementErrorDetails("WritingError", Data, DataPresentation, Error)
+				);
+			EndDo;
+			
+			ActionState = "WritingError";
+		EndTry;
+		
+		If NOT WriteParameters.WriteInPrivilegedMode Then
+			SetPrivilegedMode(True);
+		EndIf;
+		
+		// Deleting processed register records and sequences from the search table
+	EndIf;
+	
+	If InnerTransaction Then
+		If ActionState = "" Then
+			CommitTransaction();
+		Else
+			RollbackTransaction();
+		EndIf;
+	EndIf;
+	
+	// Marking as processed
+	For Each Row In RowsToProcess Do
+		Row.ReplacementKey = "";
+	EndDo;
+	
+EndProcedure
+
+Procedure ReplaceInSet(Results, Val UsageInstance, Val WriteParameters, Val InnerTransaction = True)
+	SetPrivilegedMode(True);
+	
+	Data = UsageInstance.Data;
+	Meta = UsageInstance.Metadata;
+	
+	DataPresentation = String(Data);
+	
+	// Performing all replacement of the data in the same time
+	Filter = New Structure("Data, ReplacementKey", Data, "RecordKey");
+	RowsToProcess = UsageInstance.Owner().FindRows(Filter);
+	
+	SetDescription = RecordKeyDescription(Meta);
+	RecordSet = SetDescription.RecordSet;
+	
+	ReplacementCouples = New Map;
+	For Each Row In RowsToProcess Do
+		ReplacementCouples.Insert(Row.Ref, Row.DestinationRef);
+	EndDo;
+	
+	ActionState = "";
+	
+	If InnerTransaction Then
+		BeginTransaction();
+		
+		// Locking and preparing the set
+		DataLock = New DataLock;
+		For Each KeyValue In SetDescription.MeasurementList Do
+			DimensionType = KeyValue.Value;
+			Name          = KeyValue.Key;
+			Value     = Data[Name];
+			
+			For Each Row In RowsToProcess Do
+				CurrentRef = Row.Ref;
+				If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+					DataLock.Add(SetDescription.LockSpace).SetValue(Name, CurrentRef);
+				EndIf;
+			EndDo;
+			
+			RecordSet.Filter[Name].Set(Value);
+		EndDo;
+		
+		Try
+			DataLock.Lock();
+		Except
+			// Adding the record to the unsuccessful lock attempt result
+			Error = NStr("en = 'Cannot lock the %1 set'");
+			Error = StrReplace(Error, "%1", DataPresentation);
+			
+			ActionState = "LockError";
+		EndTry;
+		
+	EndIf;	// Need of locking
+		
+	If ActionState = "" Then
+		RecordSet.Read();
+		ReplaceInRowCollection(RecordSet, SetDescription.FieldList, ReplacementCouples);
+		
+		If RecordSet.Modified() Then
+			// Attempting to save
+			If NOT WriteParameters.WriteInPrivilegedMode Then
+				SetPrivilegedMode(False);
+			EndIf;
+			
+			Try
+				WriteObject(RecordSet, WriteParameters);
+			Except
+				// Saving the cause
+				Information = ErrorInfo();
+				WriteLogEvent(ReferenceReplacementEventLogMessageText(),
+					EventLogLevel.Error, Meta, DetailErrorDescription(Information));
+					
+				ErrorDescription = BriefErrorDescription(Information);
+				If IsBlankString(ErrorDescription) Then
+					ErrorDescription = Information.Details;
+				EndIf;
+				
+				// Adding a record to the record error result
+				Error = NStr("en = 'Cannot write %1 by the following reason: %2'");
+				Error = StrReplace(Error, "%1", DataPresentation);
+				Error = StrReplace(Error, "%2", ErrorDescription);
+				
+				For Each Row In RowsToProcess Do
+					AddReplacementResult(Results, Row.Ref, 
+						ReplacementErrorDetails("WritingError", Data, DataPresentation, Error)
+					);
+				EndDo;
+				
+				ActionState = "WritingError";
+			EndTry;
+			
+			If NOT WriteParameters.WriteInPrivilegedMode Then
+				SetPrivilegedMode(True);
+			EndIf;
+			
+		EndIf;
+	EndIf;
+	
+	If InnerTransaction Then
+		If ActionState = "" Then
+			CommitTransaction();
+		Else
+			RollbackTransaction();
+		EndIf;
+	EndIf;
+	
+	// Marking as processed
+	For Each Row In RowsToProcess Do
+		Row.ReplacementKey = "";
+	EndDo;
+	
+EndProcedure
+
+Function ModifiedObjectsOnReplaceInObject(Val Data, Val RowsToProcess, Val RegisterRecordDescription, Val SequenceDescription)
+	SetPrivilegedMode(True);
+	
+	// Returning modified processed objects
+	Modified = New Map;
+	
+	// Reading
+	Details = ObjectDescription(Data.Metadata());
+	Try
+		Object = Data.GetObject();
+	Except
+		// Already processed with errors
+		Object = Undefined;
+	EndTry;
+	
+	If Object = Undefined Then
+		Return Modified;
+	EndIf;
+	
+	For Each RegisterRecordDescription In RegisterRecordDescription Do
+		RegisterRecordDescription.RecordSet.Filter.Recorder.Set(Data);
+		RegisterRecordDescription.RecordSet.Read();
+	EndDo;
+	
+	For Each SequenceDescription In SequenceDescription Do
+		SequenceDescription.RecordSet.Filter.Recorder.Set(Data);
+		SequenceDescription.RecordSet.Read();
+	EndDo;
+	
+	// Replacing all at once
+	ReplacementCouples = New Map;
+	For Each UsageInstance In RowsToProcess Do
+		ReplacementCouples.Insert(UsageInstance.Ref, UsageInstance.DestinationRef);
+	EndDo;
+	
+	// Attributes
+	For Each KeyValue In Details.Attributes Do
+		Name = KeyValue.Key;
+		DestinationRef = ReplacementCouples[ Object[Name] ];
+		If DestinationRef <> Undefined Then
+			Object[Name] = DestinationRef;
+		EndIf;
+	EndDo;
+		
+	// Standard attributes
+	For Each KeyValue In Details.StandardAttributes Do
+		Name = KeyValue.Key;
+		DestinationRef = ReplacementCouples[ Object[Name] ];
+		If DestinationRef <> Undefined Then
+			Object[Name] = DestinationRef;
+		EndIf;
+	EndDo;
+		
+	// Tabular sections
+	For Each Item In Details.TabularSections Do
+		ReplaceInRowCollection(Object[Item.Name], Item.FieldList, ReplacementCouples);
+	EndDo;
+	
+	// Standard tabular section
+	For Each Item In Details.StandardTabularSections Do
+		ReplaceInRowCollection(Object[Item.Name], Item.FieldList, ReplacementCouples);
+	EndDo;
+		
+	// RegisterRecords
+	For Each RegisterRecordDescription In RegisterRecordDescription Do
+		ReplaceInRowCollection(RegisterRecordDescription.RecordSet, RegisterRecordDescription.FieldList, ReplacementCouples);
+	EndDo;
+	
+	// Sequences
+	For Each SequenceDescription In SequenceDescription Do
+		ReplaceInRowCollection(SequenceDescription.RecordSet, SequenceDescription.FieldList, ReplacementCouples);
+	EndDo;
+	
+	For Each RegisterRecordDescription In RegisterRecordDescription Do
+		If RegisterRecordDescription.RecordSet.Modified() Then
+			Modified.Insert(RegisterRecordDescription.RecordSet, False);
+		EndIf;
+	EndDo;
+	
+	For Each SequenceDescription In SequenceDescription Do
+		If SequenceDescription.RecordSet.Modified() Then
+			Modified.Insert(SequenceDescription.RecordSet, False);
+		EndIf;
+	EndDo;
+	
+	// The object is last - to provide posting if necessary
+	If Object.Modified() Then
+		Modified.Insert(Object, Details.CanBePosted);
+	EndIf;
+	
+	Return Modified;
+EndFunction
+
+Procedure DeleteReferencesWithMark(DeletionResult, Val ReferenceList, Val WriteParameters, Val InnerTransaction = True)
+	
+	DeleteReferencesNotExclusive(DeletionResult, ReferenceList, WriteParameters, InnerTransaction, False);
+	
+EndProcedure
+
+Procedure DeleteReferencesDirectly(DeletionResult, Val ReferenceList, Val WriteParameters, Val InnerTransaction = True)
+	
+	DeleteReferencesNotExclusive(DeletionResult, ReferenceList, WriteParameters, InnerTransaction, True);
+	
+EndProcedure
+
+Procedure DeleteReferencesNotExclusive(DeletionResult, Val ReferenceList, Val WriteParameters, Val InnerTransaction, Val DeleteDirectly)
+	
+	SetPrivilegedMode(True);
+	
+	ToDelete = New Array;
+	
+	If InnerTransaction Then
+		BeginTransaction();
+	EndIf;
+		
+	For Each Ref In ReferenceList Do
+		DataLock = New DataLock;
+		DataLock.Add(Ref.Metadata().FullName()).SetValue("Ref", Ref);
+		
+		RefPresentation = String(Ref);
+		
+		Try 
+			DataLock.Lock();
+			ToDelete.Add(Ref);
+		Except
+			AddReplacementResult(DeletionResult, Ref, 
+				ReplacementErrorDetails("LockError", Ref, RefPresentation, NStr("en = 'Cannot lock the reference for deletion'"))
+			);
+		EndTry
+	EndDo;
+		
+	SearchTable = UsageInstances(ToDelete);
+	Filter = New Structure("Ref");
+	
+	For Each Ref In ToDelete Do
+		RefPresentation = String(Ref);
+		
+		Filter.Ref = Ref;
+		UsageInstances = SearchTable.FindRows(Filter);
+		
+		Index = UsageInstances.UBound();
+		While Index >= 0 Do
+			If UsageInstances[Index].AuxiliaryData Then
+				UsageInstances.Delete(Index);
+			EndIf;
+			Index = Index - 1;
+		EndDo;
+		
+		If UsageInstances.Count() > 0 Then
+			// Was modified, cannot be deleted
+			AddModifiedObjectReplacementResults(DeletionResult, UsageInstances);
+			Continue;
+		EndIf;
+		
+		Object = Ref.GetObject();
+		If Object = Undefined Then
+			// Already deleted
+			Continue;
+		EndIf;
+			
+		If NOT WriteParameters.WriteInPrivilegedMode Then
+			SetPrivilegedMode(False);
+		EndIf;
+			
+		Try
+			If DeleteDirectly Then
+				HandleObjectWithMessageInterception(Object, "DirectDeletion", Undefined, WriteParameters);
+			Else
+				HandleObjectWithMessageInterception(Object, "DeletionMark", Undefined, WriteParameters);
+			EndIf;
+		Except
+			ErrorInfo = ErrorInfo();
+			AddReplacementResult(DeletionResult, Ref, 
+				ReplacementErrorDetails("DeletionError", Ref, RefPresentation,
+				NStr("en = 'Deletion error'") + Chars.LF + TrimAll( BriefErrorDescription(ErrorInfo)))
+			);
+		EndTry;
+			
+		If NOT WriteParameters.WriteInPrivilegedMode Then
+			SetPrivilegedMode(True);
+		EndIf;
+	EndDo;
+	
+	If InnerTransaction Then
+		CommitTransaction();
+	EndIf;
+EndProcedure
+
+Procedure AddModifiedObjectReplacementResults(ResultTable, RepeatSearchTable)
+	
+	RecordKeyType = RecordKeysTypeDescription();
+	
+	Filter = New Structure("ErrorType, Ref, ErrorObject", "");
+	For Each Row In RepeatSearchTable Do
+		Test = New Structure("AuxiliaryData", False);
+		FillPropertyValues(Test, Row);
+		If Test.AuxiliaryData Then
+			Continue;
+		EndIf;
+		
+		Data = Row.Data;
+		Ref  = Row.Ref;
+		
+		DataPresentation = String(Data);
+		
+		Filter.ErrorObject = Data;
+		Filter.Ref         = Ref;
+		If ResultTable.FindRows(Filter).Count() = 0 Then
+			AddReplacementResult(ResultTable, Ref, 
+				ReplacementErrorDetails("DataChanged", Data, DataPresentation,
+				NStr("en = 'Data were added or changed by another user'"))
+			);
+		EndIf;
+	EndDo;
+	
+EndProcedure
+
+Function SetDimensionDescription(Val Meta, Cache)
+	
+	DimensionDescription = Cache[Meta];
+	If DimensionDescription<>Undefined Then
+		Return DimensionDescription;
+	EndIf;
+	
+	// Period and recorder, if there are
+	DimensionDescription = New Structure;
+	
+	DataDimensions = New Structure("Master, Presentation, Format, Type", False);
+	
+	If Metadata.InformationRegisters.Contains(Meta) Then
+		// Perhaps there is a period
+		MetaPeriod  = Meta.InformationRegisterPeriodicity; 
+		Periodicity = Metadata.ObjectProperties.InformationRegisterPeriodicity;
+		
+		If MetaPeriod = Periodicity.RecorderPosition Then
+			DataDimensions.Type         = Documents.AllRefsType();
+			DataDimensions.Presentation = NStr("en='Recorder'");
+			DataDimensions.Master       = True;
+			DimensionDescription.Insert("Recorder", DataDimensions);
+			
+		ElsIf MetaPeriod = Periodicity.Year Then
+			DataDimensions.Type         = New TypeDescription("Date");
+			DataDimensions.Presentation = NStr("en='Period'");
+			DataDimensions.Format       = "L=en_US; DF='yyyy'; DE='Date not set'";
+			DimensionDescription.Insert("Period", DataDimensions);
+			
+		ElsIf MetaPeriod = Periodicity.Day Then
+			DataDimensions.Type           = New TypeDescription("Date");
+			DataDimensions.Presentation = NStr("en='Period'");
+			DataDimensions.Format        = "L=en_US; DLF=D; DE='Date not set'";
+			DimensionDescription.Insert("Period", DataDimensions);
+			
+		ElsIf MetaPeriod = Periodicity.Quarter Then
+			DataDimensions.Type         = New TypeDescription("Date");
+			DataDimensions.Presentation = NStr("en='Period'");
+			DataDimensions.Format       = "L=en_US; DF='""""quarter """" K """" of """" yyyy'; DE='Date not set'";
+			DimensionDescription.Insert("Period", DataDimensions);
+			
+		ElsIf MetaPeriod = Periodicity.Month Then
+			DataDimensions.Type         = New TypeDescription("Date");
+			DataDimensions.Presentation = NStr("en='Period'");
+			DataDimensions.Format       = "L=en_US; DF='MMMM yyyy'; DE='Date not set'";
+			DimensionDescription.Insert("Period", DataDimensions);
+			
+		ElsIf MetaPeriod = Periodicity.Second Then
+			DataDimensions.Type         = New TypeDescription("Date");
+			DataDimensions.Presentation = NStr("en='Period'");
+			DataDimensions.Format       = "L=en_US; DLF=DT; DE='Date not set'";
+			DimensionDescription.Insert("Period", DataDimensions);
+			
+		EndIf;
+		
+	Else
+		DataDimensions.Type         = Documents.AllRefsType();
+		DataDimensions.Presentation = NStr("en='Recorder'");
+		DataDimensions.Master       = True;
+		DimensionDescription.Insert("Recorder", DataDimensions);
+		
+	EndIf;
+	
+	// All dimensions
+	For Each MetaDimension In Meta.Dimensions Do
+		DataDimensions = New Structure("Master, Presentation, Format, Type");
+		DataDimensions.Type         = MetaDimension.Type;
+		DataDimensions.Presentation = MetaDimension.Presentation();
+		DataDimensions.Master       = MetaDimension.Master;
+		DimensionDescription.Insert(MetaDimension.Name, DataDimensions);
+	EndDo;
+	
+	Cache[Meta] = DimensionDescription;
+	Return DimensionDescription;
+EndFunction
+
+Function RegisterRecordDescription(Val Meta)
+	// can be cached by Meta
+	
+	RegisterRecordDescription = New Array;
+	If Not Metadata.Documents.Contains(Meta) Then
+		Return RegisterRecordDescription;
+	EndIf;
+	
+	For Each RegisterRecord In Meta.RegisterRecords Do
+		
+		If Metadata.AccumulationRegisters.Contains(RegisterRecord) Then
+			RecordSet = AccumulationRegisters[RegisterRecord.Name].CreateRecordSet();
+			ExcludeFields = "Active, LineNumber, Period, Recorder"; 
+			
+		ElsIf Metadata.InformationRegisters.Contains(RegisterRecord) Then
+			RecordSet = InformationRegisters[RegisterRecord.Name].CreateRecordSet();
+			ExcludeFields = "Active, RecordType, LineNumber, Period, Recorder"; 
+			
+		ElsIf Metadata.AccountingRegisters.Contains(RegisterRecord) Then
+			RecordSet = AccountingRegisters[RegisterRecord.Name].CreateRecordSet();
+			ExcludeFields = "Active, RecordType, LineNumber, Period, Recorder"; 
+			
+		ElsIf Metadata.CalculationRegisters.Contains(RegisterRecord) Then
+			RecordSet = CalculationRegisters[RegisterRecord.Name].CreateRecordSet();
+			ExcludeFields = "Active, EndOfBasePeriod, BegOfBasePeriod, LineNumber, ActionPeriod, EndOfActionPeriod, BegOfActionPeriod, RegistrationPeriod, Recorder, ReversingEntry, ActualActionPeriod";
+		Else
+			// Unknown type
+			Continue;
+		EndIf;
+		
+		// Fields of reference types and dimensions are candidates
+		Details = FieldListsByType(RecordSet, RegisterRecord.Dimensions, ExcludeFields);
+		If Details.FieldList.Count() = 0 Then
+			// No need to handle
+			Continue;
+		EndIf;
+		
+		Details.Insert("RecordSet", RecordSet);
+		Details.Insert("LockSpace", RegisterRecord.FullName() );
+		
+		RegisterRecordDescription.Add(Details);
+	EndDo; // Register record metadata
+	
+	Return RegisterRecordDescription;
+EndFunction
+
+Function SequenceDescription(Val Meta)
+	
+	SequenceDescription = New Array;
+	If NOT Metadata.Documents.Contains(Meta) Then
+		Return SequenceDescription;
+	EndIf;
+	
+	For Each Sequence In Metadata.Sequences Do
+		If NOT Sequence.Documents.Contains(Meta) Then
+			Continue;
+		EndIf;
+		
+		TableName = Sequence.FullName();
+		
+		// List of fields and dimensions
+		Details = FieldListsByType(TableName, Sequence.Dimensions, "Recorder");
+		If Details.FieldList.Count() > 0 Then
+			
+			Details.Insert("RecordSet",  Sequences[Sequence.Name].CreateRecordSet());
+			Details.Insert("LockSpace",  TableName + ".Records");
+			Details.Insert("Dimensions", New Structure);
+			
+			SequenceDescription.Add(Details);
+		EndIf;
+		
+	EndDo;
+	
+	Return SequenceDescription;
+EndFunction
+
+Function ObjectDescription(Val Meta)
+	// can be cached by Meta
+	
+	AllRefsType = AllRefsTypeDescription();
+	
+	Candidates = New Structure("Attributes, StandardAttributes, TabularSections, StandardTabularSections");
+	FillPropertyValues(Candidates, Meta);
+	
+	ObjectDescription = New Structure;
+	
+	ObjectDescription.Insert("Attributes", New Structure);
+	If Candidates.Attributes <> Undefined Then
+		For Each MetaAttribute In Candidates.Attributes Do
+			If DescriptionTypesIntersect(MetaAttribute.Type, AllRefsType) Then
+				ObjectDescription.Attributes.Insert(MetaAttribute.Name);
+			EndIf;
+		EndDo;
+	EndIf;
+	
+	ObjectDescription.Insert("StandardAttributes", New Structure);
+	If Candidates.StandardAttributes <> Undefined Then
+		ToExclude = New Structure("Ref");
+		
+		For Each MetaAttribute In Candidates.StandardAttributes Do
+			Name = MetaAttribute.Name;
+			If Not ToExclude.Property(Name) AND DescriptionTypesIntersect(MetaAttribute.Type, AllRefsType) Then
+				ObjectDescription.Attributes.Insert(MetaAttribute.Name);
+			EndIf;
+		EndDo;
+	EndIf;
+	
+	ObjectDescription.Insert("TabularSections", New Array);
+	If Candidates.TabularSections <> Undefined Then
+		For Each MetaTable In Candidates.TabularSections Do
+			
+			FieldList = New Structure;
+			For Each MetaAttribute In MetaTable.Attributes Do
+				If DescriptionTypesIntersect(MetaAttribute.Type, AllRefsType) Then
+					FieldList.Insert(MetaAttribute.Name);
+				EndIf;
+			EndDo;
+			
+			If FieldList.Count() > 0 Then
+				ObjectDescription.TabularSections.Add(New Structure("Name, FieldList", MetaTable.Name, FieldList));
+			EndIf;
+		EndDo;
+	EndIf;
+	
+	ObjectDescription.Insert("StandardTabularSections", New Array);
+	If Candidates.StandardTabularSections <> Undefined Then
+		For Each MetaTable In Candidates.StandardTabularSections Do
+			
+			FieldList = New Structure;
+			For Each MetaAttribute In MetaTable.StandardAttributes Do
+				If DescriptionTypesIntersect(MetaAttribute.Type, AllRefsType) Then
+					FieldList.Insert(MetaAttribute.Name);
+				EndIf;
+			EndDo;
+			
+			If FieldList.Count() > 0 Then
+				ObjectDescription.StandardTabularSections.Add(New Structure("Name, FieldList", MetaTable.Name, FieldList));
+			EndIf;
+		EndDo;
+	EndIf;
+	
+	ObjectDescription.Insert("CanBePosted", Metadata.Documents.Contains(Meta));
+	Return ObjectDescription;
+EndFunction
+
+Function RecordKeyDescription(Val Meta)
+	// can be cached by Meta
+	
+	TableName = Meta.FullName();
+	
+	// Fields of reference types are candidates and a dimension set
+	KeyDescription = FieldListsByType(TableName, Meta.Dimensions, "Period, Recorder");
+		
+	If Metadata.InformationRegisters.Contains(Meta) Then
+		RecordSet = InformationRegisters[Meta.Name].CreateRecordSet();
+		
+	ElsIf Metadata.AccumulationRegisters.Contains(Meta) Then
+		RecordSet = AccumulationRegisters[Meta.Name].CreateRecordSet();
+		
+	ElsIf Metadata.AccountingRegisters.Contains(Meta) Then
+		RecordSet = AccountingRegisters[Meta.Name].CreateRecordSet();
+		
+	ElsIf Metadata.CalculationRegisters.Contains(Meta) Then
+		RecordSet = CalculationRegisters[Meta.Name].CreateRecordSet();
+		
+	Else
+		RecordSet = Undefined;
+	EndIf;
+		
+	KeyDescription.Insert("RecordSet", RecordSet);
+	KeyDescription.Insert("LockSpace", TableName);
+
+	Return KeyDescription;
+EndFunction
+
+Function LockListDescription(Val DataLock)
+	// Unique values only
+	ProcessedItems = New Map;
+	
+	DescriptionString = "";
+	For Each Item In DataLock Do
+		For Each Field In Item.Fields Do
+			Value = Field.Value;
+			If ProcessedItems[Value] = Undefined Then
+				DescriptionString = DescriptionString + Chars.LF + Field.Value;
+				ProcessedItems[Value] = True;
+			EndIf
+		EndDo;
+	EndDo;
+	
+	Return TrimL(DescriptionString);
+EndFunction
+
+Function DescriptionTypesIntersect(Val Description1, Val Description2)
+	
+	For Each Type In Description1.Types() Do
+		If Description2.ContainsType(Type) Then
+			Return True;
+		EndIf;
+	EndDo;
+	
+	Return False;
+EndFunction
+
+// Returns a description by the table name or by the record set
+Function FieldListsByType(Val DataSource , Val MetaDimensions, Val ExcludeFields)
+	// can be cached
+	
+	Details = New Structure;
+	Details.Insert("FieldList",           New Structure);
+	Details.Insert("MeasurementList",     New Structure);
+	Details.Insert("MasterDimentionList", New Structure);
+	
+	ControlType = AllRefsTypeDescription();
+	ToExclude = New Structure(ExcludeFields);
+	
+	DataSourceType = TypeOf(DataSource);
+	
+	If DataSourceType = Type("String") Then
+		// Table name is a source, getting fields with query
+		Query = New Query("SELECT * FROM " + DataSource + " WHERE FALSE");
+		FieldSource = Query.Execute();
+	Else
+		// Record set is a source
+		FieldSource = DataSource.UnloadColumns();
+	EndIf;
+	
+	For Each Column In FieldSource.Columns Do
+		Name = Column.Name;
+		If Not ToExclude.Property(Name) AND DescriptionTypesIntersect(Column.ValueType, ControlType) Then
+			Details.FieldList.Insert(Name);
+			
+			// Checking for a master dimension
+			Meta = MetaDimensions.Find(Name);
+			If Meta <> Undefined Then
+				Details.MeasurementList.Insert(Name, Meta.Type);
+				Test = New Structure("Master", False);
+				FillPropertyValues(Test, Meta);
+				If Test.Master Then
+					Details.MasterDimentionList.Insert(Name, Meta.Type);
+				EndIf;
+			EndIf;
+			
+		EndIf;
+		
+	EndDo;
+	
+	Return Details;
+EndFunction
+
+Procedure AddReplacementResult(Table, Val Ref, Val ErrorDescription)
+	Row = Table.Add();
+	
+	Row.Ref = Ref;
+	
+	Row.ErrorObjectPresentation = ErrorDescription.ErrorObjectPresentation;
+	Row.ErrorObject             = ErrorDescription.ErrorObject;
+	Row.ErrorText               = ErrorDescription.ErrorText;
+	Row.ErrorObject             = ErrorDescription.ErrorObject;
+	
+EndProcedure
+
+Function ReplacementErrorDetails(Val ErrorType, Val ErrorObject, Val ErrorObjectPresentation, Val ErrorText)
+	Result = New Structure;
+	
+	Result.Insert("ErrorType",               ErrorType);
+	Result.Insert("ErrorObject",             ErrorObject);
+	Result.Insert("ErrorObjectPresentation", ErrorObjectPresentation);
+	Result.Insert("ErrorText",               ErrorText);
+	
+	Return Result;
+EndFunction
+
+Procedure ReplaceInRowCollection(Collection, Val FieldList, Val ReplacementCouples)
+	WorkingCollection = Collection.Unload();
+	Modified = False;
+	
+	For Each Row In WorkingCollection Do
+		
+		For Each KeyValue In FieldList Do
+			Name = KeyValue.Key;
+			DestinationRef = ReplacementCouples[ Row[Name] ];
+			If DestinationRef <> Undefined Then
+				Row[Name] = DestinationRef;
+				Modified = True;
+			EndIf;
+		EndDo;
+		
+	EndDo;
+	
+	If Modified Then
+		Collection.Load(WorkingCollection);
+	EndIf;
+EndProcedure
+
+Procedure ReportDeferredMessages(Val Messages)
+	
+	For Each Message In Messages Do
+		Message.Message();
+	EndDo;
+	
+EndProcedure
+
+Procedure HandleObjectWithMessageInterception(Val Object, Val Action, Val WriteMode, Val WriteParameters)
+	
+	// Saving the current messages before the exceptions
+	PreviousMessages = GetUserMessages(True);
+	ReportRepeatedly = CurrentRunMode() <> Undefined;
+	
+	Try
+		
+		If Action = "Write" Then
+			SetWritingParameters(Object, WriteParameters);
+			If WriteMode = Undefined Then
+				Object.Write();
+			Else
+				Object.Write(WriteMode);
+			EndIf;
+			
+		ElsIf Action = "DeletionMark" Then
+			SetWritingParameters(Object, WriteParameters);
+			Object.SetDeletionMark(True, False);
+			
+		ElsIf Action = "DirectDeletion" Then
+			SetWritingParameters(Object, WriteParameters);
+			Object.Delete();
+			
+		EndIf;
+		
+	Except
+		Information = ErrorInfo(); 
+		
+		// Intercepting all reported error messages and adding them to a single exception
+		ErrorMessage = "";
+		For Each Message In GetUserMessages(False) Do
+			ErrorMessage = ErrorMessage + Chars.LF + Message.Text;
+		EndDo;
+		
+		// Reporting the previous message
+		If ReportRepeatedly Then
+			ReportDeferredMessages(PreviousMessages);
+		EndIf;
+		
+		// Exiting
+		If IsBlankString(ErrorMessage) Then
+			Raise;
+		EndIf;
+		
+		Raise TrimAll(BriefErrorDescription(Information) + Chars.LF + TrimAll(ErrorMessage));
+	EndTry;
+	
+	If ReportRepeatedly Then
+		ReportDeferredMessages(PreviousMessages);
+	EndIf;
+	
+EndProcedure
+
+Procedure WriteObject(Val Object, Val WriteParameters)
+	
+	ObjectMetadata = Object.Metadata();
+	
+	If IsDocument(ObjectMetadata) Then
+		HandleObjectWithMessageInterception(Object, "Write", DocumentWriteMode.Write, WriteParameters);
+		Return;
+	EndIf;
+	
+	// Checking for loop references
+	AttributeTest= New Structure("Hierarchical, ExtDimensionTypes, Owners", False, Undefined, New Array);
+	FillPropertyValues(AttributeTest, ObjectMetadata);
+	
+	// By parent
+	If AttributeTest.Hierarchical Or AttributeTest.ExtDimensionTypes <> Undefined Then 
+		
+		If Object.Parent = Object.Ref Then
+			Raise StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'When writing %1 a loop reference occurs in hierarchy.'"),
+				String(Object));
+			EndIf;
+			
+	EndIf;
+	
+	// By owner
+	For Each MetaOwner In AttributeTest.Owners Do
+		
+		If Object.Owner = Object.Ref Then
+			Raise StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'When writing %1 a loop reference occurs in subordination.'"),
+				String(Object));
+		EndIf;
+		Break;
+		
+	EndDo;
+	
+	// Just writing
+	HandleObjectWithMessageInterception(Object, "Write", Undefined, WriteParameters);
+EndProcedure
+
+Procedure SetWritingParameters(Object, Val WriteParameters)
+	
+	AttributeTest = New Structure("DataExchange");
+	FillPropertyValues(AttributeTest, Object);
+	If TypeOf(AttributeTest.DataExchange) = Type("DataExchangeParameters") Then
+		Object.DataExchange.Load = WriteParameters.DontCheck;
+		Object.DataExchange.Recipients.AutoFill = Not WriteParameters.DontCheck;
+	EndIf;
+	
+	Object.AdditionalProperties.Insert("DisableObjectChangeRecordMechanism", WriteParameters.DontCheck);
+	
+EndProcedure
+
+Function ReferenceReplacementEventLogMessageText()
+	Return NStr("en='Reference search and deletion'", 
+		Metadata.DefaultLanguage.LanguageCode);
+EndFunction
+
+
+Procedure ReplaceReferenceInShortTransactions(ReplacementResult, Val ReplacementParameters, Val ReplacementToProcess, Val SearchTable)
+	
+	// Main data processor loop
+	WriteParameters = New Structure;
+	WriteParameters.Insert("DontCheck", Not ReplacementParameters.ControlOnWrite);
+	WriteParameters.Insert("WriteInPrivilegedMode", ReplacementParameters.WriteInPrivilegedMode);
+	
+	ReferenceFilter = New Structure("Ref, ReplacementKey");
+	For Each Ref In ReplacementToProcess Do
+		ReferenceFilter.Ref = Ref;
+		
+		ReferenceFilter.ReplacementKey = "Constant";
+		UsageInstances = SearchTable.FindRows(ReferenceFilter);
+		For Each UsageInstance In UsageInstances Do
+			ReplaceInConstant(ReplacementResult, UsageInstance, WriteParameters);
+		EndDo;
+		
+		ReferenceFilter.ReplacementKey = "Object";
+		UsageInstances = SearchTable.FindRows(ReferenceFilter);
+		For Each UsageInstance In UsageInstances Do
+			ReplaceInObject(ReplacementResult, UsageInstance, WriteParameters);
+		EndDo;
+		
+		ReferenceFilter.ReplacementKey = "RecordKey";
+		UsageInstances = SearchTable.FindRows(ReferenceFilter);
+		For Each UsageInstance In UsageInstances Do
+			ReplaceInSet(ReplacementResult, UsageInstance, WriteParameters);
+		EndDo;
+	EndDo;
+	
+	// Final actions
+	If ReplacementParameters.DeleteDirectly Then
+		DeleteReferencesDirectly(ReplacementResult, ReplacementToProcess, WriteParameters, True);
+		
+	ElsIf ReplacementParameters.MarkForDeletion Then
+		DeleteReferencesWithMark(ReplacementResult, ReplacementToProcess, WriteParameters);
+		
+	Else 
+		// Searching for new items
+		RepeatSearchTable = UsageInstances(ReplacementToProcess);
+		AddModifiedObjectReplacementResults(ReplacementResult, RepeatSearchTable);
+	EndIf;
+		
+EndProcedure
+
+Procedure ReplaceReferenceInLongTransaction(ReplacementResult, Val Ref, Val ReplacementParameters, Val SearchTable)
+	SetPrivilegedMode(True);
+	
+	WriteParameters = New Structure;
+	WriteParameters.Insert("DontCheck", Not ReplacementParameters.ControlOnWrite);
+	WriteParameters.Insert("WriteInPrivilegedMode", ReplacementParameters.WriteInPrivilegedMode);
+	
+	ActionState = "";
+	
+	// 1. Locking all usage instances
+	DataLock = New DataLock;
+	
+	UsageInstancesConstants = SearchTable.FindRows(New Structure("Ref, ReplacementKey", Ref, "Constant"));
+	AddObjectsLockConstants(DataLock, UsageInstancesConstants);
+	
+	UsageInstancesObjects = SearchTable.FindRows(New Structure("Ref, ReplacementKey", Ref, "Object"));
+	AddLockObjectsObjects(DataLock, UsageInstancesObjects);
+	
+	UsageInstancesSets = SearchTable.FindRows(New Structure("Ref, ReplacementKey", Ref, "RecordKey"));
+	AddLockObjectsSets(DataLock, UsageInstancesSets);
+		
+	BeginTransaction();
+	Try
+		DataLock.Lock();
+	Except
+		// Adding the record to the unsuccessful lock attempt result
+		Error = StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'Cannot lock all usage instances of %1'"),
+			Ref
+		);
+		AddReplacementResult(ReplacementResult, Ref, 
+			ReplacementErrorDetails("LockError", Undefined, Undefined, Error)
+		);
+	
+		ActionState = "LockError";
+	EndTry;
+	
+	SetPrivilegedMode(False);
+	
+	// 2. Replacing everywhere
+	If ActionState = "" Then
+		ErrorsCount = ReplacementResult.Count();
+		
+		For Each UsageInstance In UsageInstancesConstants Do
+			ReplaceInConstant(ReplacementResult, UsageInstance, WriteParameters, False);
+		EndDo;
+		
+		For Each UsageInstance In UsageInstancesObjects Do
+			ReplaceInObject(ReplacementResult, UsageInstance, WriteParameters, False);
+		EndDo;
+		
+		For Each UsageInstance In UsageInstancesSets Do
+			ReplaceInSet(ReplacementResult, UsageInstance, WriteParameters, False);
+		EndDo;
+		
+		If ErrorsCount <> ReplacementResult.Count() Then
+			ActionState = "WritingError";
+		EndIf;
+	EndIf;
+	
+	// 3. Delete 
+	ReplacementToProcess = New Array;
+	ReplacementToProcess.Add(Ref);
+	
+	If ActionState = "" Then
+		ErrorsCount = ReplacementResult.Count();
+		
+		If ReplacementParameters.DeleteDirectly Then
+			DeleteReferencesDirectly(ReplacementResult, ReplacementToProcess, WriteParameters, False);
+			
+		ElsIf ReplacementParameters.MarkForDeletion Then
+			DeleteReferencesWithMark(ReplacementResult, ReplacementToProcess, WriteParameters, False);
+			
+		Else 
+			// Searching for new items
+			RepeatSearchTable = UsageInstances(ReplacementToProcess);
+			AddModifiedObjectReplacementResults(ReplacementResult, RepeatSearchTable);
+		EndIf;
+		
+		If ErrorsCount <> ReplacementResult.Count() Then
+			ActionState = "DataChanged";
+		EndIf;
+	EndIf;
+	
+	If ActionState = "" Then
+		CommitTransaction();
+	Else
+		RollbackTransaction();
+	EndIf;
+	
+EndProcedure
+	
+Procedure AddObjectsLockConstants(DataLock, Val UsageRows)
+	
+	For Each Row In UsageRows Do
+		DataLock.Add(Row.Metadata.FullName());
+	EndDo;
+	
+EndProcedure
+
+
+Procedure AddLockObjectsObjects(DataLock, Val UsageRows)
+	
+	For Each UsageInstance In UsageRows Do
+		Data = UsageInstance.Data;
+		Meta = UsageInstance.Metadata;
+		
+		// The item
+		DataLock.Add(Meta.FullName()).SetValue("Ref", Data);
+		
+		// RegisterRecords 
+		RegisterRecordDescription = RegisterRecordDescription(Meta);
+		For Each Item In RegisterRecordDescription Do
+			// Everything by the recorder
+			DataLock.Add(Item.LockSpace + ".RecordSet").SetValue("Recorder", Data);
+			
+			// All candidates are dimensions for saving the results
+			For Each KeyValue In Item.MeasurementList Do
+				DimensionType = KeyValue.Value;
+				For Each UsageInstance In UsageRows Do
+					CurrentRef = UsageInstance.Ref;
+					If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+						DataLock.Add(Item.LockSpace).SetValue(KeyValue.Key, UsageInstance.Ref);
+					EndIf;
+				EndDo;
+			EndDo;
+		EndDo;
+		
+		// Sequences
+		SequenceDescription = SequenceDescription(Meta);
+		For Each Item In SequenceDescription Do
+			DataLock.Add(Item.LockSpace).SetValue("Recorder", Data);
+			
+			For Each KeyValue In Item.MeasurementList Do
+				DimensionType = KeyValue.Value;
+				For Each UsageInstance In UsageRows Do
+					CurrentRef = UsageInstance.Ref;
+					If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+						DataLock.Add(Item.LockSpace).SetValue(KeyValue.Key, CurrentRef);
+					EndIf;
+				EndDo;
+			EndDo;
+		EndDo;
+	
+	EndDo;
+
+EndProcedure
+
+
+Procedure AddLockObjectsSets(DataLock, Val UsageRows)
+	
+	For Each UsageInstance In UsageRows Do
+		Data = UsageInstance.Data;
+		Meta = UsageInstance.Metadata; 
+		
+		SetDescription = RecordKeyDescription(Meta);
+		RecordSet = SetDescription.RecordSet;
+		
+		For Each KeyValue In SetDescription.MeasurementList Do
+			DimensionType = KeyValue.Value;
+			Name          = KeyValue.Key;
+			Value         = Data[Name];
+			
+			For Each Row In UsageRows Do
+				CurrentRef = Row.Ref;
+				If DimensionType.ContainsType(TypeOf(CurrentRef)) Then
+					DataLock.Add(SetDescription.LockSpace).SetValue(Name, CurrentRef);
+				EndIf;
+			EndDo;
+			
+			RecordSet.Filter[Name].Set(Value);
+		EndDo;
+		
+	EndDo;
+	
+EndProcedure
+
+Function EvaluateDataValueByPath(Val Data, Val DataPath)
+	PathParts = StrReplace(DataPath, ".", Chars.LF);
+	PathPartCount = StrLineCount(PathParts);
+	
+	InterimResult = Data;
+	
+	For Index = 1 To PathPartCount Do
+		AttributeName = StrGetLine(PathParts, Index);
+		
+		Test = New Structure(AttributeName, Undefined);
+		FillPropertyValues(Test, InterimResult);
+		If Test[AttributeName] = Undefined Then
+			Test[AttributeName] = -1;
+			FillPropertyValues(Test, InterimResult);
+			If Test[AttributeName] = Undefined Then
+				Raise StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en='Cannot evaluate %1 for the %2 object. The %3 attribute is not found.'"),
+					DataPath, Data, AttributeName 
+				);
+			EndIf;
+		EndIf;
+		
+		Result = Test[AttributeName];
+		If Index = PathPartCount Then
+			Return Result;
+			
+		ElsIf Result = Undefined Then
+			// No need to continue evaluation
+			Return Undefined;
+			
+		EndIf;
+		
+		InterimResult = Result;
+	EndDo;
+	
+	Return Undefined;
+EndFunction
+
+// Internal. Starts background jobs during reference replacement.
+Procedure InstanceCountCalculatingInBackground(Val ReferenceSet, Val ResultAddress) Export
+	
+	SearchTable = UsageInstances(ReferenceSet);
+	
+	Filter = New Structure("AuxiliaryData", False);
+	ActualRows = SearchTable.FindRows(Filter);
+	
+	Result = SearchTable.Copy(ActualRows, "Ref");
+	Result.Columns.Add("Entries", New TypeDescription("Number"));
+	Result.FillValues(1, "Entries");
+	
+	Result.Collapse("Ref", "Entries");
+	For Each Ref In ReferenceSet Do
+		If Result.Find(Ref, "Ref") = Undefined Then
+			Result.Add().Ref = Ref;
+		EndIf;
+	EndDo;
+	
+	PutToTempStorage(Result, ResultAddress);
+EndProcedure
+
+
+// See. DataProcessor.SearchAndDeletionOfDuplicates
+Function AvailableFilterMetaAttributeNames(Val MetaCollection)
+	Result = "";
+	StoreType = Type("ValueStorage");
+	
+	For Each MetaAttribute In MetaCollection Do
+		IsStorage = MetaAttribute.Type.ContainsType(StoreType);
+		If Not IsStorage Then
+			Result = Result + "," + MetaAttribute.Name;
+		EndIf
+	EndDo;
+	
+	Return Result;
+EndFunction
+
+#EndRegion

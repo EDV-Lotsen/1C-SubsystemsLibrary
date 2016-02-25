@@ -1,58 +1,280 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
 	<Events>
-		<Event name="AfterWrite">AfterWrite</Event>
+		<Event name="AfterWriteAtServer">AfterWriteAtServer</Event>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
+		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
 	</Events>
 	<ChildItems>
+		<UsualGroup name="GroupTypeDescription" id="72">
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupTypeDescriptionExtendedTooltip" id="85"/>
+			<ChildItems>
+				<InputField name="Type" id="70">
+					<DataPath>Object.Type</DataPath>
+					<Width>19</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<TextEdit>false</TextEdit>
+					<BackColor>style:MasterFieldBackground</BackColor>
+					<ContextMenu name="TypeContextMenu" id="71"/>
+					<ExtendedTooltip name="TypeExtendedTooltip" id="86"/>
+					<Events>
+						<Event name="OnChange">TypeOnChange</Event>
+						<Event name="Clearing">ClearType</Event>
+					</Events>
+				</InputField>
+				<InputField name="Description" id="1">
+					<DataPath>Object.Description</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Width>20</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="2"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="87"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="Tooltip" id="73">
+			<DataPath>Object.ToolTip</DataPath>
+			<TitleLocation>Left</TitleLocation>
+			<Height>2</Height>
+			<MultiLine>true</MultiLine>
+			<ContextMenu name="ToolTipContextMenu" id="74"/>
+			<ExtendedTooltip name="ToolTipExtendedTooltip" id="88"/>
+		</InputField>
 		<InputField name="Parent" id="11">
 			<DataPath>Object.Parent</DataPath>
 			<Wrap>false</Wrap>
+			<OpenButton>false</OpenButton>
 			<ContextMenu name="ParentContextMenu" id="12"/>
-			<ExtendedTooltip name="ParentExtendedTooltip" id="15"/>
+			<ExtendedTooltip name="ParentExtendedTooltip" id="89"/>
 		</InputField>
-		<InputField name="Description" id="1">
-			<DataPath>Object.Description</DataPath>
-			<DefaultItem>true</DefaultItem>
-			<Wrap>false</Wrap>
-			<ContextMenu name="DescriptionContextMenu" id="2"/>
-			<ExtendedTooltip name="DescriptionExtendedTooltip" id="16"/>
-		</InputField>
-		<InputField name="Type" id="3">
-			<DataPath>Object.Type</DataPath>
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Information type</v8:content>
-				</v8:item>
-			</Title>
-			<Wrap>false</Wrap>
-			<ContextMenu name="TypeContextMenu" id="4"/>
-			<ExtendedTooltip name="TypeExtendedTooltip" id="17"/>
-			<Events>
-				<Event name="OnChange">TypeOnChange</Event>
-			</Events>
-		</InputField>
-		<CheckBoxField name="EditInDialogOnly" id="9">
-			<DataPath>Object.EditInDialogOnly</DataPath>
-			<TitleLocation>Right</TitleLocation>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="EditInDialogOnlyContextMenu" id="10"/>
-			<ExtendedTooltip name="EditInDialogOnlyExtendedTooltip" id="18"/>
-			<Events>
-				<Event name="OnChange">EditInDialogOnlyOnChange</Event>
-			</Events>
-		</CheckBoxField>
-		<CheckBoxField name="HomeCountryAddressOnly" id="13">
-			<DataPath>Object.HomeCountryAddressOnly</DataPath>
-			<TitleLocation>Right</TitleLocation>
-			<CheckBoxType>Auto</CheckBoxType>
-			<ContextMenu name="HomeCountryAddressOnlyContextMenu" id="14"/>
-			<ExtendedTooltip name="HomeCountryAddressOnlyExtendedTooltip" id="19"/>
-		</CheckBoxField>
+		<UsualGroup name="GroupContactInformationType" id="63">
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="GroupContactInformationTypeExtendedTooltip" id="90"/>
+			<ChildItems>
+				<UsualGroup name="GroupTypeCommon" id="64">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Type common group</v8:content>
+						</v8:item>
+					</Title>
+					<HorizontalStretch>true</HorizontalStretch>
+					<Group>Vertical</Group>
+					<Representation>NormalSeparation</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="GroupTypeCommonExtendedTooltip" id="91"/>
+					<ChildItems>
+						<CheckBoxField name="Mandatory" id="18">
+							<DataPath>Object.Mandatory</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="MandatoryContextMenu" id="19"/>
+							<ExtendedTooltip name="MandatoryExtendedTooltip" id="92"/>
+						</CheckBoxField>
+						<CheckBoxField name="EditInDialogOnly" id="9">
+							<DataPath>Object.EditInDialogOnly</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Edit in dialog box only</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>Right</TitleLocation>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="EditInDialogOnlyContextMenu" id="10"/>
+							<ExtendedTooltip name="EditInDialogOnlyExtendedTooltip" id="93"/>
+						</CheckBoxField>
+						<CheckBoxField name="AllowMultipleValueInput" id="80">
+							<DataPath>Object.AllowMultipleValueInput</DataPath>
+							<TitleLocation>Right</TitleLocation>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Allow input of multiple values of the same kind</v8:content>
+								</v8:item>
+							</ToolTip>
+							<CheckBoxType>Auto</CheckBoxType>
+							<ContextMenu name="AllowMultipleValueInputContextMenu" id="81"/>
+							<ExtendedTooltip name="AllowMultipleValueInputExtendedTooltip" id="94"/>
+						</CheckBoxField>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="Group3" id="82">
+					<Group>Horizontal</Group>
+					<Representation>NormalSeparation</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="Group3ExtendedTooltip" id="95"/>
+					<ChildItems>
+						<LabelDecoration name="Decoration1" id="83">
+							<Width>1</Width>
+							<ContextMenu name="Decoration1ContextMenu" id="84"/>
+							<ExtendedTooltip name="Decoration1ExtendedTooltip" id="96"/>
+						</LabelDecoration>
+					</ChildItems>
+				</UsualGroup>
+				<UsualGroup name="DescriptionSettingsByTypeGroup" id="65">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description settings by type group</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description settings by type group</v8:content>
+						</v8:item>
+					</ToolTip>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Group>Vertical</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="DescriptionSettingsByTypeGroupExtendedTooltip" id="97"/>
+					<ChildItems>
+						<UsualGroup name="GroupAlignByType" id="66">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Align by type group</v8:content>
+								</v8:item>
+							</Title>
+							<HorizontalStretch>false</HorizontalStretch>
+							<Group>Horizontal</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="GroupAlignByTypeExtendedTooltip" id="98"/>
+							<ChildItems>
+								<Pages name="Checks" id="27">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Checks</v8:content>
+										</v8:item>
+									</Title>
+									<PagesRepresentation>None</PagesRepresentation>
+									<ExtendedTooltip name="ChecksExtendedTooltip" id="99"/>
+									<ChildItems>
+										<Page name="Address" id="25">
+											<ExtendedTooltip name="AddressExtendedTooltip" id="100"/>
+											<ChildItems>
+												<CheckBoxField name="DomesticAddressOnly" id="13">
+													<DataPath>Object.DomesticAddressOnly</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Home country only</v8:content>
+														</v8:item>
+													</Title>
+													<TitleLocation>Right</TitleLocation>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="DomesticAddressOnlyContextMenu" id="14"/>
+													<ExtendedTooltip name="DomesticAddressOnlyExtendedTooltip" id="101"/>
+													<Events>
+														<Event name="OnChange">DomesticAddressOnlyOnChange</Event>
+													</Events>
+												</CheckBoxField>
+												<UsualGroup name="Group2" id="37">
+													<Group>Horizontal</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="Group2ExtendedTooltip" id="102"/>
+													<ChildItems>
+														<LabelDecoration name="Decoration3" id="38">
+															<Width>1</Width>
+															<ContextMenu name="Decoration3ContextMenu" id="39"/>
+															<ExtendedTooltip name="Decoration3ExtendedTooltip" id="103"/>
+														</LabelDecoration>
+														<UsualGroup name="Group1" id="34">
+															<Group>Vertical</Group>
+															<Representation>None</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="Group1ExtendedTooltip" id="104"/>
+															<ChildItems>
+																<CheckBoxField name="CheckByClassfier" id="32">
+																	<DataPath>Object.CheckValidity</DataPath>
+																	<Title>
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Prohibit invalid address input</v8:content>
+																		</v8:item>
+																	</Title>
+																	<TitleLocation>Right</TitleLocation>
+																	<CheckBoxType>Auto</CheckBoxType>
+																	<ContextMenu name="CheckByClassfierContextMenu" id="33"/>
+																	<ExtendedTooltip name="CheckByClassfierExtendedTooltip" id="105"/>
+																	<Events>
+																		<Event name="OnChange">CheckByClassfierOnChange</Event>
+																	</Events>
+																</CheckBoxField>
+																<CheckBoxField name="HideObsoleteAddresses" id="61">
+																	<DataPath>Object.HideObsoleteAddresses</DataPath>
+																	<TitleLocation>Right</TitleLocation>
+																	<CheckBoxType>Auto</CheckBoxType>
+																	<ContextMenu name="HideObsoleteAddressesContextMenu" id="62"/>
+																	<ExtendedTooltip name="HideObsoleteAddressesExtendedTooltip" id="106"/>
+																</CheckBoxField>
+																<CheckBoxField name="IncludeCountryInPresentation" id="16">
+																	<DataPath>Object.IncludeCountryInPresentation</DataPath>
+																	<TitleLocation>Right</TitleLocation>
+																	<CheckBoxType>Auto</CheckBoxType>
+																	<ContextMenu name="IncludeCountryInPresentationContextMenu" id="17"/>
+																	<ExtendedTooltip name="IncludeCountryInPresentationExtendedTooltip" id="107"/>
+																</CheckBoxField>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</Page>
+										<Page name="EmailAddress" id="28">
+											<ExtendedTooltip name="EmailAddressExtendedTooltip" id="108"/>
+											<ChildItems>
+												<CheckBoxField name="CheckValidity" id="20">
+													<DataPath>Object.CheckValidity</DataPath>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Prohibit invalid address input</v8:content>
+														</v8:item>
+													</Title>
+													<TitleLocation>Right</TitleLocation>
+													<CheckBoxType>Auto</CheckBoxType>
+													<ContextMenu name="CheckValidityContextMenu" id="21"/>
+													<ExtendedTooltip name="CheckValidityExtendedTooltip" id="109"/>
+													<Events>
+														<Event name="OnChange">CheckValidityOnChange</Event>
+													</Events>
+												</CheckBoxField>
+											</ChildItems>
+										</Page>
+										<Page name="Other" id="51">
+											<ExtendedTooltip name="OtherExtendedTooltip" id="110"/>
+											<ChildItems>
+												<LabelDecoration name="Decoration7" id="54">
+													<ContextMenu name="Decoration7ContextMenu" id="55"/>
+													<ExtendedTooltip name="Decoration7ExtendedTooltip" id="111"/>
+												</LabelDecoration>
+											</ChildItems>
+										</Page>
+									</ChildItems>
+								</Pages>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Object" id="1">
@@ -61,39 +283,6 @@
 			</Type>
 			<MainAttribute>true</MainAttribute>
 			<SavedData>true</SavedData>
-		</Attribute>
-		<Attribute name="CITypeAddress" id="2">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Address type of contact information</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:EnumRef.ContactInformationTypes</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="CITypePhone" id="3">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Telephone type of contact information</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:EnumRef.ContactInformationTypes</v8:Type>
-			</Type>
-		</Attribute>
-		<Attribute name="CITypeFax" id="4">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Fax type of contact information</v8:content>
-				</v8:item>
-			</Title>
-			<Type>
-				<v8:Type>cfg:EnumRef.ContactInformationTypes</v8:Type>
-			</Type>
 		</Attribute>
 	</Attributes>
 </Form>

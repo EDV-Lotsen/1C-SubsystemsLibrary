@@ -2,13 +2,13 @@
 <Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
 	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<ChildItems>
-			<Button name="ExecuteExchange" id="2">
+			<Button name="ExecuteExchange" id="125">
 				<Type>CommandBarButton</Type>
 				<SkipOnInput>false</SkipOnInput>
 				<CommandName>Form.Command.ExecuteExchange</CommandName>
-				<ExtendedTooltip name="ExecuteExchangeExtendedTooltip" id="3"/>
+				<ExtendedTooltip name="ExecuteExchangeExtendedTooltip" id="127"/>
 			</Button>
 		</ChildItems>
 	</AutoCommandBar>
@@ -19,25 +19,25 @@
 		<Event name="BeforeWriteAtServer">BeforeWriteAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="Group" id="4">
+		<UsualGroup name="Group" id="103">
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupExtendedTooltip" id="5"/>
+			<ExtendedTooltip name="GroupExtendedTooltip" id="128"/>
 			<ChildItems>
-				<InputField name="Description" id="6">
+				<InputField name="Description" id="3">
 					<DataPath>Object.Description</DataPath>
 					<Wrap>false</Wrap>
-					<ContextMenu name="DescriptionContextMenu" id="7"/>
-					<ExtendedTooltip name="DescriptionExtendedTooltip" id="8"/>
+					<ContextMenu name="DescriptionContextMenu" id="4"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="129"/>
 				</InputField>
-				<InputField name="Code" id="9">
-					<ContextMenu name="CodeContextMenu" id="10"/>
-					<ExtendedTooltip name="CodeExtendedTooltip" id="11"/>
+				<InputField name="Code" id="101">
+					<ContextMenu name="CodeContextMenu" id="102"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="130"/>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="ScheduledExchange" id="12">
+		<UsualGroup name="ScheduledExchange" id="22">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -47,41 +47,41 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Scheduled exchange.</v8:content>
+					<v8:content>Scheduled exchange</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Width>70</Width>
 			<HorizontalStretch>false</HorizontalStretch>
-			<Group>Vertical</Group>
+			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ScheduledExchangeExtendedTooltip" id="13"/>
+			<ExtendedTooltip name="ScheduledExchangeExtendedTooltip" id="131"/>
 			<ChildItems>
-				<CheckBoxField name="UseScheduledJob" id="14">
+				<CheckBoxField name="UseScheduledJob" id="24">
 					<DataPath>Object.UseScheduledJob</DataPath>
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Use schedule</v8:content>
+							<v8:content>Automated data synchronization on schedule:</v8:content>
 						</v8:item>
 					</Title>
 					<TitleLocation>Right</TitleLocation>
 					<CheckBoxType>Auto</CheckBoxType>
-					<ContextMenu name="UseScheduledJobContextMenu" id="15"/>
-					<ExtendedTooltip name="UseScheduledJobExtendedTooltip" id="16"/>
+					<ContextMenu name="UseScheduledJobContextMenu" id="25"/>
+					<ExtendedTooltip name="UseScheduledJobExtendedTooltip" id="132"/>
 					<Events>
 						<Event name="OnChange">UseScheduledJobOnChange</Event>
 					</Events>
 				</CheckBoxField>
-				<Button name="SetupJobSchedule" id="17">
+				<Button name="SetJobSchedule" id="62">
 					<Type>Hyperlink</Type>
 					<SkipOnInput>false</SkipOnInput>
-					<CommandName>Form.Command.SetupJobSchedule</CommandName>
-					<ExtendedTooltip name="SetupJobScheduleExtendedTooltip" id="18"/>
+					<CommandName>Form.Command.SetJobSchedule</CommandName>
+					<ExtendedTooltip name="SetJobScheduleExtendedTooltip" id="133"/>
 				</Button>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="Content" id="19">
+		<UsualGroup name="Content" id="104">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -97,11 +97,12 @@
 			<Group>Vertical</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="ContentExtendedTooltip" id="20"/>
+			<ExtendedTooltip name="ContentExtendedTooltip" id="134"/>
 			<ChildItems>
-				<Table name="ScheduleContent" id="21">
+				<Table name="ScheduleContent" id="5">
 					<Representation>List</Representation>
 					<SkipOnInput>false</SkipOnInput>
+					<Width>100</Width>
 					<RowSelectionMode>Row</RowSelectionMode>
 					<AutoInsertNewRow>true</AutoInsertNewRow>
 					<DataPath>Object.ExchangeSettings</DataPath>
@@ -109,123 +110,117 @@
 					<ViewStatusLocation>None</ViewStatusLocation>
 					<SearchControlLocation>None</SearchControlLocation>
 					<RowFilter xsi:nil="true"/>
-					<ContextMenu name="ScheduleContentContextMenu" id="22">
+					<ContextMenu name="ScheduleContentContextMenu" id="6">
 						<ChildItems>
-							<Button name="TransportSettings" id="23">
+							<Button name="TransportSettings" id="86">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.TransportSettings</CommandName>
-								<ExtendedTooltip name="TransportSettingsExtendedTooltip" id="24"/>
+								<ExtendedTooltip name="TransportSettingsExtendedTooltip" id="135"/>
 							</Button>
-							<Button name="ContextMenuScheduleContentGoToEventLog" id="25">
+							<Button name="ContextMenuScheduleContentGoToEventLog" id="126">
 								<Type>CommandBarButton</Type>
 								<SkipOnInput>false</SkipOnInput>
 								<CommandName>Form.Command.GoToEventLog</CommandName>
-								<ExtendedTooltip name="ContextMenuScheduleContentGoToEventLogExtendedTooltip" id="26"/>
+								<ExtendedTooltip name="ContextMenuScheduleContentGoToEventLogExtendedTooltip" id="136"/>
 							</Button>
 						</ChildItems>
 					</ContextMenu>
-					<AutoCommandBar name="ScheduleContentCommandBar" id="27"/>
-					<ExtendedTooltip name="ScheduleContentExtendedTooltip" id="28"/>
-					<SearchStringAddition name="ScheduleContentSearchString" id="54">
+					<AutoCommandBar name="ScheduleContentCommandBar" id="7"/>
+					<ExtendedTooltip name="ScheduleContentExtendedTooltip" id="137"/>
+					<SearchStringAddition name="ScheduleContentSearchString" id="147">
 						<AdditionSource>
 							<Item>ScheduleContent</Item>
 							<Type>SearchStringRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="ScheduleContentSearchStringContextMenu" id="55"/>
-						<ExtendedTooltip name="ScheduleContentSearchStringExtendedTooltip" id="56"/>
+						<ContextMenu name="ScheduleContentSearchStringContextMenu" id="148"/>
+						<ExtendedTooltip name="ScheduleContentSearchStringExtendedTooltip" id="149"/>
 					</SearchStringAddition>
-					<ViewStatusAddition name="ScheduleContentViewStatus" id="57">
+					<ViewStatusAddition name="ScheduleContentViewStatus" id="150">
 						<AdditionSource>
 							<Item>ScheduleContent</Item>
 							<Type>ViewStatusRepresentation</Type>
 						</AdditionSource>
-						<ContextMenu name="ScheduleContentViewStatusContextMenu" id="58"/>
-						<ExtendedTooltip name="ScheduleContentViewStatusExtendedTooltip" id="59"/>
+						<ContextMenu name="ScheduleContentStatusViewContextMenu" id="151"/>
+						<ExtendedTooltip name="ScheduleContentViewStatusExtendedTooltip" id="152"/>
 					</ViewStatusAddition>
-					<SearchControlAddition name="ScheduleContentSearchControl" id="60">
+					<SearchControlAddition name="ScheduleContentSearchControl" id="153">
 						<AdditionSource>
 							<Item>ScheduleContent</Item>
 							<Type>SearchControl</Type>
 						</AdditionSource>
-						<ContextMenu name="ScheduleContentSearchControlContextMenu" id="61"/>
-						<ExtendedTooltip name="ScheduleContentSearchControlExtendedTooltip" id="62"/>
+						<ContextMenu name="ScheduleContentSearchControlContextMenu" id="154"/>
+						<ExtendedTooltip name="ScheduleContentSearchControlExtendedTooltip" id="155"/>
 					</SearchControlAddition>
 					<Events>
 						<Event name="OnActivateRow">ScheduleContentOnActivateRow</Event>
 					</Events>
 					<ChildItems>
-						<LabelField name="ExchangeSettingsRowNumber" id="29">
+						<LabelField name="ExchangeSettingsRowNumber" id="108">
 							<DataPath>Object.ExchangeSettings.LineNumber</DataPath>
 							<EditMode>EnterOnInput</EditMode>
-							<ContextMenu name="ExchangeSettingsRowNumberContextMenu" id="30"/>
-							<ExtendedTooltip name="ExchangeSettingsRowNumberExtendedTooltip" id="31"/>
+							<ContextMenu name="ExchangeSettingsRowNumberContextMenu" id="109"/>
+							<ExtendedTooltip name="ExchangeSettingsRowNumberExtendedTooltip" id="138"/>
 						</LabelField>
-						<ColumnGroup name="InfoBaseNodeColumns" id="32">
+						<ColumnGroup name="InfobaseNodeColumns" id="122">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Infobase node columns</v8:content>
+									<v8:content>Info base node columns</v8:content>
 								</v8:item>
 							</Title>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Infobase node columns.</v8:content>
+									<v8:content>Info base node columns</v8:content>
 								</v8:item>
 							</ToolTip>
 							<Group>InCell</Group>
-							<ExtendedTooltip name="InfoBaseNodeColumnsExtendedTooltip" id="33"/>
+							<ExtendedTooltip name="InfobaseNodeColumnsExtendedTooltip" id="139"/>
 							<ChildItems>
-								<PictureField name="ExchangeSettingsExchangeExecutionResult" id="34">
+								<PictureField name="ExchangeSettingsExchangeExecutionResult" id="123">
 									<DataPath>Object.ExchangeSettings.ExchangeExecutionResult</DataPath>
 									<TitleLocation>None</TitleLocation>
 									<EditMode>EnterOnInput</EditMode>
 									<ValuesPicture>
 										<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
-										<xr:LoadTransparent>true</xr:LoadTransparent>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
 									</ValuesPicture>
-									<ContextMenu name="ExchangeSettingsExchangeExecutionResultContextMenu" id="35"/>
-									<ExtendedTooltip name="ExchangeSettingsExchangeExecutionResultExtendedTooltip" id="36"/>
+									<ContextMenu name="ExchangeSettingsExchangeExecutionResultContextMenu" id="124"/>
+									<ExtendedTooltip name="ExchangeSettingsExchangeExecutionResultExtendedTooltip" id="140"/>
 								</PictureField>
-								<InputField name="ExchangeSettingsInfoBaseNode" id="37">
-									<DataPath>Object.ExchangeSettings.InfoBaseNode</DataPath>
+								<InputField name="ExchangeSettingsInfobaseNode" id="112">
+									<DataPath>Object.ExchangeSettings.InfobaseNode</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ContextMenu name="ExchangeSettingsInfoBaseNodeContextMenu" id="38"/>
-									<ExtendedTooltip name="ExchangeSettingsInfoBaseNodeExtendedTooltip" id="39"/>
+									<ContextMenu name="ExchangeSettingsInfobaseNodeContextMenu" id="113"/>
+									<ExtendedTooltip name="ExchangeSettingsInfobaseNodeExtendedTooltip" id="141"/>
 									<Events>
-										<Event name="OnChange">ExchangeSettingsInfoBaseNodeOnChange</Event>
+										<Event name="OnChange">ExchangeSettingsInfobaseNodeOnChange</Event>
 									</Events>
 								</InputField>
 							</ChildItems>
 						</ColumnGroup>
-						<InputField name="ExchangeSettingsExchangeTransportKind" id="40">
+						<InputField name="ExchangeSettingsExchangeTransportKind" id="114">
 							<DataPath>Object.ExchangeSettings.ExchangeTransportKind</DataPath>
 							<EditMode>EnterOnInput</EditMode>
 							<ListChoiceMode>true</ListChoiceMode>
-							<ContextMenu name="ExchangeSettingsExchangeTransportKindContextMenu" id="41"/>
-							<ExtendedTooltip name="ExchangeSettingsExchangeTransportKindExtendedTooltip" id="42"/>
+							<ContextMenu name="ExchangeSettingsExchangeTransportKindContextMenu" id="115"/>
+							<ExtendedTooltip name="ExchangeSettingsExchangeTransportKindExtendedTooltip" id="142"/>
 							<Events>
 								<Event name="StartChoice">ExchangeSettingsExchangeTransportKindStartChoice</Event>
 							</Events>
 						</InputField>
-						<InputField name="ExchangeSettingsCurrentAction" id="43">
+						<InputField name="ExchangeSettingsCurrentAction" id="116">
 							<DataPath>Object.ExchangeSettings.CurrentAction</DataPath>
 							<EditMode>EnterOnInput</EditMode>
-							<ContextMenu name="ExchangeSettingsCurrentActionContextMenu" id="44"/>
-							<ExtendedTooltip name="ExchangeSettingsCurrentActionExtendedTooltip" id="45"/>
-						</InputField>
-						<InputField name="ExchangeSettingsTransactionItemCount" id="46">
-							<DataPath>Object.ExchangeSettings.TransactionItemCount</DataPath>
-							<EditMode>EnterOnInput</EditMode>
-							<ContextMenu name="ExchangeSettingsTransactionItemCountContextMenu" id="47"/>
-							<ExtendedTooltip name="ExchangeSettingsTransactionItemCountExtendedTooltip" id="48"/>
+							<ContextMenu name="ExchangeSettingsCurrentActionContextMenu" id="117"/>
+							<ExtendedTooltip name="ExchangeSettingsCurrentActionExtendedTooltip" id="143"/>
 						</InputField>
 					</ChildItems>
 				</Table>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="Advanced" id="49">
+		<UsualGroup name="Advanced" id="107">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -241,13 +236,18 @@
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="AdvancedExtendedTooltip" id="50"/>
+			<ExtendedTooltip name="AdvancedExtendedTooltip" id="145"/>
 			<ChildItems>
-				<InputField name="Comment" id="51">
+				<InputField name="Comment" id="30">
 					<DataPath>Object.Comment</DataPath>
+					<Height>2</Height>
 					<Wrap>false</Wrap>
-					<ContextMenu name="CommentContextMenu" id="52"/>
-					<ExtendedTooltip name="CommentExtendedTooltip" id="53"/>
+					<ChoiceButton>true</ChoiceButton>
+					<ContextMenu name="CommentContextMenu" id="31"/>
+					<ExtendedTooltip name="CommentExtendedTooltip" id="146"/>
+					<Events>
+						<Event name="StartChoice">CommentStartChoice</Event>
+					</Events>
 				</InputField>
 			</ChildItems>
 		</UsualGroup>
@@ -291,34 +291,42 @@
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="SetupJobSchedule" id="1">
+		<Command name="SetJobSchedule" id="1">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Exchange execution schedule</v8:content>
+					<v8:content>Synchronization schedule</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Setup job schedule.</v8:content>
+					<v8:content>Set job schedule</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>SetupJobSchedule</Action>
+			<Picture>
+				<xr:Ref>StdPicture.SetTime</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetJobSchedule</Action>
 		</Command>
 		<Command name="TransportSettings" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Transport settings</v8:content>
+					<v8:content>Connection parameters</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Open transport settings for the current settings row.</v8:content>
+					<v8:content>Open connection parameters for the selected settings row</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationSetup</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
 			<Action>TransportSettings</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
@@ -332,13 +340,18 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute exchange scenario.</v8:content>
+					<v8:content>Execute scenario</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationExecution</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:TransparentPixel x="7" y="5"/>
+			</Picture>
 			<Action>ExecuteExchange</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="GoToEventLog" id="4">
+		<Command name="GoToEventLog" id="5">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -348,10 +361,45 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Go to data exchange event log.</v8:content>
+					<v8:content>Go to data exchange event log</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.EventLog</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>GoToEventLog</Action>
 		</Command>
 	</Commands>
+	<CommandInterface>
+		<NavigationPanel>
+			<Item>
+				<Command>0</Command>
+				<Type>Added</Type>
+				<Attribute>Items.ScheduleContent.CurrentData.InfobaseNode</Attribute>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>0</Command>
+				<Type>Added</Type>
+				<Attribute>Items.ScheduleContent.CurrentData.InfobaseNode</Attribute>
+				<Index>3</Index>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>0</Command>
+				<Type>Added</Type>
+				<Attribute>Items.ScheduleContent.CurrentData.InfobaseNode</Attribute>
+				<Index>1</Index>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+			<Item>
+				<Command>0</Command>
+				<Type>Added</Type>
+				<Attribute>Items.ScheduleContent.CurrentData.InfobaseNode</Attribute>
+				<Index>2</Index>
+				<DefaultVisible>false</DefaultVisible>
+			</Item>
+		</NavigationPanel>
+	</CommandInterface>
 </Form>

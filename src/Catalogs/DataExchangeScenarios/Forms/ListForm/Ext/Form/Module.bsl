@@ -1,5 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
+﻿
+#Region FormCommandHandlers
 
 &AtClient
 Procedure EnableDisableScheduledJob(Command)
@@ -16,8 +16,9 @@ Procedure EnableDisableScheduledJob(Command)
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+#EndRegion
+
+#Region InternalProceduresAndFunctions
 
 &AtServer
 Procedure EnableDisableScheduledJobAtServer(SelectedRows, UseScheduledJob)
@@ -39,5 +40,4 @@ Procedure EnableDisableScheduledJobAtServer(SelectedRows, UseScheduledJob)
 	
 EndProcedure
 
-
-
+#EndRegion

@@ -1,18 +1,23 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
+﻿#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
+#Region InternalProceduresAndFunctions
 
 Function SelectChanges(Val Node, Val MessageNo) Export
+	
+	If TransactionActive() Then
+		Raise NStr("en = 'Selection of data changes in an active transaction is not allowed.'");
+	EndIf;
 	
 	Result = New Array;
 	
 	BeginTransaction();
 	Try
 		
-		Lock = New DataLock;
-		LockItem = Lock.Add("InformationRegister.CommonNodeDataChanges");
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("InformationRegister.CommonNodeDataChanges");
 		LockItem.Mode = DataLockMode.Exclusive;
 		LockItem.SetValue("Node", Node);
-		Lock.Lock();
+		DataLock.Lock();
 		
 		QueryText =
 		"SELECT
@@ -58,11 +63,11 @@ Procedure RecordChanges(Val Node) Export
 	BeginTransaction();
 	Try
 		
-		Lock = New DataLock;
-		LockItem = Lock.Add("InformationRegister.CommonNodeDataChanges");
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("InformationRegister.CommonNodeDataChanges");
 		LockItem.Mode = DataLockMode.Exclusive;
 		LockItem.SetValue("Node", Node);
-		Lock.Lock();
+		DataLock.Lock();
 		
 		RecordStructure = New Structure;
 		RecordStructure.Insert("Node", Node);
@@ -79,14 +84,18 @@ EndProcedure
 
 Procedure DeleteChangeRecords(Val Node, Val MessageNo = Undefined) Export
 	
+	If TransactionActive() Then
+		Raise NStr("en = 'Deletion of data change registration in an active transaction is not allowed.'");
+	EndIf;
+	
 	BeginTransaction();
 	Try
 		
-		Lock = New DataLock;
-		LockItem = Lock.Add("InformationRegister.CommonNodeDataChanges");
+		DataLock = New DataLock;
+		LockItem = DataLock.Add("InformationRegister.CommonNodeDataChanges");
 		LockItem.Mode = DataLockMode.Exclusive;
 		LockItem.SetValue("Node", Node);
-		Lock.Lock();
+		DataLock.Lock();
 		
 		If MessageNo = Undefined Then
 			
@@ -133,16 +142,20 @@ Procedure DeleteChangeRecords(Val Node, Val MessageNo = Undefined) Export
 	
 EndProcedure
 
-// Adds the record to the register by the passed structure values.
+// Adds a record to the register by the passed structure values.
 Procedure AddRecord(RecordStructure)
 	
 	DataExchangeServer.AddRecordToInformationRegister(RecordStructure, "CommonNodeDataChanges");
 	
 EndProcedure
 
-// Deletes the record set from the register by the passet structure values.
+// Deletes a record set from the register by the passed structure values.
 Procedure DeleteRecord(RecordStructure)
 	
 	DataExchangeServer.DeleteRecordSetFromInformationRegister(RecordStructure, "CommonNodeDataChanges");
 	
 EndProcedure
+
+#EndRegion
+
+#EndIf

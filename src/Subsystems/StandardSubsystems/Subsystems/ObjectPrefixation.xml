@@ -10,7 +10,7 @@
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<IncludeHelpInContents>true</IncludeHelpInContents>
+			<IncludeHelpInContents>false</IncludeHelpInContents>
 			<IncludeInCommandInterface>false</IncludeInCommandInterface>
 			<Explanation/>
 			<Picture/>
@@ -19,7 +19,9 @@
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixationCached</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixationClientServer</xr:Item>
 				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixationClientServerOverridable</xr:Item>
-				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixation</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixationInternal</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectPrefixationOverridable</xr:Item>
+				<xr:Item xsi:type="xr:MDObjectRef">CommonModule.ObjectReprefixation</xr:Item>
 			</Content>
 		</Properties>
 		<ChildObjects/>

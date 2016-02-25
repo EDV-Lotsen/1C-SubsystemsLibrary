@@ -1,72 +1,112 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
+﻿
+#Region FormEventHandlers
 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
-	
-	//** Setting initial values before importing settings from the server
-	// if data was not written and there is nothing to import.
-	ShowRoleSubsystems = True;
-	Items.RolesShowRoleSubsystems.Check = True;
-	// A form initial script is executed in OnCreateAtServer, in case of new object,
-	// and in OnReadAtServer if object already exists.
-	If Object.Ref.IsEmpty() Then
-		FormInitialization();
+
+	SetConditionalAppearance();
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
 	EndIf;
 	
-	//** Preparing permanent data
+	If Not ValueIsFilled(Object.Ref) Then
+		ProcessRolesInterface("FillRoles", Object.Roles);
+		ProcessRolesInterface("SetUpRoleInterfaceOnFormCreate", False);
+	EndIf;
+	
+	// Preparing auxiliary data.
 	FillAuthorizationObjectTypeList();
 	
-	// Deleting the FullAccess role from the choice list and the role table
-	
-	//** Filling variable data
-	
-	If Object.Ref = Catalogs.ExternalUserGroups.EmptyRef() And
-	 Object.Parent.Ref = Catalogs.ExternalUserGroups.AllExternalUsers Then
+	If Not ValueIsFilled(Object.Ref) Then
 		
-		Object.Parent = Catalogs.ExternalUserGroups.EmptyRef();
+		If Object.Parent = Catalogs.ExternalUserGroups.AllExternalUsers
+			Or CommonUse.ObjectAttributeValue(Object.Parent, "AllAuthorizationObjects") Then
+			Object.Parent = Catalogs.ExternalUserGroups.EmptyRef();
+		EndIf;
+		
 	EndIf;
 	
-	DefineActionsOnForm();
+	SelectAvailableGroupParticipantsTypes();
 	
-	//** Setting permanent property availability
+	SetActionsOnForm();
 	
-	Items.Description.Visible = ValueIsFilled(ActionsOnForm.ItemProperties);
-	Items.Parent.Visible = ValueIsFilled(ActionsOnForm.ItemProperties);
-	Items.Comment.Visible = ValueIsFilled(ActionsOnForm.ItemProperties);
-	Items.Content.Visible = ValueIsFilled(ActionsOnForm.GroupContent);
+	// Making the properties always available.
+	
+	Items.Description.Visible        = ValueIsFilled(ActionsOnForm.ItemProperties);
+	Items.Parent.Visible             = ValueIsFilled(ActionsOnForm.ItemProperties);
+	Items.Comment.Visible            = ValueIsFilled(ActionsOnForm.ItemProperties);
+	Items.Content.Visible            = ValueIsFilled(ActionsOnForm.GroupContent);
 	Items.RoleRepresentation.Visible = ValueIsFilled(ActionsOnForm.Roles);
 	
-	IsAllExternalUsersGroup = (Object.Ref = Catalogs.ExternalUserGroups.AllExternalUsers);
+	If Object.AllAuthorizationObjects Then
+		GroupMembers = "AllOfSingleType";
+	ElsIf Object.AuthorizationObjectType <> Undefined Then
+		GroupMembers = "SingleType";
+	Else
+		GroupMembers = "Any";
+	EndIf;
 	
-	ReadOnly = ReadOnly Or
-	 Not IsAllExternalUsersGroup And
-	 ActionsOnForm.Roles <> "Edit" And
-	 ActionsOnForm.GroupContent <> "Edit" And
-	 ActionsOnForm.ItemProperties <> "Edit";
+	IsAllExternalUsersGroup = 
+		Object.Ref = Catalogs.ExternalUserGroups.AllExternalUsers;
 	
-	Items.Description.ReadOnly = IsAllExternalUsersGroup Or ActionsOnForm.ItemProperties <> "Edit";
-	Items.Parent.ReadOnly = IsAllExternalUsersGroup Or ActionsOnForm.ItemProperties <> "Edit";
-	Items.Comment.ReadOnly = IsAllExternalUsersGroup Or ActionsOnForm.ItemProperties <> "Edit";
-	Items.GroupExternalUsers.ReadOnly = IsAllExternalUsersGroup Or ActionsOnForm.GroupContent <> "Edit";
-	Items.Content.ReadOnly = IsAllExternalUsersGroup Or ActionsOnForm.GroupContent <> "Edit";
-	Items.ContentFill.Enabled = Not (IsAllExternalUsersGroup Or ActionsOnForm.GroupContent <> "Edit");
+	If IsAllExternalUsersGroup Then
+		Items.Description.ReadOnly        = True;
+		Items.Parent.ReadOnly             = True;
+		Items.Comment.ReadOnly            = True;
+		Items.GroupExternalUsers.ReadOnly = True;
+	EndIf;
 	
-	SetRolesReadOnly(ActionsOnForm.Roles <> "Edit");
+	If ReadOnly
+	 Or Not IsAllExternalUsersGroup
+	     And ActionsOnForm.Roles          <> "Edit"
+	     And ActionsOnForm.GroupContent   <> "Edit"
+	     And ActionsOnForm.ItemProperties <> "Edit"
+	 Or IsAllExternalUsersGroup
+	   And UsersInternal.RoleEditProhibition() Then
+		
+		ReadOnly = True;
+	EndIf;
 	
-EndProcedure
-
-&AtClient
-Procedure OnOpen(Cancel)
+	If ActionsOnForm.ItemProperties <> "Edit" Then
+		Items.Description.ReadOnly = True;
+		Items.Parent.ReadOnly      = True;
+		Items.Comment.ReadOnly     = True;
+	EndIf;
 	
-	SetPropertyEnabled();
+	If ActionsOnForm.GroupContent <> "Edit" Then
+		Items.GroupExternalUsers.ReadOnly = True;
+	EndIf;
+	
+	ProcessRolesInterface(
+		"SetRolesReadOnly",
+		    UsersInternal.RoleEditProhibition()
+		Or ActionsOnForm.Roles <> "Edit");
+	
+	SetPropertyEnabled(ThisObject);
+	
+	FillUserStatus();
+	RefreshNotValidUserList(True);
 	
 EndProcedure
 
 &AtServer
 Procedure OnReadAtServer(CurrentObject)
 	
-	FormInitialization();
+	ProcessRolesInterface("FillRoles", Object.Roles);
+	ProcessRolesInterface("SetUpRoleInterfaceOnFormCreate", True);
+	
+EndProcedure
+
+&AtServer
+Procedure BeforeWriteAtServer(Cancel, CurrentObject, WriteParameters)
+	
+	// Filling object roles from a collection.
+	CurrentObject.Roles.Clear();
+	For Each Row In RoleCollection Do
+		CurrentObject.Roles.Add().Role = CommonUse.MetadataObjectID(
+			"Role." + Row.Role);
+	EndDo;
 	
 EndProcedure
 
@@ -78,30 +118,117 @@ Procedure AfterWrite(WriteParameters)
 EndProcedure
 
 &AtServer
-Procedure OnLoadDataFromSettingsAtServer(Settings)
+Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 	
-	If Settings["ShowRoleSubsystems"] = False Then
-		ShowRoleSubsystems = False;
-		Items.RolesShowRoleSubsystems.Check = False;
-	Else
-		ShowRoleSubsystems = True;
-		Items.RolesShowRoleSubsystems.Check = True;
+	NoCheckAttributes = New Array;
+	CheckedObjectAttributes = New Array;
+	Errors = Undefined;
+	
+	// Checking whether roles are present in the metadata.
+	CheckedObjectAttributes.Add("Roles.Role");
+	
+	TreeItems = Roles.GetItems();
+	For Each Row In TreeItems Do
+		If Row.Check And Left(Row.Synonym, 1) = "?" Then
+			CommonUseClientServer.AddUserError(Errors,
+				"Roles[%1].RolesSynonym",
+				StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'Role ""%1"" is not found in the metadata'"),
+					Row.Synonym),
+				"Roles",
+				TreeItems.IndexOf(Row),
+				StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'Role ""%2"" in row #%1 is not found in the metadata'"),
+					"%1", Row.Synonym));
+		EndIf;
+	EndDo;
+	
+	CommonUseClientServer.ShowErrorsToUser(Errors, Cancel);
+	
+	If GroupMembers = "Any" Then
+		NoCheckAttributes.Add("AuthorizationObjectTypePresentation");
 	EndIf;
+	NoCheckAttributes.Add("Object");
+	CommonUse.DeleteNoCheckAttributesFromArray(AttributesToCheck, NoCheckAttributes);
 	
-	HideFullAccessRole = True;
-	RefreshRoleTree();
+	CurrentObject = FormAttributeToValue("Object");
+	
+	CurrentObject.AdditionalProperties.Insert(
+		"CheckedObjectAttributes", CheckedObjectAttributes);
+	
+	If Not CurrentObject.CheckFilling() Then
+		Cancel = True;
+	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
+&AtServer
+Procedure OnLoadDataFromSettingsAtServer(Settings)
+	
+	ProcessRolesInterface("SetUpRoleInterfaceOnLoadSettings", Settings);
+	
+EndProcedure
+
+#EndRegion
+
+#Region FormHeaderItemEventHandlers
+
+&AtClient
+Procedure ParticipantContentOnChange(Item)
+	
+	Object.AllAuthorizationObjects = (GroupMembers = "AllOfSingleType");
+	If Object.AllAuthorizationObjects Then
+		Object.Content.Clear();
+	EndIf;
+	
+	If GroupMembers = "AllOfSingleType" Or GroupMembers = "SingleType" Then
+		If Not ValueIsFilled(AuthorizationObjectTypePresentation) Then
+			AuthorizationObjectTypePresentation = AuthorizationObjectTypes[0].Presentation;
+			Object.AuthorizationObjectType = AuthorizationObjectTypes[0].Value;
+		EndIf;
+	Else
+		AuthorizationObjectTypePresentation = "";
+		Object.AuthorizationObjectType = Undefined;
+	EndIf;
+	
+	SetPropertyEnabled(ThisObject);
+	
+EndProcedure
+
+&AtClient
+Procedure AuthorizationObjectTypePresentationOnChange(Item)
+	
+	If ValueIsFilled(AuthorizationObjectTypePresentation) Then
+		DeleteNotTypicalExternalUsers();
+	Else
+		Object.AllAuthorizationObjects  = False;
+		Object.AuthorizationObjectType = Undefined;
+	EndIf;
+	
+	SetPropertyEnabled(ThisObject);
+	
+EndProcedure
+
+&AtClient
+Procedure AuthorizationObjectTypePresentationStartChoice(Item, ChoiceData, StandardProcessing)
+	
+	StandardProcessing = False;
+	
+	ShowChooseFromList(
+		New NotifyDescription("AuthorizationObjectTypePresentationEndChoice", ThisObject),
+		AuthorizationObjectTypes,
+		Item,
+		AuthorizationObjectTypes.FindByValue(Object.AuthorizationObjectType));
+	
+EndProcedure
 
 &AtClient
 Procedure ParentOnChange(Item)
 	
 	Object.AllAuthorizationObjects = False;
+	SelectAvailableGroupParticipantsTypes();
 	
-	SetPropertyEnabled();
+	SetPropertyEnabled(ThisObject);
 	
 EndProcedure
 
@@ -118,85 +245,43 @@ Procedure ParentStartChoice(Item, ChoiceData, StandardProcessing)
 EndProcedure
 
 &AtClient
-Procedure AuthorizationObjectTypePresentationOnChange(Item)
+Procedure CommentStartChoice(Item, ChoiceData, StandardProcessing)
 	
-	If ValueIsFilled(AuthorizationObjectTypePresentation) Then
-		DeleteNotTypicalExternalUsers();
-	Else
-		Object.AllAuthorizationObjects = False;
-		Object.AuthorizationObjectType = Undefined;
-	EndIf;
-	
-	SetPropertyEnabled();
+	CommonUseClient.ShowCommentEditingForm(
+		Item.EditText, ThisObject, "Object.Comment");
 	
 EndProcedure
 
-&AtClient
-Procedure AuthorizationObjectTypePresentationStartChoice(Item, ChoiceData, StandardProcessing)
-	
-	StandardProcessing = False;
-	
-	SelectedItem = Undefined;
+#EndRegion
 
-	
-	ShowChooseFromList(New NotifyDescription("AuthorizationObjectTypePresentationStartChoiceEnd", ThisObject, New Structure("Item", Item)), AuthorizationObjectTypes, Item, AuthorizationObjectTypes.FindByValue(Object.AuthorizationObjectType));
-	
-EndProcedure
-
-&AtClient
-Procedure AuthorizationObjectTypePresentationStartChoiceEnd(SelectedItem1, AdditionalParameters) Export
-    
-    Item = AdditionalParameters.Item;
-    
-    
-    SelectedItem = SelectedItem1;
-    
-    If SelectedItem <> Undefined Then
-        
-        Modified = True;
-        Object.AuthorizationObjectType = SelectedItem.Value;
-        AuthorizationObjectTypePresentation = SelectedItem.Presentation;
-        
-        AuthorizationObjectTypePresentationOnChange(Item);
-    EndIf;
-
-EndProcedure
-
-&AtClient
-Procedure AllAuthorizationObjectsOnChange(Item)
-	
-	If Object.AllAuthorizationObjects Then
-		Object.Content.Clear();
-	EndIf;
-	
-	SetPropertyEnabled();
-	
-EndProcedure
+#Region RolesFormTableItemEventHandlers
 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedure and functuions to provide the role interface.
+// Role interface procedures and functions
 
 &AtClient
 Procedure RolesCheckOnChange(Item)
 	
 	If Items.Roles.CurrentData <> Undefined Then
-		UpdateRoleContent(Items.Roles.CurrentRow, Items.Roles.CurrentData.Check);
+		ProcessRolesInterface("UpdateRoleContent");
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF Content TABLE 
+#EndRegion
+
+#Region ContentFormTableItemsEventHandlers
 
 &AtClient
 Procedure ContentChoiceProcessing(Item, SelectedValue, StandardProcessing)
 	
+	Object.Content.Clear();
 	If TypeOf(SelectedValue) = Type("Array") Then
 		For Each Value In SelectedValue Do
-			ExternalUserChoiceProcessing(Value);
+			ExternalUserSelectionProcessing(Value);
 		EndDo;
 	Else
-		ExternalUserChoiceProcessing(SelectedValue);
+		ExternalUserSelectionProcessing(SelectedValue);
 	EndIf;
 	
 EndProcedure
@@ -206,115 +291,234 @@ Procedure ContentExternalUserStartChoice(Item, ChoiceData, StandardProcessing)
 	
 	StandardProcessing = False;
 	
-	ChooseFillUsers(False);
+	SelectPickUsers(False);
 	
 EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
 
 &AtClient
-Procedure FillExternalUsers(Command)
-
-	ChooseFillUsers(True);
+Procedure ContentDrag(Item, DragParameters, StandardProcessing, Row, Field)
+	
+	StandardProcessing = False;
+	UserMessage = MoveUserToTheGroup(DragParameters.Value, Object.Ref);
+	If UserMessage <> Undefined Then
+		ShowUserNotification(
+			NStr("en = 'Moving users'"), , UserMessage, PictureLib.Information32);
+	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// Procedure and functuions to provide the role interface.
+#EndRegion
+
+#Region FormCommandHandlers
+
+&AtClient
+Procedure PickExternalUsers(Command)
+
+	SelectPickUsers(True);
+	
+EndProcedure
+
+&AtClient
+Procedure ShowNotValidUsers(Command)
+	
+	RefreshNotValidUserList(False);
+	
+EndProcedure
+
+&AtClient
+Procedure SortAsc(Command)
+	ContentSortRows("Ascending");
+EndProcedure
+
+&AtClient
+Procedure SortDesc(Command)
+	ContentSortRows("Descending");
+EndProcedure
+
+&AtClient
+Procedure MoveUp(Command)
+	ContentMoveRow("Up");
+EndProcedure
+
+&AtClient
+Procedure MoveDown(Command)
+	ContentMoveRow("Down");
+EndProcedure
 
 &AtClient
 Procedure ShowSelectedRolesOnly(Command)
 	
-	ShowSelectedRolesOnly = Not ShowSelectedRolesOnly;
-	Items.RolesShowSelectedRolesOnly.Check = ShowSelectedRolesOnly;
-	
-	RefreshRoleTree();
-	ExpandRoleSubsystems();
+	ProcessRolesInterface("SelectedRolesOnly");
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 EndProcedure
 
 &AtClient
-Procedure ShowRoleSubsystems(Command)
+Procedure RoleGroupingBySubsystems(Command)
 	
-	ShowRoleSubsystems = Not ShowRoleSubsystems;
-	Items.RolesShowRoleSubsystems.Check = ShowRoleSubsystems;
-	
-	RefreshRoleTree();
-	ExpandRoleSubsystems();
+	ProcessRolesInterface("GroupBySubsystems");
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 EndProcedure
 
 &AtClient
-Procedure CheckAll(Command)
+Procedure EnableRoles(Command)
 	
-	UpdateRoleContent(Undefined, True);
-	If ShowSelectedRolesOnly Then
-		ExpandRoleSubsystems();
+	ProcessRolesInterface("UpdateRoleContent", "EnableAll");
+	
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject, False);
+	
+EndProcedure
+
+&AtClient
+Procedure DisableRoles(Command)
+	
+	ProcessRolesInterface("UpdateRoleContent", "DisableAll");
+	
+EndProcedure
+
+#EndRegion
+
+#Region InternalProceduresAndFunctions
+
+&AtServer
+Procedure SetConditionalAppearance()
+
+	ConditionalAppearance.Items.Clear();
+ 
+
+	Item = ConditionalAppearance.Items.Add();
+
+	ItemField = Item.Fields.Items.Add();
+	ItemField.Field = New DataCompositionField(Items.ContentExternalUser.Name);
+
+	ItemFilter = Item.Filter.Items.Add(Type("DataCompositionFilterItem"));
+	ItemFilter.LeftValue = New DataCompositionField("Object.Content.NotValid");
+	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
+	ItemFilter.RightValue = True;
+
+	Item.Appearance.SetParameterValue("TextColor", WebColors.Gray);
+
+EndProcedure
+
+&AtClient
+Procedure AuthorizationObjectTypePresentationEndChoice(SelectedItem, NotDefined) Export
+	
+	If SelectedItem <> Undefined Then
+		
+		Modified = True;
+		Object.AuthorizationObjectType      = SelectedItem.Value;
+		AuthorizationObjectTypePresentation = SelectedItem.Presentation;
+		
+		AuthorizationObjectTypePresentationOnChange(Items.AuthorizationObjectTypePresentation);
 	EndIf;
 	
 EndProcedure
 
-&AtClient
-Procedure UncheckAll(Command)
+&AtServer
+Function MoveUserToTheGroup(UserArray, NewOwnerGroup)
 	
-	UpdateRoleContent(Undefined, False);
+	MovedUsersArray = New Array;
+	For Each UserRef In UserArray Do
+		
+		FilterParameters = New Structure("ExternalUser", UserRef);
+		If TypeOf(UserRef) = Type("CatalogRef.ExternalUsers")
+			And Object.Content.FindRows(FilterParameters).Count() = 0 Then
+			Object.Content.Add().ExternalUser = UserRef;
+			MovedUsersArray.Add(UserRef);
+		EndIf;
+		
+	EndDo;
+	
+	Return UsersInternal.UserMessageCreation(
+		MovedUsersArray, NewOwnerGroup, False);
+	
+EndFunction
+
+&AtServer
+Procedure SelectAvailableGroupParticipantsTypes()
+	
+	If ValueIsFilled(Object.Parent)
+		And Object.Parent <> Catalogs.ExternalUserGroups.AllExternalUsers Then
+		
+		If Object.Parent.AuthorizationObjectType <> Undefined Then
+			ValueFound = AuthorizationObjectTypes.FindByValue(Object.Parent.AuthorizationObjectType);
+			Object.AuthorizationObjectType      = ValueFound.Value;
+			AuthorizationObjectTypePresentation = ValueFound.Presentation;
+			GroupMembers = Items.GroupMembers.ChoiceList.FindByValue("SingleType").Value;
+			Items.UserType.Enabled = False;
+		Else
+			Items.UserType.Enabled = True;
+			ValueFound = Items.GroupMembers.ChoiceList.FindByValue("AllOfSingleType");
+			If ValueFound <> Undefined Then
+				Items.GroupMembers.ChoiceList.Delete(ValueFound);
+			EndIf;
+			
+		EndIf;
+		
+	Else
+		
+		ValueFound = Items.GroupMembers.ChoiceList.FindByValue("AllOfSingleType");
+		If ValueFound = Undefined Then
+			Items.GroupMembers.ChoiceList.Insert(0, "AllOfSingleType", NStr("en = 'All users of specified type'"));
+		EndIf;
+		Items.UserType.Enabled = True;
+		
+	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
 &AtServer
-Procedure FormInitialization()
-	
-	// If an item is a new one, all roles must be shown, otherwise only selected roles must be shown
-	ShowSelectedRolesOnly = ValueIsFilled(Object.Ref);
-	Items.RolesShowSelectedRolesOnly.Check = ValueIsFilled(Object.Ref);
-	//
-	HideFullAccessRole = True;
-	RefreshRoleTree();
-	
-EndProcedure
-
-&AtServer
-Procedure DefineActionsOnForm()
+Procedure SetActionsOnForm()
 	
 	ActionsOnForm = New Structure;
-	ActionsOnForm.Insert("Roles", ""); // "", "View", "Edit"
-	ActionsOnForm.Insert("GroupContent", ""); // "", "View", "Edit"
-	ActionsOnForm.Insert("ItemProperties", ""); // "", "View", "Edit"
 	
-	If Users.InfoBaseUserWithFullAccess() Or
-	 AccessRight("Insert", Metadata.Catalogs.Users) Then
-		// Administrator
-		ActionsOnForm.Roles = "Edit";
-		ActionsOnForm.GroupContent = "Edit";
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("Roles", "");
+	
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("GroupContent", "");
+	
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("ItemProperties", "");
+	
+	If Users.InfobaseUserWithFullAccess()
+	 Or AccessRight("Insert", Metadata.Catalogs.Users) Then
+		// Administrator.
+		ActionsOnForm.Roles          = "Edit";
+		ActionsOnForm.GroupContent   = "Edit";
 		ActionsOnForm.ItemProperties = "Edit";
 		
 	ElsIf IsInRole("AddEditExternalUsers") Then
-		// External user manager
-		ActionsOnForm.Roles = "";
-		ActionsOnForm.GroupContent = "Edit";
+		// External user manager.
+		ActionsOnForm.Roles          = "";
+		ActionsOnForm.GroupContent   = "Edit";
 		ActionsOnForm.ItemProperties = "Edit";
 		
 	Else
-		// External user reader
-		ActionsOnForm.Roles = "";
-		ActionsOnForm.GroupContent = "View";
+		// External user viewer.
+		ActionsOnForm.Roles          = "";
+		ActionsOnForm.GroupContent   = "View";
 		ActionsOnForm.ItemProperties = "View";
 	EndIf;
 	
+	EventHandlers = CommonUse.InternalEventHandlers(
+		"StandardSubsystems.Users\OnDefineActionsInForm");
+	
+	For Each Handler In EventHandlers Do
+		Handler.Module.OnDefineActionsInForm(Object.Ref, ActionsOnForm);
+	EndDo;
+	
 	UsersOverridable.ChangeActionsOnForm(Object.Ref, ActionsOnForm);
 	
-	// Verifying action names on the form
+	// Check actions names in a form
 	If Find(", View, Edit,", ", " + ActionsOnForm.Roles + ",") = 0 Then
 		ActionsOnForm.Roles = "";
-	ElsIf UsersOverridable.RoleEditProhibition() Then
+	ElsIf UsersInternal.RoleEditProhibition() Then
 		ActionsOnForm.Roles = "";
 	EndIf;
 	If Find(", View, Edit,", ", " + ActionsOnForm.GroupContent + ",") = 0 Then
-		ActionsOnForm.InfoBaseUserProperties = "";
+		ActionsOnForm.InfobaseUserProperties = "";
 	EndIf;
 	If Find(", View, Edit,", ", " + ActionsOnForm.ItemProperties + ",") = 0 Then
 		ActionsOnForm.ItemProperties = "";
@@ -322,368 +526,245 @@ Procedure DefineActionsOnForm()
 	
 EndProcedure
 
-&AtClient
-Procedure SetPropertyEnabled()
+&AtClientAtServerNoContext
+Procedure SetPropertyEnabled(Form)
 	
-	Items.Content.ReadOnly = Object.AllAuthorizationObjects;
+	Items = Form.Items;
 	
-	Items.ContentFill.Enabled = Not Items.Content.ReadOnly And Items.Content.Enabled;
-	Items.ShortcutMenuContentFill.Enabled = Not Items.Content.ReadOnly And Items.Content.Enabled;
-	Items.ContentAdd.Enabled = Not Items.Content.ReadOnly And Items.Content.Enabled;
-	Items.ContextMenuContentAdd.Enabled = Not Items.Content.ReadOnly And Items.Content.Enabled;
+	Items.Content.ReadOnly = Form.Object.AllAuthorizationObjects;
 	
-	Items.AllAuthorizationObjects.Enabled = ValueIsFilled(AuthorizationObjectTypePresentation) And Not ValueIsFilled(Object.Parent);
+	CommandAvailability =
+		Not Form.ReadOnly
+		And Not Items.GroupExternalUsers.ReadOnly
+		And Not Items.Content.ReadOnly
+		And Items.Content.Enabled;
+		
+	Items.ContentPick.Enabled            = CommandAvailability;
+	Items.ContentContextMenuPick.Enabled = CommandAvailability;
+	Items.ContentAdd.Enabled             = CommandAvailability;
+	Items.ContentContextMenuAdd.Enabled  = CommandAvailability;
+	
+	Items.AuthorizationObjectTypePresentation.Visible = 
+		Not Form.IsAllExternalUsersGroup
+		And ((Form.GroupMembers = "SingleType" Or Form.GroupMembers = "AllOfSingleType"));
 	
 EndProcedure
 
 &AtServer
 Procedure FillAuthorizationObjectTypeList()
 	
-	For Each AuthorizationObjectRefType In Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObject.Type.Types() Do
+	AuthorizationObjectRefTypes =
+		Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObject.Type.Types();
 	
+	For Each AuthorizationObjectRefType In AuthorizationObjectRefTypes Do
 		TypeMetadata = Metadata.FindByType(AuthorizationObjectRefType);
 		
 		TypeArray = New Array;
 		TypeArray.Add(AuthorizationObjectRefType);
-		ReferenceTypeDescription = New TypeDescription(TypeArray);
+		RefTypeDescription = New TypeDescription(TypeArray);
 		
-		AuthorizationObjectTypes.Add(ReferenceTypeDescription.AdjustValue(Undefined), TypeMetadata.Synonym);
+		AuthorizationObjectTypes.Add(
+			RefTypeDescription.AdjustValue(Undefined), TypeMetadata.Synonym);
 	EndDo;
 	
-	
 	FoundItem = AuthorizationObjectTypes.FindByValue(Object.AuthorizationObjectType);
-	AuthorizationObjectTypePresentation = ?(FoundItem = Undefined, "", FoundItem.Presentation);
+	
+	AuthorizationObjectTypePresentation = ?(
+		FoundItem = Undefined, "", FoundItem.Presentation);
 	
 EndProcedure
 
 &AtServer
 Procedure DeleteNotTypicalExternalUsers()
 	
-	Query = New Query(
+	Query = New Query;
+	Query.SetParameter("AuthorizationObjectType", TypeOf(Object.AuthorizationObjectType));
+	Query.SetParameter(
+		"SelectedExternalUsers",
+		Object.Content.Unload().UnloadColumn("ExternalUser"));
+	
+	Query.Text =
 	"SELECT
 	|	ExternalUsers.Ref
 	|FROM
 	|	Catalog.ExternalUsers AS ExternalUsers
 	|WHERE
 	|	VALUETYPE(ExternalUsers.AuthorizationObject) <> &AuthorizationObjectType
-	|	AND ExternalUsers.Ref IN(&SelectedExternalUsers)");
-	Query.SetParameter("SelectedExternalUsers", Object.Content.Unload().UnloadColumn("ExternalUser"));
-	Query.SetParameter("AuthorizationObjectType", TypeOf(Object.AuthorizationObjectType));
+	|	AND ExternalUsers.Ref IN(&SelectedExternalUsers)";
 	
-	Selection = Query.Execute().Select();
-	While Selection.Next() Do
-		FoundRows = Object.Content.FindRows(New Structure("ExternalUser", Selection.Ref));
-		For Each FoundRow In FoundRows Do
-			Object.Content.Delete(Object.Content.IndexOf(FoundRow));
+	BeginTransaction();
+	Try
+		Selection = Query.Execute().Select();
+		While Selection.Next() Do
+			
+			FoundRows = Object.Content.FindRows(
+				New Structure("ExternalUser", Selection.Ref));
+			
+			For Each FoundRow In FoundRows Do
+				Object.Content.Delete(Object.Content.IndexOf(FoundRow));
+			EndDo;
 		EndDo;
-	EndDo;
+		
+		CommitTransaction();
+	Except
+		RollbackTransaction();
+		Raise;
+	EndTry;
 	
 EndProcedure
 
 &AtClient
-Procedure ChooseFillUsers(Fill)
+Procedure SelectPickUsers(Pick)
 	
 	FormParameters = New Structure;
 	FormParameters.Insert("ChoiceMode", True);
-	FormParameters.Insert("CurrentRow", ?(Items.Content.CurrentData = Undefined, Undefined, Items.Content.CurrentData.ExternalUser));
+	FormParameters.Insert("CurrentRow", ?(
+		Items.Content.CurrentData = Undefined,
+		Undefined,
+		Items.Content.CurrentData.ExternalUser));
 	
-	If Fill Then
+	If Pick Then
 		FormParameters.Insert("CloseOnChoice", False);
+		FormParameters.Insert("MultipleChoice", True);
+		FormParameters.Insert("ExtendedPick", True);
+		FormParameters.Insert("ExtendedPickFormParameters", ExtendedPickFormParameters());
 	EndIf;
 	
 	If Object.AuthorizationObjectType <> Undefined Then
 		FormParameters.Insert("AuthorizationObjectType", Object.AuthorizationObjectType);
 	EndIf;
 	
-	OpenForm("Catalog.ExternalUsers.ChoiceForm", FormParameters, ?(Fill, Items.Content, Items.ContentExternalUser));
+	OpenForm(
+		"Catalog.ExternalUsers.ChoiceForm",
+		FormParameters,
+		?(Pick,
+			Items.Content,
+			Items.ContentExternalUser));
 	
 EndProcedure
 
 &AtClient
-Procedure ExternalUserChoiceProcessing(SelectedValue)
+Procedure ExternalUserSelectionProcessing(SelectedValue)
 	
 	If TypeOf(SelectedValue) = Type("CatalogRef.ExternalUsers") Then
-		If Object.Content.FindRows(New Structure("ExternalUser", SelectedValue)).Count() = 0 Then
-			Object.Content.Add().ExternalUser = SelectedValue;
-		EndIf;
+		Object.Content.Add().ExternalUser = SelectedValue;
 	EndIf;
 	
 EndProcedure
 
-////////////////////////////////////////////////////////////////////////////////
-// Procedure and functuions to provide the role interface.
-
 &AtServer
-Function RoleCollection(ValueTableForReading = False)
+Function ExtendedPickFormParameters()
 	
-	If ValueTableForReading Then
-		Return Object.Roles.Unload();
-	EndIf;
+	SelectedUsers = New ValueTable;
+	SelectedUsers.Columns.Add("User");
+	SelectedUsers.Columns.Add("PictureNumber");
 	
-	Return Object.Roles;
+	ExternalUsersGroupParticipants = Object.Content.Unload(, "ExternalUser");
+	
+	For Each Item In ExternalUsersGroupParticipants Do
+		
+		SelectedUsersRow = SelectedUsers.Add();
+		SelectedUsersRow.User = Item.ExternalUser;
+		
+	EndDo;
+	
+	PickFormTitle = NStr("en = 'Pick external user group members'");
+	ExtendedPickFormParameters = 
+		New Structure("PickFormTitle, SelectedUsers, SelectionOfGroupsIsNotPossible",
+		                 PickFormTitle, SelectedUsers, True);
+	StorageAddress = PutToTempStorage(ExtendedPickFormParameters);
+	Return StorageAddress;
 	
 EndFunction
 
 &AtServer
-Procedure SetRolesReadOnly(Val RolesReadOnly = Undefined, Val AllowViewSelectedOnly = False)
+Procedure FillUserStatus()
 	
-	If RolesReadOnly <> Undefined Then
-		Items.Roles.ReadOnly = RolesReadOnly;
-		Items.RolesCheckAll.Enabled = Not RolesReadOnly;
-		Items.RolesUncheckAll.Enabled = Not RolesReadOnly;
-	EndIf;
-	
-	If AllowViewSelectedOnly Then
-		Items.RolesShowSelectedRolesOnly.Enabled = False;
-	EndIf;
-	
-EndProcedure
-
-
-&AtClient
-Procedure ExpandRoleSubsystems(Collection = Undefined);
-	
-	If Collection = Undefined Then
-		Collection = Roles.GetItems();
-	EndIf;
-	
-	// Expand all subsystems
-	For Each Row In Collection Do
-		Items.Roles.Expand(Row.GetID());
-		If Not Row.IsRole Then
-			ExpandRoleSubsystems(Row.GetItems());
-		EndIf;
+	For Each GroupContentRow In Object.Content Do
+		GroupContentRow.NotValid = 
+			CommonUse.ObjectAttributeValue(GroupContentRow.ExternalUser, "NotValid");
 	EndDo;
 	
 EndProcedure
 
 &AtServer
-Procedure RefreshRoleTree()
+Procedure RefreshNotValidUserList(BeforeOpenForm)
 	
-	If Not Items.RolesShowSelectedRolesOnly.Enabled Then
-		Items.RolesShowSelectedRolesOnly.Check = True;
-		ShowSelectedRolesOnly = True;
-	EndIf;
+	Items.ShowNotValidUsers.Check = ?(BeforeOpenForm, False,
+		Not Items.ShowNotValidUsers.Check);
 	
-	// Storing the current row
-	CurrentSubsystem = "";
-	CurrentRole = "";
-	//
-	If Items.Roles.CurrentRow <> Undefined Then
-		CurrentData = Roles.FindByID(Items.Roles.CurrentRow);
-		If CurrentData.IsRole Then
-			CurrentSubsystem = ?(CurrentData.GetParent() = Undefined, "", CurrentData.GetParent().Name);
-			CurrentRole = CurrentData.Name;
-		Else
-			CurrentSubsystem = CurrentData.Name;
-			CurrentRole = "";
-		EndIf;
-	EndIf;
+	Filter = New Structure;
 	
-	RoleTree = UsersServerCached.RoleTree(ShowRoleSubsystems).Copy();
-	AddNonexistentRoleNames(RoleTree);
-	RoleTree.Columns.Add("Check", New TypeDescription("Boolean"));
-	RoleTree.Columns.Add("PictureNumber", New TypeDescription("Number"));
-	PrepareRoleTree(RoleTree.Rows, HideFullAccessRole, ShowSelectedRolesOnly);
-	
-	ValueToFormAttribute(RoleTree, "Roles");
-	
-	Items.Roles.Representation = ?(RoleTree.Rows.Find(False, "IsRole") = Undefined, TableRepresentation.List, TableRepresentation.Tree);
-	
-	// Restoring the current row
-	FoundRows = RoleTree.Rows.FindRows(New Structure("IsRole, Name", False, CurrentSubsystem), True);
-	If FoundRows.Count() <> 0 Then
-		SubsystemDetails = FoundRows[0];
-		SubsystemIndex = ?(SubsystemDetails.Parent = Undefined, RoleTree.Rows, SubsystemDetails.Parent.Rows).IndexOf(SubsystemDetails);
-		SubsystemRow = FormDataTreeItemCollection(Roles, SubsystemDetails).Get(SubsystemIndex);
-		If ValueIsFilled(CurrentRole) Then
-			FoundRows = SubsystemDetails.Rows.FindRows(New Structure("IsRole, Name", True, CurrentRole));
-			If FoundRows.Count() <> 0 Then
-				RoleDetails = FoundRows[0];
-				Items.Roles.CurrentRow = SubsystemRow.GetItems().Get(SubsystemDetails.Rows.IndexOf(RoleDetails)).GetID();
-			Else
-				Items.Roles.CurrentRow = SubsystemRow.GetID();
-			EndIf;
-		Else
-			Items.Roles.CurrentRow = SubsystemRow.GetID();
-		EndIf;
+	If Not Items.ShowNotValidUsers.Check Then
+		Filter.Insert("NotValid", False);
+		Items.Content.RowFilter = New FixedStructure(Filter);
 	Else
-		FoundRows = RoleTree.Rows.FindRows(New Structure("IsRole, Name", True, CurrentRole), True);
-		If FoundRows.Count() <> 0 Then
-			RoleDetails = FoundRows[0];
-			RoleIndex = ?(RoleDetails.Parent = Undefined, RoleTree.Rows, RoleDetails.Parent.Rows).IndexOf(RoleDetails);
-			RoleRow = FormDataTreeItemCollection(Roles, RoleDetails).Get(RoleIndex);
-			Items.Roles.CurrentRow = RoleRow.GetID();
-		EndIf;
+		Items.Content.RowFilter = New FixedStructure();
 	EndIf;
 	
 EndProcedure
 
 &AtServer
-Procedure PrepareRoleTree(Val Collection, Val HideFullAccessRole, Val ShowSelectedRolesOnly)
+Procedure ContentSortRows(OrderType)
+	If Not Items.ShowNotValidUsers.Check Then
+		Items.Content.RowFilter = New FixedStructure();
+	EndIf;
 	
-	Index = Collection.Count()-1;
+	If OrderType = "Ascending" Then
+		Object.Content.Sort("ExternalUser Asc");
+	Else
+		Object.Content.Sort("ExternalUser Desc");
+	EndIf;
 	
-	While Index >= 0 Do
-		Row = Collection[Index];
-		
-		PrepareRoleTree(Row.Rows, HideFullAccessRole, ShowSelectedRolesOnly);
-		
-		If Row.IsRole Then
-			If HideFullAccessRole 
-				And (Upper(Row.Name) = Upper("FullAccess") Or Upper(Row.Name) = Upper("FullAdministrator")) Then
-				
-				Collection.Delete(Index);
-			Else
-				Row.PictureNumber = 6;
-				Row.Check = RoleCollection().FindRows(New Structure("Role", Row.Name)).Count() > 0;
-				If ShowSelectedRolesOnly And Not Row.Check Then
-					Collection.Delete(Index);
-				EndIf;
-			EndIf;
-		Else
-			If Row.Rows.Count() = 0 Then
-				Collection.Delete(Index);
-			Else
-				Row.PictureNumber = 5;
-				Row.Check = Row.Rows.FindRows(New Structure("Check", False)).Count() = 0;
-			EndIf;
-		EndIf;
-		
-		Index = Index-1;
-	EndDo;
-	
+	If Not Items.ShowNotValidUsers.Check Then
+		Filter = New Structure;
+		Filter.Insert("NotValid", False);
+		Items.Content.RowFilter = New FixedStructure(Filter);
+	EndIf;
 EndProcedure
 
 &AtServer
-Function FormDataTreeItemCollection(Val FormDataTree, Val ValueTreeRow)
+Procedure ContentMoveRow(MovementDirection)
 	
-	If ValueTreeRow.Parent = Undefined Then
-		FormDataTreeItemCollection = FormDataTree.GetItems();
-	Else
-		ParentIndex = ?(ValueTreeRow.Parent.Parent = Undefined, ValueTreeRow.Owner().Rows, ValueTreeRow.Parent.Parent.Rows).IndexOf(ValueTreeRow.Parent);
-		FormDataTreeItemCollection = FormDataTreeItemCollection(FormDataTree, ValueTreeRow.Parent).Get(ParentIndex).GetItems();
+	Row = Object.Content.FindByID(Items.Content.CurrentRow);
+	If Row = Undefined Then
+		Return;
 	EndIf;
 	
-	Return FormDataTreeItemCollection;
+	CurrentRowIndex = Row.LineNumber - 1;
+	Move = 0;
 	
-EndFunction
-
-
-&AtServer
-Procedure UpdateRoleContent(RowID, Add);
-	
-	If RowID = Undefined Then
-		// Processing all roles
-		RoleCollection = RoleCollection();
-		RoleCollection.Clear();
-		If Add Then
-			AllRoles = UsersServerCached.AllRoles();
-			For Each RoleDetails In AllRoles Do
-				If RoleDetails.Name <> "FullAccess" And RoleDetails.Name <> "FullAdministrator" Then
-					RoleCollection.Add().Role = RoleDetails.Name;
-				EndIf;
-			EndDo;
-		EndIf;
-		If ShowSelectedRolesOnly Then
-			If RoleCollection.Count() > 0 Then
-				RefreshRoleTree();
-			Else
-				Roles.GetItems().Clear();
-			EndIf;
-			// Return
+	While True Do
+		Move = Move + ?(MovementDirection = "Up", -1, 1);
+		
+		If CurrentRowIndex + Move < 0
+		Or CurrentRowIndex + Move >= Object.Content.Count() Then
 			Return;
-			// Return
-		EndIf;
-	Else
-		CurrentData = Roles.FindByID(RowID);
-		If CurrentData.IsRole Then
-			AddDeleteRole(CurrentData.Name, Add);
-		Else
-			AddDeleteSubsystemRoles(CurrentData.GetItems(), Add);
-		EndIf;
-	EndIf;
-	
-	RefreshSelectedRoleMarks(Roles.GetItems());
-	
-	Modified = True;
-	
-EndProcedure
-
-&AtServer
-Procedure AddDeleteRole(Val Role, Val Add)
-	
-	FoundRoles = RoleCollection().FindRows(New Structure("Role", Role));
-	
-	If Add Then
-		If FoundRoles.Count() = 0 Then
-			RoleCollection().Add().Role = Role;
-		EndIf;
-	Else
-		If FoundRoles.Count() > 0 Then
-			RoleCollection().Delete(FoundRoles[0]);
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
-&AtServer
-Procedure AddDeleteSubsystemRoles(Val Collection, Val Add)
-	
-	For Each Row In Collection Do
-		If Row.IsRole Then
-			AddDeleteRole(Row.Name, Add);
-		Else
-			AddDeleteSubsystemRoles(Row.GetItems(), Add);
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Procedure RefreshSelectedRoleMarks(Val Collection)
-	
-	Index = Collection.Count()-1;
-	
-	While Index >= 0 Do
-		Row = Collection[Index];
-		
-		If Row.IsRole Then
-			Row.Check = RoleCollection().FindRows(New Structure("Role", Row.Name)).Count() > 0;
-			If ShowSelectedRolesOnly And Not Row.Check Then
-				Collection.Delete(Index);
-			EndIf;
-		Else
-			RefreshSelectedRoleMarks(Row.GetItems());
-			If Row.GetItems().Count() = 0 Then
-				Collection.Delete(Index);
-			Else
-				Row.Check = True;
-				For Each Item In Row.GetItems() Do
-					If Not Item.Check Then
-						Row.Check = False;
-						Break;
-					EndIf;
-				EndDo;
-			EndIf;
 		EndIf;
 		
-		Index = Index-1;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Procedure AddNonexistentRoleNames(RoleTree)
-	
-	// Adding nonexistent roles
-	For Each Row In RoleCollection() Do
-		If RoleTree.Rows.FindRows(New Structure("IsRole, Name", True, Row.Role), True).Count() = 0 Then
-			TreeRow = RoleTree.Rows.Insert(0);
-			TreeRow.IsRole = True;
-			TreeRow.Name = Row.Role;
-			TreeRow.Synonym = "? " + Row.Role;
+		If Items.ShowNotValidUsers.Check
+		 Or Object.Content[CurrentRowIndex + Move].NotValid = False Then
+			Break;
 		EndIf;
 	EndDo;
 	
+	Object.Content.Move(CurrentRowIndex, Move);
+	Items.Content.Refresh();
+	
 EndProcedure
+ 
+&AtServer
+Procedure ProcessRolesInterface(Action, MainParameter = Undefined)
+	
+	ActionParameters = New Structure;
+	ActionParameters.Insert("MainParameter",      MainParameter);
+	ActionParameters.Insert("Form",               ThisObject);
+	ActionParameters.Insert("RoleCollection",     RoleCollection);
+	ActionParameters.Insert("UserType",           Enums.UserTypes.ExternalUser);
+	ActionParameters.Insert("HideFullAccessRole", True);
+	
+	UsersInternal.ProcessRolesInterface(Action, ActionParameters);
+	
+EndProcedure
+
+#EndRegion

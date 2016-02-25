@@ -3,13 +3,13 @@
 	<AutoTitle>false</AutoTitle>
 	<CommandBarLocation>None</CommandBarLocation>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1"/>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
 	<Events>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 		<Event name="OnClose">OnClose</Event>
 	</Events>
 	<ChildItems>
-		<Pages name="PagesGroup" id="2">
+		<Pages name="GroupPages" id="18">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -17,18 +17,18 @@
 				</v8:item>
 			</Title>
 			<PagesRepresentation>None</PagesRepresentation>
-			<ExtendedTooltip name="PagesGroupExtendedTooltip" id="3"/>
+			<ExtendedTooltip name="PagesGroupExtendedTooltip" id="29"/>
 			<ChildItems>
-				<Page name="Warning" id="4">
+				<Page name="Warning" id="19">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Warning</v8:content>
 						</v8:item>
 					</Title>
-					<ExtendedTooltip name="WarningExtendedTooltip" id="5"/>
+					<ExtendedTooltip name="WarningExtendedTooltip" id="30"/>
 					<ChildItems>
-						<UsualGroup name="NotificationGroup" id="6">
+						<UsualGroup name="NotificationGroup" id="9">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -44,44 +44,44 @@
 							<Group>Vertical</Group>
 							<Representation>None</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="NotificationGroupExtendedTooltip" id="7"/>
+							<ExtendedTooltip name="NotificationGroupExtendedTooltip" id="31"/>
 							<ChildItems>
-								<LabelDecoration name="AttentionDecoration" id="8">
+								<LabelDecoration name="AttentionDecoration" id="7">
 									<Title formatted="false">
 										<v8:item>
 											<v8:lang>en</v8:lang>
 											<v8:content>Attention!</v8:content>
 										</v8:item>
 									</Title>
-									<ContextMenu name="AttentionDecorationContextMenu" id="9"/>
-									<ExtendedTooltip name="AttentionDecorationExtendedTooltip" id="10"/>
+									<ContextMenu name="AttentionDecorationContextMenu" id="8"/>
+									<ExtendedTooltip name="AttentionDecorationExtendedTooltip" id="32"/>
 								</LabelDecoration>
-								<LabelDecoration name="WarningDecoration" id="11">
-									<ContextMenu name="WarningDecorationContextMenu" id="12"/>
-									<ExtendedTooltip name="WarningDecorationExtendedTooltip" id="13"/>
+								<LabelDecoration name="WarningDecoration" id="1">
+									<ContextMenu name="WarningDecorationContextMenu" id="2"/>
+									<ExtendedTooltip name="WarningDecorationExtendedTooltip" id="33"/>
 								</LabelDecoration>
-								<LabelDecoration name="WarningDecoration1" id="14">
+								<LabelDecoration name="WarningDecoration1" id="16">
 									<Title formatted="false">
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Data export can take a while.</v8:content>
+											<v8:content>The data export can take a long time.</v8:content>
 										</v8:item>
 									</Title>
-									<ContextMenu name="WarningDecoration1ContextMenu" id="15"/>
-									<ExtendedTooltip name="WarningDecoration1ExtendedTooltip" id="16"/>
+									<ContextMenu name="WarningDecoration1ContextMenu" id="17"/>
+									<ExtendedTooltip name="WarningDecoration1ExtendedTooltip" id="34"/>
 								</LabelDecoration>
-								<LabelDecoration name="WarningDecoration2" id="17">
+								<LabelDecoration name="WarningDecoration2" id="12">
 									<Title formatted="false">
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Can not start data export while other users are logged on to the infobase.
-The full list of active users you can see here:</v8:content>
+											<v8:content>Cannot export data when other users operate the infobase.
+You can see the full list of active users here:</v8:content>
 										</v8:item>
 									</Title>
-									<ContextMenu name="WarningDecoration2ContextMenu" id="18"/>
-									<ExtendedTooltip name="WarningDecoration2ExtendedTooltip" id="19"/>
+									<ContextMenu name="WarningDecoration2ContextMenu" id="13"/>
+									<ExtendedTooltip name="WarningDecoration2ExtendedTooltip" id="35"/>
 								</LabelDecoration>
-								<LabelDecoration name="ActiveUserList" id="20">
+								<LabelDecoration name="ActiveUserList" id="27">
 									<HorizontalStretch>true</HorizontalStretch>
 									<Title formatted="false">
 										<v8:item>
@@ -90,15 +90,20 @@ The full list of active users you can see here:</v8:content>
 										</v8:item>
 									</Title>
 									<Hyperlink>true</Hyperlink>
-									<ContextMenu name="ActiveUserListContextMenu" id="21"/>
-									<ExtendedTooltip name="ActiveUserListExtendedTooltip" id="22"/>
+									<ContextMenu name="ActiveUserListContextMenu" id="28"/>
+									<ExtendedTooltip name="ActiveUserListExtendedTooltip" id="36"/>
 									<Events>
 										<Event name="Click">OpenActiveUsersForm</Event>
 									</Events>
 								</LabelDecoration>
+								<LabelDecoration name="DecorationWarning23" id="43">
+									<VerticalStretch>true</VerticalStretch>
+									<ContextMenu name="DecorationWarning23ContextMenu" id="44"/>
+									<ExtendedTooltip name="DecorationWarning23ExtendedTooltip" id="45"/>
+								</LabelDecoration>
 							</ChildItems>
 						</UsualGroup>
-						<CommandBar name="ButtonsGroup" id="23">
+						<CommandBar name="ButtonsGroup" id="6">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -108,28 +113,28 @@ The full list of active users you can see here:</v8:content>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Button group</v8:content>
+									<v8:content>Buttons group</v8:content>
 								</v8:item>
 							</ToolTip>
 							<HorizontalLocation>Right</HorizontalLocation>
-							<ExtendedTooltip name="ButtonsGroupExtendedTooltip" id="24"/>
+							<ExtendedTooltip name="ButtonsGroupExtendedTooltip" id="37"/>
 							<ChildItems>
-								<Button name="Continue" id="25">
+								<Button name="Continue" id="3">
 									<Type>CommandBarButton</Type>
 									<DefaultButton>true</DefaultButton>
 									<CommandName>Form.Command.Continue</CommandName>
-									<ExtendedTooltip name="ContinueExtendedTooltip" id="26"/>
+									<ExtendedTooltip name="ContinueExtendedTooltip" id="38"/>
 								</Button>
-								<Button name="Cancel" id="27">
+								<Button name="Cancel" id="4">
 									<Type>CommandBarButton</Type>
 									<CommandName>Form.StandardCommand.Cancel</CommandName>
-									<ExtendedTooltip name="CancelExtendedTooltip" id="28"/>
+									<ExtendedTooltip name="CancelExtendedTooltip" id="39"/>
 								</Button>
 							</ChildItems>
 						</CommandBar>
 					</ChildItems>
 				</Page>
-				<Page name="Data" id="29">
+				<Page name="Data" id="20">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
@@ -142,9 +147,9 @@ The full list of active users you can see here:</v8:content>
 							<v8:content>Data</v8:content>
 						</v8:item>
 					</ToolTip>
-					<ExtendedTooltip name="ExportExtendedTooltip" id="30"/>
+					<ExtendedTooltip name="ExportExtendedTooltip" id="40"/>
 					<ChildItems>
-						<PictureDecoration name="ProgressDecoration" id="31">
+						<PictureDecoration name="ProgressDecoration" id="22">
 							<Title formatted="false">
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -153,21 +158,21 @@ The full list of active users you can see here:</v8:content>
 							</Title>
 							<Picture>
 								<xr:Ref>CommonPicture.LongAction48</xr:Ref>
-								<xr:LoadTransparent>true</xr:LoadTransparent>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
 							</Picture>
-							<ContextMenu name="ProgressDecorationContextMenu" id="32"/>
-							<ExtendedTooltip name="ProgressDecorationExtendedTooltip" id="33"/>
+							<ContextMenu name="ProgressDecorationContextMenu" id="23"/>
+							<ExtendedTooltip name="ProgressDecorationExtendedTooltip" id="41"/>
 						</PictureDecoration>
-						<LabelDecoration name="PreparingExportFileDecoration" id="34">
+						<LabelDecoration name="PreparingExportFileDecoration" id="24">
 							<Title formatted="false">
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>The export file is preparing. This action can take a while.
-Please wait.</v8:content>
+									<v8:content>Please wait.
+Preparing the export file. The operation can take a long time.</v8:content>
 								</v8:item>
 							</Title>
-							<ContextMenu name="PreparingExportFileDecorationContextMenu" id="35"/>
-							<ExtendedTooltip name="PreparingExportFileDecorationExtendedTooltip" id="36"/>
+							<ContextMenu name="PreparingExportFileDecorationContextMenu" id="25"/>
+							<ExtendedTooltip name="PreparingExportFileDecorationExtendedTooltip" id="42"/>
 						</LabelDecoration>
 					</ChildItems>
 				</Page>
@@ -218,7 +223,7 @@ Please wait.</v8:content>
 			</ToolTip>
 			<Action>ExportData</Action>
 		</Command>
-		<Command name="OpenActiveUsersForm" id="2">
+		<Command name="OpenActiveUsersForm" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>

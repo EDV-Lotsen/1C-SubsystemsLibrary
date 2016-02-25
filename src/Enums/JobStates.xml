@@ -99,7 +99,7 @@
 							<v8:content>Scheduled</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment/>
+					<Comment>Job scheduled for execution</Comment>
 				</Properties>
 			</EnumValue>
 			<EnumValue uuid="5b06ccda-2a70-4621-8273-78408cbe72a9">
@@ -111,7 +111,7 @@
 							<v8:content>Executing</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment/>
+					<Comment>Job executing</Comment>
 				</Properties>
 			</EnumValue>
 			<EnumValue uuid="89753385-64fd-4e76-9857-bfd5d7c23f71">
@@ -123,7 +123,7 @@
 							<v8:content>Completed</v8:content>
 						</v8:item>
 					</Synonym>
-					<Comment/>
+					<Comment>Job completed</Comment>
 				</Properties>
 			</EnumValue>
 			<EnumValue uuid="1b3113f3-e7d4-4e6f-b6ed-08f5fd78c68e">
@@ -133,6 +133,42 @@
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Not scheduled</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment>Job not scheduled</Comment>
+				</Properties>
+			</EnumValue>
+			<EnumValue uuid="53e72cf2-e2a5-4b59-b5b1-a1fc28fda5bf">
+				<Properties>
+					<Name>ExecutionError</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Execution error</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment>Job execution error</Comment>
+				</Properties>
+			</EnumValue>
+			<EnumValue uuid="e20bcb57-2f68-4709-8a11-105d561a2dda">
+				<Properties>
+					<Name>NotActive</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Not active</v8:content>
+						</v8:item>
+					</Synonym>
+					<Comment>Job not active</Comment>
+				</Properties>
+			</EnumValue>
+			<EnumValue uuid="3df3f61a-2c17-4278-8d82-91089f793e6a">
+				<Properties>
+					<Name>ErrorHandlerOnFailure</Name>
+					<Synonym>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Error handler on failure</v8:content>
 						</v8:item>
 					</Synonym>
 					<Comment/>

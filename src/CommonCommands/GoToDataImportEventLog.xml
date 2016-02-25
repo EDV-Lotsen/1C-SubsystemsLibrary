@@ -6,20 +6,28 @@
 			<Synonym>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data import events</v8:content>
+					<v8:content>Import events</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
 			<Group>FormNavigationPanelGoTo</Group>
 			<Representation>PictureAndText</Representation>
-			<ToolTip/>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data import events</v8:content>
+				</v8:item>
+			</ToolTip>
 			<Picture>
 				<xr:Ref>StdPicture.EventLog</xr:Ref>
 				<xr:LoadTransparent>true</xr:LoadTransparent>
 			</Picture>
 			<Shortcut/>
 			<IncludeHelpInContents>false</IncludeHelpInContents>
-			<CommandParameterType/>
+			<CommandParameterType>
+				<v8:Type>cfg:ExchangePlanRef.MessageExchange</v8:Type>
+				<v8:Type>cfg:ExchangePlanRef.DemoExchangeInDIB</v8:Type>
+			</CommandParameterType>
 			<ParameterUseMode>Single</ParameterUseMode>
 			<ModifiesData>false</ModifiesData>
 		</Properties>

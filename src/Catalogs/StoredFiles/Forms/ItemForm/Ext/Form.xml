@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Popup name="Cryptography" id="12">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Cryptography</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Cryptography</v8:content>
+					</v8:item>
+				</ToolTip>
+				<ExtendedTooltip name="CryptographyExtendedTooltip" id="24"/>
+				<ChildItems>
+					<Button name="Sign" id="13">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Sign</CommandName>
+						<ExtendedTooltip name="SignExtendedTooltip" id="25"/>
+					</Button>
+					<Button name="VerifySignature" id="14">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.VerifySignature</CommandName>
+						<ExtendedTooltip name="VerifySignatureExtendedTooltip" id="26"/>
+					</Button>
+					<Button name="PutEncryptedOnServer" id="15">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.PutEncryptedOnServer</CommandName>
+						<ExtendedTooltip name="PutEncryptedOnServerExtendedTooltip" id="27"/>
+					</Button>
+					<Button name="Encrypt" id="18">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Encrypt</CommandName>
+						<ExtendedTooltip name="EncryptExtendedTooltip" id="28"/>
+					</Button>
+					<Button name="GetWithDetails" id="16">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.GetWithDetails</CommandName>
+						<ExtendedTooltip name="GetWithDetailsExtendedTooltip" id="29"/>
+					</Button>
+				</ChildItems>
+			</Popup>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="BeforeWrite">BeforeWrite</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="Owner" id="4">
+			<DataPath>1/-5</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="OwnerContextMenu" id="10"/>
+			<ExtendedTooltip name="OwnerExtendedTooltip" id="30"/>
+		</InputField>
+		<InputField name="Code" id="2">
+			<DataPath>Object.Code</DataPath>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="CodeContextMenu" id="5"/>
+			<ExtendedTooltip name="CodeExtendedTooltip" id="31"/>
+		</InputField>
+		<InputField name="Description" id="3">
+			<DataPath>Object.Description</DataPath>
+			<DefaultItem>true</DefaultItem>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="DescriptionContextMenu" id="9"/>
+			<ExtendedTooltip name="DescriptionExtendedTooltip" id="32"/>
+		</InputField>
+		<InputField name="FileName" id="8">
+			<DataPath>Object.FileName</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+			<Wrap>false</Wrap>
+			<ContextMenu name="FileNameContextMenu" id="11"/>
+			<ExtendedTooltip name="FileNameExtendedTooltip" id="33"/>
+		</InputField>
+		<UsualGroup name="FlagsGroup" id="19">
+			<ReadOnly>true</ReadOnly>
+			<EnableContentChange>true</EnableContentChange>
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Check boxes group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Check boxes group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="FlagsGroupExtendedTooltip" id="34"/>
+			<ChildItems>
+				<CheckBoxField name="Signed" id="20">
+					<DataPath>Object.Signed</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="SignedContextMenu" id="21"/>
+					<ExtendedTooltip name="SignedExtendedTooltip" id="35"/>
+				</CheckBoxField>
+				<CheckBoxField name="Encrypted" id="22">
+					<DataPath>Object.Encrypted</DataPath>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="EncryptedContextMenu" id="23"/>
+					<ExtendedTooltip name="EncryptedExtendedTooltip" id="36"/>
+				</CheckBoxField>
+			</ChildItems>
+		</UsualGroup>
+		<Button name="ChooseFileFromDiskAndWrite" id="6">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>Form.Command.ChooseFileFromDiskAndWrite</CommandName>
+			<TextColor>#1C55AE</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="ChooseFileFromDiskAndWriteExtendedTooltip" id="37"/>
+		</Button>
+		<Button name="ReadFileAndSaveToDisk" id="7">
+			<Type>Hyperlink</Type>
+			<SkipOnInput>false</SkipOnInput>
+			<CommandName>Form.Command.ReadFileAndSaveToDisk</CommandName>
+			<TextColor>#1C55AE</TextColor>
+			<BackColor>style:ButtonBackColor</BackColor>
+			<BorderColor>style:BorderColor</BorderColor>
+			<ExtendedTooltip name="ReadFileAndSaveToDiskExtendedTooltip" id="38"/>
+		</Button>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.StoredFiles</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+			<UseAlways>
+				<Field>Object.FileData</Field>
+			</UseAlways>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ChooseFileFromDiskAndWrite" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choose file from disk and save</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choose file from disk and save</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ChooseFileFromDiskAndWrite</Action>
+		</Command>
+		<Command name="ReadFileAndSaveToDisk" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Read file and save to disk</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Read file and save to disk</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ReadFileAndSaveToDisk</Action>
+		</Command>
+		<Command name="Sign" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sign saved file</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sign file on your behalf</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Sign</Action>
+		</Command>
+		<Command name="VerifySignature" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Validate signature of saved file</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Validate digital signature of saved file</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>VerifySignature</Action>
+		</Command>
+		<Command name="PutEncryptedOnServer" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Choose file from disk, encrypt, and save</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Put encrypted file on server</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>PutEncryptedOnServer</Action>
+		</Command>
+		<Command name="GetWithDetails" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Read file, decrypt, and save to disk</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Receives the decrypted file, saves to the disk, tries to open if there is an extension</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>GetWithDetails</Action>
+		</Command>
+		<Command name="Encrypt" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Encrypt saved file</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Gets the unencrypted file from the server, encrypts it with the file owner contractor's public keyб and puts it on the server. File signatures, if any, are kept the same as for unencrypted version of the document.</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Encrypt</Action>
+		</Command>
+	</Commands>
+</Form>

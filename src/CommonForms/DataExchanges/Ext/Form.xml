@@ -3,398 +3,1505 @@
 	<Title>
 		<v8:item>
 			<v8:lang>en</v8:lang>
-			<v8:content>Data exchanges</v8:content>
+			<v8:content>Data synchronization</v8:content>
 		</v8:item>
 	</Title>
 	<AutoTitle>false</AutoTitle>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<AutoCommandBar name="FormCommandBar" id="1">
+	<AutoCommandBar name="FormCommandBar" id="-1">
 		<Autofill>false</Autofill>
-		<ChildItems>
-			<Popup name="SubmenuCreate" id="2">
-				<Title>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Create</v8:content>
-					</v8:item>
-				</Title>
-				<ToolTip>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Setup new data exchange.</v8:content>
-					</v8:item>
-				</ToolTip>
-				<Picture>
-					<xr:Ref>StdPicture.CreateListItem</xr:Ref>
-					<xr:LoadTransparent>true</xr:LoadTransparent>
-				</Picture>
-				<ExtendedTooltip name="SubmenuCreateExtendedTooltip" id="3"/>
-			</Popup>
-			<Button name="ExecuteDataExchange" id="4">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<OnlyInAllActions>true</OnlyInAllActions>
-				<CommandName>Form.Command.ExecuteDataExchange</CommandName>
-				<ExtendedTooltip name="ExecuteDataExchangeExtendedTooltip" id="5"/>
-			</Button>
-			<Popup name="Setup" id="6">
-				<Title>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Setup</v8:content>
-					</v8:item>
-				</Title>
-				<ToolTip>
-					<v8:item>
-						<v8:lang>en</v8:lang>
-						<v8:content>Data exchange setup.</v8:content>
-					</v8:item>
-				</ToolTip>
-				<ExtendedTooltip name="SettingsExtendedTooltip" id="7"/>
-				<ChildItems>
-					<Button name="ExecuteDataExchangeInteractively" id="8">
-						<Type>CommandBarButton</Type>
-						<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
-						<ExtendedTooltip name="ExecuteDataExchangeInteractivelyExtendedTooltip" id="9"/>
-					</Button>
-					<ButtonGroup name="ScheduleGroup" id="10">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Schedule group</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Schedule group.</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="ScheduleGroupExtendedTooltip" id="11"/>
-						<ChildItems>
-							<Button name="SetupExchangeExecutionSchedule" id="12">
-								<Type>CommandBarButton</Type>
-								<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
-								<ExtendedTooltip name="SetupExchangeExecutionScheduleExtendedTooltip" id="13"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<ButtonGroup name="ChangeGroup" id="14">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Change group</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Change group</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="ChangeGroupExtendedTooltip" id="15"/>
-						<ChildItems>
-							<Button name="NodeStateListChangeInfoBaseNode" id="16">
-								<Type>CommandBarButton</Type>
-								<UserVisible>
-									<xr:Common>true</xr:Common>
-									<xr:Value name="Role.AddEditDataExchanges">true</xr:Value>
-								</UserVisible>
-								<Representation>PictureAndText</Representation>
-								<SkipOnInput>false</SkipOnInput>
-								<CommandName>Form.Command.ChangeInfoBaseNode</CommandName>
-								<ExtendedTooltip name="NodeStateListChangeInfoBaseNodeExtendedTooltip" id="17"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<ButtonGroup name="DiagnosticsGroup" id="18">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Diagnostics group</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Diagnostics group.</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="DiagnosticsGroupExtendedTooltip" id="19"/>
-						<ChildItems>
-							<Button name="NodeStateListGoToDataImportEventLog" id="20">
-								<Type>CommandBarButton</Type>
-								<OnlyInAllActions>false</OnlyInAllActions>
-								<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
-								<ExtendedTooltip name="NodeStateListGoToDataImportEventLogExtendedTooltip" id="21"/>
-							</Button>
-							<Button name="NodeStateListGoToDataExportEventLog" id="22">
-								<Type>CommandBarButton</Type>
-								<OnlyInAllActions>false</OnlyInAllActions>
-								<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
-								<ExtendedTooltip name="NodeStateListGoToDataExportEventLogExtendedTooltip" id="23"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-				</ChildItems>
-			</Popup>
-			<Button name="RefreshMonitor" id="24">
-				<Type>CommandBarButton</Type>
-				<SkipOnInput>false</SkipOnInput>
-				<OnlyInAllActions>false</OnlyInAllActions>
-				<CommandName>Form.Command.RefreshMonitor</CommandName>
-				<ExtendedTooltip name="RefreshMonitorExtendedTooltip" id="25"/>
-			</Button>
-			<Button name="FormOutputList" id="26">
-				<Type>CommandBarButton</Type>
-				<CommandName>Form.Item.NodeStateList.StandardCommand.OutputList</CommandName>
-				<ExtendedTooltip name="FormPutListExtendedTooltip" id="27"/>
-			</Button>
-			<Button name="FormChangeForm" id="28">
-				<Type>CommandBarButton</Type>
-				<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
-				<ExtendedTooltip name="FormChangeFormExtendedTooltip" id="29"/>
-			</Button>
-			<Button name="FormHelp" id="30">
-				<Type>CommandBarButton</Type>
-				<CommandName>Form.StandardCommand.Help</CommandName>
-				<ExtendedTooltip name="FormHelpExtendedTooltip" id="31"/>
-			</Button>
-		</ChildItems>
 	</AutoCommandBar>
 	<Events>
 		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnOpen">OnOpen</Event>
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<Table name="NodeStateList" id="32">
-			<Representation>List</Representation>
-			<CommandBarLocation>None</CommandBarLocation>
-			<ReadOnly>true</ReadOnly>
-			<SkipOnInput>false</SkipOnInput>
-			<SelectionMode>SingleRow</SelectionMode>
-			<RowSelectionMode>Row</RowSelectionMode>
-			<AutoInsertNewRow>true</AutoInsertNewRow>
-			<EnableStartDrag>true</EnableStartDrag>
-			<EnableDrag>true</EnableDrag>
-			<DataPath>NodeStateList</DataPath>
-			<CommandSet>
-				<ExcludedCommand>Add</ExcludedCommand>
-			</CommandSet>
-			<SearchStringLocation>None</SearchStringLocation>
-			<ViewStatusLocation>None</ViewStatusLocation>
-			<SearchControlLocation>None</SearchControlLocation>
-			<RowFilter xsi:nil="true"/>
-			<ContextMenu name="NodeStateListContextMenu" id="33">
-				<Autofill>false</Autofill>
-				<ChildItems>
-					<ButtonGroup name="DataExchangeExecutionButtonGroup" id="34">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Data exchange execution button group</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Data exchange execution button group.</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="DataExchangeExecutionButtonGroupExtendedTooltip" id="35"/>
-						<ChildItems>
-							<Button name="ExecuteDataExchange1" id="36">
-								<Type>CommandBarButton</Type>
-								<SkipOnInput>false</SkipOnInput>
-								<CommandName>Form.Command.ExecuteDataExchange</CommandName>
-								<ExtendedTooltip name="ExecuteDataExchange1ExtendedTooltip" id="37"/>
-							</Button>
-							<Button name="ExecuteDataExchangeInteractively1" id="38">
-								<Type>CommandBarButton</Type>
-								<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
-								<ExtendedTooltip name="ExecuteDataExchangeInteractively1ExtendedTooltip" id="39"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<ButtonGroup name="ContextMenuStateListDiagnostics" id="40">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Diagnostics</v8:content>
-							</v8:item>
-						</Title>
-						<ExtendedTooltip name="ContextMenuStateListDiagnosticsExtendedTooltip" id="41"/>
-						<ChildItems>
-							<Button name="ContextMenuNodeStateListGoToDataImportEventLog" id="42">
-								<Type>CommandBarButton</Type>
-								<SkipOnInput>false</SkipOnInput>
-								<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
-								<ExtendedTooltip name="ContextMenuNodeStateListGoToDataImportEventLogExtendedTooltip" id="43"/>
-							</Button>
-							<Button name="ContextMenuNodeStateListGoToDataExportEventLog" id="44">
-								<Type>CommandBarButton</Type>
-								<SkipOnInput>false</SkipOnInput>
-								<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
-								<ExtendedTooltip name="ContextMenuNodeStateListGoToDataExportEventLogExtendedTooltip" id="45"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<ButtonGroup name="ScheduleSettingsButtonGroup" id="46">
-						<Title>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Schedule settings button group</v8:content>
-							</v8:item>
-						</Title>
-						<ToolTip>
-							<v8:item>
-								<v8:lang>en</v8:lang>
-								<v8:content>Schedule settings button group.</v8:content>
-							</v8:item>
-						</ToolTip>
-						<ExtendedTooltip name="ScheduleSettingsButtonGroupExtendedTooltip" id="47"/>
-						<ChildItems>
-							<Button name="SetupExchangeExecutionSchedule1" id="48">
-								<Type>CommandBarButton</Type>
-								<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
-								<ExtendedTooltip name="SetupExchangeExecutionSchedule1ExtendedTooltip" id="49"/>
-							</Button>
-						</ChildItems>
-					</ButtonGroup>
-					<Button name="NodeStateListContextMenuCopyToClipboard" id="50">
-						<Type>CommandBarButton</Type>
-						<CommandName>Form.Item.NodeStateList.StandardCommand.CopyToClipboard</CommandName>
-						<ExtendedTooltip name="NodeStateListContextMenuCopyToClipboardExtendedTooltip" id="51"/>
-					</Button>
-				</ChildItems>
-			</ContextMenu>
-			<AutoCommandBar name="NodeStateListCommandBar" id="52"/>
-			<ExtendedTooltip name="NodeStateListExtendedTooltip" id="53"/>
-			<SearchStringAddition name="NodeStateListSearchString" id="82">
-				<AdditionSource>
-					<Item>NodeStateList</Item>
-					<Type>SearchStringRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="NodeStateListSearchStringContextMenu" id="83"/>
-				<ExtendedTooltip name="NodeStateListSearchStringExtendedTooltip" id="84"/>
-			</SearchStringAddition>
-			<ViewStatusAddition name="NodeStateListViewStatus" id="85">
-				<AdditionSource>
-					<Item>NodeStateList</Item>
-					<Type>ViewStatusRepresentation</Type>
-				</AdditionSource>
-				<ContextMenu name="NodeStateListViewStatusContextMenu" id="86"/>
-				<ExtendedTooltip name="NodeStateListViewStatusExtendedTooltip" id="87"/>
-			</ViewStatusAddition>
-			<SearchControlAddition name="NodeStateListSearchControl" id="88">
-				<AdditionSource>
-					<Item>NodeStateList</Item>
-					<Type>SearchControl</Type>
-				</AdditionSource>
-				<ContextMenu name="NodeStateListSearchControlContextMenu" id="89"/>
-				<ExtendedTooltip name="NodeStateListSearchControlExtendedTooltip" id="90"/>
-			</SearchControlAddition>
-			<Events>
-				<Event name="Selection">NodeStateListChoice</Event>
-				<Event name="OnActivateRow">NodeStateListOnActivateRow</Event>
-			</Events>
+		<Pages name="DataSynchronization" id="149">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization</v8:content>
+				</v8:item>
+			</ToolTip>
+			<PagesRepresentation>None</PagesRepresentation>
+			<ExtendedTooltip name="DataSynchronizationExtendedTooltip" id="392"/>
 			<ChildItems>
-				<InputField name="NodeStateListExchangePlanName" id="54">
-					<DataPath>NodeStateList.ExchangePlanName</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="NodeStateListExchangePlanNameContextMenu" id="55"/>
-					<ExtendedTooltip name="NodeStateListExchangePlanNameExtendedTooltip" id="56"/>
-				</InputField>
-				<InputField name="NodeStateListInfoBaseNode" id="57">
-					<DataPath>NodeStateList.InfoBaseNode</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="NodeStateListInfoBaseNodeContextMenu" id="58"/>
-					<ExtendedTooltip name="NodeStateListInfoBaseNodeExtendedTooltip" id="59"/>
-				</InputField>
-				<ColumnGroup name="ImportStateGroup" id="60">
+				<Page name="SynchronizationNotConfigured" id="153">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Import state group</v8:content>
+							<v8:content>Synchronization is not configured</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Import state group.</v8:content>
+							<v8:content>Synchronization is not configured</v8:content>
 						</v8:item>
 					</ToolTip>
-					<Group>InCell</Group>
-					<ExtendedTooltip name="ImportStateGroupExtendedTooltip" id="61"/>
+					<ExtendedTooltip name="SynchronizationNotConfiguredExtendedTooltip" id="393"/>
 					<ChildItems>
-						<PictureField name="NodeStateListLastDataImportResult" id="62">
-							<DataPath>NodeStateList.LastDataImportResult</DataPath>
-							<TitleLocation>None</TitleLocation>
-							<EditMode>EnterOnInput</EditMode>
-							<ValuesPicture>
-								<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
-								<xr:LoadTransparent>true</xr:LoadTransparent>
-							</ValuesPicture>
-							<ContextMenu name="NodeStateListLastDataImportResultContextMenu" id="63"/>
-							<ExtendedTooltip name="NodeStateListLastDataImportResultExtendedTooltip" id="64"/>
-						</PictureField>
-						<InputField name="NodeStateListLastImportDate" id="65">
-							<DataPath>NodeStateList.LastImportDate</DataPath>
-							<EditMode>EnterOnInput</EditMode>
-							<ContextMenu name="NodeStateListLastImportDateContextMenu" id="66"/>
-							<ExtendedTooltip name="NodeStateListLastImportDateExtendedTooltip" id="67"/>
-						</InputField>
+						<UsualGroup name="Group1" id="154">
+							<Group>Horizontal</Group>
+							<Representation>NormalSeparation</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="Group1ExtendedTooltip" id="394"/>
+							<ChildItems>
+								<PictureDecoration name="Decoration2" id="155">
+									<Width>5</Width>
+									<Height>2</Height>
+									<Picture>
+										<xr:Ref>CommonPicture.Information32</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="Decoration2ContextMenu" id="156"/>
+									<ExtendedTooltip name="Decoration2ExtendedTooltip" id="395"/>
+								</PictureDecoration>
+								<UsualGroup name="Group10" id="200">
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group10ExtendedTooltip" id="396"/>
+									<ChildItems>
+										<Pages name="InfoLabel" id="368">
+											<PagesRepresentation>None</PagesRepresentation>
+											<ExtendedTooltip name="InformationLabelExtendedTooltip" id="397"/>
+											<ChildItems>
+												<Page name="HasRightsToSynchronize" id="369">
+													<ExtendedTooltip name="HasRightsToSynchronizeExtendedTooltip" id="398"/>
+													<ChildItems>
+														<LabelDecoration name="HasRightSynchroizationInfo" id="158">
+															<Width>75</Width>
+															<Height>3</Height>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Click "Set up data synchronization" if it is required to synchronize data of this application with other or to set up a distributed infobase.
+Data can be synchronized automatically on schedule or on-demand at any time.</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="HasRightSynchroizationInfoContextMenu" id="159"/>
+															<ExtendedTooltip name="HasRightSynchroizationInfoExtendedTooltip" id="399"/>
+														</LabelDecoration>
+													</ChildItems>
+												</Page>
+												<Page name="HasNoRightsToSynchronize" id="370">
+													<ExtendedTooltip name="HasNoRightsToSynchronizeExtendedTooltip" id="400"/>
+													<ChildItems>
+														<LabelDecoration name="HasNoRightSynchroizationInfo" id="371">
+															<Width>75</Width>
+															<Height>3</Height>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Contact the infobase administrator if it is required to synchronize data of this application with other or to set up a distributed infobase.
+Data can be synchronized automatically on schedule or on-demand at any time.</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="HasNoRightSynchroizationInfoContextMenu" id="372"/>
+															<ExtendedTooltip name="HasNoRightSynchroizationInfoExtendedTooltip" id="401"/>
+														</LabelDecoration>
+													</ChildItems>
+												</Page>
+											</ChildItems>
+										</Pages>
+										<Button name="SetUpDataSynchronizationNotConfigured" id="204">
+											<Type>UsualButton</Type>
+											<CommandName>Form.Command.SetUpDataSynchronizationNotConfigured</CommandName>
+											<ExtendedTooltip name="SetUpDataSynchronizationNotConfiguredExtendedTooltip" id="402"/>
+										</Button>
+										<LabelDecoration name="Decoration3" id="329">
+											<Height>1</Height>
+											<VerticalStretch>false</VerticalStretch>
+											<ContextMenu name="Decoration3ContextMenu" id="330"/>
+											<ExtendedTooltip name="Decoration3ExtendedTooltip" id="403"/>
+										</LabelDecoration>
+										<InputField name="SynchronizationNotConfiguredPrefix" id="327">
+											<DataPath>InfobasePrefix</DataPath>
+											<ReadOnly>true</ReadOnly>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>This infobase prefix</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>The prefix is automatically added to
+the code of catalog items and document numbers to distinguish which
+of the programs they were introduced, and to avoid duplication of data</v8:content>
+												</v8:item>
+											</ToolTip>
+											<ContextMenu name="SynchronizationNotConfiguredPrefixContextMenu" id="328"/>
+											<ExtendedTooltip name="SynchronizationNotConfiguredPrefixExtendedTooltip" id="404"/>
+										</InputField>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
 					</ChildItems>
-				</ColumnGroup>
-				<InputField name="NodeStateListLastSuccessfulImportDate" id="68">
-					<DataPath>NodeStateList.LastSuccessfulImportDate</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="NodeStateListLastSuccessfulImportDateContextMenu" id="69"/>
-					<ExtendedTooltip name="NodeStateListLastSuccessfulImportDateExtendedTooltip" id="70"/>
-				</InputField>
-				<ColumnGroup name="ExportStateGroup" id="71">
+				</Page>
+				<Page name="SingleSynchronization" id="168">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export state group</v8:content>
+							<v8:content>Single synchronization</v8:content>
 						</v8:item>
 					</Title>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export state group.</v8:content>
+							<v8:content>Single synchronization</v8:content>
 						</v8:item>
 					</ToolTip>
-					<Group>InCell</Group>
-					<ExtendedTooltip name="ExportStateGroupExtendedTooltip" id="72"/>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ExtendedTooltip name="SingleSynchronizationExtendedTooltip" id="405"/>
 					<ChildItems>
-						<PictureField name="NodeStateListLastDataExportResult" id="73">
-							<DataPath>NodeStateList.LastDataExportResult</DataPath>
-							<TitleLocation>None</TitleLocation>
-							<EditMode>EnterOnInput</EditMode>
-							<ValuesPicture>
-								<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
-								<xr:LoadTransparent>true</xr:LoadTransparent>
-							</ValuesPicture>
-							<ContextMenu name="NodeStateListLastDataExportResultContextMenu" id="74"/>
-							<ExtendedTooltip name="NodeStateListLastDataExportResultExtendedTooltip" id="75"/>
-						</PictureField>
-						<InputField name="NodeStateListLastExportDate" id="76">
-							<DataPath>NodeStateList.LastExportDate</DataPath>
-							<EditMode>EnterOnInput</EditMode>
-							<ContextMenu name="NodeStateListLastExportDateContextMenu" id="77"/>
-							<ExtendedTooltip name="NodeStateListLastExportDateExtendedTooltip" id="78"/>
-						</InputField>
+						<UsualGroup name="Synchronization" id="239">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Synchronization</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Synchronization</v8:content>
+								</v8:item>
+							</ToolTip>
+							<HorizontalStretch>false</HorizontalStretch>
+							<VerticalStretch>false</VerticalStretch>
+							<Group>Vertical</Group>
+							<Representation>None</Representation>
+							<ChildItemsWidth>Equal</ChildItemsWidth>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="SynchronizationExtendedTooltip" id="406"/>
+							<ChildItems>
+								<UsualGroup name="Group3" id="356">
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group3ExtendedTooltip" id="407"/>
+									<ChildItems>
+										<UsualGroup name="UpdateRequiredInfoPanel1" id="306">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Update required info panel</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Update required info panel</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Width>45</Width>
+											<Group>Horizontal</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="UpdateRequiredInfoPanel1ExtendedTooltip" id="408"/>
+											<ChildItems>
+												<PictureDecoration name="WarningPicture1" id="307">
+													<Width>4</Width>
+													<Height>2</Height>
+													<Title formatted="false">
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Warning picture</v8:content>
+														</v8:item>
+													</Title>
+													<Picture>
+														<xr:Ref>CommonPicture.Warning32</xr:Ref>
+														<xr:LoadTransparent>false</xr:LoadTransparent>
+													</Picture>
+													<ContextMenu name="WarningPicture1ContextMenu" id="308"/>
+													<ExtendedTooltip name="WarningPicture1ExtendedTooltip" id="409"/>
+												</PictureDecoration>
+												<Pages name="RightToUpdatePage" id="316">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Right to update page</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Right to update page</v8:content>
+														</v8:item>
+													</ToolTip>
+													<PagesRepresentation>None</PagesRepresentation>
+													<ExtendedTooltip name="RightToUpdatePageExtendedTooltip" id="410"/>
+													<ChildItems>
+														<Page name="SynchronizationSuspendedHasRightToUpdateInfo1" id="312">
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Synchronization suspended has right to update info</v8:content>
+																</v8:item>
+															</Title>
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Synchronization suspended has right to update info</v8:content>
+																</v8:item>
+															</ToolTip>
+															<ExtendedTooltip name="SynchronizationSuspendedHasRightToUpdateInfo1ExtendedTooltip" id="411"/>
+															<ChildItems>
+																<LabelDecoration name="SynchronizationSuspendedHasRightToUpdateLabel1" id="313">
+																	<Width>35</Width>
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Data synchronization will be continued after the application update will be set.</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ContextMenu name="SynchronizationSuspendedHasRightToUpdateLabel1ContextMenu" id="314"/>
+																	<ExtendedTooltip name="SynchronizationSuspendedHasRightToUpdateLabel1ExtendedTooltip" id="412"/>
+																</LabelDecoration>
+																<Button name="InstallUpdate1" id="315">
+																	<Type>Hyperlink</Type>
+																	<CommandName>Form.Command.InstallUpdate</CommandName>
+																	<ExtendedTooltip name="InstallUpdate1ExtendedTooltip" id="413"/>
+																</Button>
+															</ChildItems>
+														</Page>
+														<Page name="SynchronizationSuspendedHasNoRightToUpdateInfo1" id="309">
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Synchronization suspended has no right to update info</v8:content>
+																</v8:item>
+															</Title>
+															<ToolTip>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Synchronization suspended has no right to update info</v8:content>
+																</v8:item>
+															</ToolTip>
+															<ExtendedTooltip name="SynchronizationSuspendedHasNoRightToUpdateInfo1ExtendedTooltip" id="414"/>
+															<ChildItems>
+																<LabelDecoration name="SynchronizationSuspendedHasNoRightToUpdateLabel1" id="310">
+																	<Width>35</Width>
+																	<Height>3</Height>
+																	<HorizontalStretch>true</HorizontalStretch>
+																	<Title formatted="false">
+																		<v8:item>
+																			<v8:lang>en</v8:lang>
+																			<v8:content>Data synchronization is suspended because received update must be installed.
+Contact the application administrator.</v8:content>
+																		</v8:item>
+																	</Title>
+																	<ContextMenu name="SynchronizationSuspendedHasNoRightToUpdate1LabelContextMenu" id="311"/>
+																	<ExtendedTooltip name="SynchronizationSuspendedHasNoRightToUpdateLabel1ExtendedTooltip" id="415"/>
+																</LabelDecoration>
+															</ChildItems>
+														</Page>
+													</ChildItems>
+												</Pages>
+											</ChildItems>
+										</UsualGroup>
+										<UsualGroup name="Group5" id="240">
+											<Group>Horizontal</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="Group5ExtendedTooltip" id="416"/>
+											<ChildItems>
+												<UsualGroup name="Group12" id="278">
+													<Group>Vertical</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="Group12ExtendedTooltip" id="417"/>
+													<ChildItems>
+														<PictureDecoration name="ImportStatusDecoration" id="286">
+															<Width>2</Width>
+															<Height>1</Height>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Import status decoration</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.Warning</xr:Ref>
+																<xr:LoadTransparent>false</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="ImportStatusDecorationContextMenu" id="287"/>
+															<ExtendedTooltip name="ImportStatusDecorationExtendedTooltip" id="418"/>
+														</PictureDecoration>
+														<LabelDecoration name="EmptyStatusDecoration" id="346">
+															<Width>2</Width>
+															<Height>1</Height>
+															<ContextMenu name="EmptyStatusDecorationContextMenu" id="347"/>
+															<ExtendedTooltip name="EmptyStatusDecorationExtendedTooltip" id="419"/>
+														</LabelDecoration>
+														<PictureDecoration name="ExportStatusDecoration" id="284">
+															<Width>2</Width>
+															<Height>1</Height>
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Export status decoration</v8:content>
+																</v8:item>
+															</Title>
+															<Picture>
+																<xr:Ref>CommonPicture.Warning</xr:Ref>
+																<xr:LoadTransparent>false</xr:LoadTransparent>
+															</Picture>
+															<ContextMenu name="ExportStatusDecorationContextMenu" id="285"/>
+															<ExtendedTooltip name="ExportStatusDecorationExtendedTooltip" id="420"/>
+														</PictureDecoration>
+													</ChildItems>
+												</UsualGroup>
+												<UsualGroup name="Group16" id="279">
+													<Group>Vertical</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="Group16ExtendedTooltip" id="421"/>
+													<ChildItems>
+														<LabelDecoration name="SuccessfulExportDecoration" id="249">
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Data received:</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="SuccessfulExportDecorationContextMenu" id="250"/>
+															<ExtendedTooltip name="SuccessfulExportDecorationExtendedTooltip" id="422"/>
+														</LabelDecoration>
+														<LabelDecoration name="SuccessfulImportDecoration" id="245">
+															<Title formatted="false">
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>Data sent:</v8:content>
+																</v8:item>
+															</Title>
+															<ContextMenu name="SuccessfulImportDecorationContextMenu" id="246"/>
+															<ExtendedTooltip name="SuccessfulImportDecorationExtendedTooltip" id="423"/>
+														</LabelDecoration>
+													</ChildItems>
+												</UsualGroup>
+												<UsualGroup name="FullAccessUserGroup" id="277">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Full access user group</v8:content>
+														</v8:item>
+													</Title>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Full access user group</v8:content>
+														</v8:item>
+													</ToolTip>
+													<Group>Vertical</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="FullAccessUserGroupExtendedTooltip" id="424"/>
+													<ChildItems>
+														<Button name="SuccessfulImportDate" id="283">
+															<Type>Hyperlink</Type>
+															<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>&lt;Date received&gt;</v8:content>
+																</v8:item>
+															</Title>
+															<ExtendedTooltip name="SuccessfulImportDateExtendedTooltip" id="425"/>
+														</Button>
+														<Button name="SuccessfulExportDate" id="282">
+															<Type>Hyperlink</Type>
+															<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+															<Title>
+																<v8:item>
+																	<v8:lang>en</v8:lang>
+																	<v8:content>&lt;Sending date&gt;</v8:content>
+																</v8:item>
+															</Title>
+															<ExtendedTooltip name="SuccessfulExportDateExtendedTooltip" id="426"/>
+														</Button>
+													</ChildItems>
+												</UsualGroup>
+												<UsualGroup name="RestrictedAccessUserGroup" id="373">
+													<Group>Vertical</Group>
+													<Representation>None</Representation>
+													<ShowTitle>false</ShowTitle>
+													<ExtendedTooltip name="RestrictedAccessUserGroupExtendedTooltip" id="427"/>
+													<ChildItems>
+														<LabelDecoration name="ReceiveDateLabel" id="374">
+															<TextColor>style:InformationText</TextColor>
+															<ContextMenu name="ReceiveDateLabelContextMenu" id="375"/>
+															<ExtendedTooltip name="ReceiveDateLabelExtendedTooltip" id="428"/>
+														</LabelDecoration>
+														<LabelDecoration name="SendDateLabel" id="376">
+															<TextColor>style:InformationText</TextColor>
+															<ContextMenu name="SendDateLabelContextMenu" id="377"/>
+															<ExtendedTooltip name="SendDateLabelExtendedTooltip" id="429"/>
+														</LabelDecoration>
+													</ChildItems>
+												</UsualGroup>
+											</ChildItems>
+										</UsualGroup>
+										<UsualGroup name="Group2" id="391">
+											<Group>Horizontal</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="Group2ExtendedTooltip" id="430"/>
+											<ChildItems>
+												<Button name="ExecuteDataExchange2" id="201">
+													<Type>UsualButton</Type>
+													<CommandName>Form.Command.ExecuteDataExchange</CommandName>
+													<ExtendedTooltip name="ExecuteDataExchange2ExtendedTooltip" id="431"/>
+												</Button>
+												<Button name="ExecuteDataExchangeInteractively2" id="202">
+													<Type>UsualButton</Type>
+													<Width>3</Width>
+													<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
+													<ExtendedTooltip name="ExecuteDataExchangeInteractively2ExtendedTooltip" id="432"/>
+												</Button>
+												<Button name="SentDataContent" id="363">
+													<Type>UsualButton</Type>
+													<Representation>Picture</Representation>
+													<Width>3</Width>
+													<CommandName>Form.Command.SentDataContent</CommandName>
+													<ExtendedTooltip name="SentDataContentExtendedTooltip" id="438"/>
+												</Button>
+												<Button name="OpenSingleSynchronizationResults" id="359">
+													<Type>Hyperlink</Type>
+													<CommandName>Form.Command.OpenDataSynchronizationResults</CommandName>
+													<ExtendedTooltip name="OpenSingleSynchronizationResultsExtendedTooltip" id="433"/>
+												</Button>
+												<LabelDecoration name="Decoration1" id="517">
+													<HorizontalStretch>true</HorizontalStretch>
+													<ContextMenu name="Decoration1ContextMenu" id="518"/>
+													<ExtendedTooltip name="Decoration1ExtendedTooltip" id="519"/>
+												</LabelDecoration>
+												<Button name="ImportDataSynchronizationRules" id="520">
+													<Type>UsualButton</Type>
+													<Representation>PictureAndText</Representation>
+													<CommandName>Form.Command.ImportDataSynchronizationRules</CommandName>
+													<ExtendedTooltip name="ImportDataSynchronizationRulesExtendedTooltip" id="521"/>
+												</Button>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="Group9" id="533">
+									<Group>Vertical</Group>
+									<Representation>NormalSeparation</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="Group9ExtendedTooltip" id="534"/>
+									<ChildItems>
+										<Pages name="Group4" id="522">
+											<ExtendedTooltip name="Group4ExtendedTooltip" id="523"/>
+											<ChildItems>
+												<Page name="Group6" id="524">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Data synchronization rules</v8:content>
+														</v8:item>
+													</Title>
+													<ExtendedTooltip name="Group6ExtendedTooltip" id="525"/>
+													<ChildItems>
+														<UsualGroup name="SynchronizationSettingsGroup" id="260">
+															<Group>Vertical</Group>
+															<Representation>NormalSeparation</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="SynchronizationSettingsGroupExtendedTooltip" id="434"/>
+															<ChildItems>
+																<UsualGroup name="Group18" id="295">
+																	<Group>Horizontal</Group>
+																	<Representation>None</Representation>
+																	<ShowTitle>false</ShowTitle>
+																	<ExtendedTooltip name="Group18ExtendedTooltip" id="435"/>
+																	<ChildItems>
+																		<Button name="ChangeInfobaseNode" id="227">
+																			<Type>UsualButton</Type>
+																			<Representation>Text</Representation>
+																			<CommandName>Form.Command.ChangeInfobaseNode</CommandName>
+																			<Title>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Set.up...</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ExtendedTooltip name="ChangeInfobaseNodeExtendedTooltip" id="437"/>
+																		</Button>
+																		<LabelDecoration name="Decoration5" id="293">
+																			<Visible>false</Visible>
+																			<Width>23</Width>
+																			<Title formatted="false">
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Data syncronization rules:</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="Decoration5ContextMenu" id="294"/>
+																			<ExtendedTooltip name="Decoration5ExtendedTooltip" id="436"/>
+																		</LabelDecoration>
+																	</ChildItems>
+																</UsualGroup>
+																<InputField name="DataSynchronizationRuleDetails" id="291">
+																	<DataPath>DataSynchronizationRuleDetails</DataPath>
+																	<ReadOnly>true</ReadOnly>
+																	<TitleLocation>None</TitleLocation>
+																	<Height>6</Height>
+																	<VerticalStretch>false</VerticalStretch>
+																	<MultiLine>true</MultiLine>
+																	<ContextMenu name="DataSynchronizationRuleDetailsContextMenu" id="292"/>
+																	<ExtendedTooltip name="DataSynchronizationRuleDetailsExtendedTooltip" id="439"/>
+																</InputField>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</Page>
+												<Page name="SchedulePage" id="526">
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Schedule</v8:content>
+														</v8:item>
+													</Title>
+													<Picture>
+														<xr:Ref>StdPicture.ScheduledJob</xr:Ref>
+														<xr:LoadTransparent>true</xr:LoadTransparent>
+													</Picture>
+													<ExtendedTooltip name="PageScheduleExtendedTooltip" id="527"/>
+													<ChildItems>
+														<UsualGroup name="SynchronizationScenarioGroup" id="257">
+															<Group>Vertical</Group>
+															<Representation>NormalSeparation</Representation>
+															<ShowTitle>false</ShowTitle>
+															<ExtendedTooltip name="SynchronizationScenarioGroupExtendedTooltip" id="440"/>
+															<ChildItems>
+																<UsualGroup name="Group19" id="300">
+																	<Group>Horizontal</Group>
+																	<Representation>None</Representation>
+																	<ShowTitle>false</ShowTitle>
+																	<ExtendedTooltip name="Group19ExtendedTooltip" id="441"/>
+																	<ChildItems>
+																		<LabelDecoration name="DataSynchronizationScheduleDecoration" id="296">
+																			<Visible>false</Visible>
+																			<Width>23</Width>
+																			<Title formatted="false">
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Data synchronization schedule:</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ContextMenu name="DataSynchronizationScheduleDecorationContextMenu" id="297"/>
+																			<ExtendedTooltip name="DataSynchronizationScheduleDecorationExtendedTooltip" id="442"/>
+																		</LabelDecoration>
+																		<Button name="SetUpDataExchangeScenarios" id="230">
+																			<Type>UsualButton</Type>
+																			<Representation>Text</Representation>
+																			<OnlyInAllActions>false</OnlyInAllActions>
+																			<CommandName>Form.Command.SetUpSynchronizationScenariosSingle</CommandName>
+																			<Picture>
+																				<xr:Ref>StdPicture.ScheduledJob</xr:Ref>
+																				<xr:LoadTransparent>true</xr:LoadTransparent>
+																			</Picture>
+																			<Title>
+																				<v8:item>
+																					<v8:lang>en</v8:lang>
+																					<v8:content>Set.up...</v8:content>
+																				</v8:item>
+																			</Title>
+																			<ExtendedTooltip name="SetUpDataExchangeScenariosExtendedTooltip" id="443"/>
+																		</Button>
+																	</ChildItems>
+																</UsualGroup>
+																<InputField name="DataSynchronizationSchedule" id="298">
+																	<DataPath>DataSynchronizationSchedule</DataPath>
+																	<ReadOnly>true</ReadOnly>
+																	<TitleLocation>None</TitleLocation>
+																	<MultiLine>true</MultiLine>
+																	<ContextMenu name="DataSynchronizationScheduleContextMenu" id="299"/>
+																	<ExtendedTooltip name="DataSynchronizationScheduleExtendedTooltip" id="444"/>
+																</InputField>
+															</ChildItems>
+														</UsualGroup>
+													</ChildItems>
+												</Page>
+											</ChildItems>
+										</Pages>
+									</ChildItems>
+								</UsualGroup>
+								<Button name="ExchangeInfo" id="322">
+									<Type>Hyperlink</Type>
+									<CommandName>Form.Command.ExchangeInfo</CommandName>
+									<ExtendedTooltip name="ExchangeInfoExtendedTooltip" id="445"/>
+								</Button>
+								<InputField name="SingleSynchronizationPrefix" id="331">
+									<DataPath>InfobasePrefix</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>This infobase prefix</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The prefix is automatically added to
+the code of catalog items and document numbers to distinguish which
+of the programs they were introduced, and to avoid duplication of data</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="SingleSynchronizationPrefixContextMenu" id="332"/>
+									<ExtendedTooltip name="SingleSynchronizationPrefixExtendedTooltip" id="446"/>
+								</InputField>
+								<UsualGroup name="SynchronizationSetupGroup" id="303">
+									<Group>Horizontal</Group>
+									<Representation>NormalSeparation</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="SynchronizationSetupGroupExtendedTooltip" id="449"/>
+									<ChildItems>
+										<Button name="SetUpDataSynchronizationSingle" id="206">
+											<Type>UsualButton</Type>
+											<CommandName>Form.Command.SetUpDataSynchronizationSingle</CommandName>
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Set up another data synchronization</v8:content>
+												</v8:item>
+											</Title>
+											<ExtendedTooltip name="SetUpDataSynchronizationSingleExtendedTooltip" id="450"/>
+										</Button>
+										<UsualGroup name="Group8" id="531">
+											<Group>Vertical</Group>
+											<Representation>None</Representation>
+											<ShowTitle>false</ShowTitle>
+											<ExtendedTooltip name="Group8ExtendedTooltip" id="532"/>
+											<ChildItems>
+												<Button name="DeleteSynchronizationSettings" id="365">
+													<Type>UsualButton</Type>
+													<CommandName>Form.Command.DeleteSynchronizationSettings</CommandName>
+													<Title>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Delete this synchronization settings item</v8:content>
+														</v8:item>
+													</Title>
+													<ExtendedTooltip name="DeleteSynchronizationSettingsExtendedTooltip" id="447"/>
+												</Button>
+											</ChildItems>
+										</UsualGroup>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
 					</ChildItems>
-				</ColumnGroup>
-				<InputField name="NodeStateListLastSuccessfulExportDate" id="79">
-					<DataPath>NodeStateList.LastSuccessfulExportDate</DataPath>
-					<EditMode>EnterOnInput</EditMode>
-					<ContextMenu name="NodeStateListLastSuccessfulExportDateContextMenu" id="80"/>
-					<ExtendedTooltip name="NodeStateListLastSuccessfulExportDateExtendedTooltip" id="81"/>
-				</InputField>
+				</Page>
+				<Page name="SeveralSynchronizations" id="152">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Multiple synchronizations</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Multiple synchronizations</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="SeveralSynchronizationsExtendedTooltip" id="452"/>
+					<ChildItems>
+						<UsualGroup name="UpdateRequiredInfoPanel" id="135">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Update required info panel</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Update required info panel</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="UpdateRequiredInfoPanelExtendedTooltip" id="453"/>
+							<ChildItems>
+								<PictureDecoration name="WarningPicture" id="136">
+									<Width>4</Width>
+									<Height>2</Height>
+									<Title formatted="false">
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Warning picture</v8:content>
+										</v8:item>
+									</Title>
+									<Picture>
+										<xr:Ref>CommonPicture.Warning32</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ContextMenu name="WarningPictureContextMenu" id="137"/>
+									<ExtendedTooltip name="WarningPictureExtendedTooltip" id="454"/>
+								</PictureDecoration>
+								<UsualGroup name="SynchronizationSuspendedHasNoRightToUpdateInfo" id="138">
+									<Visible>false</Visible>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Synchronization suspended has no right to update info</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Synchronization suspended has no right to update info</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="SynchronizationSuspendedHasNoRightToUpdateInfoExtendedTooltip" id="455"/>
+									<ChildItems>
+										<LabelDecoration name="SynchronizationSuspendedHasNoRightToUpdateLabel" id="139">
+											<HorizontalStretch>true</HorizontalStretch>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data synchronization with the %1 is suspended because received update must be installed.
+Contact the application administrator.</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="SynchronizationSuspendedHasNoRightToUpdateLabelContextMenu" id="140"/>
+											<ExtendedTooltip name="SynchronizationSuspendedHasNoRightToUpdateLabelExtendedTooltip" id="456"/>
+										</LabelDecoration>
+									</ChildItems>
+								</UsualGroup>
+								<UsualGroup name="SynchronizationSuspendedHasRightToUpdateInfo" id="141">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Synchronization suspended has right to update info</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Synchronization suspended has right to update info</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Group>Vertical</Group>
+									<Representation>None</Representation>
+									<ShowTitle>false</ShowTitle>
+									<ExtendedTooltip name="SynchronizationSuspendedHasRightToUpdateInfoExtendedTooltip" id="457"/>
+									<ChildItems>
+										<LabelDecoration name="SynchronizationSuspendedHasRightToUpdateLabel" id="142">
+											<Width>81</Width>
+											<Title formatted="false">
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Data synchronization with the %1 will be continued after the application update will be set.</v8:content>
+												</v8:item>
+											</Title>
+											<ContextMenu name="SynchronizationSuspendedHasRightToUpdateLabelContextMenu" id="143"/>
+											<ExtendedTooltip name="SynchronizationSuspendedHasRightToUpdateLabelExtendedTooltip" id="458"/>
+										</LabelDecoration>
+										<Button name="InstallUpdate" id="144">
+											<Type>Hyperlink</Type>
+											<CommandName>Form.Command.InstallUpdate</CommandName>
+											<ExtendedTooltip name="InstallUpdateExtendedTooltip" id="459"/>
+										</Button>
+									</ChildItems>
+								</UsualGroup>
+							</ChildItems>
+						</UsualGroup>
+						<UsualGroup name="DataSynchronizationResultGroup" id="348">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data synchronization result group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Data synchronization result group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="DataSynchronizationResultGroupExtendedTooltip" id="460"/>
+							<ChildItems>
+								<Button name="OpenDataSynchronizationResults" id="367">
+									<Type>Hyperlink</Type>
+									<CommandName>Form.Command.OpenDataSynchronizationResults</CommandName>
+									<Picture>
+										<xr:Ref>CommonPicture.Warning</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</Picture>
+									<ExtendedTooltip name="OpenDataSynchronizationResultsExtendedTooltip" id="461"/>
+								</Button>
+							</ChildItems>
+						</UsualGroup>
+						<CommandBar name="CommandBar" id="145">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Command bar</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Command bar</v8:content>
+								</v8:item>
+							</ToolTip>
+							<CommandSource>Item.NodeStateList</CommandSource>
+							<ExtendedTooltip name="CommandBarExtendedTooltip" id="462"/>
+							<ChildItems>
+								<Popup name="SubmenuCreate" id="91">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Set up data synchronization</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Set up synchronization with other application</v8:content>
+										</v8:item>
+									</ToolTip>
+									<Picture>
+										<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</Picture>
+									<ExtendedTooltip name="SubmenuCreateExtendedTooltip" id="463"/>
+									<ChildItems>
+										<ButtonGroup name="SubmenuOther" id="147">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Submenu other</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Submenu other</v8:content>
+												</v8:item>
+											</ToolTip>
+											<ExtendedTooltip name="SubmenuOtherExtendedTooltip" id="464"/>
+										</ButtonGroup>
+										<ButtonGroup name="SubmenuDIB" id="146">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Submenu DIB</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Submenu DIB</v8:content>
+												</v8:item>
+											</ToolTip>
+											<ExtendedTooltip name="SubmenuDIBExtendedTooltip" id="465"/>
+										</ButtonGroup>
+									</ChildItems>
+								</Popup>
+								<ButtonGroup name="NodeStateListDataExchangeExecutionGroupButton" id="390">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Node state list data exchange execution group button</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Node state list data exchange execution group button</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="NodeStateListDataExchangeExecutionGroupButtonExtendedTooltip" id="466"/>
+									<ChildItems>
+										<Button name="ExecuteDataExchangeListPanel" id="52">
+											<Type>CommandBarButton</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<OnlyInAllActions>true</OnlyInAllActions>
+											<CommandName>Form.Command.ExecuteDataExchange</CommandName>
+											<ExtendedTooltip name="ExecuteDataExchangeListPanelExtendedTooltip" id="467"/>
+										</Button>
+										<Button name="ExecuteInteractiveDataExchangeListPanel" id="92">
+											<Type>CommandBarButton</Type>
+											<Representation>Picture</Representation>
+											<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
+											<ExtendedTooltip name="ExecuteInteractiveDataExchangeListPanelExtendedTooltip" id="468"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<ButtonGroup name="NodeStateListGroup3" id="361">
+									<ExtendedTooltip name="NodeStateListGroup3ExtendedTooltip" id="469"/>
+									<ChildItems>
+										<Button name="NodeStateListChangeInfobaseNode" id="53">
+											<Type>CommandBarButton</Type>
+											<UserVisible>
+												<xr:Common>true</xr:Common>
+												<xr:Value name="Role.DataSynchronizationSetup">true</xr:Value>
+											</UserVisible>
+											<Representation>Picture</Representation>
+											<SkipOnInput>false</SkipOnInput>
+											<CommandName>Form.Command.ChangeInfobaseNode</CommandName>
+											<ExtendedTooltip name="NodeStateListChangeInfobaseNodeExtendedTooltip" id="470"/>
+										</Button>
+										<Button name="NodeStateListSentDataContent" id="360">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.SentDataContent</CommandName>
+											<ExtendedTooltip name="NodeStateListSentDataContentExtendedTooltip" id="471"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<ButtonGroup name="Settings" id="94">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Settings</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data exchange settings</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="SettingsExtendedTooltip" id="472"/>
+									<ChildItems>
+										<Button name="NodeStateListGoToDataExportEventLog" id="98">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+											<ExtendedTooltip name="NodeStateListGoToDataExportEventLogExtendedTooltip" id="473"/>
+										</Button>
+										<Button name="NodeStateListGoToDataImportEventLog" id="99">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+											<ExtendedTooltip name="NodeStateListGoToDataImportEventLogExtendedTooltip" id="474"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<Button name="SetExchangeExecutionSchedule" id="102">
+									<Type>CommandBarButton</Type>
+									<OnlyInAllActions>false</OnlyInAllActions>
+									<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
+									<ExtendedTooltip name="SetExchangeExecutionScheduleExtendedTooltip" id="475"/>
+								</Button>
+								<ButtonGroup name="NodeStateListGroup2" id="340">
+									<ExtendedTooltip name="NodeStateListGroup2ExtendedTooltip" id="476"/>
+									<ChildItems>
+										<Button name="NodeStateListFind" id="341">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Item.NodeStateList.StandardCommand.Find</CommandName>
+											<ExtendedTooltip name="NodeStateListFindExtendedTooltip" id="477"/>
+										</Button>
+										<Button name="NodeStateListCancelSearch" id="342">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Item.NodeStateList.StandardCommand.CancelSearch</CommandName>
+											<ExtendedTooltip name="NodeStateListCancelSearchExtendedTooltip" id="478"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<Button name="NodeStateListImportDataSynchronizationRules" id="535">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.Command.ImportDataSynchronizationRules</CommandName>
+									<ExtendedTooltip name="NodeStateListImportDataSynchronizationRulesExtendedTooltip" id="536"/>
+								</Button>
+								<ButtonGroup name="NodeStateListGroup1" id="339">
+									<ExtendedTooltip name="NodeStateListGroup1ExtendedTooltip" id="479"/>
+									<ChildItems>
+										<Button name="RefreshMonitor" id="16">
+											<Type>CommandBarButton</Type>
+											<SkipOnInput>false</SkipOnInput>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.RefreshMonitor</CommandName>
+											<ExtendedTooltip name="RefreshMonitorExtendedTooltip" id="480"/>
+										</Button>
+										<Button name="NodeStateListMustHideCompletedSynchronizations" id="320">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Command.HideCompletedSynchronizations</CommandName>
+											<ExtendedTooltip name="NodeStateListMustHideCompletedSynchronizationsExtendedTooltip" id="481"/>
+										</Button>
+										<Button name="FormOutputList" id="115">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.Item.NodeStateList.StandardCommand.OutputList</CommandName>
+											<ExtendedTooltip name="FormPutListExtendedTooltip" id="482"/>
+										</Button>
+										<Button name="FormChangeForm" id="134">
+											<Type>CommandBarButton</Type>
+											<CommandName>Form.StandardCommand.CustomizeForm</CommandName>
+											<ExtendedTooltip name="FormCustomizeFormExtendedTooltip" id="483"/>
+										</Button>
+										<Button name="NodeStateListExchangeInfo" id="338">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.ExchangeInfo</CommandName>
+											<ExtendedTooltip name="NodeStateListExchangeInfoExtendedTooltip" id="484"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<ButtonGroup name="NodeStateListGroup4" id="366">
+									<ExtendedTooltip name="NodeStateListGroup4ExtendedTooltip" id="485"/>
+									<ChildItems>
+										<Button name="NodeStateListDeleteSynchronizationSettings" id="364">
+											<Type>CommandBarButton</Type>
+											<OnlyInAllActions>false</OnlyInAllActions>
+											<CommandName>Form.Command.DeleteSynchronizationSettings</CommandName>
+											<ExtendedTooltip name="NodeStateListDeleteSynchronizationSettingsExtendedTooltip" id="486"/>
+										</Button>
+									</ChildItems>
+								</ButtonGroup>
+								<Button name="FormHelp" id="133">
+									<Type>CommandBarButton</Type>
+									<CommandName>Form.StandardCommand.Help</CommandName>
+									<ExtendedTooltip name="FormHelpExtendedTooltip" id="487"/>
+								</Button>
+							</ChildItems>
+						</CommandBar>
+						<Table name="NodeStateList" id="1">
+							<Representation>List</Representation>
+							<CommandBarLocation>None</CommandBarLocation>
+							<ReadOnly>true</ReadOnly>
+							<SkipOnInput>false</SkipOnInput>
+							<SelectionMode>SingleRow</SelectionMode>
+							<RowSelectionMode>Row</RowSelectionMode>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<EnableStartDrag>true</EnableStartDrag>
+							<EnableDrag>true</EnableDrag>
+							<DataPath>NodeStateList</DataPath>
+							<CommandSet>
+								<ExcludedCommand>Copy</ExcludedCommand>
+								<ExcludedCommand>SortListAsc</ExcludedCommand>
+								<ExcludedCommand>MoveUp</ExcludedCommand>
+								<ExcludedCommand>SortListDesc</ExcludedCommand>
+								<ExcludedCommand>Delete</ExcludedCommand>
+								<ExcludedCommand>EndEdit</ExcludedCommand>
+								<ExcludedCommand>Add</ExcludedCommand>
+								<ExcludedCommand>Change</ExcludedCommand>
+								<ExcludedCommand>MoveDown</ExcludedCommand>
+							</CommandSet>
+							<SearchStringLocation>None</SearchStringLocation>
+							<ViewStatusLocation>None</ViewStatusLocation>
+							<SearchControlLocation>None</SearchControlLocation>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="NodeStateListContextMenu" id="2">
+								<Autofill>false</Autofill>
+								<ChildItems>
+									<ButtonGroup name="DataExchangeExecutionButtonGroup" id="101">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Data exchange execution button group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Data exchange execution button group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="DataExchangeExecutionButtonGroupExtendedTooltip" id="488"/>
+										<ChildItems>
+											<Button name="ExecuteDataExchangeListMenu" id="96">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.ExecuteDataExchange</CommandName>
+												<ExtendedTooltip name="ExecuteDataExchangeListMenuExtendedTooltip" id="489"/>
+											</Button>
+											<Button name="ExecuteInteractiveDataExchangeListMenu" id="97">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.ExecuteDataExchangeInteractively</CommandName>
+												<ExtendedTooltip name="ExecuteInteractiveDataExchangeListMenuExtendedTooltip" id="490"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="NodeStateListContextMenuChangeInfobaseNode" id="317">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ChangeInfobaseNode</CommandName>
+										<ExtendedTooltip name="NodeStateListContextMenuChangeInfobaseNodeExtendedTooltip" id="491"/>
+									</Button>
+									<Button name="NodeStateListContextMenuSentDataContent" id="362">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.SentDataContent</CommandName>
+										<ExtendedTooltip name="NodeStateListContextMenuSentDataContentExtendedTooltip" id="492"/>
+									</Button>
+									<ButtonGroup name="ContextMenuStateListDiagnostics" id="86">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Diagnostics</v8:content>
+											</v8:item>
+										</Title>
+										<ExtendedTooltip name="ContextMenuStateListDiagnosticsExtendedTooltip" id="493"/>
+										<ChildItems>
+											<Button name="ContextMenuNodeStateListGoToDataImportEventLog" id="85">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.GoToDataImportEventLog</CommandName>
+												<ExtendedTooltip name="ContextMenuNodeStateListGoToDataImportEventLogExtendedTooltip" id="494"/>
+											</Button>
+											<Button name="ContextMenuNodeStateListGoToDataExportEventLog" id="84">
+												<Type>CommandBarButton</Type>
+												<SkipOnInput>false</SkipOnInput>
+												<CommandName>Form.Command.GoToDataExportEventLog</CommandName>
+												<ExtendedTooltip name="ContextMenuNodeStateListGoToDataExportEventLogExtendedTooltip" id="495"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<ButtonGroup name="ScheduleSettingsButtonGroup" id="104">
+										<Title>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Schedule setup button group</v8:content>
+											</v8:item>
+										</Title>
+										<ToolTip>
+											<v8:item>
+												<v8:lang>en</v8:lang>
+												<v8:content>Schedule setup button group</v8:content>
+											</v8:item>
+										</ToolTip>
+										<ExtendedTooltip name="ScheduleSettingsButtonGroupExtendedTooltip" id="496"/>
+										<ChildItems>
+											<Button name="SetExchangeExecutionSchedule1" id="105">
+												<Type>CommandBarButton</Type>
+												<CommandName>Form.Command.SetUpDataExchangeScenarios</CommandName>
+												<ExtendedTooltip name="SetExchangeExecutionSchedule1ExtendedTooltip" id="497"/>
+											</Button>
+										</ChildItems>
+									</ButtonGroup>
+									<Button name="NodeStateListContextMenuExchangeInfo" id="321">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.ExchangeInfo</CommandName>
+										<ExtendedTooltip name="NodeStateListContextMenuExchangeInfoExtendedTooltip" id="498"/>
+									</Button>
+								</ChildItems>
+							</ContextMenu>
+							<AutoCommandBar name="NodeStateListCommandBar" id="3"/>
+							<ExtendedTooltip name="NodeStateListExtendedTooltip" id="499"/>
+							<SearchStringAddition name="NodeStateListSearchString" id="537">
+								<AdditionSource>
+									<Item>NodeStateList</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="NodeStateListSearchStringContextMenu" id="538"/>
+								<ExtendedTooltip name="NodeStateListSearchStringExtendedTooltip" id="539"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="NodeStateListViewStatus" id="540">
+								<AdditionSource>
+									<Item>NodeStateList</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="NodeStateListViewStatusContextMenu" id="541"/>
+								<ExtendedTooltip name="NodeStateListViewStatusExtendedTooltip" id="542"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="NodeStateListSearchControl" id="543">
+								<AdditionSource>
+									<Item>NodeStateList</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="NodeStateListSearchControlContextMenu" id="544"/>
+								<ExtendedTooltip name="NodeStateListSearchControlExtendedTooltip" id="545"/>
+							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">NodeStateListChoice</Event>
+								<Event name="OnActivateRow">NodeStateListOnActivateRow</Event>
+							</Events>
+							<ChildItems>
+								<PictureField name="NodeStateListScheduleConfigured" id="318">
+									<DataPath>NodeStateList.ScheduleConfigured</DataPath>
+									<TitleLocation>None</TitleLocation>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Data is synchronized on schedule</v8:content>
+										</v8:item>
+									</ToolTip>
+									<EditMode>EnterOnInput</EditMode>
+									<HeaderPicture>
+										<xr:Ref>StdPicture.ScheduledJob</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</HeaderPicture>
+									<Width>2</Width>
+									<PictureSize>AutoSize</PictureSize>
+									<ValuesPicture>
+										<xr:Ref>CommonPicture.DataSynchronizationScheduleState</xr:Ref>
+										<xr:LoadTransparent>false</xr:LoadTransparent>
+									</ValuesPicture>
+									<ContextMenu name="NodeStateListScheduleConfiguredContextMenu" id="319"/>
+									<ExtendedTooltip name="NodeStateListScheduleConfiguredExtendedTooltip" id="500"/>
+								</PictureField>
+								<InputField name="NodeStateListExchangePlanName" id="89">
+									<DataPath>NodeStateList.ExchangePlanName</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="NodeStateListExchangePlanNameContextMenu" id="90"/>
+									<ExtendedTooltip name="NodeStateListExchangePlanNameExtendedTooltip" id="501"/>
+								</InputField>
+								<InputField name="NodeStateListInfobaseNode" id="10">
+									<DataPath>NodeStateList.InfobaseNode</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="NodeStateListInfobaseNodeContextMenu" id="11"/>
+									<ExtendedTooltip name="NodeStateListInfobaseNodeExtendedTooltip" id="502"/>
+								</InputField>
+								<InputField name="NodeStateListInfobasePrefix" id="323">
+									<DataPath>NodeStateList.Code</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Infobase prefix</v8:content>
+										</v8:item>
+									</ToolTip>
+									<EditMode>EnterOnInput</EditMode>
+									<ContextMenu name="NodeStateListInfobasePrefixContextMenu" id="324"/>
+									<ExtendedTooltip name="NodeStateListInfobasePrefixExtendedTooltip" id="503"/>
+								</InputField>
+								<ColumnGroup name="ExportGroup" id="326">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Export group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ExportGroupExtendedTooltip" id="504"/>
+									<ChildItems>
+										<ColumnGroup name="NodeStateListSuccessfulExportGroup" id="344">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Node state list successful export group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Node state list successful export group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>InCell</Group>
+											<ExtendedTooltip name="NodeStateListSuccessfulExportGroupExtendedTooltip" id="505"/>
+											<ChildItems>
+												<PictureField name="NodeStateListLastDataExportResult" id="6">
+													<DataPath>NodeStateList.LastDataExportResult</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Data sending state</v8:content>
+														</v8:item>
+													</ToolTip>
+													<EditMode>EnterOnInput</EditMode>
+													<HeaderPicture>
+														<xr:Ref>StdPicture.MoveRight</xr:Ref>
+														<xr:LoadTransparent>true</xr:LoadTransparent>
+													</HeaderPicture>
+													<ValuesPicture>
+														<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
+														<xr:LoadTransparent>false</xr:LoadTransparent>
+													</ValuesPicture>
+													<ContextMenu name="NodeStateListLastDataExportResultContextMenu" id="7"/>
+													<ExtendedTooltip name="NodeStateListLastDataExportResultExtendedTooltip" id="506"/>
+												</PictureField>
+												<InputField name="NodeStateListLastSuccessfulExportDate" id="4">
+													<DataPath>NodeStateList.LastSuccessfulExportDatePresentation</DataPath>
+													<EditMode>EnterOnInput</EditMode>
+													<Format>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>DE=Never</v8:content>
+														</v8:item>
+													</Format>
+													<EditFormat>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>DE=Never</v8:content>
+														</v8:item>
+													</EditFormat>
+													<ContextMenu name="NodeStateListLastSuccessfulExportDateContextMenu" id="5"/>
+													<ExtendedTooltip name="NodeStateListLastSuccessfulExportDateExtendedTooltip" id="507"/>
+												</InputField>
+											</ChildItems>
+										</ColumnGroup>
+										<InputField name="NodeStateListLastExportDate" id="36">
+											<DataPath>NodeStateList.LastExportDatePresentation</DataPath>
+											<UserVisible>
+												<xr:Common>false</xr:Common>
+											</UserVisible>
+											<HorizontalAlign>Left</HorizontalAlign>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="NodeStateListLastExportDateContextMenu" id="37"/>
+											<ExtendedTooltip name="NodeStateListLastExportDateExtendedTooltip" id="508"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+								<ColumnGroup name="ImportGroup" id="40">
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Import group</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Import group</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ExtendedTooltip name="ImportGroupExtendedTooltip" id="509"/>
+									<ChildItems>
+										<ColumnGroup name="NodeStateListSuccessfulImportGroup" id="343">
+											<Title>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Node state list successful import group</v8:content>
+												</v8:item>
+											</Title>
+											<ToolTip>
+												<v8:item>
+													<v8:lang>en</v8:lang>
+													<v8:content>Node state list successful import group</v8:content>
+												</v8:item>
+											</ToolTip>
+											<Group>InCell</Group>
+											<ExtendedTooltip name="NodeStateListSuccessfulImportGroupExtendedTooltip" id="510"/>
+											<ChildItems>
+												<PictureField name="NodeStateListLastDataImportResult" id="8">
+													<DataPath>NodeStateList.LastDataImportResult</DataPath>
+													<TitleLocation>None</TitleLocation>
+													<ToolTip>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>Data receiving state</v8:content>
+														</v8:item>
+													</ToolTip>
+													<EditMode>EnterOnInput</EditMode>
+													<HeaderPicture>
+														<xr:Ref>StdPicture.MoveLeft</xr:Ref>
+														<xr:LoadTransparent>true</xr:LoadTransparent>
+													</HeaderPicture>
+													<ValuesPicture>
+														<xr:Ref>CommonPicture.DataExchangeState</xr:Ref>
+														<xr:LoadTransparent>false</xr:LoadTransparent>
+													</ValuesPicture>
+													<ContextMenu name="NodeStateListLastDataImportResultContextMenu" id="9"/>
+													<ExtendedTooltip name="NodeStateListLastDataImportResultExtendedTooltip" id="511"/>
+												</PictureField>
+												<InputField name="NodeStateListLastSuccessfulImportDate" id="12">
+													<DataPath>NodeStateList.LastSuccessfulImportDatePresentation</DataPath>
+													<EditMode>EnterOnInput</EditMode>
+													<Format>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>DE=Never</v8:content>
+														</v8:item>
+													</Format>
+													<EditFormat>
+														<v8:item>
+															<v8:lang>en</v8:lang>
+															<v8:content>DE=Never</v8:content>
+														</v8:item>
+													</EditFormat>
+													<ContextMenu name="NodeStateListLastSuccessfulImportDateContextMenu" id="13"/>
+													<ExtendedTooltip name="NodeStateListLastSuccessfulImportDateExtendedTooltip" id="512"/>
+												</InputField>
+											</ChildItems>
+										</ColumnGroup>
+										<InputField name="NodeStateListLastImportDate" id="38">
+											<DataPath>NodeStateList.LastImportDatePresentation</DataPath>
+											<UserVisible>
+												<xr:Common>false</xr:Common>
+											</UserVisible>
+											<HorizontalAlign>Left</HorizontalAlign>
+											<EditMode>EnterOnInput</EditMode>
+											<ContextMenu name="NodeStateListLastImportDateContextMenu" id="39"/>
+											<ExtendedTooltip name="NodeStateListLastImportDateExtendedTooltip" id="513"/>
+										</InputField>
+									</ChildItems>
+								</ColumnGroup>
+							</ChildItems>
+						</Table>
+						<UsualGroup name="PrefixGroup" id="337">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Prefix group</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Prefix group</v8:content>
+								</v8:item>
+							</ToolTip>
+							<Group>Horizontal</Group>
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="PrefixGroupExtendedTooltip" id="514"/>
+							<ChildItems>
+								<InputField name="InfobasePrefix" id="333">
+									<DataPath>InfobasePrefix</DataPath>
+									<ReadOnly>true</ReadOnly>
+									<SkipOnInput>true</SkipOnInput>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>This infobase prefix</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>The prefix is automatically added to
+the code of catalog items and document numbers to distinguish which
+of the programs they were introduced, and to avoid duplication of data</v8:content>
+										</v8:item>
+									</ToolTip>
+									<ContextMenu name="InfobasePrefixContextMenu" id="334"/>
+									<ExtendedTooltip name="InfobasePrefixExtendedTooltip" id="515"/>
+								</InputField>
+								<LabelDecoration name="Decoration6" id="352">
+									<HorizontalStretch>true</HorizontalStretch>
+									<ContextMenu name="Decoration6ContextMenu" id="353"/>
+									<ExtendedTooltip name="Decoration6ExtendedTooltip" id="516"/>
+								</LabelDecoration>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</Page>
 			</ChildItems>
-		</Table>
+		</Pages>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="NodeStateList" id="1">
@@ -412,7 +1519,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Successful export date</v8:content>
+							<v8:content>Data sent</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -442,11 +1549,11 @@
 						</v8:NumberQualifiers>
 					</Type>
 				</Column>
-				<Column name="InfoBaseNode" id="4">
+				<Column name="InfobaseNode" id="4">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>InfoBase</v8:content>
+							<v8:content>Infobase</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -457,7 +1564,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Successful import date</v8:content>
+							<v8:content>Data received</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -471,7 +1578,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Import date</v8:content>
+							<v8:content>Last try to receive</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -485,7 +1592,7 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Export date</v8:content>
+							<v8:content>Last try to send</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -499,7 +1606,113 @@
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Exchange plan</v8:content>
+							<v8:content>Application</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="ScheduleConfigured" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Schedule was configured</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>1</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Code" id="10">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Prefix</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>2</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastImportDatePresentation" id="11">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Last try to receive</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastExportDatePresentation" id="12">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Last try to send</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastSuccessfulImportDatePresentation" id="13">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data received</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="LastSuccessfulExportDatePresentation" id="14">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data sent</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="DataExchangeVariant" id="15">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data exchange option</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -511,6 +1724,122 @@
 					</Type>
 				</Column>
 			</Columns>
+		</Attribute>
+		<Attribute name="CustomizableSynchronizations" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Customizable synchronizations</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="SynchronizationCount" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Synchronization number</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>1</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="IsInRoleAddEditDataExchanges" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Add edit data exchanges role is accessible</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="DataSynchronizationRuleDetails" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization rule details</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="DataSynchronizationSchedule" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization schedule</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="MustHideCompletedSynchronizations" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Hide completed synchronizations</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="InfobasePrefix" id="8">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Infobase prefix</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>2</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="HasRightToUpdate" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Has right to update</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="HasRightToViewEventLog" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Has right to view event log</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
 		</Attribute>
 	</Attributes>
 	<Commands>
@@ -528,25 +1857,34 @@
 				</v8:item>
 			</ToolTip>
 			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
 			<Action>RefreshMonitor</Action>
 		</Command>
-		<Command name="ExecuteDataExchange" id="2">
+		<Command name="ExecuteDataExchange" id="3">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute now</v8:content>
+					<v8:content>Synchronize</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute data exchange with infobase.</v8:content>
+					<v8:content>Execute automatic synchronization</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationExecution</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+				<xr:TransparentPixel x="7" y="5"/>
+			</Picture>
 			<Action>ExecuteDataExchange</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="ChangeInfoBaseNode" id="3">
+		<Command name="ChangeInfobaseNode" id="4">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -556,71 +1894,259 @@
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Change</v8:content>
+					<v8:content>Set up data synchronization rules</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>ChangeInfoBaseNode</Action>
+			<Picture>
+				<xr:Ref>StdPicture.Change</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>ChangeInfobaseNode</Action>
 		</Command>
-		<Command name="GoToDataImportEventLog" id="4">
+		<Command name="GoToDataImportEventLog" id="7">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data import events...</v8:content>
+					<v8:content>Data receiving events...</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Go to data import event log.</v8:content>
+					<v8:content>Go to data receiving event log</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>GoToDataImportEventLog</Action>
 		</Command>
-		<Command name="GoToDataExportEventLog" id="5">
+		<Command name="GoToDataExportEventLog" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data export events...</v8:content>
+					<v8:content>Data sending events...</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Go to data export event log.</v8:content>
+					<v8:content>Go to data sending event log</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>GoToDataExportEventLog</Action>
 		</Command>
-		<Command name="ExecuteDataExchangeInteractively" id="6">
+		<Command name="ExecuteDataExchangeInteractively" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute with setting...</v8:content>
+					<v8:content>Synchronize with additional parameters..</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Execute data exchange interactively.</v8:content>
+					<v8:content>Specify additional parameters and synchronize data</v8:content>
 				</v8:item>
 			</ToolTip>
+			<Picture>
+				<xr:Ref>CommonPicture.DataSynchronizationInteractiveExecute</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
 			<Action>ExecuteDataExchangeInteractively</Action>
+			<Representation>Picture</Representation>
+		</Command>
+		<Command name="SetUpDataExchangeScenarios" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization scenarios</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Setup data exchange scripts</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.ScheduledJob</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetUpDataExchangeScenarios</Action>
+		</Command>
+		<Command name="InstallUpdate" id="6">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Install the update</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Install the update</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>InstallUpdate</Action>
+		</Command>
+		<Command name="SetUpDataSynchronizationSingle" id="10">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set up data synchronization</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Set up new synchronization with other application</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetUpDataSynchronizationSingle</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="SetUpDataExchangeScenarios" id="7">
+		<Command name="SetUpDataSynchronizationNotConfigured" id="11">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data exchange scenarios</v8:content>
+					<v8:content>Set up data synchronization</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Setup data exchange scenarios.</v8:content>
+					<v8:content>Set up synchronization with other application</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>SetUpDataExchangeScenarios</Action>
+			<Picture>
+				<xr:Ref>StdPicture.CreateListItem</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SetUpDataSynchronizationNotConfigured</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="SetUpSynchronizationScenariosSingle" id="13">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Data synchronization scenarios</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Setup data exchange scripts</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>SetUpSynchronizationScenariosSingle</Action>
+		</Command>
+		<Command name="HideCompletedSynchronizations" id="9">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Display only failed synchronizations</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Display only failed data synchronizations</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>HideCompletedSynchronizations</Action>
+		</Command>
+		<Command name="ExchangeInfo" id="12">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Display details of synchronization with this application</v8:content>
+				</v8:item>
+			</Title>
+			<Picture>
+				<xr:Ref>CommonPicture.Information</xr:Ref>
+				<xr:LoadTransparent>false</xr:LoadTransparent>
+			</Picture>
+			<Action>ExchangeInfo</Action>
+		</Command>
+		<Command name="OpenDataSynchronizationResults" id="16">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>No warnings to display</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Open data synchronization warnings</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>OpenSingleSynchronizationResults</Action>
+		</Command>
+		<Command name="SentDataContent" id="17">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sent data content</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Sent data content</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.FullAdministrator">true</xr:Value>
+			</Use>
+			<Picture>
+				<xr:Ref>StdPicture.Magnifier</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>SentDataContent</Action>
+		</Command>
+		<Command name="DeleteSynchronizationSettings" id="18">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Delete synchronization settings</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Detele current data synchronization settings item</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Use>
+				<xr:Common>false</xr:Common>
+				<xr:Value name="Role.FullAdministrator">true</xr:Value>
+				<xr:Value name="Role.DataSynchronizationSetup">true</xr:Value>
+			</Use>
+			<Picture>
+				<xr:Ref>StdPicture.Delete</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>DeleteSynchronizationSettings</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="ImportDataSynchronizationRules" id="14">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import rules...</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Import data synchronization rules</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ImportDataSynchronizationRules</Action>
 		</Command>
 	</Commands>
 </Form>

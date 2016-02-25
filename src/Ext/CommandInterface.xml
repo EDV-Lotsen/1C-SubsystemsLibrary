@@ -1,18 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <CommandInterface xmlns="http://v8.1c.ru/8.3/xcf/extrnprops" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
-	<SubsystemsVisibility>
-		<Subsystem name="Subsystem._DemoDataExchange">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Subsystem>
-	</SubsystemsVisibility>
 	<SubsystemsOrder>
 		<Subsystem>Subsystem.Sales</Subsystem>
-		<Subsystem>Subsystem.Purchasing</Subsystem>
-		<Subsystem>Subsystem.Banking</Subsystem>
-		<Subsystem>Subsystem.PayrollAndHumanResources</Subsystem>
-		<Subsystem>Subsystem.Settings</Subsystem>
-		<Subsystem>Subsystem._DemoDataExchange</Subsystem>
+		<Subsystem>Subsystem.Purchases</Subsystem>
+		<Subsystem>Subsystem.Inventory</Subsystem>
+		<Subsystem>Subsystem.Finances</Subsystem>
+		<Subsystem>Subsystem.Administration</Subsystem>
 	</SubsystemsOrder>
 </CommandInterface>

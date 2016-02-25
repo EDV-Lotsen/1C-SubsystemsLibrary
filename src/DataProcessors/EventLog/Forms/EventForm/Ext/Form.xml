@@ -7,11 +7,11 @@
 		</v8:item>
 	</Title>
 	<Width>100</Width>
-	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
 	<EnterKeyBehavior>DefaultButton</EnterKeyBehavior>
 	<AutoTitle>false</AutoTitle>
 	<Customizable>false</Customizable>
 	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
 	<CommandSet>
 		<ExcludedCommand>No</ExcludedCommand>
 		<ExcludedCommand>SaveValues</ExcludedCommand>
@@ -28,41 +28,57 @@
 		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
 	</Events>
 	<ChildItems>
-		<UsualGroup name="GroupMains" id="1">
+		<CommandBar name="ButtonGroup" id="42">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group mains</v8:content>
+					<v8:content>Button group</v8:content>
 				</v8:item>
 			</Title>
-			<ToolTip>
+			<ExtendedTooltip name="ButtonGroupExtendedTooltip" id="158"/>
+			<ChildItems>
+				<Button name="Close" id="43">
+					<Type>CommandBarButton</Type>
+					<Representation>Text</Representation>
+					<DefaultButton>true</DefaultButton>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.Close</CommandName>
+					<TextColor>style:ButtonTextColor</TextColor>
+					<BackColor>style:ButtonBackColor</BackColor>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ExtendedTooltip name="CloseExtendedTooltip" id="159"/>
+				</Button>
+				<Button name="Help" id="46">
+					<Type>CommandBarButton</Type>
+					<SkipOnInput>false</SkipOnInput>
+					<CommandName>Form.StandardCommand.Help</CommandName>
+					<ExtendedTooltip name="HelpExtendedTooltip" id="160"/>
+				</Button>
+			</ChildItems>
+		</CommandBar>
+		<UsualGroup name="MainGroup" id="1">
+			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Group mains</v8:content>
+					<v8:content>Main group</v8:content>
 				</v8:item>
-			</ToolTip>
+			</Title>
 			<Group>Horizontal</Group>
 			<Representation>None</Representation>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupMainsExtendedTooltip" id="107"/>
+			<ExtendedTooltip name="MainGroupExtendedTooltip" id="109"/>
 			<ChildItems>
-				<UsualGroup name="GroupDateComputer" id="7">
+				<UsualGroup name="UserAndDateGroup" id="7">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group date Computer</v8:content>
+							<v8:content>User and date group</v8:content>
 						</v8:item>
 					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Group date Computer</v8:content>
-						</v8:item>
-					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupDateComputerExtendedTooltip" id="108"/>
+					<ExtendedTooltip name="UserAndDateGroupExtendedTooltip" id="110"/>
 					<ChildItems>
 						<InputField name="UserName" id="15">
 							<DataPath>UserName</DataPath>
@@ -70,36 +86,27 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="UserNameContextMenu" id="16"/>
-							<ExtendedTooltip name="UserNameExtendedTooltip" id="109"/>
+							<ExtendedTooltip name="UserNameExtendedTooltip" id="111"/>
 						</InputField>
 						<InputField name="Date" id="9">
 							<DataPath>Date</DataPath>
 							<ReadOnly>true</ReadOnly>
-							<Wrap>false</Wrap>
-							<ChoiceButton>false</ChoiceButton>
-							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="DateContextMenu" id="10"/>
-							<ExtendedTooltip name="DateExtendedTooltip" id="110"/>
+							<ExtendedTooltip name="DateExtendedTooltip" id="112"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="GroupUserApplication" id="8">
+				<UsualGroup name="ComputerApplicationDataSeparationGroup" id="8">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Group user application</v8:content>
+							<v8:content>Computer application data separation group</v8:content>
 						</v8:item>
 					</Title>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Group user application</v8:content>
-						</v8:item>
-					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ShowTitle>false</ShowTitle>
-					<ExtendedTooltip name="GroupUserApplicationExtendedTooltip" id="111"/>
+					<ExtendedTooltip name="ComputerApplicationDataSeparationGroupExtendedTooltip" id="113"/>
 					<ChildItems>
 						<InputField name="ApplicationPresentation" id="17">
 							<DataPath>ApplicationPresentation</DataPath>
@@ -107,7 +114,18 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="ApplicationPresentationContextMenu" id="18"/>
-							<ExtendedTooltip name="ApplicationPresentationExtendedTooltip" id="112"/>
+							<ExtendedTooltip name="ApplicationPresentationExtendedTooltip" id="114"/>
+						</InputField>
+						<InputField name="SessionDataSeparation" id="107">
+							<DataPath>SessionDataSeparation</DataPath>
+							<ReadOnly>true</ReadOnly>
+							<Wrap>false</Wrap>
+							<OpenButton>true</OpenButton>
+							<ContextMenu name="SessionDataSeparationContextMenu" id="108"/>
+							<ExtendedTooltip name="SessionDataSeparationExtendedTooltip" id="115"/>
+							<Events>
+								<Event name="Opening">SessionDataSeparationOpening</Event>
+							</Events>
 						</InputField>
 						<InputField name="Computer" id="11">
 							<DataPath>Computer</DataPath>
@@ -115,79 +133,54 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="ComputerContextMenu" id="12"/>
-							<ExtendedTooltip name="ComputerExtendedTooltip" id="113"/>
+							<ExtendedTooltip name="ComputerExtendedTooltip" id="116"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="GroupMain1" id="44">
+		<UsualGroup name="MainGroup" id="44">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Main</v8:content>
+					<v8:content>IsMain</v8:content>
 				</v8:item>
 			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Main</v8:content>
-				</v8:item>
-			</ToolTip>
 			<Group>Vertical</Group>
 			<Representation>NormalSeparation</Representation>
 			<ChildItemsWidth>Equal</ChildItemsWidth>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupMain1ExtendedTooltip" id="114"/>
+			<ExtendedTooltip name="MainGroupExtendedTooltip" id="117"/>
 			<ChildItems>
-				<UsualGroup name="GroupData" id="4">
+				<UsualGroup name="DataGroup" id="4">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Data</v8:content>
 						</v8:item>
 					</Title>
-					<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Data</v8:content>
-						</v8:item>
-					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
-					<ExtendedTooltip name="GroupDataExtendedTooltip" id="115"/>
+					<ExtendedTooltip name="DataGroupExtendedTooltip" id="118"/>
 					<ChildItems>
 						<Pages name="DataPresentations" id="47">
 							<Title>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Data presentation</v8:content>
+									<v8:content>Data presentations</v8:content>
 								</v8:item>
 							</Title>
-							<ToolTip>
-								<v8:item>
-									<v8:lang>en</v8:lang>
-									<v8:content>Data presentation</v8:content>
-								</v8:item>
-							</ToolTip>
 							<PagesRepresentation>TabsOnBottom</PagesRepresentation>
-							<ExtendedTooltip name="DataPresentationsExtendedTooltip" id="116"/>
+							<ExtendedTooltip name="DataPresentationsExtendedTooltip" id="119"/>
 							<ChildItems>
 								<Page name="SimpleData" id="48">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Simple Data</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
 											<v8:content>Simple data</v8:content>
 										</v8:item>
-									</ToolTip>
-									<ExtendedTooltip name="SimpleDataExtendedTooltip" id="117"/>
+									</Title>
+									<ExtendedTooltip name="SimpleDataExtendedTooltip" id="120"/>
 									<ChildItems>
 										<InputField name="MetadataPresentation" id="21">
 											<DataPath>MetadataPresentation</DataPath>
@@ -201,7 +194,7 @@
 											<Wrap>false</Wrap>
 											<BorderColor>style:BorderColor</BorderColor>
 											<ContextMenu name="MetadataPresentationContextMenu" id="22"/>
-											<ExtendedTooltip name="MetadataPresentationExtendedTooltip" id="118"/>
+											<ExtendedTooltip name="MetadataPresentationExtendedTooltip" id="121"/>
 											<Events>
 												<Event name="Opening">MetadataPresentationOpening</Event>
 											</Events>
@@ -212,7 +205,7 @@
 											<Wrap>false</Wrap>
 											<BorderColor>style:BorderColor</BorderColor>
 											<ContextMenu name="DataContextMenu" id="24"/>
-											<ExtendedTooltip name="DataExtendedTooltip" id="119"/>
+											<ExtendedTooltip name="DataExtendedTooltip" id="122"/>
 										</InputField>
 										<InputField name="DataPresentation" id="25">
 											<DataPath>DataPresentation</DataPath>
@@ -224,11 +217,11 @@
 												</v8:item>
 											</Title>
 											<TitleLocation>Left</TitleLocation>
-											<Height>3</Height>
+											<Height>1</Height>
 											<MultiLine>true</MultiLine>
 											<BorderColor>style:BorderColor</BorderColor>
 											<ContextMenu name="DataPresentationContextMenu" id="26"/>
-											<ExtendedTooltip name="DataPresentationExtendedTooltip" id="120"/>
+											<ExtendedTooltip name="DataPresentationExtendedTooltip" id="123"/>
 										</InputField>
 									</ChildItems>
 								</Page>
@@ -236,10 +229,10 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Access Data</v8:content>
+											<v8:content>Access data</v8:content>
 										</v8:item>
 									</Title>
-									<ExtendedTooltip name="AccessDataExtendedTooltip" id="121"/>
+									<ExtendedTooltip name="AccessDataExtendedTooltip" id="124"/>
 									<ChildItems>
 										<InputField name="AccessMetadataPresentation" id="54">
 											<DataPath>MetadataPresentation</DataPath>
@@ -253,7 +246,7 @@
 											<Wrap>false</Wrap>
 											<BorderColor>style:BorderColor</BorderColor>
 											<ContextMenu name="AccessMetadataPresentationContextMenu" id="55"/>
-											<ExtendedTooltip name="AccessMetadataPresentationExtendedTooltip" id="122"/>
+											<ExtendedTooltip name="AccessMetadataPresentationExtendedTooltip" id="125"/>
 											<Events>
 												<Event name="Opening">MetadataPresentationOpening</Event>
 											</Events>
@@ -286,41 +279,41 @@
 											<RowFilter xsi:nil="true"/>
 											<ContextMenu name="AccessDataTableContextMenu" id="57">
 												<ChildItems>
-													<Button name="DataAccessTableContextMenuOutputList" id="103">
+													<Button name="AccessDataTableContextMenuOutputList" id="103">
 														<Type>CommandBarButton</Type>
 														<OnlyInAllActions>true</OnlyInAllActions>
 														<CommandName>Form.Item.AccessDataTable.StandardCommand.OutputList</CommandName>
-														<ExtendedTooltip name="DataAccessTableContextMenuOutputListExtendedTooltip" id="123"/>
+														<ExtendedTooltip name="AccessDataTableContextMenuOutputListExtendedTooltip" id="126"/>
 													</Button>
 												</ChildItems>
 											</ContextMenu>
 											<AutoCommandBar name="AccessDataTableCommandBar" id="58">
 												<Autofill>false</Autofill>
 											</AutoCommandBar>
-											<ExtendedTooltip name="AccessDataTableExtendedTooltip" id="124"/>
-											<SearchStringAddition name="AccessDataTableSearchString" id="125">
+											<ExtendedTooltip name="AccessDataTableExtendedTooltip" id="127"/>
+											<SearchStringAddition name="AccessDataTableSearchString" id="161">
 												<AdditionSource>
 													<Item>AccessDataTable</Item>
 													<Type>SearchStringRepresentation</Type>
 												</AdditionSource>
-												<ContextMenu name="AccessDataTableSearchStringContextMenu" id="126"/>
-												<ExtendedTooltip name="AccessDataTableSearchStringExtendedTooltip" id="127"/>
+												<ContextMenu name="AccessDataTableSearchStringContextMenu" id="162"/>
+												<ExtendedTooltip name="AccessDataTableSearchStringExtendedTooltip" id="163"/>
 											</SearchStringAddition>
-											<ViewStatusAddition name="AccessDataTableViewStatus" id="128">
+											<ViewStatusAddition name="AccessDataTableViewStatus" id="164">
 												<AdditionSource>
 													<Item>AccessDataTable</Item>
 													<Type>ViewStatusRepresentation</Type>
 												</AdditionSource>
-												<ContextMenu name="AccessDataTableViewStatusContextMenu" id="129"/>
-												<ExtendedTooltip name="AccessDataTableViewStatusExtendedTooltip" id="130"/>
+												<ContextMenu name="AccessDataTableViewStatusContextMenu" id="165"/>
+												<ExtendedTooltip name="AccessDataTableViewStatusExtendedTooltip" id="166"/>
 											</ViewStatusAddition>
-											<SearchControlAddition name="AccessDataTableSearchControl" id="131">
+											<SearchControlAddition name="AccessDataTableSearchControl" id="167">
 												<AdditionSource>
 													<Item>AccessDataTable</Item>
 													<Type>SearchControl</Type>
 												</AdditionSource>
-												<ContextMenu name="AccessDataTableSearchControlContextMenu" id="132"/>
-												<ExtendedTooltip name="AccessDataTableSearchControlExtendedTooltip" id="133"/>
+												<ContextMenu name="AccessDataTableSearchControlContextMenu" id="168"/>
+												<ExtendedTooltip name="AccessDataTableSearchControlExtendedTooltip" id="169"/>
 											</SearchControlAddition>
 											<Events>
 												<Event name="Selection">DataTableChoice</Event>
@@ -332,16 +325,10 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Refusal Access Rights Data</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
 											<v8:content>Access right denied data</v8:content>
 										</v8:item>
-									</ToolTip>
-									<ExtendedTooltip name="AccessRightDeniedDataExtendedTooltip" id="134"/>
+									</Title>
+									<ExtendedTooltip name="AccessRightDeniedDataExtendedTooltip" id="128"/>
 									<ChildItems>
 										<InputField name="AccessRightRejectionMetadataPresentation" id="65">
 											<DataPath>MetadataPresentation</DataPath>
@@ -355,16 +342,16 @@
 											<Wrap>false</Wrap>
 											<BorderColor>style:BorderColor</BorderColor>
 											<ContextMenu name="AccessRightRejectionMetadataPresentationContextMenu" id="66"/>
-											<ExtendedTooltip name="AccessRightRejectionMetadataPresentationExtendedTooltip" id="135"/>
+											<ExtendedTooltip name="AccessRightRejectionMetadataPresentationExtendedTooltip" id="129"/>
 											<Events>
 												<Event name="Opening">MetadataPresentationOpening</Event>
 											</Events>
 										</InputField>
-										<InputField name="CancellationOfAccessRight" id="78">
-											<DataPath>CancellationOfAccessRight</DataPath>
+										<InputField name="AccessRightDenied" id="78">
+											<DataPath>AccessRightDenied</DataPath>
 											<ReadOnly>true</ReadOnly>
-											<ContextMenu name="CancellationOfAccessRightContextMenu" id="79"/>
-											<ExtendedTooltip name="CancellationOfAccessRightExtendedTooltip" id="136"/>
+											<ContextMenu name="AccessRightDeniedContextMenu" id="79"/>
+											<ExtendedTooltip name="AccessRightDeniedExtendedTooltip" id="130"/>
 										</InputField>
 									</ChildItems>
 								</Page>
@@ -372,18 +359,12 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Refusal Access Action Data</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
 											<v8:content>Access action denied data</v8:content>
 										</v8:item>
-									</ToolTip>
-									<ExtendedTooltip name="AccessActionDeniedDataExtendedTooltip" id="137"/>
+									</Title>
+									<ExtendedTooltip name="AccessActionDeniedDataExtendedTooltip" id="131"/>
 									<ChildItems>
-										<InputField name="AccessActionRejectionMetadataPresentation" id="72">
+										<InputField name="AccessActionDeniedMetadataPresentation" id="72">
 											<DataPath>MetadataPresentation</DataPath>
 											<ReadOnly>true</ReadOnly>
 											<ToolTip>
@@ -394,19 +375,19 @@
 											</ToolTip>
 											<Wrap>false</Wrap>
 											<BorderColor>style:BorderColor</BorderColor>
-											<ContextMenu name="AccessActionRejectionMetadataPresentationContextMenu" id="73"/>
-											<ExtendedTooltip name="AccessActionRejectionMetadataPresentationExtendedTooltip" id="138"/>
+											<ContextMenu name="AccessActionDeniedMetadataPresentationContextMenu" id="73"/>
+											<ExtendedTooltip name="AccessActionDeniedMetadataPresentationExtendedTooltip" id="132"/>
 											<Events>
 												<Event name="Opening">MetadataPresentationOpening</Event>
 											</Events>
 										</InputField>
-										<InputField name="CancellationOfAccessAction" id="80">
-											<DataPath>CancellationOfAccessAction</DataPath>
+										<InputField name="AccessActionDenied" id="80">
+											<DataPath>AccessActionDenied</DataPath>
 											<ReadOnly>true</ReadOnly>
-											<ContextMenu name="CancellationOfAccessActionContextMenu" id="81"/>
-											<ExtendedTooltip name="CancellationOfAccessActionExtendedTooltip" id="139"/>
+											<ContextMenu name="AccessActionDeniedContextMenu" id="81"/>
+											<ExtendedTooltip name="AccessActionDeniedExtendedTooltip" id="133"/>
 										</InputField>
-										<Table name="DataTableRefusalAccessAction" id="74">
+										<Table name="AccessActionDeniedDataTable" id="74">
 											<Representation>List</Representation>
 											<TitleLocation>Top</TitleLocation>
 											<CommandBarLocation>None</CommandBarLocation>
@@ -432,43 +413,43 @@
 											<ViewStatusLocation>None</ViewStatusLocation>
 											<SearchControlLocation>None</SearchControlLocation>
 											<RowFilter xsi:nil="true"/>
-											<ContextMenu name="DataTableRefusalAccessActionContextMenu" id="75">
+											<ContextMenu name="AccessActionDeniedDataTableContextMenu" id="75">
 												<ChildItems>
-													<Button name="AccessActionRefusalDataTableContextMenuOutputList" id="104">
+													<Button name="AccessActionDeniedDataTableContextMenuOutputList" id="104">
 														<Type>CommandBarButton</Type>
 														<OnlyInAllActions>true</OnlyInAllActions>
-														<CommandName>Form.Item.DataTableRefusalAccessAction.StandardCommand.OutputList</CommandName>
-														<ExtendedTooltip name="AccessActionRefusalDataTableContextMenuOutputListExtendedTooltip" id="140"/>
+														<CommandName>Form.Item.AccessActionDeniedDataTable.StandardCommand.OutputList</CommandName>
+														<ExtendedTooltip name="AccessActionDeniedDataTableContextMenuOutputListExtendedTooltip" id="134"/>
 													</Button>
 												</ChildItems>
 											</ContextMenu>
-											<AutoCommandBar name="DataTableRefusalAccessActionCommandBar" id="76">
+											<AutoCommandBar name="AccessActionDeniedDataTableCommandBar" id="76">
 												<Autofill>false</Autofill>
 											</AutoCommandBar>
-											<ExtendedTooltip name="DataTableRefusalAccessActionExtendedTooltip" id="141"/>
-											<SearchStringAddition name="DataTableRefusalAccessActionSearchString" id="142">
+											<ExtendedTooltip name="AccessActionDeniedDataTableExtendedTooltip" id="135"/>
+											<SearchStringAddition name="AccessActionDeniedDataTableSearchString" id="170">
 												<AdditionSource>
-													<Item>DataTableRefusalAccessAction</Item>
+													<Item>AccessActionDeniedDataTable</Item>
 													<Type>SearchStringRepresentation</Type>
 												</AdditionSource>
-												<ContextMenu name="DataTableRefusalAccessActionSearchStringContextMenu" id="143"/>
-												<ExtendedTooltip name="DataTableRefusalAccessActionSearchStringExtendedTooltip" id="144"/>
+												<ContextMenu name="AccessActionDeniedDataTableSearchStringContextMenu" id="171"/>
+												<ExtendedTooltip name="AccessActionDeniedDataTableSearchStringExtendedTooltip" id="172"/>
 											</SearchStringAddition>
-											<ViewStatusAddition name="DataTableRefusalAccessActionViewStatus" id="145">
+											<ViewStatusAddition name="AccessActionDeniedDataTableViewStatus" id="173">
 												<AdditionSource>
-													<Item>DataTableRefusalAccessAction</Item>
+													<Item>AccessActionDeniedDataTable</Item>
 													<Type>ViewStatusRepresentation</Type>
 												</AdditionSource>
-												<ContextMenu name="DataTableRefusalAccessActionViewStatusContextMenu" id="146"/>
-												<ExtendedTooltip name="DataTableRefusalAccessActionViewStatusExtendedTooltip" id="147"/>
+												<ContextMenu name="AccessActionDeniedDataTableViewStatusContextMenu" id="174"/>
+												<ExtendedTooltip name="AccessActionDeniedDataTableViewStatusExtendedTooltip" id="175"/>
 											</ViewStatusAddition>
-											<SearchControlAddition name="DataTableRefusalAccessActionSearchControl" id="148">
+											<SearchControlAddition name="AccessActionDeniedDataTableSearchControl" id="176">
 												<AdditionSource>
-													<Item>DataTableRefusalAccessAction</Item>
+													<Item>AccessActionDeniedDataTable</Item>
 													<Type>SearchControl</Type>
 												</AdditionSource>
-												<ContextMenu name="DataTableRefusalAccessActionSearchControlContextMenu" id="149"/>
-												<ExtendedTooltip name="DataTableRefusalAccessActionSearchControlExtendedTooltip" id="150"/>
+												<ContextMenu name="AccessActionDeniedDataTableSearchControlContextMenu" id="177"/>
+												<ExtendedTooltip name="AccessActionDeniedDataTableSearchControlExtendedTooltip" id="178"/>
 											</SearchControlAddition>
 											<Events>
 												<Event name="Selection">DataTableChoice</Event>
@@ -480,65 +461,53 @@
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>Authentication Data</v8:content>
-										</v8:item>
-									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
 											<v8:content>Authentication data</v8:content>
 										</v8:item>
-									</ToolTip>
-									<ExtendedTooltip name="AuthenticationDataExtendedTooltip" id="151"/>
+									</Title>
+									<ExtendedTooltip name="AuthenticationDataExtendedTooltip" id="136"/>
 									<ChildItems>
 										<InputField name="AuthenticationUserName" id="87">
 											<DataPath>AuthenticationUserName</DataPath>
 											<ReadOnly>true</ReadOnly>
 											<ContextMenu name="AuthenticationUserNameContextMenu" id="88"/>
-											<ExtendedTooltip name="AuthenticationUserNameExtendedTooltip" id="152"/>
+											<ExtendedTooltip name="AuthenticationUserNameExtendedTooltip" id="137"/>
 										</InputField>
 										<InputField name="AuthenticationOSUser" id="85">
 											<DataPath>AuthenticationOSUser</DataPath>
 											<ReadOnly>true</ReadOnly>
 											<ContextMenu name="AuthenticationOSUserContextMenu" id="86"/>
-											<ExtendedTooltip name="AuthenticationOSUserExtendedTooltip" id="153"/>
+											<ExtendedTooltip name="AuthenticationOSUserExtendedTooltip" id="138"/>
 										</InputField>
 										<InputField name="AuthenticationCurrentOSUser" id="89">
 											<DataPath>AuthenticationCurrentOSUser</DataPath>
 											<ReadOnly>true</ReadOnly>
 											<ContextMenu name="AuthenticationCurrentOSUserContextMenu" id="90"/>
-											<ExtendedTooltip name="AuthenticationCurrentOSUserExtendedTooltip" id="154"/>
+											<ExtendedTooltip name="AuthenticationCurrentOSUserExtendedTooltip" id="139"/>
 										</InputField>
 									</ChildItems>
 								</Page>
-								<Page name="InfoBaseUserData" id="91">
+								<Page name="InfobaseUserData" id="91">
 									<Title>
 										<v8:item>
 											<v8:lang>en</v8:lang>
-											<v8:content>IB user data</v8:content>
+											<v8:content>Infobase user data</v8:content>
 										</v8:item>
 									</Title>
-									<ToolTip>
-										<v8:item>
-											<v8:lang>en</v8:lang>
-											<v8:content>IB user data</v8:content>
-										</v8:item>
-									</ToolTip>
-									<ExtendedTooltip name="InfoBaseUserDataExtendedTooltip" id="155"/>
+									<ExtendedTooltip name="InfobaseUserDataExtendedTooltip" id="140"/>
 									<ChildItems>
-										<UsualGroup name="HorizontalGroupOfPropertiesOfIBUser" id="102">
+										<UsualGroup name="InfobaseUserPropertiesHorizontalGroup" id="102">
 											<Title>
 												<v8:item>
 													<v8:lang>en</v8:lang>
-													<v8:content>Horizontal group of IB user properties</v8:content>
+													<v8:content>Horizontal infobase user property group</v8:content>
 												</v8:item>
 											</Title>
 											<Group>Horizontal</Group>
 											<Representation>None</Representation>
 											<ShowTitle>false</ShowTitle>
-											<ExtendedTooltip name="HorizontalGroupOfPropertiesOfIBUserExtendedTooltip" id="156"/>
+											<ExtendedTooltip name="InfobaseUserPropertiesHorizontalGroupExtendedTooltip" id="141"/>
 											<ChildItems>
-												<Table name="TableOfIBUserProperties" id="94">
+												<Table name="InfobaseUserPropertyTable" id="94">
 													<Representation>List</Representation>
 													<TitleLocation>Top</TitleLocation>
 													<CommandBarLocation>None</CommandBarLocation>
@@ -551,7 +520,7 @@
 													<Title>
 														<v8:item>
 															<v8:lang>en</v8:lang>
-															<v8:content>Account properties</v8:content>
+															<v8:content>User properties</v8:content>
 														</v8:item>
 													</Title>
 													<CommandSet>
@@ -571,49 +540,49 @@
 													<ViewStatusLocation>None</ViewStatusLocation>
 													<SearchControlLocation>None</SearchControlLocation>
 													<RowFilter xsi:nil="true"/>
-													<ContextMenu name="TableOfIBUserPropertiesContextMenu" id="95">
+													<ContextMenu name="InfobaseUserPropertyTableContextMenu" id="95">
 														<ChildItems>
-															<Button name="IBUserTableOfUserPropertiesContextMenuOutputList" id="105">
+															<Button name="InfobaseUserPropertyTableContextMenuOutputList" id="105">
 																<Type>CommandBarButton</Type>
 																<OnlyInAllActions>true</OnlyInAllActions>
-																<CommandName>Form.Item.TableOfIBUserProperties.StandardCommand.OutputList</CommandName>
-																<ExtendedTooltip name="IBUserTableOfUserPropertiesContextMenuOutputListExtendedTooltip" id="157"/>
+																<CommandName>Form.Item.InfobaseUserPropertyTable.StandardCommand.OutputList</CommandName>
+																<ExtendedTooltip name="InfobaseUserPropertyTableContextMenuOutputListExtendedTooltip" id="142"/>
 															</Button>
 														</ChildItems>
 													</ContextMenu>
-													<AutoCommandBar name="TableOfIBUserPropertiesCommandBar" id="96">
+													<AutoCommandBar name="InfobaseUserPropertyTableCommandBar" id="96">
 														<Autofill>false</Autofill>
 													</AutoCommandBar>
-													<ExtendedTooltip name="TableOfIBUserPropertiesExtendedTooltip" id="158"/>
-													<SearchStringAddition name="TableOfIBUserPropertiesSearchString" id="159">
+													<ExtendedTooltip name="InfobaseUserPropertyTableExtendedTooltip" id="143"/>
+													<SearchStringAddition name="InfobaseUserPropertyTableSearchString" id="179">
 														<AdditionSource>
-															<Item>TableOfIBUserProperties</Item>
+															<Item>InfobaseUserPropertyTable</Item>
 															<Type>SearchStringRepresentation</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfIBUserPropertiesSearchStringContextMenu" id="160"/>
-														<ExtendedTooltip name="TableOfIBUserPropertiesSearchStringExtendedTooltip" id="161"/>
+														<ContextMenu name="InfobaseUserPropertyTableSearchStringContextMenu" id="180"/>
+														<ExtendedTooltip name="InfobaseUserPropertyTableSearchStringExtendedTooltip" id="181"/>
 													</SearchStringAddition>
-													<ViewStatusAddition name="TableOfIBUserPropertiesViewStatus" id="162">
+													<ViewStatusAddition name="InfobaseUserPropertyTableViewStatus" id="182">
 														<AdditionSource>
-															<Item>TableOfIBUserProperties</Item>
+															<Item>InfobaseUserPropertyTable</Item>
 															<Type>ViewStatusRepresentation</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfIBUserPropertiesViewStatusContextMenu" id="163"/>
-														<ExtendedTooltip name="TableOfIBUserPropertiesViewStatusExtendedTooltip" id="164"/>
+														<ContextMenu name="InfobaseUserPropertyTableViewStatusContextMenu" id="183"/>
+														<ExtendedTooltip name="InfobaseUserPropertyTableViewStatusExtendedTooltip" id="184"/>
 													</ViewStatusAddition>
-													<SearchControlAddition name="TableOfIBUserPropertiesSearchControl" id="165">
+													<SearchControlAddition name="InfobaseUserPropertyTableSearchControl" id="185">
 														<AdditionSource>
-															<Item>TableOfIBUserProperties</Item>
+															<Item>InfobaseUserPropertyTable</Item>
 															<Type>SearchControl</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfIBUserPropertiesSearchControlContextMenu" id="166"/>
-														<ExtendedTooltip name="TableOfIBUserPropertiesSearchControlExtendedTooltip" id="167"/>
+														<ContextMenu name="InfobaseUserPropertyTableSearchControlContextMenu" id="186"/>
+														<ExtendedTooltip name="InfobaseUserPropertyTableSearchControlExtendedTooltip" id="187"/>
 													</SearchControlAddition>
 													<Events>
 														<Event name="Selection">DataTableChoice</Event>
 													</Events>
 												</Table>
-												<Table name="TableOfRolesOfIBUser" id="98">
+												<Table name="InfobaseUserRoleTable" id="98">
 													<Representation>List</Representation>
 													<TitleLocation>Top</TitleLocation>
 													<CommandBarLocation>None</CommandBarLocation>
@@ -646,43 +615,43 @@
 													<ViewStatusLocation>None</ViewStatusLocation>
 													<SearchControlLocation>None</SearchControlLocation>
 													<RowFilter xsi:nil="true"/>
-													<ContextMenu name="TableOfRolesOfIBUserContextMenu" id="99">
+													<ContextMenu name="InfobaseUserRoleTableContextMenu" id="99">
 														<ChildItems>
-															<Button name="IBUserTableOfRolesContextMenuOutputList" id="106">
+															<Button name="InfobaseUserRoleTableContextMenuOutputList" id="106">
 																<Type>CommandBarButton</Type>
 																<OnlyInAllActions>true</OnlyInAllActions>
-																<CommandName>Form.Item.TableOfRolesOfIBUser.StandardCommand.OutputList</CommandName>
-																<ExtendedTooltip name="IBUserTableOfRolesContextMenuOutputListExtendedTooltip" id="168"/>
+																<CommandName>Form.Item.InfobaseUserRoleTable.StandardCommand.OutputList</CommandName>
+																<ExtendedTooltip name="InfobaseUserRoleTableContextMenuOutputListExtendedTooltip" id="144"/>
 															</Button>
 														</ChildItems>
 													</ContextMenu>
-													<AutoCommandBar name="TableOfRolesOfIBUserCommandBar" id="100">
+													<AutoCommandBar name="InfobaseUserRoleTableCommandBar" id="100">
 														<Autofill>false</Autofill>
 													</AutoCommandBar>
-													<ExtendedTooltip name="TableOfRolesOfIBUserExtendedTooltip" id="169"/>
-													<SearchStringAddition name="TableOfRolesOfIBUserSearchString" id="170">
+													<ExtendedTooltip name="InfobaseUserRoleTableExtendedTooltip" id="145"/>
+													<SearchStringAddition name="InfobaseUserRoleTableSearchString" id="188">
 														<AdditionSource>
-															<Item>TableOfRolesOfIBUser</Item>
+															<Item>InfobaseUserRoleTable</Item>
 															<Type>SearchStringRepresentation</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfRolesOfIBUserSearchStringContextMenu" id="171"/>
-														<ExtendedTooltip name="TableOfRolesOfIBUserSearchStringExtendedTooltip" id="172"/>
+														<ContextMenu name="InfobaseUserRoleTableSearchStringContextMenu" id="189"/>
+														<ExtendedTooltip name="InfobaseUserRoleTableSearchStringExtendedTooltip" id="190"/>
 													</SearchStringAddition>
-													<ViewStatusAddition name="TableOfRolesOfIBUserViewStatus" id="173">
+													<ViewStatusAddition name="InfobaseUserRoleTableViewStatus" id="191">
 														<AdditionSource>
-															<Item>TableOfRolesOfIBUser</Item>
+															<Item>InfobaseUserRoleTable</Item>
 															<Type>ViewStatusRepresentation</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfRolesOfIBUserViewStatusContextMenu" id="174"/>
-														<ExtendedTooltip name="TableOfRolesOfIBUserViewStatusExtendedTooltip" id="175"/>
+														<ContextMenu name="InfobaseUserRoleTableViewStatusContextMenu" id="192"/>
+														<ExtendedTooltip name="InfobaseUserRoleTableViewStatusExtendedTooltip" id="193"/>
 													</ViewStatusAddition>
-													<SearchControlAddition name="TableOfRolesOfIBUserSearchControl" id="176">
+													<SearchControlAddition name="InfobaseUserRoleTableSearchControl" id="194">
 														<AdditionSource>
-															<Item>TableOfRolesOfIBUser</Item>
+															<Item>InfobaseUserRoleTable</Item>
 															<Type>SearchControl</Type>
 														</AdditionSource>
-														<ContextMenu name="TableOfRolesOfIBUserSearchControlContextMenu" id="177"/>
-														<ExtendedTooltip name="TableOfRolesOfIBUserSearchControlExtendedTooltip" id="178"/>
+														<ContextMenu name="InfobaseUserRoleTableSearchControlContextMenu" id="195"/>
+														<ExtendedTooltip name="InfobaseUserRoleTableSearchControlExtendedTooltip" id="196"/>
 													</SearchControlAddition>
 													<Events>
 														<Event name="Selection">DataTableChoice</Event>
@@ -696,23 +665,16 @@
 						</Pages>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="GroupEvent" id="2">
+				<UsualGroup name="EventGroup" id="2">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Event</v8:content>
 						</v8:item>
 					</Title>
-					<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
-					<ToolTip>
-						<v8:item>
-							<v8:lang>en</v8:lang>
-							<v8:content>Event</v8:content>
-						</v8:item>
-					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>NormalSeparation</Representation>
-					<ExtendedTooltip name="GroupEventExtendedTooltip" id="179"/>
+					<ExtendedTooltip name="EventGroupExtendedTooltip" id="146"/>
 					<ChildItems>
 						<InputField name="EventPresentation" id="13">
 							<DataPath>EventPresentation</DataPath>
@@ -727,7 +689,7 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="EventPresentationContextMenu" id="14"/>
-							<ExtendedTooltip name="EventPresentationExtendedTooltip" id="180"/>
+							<ExtendedTooltip name="EventPresentationExtendedTooltip" id="147"/>
 						</InputField>
 						<InputField name="Comment" id="19">
 							<DataPath>Comment</DataPath>
@@ -737,31 +699,30 @@
 							<MultiLine>true</MultiLine>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="CommentContextMenu" id="20"/>
-							<ExtendedTooltip name="CommentExtendedTooltip" id="181"/>
+							<ExtendedTooltip name="CommentExtendedTooltip" id="148"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
-		<UsualGroup name="GroupTransactionConnection" id="45">
+		<UsualGroup name="TransactionIDConnectionGroup" id="45">
 			<Group>Horizontal</Group>
-			<Representation>None</Representation>
+			<Representation>NormalSeparation</Representation>
 			<ChildItemsWidth>Equal</ChildItemsWidth>
 			<ShowTitle>false</ShowTitle>
-			<ExtendedTooltip name="GroupTransactionConnectionExtendedTooltip" id="182"/>
+			<ExtendedTooltip name="TransactionIDConnectionGroupExtendedTooltip" id="149"/>
 			<ChildItems>
-				<UsualGroup name="GroupConnection" id="6">
+				<UsualGroup name="ConnectionGroup" id="6">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Session</v8:content>
 						</v8:item>
 					</Title>
-					<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
 					<ChildItemsWidth>LeftNarrowest</ChildItemsWidth>
-					<ExtendedTooltip name="GroupConnectionExtendedTooltip" id="183"/>
+					<ExtendedTooltip name="ConnectionGroupExtendedTooltip" id="150"/>
 					<ChildItems>
 						<InputField name="Session" id="33">
 							<DataPath>Session</DataPath>
@@ -769,7 +730,7 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="SessionContextMenu" id="34"/>
-							<ExtendedTooltip name="SessionExtendedTooltip" id="184"/>
+							<ExtendedTooltip name="SessionExtendedTooltip" id="151"/>
 						</InputField>
 						<InputField name="ServerName" id="35">
 							<DataPath>ServerName</DataPath>
@@ -777,7 +738,7 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="ServerNameContextMenu" id="36"/>
-							<ExtendedTooltip name="ServerNameExtendedTooltip" id="185"/>
+							<ExtendedTooltip name="ServerNameExtendedTooltip" id="152"/>
 						</InputField>
 						<InputField name="Port" id="38">
 							<DataPath>Port</DataPath>
@@ -786,7 +747,7 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="PortContextMenu" id="39"/>
-							<ExtendedTooltip name="PortExtendedTooltip" id="186"/>
+							<ExtendedTooltip name="PortExtendedTooltip" id="153"/>
 						</InputField>
 						<InputField name="SyncPort" id="40">
 							<DataPath>SyncPort</DataPath>
@@ -795,27 +756,26 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="SyncPortContextMenu" id="41"/>
-							<ExtendedTooltip name="SyncPortExtendedTooltip" id="187"/>
+							<ExtendedTooltip name="SyncPortExtendedTooltip" id="154"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
-				<UsualGroup name="GroupTransaction" id="5">
+				<UsualGroup name="TransactionIDGroup" id="5">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Transaction</v8:content>
+							<v8:content>TransactionID</v8:content>
 						</v8:item>
 					</Title>
-					<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
 					<ToolTip>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>Transaction</v8:content>
+							<v8:content>TransactionID</v8:content>
 						</v8:item>
 					</ToolTip>
 					<Group>Vertical</Group>
 					<Representation>None</Representation>
-					<ExtendedTooltip name="GroupTransactionExtendedTooltip" id="188"/>
+					<ExtendedTooltip name="TransactionIDGroupExtendedTooltip" id="155"/>
 					<ChildItems>
 						<InputField name="TransactionID" id="27">
 							<DataPath>TransactionID</DataPath>
@@ -823,7 +783,7 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="TransactionIDContextMenu" id="28"/>
-							<ExtendedTooltip name="TransactionIDExtendedTooltip" id="189"/>
+							<ExtendedTooltip name="TransactionIDExtendedTooltip" id="156"/>
 						</InputField>
 						<InputField name="TransactionStatus" id="29">
 							<DataPath>TransactionStatus</DataPath>
@@ -831,47 +791,12 @@
 							<Wrap>false</Wrap>
 							<BorderColor>style:BorderColor</BorderColor>
 							<ContextMenu name="TransactionStatusContextMenu" id="30"/>
-							<ExtendedTooltip name="TransactionStatusExtendedTooltip" id="190"/>
+							<ExtendedTooltip name="TransactionStatusExtendedTooltip" id="157"/>
 						</InputField>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
-		<CommandBar name="ButtonGroup" id="42">
-			<Title>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Button group</v8:content>
-				</v8:item>
-			</Title>
-			<ToolTip>
-				<v8:item>
-					<v8:lang>en</v8:lang>
-					<v8:content>Button group</v8:content>
-				</v8:item>
-			</ToolTip>
-			<HorizontalLocation>Right</HorizontalLocation>
-			<ExtendedTooltip name="ButtonGroupExtendedTooltip" id="191"/>
-			<ChildItems>
-				<Button name="Close" id="43">
-					<Type>CommandBarButton</Type>
-					<Representation>PictureAndText</Representation>
-					<DefaultButton>true</DefaultButton>
-					<SkipOnInput>false</SkipOnInput>
-					<CommandName>Form.StandardCommand.Close</CommandName>
-					<TextColor>style:ButtonTextColor</TextColor>
-					<BackColor>style:ButtonBackColor</BackColor>
-					<BorderColor>style:BorderColor</BorderColor>
-					<ExtendedTooltip name="CloseExtendedTooltip" id="192"/>
-				</Button>
-				<Button name="Help" id="46">
-					<Type>CommandBarButton</Type>
-					<SkipOnInput>false</SkipOnInput>
-					<CommandName>Form.StandardCommand.Help</CommandName>
-					<ExtendedTooltip name="HelpExtendedTooltip" id="193"/>
-				</Button>
-			</ChildItems>
-		</CommandBar>
 	</ChildItems>
 	<Attributes>
 		<Attribute name="Object" id="1">
@@ -884,7 +809,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Date, Time</v8:content>
+					<v8:content>Date, time</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -974,7 +899,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Data Presentation</v8:content>
+					<v8:content>Data presentation</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1004,7 +929,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Completion Status of Transaction</v8:content>
+					<v8:content>Transaction completion status</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1034,7 +959,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Server Name</v8:content>
+					<v8:content>Server name</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1049,7 +974,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Main IP port</v8:content>
+					<v8:content>Port</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1064,7 +989,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Addit. IP Port</v8:content>
+					<v8:content>Sync port</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1094,7 +1019,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Application</v8:content>
+					<v8:content>Package</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1116,11 +1041,11 @@
 				<v8:Type>v8:ValueTable</v8:Type>
 			</Type>
 		</Attribute>
-		<Attribute name="CancellationOfAccessRight" id="18">
+		<Attribute name="AccessRightDenied" id="18">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Right Refuse</v8:content>
+					<v8:content>Access denied by rule</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1131,11 +1056,11 @@
 				</v8:StringQualifiers>
 			</Type>
 		</Attribute>
-		<Attribute name="CancellationOfAccessAction" id="19">
+		<Attribute name="AccessActionDenied" id="19">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Action Cancel</v8:content>
+					<v8:content>Denied action</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1165,7 +1090,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>User Name</v8:content>
+					<v8:content>User name</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1180,7 +1105,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Current OS User</v8:content>
+					<v8:content>Current OS user</v8:content>
 				</v8:item>
 			</Title>
 			<Type>
@@ -1201,6 +1126,20 @@
 			<Type>
 				<v8:Type>v8:ValueTable</v8:Type>
 			</Type>
+		</Attribute>
+		<Attribute name="SessionDataSeparation" id="24">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Session data separation</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueListType</v8:Type>
+			</Type>
+			<FunctionalOptions>
+				<Item>FunctionalOption.SaaSOperations</Item>
+			</FunctionalOptions>
 		</Attribute>
 	</Attributes>
 	<Parameters>

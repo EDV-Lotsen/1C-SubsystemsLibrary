@@ -1,979 +1,1073 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// FORM EVENT HANDLERS
-
+﻿ 
+#Region FormEventHandlers
+ 
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
+		Return;
+	EndIf;
 	
-	//** Setting initial values before importing settings from the server
-	//   if data was not written and there is nothing to import.
-	ShowRoleSubsystems = True;
-	Items.RolesShowRoleSubsystems.Check = True;
-	// If the item is a new one, all roles are shown, otherwise only selected roles are shown
-	ShowSelectedRolesOnly                  = ValueIsFilled(Object.Ref);
-	Items.RolesShowSelectedRolesOnly.Check = ValueIsFilled(Object.Ref);
-	//
-	HideFullAccessRole = True;
-	RefreshRoleTree();
+	// Filling auxiliary data.
 	
+	RoleEditProhibition = UsersInternal.RoleEditProhibition();
 	
-	//** Filling permanent data
-	RoleEditProhibition = UsersOverridable.RoleEditProhibition();
-	FullAccessUserAuthorized = Users.InfoBaseUserWithFullAccess();
+	// Filling language choice list.
+	If Metadata.Languages.Count() < 2 Then
+		Items.InfobaseUserLanguage.Visible = False;
+	Else
+		For Each LanguageMetadata In Metadata.Languages Do
+			Items.InfobaseUserLanguage.ChoiceList.Add(
+				LanguageMetadata.Name, LanguageMetadata.Synonym);
+		EndDo;
+	EndIf;
 	
-	// Filling the language choice list
-	For Each LanguageMetadata In Metadata.Languages Do
-		Items.LanguagePresentation.ChoiceList.Add(LanguageMetadata.Synonym);
-	EndDo;
-	
-	//** Preparing to process interactive actions according to form opening scenarios
+	// Preparing for execution of interactive actions according to the form opening scenarios.
+	AccessLevel = UsersInternal.UserPropertyAccessLevel(Object);
 	
 	SetPrivilegedMode(True);
 	
 	If Not ValueIsFilled(Object.Ref) Then
-		// Creating a new item
-		If Parameters.NewExternalUserGroup <> Catalogs.ExternalUserGroups.AllExternalUsers Then
+		
+		// Adding a new item.
+		If Parameters.NewExternalUserGroup
+		         <> Catalogs.ExternalUserGroups.AllExternalUsers Then
+			
 			NewExternalUserGroup = Parameters.NewExternalUserGroup;
 		EndIf;
+		
 		If ValueIsFilled(Parameters.CopyingValue) Then
-			// Coping the item
+			// Copying the item.
+			CopyingValue = Parameters.CopyingValue;
 			Object.AuthorizationObject = Undefined;
-			Object.Description      = "";
-			Object.Code               = "";
-			Object.DeletePassword     = "";
-			ReadInfoBaseUser(ValueIsFilled(Parameters.CopyingValue.InfoBaseUserID));
+			Object.Description         = "";
+ 
+			
+			If Users.InfobaseUserWithFullAccess(CopyingValue, True, False) Then
+				InfobaseUserCopyingAllowed = AccessLevel.FullAdministrator;
+			ElsIf Users.InfobaseUserWithFullAccess(CopyingValue, False, False) Then
+				InfobaseUserCopyingAllowed = AccessLevel.FullAccess;
+			Else
+				InfobaseUserCopyingAllowed = True;
+			EndIf;
+			
+			If InfobaseUserCopyingAllowed Then
+				ReadInfobaseUser(ValueIsFilled(
+					Parameters.CopyingValue.InfobaseUserID));
+			Else
+				ReadInfobaseUser();
+			EndIf;
+			If Not AccessLevel.FullAccess Then
+				CanLogOnToApplication = False;
+				CanLogOnToApplicationDirectChangeValue = False;
+			EndIf;
 		Else
-			// Adding the item
+			// Adding an item.
 			If Parameters.Property("NewExternalUserAuthorizationObject") Then
+				
 				Object.AuthorizationObject = Parameters.NewExternalUserAuthorizationObject;
-				IsAuthorizationObjectSetOnOpen = ValueIsFilled(Object.AuthorizationObject);
-				AuthorizationObjectOnChangeAtClientAtServer(ThisForm, Object);
+				AuthorizationObjectSetOnOpen = ValueIsFilled(Object.AuthorizationObject);
+				AuthorizationObjectOnChangeAtClientAtServer(ThisObject, Object);
+				
 			ElsIf ValueIsFilled(NewExternalUserGroup) Then
-				AuthorizationObjectType = CommonUse.GetAttributeValue(NewExternalUserGroup, "AuthorizationObjectType");
+				
+				AuthorizationObjectType = CommonUse.ObjectAttributeValue(
+					NewExternalUserGroup, "AuthorizationObjectType");
+				
 				Object.AuthorizationObject = AuthorizationObjectType;
 				Items.AuthorizationObject.ChooseType = AuthorizationObjectType = Undefined;
 			EndIf;
-			// Reading initial values of infobase user properties
-			ReadInfoBaseUser();
+			
+			// Reading initial infobase user property values.
+			ReadInfobaseUser();
+			
+			If Not ValueIsFilled(Parameters.InfobaseUserID) Then
+				InfobaseUserStandardAuthentication = True;
+				
+				If AccessLevel.FullAccess Then
+					CanLogOnToApplication = True;
+					CanLogOnToApplicationDirectChangeValue = True;
+				EndIf;
+			EndIf;
+		EndIf;
+		
+		If AccessLevel.FullAccess
+		   And Object.AuthorizationObject <> Undefined Then
+			
+			InfobaseUserName = UsersInternalClientServer.GetInfobaseUserShortName(
+				CurrentAuthorizationObjectPresentation);
+			
+			InfobaseUserFullName = Object.Description;
 		EndIf;
 	Else
-		// Opening the existent item
-		ReadInfoBaseUser();
+		// Opening the existing item.
+		ReadInfobaseUser();
 	EndIf;
 	
 	SetPrivilegedMode(False);
 	
-	DefineActionsOnForm();
+	ProcessRolesInterface("SetUpRoleInterfaceOnFormCreate", True);
+	InitialInfobaseUserDescription = InitialInfobaseUserDescription();
 	
-	FindUserAndInfoBaseUserInconsistencies();
-	
-	//** Setting permanent property availability
-	Items.InfoBaseUserProperties.Visible = ValueIsFilled(ActionsOnForm.InfoBaseUserProperties);
-	Items.RoleRepresentation.Visible    = ValueIsFilled(ActionsOnForm.Roles);
-	Items.SetRolesDirectly.Visible       = ValueIsFilled(ActionsOnForm.Roles) And Not UsersOverridable.RoleEditProhibition();
-	
-	Items.SetRolesDirectly.Enabled = ActionsOnForm.Roles = "Edit";
-	
-	ReadOnly = ReadOnly Or
-	                 ActionsOnForm.Roles <> "Edit" And
-	                 Not (ActionsOnForm.InfoBaseUserProperties = "EditAll" Or
-	                      ActionsOnForm.InfoBaseUserProperties = "EditOwn") And
-	                 ActionsOnForm.ItemProperties <> "Edit";
+	FormCommonSetting(True);
 	
 EndProcedure
-
-&AtClient
-Procedure OnOpen(Cancel)
-	
-	SetPropertyEnabled();
-	
-EndProcedure
-
+ 
 &AtServer
 Procedure OnReadAtServer(CurrentObject)
+	
+	FormCommonSetting();
 	
 	CurrentAuthorizationObjectPresentation = String(Object.AuthorizationObject);
 	
 EndProcedure
-
+ 
+&AtServer
+Procedure FormCommonSetting(OnCreateAtServer = False, WriteParameters = Undefined)
+	
+	If InitialInfobaseUserDetails = Undefined Then
+		Return; // OnReadAtServer before OnCreateAtServer.
+	EndIf;
+	
+	If Not OnCreateAtServer Then
+		ReadInfobaseUser();
+	EndIf;
+	
+	AccessLevel = UsersInternal.UserPropertyAccessLevel(Object);
+	
+	SetActionsOnForm();
+	
+	FindUserAndInfobaseUserInconsistencies(WriteParameters);
+	
+	// Making the properties always available.
+	Items.InfobaseUserProperties.Visible =
+		ValueIsFilled(ActionsOnForm.InfobaseUserProperties);
+	
+	Items.RoleRepresentation.Visible =
+		ValueIsFilled(ActionsOnForm.Roles);
+	
+	Items.SetRolesDirectly.Visible =
+		ValueIsFilled(ActionsOnForm.Roles) And Not UsersInternal.RoleEditProhibition();
+	
+	UpdateDisplayedUserType();
+	
+	ReadOnly = ReadOnly
+		Or ActionsOnForm.Roles                     <> "Edit"
+		  And ActionsOnForm.ItemProperties         <> "Edit"
+		  And ActionsOnForm.InfobaseUserProperties <> "Edit";
+	
+	Items.CheckSettingsAfterLogOnRecommendation.Visible =
+		AccessLevel.FullAccess And Object.Prepared And Not CanLogOnToApplicationOnRead;
+	
+	SetPropertyEnabled();
+	
+EndProcedure
+ 
 &AtClient
-Procedure BeforeWrite(Cancel)
+Procedure BeforeWrite(Cancel, WriteParameters)
 	
 	ClearMessages();
 	
-	If ActionsOnForm.Roles = "Edit" And Object.SetRolesDirectly And InfoBaseUserRoles.Count() = 0 Then
+	If ActionsOnForm.Roles = "Edit"
+	   And Object.SetRolesDirectly
+	   And InfobaseUserRoles.Count() = 0 Then
 		
-		ShowMessageBox(, NStr("en='No role specified for the infobase user. Select at least one role.'"),
-		            , NStr("en='Writing infobase user'"));
-		Cancel = True;
+		If Not WriteParameters.Property("WithEmptyRoleList") Then
+			Cancel = True;
+			ShowQueryBox(
+				New NotifyDescription("AfterAnswerQuestionAboutWritingWithEmptyRoleList", ThisObject, WriteParameters),
+				NStr("en = 'No roles are set for the infobase user. Do you want to continue?'"),
+				QuestionDialogMode.YesNo,
+				,
+				,
+				NStr("en = 'Save infobase user'"));
+			Return;
+		EndIf;
 	EndIf;
 	
 EndProcedure
-
+ 
 &AtServer
 Procedure BeforeWriteAtServer(Cancel, CurrentObject, WriteParameters)
 	
-	If ActionsOnForm.ItemProperties <> "Edit" Then
-		FillPropertyValues(CurrentObject, CommonUse.GetAttributeValues(CurrentObject.Ref, "Description, DeletionMark"));
-	EndIf;
+	CurrentObject.AdditionalProperties.Insert("CopyingValue", CopyingValue);
 	
-	If ExternalUsers.AuthorizationObjectUsed(Object.AuthorizationObject, Object.Ref) Then
+	UpdateDisplayedUserType();
+	// Updating external user description.
+	SetPrivilegedMode(True);
+	CurrentAuthorizationObjectPresentation = String(CurrentObject.AuthorizationObject);
+	SetPrivilegedMode(False); 
+	Object.Description        = CurrentAuthorizationObjectPresentation;
+	CurrentObject.Description = CurrentAuthorizationObjectPresentation;
+	
+	If InfobaseUserWriteRequired(ThisObject) Then
+		InfobaseUserDescription = InfobaseUserDescription();
+		InfobaseUserDescription.Delete("PasswordConfirmation");
 		
-		CommonUseClientServer.MessageToUser(
-						NStr("en = 'The infobase object is already used for another external user.'"), ,
-						"Object.AuthorizationObject", ,
-						Cancel);
-		Return;
-	EndIf;
-	
-	CurrentObject.AdditionalProperties.Insert("NewExternalUserGroup", NewExternalUserGroup);
-	
-	If InfoBaseAccessAllowed Then
-		
-		WriteIBUser(CurrentObject, Cancel);
-		If Not Cancel Then
-			If CurrentObject.InfoBaseUserID <> OldInfoBaseUserID Then
-				WriteParameters.Insert("InfoBaseUserAdded", CurrentObject.InfoBaseUserID);
-			Else
-				WriteParameters.Insert("InfoBaseUserChanged", CurrentObject.InfoBaseUserID);
-			EndIf
+		If ValueIsFilled(Object.InfobaseUserID) Then
+			InfobaseUserDescription.Insert("UUID", Object.InfobaseUserID);
 		EndIf;
+		InfobaseUserDescription.Insert("Action", "Write");
 		
-	ElsIf Not HasRelationToNonexistentInfoBaseUser Or
-	          ActionsOnForm.InfoBaseUserProperties = "EditAll" Then
-		
-		CurrentObject.InfoBaseUserID = Undefined;
+		CurrentObject.AdditionalProperties.Insert("InfobaseUserDescription", InfobaseUserDescription);
 	EndIf;
+	
+	If ActionsOnForm.ItemProperties <> "Edit" Then
+		FillPropertyValues(CurrentObject, CommonUse.ObjectAttributeValues(
+			CurrentObject.Ref, "DeletionMark"));
+	EndIf;
+	
+	CurrentObject.AdditionalProperties.Insert(
+		"NewExternalUserGroup", NewExternalUserGroup);
 	
 	SetPrivilegedMode(True);
 	
-	CurrentAuthorizationObjectPresentation = String(CurrentObject.AuthorizationObject);
-	CurrentObject.Description = CurrentAuthorizationObjectPresentation;
-	
 EndProcedure
-
-&AtServer
-Procedure OnWriteAtServer(Cancel, CurrentObject, WriteParameters)
-	
-	If Not InfoBaseAccessAllowed And InfoBaseUserExists Then
-		DeleteInfoBaseUser(Cancel);
-		If Not Cancel Then
-			WriteParameters.Insert("InfoBaseUserDeleted", OldInfoBaseUserID);
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
+ 
 &AtServer
 Procedure AfterWriteAtServer(CurrentObject, WriteParameters)
 	
-	ReadInfoBaseUser();
+	If InfobaseUserWriteRequired(ThisObject) Then
+		WriteParameters.Insert(
+			CurrentObject.AdditionalProperties.InfobaseUserDescription.ActionResult);
+	EndIf;
 	
-	FindUserAndInfoBaseUserInconsistencies(WriteParameters);
+	FormCommonSetting(, WriteParameters);
 	
 EndProcedure
-
+ 
 &AtClient
 Procedure AfterWrite(WriteParameters)
 	
 	Notify("Write_ExternalUsers", New Structure, Object.Ref);
 	
-	If WriteParameters.Property("InfoBaseUserAdded") Then
-		Notify("InfoBaseUserAdded", WriteParameters.InfoBaseUserAdded, ThisForm);
+	If WriteParameters.Property("InfobaseUserAdded") Then
+		Notify("InfobaseUserAdded", WriteParameters.InfobaseUserAdded, ThisObject);
 		
-	ElsIf WriteParameters.Property("InfoBaseUserChanged") Then
-		Notify("InfoBaseUserChanged", WriteParameters.InfoBaseUserChanged, ThisForm);
+	ElsIf WriteParameters.Property("InfobaseUserChanged") Then
+		Notify("InfobaseUserChanged", WriteParameters.InfobaseUserChanged, ThisObject);
 		
-	ElsIf WriteParameters.Property("InfoBaseUserDeleted") Then
-		Notify("InfoBaseUserDeleted", WriteParameters.InfoBaseUserDeleted, ThisForm);
+	ElsIf WriteParameters.Property("InfobaseUserDeleted") Then
+		Notify("InfobaseUserDeleted", WriteParameters.InfobaseUserDeleted, ThisObject);
 		
-	ElsIf WriteParameters.Property("NonexistentInfoBaseUserRelationCleared") Then
-		Notify("NonexistentInfoBaseUserRelationCleared", WriteParameters.NonexistentInfoBaseUserRelationCleared, ThisForm);
+	ElsIf WriteParameters.Property("MappingToNonExistentInfobaseUserCleared") Then
+		
+		Notify(
+			"MappingToNonExistentInfobaseUserCleared",
+			WriteParameters.MappingToNonExistentInfobaseUserCleared, ThisObject);
 	EndIf;
 	
 	If ValueIsFilled(NewExternalUserGroup) Then
 		NotifyChanged(NewExternalUserGroup);
-		Notify("Write_ExternalUserGroups", New Structure, NewExternalUserGroup);
+		
+		Notify(
+			"Write_ExternalUserGroups",
+			New Structure,
+			NewExternalUserGroup);
+		
 		NewExternalUserGroup = Undefined;
 	EndIf;
 	
 	SetPropertyEnabled();
 	
-	ExpandRoleSubsystems();
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 EndProcedure
-
+ 
 &AtServer
 Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 	
-	If InfoBaseAccessAllowed Then
+	ErrorText = "";
+	If UsersInternal.AuthorizationObjectUsed(
+	         Object.AuthorizationObject, Object.Ref, , , ErrorText) Then
 		
-		If Not Cancel And IsBlankString(InfoBaseUserName) Then
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The infobase user name is not filled.'"),
-				,
-				"InfoBaseUserName",
-				,
-				Cancel);
-		EndIf;
+		CommonUseClientServer.MessageToUser(
+			ErrorText, , "Object.AuthorizationObject", , Cancel);
+	EndIf;
+	
+	If InfobaseUserWriteRequired(ThisObject) Then
+		InfobaseUserDescription = InfobaseUserDescription();
+		InfobaseUserDescription.Insert("InfobaseUserID", Object.InfobaseUserID);
+		UsersInternal.CheckInfobaseUserDescription(InfobaseUserDescription, Cancel);
 		
-		If Not Cancel And InfoBaseUserPassword <> Undefined  And Password <> PasswordConfirmation Then
+		MessageText = "";
+		If UsersInternal.CreateFirstAdministratorRequired(, MessageText) Then
 			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The password and password confirmation do not match.'"),
-				,
-				"Password",
-				,
-				Cancel);
-		EndIf;
-		
-		If CreateFirstAdministratorRequired() Then
-			CommonUseClientServer.MessageToUser(
-				NStr("en = 'The first infobase user must have full rights but an external user cannot have them. You must create an ordinary user with administrative rights first.'"),
-				,
-				"InfoBaseAccessAllowed",
-				,
-				Cancel);
+				MessageText, , "CanLogOnToApplication", , Cancel);
 		EndIf;
 	EndIf;
 	
 EndProcedure
-
+ 
 &AtServer
 Procedure OnLoadDataFromSettingsAtServer(Settings)
 	
-	If Settings["ShowRoleSubsystems"] = False Then
-		ShowRoleSubsystems = False;
-		Items.RolesShowRoleSubsystems.Check = False;
-	Else
-		ShowRoleSubsystems = True;
-		Items.RolesShowRoleSubsystems.Check = True;
-	EndIf;
-	
-	HideFullAccessRole = True;
-	RefreshRoleTree();
+	ProcessRolesInterface("SetUpRoleInterfaceOnLoadSettings", Settings);
 	
 EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// FORM HEADER ITEM EVENT HANDLERS
-
+ 
+#EndRegion
+ 
+#Region FormHeaderItemEventHandlers
+ 
 &AtClient
 Procedure AuthorizationObjectOnChange(Item)
 	
-	AuthorizationObjectOnChangeAtClientAtServer(ThisForm, Object);
+	AuthorizationObjectOnChangeAtClientAtServer(ThisObject, Object);
 	
 EndProcedure
-
+ 
 &AtClient
-Procedure InfoBaseAccessAllowedOnChange(Item)
+Procedure NotValidOnChange(Item)
 	
-	If Not InfoBaseUserExists And InfoBaseAccessAllowed Then
-		InfoBaseUserName = GetInfoBaseUserShortName(CurrentAuthorizationObjectPresentation);
+	If Object.NotValid Then
+		CanLogOnToApplication = False;
+	Else
+		CanLogOnToApplication = CanLogOnToApplicationDirectChangeValue
+			And (InfobaseUserOpenIDAuthentication
+			   Or InfobaseUserStandardAuthentication);
 	EndIf;
 	
 	SetPropertyEnabled();
 	
 EndProcedure
-
+ 
+&AtClient
+Procedure CanLogOnToApplicationOnChange(Item)
+	
+	If Object.DeletionMark And CanLogOnToApplication Then
+		CanLogOnToApplication = False;
+		ShowMessageBox(,
+			NStr("en = 'To allow access to the infobase, remove the deletion mark from the external user.'"));
+		Return;
+	EndIf;
+	
+	UpdateLogonName(ThisObject);
+	
+	If CanLogOnToApplication
+	   And Not InfobaseUserOpenIDAuthentication
+	   And Not InfobaseUserStandardAuthentication Then
+	
+		InfobaseUserStandardAuthentication = True;
+	EndIf;
+	
+	SetPropertyEnabled();
+	
+	If Not AccessLevel.FullAccess
+	   And AccessLevel.ListManagement
+	   And Not CanLogOnToApplication Then
+		
+		ShowMessageBox(,
+			NStr("en = 'Once you save the changes, only administrator can allow logging on to the application.'"));
+	EndIf;
+	
+	CanLogOnToApplicationDirectChangeValue = CanLogOnToApplication;
+	
+EndProcedure
+ 
+&AtClient
+Procedure InfobaseUserNameOnChange(Item)
+	
+	SetPropertyEnabled();
+	
+EndProcedure
+ 
+&AtClient
+Procedure InfobaseUserStandardAuthenticationOnChange(Item)
+	
+	AuthenticationOnChange();
+	
+EndProcedure
+ 
 &AtClient
 Procedure PasswordOnChange(Item)
 	
-	InfoBaseUserPassword = Password;
+	SetPropertyEnabled();
+	
+	InfobaseUserPassword = Password;
 	
 EndProcedure
-
+ 
+&AtClient
+Procedure InfobaseUserCannotChangePasswordOnChange(Item)
+	
+	SetPropertyEnabled();
+	
+EndProcedure
+ 
+&AtClient
+Procedure InfobaseUserOpenIDAuthenticationOnChange(Item)
+	
+	AuthenticationOnChange();
+	
+EndProcedure
+ 
 &AtClient
 Procedure SetRolesDirectlyOnChange(Item)
 	
 	If Not Object.SetRolesDirectly Then
-		ReadInfoBaseUser(, True);
-		ExpandRoleSubsystems();
+		ReadInfobaseUserRoles();
+		UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	EndIf;
 	
 	SetPropertyEnabled();
 	
 EndProcedure
-
+ 
+&AtClient
+Procedure CommentStartChoice(Item, ChoiceData, StandardProcessing)
+	
+	CommonUseClient.ShowCommentEditingForm(
+		Item.EditText, ThisObject, "Object.Comment");
+	
+EndProcedure
+ 
+#EndRegion
+ 
+#Region RolesFormTableItemEventHandlers
+ 
 ////////////////////////////////////////////////////////////////////////////////
-// FORM TABLE EVENT HANDLERS OF Roles TABLE 
-
-////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions that provide the role interface
-
+//Role interface procedures and functions
+ 
+ 
 &AtClient
 Procedure RolesCheckOnChange(Item)
 	
 	If Items.Roles.CurrentData <> Undefined Then
-		UpdateRoleContent(Items.Roles.CurrentRow, Items.Roles.CurrentData.Check);
+		ProcessRolesInterface("UpdateRoleContent");
 	EndIf;
 	
 EndProcedure
-
+ 
+#EndRegion
+ 
+#Region FormCommandHandlers
+ 
 ////////////////////////////////////////////////////////////////////////////////
-// FORM COMMAND HANDLERS
-
-////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions that provide the role interface
-
+//Role interface procedures and functions
+ 
+ 
 &AtClient
 Procedure ShowSelectedRolesOnly(Command)
 	
-	ShowSelectedRolesOnly = Not ShowSelectedRolesOnly;
-	Items.RolesShowSelectedRolesOnly.Check = ShowSelectedRolesOnly;
-	
-	RefreshRoleTree();
-	ExpandRoleSubsystems();
+	ProcessRolesInterface("SelectedRolesOnly");
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 EndProcedure
-
+ 
 &AtClient
-Procedure ShowRoleSubsystems(Command)
+Procedure RoleGroupingBySubsystems(Command)
 	
-	ShowRoleSubsystems = Not ShowRoleSubsystems;
-	Items.RolesShowRoleSubsystems.Check = ShowRoleSubsystems;
-	
-	RefreshRoleTree();
-	ExpandRoleSubsystems();
+	ProcessRolesInterface("GroupBySubsystems");
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 EndProcedure
-
+ 
 &AtClient
-Procedure CheckAll(Command)
+Procedure EnableRoles(Command)
 	
-	UpdateRoleContent(Undefined, True);
-	If ShowSelectedRolesOnly Then
-		ExpandRoleSubsystems();
+	ProcessRolesInterface("UpdateRoleContent", "EnableAll");
+	
+	UsersInternalClient.ExpandRoleSubsystems(ThisObject, False);
+	
+EndProcedure
+ 
+&AtClient
+Procedure DisableRoles(Command)
+	
+	ProcessRolesInterface("UpdateRoleContent", "DisableAll");
+	
+EndProcedure
+ 
+#EndRegion
+ 
+#Region InternalProceduresAndFunctions
+ 
+&AtClientAtServerNoContext
+Procedure UpdateLogonName(Form, OnChangeDescription = False)
+	
+	Items  = Form.Items;
+	Object = Form.Object;
+	
+	If Form.InfobaseUserExists Then
+		Return;
+	EndIf;
+	
+	ShortName = UsersInternalClientServer.GetInfobaseUserShortName(
+		Form.CurrentAuthorizationObjectPresentation);
+	
+	If Items.NameMarkIncompleteSwitch.CurrentPage = Items.NameWithoutMarkIncomplete Then
+		If Form.InfobaseUserName = ShortName Then
+			Form.InfobaseUserName = "";
+		EndIf;
+	Else
+		
+		If OnChangeDescription
+		 Or Not ValueIsFilled(Form.InfobaseUserName) Then
+			
+			Form.InfobaseUserName = ShortName;
+		EndIf;
 	EndIf;
 	
 EndProcedure
-
+ 
 &AtClient
-Procedure UncheckAll(Command)
+Procedure AuthenticationOnChange()
 	
-	UpdateRoleContent(Undefined, False);
+	SetPropertyEnabled();
+	
+	If Not InfobaseUserOpenIDAuthentication
+	   And Not InfobaseUserStandardAuthentication Then
+	
+		CanLogOnToApplication = False;
+		
+	ElsIf Not CanLogOnToApplication Then
+		CanLogOnToApplication = CanLogOnToApplicationDirectChangeValue;
+	EndIf;
 	
 EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// INTERNAL PROCEDURES AND FUNCTIONS
-
+ 
 &AtServer
-Function CreateFirstAdministratorRequired()
-	
-	SetPrivilegedMode(True);
-	
-	Return InfoBaseUsers.GetUsers().Count() = 0;
-	
-EndFunction
-
-&AtServer
-Procedure DefineActionsOnForm()
+Procedure SetActionsOnForm()
 	
 	ActionsOnForm = New Structure;
-	ActionsOnForm.Insert("Roles",                  ""); // "", "View",    "Edit"
-	ActionsOnForm.Insert("InfoBaseUserProperties", ""); // "", "ViewAll", "EditAll", "EditOwn"
-	ActionsOnForm.Insert("ItemProperties",         ""); // "", "View",    "Edit"
 	
-	If Users.InfoBaseUserWithFullAccess() Or
-	     AccessRight("Insert", Metadata.Catalogs.Users) Then
-		// Administrator
-		ActionsOnForm.Roles                   = "Edit";
-		ActionsOnForm.InfoBaseUserProperties = "EditAll";
-		ActionsOnForm.ItemProperties       = "Edit";
-		
-	ElsIf IsInRole("AddEditExternalUsers") Then
-		// External user manager
-		ActionsOnForm.Roles                   = "";
-		ActionsOnForm.InfoBaseUserProperties = "EditAll";
-		ActionsOnForm.ItemProperties       = "View";
-		
-	ElsIf ValueIsFilled(ExternalUsers.CurrentExternalUser()) And
-	          Object.Ref = ExternalUsers.CurrentExternalUser() Then
-		// Own properties
-		ActionsOnForm.Roles                   = "";
-		ActionsOnForm.InfoBaseUserProperties = "EditOwn";
-		ActionsOnForm.ItemProperties       = "View";
-	Else
-		// External user reader
-		ActionsOnForm.Roles                   = "";
-		ActionsOnForm.InfoBaseUserProperties = "";
-		ActionsOnForm.ItemProperties       = "View";
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("Roles", "");
+	
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("InfobaseUserProperties", "");
+	
+	// "", "View", "Edit".
+	ActionsOnForm.Insert("ItemProperties", "View");
+	
+	If AccessLevel.ChangeCurrent Or AccessLevel.ListManagement Then
+		ActionsOnForm.InfobaseUserProperties = "Edit";
 	EndIf;
 	
-	If Not ValueIsFilled(Object.Ref) And Not ValueIsFilled(Object.AuthorizationObject) Then
-		ActionsOnForm.ItemProperties       = "Edit";
+	If AccessLevel.ListManagement Then
+		ActionsOnForm.ItemProperties = "Edit";
 	EndIf;
+	
+	If AccessLevel.FullAccess Then
+		ActionsOnForm.Roles = "Edit";
+	EndIf;
+	
+	If Not ValueIsFilled(Object.Ref)
+	   And Not ValueIsFilled(Object.AuthorizationObject) Then
+		
+		ActionsOnForm.ItemProperties = "Edit";
+	EndIf;
+	
+	EventHandlers = CommonUse.InternalEventHandlers(
+		"StandardSubsystems.Users\ActionsInFormOnDefine");
+	
+	For Each Handler In EventHandlers Do
+		Handler.Module.ActionsInFormOnDefine(Object.Ref, ActionsOnForm);
+	EndDo;
 	
 	UsersOverridable.ChangeActionsOnForm(Object.Ref, ActionsOnForm);
 	
-	// Verifying action names on the form
+	// Checking action names in the form.
 	If Find(", View, Edit,", ", " + ActionsOnForm.Roles + ",") = 0 Then
 		ActionsOnForm.Roles = "";
-	ElsIf UsersOverridable.RoleEditProhibition() Then
+		
+	ElsIf ActionsOnForm.Roles = "Edit"
+	        And UsersInternal.RoleEditProhibition() Then
+		
 		ActionsOnForm.Roles = "View";
 	EndIf;
-	If Find(", ViewAll, EditAll, EditOwn,", ", " + ActionsOnForm.InfoBaseUserProperties + ",") = 0 Then
-		ActionsOnForm.InfoBaseUserProperties = "";
+	
+	If Find(", View, ViewAll, Edit, EditOwn, EditAll,",
+	           ", " + ActionsOnForm.InfobaseUserProperties + ",") = 0 Then
+		
+		ActionsOnForm.InfobaseUserProperties = "";
+		
+	Else // Backward compatibility support.
+		If Find(ActionsOnForm.InfobaseUserProperties, "View") Then
+			ActionsOnForm.InfobaseUserProperties = "View";
+			
+		ElsIf Find(ActionsOnForm.InfobaseUserProperties, "Edit") Then
+			ActionsOnForm.InfobaseUserProperties = "Edit";
+		EndIf;
 	EndIf;
+	
 	If Find(", View, Edit,", ", " + ActionsOnForm.ItemProperties + ",") = 0 Then
 		ActionsOnForm.ItemProperties = "";
 	EndIf;
 	
 EndProcedure
-
-&AtClientAtServerNoContext
-Procedure AuthorizationObjectOnChangeAtClientAtServer(Context, Object)
+ 
+&AtServer
+Function InfobaseUserDescription()
 	
-	If Object.AuthorizationObject = Undefined Then
-		Object.AuthorizationObject = Context.AuthorizationObjectType;
+	If AccessLevel.ListManagement
+	   And ActionsOnForm.ItemProperties = "Edit" Then
+		
+		InfobaseUserFullName = Object.Description;
 	EndIf;
 	
-	If Context.CurrentAuthorizationObjectPresentation <> String(Object.AuthorizationObject) Then
+	If AccessLevel.FullAdministrator
+	 Or AccessLevel.FullAccess Then
 		
-		Context.CurrentAuthorizationObjectPresentation = String(Object.AuthorizationObject);
+		Result = Users.NewInfobaseUserInfo();
+		Users.CopyInfobaseUserProperties(
+			Result,
+			ThisObject,
+			,
+			"UUID, Roles",
+			"InfobaseUser");
 		
-		If Not Context.InfoBaseUserExists And Context.InfoBaseAccessAllowed Then
-			Context.InfoBaseUserName = GetInfoBaseUserShortName(Context.CurrentAuthorizationObjectPresentation);
+		Result.Insert("CanLogOnToApplication", CanLogOnToApplication);
+		
+	Else
+		Result = New Structure;
+		
+		If AccessLevel.ChangeCurrent Then
+			Result.Insert("Password", InfobaseUserPassword);
+			Result.Insert("Language", InfobaseUserLanguage);
 		EndIf;
 		
+		If AccessLevel.ListManagement Then
+			Result.Insert("CanLogOnToApplication",  CanLogOnToApplication);
+			Result.Insert("CannotChangePassword",   InfobaseUserCannotChangePassword);
+			Result.Insert("Language",               InfobaseUserLanguage);
+			Result.Insert("FullName",               InfobaseUserFullName);
+		EndIf;
+		
+		If AccessLevel.LogonSettings Then
+			Result.Insert("StandardAuthentication", InfobaseUserStandardAuthentication);
+			Result.Insert("Name",                   InfobaseUserName);
+			Result.Insert("Password",               InfobaseUserPassword);
+			Result.Insert("OpenIDAuthentication",   InfobaseUserOpenIDAuthentication);
+		EndIf;
+	EndIf;
+	Result.Insert("PasswordConfirmation", PasswordConfirmation);
+	
+	If AccessLevel.LogonSettings
+	   And Not UsersInternal.RoleEditProhibition()
+	   And Object.SetRolesDirectly Then
+		
+		CurrentRoles = InfobaseUserRoles.Unload(, "Role").UnloadColumn("Role");
+		Result.Insert("Roles", CurrentRoles);
+	EndIf;
+	
+	If AccessLevel.ListManagement Then
+		Result.Insert("ShowInList", False);
+		Result.Insert("RunMode", "Auto");
+	EndIf;
+	
+	If AccessLevel.FullAccess Then
+		Result.Insert("OSAuthentication", False);
+		Result.Insert("OSUser", "");
+	EndIf;
+	
+	Return Result;
+	
+EndFunction
+ 
+&AtClientAtServerNoContext
+Procedure AuthorizationObjectOnChangeAtClientAtServer(Form, Object)
+	
+	If Object.AuthorizationObject = Undefined Then
+		Object.AuthorizationObject = Form.AuthorizationObjectType;
+	EndIf;
+	
+	If Form.CurrentAuthorizationObjectPresentation <> String(Object.AuthorizationObject) Then
+		Form.CurrentAuthorizationObjectPresentation = String(Object.AuthorizationObject);
+		UpdateLogonName(Form, True);
 	EndIf;
 	
 EndProcedure
-
-////////////////////////////////////////////////////////////////////////////////
-// Reading, writing, deleting, creating an infobase user short name, checking for inconsistencies.
-
+ 
 &AtServer
-Procedure ReadInfoBaseUser(OnCopyItem = False, RolesOnly = False)
+Procedure UpdateDisplayedUserType()
+	
+	If Object.AuthorizationObject <> Undefined Then
+		Items.AuthorizationObject.Title = Metadata.FindByType(TypeOf(Object.AuthorizationObject)).ObjectPresentation;
+	EndIf;
+	
+EndProcedure
+ 
+&AtClient
+Procedure AfterAnswerQuestionAboutWritingWithEmptyRoleList(Answer, WriteParameters) Export
+	
+	If Answer = DialogReturnCode.Yes Then
+		WriteParameters.Insert("WithEmptyRoleList");
+		Write(WriteParameters);
+	EndIf;
+	
+EndProcedure
+ 
+////////////////////////////////////////////////////////////////////////////////
+// Processing infobase user.
+ 
+&AtServer
+Procedure ReadInfobaseUserRoles()
+	
+	InfobaseUserProperties = Undefined;
+	
+	Users.ReadInfobaseUser(
+		Object.InfobaseUserID, InfobaseUserProperties);
+	
+	ProcessRolesInterface("FillRoles", InfobaseUserProperties.Roles);
+	
+EndProcedure
+ 
+&AtServer
+Function InitialInfobaseUserDescription()
+	
+	InfobaseUserDescription = Users.NewInfobaseUserInfo();
+	
+	If Not ValueIsFilled(Object.Ref) Then
+		InfobaseUserDescription.ShowInList = False;
+		InfobaseUserDescription.StandardAuthentication = True;
+	EndIf;
+	InfobaseUserDescription.Roles = New Array;
+	
+	Return InfobaseUserDescription;
+	
+EndFunction
+ 
+&AtServer
+Procedure ReadInfobaseUser(OnCopyItem = False)
 	
 	SetPrivilegedMode(True);
-	
-	ReadRoles = Undefined;
-	
-	If RolesOnly Then
-		Users.ReadInfoBaseUser(Object.InfoBaseUserID, , ReadRoles);
-		FillRoles(ReadRoles);
-		Return;
-	EndIf;
 	
 	Password              = "";
 	PasswordConfirmation  = "";
 	ReadProperties        = Undefined;
-	OldInfoBaseUserID     = Undefined;
-	InfoBaseUserExists    = False;
-	InfoBaseAccessAllowed = False;
-	
-	// Filling initial InfoBaseUser property values for the user.
-	Users.ReadInfoBaseUser(Undefined, ReadProperties, ReadRoles);
-	FillPropertyValues(ThisForm, ReadProperties);
+	InfobaseUserDescription   = InitialInfobaseUserDescription();
+	InfobaseUserExists    = False;
+	InfobaseUserMain      = False;
+	CanLogOnToApplication = False;
+	CanLogOnToApplicationDirectChangeValue = False;
 	
 	If OnCopyItem Then
 		
-		If Users.ReadInfoBaseUser(Parameters.CopyingValue.InfoBaseUserID, ReadProperties, ReadRoles) Then
-			// Setting a future relation for a new user.
-			// because the copied one has a relation with InfoBaseUser,
-			InfoBaseAccessAllowed = True;
-			// Copping properties and roles of InfoBaseUser,
-			// because InfoBaseUser of the copied user has been read.
-			FillPropertyValues(ThisForm,
-			                         ReadProperties,
-			                         "InfoBaseUserCannotChangePassword");
+		If Users.ReadInfobaseUser(
+		         Parameters.CopyingValue.InfobaseUserID,
+		         ReadProperties) Then
+			
+			// Mapping infobase user to user from catalog.
+			If Users.CanLogOnToApplication(ReadProperties) Then
+				CanLogOnToApplication = True;
+				CanLogOnToApplicationDirectChangeValue = True;
+			EndIf;
+			
+			// Copying infobase user properties and roles.
+			FillPropertyValues(
+				InfobaseUserDescription,
+				ReadProperties,
+				"CannotChangePassword, RunMode" + ?(Not Items.InfobaseUserLanguage.Visible, "", ", Language") + ?(UsersInternal.RoleEditProhibition(), "", ", Roles"));
 		EndIf;
-		Object.InfoBaseUserID = Undefined;
+		Object.InfobaseUserID = Undefined;
 	Else
-		If Users.ReadInfoBaseUser(Object.InfoBaseUserID, ReadProperties, ReadRoles) Then
+		If Users.ReadInfobaseUser(
+		       Object.InfobaseUserID, ReadProperties) Then
 		
-			InfoBaseUserExists    = True;
-			InfoBaseAccessAllowed = True;
-			OldInfoBaseUserID     = Object.InfoBaseUserID;
+			InfobaseUserExists = True;
+			InfobaseUserMain = True;
 			
-			FillPropertyValues(ThisForm,
-			                   ReadProperties,
-			                   "InfoBaseUserName,
-			                   |InfoBaseUserCannotChangePassword");
+		ElsIf Parameters.Property("InfobaseUserID")
+		        And ValueIsFilled(Parameters.InfobaseUserID) Then
 			
-			If ReadProperties.InfoBaseUserPasswordIsSet Then
+			Object.InfobaseUserID = Parameters.InfobaseUserID;
+			
+			If Users.ReadInfobaseUser(
+			       Object.InfobaseUserID, ReadProperties) Then
+				
+				InfobaseUserExists = True;
+				If Object.Description <> ReadProperties.FullName Then
+					ReadProperties.FullName = Object.Description;
+					Modified = True;
+				EndIf;
+				If ReadProperties.OSAuthentication Then
+					ReadProperties.OSAuthentication = False;
+					Modified = True;
+				EndIf;
+				If ValueIsFilled(ReadProperties.OSUser) Then
+					ReadProperties.OSUser = "";
+					Modified = True;
+				EndIf;
+			EndIf;
+		EndIf;
+		
+		If InfobaseUserExists Then
+			
+			If Not Items.InfobaseUserLanguage.Visible Then
+				ReadProperties.Language = InfobaseUserDescription.Language;
+			EndIf;
+			
+			If Users.CanLogOnToApplication(ReadProperties) Then
+				CanLogOnToApplication = True;
+				CanLogOnToApplicationDirectChangeValue = True;
+			EndIf;
+			
+			FillPropertyValues(
+				InfobaseUserDescription,
+				ReadProperties,
+				"Name, FullName, OpenIDAuthentication, StandardAuthentication, ShowInList, CannotChangePassword, OSAuthentication, OSUser, RunMode, RunMode" + ?(Not Items.InfobaseUserLanguage.Visible, "", ", Language") + ?(UsersInternal.RoleEditProhibition(), "", ", Roles"));
+			
+			If ReadProperties.PasswordIsSet Then
 				Password             = "**********";
 				PasswordConfirmation = "**********";
 			EndIf;
 		EndIf;
 	EndIf;
 	
-	FillLanguagePresentation(ReadProperties.InfoBaseUserLanguage);
-	FillRoles(ReadRoles);
+	Users.CopyInfobaseUserProperties(
+		ThisObject,
+		InfobaseUserDescription,
+		,
+		"UUID, Roles",
+		"InfobaseUser");
+	
+	If InfobaseUserMain And Not CanLogOnToApplication Then
+		StoredProperties = UsersInternal.InfobaseUserStoredProperties(Object.Ref);
+		InfobaseUserOpenIDAuthentication   = StoredProperties.OpenIDAuthentication;
+		InfobaseUserStandardAuthentication = StoredProperties.StandardAuthentication;
+	EndIf;
+	
+	ProcessRolesInterface("FillRoles", InfobaseUserDescription.Roles);
+	
+	CanLogOnToApplicationOnRead = CanLogOnToApplication;
 	
 EndProcedure
-
+ 
 &AtServer
-Procedure WriteIBUser(CurrentObject, Cancel)
+Procedure FindUserAndInfobaseUserInconsistencies(WriteParameters = Undefined)
 	
-	// Restoring actions on the form if they have been changed on a client
-	DefineActionsOnForm();
+	// Checking whether the FullName infobase user property matches the Description external user attribute
+  // Also checking the default property values.
 	
-	If Not (ActionsOnForm.InfoBaseUserProperties = "EditAll" Or
-	         ActionsOnForm.InfoBaseUserProperties = "EditOwn")Then
-		Return;
-	EndIf;
+	ShowMismatch = True;
+	ShowDifferenceResolvingCommands = False;
 	
-	SetPrivilegedMode(True);
-	
-	InitialProperties = Undefined;
-	NewProperties     = Undefined;
-	NewRoles          = Undefined;
-	
-	// Reading old properties and filling InfobaseUser and User initial properties.
-	Users.ReadInfoBaseUser(CurrentObject.InfoBaseUserID, NewProperties);
-	NewProperties.InfoBaseUserFullName                 = String(CurrentObject.AuthorizationObject);
-	NewProperties.InfoBaseUserStandardAuthentication = True;
-	
-	Users.ReadInfoBaseUser(Undefined, InitialProperties);
-	FillPropertyValues(NewProperties,
-	                         InitialProperties,
-	                         "InfoBaseUserShowInList,
-	                         |InfoBaseUserOSAuthentication,
-	                         |InfoBaseUserDefaultInterface,
-	                         |InfoBaseUserRunMode");
-	
-	If ActionsOnForm.InfoBaseUserProperties = "EditAll" Then
-		FillPropertyValues(NewProperties,
-		                         ThisForm,
-		                         "InfoBaseUserName,
-		                         |InfoBaseUserPassword,
-		                         |InfoBaseUserCannotChangePassword");
-	Else
-		FillPropertyValues(NewProperties,
-		                         ThisForm,
-		                         "InfoBaseUserName,
-		                         |InfoBaseUserPassword");
-	EndIf;
-	NewProperties.InfoBaseUserLanguage = GetSelectedLanguage();
+	If Not InfobaseUserExists Then
+		ShowMismatch = False;
 		
-	If ActionsOnForm.Roles = "Edit" And Object.SetRolesDirectly Then
-		NewRoles = InfoBaseUserRoles.Unload(, "Role").UnloadColumn("Role");
-	EndIf;
-	
-	// Attempting to write the infobase user
-	ErrorDescription = "";
-	If Users.WriteIBUser(CurrentObject.InfoBaseUserID, NewProperties, NewRoles, Not InfoBaseUserExists, ErrorDescription) Then
-		If Not InfoBaseUserExists Then
-			CurrentObject.InfoBaseUserID = NewProperties.InfoBaseUserUUID;
-			InfoBaseUserExists = True;
+	ElsIf Not ValueIsFilled(Object.Ref) Then
+		InfobaseUserFullName = Object.Description;
+		ShowMismatch = False;
+		
+	ElsIf AccessLevel.ListManagement Then
+		
+		PropertiesClarification = New Array;
+		HasDifferencesDisposableWithoutAdministrator = False;
+		
+		If InfobaseUserOSAuthentication <> False Then
+			PropertiesClarification.Add(NStr("en = 'OS authentication (enabled)'"));
 		EndIf;
-	Else
-		Cancel = True;
-		CommonUseClientServer.MessageToUser(ErrorDescription);
-	EndIf;
-	
-EndProcedure
-
-&AtServer
-Function DeleteInfoBaseUser(Cancel)
-	
-	SetPrivilegedMode(True);
-	
-	ErrorDescription = "";
-	If Not Users.DeleteInfoBaseUser(OldInfoBaseUserID, ErrorDescription) Then
-		CommonUseClientServer.MessageToUser(ErrorDescription, , , , Cancel);
-	EndIf;
-	
-EndFunction
-
-&AtClientAtServerNoContext
-Function GetInfoBaseUserShortName(Val FullName)
-	
-	ShortName = "";
-	FirstLoopIteration = True;
-	
-	While True Do
-		If Not FirstLoopIteration Then
-			ShortName = ShortName + Upper(Left(FullName, 1));
+		
+		If ValueIsFilled(PropertiesClarification) Then
+			ShowDifferenceResolvingCommands =
+				  AccessLevel.LogonSettings
+				And ActionsOnForm.InfobaseUserProperties = "Edit";
 		EndIf;
-		SpacePosition = Find(FullName, " ");
-		If SpacePosition = 0 Then
-			If FirstLoopIteration Then
-				ShortName = FullName;
+		
+		If InfobaseUserFullName <> Object.Description Then
+			HasDifferencesDisposableWithoutAdministrator = True;
+			
+			FullNameClarification = StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'Full name: ""%1""'"), InfobaseUserFullName);
+			
+			PropertiesClarification.Insert(0, StringFunctionsClientServer.SubstituteParametersInString(
+				NStr("en = 'Full name: ""%1""'"), InfobaseUserFullName));
+		EndIf;
+		
+		If InfobaseUserOSUser <> "" Then
+			PropertiesClarification.Add(NStr("en = 'OS user (specified)'"));
+		EndIf;
+		
+		If InfobaseUserShowInList Then
+			HasDifferencesDisposableWithoutAdministrator = True;
+			PropertiesClarification.Add(NStr("en = 'Show in selection list (enabled)'"));
+		EndIf;
+		
+		If InfobaseUserRunMode <> "Auto" Then
+			HasDifferencesDisposableWithoutAdministrator = True;
+			PropertiesClarification.Add(NStr("en = 'Run mode (not Auto)'"));
+		EndIf;
+		
+		If PropertiesClarification.Count() > 0 Then
+			RowPropertiesClarification = "";
+			CurrentRow = "";
+			For Each PropertyClarification In PropertiesClarification Do
+				If StrLen(CurrentRow + PropertyClarification) > 90 Then
+					RowPropertiesClarification = RowPropertiesClarification + TrimR(CurrentRow) + ", " + Chars.LF;
+					CurrentRow = "";
+				EndIf;
+				CurrentRow = CurrentRow + ?(ValueIsFilled(CurrentRow), ", ", "") + PropertyClarification;
+			EndDo;
+			If ValueIsFilled(CurrentRow) Then
+				RowPropertiesClarification = RowPropertiesClarification + CurrentRow;
 			EndIf;
-			Break;
+			Items.PropertiesMismatchNote.Title =
+				StringFunctionsClientServer.SubstituteParametersInString(
+					NStr("en = 'The following infobase user properties do not match the properties specified in the form:
+					           |%1.'"), RowPropertiesClarification)
+				+ Chars.LF
+				+ ?(ShowDifferenceResolvingCommands Or HasDifferencesDisposableWithoutAdministrator,
+					NStr("en = 'To overwrite the properties, click Save.'"),
+					NStr("en = 'If you want to overwrite the properties, contact your system administrator.'"));
+		Else
+			ShowMismatch = False;
 		EndIf;
-		
-		If FirstLoopIteration Then
-			ShortName = Left(FullName, SpacePosition - 1);
-		EndIf;
-		
-		FullName = Right(FullName, StrLen(FullName) - SpacePosition);
-		
-		FirstLoopIteration = False;
-	EndDo;
+	Else
+		ShowMismatch = False;
+	EndIf;
 	
-	ShortName = StrReplace(ShortName, " ", "");
+	Items.PropertiesMismatchProcessing.Visible = ShowMismatch;
 	
-	Return ShortName;
+	// Checking whether an infobase user that does not exist is mapped to a user from the catalog.
+	HasNewMappingToNonExistentInfobaseUser =
+		Not InfobaseUserExists And ValueIsFilled(Object.InfobaseUserID);
 	
-EndFunction
-
-&AtServer
-Procedure FindUserAndInfoBaseUserInconsistencies(WriteParameters = Undefined)
-	
-	//** Defining relations with an nonexistent infobase user
-	HasNewRelationToNonExistentInfoBaseUser = Not InfoBaseUserExists And ValueIsFilled(Object.InfoBaseUserID);
 	If WriteParameters <> Undefined
-	   And HasRelationToNonexistentInfoBaseUser
-	   And Not HasNewRelationToNonExistentInfoBaseUser Then
+	   And HasMappingToNonExistentInfobaseUser
+	   And Not HasNewMappingToNonExistentInfobaseUser Then
 		
-		WriteParameters.Insert("NonexistentInfoBaseUserRelationCleared", Object.Ref);
+		WriteParameters.Insert("MappingToNonExistentInfobaseUserCleared", Object.Ref);
 	EndIf;
-	HasRelationToNonexistentInfoBaseUser = HasNewRelationToNonExistentInfoBaseUser;
+	HasMappingToNonExistentInfobaseUser = HasNewMappingToNonExistentInfobaseUser;
 	
-	If ActionsOnForm.InfoBaseUserProperties <> "EditAll" Then
-		// The relation cannot be changed
-		Items.RelationMismatchProcessing.Visible = False;
+	If AccessLevel.ListManagement Then
+		Items.MappingMismatchProcessing.Visible = HasMappingToNonExistentInfobaseUser;
 	Else
-		Items.RelationMismatchProcessing.Visible = HasRelationToNonexistentInfoBaseUser;
+		// Mapping cannot be changed.
+		Items.MappingMismatchProcessing.Visible = False;
 	EndIf;
 	
 EndProcedure
-
+ 
 ////////////////////////////////////////////////////////////////////////////////
-// Initial filling, fill checking, property availability.
-
+// Initial filling, fill check, availability of properties
+ 
 &AtServer
-Procedure FillLanguagePresentation(Language)
-	
-	LanguagePresentation = "";
-	
-	For Each LanguageMetadata In Metadata.Languages Do
-	
-		If LanguageMetadata.Name = Language Then
-			LanguagePresentation = LanguageMetadata.Synonym;
-			Break;
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Function GetSelectedLanguage()
-	
-	For Each LanguageMetadata In Metadata.Languages Do
-	
-		If LanguageMetadata.Synonym = LanguagePresentation Then
-			Return LanguageMetadata.Name;
-		EndIf;
-	EndDo;
-	
-	Return "";
-	
-EndFunction
-
-&AtServer
-Procedure FillRoles(ReadRoles)
-	
-	InfoBaseUserRoles.Clear();
-	
-	For Each Role In ReadRoles Do
-		InfoBaseUserRoles.Add().Role = Role;
-	EndDo;
-	
-	If ShowSelectedRolesOnly Then
-		RefreshRoleTree();
-	Else
-		RefreshSelectedRoleMarks(Roles.GetItems());
-	EndIf;
-	
-EndProcedure
-
-&AtClient
 Procedure SetPropertyEnabled()
 	
-	Items.AuthorizationObject.ReadOnly                  = ActionsOnForm.ItemProperties       <> "Edit" Or
-	                                                      IsAuthorizationObjectSetOnOpen Or
-	                                                      ValueIsFilled(Object.Ref) And
-	                                                      ValueIsFilled(Object.AuthorizationObject);
-	Items.InfoBaseAccessAllowed.ReadOnly                = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
-	Items.InfoBaseUserProperties.ReadOnly               = ActionsOnForm.InfoBaseUserProperties =  "ViewAll";
-	Items.Password.ReadOnly                             = InfoBaseUserCannotChangePassword And Not FullAccessUserAuthorized;
-	Items.PasswordConfirmation.ReadOnly                 = InfoBaseUserCannotChangePassword And Not FullAccessUserAuthorized;
-	Items.InfoBaseUserName.ReadOnly                     = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
-	Items.InfoBaseUserCannotChangePassword.ReadOnly = ActionsOnForm.InfoBaseUserProperties <> "EditAll";
+	// Specify whether making changes is allowed.
+	Items.AuthorizationObject.ReadOnly
+		=   ActionsOnForm.ItemProperties <> "Edit"
+		Or AuthorizationObjectSetOnOpen
+		Or   ValueIsFilled(Object.Ref)
+		    And ValueIsFilled(Object.AuthorizationObject);
 	
-	SetRolesReadOnly(RoleEditProhibition Or ActionsOnForm.Roles <> "Edit" Or Not Object.SetRolesDirectly);
+	Items.NotValid.ReadOnly =
+		Not (ActionsOnForm.ItemProperties = "Edit" And AccessLevel.ListManagement);
 	
-	Items.MainProperties.Enabled              = InfoBaseAccessAllowed;
-	Items.EditOrViewRoles.Enabled             = InfoBaseAccessAllowed;
-	Items.InfoBaseUserName.AutoMarkIncomplete = InfoBaseAccessAllowed;
+	Items.MainProperties.ReadOnly =
+		Not (  ActionsOnForm.InfobaseUserProperties = "Edit"
+		    And (AccessLevel.ListManagement Or AccessLevel.ChangeCurrent));
 	
-	Items.InfoBaseAccessAllowed.Enabled = Not Object.NotValid;
+	Items.CanLogOnToApplication.ReadOnly =
+		Not (  Items.MainProperties.ReadOnly = False
+		    And (    AccessLevel.FullAccess
+		       Or AccessLevel.ListManagement And CanLogOnToApplicationOnRead));
+	
+	Items.InfobaseUserName1.ReadOnly                  = Not AccessLevel.LogonSettings;
+	Items.InfobaseUserName2.ReadOnly                  = Not AccessLevel.LogonSettings;
+	Items.InfobaseUserStandardAuthentication.ReadOnly = Not AccessLevel.LogonSettings;
+	Items.InfobaseUserOpenIDAuthentication.ReadOnly   = Not AccessLevel.LogonSettings;
+	Items.SetRolesDirectly.ReadOnly                   = Not AccessLevel.LogonSettings;
+	
+	Items.InfobaseUserCannotChangePassword.ReadOnly = Not AccessLevel.ListManagement;
+	
+	Items.Password.ReadOnly =
+		Not (    AccessLevel.LogonSettings
+		    Or AccessLevel.ChangeCurrent
+		      And Not InfobaseUserCannotChangePassword);
+	
+	Items.PasswordConfirmation.ReadOnly = Items.Password.ReadOnly;
+	
+	ProcessRolesInterface(
+		"SetRolesReadOnly",
+		    RoleEditProhibition
+		Or ActionsOnForm.Roles <> "Edit"
+		Or Not Object.SetRolesDirectly
+		Or Not AccessLevel.LogonSettings);
+	
+	Items.Comment.ReadOnly =
+		Not (ActionsOnForm.ItemProperties = "Edit" And AccessLevel.ListManagement);
+	
+	// Specifying whether filling is necessary.
+	If InfobaseUserWriteRequired(ThisObject, False) Then
+		NewPage = Items.NameWithMarkIncomplete;
+	Else
+		NewPage = Items.NameWithoutMarkIncomplete;
+	EndIf;
+	
+	If Items.NameMarkIncompleteSwitch.CurrentPage <> NewPage Then
+		Items.NameMarkIncompleteSwitch.CurrentPage = NewPage;
+	EndIf;
+	UpdateLogonName(ThisObject);
+	
+	// Specifying whether related items are available.
+	Items.CanLogOnToApplication.Enabled = Not Object.NotValid;
+	Items.MainProperties.Enabled        = Not Object.NotValid;
+	Items.EditOrViewRoles.Enabled       = Not Object.NotValid;
+	
+	Items.Password.Enabled              = InfobaseUserStandardAuthentication;
+	Items.PasswordConfirmation.Enabled  = InfobaseUserStandardAuthentication;
+	
+	Items.InfobaseUserCannotChangePassword.Enabled
+		= InfobaseUserStandardAuthentication;
 	
 EndProcedure
-
+ 
+&AtClientAtServerNoContext
+Function InfobaseUserWriteRequired(Form, UseStandartName = True)
+	
+	If Form.ActionsOnForm.InfobaseUserProperties <> "Edit" Then
+		Return False;
+	EndIf;
+	
+	Template = Form.InitialInfobaseUserDescription;
+	
+	CurrentName = "";
+	If Not UseStandartName Then
+		ShortName = UsersInternalClientServer.GetInfobaseUserShortName(
+			Form.CurrentAuthorizationObjectPresentation);
+		
+		If Form.InfobaseUserName = ShortName Then
+			CurrentName = ShortName;
+		EndIf;
+	EndIf;
+	
+	If Form.InfobaseUserExists
+	 Or Form.CanLogOnToApplication
+	 Or Form.InfobaseUserName                   <> CurrentName
+	 Or Form.InfobaseUserStandardAuthentication <> Template.StandardAuthentication
+	 Or Form.InfobaseUserCannotChangePassword   <> Template.CannotChangePassword
+	 Or Form.Password <> ""
+	 Or Form.PasswordConfirmation <> ""
+	 Or Form.InfobaseUserOpenIDAuthentication <> Template.OpenIDAuthentication
+	 Or Form.Language                         <> Template.Language
+	 Or Form.InfobaseUserRoles.Count() <> 0 Then
+		
+		Return True;
+	EndIf;
+	
+	Return False;
+	
+EndFunction
+ 
 ////////////////////////////////////////////////////////////////////////////////
-// Procedures and functions to provide the role interface.
-
+// Role interface procedures and functions.
+ 
 &AtServer
-Function RoleCollection(ValueTableForReading = False)
+Procedure ProcessRolesInterface(Action, MainParameter = Undefined)
 	
-	If ValueTableForReading Then
-		Return FormAttributeToValue("InfoBaseUserRoles");
-	EndIf;
+	ActionParameters = New Structure;
+	ActionParameters.Insert("MainParameter",      MainParameter);
+	ActionParameters.Insert("Form",               ThisObject);
+	ActionParameters.Insert("RoleCollection",     InfobaseUserRoles);
+	ActionParameters.Insert("UserType",           Enums.UserTypes.ExternalUser);
+	ActionParameters.Insert("HideFullAccessRole", True);
 	
-	Return InfoBaseUserRoles;
-	
-EndFunction
-
-&AtClient
-Procedure SetRolesReadOnly(Val RolesReadOnly = Undefined, Val AllowViewSelectedOnly = False)
-	
-	If RolesReadOnly <> Undefined Then
-		Items.Roles.ReadOnly          =     RolesReadOnly;
-		Items.RolesCheckAll.Enabled   = Not RolesReadOnly;
-		Items.RolesUncheckAll.Enabled = Not RolesReadOnly;
-	EndIf;
-	
-	If AllowViewSelectedOnly Then
-		Items.RolesShowSelectedRolesOnly.Enabled = False;
-	EndIf;
+	UsersInternal.ProcessRolesInterface(Action, ActionParameters);
 	
 EndProcedure
-
-
-&AtClient
-Procedure ExpandRoleSubsystems(Collection = Undefined);
-	
-	If Collection = Undefined Then
-		Collection = Roles.GetItems();
-	EndIf;
-	
-	// Expanding all roles
-	For Each Row In Collection Do
-		Items.Roles.Expand(Row.GetID());
-		If Not Row.IsRole Then
-			ExpandRoleSubsystems(Row.GetItems());
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Procedure RefreshRoleTree()
-	
-	If Not Items.RolesShowSelectedRolesOnly.Enabled Then
-		Items.RolesShowSelectedRolesOnly.Check = True;
-		ShowSelectedRolesOnly = True;
-	EndIf;
-	
-	// Storing the current row
-	CurrentSubsystem = "";
-	CurrentRole      = "";
-	//
-	If Items.Roles.CurrentRow <> Undefined Then
-		CurrentData = Roles.FindByID(Items.Roles.CurrentRow);
-		If CurrentData.IsRole Then
-			CurrentSubsystem = ?(CurrentData.GetParent() = Undefined, "", CurrentData.GetParent().Name);
-			CurrentRole      = CurrentData.Name;
-		Else
-			CurrentSubsystem = CurrentData.Name;
-			CurrentRole      = "";
-		EndIf;
-	EndIf;
-	
-	UserType = Enums.UserTypes.ExternalUser;
-	RoleTree = UsersServerCached.RoleTree(ShowRoleSubsystems, UserType).Copy();
-	RoleTree.Columns.Add("Check",       New TypeDescription("Boolean"));
-	RoleTree.Columns.Add("PictureNumber", New TypeDescription("Number"));
-	PrepareRoleTree(RoleTree.Rows, HideFullAccessRole, ShowSelectedRolesOnly);
-	
-	ValueToFormAttribute(RoleTree, "Roles");
-	
-	Items.Roles.Representation = ?(RoleTree.Rows.Find(False, "IsRole") = Undefined, TableRepresentation.List, TableRepresentation.Tree);
-	
-	// Restoring the current row
-	FoundRows = RoleTree.Rows.FindRows(New Structure("IsRole, Name", False, CurrentSubsystem), True);
-	If FoundRows.Count() <> 0 Then
-		SubsystemDetails = FoundRows[0];
-		SubsystemIndex = ?(SubsystemDetails.Parent = Undefined, RoleTree.Rows, SubsystemDetails.Parent.Rows).IndexOf(SubsystemDetails);
-		SubsystemRow = FormDataTreeItemCollection(Roles, SubsystemDetails).Get(SubsystemIndex);
-		If ValueIsFilled(CurrentRole) Then
-			FoundRows = SubsystemDetails.Rows.FindRows(New Structure("IsRole, Name", True, CurrentRole));
-			If FoundRows.Count() <> 0 Then
-				RoleDetails = FoundRows[0];
-				Items.Roles.CurrentRow = SubsystemRow.GetItems().Get(SubsystemDetails.Rows.IndexOf(RoleDetails)).GetID();
-			Else
-				Items.Roles.CurrentRow = SubsystemRow.GetID();
-			EndIf;
-		Else
-			Items.Roles.CurrentRow = SubsystemRow.GetID();
-		EndIf;
-	Else
-		FoundRows = RoleTree.Rows.FindRows(New Structure("IsRole, Name", True, CurrentRole), True);
-		If FoundRows.Count() <> 0 Then
-			RoleDetails = FoundRows[0];
-			RoleIndex = ?(RoleDetails.Parent = Undefined, RoleTree.Rows, RoleDetails.Parent.Rows).IndexOf(RoleDetails);
-			RoleRow = FormDataTreeItemCollection(Roles, RoleDetails).Get(RoleIndex);
-			Items.Roles.CurrentRow = RoleRow.GetID();
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
-&AtServer
-Procedure PrepareRoleTree(Val Collection, Val HideFullAccessRole, Val ShowSelectedRolesOnly)
-	
-	Index = Collection.Count()-1;
-	
-	While Index >= 0 Do
-		Row = Collection[Index];
-		
-		PrepareRoleTree(Row.Rows, HideFullAccessRole, ShowSelectedRolesOnly);
-		
-		If Row.IsRole Then
-			If HideFullAccessRole And 
-				(Upper(Row.Name) = Upper("FullAccess") Or Upper(Row.Name) = Upper("FullAdministrator")) Then
-				Collection.Delete(Index);
-			Else
-				Row.PictureNumber = 6;
-				Row.Check = RoleCollection().FindRows(New Structure("Role", Row.Name)).Count() > 0;
-				If ShowSelectedRolesOnly And Not Row.Check Then
-					Collection.Delete(Index);
-				EndIf;
-			EndIf;
-		Else
-			If Row.Rows.Count() = 0 Then
-				Collection.Delete(Index);
-			Else
-				Row.PictureNumber = 5;
-				Row.Check = Row.Rows.FindRows(New Structure("Check", False)).Count() = 0;
-			EndIf;
-		EndIf;
-		
-		Index = Index - 1;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Function FormDataTreeItemCollection(Val FormDataTree, Val ValueTreeRow)
-	
-	If ValueTreeRow.Parent = Undefined Then
-		FormDataTreeItemCollection = FormDataTree.GetItems();
-	Else
-		ParentIndex = ?(ValueTreeRow.Parent.Parent = Undefined, ValueTreeRow.Owner().Rows, ValueTreeRow.Parent.Parent.Rows).IndexOf(ValueTreeRow.Parent);
-		FormDataTreeItemCollection = FormDataTreeItemCollection(FormDataTree, ValueTreeRow.Parent).Get(ParentIndex).GetItems();
-	EndIf;
-	
-	Return FormDataTreeItemCollection;
-	
-EndFunction
-
-
-&AtServer
-Procedure UpdateRoleContent(RowID, Add);
-	
-	If RowID = Undefined Then
-		// Processing all roles
-		RoleCollection = RoleCollection();
-		RoleCollection.Clear();
-		If Add Then
-			AllRoles = UsersServerCached.AllRoles();
-			For Each RoleDetails In AllRoles Do
-				If RoleDetails.Name <> "FullAccess" And RoleDetails.Name <> "FullAdministrator" Then
-					RoleCollection.Add().Role = RoleDetails.Name;
-				EndIf;
-			EndDo;
-		EndIf;
-		If ShowSelectedRolesOnly Then
-			If RoleCollection.Count() > 0 Then
-				RefreshRoleTree();
-			Else
-				Roles.GetItems().Clear();
-			EndIf;
-			// Return
-			Return;
-			// Return
-		EndIf;
-	Else
-		CurrentData = Roles.FindByID(RowID);
-		If CurrentData.IsRole Then
-			AddDeleteRole(CurrentData.Name, Add);
-		Else
-			AddDeleteSubsystemRoles(CurrentData.GetItems(), Add);
-		EndIf;
-	EndIf;
-	
-	RefreshSelectedRoleMarks(Roles.GetItems());
-	
-	Modified = True;
-	
-EndProcedure
-
-&AtServer
-Procedure AddDeleteRole(Val Role, Val Add)
-	
-	FoundRoles = RoleCollection().FindRows(New Structure("Role", Role));
-	
-	If Add Then
-		If FoundRoles.Count() = 0 Then
-			RoleCollection().Add().Role = Role;
-		EndIf;
-	Else
-		If FoundRoles.Count() > 0 Then
-			RoleCollection().Delete(FoundRoles[0]);
-		EndIf;
-	EndIf;
-	
-EndProcedure
-
-&AtServer
-Procedure AddDeleteSubsystemRoles(Val Collection, Val Add)
-	
-	For Each Row In Collection Do
-		If Row.IsRole Then
-			AddDeleteRole(Row.Name, Add);
-		Else
-			AddDeleteSubsystemRoles(Row.GetItems(), Add);
-		EndIf;
-	EndDo;
-	
-EndProcedure
-
-&AtServer
-Procedure RefreshSelectedRoleMarks(Val Collection)
-	
-	Index = Collection.Count()-1;
-	
-	While Index >= 0 Do
-		Row = Collection[Index];
-		
-		If Row.IsRole Then
-			Row.Check = RoleCollection().FindRows(New Structure("Role", Row.Name)).Count() > 0;
-			If ShowSelectedRolesOnly And Not Row.Check Then
-				Collection.Delete(Index);
-			EndIf;
-		Else
-			RefreshSelectedRoleMarks(Row.GetItems());
-			If Row.GetItems().Count() = 0 Then
-				Collection.Delete(Index);
-			Else
-				Row.Check = True;
-				For Each Item In Row.GetItems() Do
-					If Not Item.Check Then
-						Row.Check = False;
-						Break;
-					EndIf;
-				EndDo;
-			EndIf;
-		EndIf;
-		
-		Index = Index - 1;
-	EndDo;
-	
-EndProcedure
-
-&AtClient
-Procedure NotValidOnChange(Item)
-	
-	If Object.NotValid Then
-		InfoBaseAccessAllowed = False;
-	EndIf;	
-	
-	SetPropertyEnabled();
-	
-EndProcedure
+ 
+#EndRegion
