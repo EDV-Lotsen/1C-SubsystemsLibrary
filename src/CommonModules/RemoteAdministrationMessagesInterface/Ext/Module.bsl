@@ -226,7 +226,7 @@ EndFunction
 //
 Function MessageSetServiceManagerEndpoint(Val PackageUsed = Undefined) Export
 	
-	Return GenerateMessageType(PackageUsed, "SetServiceManagerEndpoint");
+	Return GenerateMessageType(PackageUsed, "SetServiceManagerEndPoint");
 	
 EndFunction
 

@@ -326,7 +326,7 @@ Procedure ExecuteExchangeMessagAnalysis(Cancel) Export
 	
 	AddColumnWithValueToTable(TempStatistics, 1, "Iterator");
 	
-	TempStatistics.Collapse("TargetTableName, IsObjectDeletion", "Iterator");
+	TempStatistics.GroupBy("TargetTableName, IsObjectDeletion", "Iterator");
 	
 	For Each TableRow In TempStatistics Do
 		

@@ -17,6 +17,8 @@ Function ExecuteExport(ExchangePlanName, InfobaseNodeCode, ExchangeMessageStorag
 	
 	DataExchangeServer.ExportForInfobaseNodeViaString(MessageExchangeInternal.ConvertExchangePlanName(ExchangePlanName), InfobaseNodeCode, ExchangeMessage);
 	
+	ExchangeMessage = MessageExchangeInternal.ConvertBackExchangePlanMessageData(ExchangeMessage);
+	
 	ExchangeMessageStorage = New ValueStorage(ExchangeMessage, New Deflation(9));
 	
 EndFunction

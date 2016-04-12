@@ -336,14 +336,20 @@ To view the skipped rows and select data to be added, click Next.</v8:content>
 						</UsualGroup>
 					</ChildItems>
 				</Page>
-				<Page name="ImportDataMapping" id="191">
+				<Page name="DataToImportMapping" id="191">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
 							<v8:content>Imported data mapping</v8:content>
 						</v8:item>
 					</Title>
-					<ExtendedTooltip name="ImportDataMappingExtendedTooltip" id="192"/>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Data to import mapping</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ExtendedTooltip name="DataToImportMappingExtendedTooltip" id="192"/>
 					<ChildItems>
 						<UsualGroup name="HelpForDataMapping" id="401">
 							<Title>
@@ -357,7 +363,7 @@ To view the skipped rows and select data to be added, click Next.</v8:content>
 							<Representation>NormalSeparation</Representation>
 							<ExtendedTooltip name="ExplanationForExtendedTooltipDataMapping" id="402"/>
 							<ChildItems>
-								<LabelDecoration name="RefSearchHelp" id="501">
+								<LabelDecoration name="ExplanationForRefSearch" id="501">
 									<HorizontalStretch>true</HorizontalStretch>
 									<Title formatted="false">
 										<v8:item>
@@ -573,7 +579,7 @@ If the application does not have matching data items, you have to enter them man
 											<ContextMenu name="CreateIfNotMappedContextMenu" id="424"/>
 											<ExtendedTooltip name="CreateIfNotMappedExtendedTooltip" id="425"/>
 										</RadioButtonField>
-										<LabelDecoration name="ConflictDetails" id="461">
+										<LabelDecoration name="ConflictDescription" id="461">
 											<Visible>false</Visible>
 											<Title formatted="false">
 												<v8:item>
@@ -581,8 +587,8 @@ If the application does not have matching data items, you have to enter them man
 													<v8:content>(mapping conflicts: %1 )</v8:content>
 												</v8:item>
 											</Title>
-											<ContextMenu name="ConflictDetailsContextMenu" id="462"/>
-											<ExtendedTooltip name="ConflictDetailsExtendedTooltip" id="463"/>
+											<ContextMenu name="ConflictDescriptionContextMenu" id="462"/>
+											<ExtendedTooltip name="ConflictDescriptionExtendedTooltip" id="463"/>
 										</LabelDecoration>
 									</ChildItems>
 								</UsualGroup>
@@ -704,10 +710,10 @@ If the application does not have matching data items, you have to enter them man
 									<RowFilter xsi:nil="true"/>
 									<ContextMenu name="DataMappingTableContextMenu" id="438">
 										<ChildItems>
-											<Button name="ResolveConflictDataMappingTableContextMenu" id="487">
+											<Button name="DataMappingTableContextMenuResolveConflict" id="487">
 												<Type>CommandBarButton</Type>
 												<CommandName>Form.Command.ResolveConflict</CommandName>
-												<ExtendedTooltip name="ResolveConflictDataMappingTableContextMenuExtendedTooltip" id="488"/>
+												<ExtendedTooltip name="DataMappingTableContextMenuResolveConflictExtendedTooltip" id="488"/>
 											</Button>
 										</ChildItems>
 									</ContextMenu>
@@ -873,7 +879,7 @@ If the application does not have matching data items, you have to enter them man
 										</UsualGroup>
 									</ChildItems>
 								</UsualGroup>
-								<LabelDecoration name="ImportReportExplanation" id="375">
+								<LabelDecoration name="ExplanationForImportReport" id="375">
 									<HorizontalStretch>true</HorizontalStretch>
 									<Title formatted="false">
 										<v8:item>

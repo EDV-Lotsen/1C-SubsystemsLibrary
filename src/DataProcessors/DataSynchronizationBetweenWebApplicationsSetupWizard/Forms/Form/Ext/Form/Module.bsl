@@ -109,7 +109,7 @@ Procedure OnOpen(Cancel)
 		
 		SettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 		SettingsFormName = StrReplace(SettingsFormName, "[ExchangePlanName]", ExchangePlanName);
-		SettingsFormName = StrReplace(SettingsFormName, "[NodeSetupForm]", NodesSetupForm);
+		SettingsFormName = StrReplace(SettingsFormName, "[NodesSetupForm]", NodesSetupForm);
 		
 		SettingsForm = GetForm(SettingsFormName, FormParameters, ThisObject);
 		
@@ -503,7 +503,7 @@ Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	// OnOpen handler
 	If Not IsBlankString(GoToRowCurrent.OnOpenHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, SkipPage, IsGoNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, SkipPage, IsGoNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.OnOpenHandlerName);
 		
 		Cancel   = False;
@@ -553,7 +553,7 @@ Procedure ExecuteLongActionHandler()
 	// LongActionProcessing handler
 	If Not IsBlankString(GoToRowCurrent.LongActionHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, GoToNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, GoToNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.LongActionHandlerName);
 		
 		Cancel = False;
@@ -715,7 +715,7 @@ Procedure OpenDataExportSetupForm(Val CorrespondentDataTemporaryStorageAddress)
 	
 	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", ExchangePlanName);
-	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodeSetupForm]", NodesSetupForm);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodesSetupForm]", NodesSetupForm);
 	
 	ConnectionParameters = New Structure;
 	ConnectionParameters.Insert("JoinType", "TempStorage");
@@ -852,9 +852,9 @@ Procedure OpenMappingForm()
 EndProcedure
 
 &AtServer
-Function TableRowID(Val FieldName, Val Key, FormDataCollection)
+Function TableRowID(Val FieldName, Val _Key, FormDataCollection)
 	
-	CollectionItems = FormDataCollection.FindRows(New Structure(FieldName, Key));
+	CollectionItems = FormDataCollection.FindRows(New Structure(FieldName, _Key));
 	
 	If CollectionItems.Count() > 0 Then
 		
@@ -870,9 +870,9 @@ Function GetStatisticsTableRowIndexes(RowKeys)
 	
 	RowIndexes = New Array;
 	
-	For Each Key In RowKeys Do
+	For Each _Key In RowKeys Do
 		
-		TableRows = Object.Statistics.FindRows(New Structure("Key", Key));
+		TableRows = Object.Statistics.FindRows(New Structure("Key", _Key));
 		
 		LineIndex = Object.Statistics.IndexOf(TableRows[0]);
 		
@@ -934,7 +934,7 @@ EndProcedure
 // Checking whether a settings structure is filled.
 //
 &AtClient
-Function Attachable_Beginning_OnGoNext(Cancel)
+Function Attachable_Start_OnGoNext(Cancel)
 	
 	// Checking whether form attributes are filled
 	If NodeFilterSettingsAvailable Then
@@ -946,7 +946,7 @@ Function Attachable_Beginning_OnGoNext(Cancel)
 		
 		SettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 		SettingsFormName = StrReplace(SettingsFormName, "[ExchangePlanName]", ExchangePlanName);
-		SettingsFormName = StrReplace(SettingsFormName, "[NodeSetupForm]", NodesSetupForm);
+		SettingsFormName = StrReplace(SettingsFormName, "[NodesSetupForm]", NodesSetupForm);
 		
 		SettingsForm = GetForm(SettingsFormName, FormParameters, ThisObject);
 		

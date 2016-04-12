@@ -125,7 +125,7 @@ EndProcedure
 &AtServer
 Procedure FormCommonSetting(OnCreateAtServer = False, WriteParameters = Undefined)
 	
-	If InitialInfobaseUserDetails = Undefined Then
+	If InitialInfobaseUserDescription = Undefined Then
 		Return; // OnReadAtServer before OnCreateAtServer.
 	EndIf;
 	

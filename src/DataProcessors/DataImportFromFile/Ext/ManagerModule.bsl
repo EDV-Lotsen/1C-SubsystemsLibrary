@@ -100,7 +100,7 @@ EndProcedure
 
 #Region UtilityFunctions
 
-Procedure InitRefSearchMode(TemplateWithData, InformationByColumns, TypeDescription) Export
+Procedure InitRefSearchMode(TemplateWithData, ColumnInfo, TypeDescription) Export
 	ColumnMap = New Map;
 	ColumnHeader = "";
 	Separator = "";
@@ -124,8 +124,8 @@ Procedure InitRefSearchMode(TemplateWithData, InformationByColumns, TypeDescript
 		ColumnHeader = "Entered data";
 		
 	EndDo;
-	AddInformationByColumn(InformationByColumns, "References", ColumnHeader, New TypeDescription("String"), False, 1);
-	GenerateTemplateForInformationByColumns(InformationByColumns, TemplateWithData);
+	AddInformationByColumn(ColumnInfo, "References", ColumnHeader, New TypeDescription("String"), False, 1);
+	GenerateTemplateForInformationByColumns(ColumnInfo, TemplateWithData);
 	
 EndProcedure
 
@@ -347,7 +347,7 @@ Procedure CreateCatalogListForImport(CatalogListForImport) Export
 	EndIf;
 	
 	CatalogListForImport.Clear();
-	For Each string In CatalogInfo Do 
+	For Each Row In CatalogInfo Do 
 		CatalogListForImport.Add(Row.Parameters, Row.Presentation);
 	EndDo;
 		
@@ -407,25 +407,25 @@ EndFunction
 
 // Fills the data mapping value table based on template data.
 //
-Procedure FillMappingTableWithDataFromBackgroundTemplate(ExportParameters, StorageAddress) Export
+Procedure FillMappingTableWithDataFromTemplateBackground(ExportParameters, StorageAddress) Export
 	
 	TemplateWithData = ExportParameters.TemplateWithData;
 	MappingTable = ExportParameters.MappingTable;
-	InformationByColumns = ExportParameters.InformationByColumns;
+	ColumnInfo = ExportParameters.ColumnInfo;
 	
-	GetColumnPositionsInTemplate(TemplateWithData, InformationByColumns);
+	GetColumnPositionsInTemplate(TemplateWithData, ColumnInfo);
 	MappingTable.Clear();
-	FillMappingTableWithImportedData(TemplateWithData, InformationByColumns, MappingTable, True);
+	FillMappingTableWithImportedData(TemplateWithData, ColumnInfo, MappingTable, True);
 	
 	PutToTempStorage(MappingTable, StorageAddress);
 	
 EndProcedure
 
-Procedure FillMappingTableWithDataFromTemplate(TemplateWithData, MappingTable, InformationByColumns) Export
+Procedure FillMappingTableWithDataFromTemplate(TemplateWithData, MappingTable, ColumnInfo) Export
 	
-	GetColumnPositionsInTemplate(TemplateWithData, InformationByColumns);
+	GetColumnPositionsInTemplate(TemplateWithData, ColumnInfo);
 	MappingTable.Clear();
-	FillMappingTableWithImportedData(TemplateWithData, InformationByColumns, MappingTable);
+	FillMappingTableWithImportedData(TemplateWithData, ColumnInfo, MappingTable);
 	
 EndProcedure
 
@@ -515,7 +515,7 @@ Function CellValue(Column, CellValue)
 	
 EndFunction
 
-Procedure GetColumnPositionsInTemplate(TemplateWithData, InformationByColumns)
+Procedure GetColumnPositionsInTemplate(TemplateWithData, ColumnInfo)
 	
 	TitleArea = TableTemplateTitleArea(TemplateWithData);
 	
@@ -526,7 +526,7 @@ Procedure GetColumnPositionsInTemplate(TemplateWithData, InformationByColumns)
 		ColumnMap.Insert(ColumnNameInTemplate, ColumnNumber);
 	EndDo;
 	
-	For Each Column In InformationByColumns Do 
+	For Each Column In ColumnInfo Do 
 		Position = ColumnMap.Get(Column.ColumnPresentation);
 		If Position <> Undefined Then 
 			Column.Position = Position;
@@ -552,7 +552,7 @@ EndFunction
 
 // Generates a spreadsheet document template based on catalog attributes.
 //
-Procedure GenerateTemplateByCatalogAttributes(MappingObjectName, TemplateWithData, InformationByColumns) Export
+Procedure GenerateTemplateByCatalogAttributes(MappingObjectName, TemplateWithData, ColumnInfo) Export
 	
 	CatalogMetadata= Metadata.FindByFullName(MappingObjectName);
 	TemporaryVT = New ValueTable;
@@ -563,22 +563,22 @@ Procedure GenerateTemplateByCatalogAttributes(MappingObjectName, TemplateWithDat
 	
 	Position = 1;
 	If Not CatalogMetadata.Autonumbering And CatalogMetadata.CodeLength > 0 Then
-		CreateStandardAttributesColumn(TemplateWithData, InformationByColumns, CatalogMetadata, Cell, "Code", Position);
+		CreateStandardAttributesColumn(TemplateWithData, ColumnInfo, CatalogMetadata, Cell, "Code", Position);
 		Position = Position + 1;
 	EndIf;
 	
 	If CatalogMetadata.DescriptionLength > 0  Then
-		CreateStandardAttributesColumn(TemplateWithData, InformationByColumns, CatalogMetadata, Cell, "Description", Position);
+		CreateStandardAttributesColumn(TemplateWithData, ColumnInfo, CatalogMetadata, Cell, "Description", Position);
 		Position = Position + 1;
 	EndIf;
 	
 	If CatalogMetadata.Hierarchical Then
-		 CreateStandardAttributesColumn(TemplateWithData, InformationByColumns, CatalogMetadata, Cell, "Parent", Position);
+		 CreateStandardAttributesColumn(TemplateWithData, ColumnInfo, CatalogMetadata, Cell, "Parent", Position);
 		 Position = Position + 1;
 	EndIf;
 	 
 	If CatalogMetadata.Owners.Count() > 0 Then
-		 CreateStandardAttributesColumn(TemplateWithData, InformationByColumns, CatalogMetadata, Cell, "Owner", Position);
+		 CreateStandardAttributesColumn(TemplateWithData, ColumnInfo, CatalogMetadata, Cell, "Owner", Position);
 		 Position = Position + 1;
 	EndIf;
 	
@@ -632,7 +632,7 @@ Procedure GenerateTemplateByCatalogAttributes(MappingObjectName, TemplateWithDat
 		TemplateWithData.Join(Cell);
 		
 		// Information by columns
-		AddInformationByColumn(InformationByColumns, Attribute.Name, Attribute.Presentation(), Attribute.Type, MandatoryField, Position);
+		AddInformationByColumn(ColumnInfo, Attribute.Name, Attribute.Presentation(), Attribute.Type, MandatoryField, Position);
 		Position = Position + 1;
 		
 	EndDo;
@@ -640,7 +640,7 @@ Procedure GenerateTemplateByCatalogAttributes(MappingObjectName, TemplateWithDat
 	TemplateWithData.FixedTop = 1;
 EndProcedure
 
-Procedure CreateStandardAttributesColumn(TemplateWithData, InformationByColumns, CatalogMetadata, Cell, ColumnName, Position)
+Procedure CreateStandardAttributesColumn(TemplateWithData, ColumnInfo, CatalogMetadata, Cell, ColumnName, Position)
 	
 	Attribute = CatalogMetadata.StandardAttributes[ColumnName];
 	Presentation = CatalogMetadata.StandardAttributes[ColumnName].Presentation();
@@ -672,7 +672,7 @@ Procedure CreateStandardAttributesColumn(TemplateWithData, InformationByColumns,
 	TemplateWithData.Join(Cell);
 	
 	ObligatoryForFilling = ?(Attribute.FillChecking = FillChecking.ShowError, True, False);
-	AddInformationByColumn(InformationByColumns, ColumnName, Presentation, TypeDescription, ObligatoryForFilling, Position);
+	AddInformationByColumn(ColumnInfo, ColumnName, Presentation, TypeDescription, ObligatoryForFilling, Position);
 	
 EndProcedure
 
@@ -726,7 +726,7 @@ Procedure FillTemplateHeaderCell(Cell, Text, Width, ToolTip, MandatoryField, Nam
 	Cell.CurrentArea.Text = Text;
 	Cell.CurrentArea.Name = Name;
 	Cell.CurrentArea.DetailsParameter = Name;
-	Cell.CurrentArea.BgColor =  StyleColors.ReportHeaderBackColor;
+	Cell.CurrentArea.BackColor =  StyleColors.ReportHeaderBackColor;
 	Cell.CurrentArea.ColumnWidth = Width;
 	Cell.CurrentArea.Comment.Text = ToolTip;
 	If MandatoryField Then 
@@ -738,7 +738,7 @@ Procedure FillTemplateHeaderCell(Cell, Text, Width, ToolTip, MandatoryField, Nam
 EndProcedure	
 
 // Fills the table with complete information about template columns. This information is used for generating a mapping table.
-Procedure CreateInformationByColumnsBasedOnTemplate(TableTitleArea, ColumnDataTypeMap, InformationByColumns) Export 
+Procedure CreateInformationByColumnsBasedOnTemplate(TableTitleArea, ColumnDataTypeMap, ColumnInfo) Export 
 	
 	For ColumnNumber = 1 to TableTitleArea.TableWidth Do
 		Cell = TableTitleArea.GetArea(1, ColumnNumber, 1, ColumnNumber).CurrentArea;
@@ -762,36 +762,36 @@ Procedure CreateInformationByColumnsBasedOnTemplate(TableTitleArea, ColumnDataTy
 		EndIf;
 		
 		If ValueIsFilled(AttributeName) Then 
-			AddInformationByColumn(InformationByColumns, AttributeName, AttributePresentation, ColumnDataType,
+			AddInformationByColumn(ColumnInfo, AttributeName, AttributePresentation, ColumnDataType,
 				Cell.Font.Bold, ColumnNumber, Association);
 		EndIf;
 	EndDo;
 	
 EndProcedure
 
-Procedure AddInformationByColumn(InformationByColumns, Name, Presentation, Type, ObligatoryForFilling, Position, Association = "")
-	ColumnInfoRow = InformationByColumns.Add();
+Procedure AddInformationByColumn(ColumnInfo, Name, Presentation, Type, MandatoryForFilling, Position, Association = "")
+	ColumnInfoRow = ColumnInfo.Add();
 	ColumnInfoRow.ColumnName = Name;
 	ColumnInfoRow.ColumnPresentation = Presentation;
 	ColumnInfoRow.ColumnType = Type;
-	ColumnInfoRow.ObligatoryForFilling = ObligatoryForFilling;
+	ColumnInfoRow.MandatoryForFilling = MandatoryForFilling;
 	ColumnInfoRow.Position = Position;
 	ColumnInfoRow.Association = ?(ValueIsFilled(Association), Association, Name);
 EndProcedure
 
-Procedure FilterDataByRefs(TemplateWithData, InformationByColumns, ImportDataAddress) Export
+Procedure FilterDataByRefs(TemplateWithData, ColumnInfo, ImportDataAddress) Export
 	
 EndProcedure
 
 // Creates a value table based on the template data and stores it to a temporary storage. 
 //
-Procedure ExportDataForTS(TemplateWithData, InformationByColumns, ImportDataAddress) Export
+Procedure ExportDataForTS(TemplateWithData, ColumnInfo, ImportDataAddress) Export
 	
 	ImportData = New ValueTable;
 	
 	TitleArea = TableTemplateTitleArea(TemplateWithData);
 	
-	For Each Column In InformationByColumns Do 
+	For Each Column In ColumnInfo Do 
 		ImportData.Columns.Add(Column.ColumnName, New TypeDescription("String"), Column.ColumnPresentation);
 	EndDo;
 	NumberTypeDescription = New TypeDescription("Number");
@@ -806,7 +806,7 @@ Procedure ExportDataForTS(TemplateWithData, InformationByColumns, ImportDataAddr
 		For ColumnNumber = 1 To TemplateWithData.TableWidth Do 
 			Cell = TemplateWithData.GetArea(LineNumber,ColumnNumber,LineNumber,ColumnNumber).CurrentArea;
 			
-			FoundColumn = FindInformationAboutColumn(InformationByColumns, "Position", ColumnNumber);
+			FoundColumn = FindInformationAboutColumn(ColumnInfo, "Position", ColumnNumber);
 
 			If FoundColumn <> Undefined Then 
 				ColumnName = FoundColumn.ColumnName; 
@@ -818,7 +818,7 @@ Procedure ExportDataForTS(TemplateWithData, InformationByColumns, ImportDataAddr
 	ImportDataAddress = PutToTempStorage(ImportData);
 EndProcedure
 
-Procedure InitializeImportToTabularSection(TabularSectionFullName, DataStructureTemplateName, InformationByColumns, TemplateWithData, Cancel) Export
+Procedure InitializeImportToTabularSection(TabularSectionFullName, DataStructureTemplateName, ColumnInfo, TemplateWithData, Cancel) Export
 	ObjectName = SplitFullObjectName(TabularSectionFullName);
 	
 	Try
@@ -851,11 +851,11 @@ Procedure InitializeImportToTabularSection(TabularSectionFullName, DataStructure
 		EndIf;
 		
 		TableTitle = TableTemplateTitleArea(Template);
-		CreateInformationByColumnsBasedOnTemplate(TableTitle, Undefined, InformationByColumns);
+		CreateInformationByColumnsBasedOnTemplate(TableTitle, Undefined, ColumnInfo);
 		
 		For Each Attribute In TSMetadata.Attributes Do
 			
-			Column = FindInformationAboutColumn(InformationByColumns, "ColumnName", Attribute.Name);
+			Column = FindInformationAboutColumn(ColumnInfo, "ColumnName", Attribute.Name);
 			
 			If Column <> Undefined Then 
 				Column.ColumnType = Attribute.Type;
@@ -870,11 +870,11 @@ Procedure InitializeImportToTabularSection(TabularSectionFullName, DataStructure
 	
 EndProcedure
 
-Procedure GenerateTemplateForInformationByColumns(InformationByColumns, Template) Export
+Procedure GenerateTemplateForInformationByColumns(ColumnInfo, Template) Export
 
 	SimpleTemplate = DataProcessors.DataImportFromFile.GetTemplate("SimpleTemplate");
 	AreaTitle = SimpleTemplate.GetArea("Title");
-	For Each Column In InformationByColumns Do 
+	For Each Column In ColumnInfo Do 
 		AreaTitle.Parameters.Title = Column.ColumnPresentation;
 		AreaTitle.CurrentArea.ColumnWidth = StrLen(Column.ColumnPresentation) + 5;
 		Template.Join(AreaTitle);
@@ -1003,13 +1003,13 @@ Function GetMetadataObjectTypeByName(Name)
 	Return Undefined;
 EndFunction
 
-Procedure FillTableByImportedDataFromFile(DataFromFile, TemplateWithData, InformationByColumns) Export 
+Procedure FillTableByImportedDataFromFile(DataFromFile, TemplateWithData, ColumnInfo) Export 
 	
 	StringHeader = DataFromFile.Get(0);
 	ColumnMap = New Map;
 	
 	For Each Column In DataFromFile.Columns Do
-		FoundColumn = FindInformationAboutColumn(InformationByColumns, "ColumnPresentation", StringHeader[Column.Name]);
+		FoundColumn = FindInformationAboutColumn(ColumnInfo, "ColumnPresentation", StringHeader[Column.Name]);
 		If FoundColumn <> Undefined Then 
 			ColumnMap.Insert(FoundColumn.Position, Column.Name);	
 		EndIf;
@@ -1039,7 +1039,7 @@ EndProcedure
 
 #Region Excel2007FileFormatImport
 
-Procedure ImportExcel2007FileIntoTable(PathToFile, TemplateWithData, InformationByColumns) Export
+Procedure ImportExcel2007FileIntoTable(PathToFile, TemplateWithData, ColumnInfo) Export
 	File = New File(PathToFile);
 	If Not File.Exist() Then
 		Return;
@@ -1157,7 +1157,7 @@ Procedure ImportExcel2007FileIntoTable(PathToFile, TemplateWithData, Information
 		EndDo;
 	EndDo;
 	
-	FillTableByImportedDataFromFile(Table, TemplateWithData, InformationByColumns);
+	FillTableByImportedDataFromFile(Table, TemplateWithData, ColumnInfo);
 	
 EndProcedure
 
@@ -1323,12 +1323,12 @@ Procedure ImportFileToTable(ServerCallParameters, StorageAddress) Export
 	Extension = ServerCallParameters.Extension;
 	TemplateWithData = ServerCallParameters.TemplateWithData;
 	TempFileName = ServerCallParameters.TempFileName;
-	InformationByColumns = ServerCallParameters.InformationByColumns;
+	ColumnInfo = ServerCallParameters.ColumnInfo;
 	
 	If Extension = "xlsx" Then 
-		ImportExcel2007FileIntoTable(TempFileName, TemplateWithData, InformationByColumns);
+		ImportExcel2007FileIntoTable(TempFileName, TemplateWithData, ColumnInfo);
 	ElsIf Extension = "csv" Then 
-		ImportCSVFileIntoTable(TempFileName, TemplateWithData, InformationByColumns);
+		ImportCSVFileIntoTable(TempFileName, TemplateWithData, ColumnInfo);
 	Else
 		TemplateWithData.Read(TempFileName);
 	EndIf;
@@ -1337,7 +1337,7 @@ Procedure ImportFileToTable(ServerCallParameters, StorageAddress) Export
 	
 EndProcedure
 
-Procedure ImportCSVFileIntoTable(FileName, TemplateWithData, InformationByColumns) Export
+Procedure ImportCSVFileIntoTable(FileName, TemplateWithData, ColumnInfo) Export
 	
 	File = new File(FileName);
 	If Not File.Exist() Then 
@@ -1357,7 +1357,7 @@ Procedure ImportCSVFileIntoTable(FileName, TemplateWithData, InformationByColumn
 	
 	For Each Column In HeaderColumns Do 
 		
-		FoundColumn = FindInformationAboutColumn(InformationByColumns, "ColumnPresentation", Column);
+		FoundColumn = FindInformationAboutColumn(ColumnInfo, "ColumnPresentation", Column);
 		
 		If FoundColumn <> Undefined Then 
 			NewColumn = Source.Columns.Add();
@@ -1390,15 +1390,15 @@ Procedure ImportCSVFileIntoTable(FileName, TemplateWithData, InformationByColumn
 		String = TextReader.ReadLine();
 	EndDo;
 	
-	FillTableByImportedDataFromFile(Source, TemplateWithData, InformationByColumns);
+	FillTableByImportedDataFromFile(Source, TemplateWithData, ColumnInfo);
 	
 EndProcedure
 
-Procedure SaveTableToCSVFile(PathToFile, InformationByColumns) Export
+Procedure SaveTableToCSVFile(PathToFile, ColumnInfo) Export
 	
 	HeaderFormatForCSV = "";
 	
-	For Each Column In InformationByColumns Do 
+	For Each Column In ColumnInfo Do 
 		HeaderFormatForCSV = HeaderFormatForCSV + Column.ColumnPresentation + ";";
 	EndDo;
 	
@@ -1434,10 +1434,10 @@ Procedure WriteMappedData(ExportParameters, StorageAddress) Export
 	MappedData = ExportParameters.MappedData;
 	MappingObjectName =ExportParameters.MappingObjectName;
 	ImportParameters = ExportParameters.ImportParameters;
-	InformationByColumns = ExportParameters.InformationByColumns;
+	ColumnInfo = ExportParameters.ColumnInfo;
 	
 	CreateIfNotMapped = ImportParameters.CreateIfNotMapped;
-	UpdateExisting = ImportParameters.UpdateExisting;
+	UpdateExistingItems = ImportParameters.UpdateExistingItems;
 	
 	StringType = New TypeDescription("String");
 	
@@ -1450,10 +1450,10 @@ Procedure WriteMappedData(ExportParameters, StorageAddress) Export
 		LineNumber = LineNumber + 1;
 		Try
 			BeginTransaction();
-			If Not ValueIsFilled(TableRow.MappedObject) Then 
+			If Not ValueIsFilled(TableRow.MappingObject) Then 
 				If CreateIfNotMapped Then 
 					ItemCatalog = CatalogManager.CreateItem();
-					TableRow.MappedObject = ItemCatalog;
+					TableRow.MappingObject = ItemCatalog;
 					TableRow.RowMappingResult = "Created";
 				Else
 					TableRow.RowMappingResult = "Skipped";
@@ -1461,7 +1461,7 @@ Procedure WriteMappedData(ExportParameters, StorageAddress) Export
 					Continue;
 				EndIf;
 			Else
-				If Not UpdateExisting Then 
+				If Not UpdateExistingItems Then 
 					TableRow.RowMappingResult = "Skipped";
 					SetProgressPercentage(TotalRows, LineNumber);
 					Continue;
@@ -1469,9 +1469,9 @@ Procedure WriteMappedData(ExportParameters, StorageAddress) Export
 				
 				DataLock = New DataLock;
 				LockItem = DataLock.Add("Catalog." + CatalogName);
-				LockItem.SetValue("Ref", TableRow.MappedObject);
+				LockItem.SetValue("Ref", TableRow.MappingObject);
 				
-				ItemCatalog = TableRow.MappedObject.GetObject();
+				ItemCatalog = TableRow.MappingObject.GetObject();
 				TableRow.RowMappingResult = "Updated";
 				If ItemCatalog = Undefined Then
 					MessageText = StringFunctionsClientServer.SubstituteParametersInString(
@@ -1481,7 +1481,7 @@ Procedure WriteMappedData(ExportParameters, StorageAddress) Export
 				EndIf;
 			EndIf;
 			
-			For Each Column In InformationByColumns Do 
+			For Each Column In ColumnInfo Do 
 				ItemCatalog[Column.ColumnName] = TableRow[Column.ColumnName];
 			EndDo;
 			
@@ -1527,10 +1527,10 @@ Procedure GenerateReportOnBackgroundImport(ExportParameters, StorageAddress) Exp
 	
 	ReportTable = ExportParameters.ReportTable;
 	MappedData  = ExportParameters.MappedData;
-	InformationByColumns  = ExportParameters.InformationByColumns;
+	ColumnInfo  = ExportParameters.ColumnInfo;
 	TemplateWithData = ExportParameters.TemplateWithData;
 	ReportType = ExportParameters.ReportType;
-	CalculatePercentOfProgress = ExportParameters.CalculatePercentOfProgress;
+	CalculateProgressPercentage = ExportParameters.CalculateProgressPercentage;
 	
 	If Not ValueIsFilled(ReportType) Then
 		ReportType = "AllItems";
@@ -1549,7 +1549,7 @@ Procedure GenerateReportOnBackgroundImport(ExportParameters, StorageAddress) Exp
 		
 		Cell = ReportTable.GetArea(LineNumber + 1, 1, LineNumber + 1, 1);
 		Cell.CurrentArea.Text = Row.RowMappingResult;
-		Cell.CurrentArea.Details = Row.MappedObject;
+		Cell.CurrentArea.Details = Row.MappingObject;
 		Cell.CurrentArea.Comment.Text = Row.ErrorDescription;
 		If Row.RowMappingResult = "Created" Then 
 			Cell.CurrentArea.TextColor = StyleColors.SuccessResultColor;
@@ -1577,15 +1577,15 @@ Procedure GenerateReportOnBackgroundImport(ExportParameters, StorageAddress) Exp
 			Continue;
 		EndIf;
 		
-		ReportTable.Output(Cell);
-		For Index = 1 To InformationByColumns.Count() Do 
+		ReportTable.Put(Cell);
+		For Index = 1 To ColumnInfo.Count() Do 
 			Cell = ReportTable.GetArea(LineNumber + 1, Index + 1, LineNumber + 1, Index + 1);
 			
 			Filter = New Structure("Position", Index);
-			FoundColumns = InformationByColumns.FindRows(Filter);
+			FoundColumns = ColumnInfo.FindRows(Filter);
 			If FoundColumns.Count() > 0 Then 
 				ColumnName = FoundColumns[0].ColumnName;
-				Cell.CurrentArea.Details = Row.MappedObject;
+				Cell.CurrentArea.Details = Row.MappingObject;
 				Cell.CurrentArea.Text = Row[ColumnName];
 				Cell.CurrentArea.TextPlacement = SpreadsheetDocumentTextPlacementType.Cut;
 			EndIf;
@@ -1593,7 +1593,7 @@ Procedure GenerateReportOnBackgroundImport(ExportParameters, StorageAddress) Exp
 			
 		EndDo;
 		
-		If CalculatePercentOfProgress Then 
+		If CalculateProgressPercentage Then 
 			Percent = Round(LineNumber * 50 / MappedData.Count()) + 50;
 			LongActionModule = CommonUseClientServer.CommonModule("LongActions");
 			LongActionModule.RegisterProgress(Percent);

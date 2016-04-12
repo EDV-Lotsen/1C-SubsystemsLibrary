@@ -562,7 +562,7 @@ Procedure SetupDataExport(Command)
 	
 	NodeSettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
-	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodeSetupForm]", NodesSetupForm);
+	NodeSettingsFormName = StrReplace(NodeSettingsFormName, "[NodesSetupForm]", NodesSetupForm);
 	
 	FormParameters = New Structure;
 	FormParameters.Insert("CorrespondentVersion", CorrespondentConfigurationVersion);
@@ -2909,7 +2909,7 @@ Function Attachable_WizardPageFirstInfobaseExternalConnectionParameterSetup_OnGo
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageDataExchangeSetupParameter_OnOpen(Cancel, SkipPage, IsGoNext)
+Function Attachable_WizardPageDataExchangeParameterSetup_OnOpen(Cancel, SkipPage, IsGoNext)
 	
 	If IsGoNext Then
 		
@@ -2921,7 +2921,7 @@ Function Attachable_WizardPageDataExchangeSetupParameter_OnOpen(Cancel, SkipPage
 		
 		SettingsFormName = "ExchangePlan.[ExchangePlanName].Form.[NodesSetupForm]";
 		SettingsFormName = StrReplace(SettingsFormName, "[ExchangePlanName]", Object.ExchangePlanName);
-		SettingsFormName = StrReplace(SettingsFormName, "[NodeSetupForm]", NodesSetupForm);
+		SettingsFormName = StrReplace(SettingsFormName, "[NodesSetupForm]", NodesSetupForm);
 		
 		SettingsForm = GetForm(SettingsFormName, FormParameters, ThisObject);
 		
@@ -2933,7 +2933,7 @@ Function Attachable_WizardPageDataExchangeSetupParameter_OnOpen(Cancel, SkipPage
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageDataExchangeSetupParameter_OnGoNext(Cancel)
+Function Attachable_WizardPageDataExchangeParameterSetup_OnGoNext(Cancel)
 	
 	CheckJobSettingsForFirstInfobase(Cancel, "WebService");
 	
@@ -3204,7 +3204,7 @@ Function Attachable_WizardPageWaitForCheckExternalConnectionConnected_LongAction
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageWaitForConnectionCheckOverWebService_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForTestConnectionViaWebService_LongActionProcessing(Cancel, GoToNext)
 	
 	TestWSConnectionAtClient(Cancel, True);
 	
@@ -3549,7 +3549,7 @@ Function Attachable_WizardPageWaitForSaveSettings_LongActionProcessing(Cancel, G
 EndFunction
 
 &AtClient
-Function Attachable_WizardPageSettingsSavingWaitLongAction_LongActionProcessing(Cancel, GoToNext)
+Function Attachable_WizardPageWaitForSaveSettingsLongAction_LongActionProcessing(Cancel, GoToNext)
 	
 	If LongAction Then
 		
@@ -4401,10 +4401,10 @@ Procedure ExchangeOverWebServiceSetupGoToTable()
 	// Getting catalogs from the correspondent infobase
 	GoToTableNewRow(8,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
 	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
-	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionCompletion_LongActionProcessing");
 	
 	// Mapping data automatically. Getting mapping statistics.
-	GoToTableNewRow(11, "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing");
+	GoToTableNewRow(11, "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing");
 	
 	// Mapping data manually
 	GoToTableNewRow(12, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
@@ -4413,7 +4413,7 @@ Procedure ExchangeOverWebServiceSetupGoToTable()
 	GoToTableNewRow(13, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
 	GoToTableNewRow(14, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
 	GoToTableNewRow(15, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(16, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(16, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionCompletion_LongActionProcessing");
 	
 	// Accounting parameter settings
 	GoToTableNewRow(17, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
@@ -4425,12 +4425,12 @@ Procedure ExchangeOverWebServiceSetupGoToTable()
 	// Synchronizing all data except catalogs
 	GoToTableNewRow(20, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
 	GoToTableNewRow(21, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
-	GoToTableNewRow(22, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(22, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(23, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
 	GoToTableNewRow(24, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(25, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(25, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionCompletion_LongActionProcessing");
 	
-	GoToTableNewRow(26, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeSuccessfullyCreated_OnOpen");
+	GoToTableNewRow(26, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeCreatedSuccessfully_OnOpen");
 	
 EndProcedure
 
@@ -4456,10 +4456,10 @@ Procedure ExtendedExchangeWithServiceSetupGoToTable()
 	// Getting catalogs from the correspondent infobase
 	GoToTableNewRow(7,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessage_LongActionProcessing");
 	GoToTableNewRow(8,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongAction_LongActionProcessing");
-	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(9,  "WizardPageWaitForDataAnalysisGetMessage",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisGetMessageLongActionCompletion_LongActionProcessing");
 	
 	// Mapping data automatically. Getting mapping statistics.
-	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForAutomaticMappingDataAnalysis_LongActionProcessing");
+	GoToTableNewRow(10,  "WizardPageWaitForDataAnalysisAutomaticMapping",, "NavigationPageWait",,,, True, "WizardPageWaitForDataAnalysisAutomaticMapping_LongActionProcessing");
 	
 	// Mapping data manually
 	GoToTableNewRow(11, "WizardPageDataMapping",, "NavigationPageContinuationOnlyNext", "WizardPageDataMapping_OnGoNext",, "WizardPageDataMapping_OnOpen");
@@ -4468,7 +4468,7 @@ Procedure ExtendedExchangeWithServiceSetupGoToTable()
 	GoToTableNewRow(12, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationImport_LongActionProcessing");
 	GoToTableNewRow(13, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExport_LongActionProcessing");
 	GoToTableNewRow(14, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(15, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(15, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForCatalogSynchronizationExportLongActionCompletion_LongActionProcessing");
 	
 	// Accounting parameter settings
 	GoToTableNewRow(16, "WizardPageAddingDocumentDataToAccountingRecordsSettings",, "NavigationPageContinuationOnlyNext", "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnGoNext",, "WizardPageAddingDocumentDataToAccountingRecordsSettings_OnOpen");
@@ -4480,12 +4480,12 @@ Procedure ExtendedExchangeWithServiceSetupGoToTable()
 	// Synchronizing all data except catalogs
 	GoToTableNewRow(19, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImport_LongActionProcessing");
 	GoToTableNewRow(20, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongAction_LongActionProcessing");
-	GoToTableNewRow(21, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(21, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationImportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(22, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExport_LongActionProcessing");
 	GoToTableNewRow(23, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongAction_LongActionProcessing");
-	GoToTableNewRow(24, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionEnd_LongActionProcessing");
+	GoToTableNewRow(24, "DataSynchronizationWait",, "NavigationPageWait",,,, True, "WizardPageWaitForDataSynchronizationExportLongActionCompletion_LongActionProcessing");
 	
-	GoToTableNewRow(25, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeSuccessfullyCreated_OnOpen");
+	GoToTableNewRow(25, "WizardPageDataExchangeCreatedSuccessfully",, "NavigationPageEnd",,, "WizardPageDataExchangeCreatedSuccessfully_OnOpen");
 	
 EndProcedure
 

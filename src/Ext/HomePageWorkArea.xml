@@ -33,11 +33,18 @@
 			</Visibility>
 		</Item>
 		<Item>
-			<Form>DataProcessor.EventLog.Form.EventLog</Form>
+			<Form>Catalog.Users.Form.ListForm</Form>
 			<Height>10</Height>
 			<Visibility>
 				<xr:Common>false</xr:Common>
 				<xr:Value name="Role.FullAccess">true</xr:Value>
+			</Visibility>
+		</Item>
+		<Item>
+			<Form>DataProcessor.EventLog.Form.EventLog</Form>
+			<Height>10</Height>
+			<Visibility>
+				<xr:Common>false</xr:Common>
 				<xr:Value name="Role.FullAdministrator">true</xr:Value>
 			</Visibility>
 		</Item>

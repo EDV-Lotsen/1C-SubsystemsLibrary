@@ -67,7 +67,7 @@ Procedure Delete(Command)
 	If Items.List.CurrentData <> Undefined Then
 		
 		If Items.List.CurrentData.Property("RowGroup")
-			And TypeOf(Items.List.CurrentData.RowGroup) = Type("DynamicListGroupRow") Then
+			And TypeOf(Items.List.CurrentData.RowGroup) = Type("DynamicalListGroupRow") Then
 			
 			ShowMessageBox(, NStr("en = 'The action cannot be performed on a list group row.'"));
 			

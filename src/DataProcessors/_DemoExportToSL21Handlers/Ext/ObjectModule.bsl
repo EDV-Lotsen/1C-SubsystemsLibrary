@@ -170,10 +170,10 @@ EndProcedure
 //
 Procedure AttachDataProcessorToDebug(Owner) Export
 
-	Parameters            	   = Owner.Parameters;
+	Parameters            	  	= Owner.Parameters;
 	CommonProceduresFunctions	= Owner;
-	Requests              	   = Owner.Requests;
-	NodeForExchange		 	      = Owner.NodeForExchange;
+	Queries              	  	= Owner.Queries;
+	NodeForExchange		 	    = Owner.NodeForExchange;
 
 EndProcedure
 

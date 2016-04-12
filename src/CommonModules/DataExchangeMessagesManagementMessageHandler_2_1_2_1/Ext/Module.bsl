@@ -395,7 +395,7 @@ Procedure GetCorrespondentAccountingParameters(Message, From)
 		
 		ExchangePlans[Body.ExchangePlan].AccountingSettingsCheckHandler(Cancel, Correspondent, ErrorPresentation);
 		
-		CorrespondentData = New Structure("AccountingParametersSet, ErrorPresentation", Not Cancel, ErrorPresentation);
+		CorrespondentData = New Structure("AccountingParametersSpecified, ErrorPresentation", Not Cancel, ErrorPresentation);
 		
 		// Sending response message that notifies about successful getting of accounting parameters
 		ResponseMessage = MessagesSaaS.NewMessage(

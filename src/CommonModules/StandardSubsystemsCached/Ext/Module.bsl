@@ -52,7 +52,7 @@ EndFunction
 Function SubsystemDescriptions() Export
 	
 	SubsystemModules = New Array;
-	SubsystemModules.Add("SLInfobaseUpdate");
+	SubsystemModules.Add("InfobaseUpdateSL");
 	
 	ConfigurationSubsystemsOverridable.SubsystemsOnAdd(SubsystemModules);
 	

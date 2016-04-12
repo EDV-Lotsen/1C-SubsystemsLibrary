@@ -7815,7 +7815,7 @@ Procedure ImportTabularSection(Object, TabularSectionName, DocumentTypeCommonInf
 		
 	EndIf;
 	
-	UUID = StrReplace(String(New UUID), "", "_");
+	UUID = StrReplace(String(New UUID), "-", "_");
 	
 	OrderFieldName = "OrderField_[UUID]";
 	OrderFieldName = StrReplace(OrderFieldName, "[UUID]", UUID);
@@ -7827,7 +7827,7 @@ Procedure ImportTabularSection(Object, TabularSectionName, DocumentTypeCommonInf
 	
 	ObjectCollection = ObjectTabularSection.Unload();
 	
-	ExchangeFileCollection = ObjectCollection.CopyColumns();
+	ExchangeFileCollection = ObjectCollection.CopyColumns();	
 	ExchangeFileCollection.Columns.Add(OrderFieldName);
 	
 	FillExchangeFileCollection(Object, ExchangeFileCollection, TabularSectionName, DocumentTypeCommonInformation, ObjectParameters, KeySearchFieldArray, OrderFieldName);
@@ -14157,6 +14157,7 @@ Procedure ReadDataInExternalConnectionMode(MessageReader)
 	EndDo;
 	
 EndProcedure
+
 Procedure ReadDataViaExchange(MessageReader, DataAnalysis)
 	
 	ExchangePlanNameField      = deAttribute(ExchangeFile, StringType, "ExchangePlan");
@@ -14179,7 +14180,7 @@ Procedure ReadDataViaExchange(MessageReader, DataAnalysis)
 	EndIf;
 	
 	
-	MessageReader = New Structure("MessageNo, ReceivedNo, FromClause, Sender, MessageReceivedEarlier, DataAnalysis");
+	MessageReader = New Structure("MessageNo, ReceivedNo, SenderObject, Sender, MessageReceivedEarlier, DataAnalysis");
 	MessageReader.Sender       = ExchangeNodeRecipient;
 	MessageReader.SenderObject = ExchangeNodeRecipient.GetObject();
 	MessageReader.MessageNo    = MessageNumberField;
@@ -14342,7 +14343,7 @@ Procedure ExecuteDeferredDocumentPosting()
 	EndIf;
 	
 	// Grouping table by the unique fields
-	DocumentsForDeferredPosting().Collapse("DocumentRef, DocumentDate");
+	DocumentsForDeferredPosting().GroupBy("DocumentRef, DocumentDate");
 	
 	// Sorting documents in ascending dates
 	
@@ -15108,7 +15109,7 @@ Procedure ExportRecordedData(WriteMessage, ErrorMessageString, UsedExportRuleTab
 	
 	// The InfobaseObjectMaps information register is exported separately, therefore, 
 	// deleting it from the following selection.
-	If MetadataToExportArray.Find(Metadata.InformationRegisters.InfobaseObjectMaps) <> Undefined Then
+	If MetadataToExportArray.Find(Metadata.InformationRegisters.InfobaseObjectMappings) <> Undefined Then
 		
 		CommonUseClientServer.DeleteValueFromArray(MetadataToExportArray, Metadata.InformationRegisters.InfobaseObjectMaps);
 		
@@ -15401,10 +15402,10 @@ Function ExportObjectMappingInfo(InfobaseNode)
 	QueryText = "
 	|SELECT TOP 1 1
 	|FROM
-	| InformationRegister.InfobaseObjectMaps.Changes AS InfobaseObjectMapsChanges
+	| InformationRegister.InfobaseObjectMappings.Changes AS InfobaseObjectMappingsChanges
 	|WHERE
-	| InfobaseObjectMapsChanges.Node = &InfobaseNode
-	|";
+	| InfobaseObjectMappingsChanges.Node = &InfobaseNode
+	|";	
 	
 	Query = New Query;
 	Query.Text = QueryText;
@@ -16302,14 +16303,14 @@ Procedure InitAttributesAndModuleVariables()
 	InfobaseObjectMappingQuery = New Query;
 	InfobaseObjectMappingQuery.Text = "
 	|SELECT TOP 1
-	| InfobaseObjectMaps.SourceUUIDString AS SourceUUIDString
+	| InfobaseObjectMappings.SourceUUIDString AS SourceUUIDString
 	|FROM
-	| InformationRegister.InfobaseObjectMaps AS InfobaseObjectMaps
+	| InformationRegister.InfobaseObjectMappings AS InfobaseObjectMappings
 	|WHERE
-	|   InfobaseObjectMaps.InfobaseNode = &InfobaseNode
-	| AND InfobaseObjectMaps.TargetUUID = &TargetUUID
-	| AND InfobaseObjectMaps.TargetType = &TargetType
-	| AND InfobaseObjectMaps.SourceType = &SourceType
+	|   InfobaseObjectMappings.InfobaseNode = &InfobaseNode
+	| AND InfobaseObjectMappings.TargetUUID = &TargetUUID
+	| AND InfobaseObjectMappings.TargetType = &TargetType
+	| AND InfobaseObjectMappings.SourceType = &SourceType
 	|";
 	
 	

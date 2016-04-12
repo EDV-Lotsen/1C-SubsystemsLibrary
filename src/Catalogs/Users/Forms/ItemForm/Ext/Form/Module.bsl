@@ -118,7 +118,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	SetPrivilegedMode(False);
 	
 	ProcessRolesInterface("SetUpRoleInterfaceOnFormCreate", InfobaseUserExists);
-	InitialInfobaseUserDetails = InitialInfobaseUserDetails();
+	InitialInfobaseUserDescription = InitialInfobaseUserDescription();
 	SynchronizationWithServiceRequired = Object.Ref.IsEmpty();
 	
 	If CommonUse.SubsystemExists("StandardSubsystems.ContactInformation") Then
@@ -636,7 +636,8 @@ Procedure RolesCheckOnChange(Item)
 	If Items.Roles.CurrentData <> Undefined Then
 		ProcessRolesInterface("UpdateRoleContent");
 		
-		If Items.Roles.CurrentData.Name = "FullAccess" Then
+		If Items.Roles.CurrentData <> Undefined 
+		   And Items.Roles.CurrentData.Name = "FullAccess" Then
 			SetSynchronizationWithServiceNecessity(ThisObject);
 		EndIf;
 	EndIf;
@@ -743,7 +744,7 @@ EndProcedure
 &AtServer
 Procedure GeneralFormSetup(OnCreateAtServer = False, WriteParameters = Undefined)
 	
-	If InitialInfobaseUserDetails = Undefined Then
+	If InitialInfobaseUserDescription = Undefined Then
 		Return; // OnReadAtServer before OnCreateAtServer
 	EndIf;
 	
@@ -1163,7 +1164,7 @@ EndFunction
 // Processing infobase user
  
 &AtServer
-Function InitialInfobaseUserDetails()
+Function InitialInfobaseUserDescription()
 	
 	SetPrivilegedMode(True);
 	
@@ -1192,7 +1193,7 @@ Procedure ReadInfobaseUser(OnCopyItem = False)
 	Password             = "";
 	PasswordConfirmation = "";
 	ReadProperties       = Undefined;
-	InfobaseUserDescription  = InitialInfobaseUserDetails();
+	InfobaseUserDescription  = InitialInfobaseUserDescription();
 	InfobaseUserExists   = False;
 	InfobaseUserMain     = False;
 	CanLogOnToApplication = False;
@@ -1449,12 +1450,12 @@ Procedure SetPropertyEnabled(Form)
 				CIItem.ReadOnly = Not Object.Ref.IsEmpty();
 				
 				CIItem.ChoiceButton = Not Object.Ref.IsEmpty()
-					And CITypeActions.Update;
+					And CITypeActions.Change;
 					
 				EmailFilled = ValueIsFilled(Form[CIRow.AttributeName]);
 			Else
 				CIItem.ReadOnly = CIItem.ReadOnly
-					Or Not CITypeActions.Update;
+					Or Not CITypeActions.Change;
 			EndIf;
 		EndDo;
 		
@@ -1498,7 +1499,7 @@ Function InfobaseUserWriteRequired(Form, UseStandartName = True)
 		Return False;
 	EndIf;
 	
-	Template = Form.InitialInfobaseUserDetails;
+	Template = Form.InitialInfobaseUserDescription;
 	
 	CurrentName = "";
 	If Not UseStandartName Then

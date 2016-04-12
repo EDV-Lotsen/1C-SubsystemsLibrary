@@ -68,7 +68,7 @@ Procedure AfterStart() Export
 	LockMode = RunParameters.SessionLockParameters;
 	CurrentTime = LockMode.CurrentSessionDate;
 	If LockMode.Use 
-		 And (Not ValueIsFilled(LockMode.Beginning) Or CurrentTime >= LockMode.Beginning) 
+		 And (Not ValueIsFilled(LockMode.Begin) Or CurrentTime >= LockMode.Begin) 
 		 And (Not ValueIsFilled(LockMode.End) Or CurrentTime <= LockMode.End) Then
 		// If the user logged on to a locked infobase, they must have used the /UC key.
 		// Sessions by these users should not be terminated.

@@ -170,7 +170,7 @@ Procedure Back(Command)
 	
 	If Items.WizardPages.CurrentPage = Items.FillTableWithData Then
 		Items.WizardPages.CurrentPage = Items.SelectCatalogForImport;
-		Items.Back.Visibility = False;
+		Items.Back.Visible = False;
 		ClearTable();
 	ElsIf Items.WizardPages.CurrentPage = Items.DataToImportMapping Or Items.WizardPages.CurrentPage = Items.NotFound Then
 		Items.WizardPages.CurrentPage = Items.FillTableWithData; 
@@ -237,7 +237,7 @@ Function SpreadsheetDocumentDeleteAnnotations()
 	For Index = 1 To TemplateWithData.TableWidth Do 
 		Cell = SpreadsheetDocumentToSave.GetArea(1, Index, 1, Index).CurrentArea;
 		Cell.Comment = Undefined;
-		Cell.BgColor = New Color();
+		Cell.BackColor = New Color();
 	EndDo;
 	
 	AddressInTempStorage = PutToTempStorage(SpreadsheetDocumentToSave);
@@ -606,8 +606,8 @@ Procedure ExecuteDataToImportMappingStepAtServer(BackgroundJob = False)
 		ServerCallParameters = New Structure();
 		ServerCallParameters.Insert("TemplateWithData", TemplateWithData);
 		ServerCallParameters.Insert("MappingTable", MappingTable);
-		InformationByColumnTable = FormAttributeToValue("InformationByColumns");
-		ServerCallParameters.Insert("InformationByColumns", InformationByColumnTable);
+		ColumnInfoTable = FormAttributeToValue("ColumnInfo");
+		ServerCallParameters.Insert("ColumnInfo", ColumnInfoTable);
 		
 		BackgroundJobResult = LongActions.ExecuteInBackground(UUID, 
 		"DataProcessors.DataImportFromFile.FillMappingTableWithDataFromTemplateBackground",
@@ -1091,8 +1091,8 @@ Procedure SaveDataToImportReport(BackgroundJob = False)
 		ServerCallParameters.Insert("MappedData", MappedData);
 		ServerCallParameters.Insert("ImportParameters", ImportParameters);
 		ServerCallParameters.Insert("MappingObjectName", MappingObjectName);
-		InformationByColumnTable = FormAttributeToValue("InformationByColumns");
-		ServerCallParameters.Insert("InformationByColumns", InformationByColumnTable);
+		ColumnInfoTable = FormAttributeToValue("ColumnInfo");
+		ServerCallParameters.Insert("ColumnInfo", ColumnInfoTable);
 		
 		BackgroundJobResult = LongActions.ExecuteInBackground(UUID, 
 				"DataProcessors.DataImportFromFile.WriteMappedData",
@@ -1152,7 +1152,7 @@ Procedure ClearTable()
 	MappingTableAttributes = ThisObject.GetAttributes("DataMappingTable");
 	AttributePathArray = New Array;
 	For Each TableAttribute In MappingTableAttributes Do
-		AttributePathArray.Add("DataMappingTable" + TableAttribute.Name);
+		AttributePathArray.Add("DataMappingTable." + TableAttribute.Name);
 	EndDo;
 	If AttributePathArray.Count() > 0 Then
 		ChangeAttributes(,AttributePathArray);
@@ -1513,26 +1513,26 @@ Function UnfilledColumnsList()
 		Cell = Header.GetArea(1, ColumnNumber, 1, ColumnNumber);
 		ColumnName = TrimAll(Cell.CurrentArea.Text);
 		
-		ColumnInfo = Undefined;
+		SingleColumnInfo = Undefined;
 		Filter = New Structure("ColumnPresentation", ColumnName);
 		ColumnFilter = ColumnInfo.FindRows(Filter);
 		
 		If ColumnFilter.Count() > 0 Then
-			ColumnInfo = ColumnFilter[0];
+			SingleColumnInfo = ColumnFilter[0];
 		Else
 			Filter = New Structure("ColumnName", ColumnName);
 			ColumnFilter = ColumnInfo.FindRows(Filter);	
 			
 			If ColumnFilter.Count() > 0 Then
-				ColumnInfo = ColumnFilter[0];
+				SingleColumnInfo = ColumnFilter[0];
 			EndIf;
 		EndIf;
-		If ColumnInfo <> Undefined Then
-			If ColumnInfo.MandatoryForFilling Then 
+		If SingleColumnInfo <> Undefined Then
+			If SingleColumnInfo.MandatoryForFilling Then 
 				For LineNumber = 2 To TemplateWithData.TableHeight Do 
 					Cell = TemplateWithData.GetArea(LineNumber, ColumnNumber, LineNumber, ColumnNumber);
 					If Not ValueIsFilled(Cell.CurrentArea.Text) Then
-						ColumnNameWithoutData.Add(ColumnInfo.ColumnPresentation);
+						ColumnNameWithoutData.Add(SingleColumnInfo.ColumnPresentation);
 						Break;
 					EndIf;
 				EndDo;
@@ -1632,8 +1632,8 @@ Procedure GenerateReportOnImporting(ReportType = "AllItems", BackgroundJob = Fal
 	ServerCallParameters.Insert("MappedData", MappedData);
 	ServerCallParameters.Insert("TemplateWithData", TemplateWithData);
 	ServerCallParameters.Insert("MappingObjectName", MappingObjectName);
-	InformationByColumnTable = FormAttributeToValue("InformationByColumns");
-	ServerCallParameters.Insert("InformationByColumns", InformationByColumnTable);
+	ColumnInfoTable = FormAttributeToValue("ColumnInfo");
+	ServerCallParameters.Insert("ColumnInfo", ColumnInfoTable);
 	
 	
 	If CommonUse.FileInfobase() Then
@@ -1888,7 +1888,7 @@ Procedure CreateMappingTableForColumnInfo()
 		EndIf;
 		If Column.Name = "MappingObject" Then 
 			NewItem.FixingInTable = FixingInTable.Left;
-			NewItem.BgColor = StyleColors.MasterFieldBackground;
+			NewItem.BackColor = StyleColors.MasterFieldBackground;
 			NewItem.HeaderPicture = PictureLib.Change;
 			NewItem.ReadOnly = False;
 			NewItem.EditMode =  ColumnEditMode.Directly;
@@ -2112,14 +2112,14 @@ Procedure ShowCompareStatisticsImportFromFile()
 	
 	AllText = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'All (%1)'"), Statistics.Total);
 	
-	Items.CreateIfNotMapped.Title = NStr("en = 'Unmapped ('") + Statistics.NotMapped + ")";
+	Items.CreateIfNotMapped.Title = NStr("en = 'Unmapped ('") + Statistics.Unmapped + ")";
 	Items.UpdateExisting.Title = NStr("en = 'Mapped ('") + String(Statistics.Mapped) + ")";
 	
 	ChoiceList = Items.MappingTableFilter.ChoiceList;
 	ChoiceList.Clear();
 	ChoiceList.Add("All", AllText, True);
 	ChoiceList.Add("Unmapped", StringFunctionsClientServer.SubstituteParametersInString(
-	NStr("en = 'Unmapped (%1)'"), Statistics.NotMapped));
+	NStr("en = 'Unmapped (%1)'"), Statistics.Unmapped));
 	ChoiceList.Add("Mapped", StringFunctionsClientServer.SubstituteParametersInString(
 	NStr("en = 'Mapped (%1)'"), Statistics.Mapped));
 	ChoiceList.Add("Conflicting", StringFunctionsClientServer.SubstituteParametersInString(
@@ -2239,7 +2239,7 @@ Procedure GetPathToFileStartChoice(DialogMode, PathToFile, FileName = "")
 	FileDialog.Filter                      = NStr("en='Excel 2007 Workbook (*.xlsx)|*.xlsx|CSV (comma delimited) (*.csv)  |*.csv|Spreadsheet document(*.mxl)|*.mxl'");
 	FileDialog.Title                       = Title;
 	FileDialog.Preview                     = False;
-	FileDialog.Extension                   = "csv";
+	FileDialog.DefaultExt                  = "csv";
 	FileDialog.FilterIndex                 = 0;
 	FileDialog.FullFileName                = FileName;
 	FileDialog.CheckFileExist = False;
@@ -2262,8 +2262,8 @@ Procedure ImportFileWithDataToSpreadsheetDocumentAtServer(TempStorageAddress, Ex
 	ServerCallParameters.Insert("Extension", Extension);
 	ServerCallParameters.Insert("TemplateWithData", TemplateWithData);
 	ServerCallParameters.Insert("TempFileName", TempFileName);
-	InformationByColumnTable = FormAttributeToValue("InformationByColumns");
-	ServerCallParameters.Insert("InformationByColumns", InformationByColumnTable);
+	ColumnInfoTable = FormAttributeToValue("ColumnInfo");
+	ServerCallParameters.Insert("ColumnInfo", ColumnInfoTable);
 	
 	If CommonUse.FileInfobase() Then
 		DataProcessors.DataImportFromFile.ImportFileToTable(ServerCallParameters, TempStorageAddress);

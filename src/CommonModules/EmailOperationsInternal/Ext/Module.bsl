@@ -824,7 +824,7 @@ Procedure CheckCanSendReceiveEmail(Account, PasswordParameter, ErrorMessage, Add
 			CheckIfCanSendTestEmail(Account, PasswordParameter);
 		Except
 			ErrorMessage = StringFunctionsClientServer.SubstituteParametersInString(
-									NStr("en = 'Error sending email message: % 1'"),
+									NStr("en = 'Error sending email message: %1'"),
 									BriefErrorDescription(ErrorInfo()) );
 		EndTry;
 		If Not AccountSettings.UseForReceiving Then

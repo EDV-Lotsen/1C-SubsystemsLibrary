@@ -18,7 +18,7 @@ Procedure SessionTerminationModeManagement() Export
 		Return;
 	EndIf;
 		
-	LockBeginTime = CurrentMode.Beginning;
+	LockBeginTime = CurrentMode.Begin;
 	LockEndTime = CurrentMode.End;
 	
 	// Values of ExitWithConfirmationTimeout and StopTimeout are negative.
@@ -74,7 +74,7 @@ Procedure TerminateSessions() Export
 	// Getting the current lock parameter values
 	CurrentMode = InfobaseConnectionsServerCall.SessionLockParameters(True);
 	
-	LockBeginTime = CurrentMode.Beginning;
+	LockBeginTime = CurrentMode.Begin;
 	LockEndTime = CurrentMode.End;
 	CurrentTime = CurrentMode.CurrentSessionDate;
 	

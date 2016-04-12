@@ -789,12 +789,12 @@ Procedure ImportParametersFromInitialImage()
 		Roles.Add("FullAdministrator");
 		Roles.Add("FullAccess");
 		
-		InfobaseUserDetails = New Structure;
-		InfobaseUserDetails.Insert("Action",                 "Write");
-		InfobaseUserDetails.Insert("Name",                   Parameters.OwnerName);
-		InfobaseUserDetails.Insert("Roles",                  Roles);
-		InfobaseUserDetails.Insert("StandardAuthentication", True);
-		InfobaseUserDetails.Insert("ShowInList",             True);
+		InfobaseUserDescription = New Structure;
+		InfobaseUserDescription.Insert("Action",                 "Write");
+		InfobaseUserDescription.Insert("Name",                   Parameters.OwnerName);
+		InfobaseUserDescription.Insert("Roles",                  Roles);
+		InfobaseUserDescription.Insert("StandardAuthentication", True);
+		InfobaseUserDescription.Insert("ShowInList",             True);
 		
 		User = Catalogs.Users.GetRef(New UUID(Parameters.Owner)).GetObject();
 		
@@ -807,7 +807,7 @@ Procedure ImportParametersFromInitialImage()
 		SetUserPasswordStrengthCheck(False);
 		
 		User.Internal = False;
-		User.AdditionalProperties.Insert("InfobaseUserDetails", InfobaseUserDetails);
+		User.AdditionalProperties.Insert("InfobaseUserDescription", InfobaseUserDescription);
 		User.Write();
 		
 		ExchangePlans.DeleteChangeRecords(ApplicationNodeSaaS.Ref);

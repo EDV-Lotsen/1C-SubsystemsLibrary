@@ -474,7 +474,7 @@ Procedure ScheduleDataAreaUpdate(Val LockAreas = True, Val LockMessage = "") Exp
 		EndIf;
 	EndIf;
 	LockParameters = InfobaseConnections.NewConnectionLockParameters();
-	LockParameters.Beginning = CurrentUniversalDate();
+	LockParameters.Begin = CurrentUniversalDate();
 	LockParameters.Message = LockMessage;
 	LockParameters.Use = True;
 	LockParameters.Exclusive = True;

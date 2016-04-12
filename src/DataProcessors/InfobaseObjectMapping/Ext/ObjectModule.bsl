@@ -579,7 +579,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|	#CUSTOM_FIELDS_MappingTable#
 	|	
-	|	#FIELD_ORDER_Receiver#
+	|	#ORDER_FIELD_Target#
 	|	
 	|	Ref,
 	|	0 AS MappingStatus,           // mapped objects (0)
@@ -602,7 +602,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|		InfobaseObjectMappings.SourceUUID AS Ref,
 	|		
 	|		#SourceTableIsFolder#             AS IsFolderSource,
-	|		#InfobaseObjectMappingsIsFolder#  AS IsFolderTarget,
+	|		#InfobaseObjectMapsIsFolder#  AS IsFolderTarget,
 	|	
 	|		// {MAPPING REGISTER DATA}
 	|		InfobaseObjectMappings.SourceUUID AS TargetUUID,
@@ -626,7 +626,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|	#CUSTOM_FIELDS_MappingTable#
 	|	
-	|	#FIELD_ORDER_Receiver#
+	|	#ORDER_FIELD_Target#
 	|	
 	|	Ref,
 	|	0 AS MappingStatus,           // mapped objects (0)
@@ -679,7 +679,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|	#CUSTOM_FIELDS_MappingTable#
 	|	
-	|	#FIELD_ORDER_Receiver#
+	|	#ORDER_FIELD_Target#
 	|	
 	|	Ref,
 	|	3 AS MappingStatus,           // unapproved mappings (3)
@@ -840,7 +840,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|	#CUSTOM_FIELDS_MappingTable#
 	|	
-	|	#FIELD_ORDER_Source#
+	|	#ORDER_FIELD_Source#
 	|	
 	|	-1 AS MappingStatus,           // unmapped source objects (-1)
 	|	 1 AS MappingStatusAdditional, // unmapped objects (1)
@@ -904,7 +904,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|	#CUSTOM_FIELDS_MappingTable#
 	|	
-	|	#FIELD_ORDER_Receiver#
+	|	#ORDER_FIELD_Target#
 	|	
 	|	1 AS MappingStatus,           // unmapped target objects (1)
 	|	1 AS MappingStatusAdditional, // unmapped objects (1)
@@ -939,7 +939,7 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|	
 	|		TargetTable.Ref AS Ref,
 	|	
-	|		#CUSTOM_FIELDS_UnmappedTargetObjectTable_NestedQuery#
+	|		#CUSTOM_FIELDS_UnmappedTargetObjectTableByFields_NestedQuery#
 	|		
 	|		NULL                  AS IsFolderSource,
 	|		#TargetTableIsFolder# AS IsFolderTarget,
@@ -949,21 +949,6 @@ Procedure GetObjectMappingTables(SourceTable, UserFields, TempTablesManager)
 	|		Undefined             AS SourceUUID,
 	|		Undefined             AS SourceType,
 	|		&TargetType           AS TargetType
-	|	FROM
-	|		#TargetTable# AS TargetTable
-	|	LEFT JOIN
-	|		MappedObjectTable AS MappedObjectTable
-	|	ON
-	|		TargetTable.Ref = MappedObjectTable.Ref
-	|	WHERE
-	|		MappedObjectTable.Ref IS NULL
-	|	) AS NestedQuery
-	|;
-	|
-	|		TargetTable.Ref AS TargetUUID,
-	|		Undefined       AS SourceUUID,
-	|		Undefined       AS SourceType,
-	|		&TargetType     AS TargetType
 	|	FROM
 	|		#TargetTable# AS TargetTable
 	|	LEFT JOIN
@@ -1153,7 +1138,7 @@ Procedure GetAutomaticMappingByGUIDAndSearchFieldTable(SourceTable, MappingField
 	|		UnmappedSourceObjectTable.SourcePictureIndex,
 	|		
 	|		// {MAPPING REGISTER DATA}
-	|		UnmappedSourceObjectTable.SourceUUID AS SourceUU
+	|		UnmappedSourceObjectTable.SourceUUID AS SourceUUID,
 	|		UnmappedSourceObjectTable.SourceType AS SourceType,
 	|		UnmappedTargetObjectTable.TargetUUID AS TargetUUID,
 	|		UnmappedTargetObjectTable.TargetType AS TargetType
@@ -1248,7 +1233,7 @@ Procedure GetAutomaticMappingByGUIDAndSearchFieldTable(SourceTable, MappingField
 	|	LEFT JOIN
 	|		UnmappedSourceObjectTableByFields AS UnmappedSourceObjectTableByFields
 	|	ON
-	|		#CONDITION_MAPPING_ON_FIELDS#
+	|		#MAPPING_BY_FIELDS_CONDITION#
 	|	
 	|	WHERE
 	|		Not UnmappedSourceObjectTableByFields.SourceUUID IS NULL
@@ -1532,15 +1517,6 @@ Function MergeUnapprovedMappingTableAndAutomaticMappingTable(TempTablesManager)
 	|	SELECT
 	|
 	|		// {MAPPING REGISTER DATA}
-	|		TargetUUID AS SourceUUID,
-	|		SourceUUID AS TargetUUID,
-	|		TargetType AS SourceType,
-	|		SourceType AS TargetType
-	|	FROM 
-	|		AutomaticallyMappedObjectTable
-	|
-	|	) AS NestedQuery
-	|
 	|		TargetUUID AS SourceUUID,
 	|		SourceUUID AS TargetUUID,
 	|		TargetType AS SourceType,

@@ -841,8 +841,8 @@ Function InitializeComposer(MetadataNameList=Undefined, LimitUsingWithFilter=Fal
 			Set.Name = SetName;
 			Set.Query = "
 				|SELECT DISTINCT ALLOWED
-				|	" + SetName + "_Changes.Ref         AS
-				|	RegistrationObject TYPE(" + FullMetadataName + ") AS RegistrationObjectType,
+				|	" + SetName + "_Changes.Ref AS RegistrationObject,
+				|	TYPE(" + FullMetadataName + ") AS RegistrationObjectType,
 				|	&RegistrationReasonAutomatically AS RegistrationReason
 				|FROM
 				|	" + FullMetadataName + ".Changes AS " + SetName + "_Changes
@@ -859,7 +859,7 @@ Function InitializeComposer(MetadataNameList=Undefined, LimitUsingWithFilter=Fal
 			Set.Name = SetName;
 			Set.Query = "
 				|SELECT ALLOWED
-				|	TYPE(" + FullMetadataName + ")     AS Type,
+				|	TYPE(" + FullMetadataName + ") AS Type,
 				|	COUNT(" + SetName + ".Ref)
 				|AS TotalCount FROM
 				|	" + FullMetadataName + " AS " + SetName + "
@@ -943,19 +943,19 @@ Function InitializeComposer(MetadataNameList=Undefined, LimitUsingWithFilter=Fal
 	If LimitUsingWithFilter Then
 		Fields = CompositionSchema.DataSets.ChangeRegistration.Fields;
 		Restriction = Fields.Find("RegistrationObjectType").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 		Restriction = Fields.Find("RegistrationReason").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 		
 		Fields = CompositionSchema.DataSets.MetadataTableNodeContent.Fields;
 		Restriction = Fields.Find("ListPresentation").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 		Restriction = Fields.Find("Presentation").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 		Restriction = Fields.Find("FullMetadataName").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 		Restriction = Fields.Find("Periodical").UseRestriction;
-		Restriction.Where = True;
+		Restriction.Condition = True;
 	EndIf;
 	
 	SettingsComposer = New DataCompositionSettingsComposer;

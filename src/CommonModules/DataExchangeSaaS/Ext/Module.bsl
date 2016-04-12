@@ -94,8 +94,8 @@ Procedure SetDataChangeFlag() Export
  
  BeginTransaction();
  Try
-  MessageExchange.SendMessage("DataExchange\ManagementApplication\DataChangeFlag",
-      New Structure("NodeCode", DataExchangeServer.ExchangePlanNodeCodeString(DataArea)),
+  MessageExchange.SendMessage(MessageExchangeInternal.ConvertBackExchangePlanMessageData("DataExchange\ManagementApplication\DataChangeFlag"),
+      New Structure(MessageExchangeInternal.ConvertBackExchangePlanMessageData("NodeCode"), DataExchangeServer.ExchangePlanNodeCodeString(DataArea)),
       SaaSOperationsCached.ServiceManagerEndpoint());
   
   Constants.DataChangesRecorded.Set(True);
@@ -824,72 +824,72 @@ EndProcedure
 // DataExchangeScenario - ValueTable.
 //
 Procedure ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex, DataExchangeScenario) Export
- 
- SetPrivilegedMode(True);
- 
- If ScenarioRowIndex > DataExchangeScenario.Count() - 1 Then
-  Return; // Ending script execution
- EndIf;
- 
- ScenarioString = DataExchangeScenario[ScenarioRowIndex];
- 
- If ScenarioString.InfobaseNumber = 1 Then
-  
-  InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.InfobaseNodeCode);
-  
-  If ScenarioString.CurrentAction = "DataImport" Then
-   
-   ExecuteDataImport(False, InfobaseNode);
-   
-  ElsIf ScenarioString.CurrentAction = "DataExport" Then
-   
-   ExecuteDataExport(False, InfobaseNode);
-   
-  Else
-   Raise StringFunctionsClientServer.SubstituteParametersInString(
-    NStr("en = 'Unknown action (%1) is detected during data exchange between data areas.'"),
-    ScenarioString.CurrentAction);
-  EndIf;
-  
-  // Going to the next scenario step
-  ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
-  
- ElsIf ScenarioString.InfobaseNumber = 2 Then
-  
-  InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.ThisNodeCode);
-  
-  CorrespondentVersions = CorrespondentVersions(InfobaseNode);
-  
-  If CorrespondentVersions.Find("2.0.1.6") <> Undefined Then
-   
-   WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy_2_0_1_6(InfobaseNode);
-   
-   If WSProxy = Undefined Then
-    
-    // Going to the next scenario step
-    ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
-    Return;
-   EndIf;
-   
-   WSProxy.ExecuteDataExchangeScriptActionInSecondInfobase(ScenarioRowIndex, XDTOSerializer.WriteXDTO(DataExchangeScenario));
-   
-  Else
-   
-   WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy(InfobaseNode);
-   
-   If WSProxy = Undefined Then
-    
-    // Going to the next scenario step
-    ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
-    Return;
-   EndIf;
-   
-   WSProxy.ExecuteDataExchangeScriptActionInSecondInfobase(ScenarioRowIndex, ValueToStringInternal(DataExchangeScenario));
-   
-  EndIf;
-  
- EndIf;
- 
+	
+	SetPrivilegedMode(True);
+	
+	If ScenarioRowIndex > DataExchangeScenario.Count() - 1 Then
+		Return; // Ending script execution
+	EndIf;
+	
+	ScenarioString = DataExchangeScenario[ScenarioRowIndex];
+	
+	If ScenarioString.InfobaseNumber = 1 Then
+		
+		InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.InfobaseNodeCode);
+		
+		If ScenarioString.CurrentAction = "DataImport" Then
+			
+			ExecuteDataImport(False, InfobaseNode);
+			
+		ElsIf ScenarioString.CurrentAction = "DataExport" Then
+			
+			ExecuteDataExport(False, InfobaseNode);
+			
+		Else
+			Raise StringFunctionsClientServer.SubstituteParametersInString(
+			NStr("en = 'Unknown action (%1) is detected during data exchange between data areas.'"),
+			ScenarioString.CurrentAction);
+		EndIf;
+		
+		// Going to the next scenario step
+		ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
+		
+	ElsIf ScenarioString.InfobaseNumber = 2 Then
+		
+		InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.ThisNodeCode);
+		
+		CorrespondentVersions = CorrespondentVersions(InfobaseNode);
+		
+		If CorrespondentVersions.Find("2.0.1.6") <> Undefined Then
+			
+			WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy_2_0_1_6(InfobaseNode);
+			
+			If WSProxy = Undefined Then
+				
+				// Going to the next scenario step
+				ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
+				Return;
+			EndIf;
+			
+			WSProxy.ExecuteDataExchangeScriptActionInSecondInfobase(ScenarioRowIndex, XDTOSerializer.WriteXDTO(DataExchangeScenario));
+			
+		Else
+			
+			WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy(InfobaseNode);
+			
+			If WSProxy = Undefined Then
+				
+				// Going to the next scenario step
+				ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex + 1, DataExchangeScenario);
+				Return;
+			EndIf;
+			
+			WSProxy.ExecuteDataExchangeScriptActionInSecondInfobase(ScenarioRowIndex, ValueToStringInternal(DataExchangeScenario));
+			
+		EndIf;
+		
+	EndIf;
+	
 EndProcedure
  
 // Executes the exchange script action that is specified in a table row for the second infobase.
@@ -899,65 +899,65 @@ EndProcedure
 // DataExchangeScenario - ValueTable.
 //
 Procedure ExecuteDataExchangeScenarioActionInSecondInfobase(ScenarioRowIndex, DataExchangeScenario) Export
- 
- SetPrivilegedMode(True);
- 
- ScenarioString = DataExchangeScenario[ScenarioRowIndex];
- 
- InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.InfobaseNodeCode);
- 
- If ScenarioString.ExecutionOrderNumber = 1 Then
-  // Resetting the data change accumulation flag
-  Constants.DataChangesRecorded.Set(False);
- EndIf;
- 
- If ScenarioString.CurrentAction = "DataImport" Then
-  
-  ExecuteDataImport(False, InfobaseNode);
-  
- ElsIf ScenarioString.CurrentAction = "DataExport" Then
-  
-  ExecuteDataExport(False, InfobaseNode);
-  
- Else
-  Raise StringFunctionsClientServer.SubstituteParametersInString(
-   NStr("en = 'Unknown action (%1) is detected during data exchange between data areas.'"),
-   ScenarioString.CurrentAction);
- EndIf;
- 
- // Ending script execution
- If ScenarioRowIndex = DataExchangeScenario.Count() - 1 Then
-  
-  // Sending a message about the exchange completion to the managing application
-  WSServiceProxy = DataExchangeSaaSCached.GetExchangeServiceWSProxy();
-  WSServiceProxy.CommitExchange(XDTOSerializer.WriteXDTO(DataExchangeScenario));
-  Return;
- EndIf;
- 
- CorrespondentVersions = CorrespondentVersions(InfobaseNode);
- 
- If CorrespondentVersions.Find("2.0.1.6") <> Undefined Then
-  
-  WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy_2_0_1_6(InfobaseNode);
-  
-  If WSProxy <> Undefined Then
-   
-   WSProxy.ExecuteDataExchangeScriptActionInFirstInfobase(ScenarioRowIndex + 1, XDTOSerializer.WriteXDTO(DataExchangeScenario));
-   
-  EndIf;
-  
- Else
-  
-  WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy(InfobaseNode);
-  
-  If WSProxy <> Undefined Then
-   
-   WSProxy.ExecuteDataExchangeScriptActionInFirstInfobase(ScenarioRowIndex + 1, ValueToStringInternal(DataExchangeScenario));
-   
-  EndIf;
-  
- EndIf;
- 
+	
+	SetPrivilegedMode(True);
+	
+	ScenarioString = DataExchangeScenario[ScenarioRowIndex];
+	
+	InfobaseNode = FindInfobaseNode(ScenarioString.ExchangePlanName, ScenarioString.InfobaseNodeCode);
+	
+	If ScenarioString.ExecutionOrderNumber = 1 Then
+		// Resetting the data change accumulation flag
+		Constants.DataChangesRecorded.Set(False);
+	EndIf;
+	
+	If ScenarioString.CurrentAction = "DataImport" Then
+		
+		ExecuteDataImport(False, InfobaseNode);
+		
+	ElsIf ScenarioString.CurrentAction = "DataExport" Then
+		
+		ExecuteDataExport(False, InfobaseNode);
+		
+	Else
+		Raise StringFunctionsClientServer.SubstituteParametersInString(
+		NStr("en = 'Unknown action (%1) is detected during data exchange between data areas.'"),
+		ScenarioString.CurrentAction);
+	EndIf;
+	
+	// Ending script execution
+	If ScenarioRowIndex = DataExchangeScenario.Count() - 1 Then
+		
+		// Sending a message about the exchange completion to the managing application
+		WSServiceProxy = DataExchangeSaaSCached.GetExchangeServiceWSProxy();
+		WSServiceProxy.CommitExchange(XDTOSerializer.WriteXDTO(MessageExchangeInternal.ConvertBackDataExchangeScenarioValueTable(DataExchangeScenario)));
+		Return;
+	EndIf;
+	
+	CorrespondentVersions = CorrespondentVersions(InfobaseNode);
+	
+	If CorrespondentVersions.Find("2.0.1.6") <> Undefined Then
+		
+		WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy_2_0_1_6(InfobaseNode);
+		
+		If WSProxy <> Undefined Then
+			
+			WSProxy.ExecuteDataExchangeScriptActionInFirstInfobase(ScenarioRowIndex + 1, XDTOSerializer.WriteXDTO(DataExchangeScenario));
+			
+		EndIf;
+		
+	Else
+		
+		WSProxy = DataExchangeSaaSCached.GetCorrespondentWSProxy(InfobaseNode);
+		
+		If WSProxy <> Undefined Then
+			
+			WSProxy.ExecuteDataExchangeScriptActionInFirstInfobase(ScenarioRowIndex + 1, ValueToStringInternal(DataExchangeScenario));
+			
+		EndIf;
+		
+	EndIf;
+	
 EndProcedure
  
 // Checks whether the exchange is locked to determine whether it is being executed. 

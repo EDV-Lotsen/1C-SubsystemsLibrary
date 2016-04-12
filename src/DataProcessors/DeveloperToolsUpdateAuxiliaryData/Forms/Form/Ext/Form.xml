@@ -47,12 +47,12 @@
 			<ShowTitle>false</ShowTitle>
 			<ExtendedTooltip name="HorizontalGroup6ExtendedTooltip" id="149"/>
 			<ChildItems>
-				<Button name="Refresh" id="56">
+				<Button name="Update" id="56">
 					<Type>UsualButton</Type>
 					<DefaultButton>true</DefaultButton>
 					<DefaultItem>true</DefaultItem>
-					<CommandName>Form.Command.Refresh</CommandName>
-					<ExtendedTooltip name="RefreshExtendedTooltip" id="150"/>
+					<CommandName>Form.Command.Update</CommandName>
+					<ExtendedTooltip name="UpdateExtendedTooltip" id="150"/>
 				</Button>
 				<InputField name="DataArea" id="114">
 					<DataPath>DataArea</DataPath>
@@ -1166,17 +1166,17 @@ Depend on configuration, access values, and access value groups.</v8:content>
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="Refresh" id="2">
+		<Command name="Update" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Refresh</v8:content>
+					<v8:content>Update</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Refresh</v8:content>
+					<v8:content>Update</v8:content>
 				</v8:item>
 			</ToolTip>
 			<Action>Update</Action>

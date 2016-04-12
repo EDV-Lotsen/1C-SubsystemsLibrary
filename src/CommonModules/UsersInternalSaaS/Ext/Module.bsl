@@ -282,14 +282,14 @@ Procedure OnCompleteInfobaseUserProcessing(UserObject, ProcessingParameters, Upd
 		UpdateRoles = False;
 	EndIf;
 	
-	InfobaseUserDetails = UserObject.AdditionalProperties.InfobaseUserDetails;
+	InfobaseUserDescription = UserObject.AdditionalProperties.InfobaseUserDescription;
 	
 	If CommonUseCached.DataSeparationEnabled()
 	   And TypeOf(UserObject) = Type("CatalogObject.Users")
-	   And InfobaseUserDetails.Property("ActionResult")
+	   And InfobaseUserDescription.Property("ActionResult")
 	   And NOT UserObject.Internal Then
 		
-		If InfobaseUserDetails.ActionResult = "InfobaseUserDeleted" Then
+		If InfobaseUserDescription.ActionResult = "InfobaseUserDeleted" Then
 			
 			SetPrivilegedMode(True);
 			CancelSaaSUserAccess(UserObject);

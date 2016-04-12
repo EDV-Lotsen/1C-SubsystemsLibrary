@@ -26,11 +26,11 @@ Procedure BeforeWrite(Cancel, Replacing)
 			
 		EndIf;
 		
-		For Each Write In ThisObject Do
+		For Each Record In ThisObject Do
 			
 			Data = CommonUse.PrepareVersionCacheData(
-				Write.DataType, ReceivingParameters);
-			Write.Data = New ValueStorage(Data);
+				Record.DataType, ReceivingParameters);
+			Record.Data = New ValueStorage(Data);
 			
 		EndDo;
 		
@@ -52,10 +52,10 @@ Procedure OnWrite(Cancel, Replacing)
 	
 	If VerificationRequired Then
 		
-		For Each Write In ThisObject Do
+		For Each Record In ThisObject Do
 			
 			VerificationRows = VerificationTable.FindRows(
-				New Structure("ID, DataType", Write.ID, Write.DataType));
+				New Structure("ID, DataType", Record.ID, Record.DataType));
 			
 			If VerificationRows.Count() <> 1 Then
 				VerificationError();
@@ -63,7 +63,7 @@ Procedure OnWrite(Cancel, Replacing)
 				
 				VerificationRow = VerificationRows.Get(0);
 				
-				CurrentData = CommonUse.ValueToXMLString(Write.Data.Get());
+				CurrentData = CommonUse.ValueToXMLString(Record.Data.Get());
 				VerificationData = CommonUse.ValueToXMLString(VerificationRow.Data.Get());
 				
 				If CurrentData <> VerificationData Then

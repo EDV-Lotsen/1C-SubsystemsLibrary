@@ -435,7 +435,7 @@ Procedure TranslateMessageToCorrespondentVersionIfNecessary(Message, Val Connect
 	If MessageInterface = Undefined Then
 		Raise NStr("en = 'Cannot determine the sent message interface: no interface handlers are registered for any of the types used in the message.'");
 	EndIf;
-	
+		
 	If Not ConnectionInformation.Property("URL") 
 			Or Not ValueIsFilled(ConnectionInformation.URL) Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
@@ -444,7 +444,7 @@ Procedure TranslateMessageToCorrespondentVersionIfNecessary(Message, Val Connect
 	
 	CorrespondentVersion = MessageInterfacesSaaS.CorrespondentInterfaceVersion(
 			MessageInterface.Interface, ConnectionInformation, RecipientPresentation);
-	
+			
 	If CorrespondentVersion = Undefined Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Correspondent %1 does not support receiving interface %2 message versions supported by the current infobase.'"),

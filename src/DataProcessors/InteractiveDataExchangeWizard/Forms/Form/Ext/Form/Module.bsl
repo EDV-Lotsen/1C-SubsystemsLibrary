@@ -1157,7 +1157,7 @@ Procedure ExecuteLongActionHandler()
 	// LongActionProcessing handler
 	If Not IsBlankString(GoToRowCurrent.LongActionHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, GoToNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, GoToNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.LongActionHandlerName);
 		
 		Cancel = False;
@@ -1446,7 +1446,7 @@ Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	// OnOpen handler
 	If Not IsBlankString(GoToRowCurrent.OnOpenHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, SkipPage, IsGoNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, SkipPage, IsGoNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.OnOpenHandlerName);
 		
 		Cancel = False;
@@ -2274,7 +2274,7 @@ Procedure InitializeExportAdditionAttributes()
 	
 	If SetFirstItem Then
 		For Each AdditionGroupItem In AdditionGroupOrder[0].Value.ChildItems Do
-			If TypeOf(AdditionGroupItem)=Type("FormField") And AdditionGroupItem.Kind = FormFieldType.RadioButtonField Then
+			If TypeOf(AdditionGroupItem) = Type("FormField") And AdditionGroupItem.Type = FormFieldType.RadioButtonField Then
 				ExportAddition.ExportVariant = AdditionGroupItem.ChoiceList[0].Value;
 				Break;
 			EndIf;
@@ -2386,8 +2386,8 @@ Procedure ReceiveDataOverRegularCommunicationChannels()
 	
 	// Data import
 	GoToTableNewRow(9,  "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Totals
 	GoToTableNewRow(12, "MappingCompletePage", "NavigationPageEnd",, "MappingCompletePage_OnOpen");
@@ -2419,8 +2419,8 @@ Procedure ReceiveDataOverExternalConnectionOrWebService()
 	
 	// Data import
 	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(12, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(12, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Totals
 	GoToTableNewRow(13, "MappingCompletePage", "NavigationPageEnd",, "MappingCompletePage_OnOpen");
@@ -2496,8 +2496,8 @@ Procedure SendAndReceiveDataOverRegularCommunicationChannels()
 	
 	// Data import
 	GoToTableNewRow(9,  "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Data export setup
 	DataExportResult = "";
@@ -2538,8 +2538,8 @@ Procedure SendAndReceiveDataOverExternalConnectionOrWebService()
 	
 	// Data import
 	GoToTableNewRow(10, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(12, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(11, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(12, "DataSynchronizationWaitPage", "NavigationPageWait",,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Data export setup
 	DataExportResult = "";

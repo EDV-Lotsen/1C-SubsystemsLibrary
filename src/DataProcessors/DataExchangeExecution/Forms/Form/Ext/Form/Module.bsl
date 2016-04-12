@@ -1032,11 +1032,11 @@ Procedure ExchangeScenarioOverWebService()
 	
 	GoToTableNewRow(1, "DataSynchronizationWait",,,,,, True, "ConnectionCheckWait_LongActionProcessing");
 	GoToTableNewRow(2, "DataSynchronizationWait",,,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(8, "ExchangeCompletion",,, "ExchangeCompletion_OnOpen",,, True, "ExchangeCompletion_LongActionProcessing");
 	
 EndProcedure
@@ -1050,18 +1050,18 @@ Procedure ExchangeScenarioOverWebService_SendingReceivingSending()
 	
 	// Sending
 	GoToTableNewRow(2, "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	
 	// Receiving
 	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Sending
 	GoToTableNewRow(8,  "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(9,  "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(10, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(9,  "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(10, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	
 	GoToTableNewRow(11, "ExchangeCompletion",,, "ExchangeCompletion_OnOpen",,, True, "ExchangeCompletion_LongActionProcessing");
 	
@@ -1075,11 +1075,11 @@ Procedure ExchangeScenarioOverWebServiceWithPasswordRequest()
 	GoToTableNewRow(1, "UserPasswordRequest",,, "UserPasswordRequest_OnOpen", "UserPasswordRequest_OnGoNext");
 	GoToTableNewRow(2, "DataSynchronizationWait",,,,,, True, "ConnectionCheckWait_LongActionProcessing");
 	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(8, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(8, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	GoToTableNewRow(9, "ExchangeCompletion",,, "ExchangeCompletion_OnOpen",,, True, "ExchangeCompletion_LongActionProcessing");
 	
 EndProcedure
@@ -1094,18 +1094,18 @@ Procedure ExchangeScenarioOverWebServiceWithPasswordRequest_SendingReceivingSend
 	
 	// Sending
 	GoToTableNewRow(3, "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(4, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(5, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	
 	// Receiving
 	GoToTableNewRow(6, "DataSynchronizationWait",,,,,, True, "DataImport_LongActionProcessing");
-	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongOperationProcessing");
-	GoToTableNewRow(8, "DataSynchronizationWait",,,,,, True, "DataImportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(7, "DataSynchronizationWait",,,,,, True, "DataImportLongAction_LongActionProcessing");
+	GoToTableNewRow(8, "DataSynchronizationWait",,,,,, True, "DataImportLongActionCompletion_LongActionProcessing");
 	
 	// Sending
 	GoToTableNewRow(9,  "DataSynchronizationWait",,,,,, True, "DataExport_LongActionProcessing");
-	GoToTableNewRow(10, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongOperationProcessing");
-	GoToTableNewRow(11, "DataSynchronizationWait",,,,,, True, "DataExportLongActionFinish_LongActionProcessing");
+	GoToTableNewRow(10, "DataSynchronizationWait",,,,,, True, "DataExportLongAction_LongActionProcessing");
+	GoToTableNewRow(11, "DataSynchronizationWait",,,,,, True, "DataExportLongActionCompletion_LongActionProcessing");
 	
 	GoToTableNewRow(12, "ExchangeCompletion",,, "ExchangeCompletion_OnOpen",,, True, "ExchangeCompletion_LongActionProcessing");
 	

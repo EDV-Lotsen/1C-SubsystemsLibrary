@@ -32,7 +32,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	AvailableImportSources.Clear();
 	
-	AvailableImportSources.Add("DIRECTORY", NStr("en = 'From disc directory'") );
+	AvailableImportSources.Add("DIRECTORY", NStr("en = 'From directory on disk'") );
 	
 	// ITS files are distributed in self-extracted .EXE format (not available for Linux).
 	//If AddressClassifierClientServer.IsWindowsClient() Then
@@ -220,7 +220,7 @@ Procedure UncheckAll(Command)
 EndProcedure
 
 &AtClient
-Procedure Load(Command)
+Procedure Import(Command)
 	
 	If ImportSourceCode = "DIRECTORY" Then
 		Text = NStr("en = 'Before you can import address classifier data 

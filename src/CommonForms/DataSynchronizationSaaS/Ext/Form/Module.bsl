@@ -175,7 +175,7 @@ Procedure DataSynchronizationSettingsOnActivateRow(Item)
 	Else		
 		Items.DataSynchronizationSettingsDisableDataSynchronization.Enabled = CurrentData.SynchronizationConfigured;
 		Items.DataSynchronizationSettingsContextMenuDisableDataSynchronization.Enabled = CurrentData.SynchronizationConfigured;
-		DataSynchronizationSettingsDescription = CurrentData.Details;
+		DataSynchronizationSettingsDescription = CurrentData.Description;
 		
 		Items.DataSynchronizationSettingsPrepareData.Enabled = CurrentData.SynchronizationConfigured;
 		Items.DataSynchronizationSettingsContextMenuSendData.Enabled = CurrentData.SynchronizationConfigured;
@@ -337,7 +337,7 @@ Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	// OnOpen handler
 	If Not IsBlankString(GoToRowCurrent.OnOpenHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, SkipPage, IsGoNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, SkipPage, IsGoNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.OnOpenHandlerName);
 		
 		Cancel = False;
@@ -387,7 +387,7 @@ Procedure ExecuteLongActionHandler()
 	// LongActionProcessing handler
 	If Not IsBlankString(GoToRowCurrent.LongActionHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, GoToNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, GoToNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.LongActionHandlerName);
 		
 		Cancel = False;
@@ -595,7 +595,7 @@ Procedure UpdateDataSynchronizationSettings()
 			
 		Else
 			
-			Settings.Details = NStr("en = 'Data synchronization not configured'");
+			Settings.Description = NStr("en = 'Data synchronization not configured'");
 			Settings.SynchronizationStatus = 0;
 			
 		EndIf;
@@ -680,7 +680,7 @@ Procedure GetDataSynchronizationSettings(Cancel)
 	
 	Try
 		
-		SynchronizationSettingsFromServiceManager = InformationRegisters.SystemMessageExchangeSessions.GetSessionData(Session).Get();
+		SynchronizationSettingsFromServiceManager = MessageExchangeInternal.ConvertSynchronizationSettingsTable(InformationRegisters.SystemMessageExchangeSessions.GetSessionData(Session).Get());
 		
 		If SynchronizationSettingsFromServiceManager.Count() = 0 Then
 			
@@ -724,7 +724,7 @@ Procedure GetDataSynchronizationSettings(Cancel)
 				Settings.Correspondent = ExchangePlans[Settings.ExchangePlan].FindByCode(
 					DataExchangeSaaS.ExchangePlanNodeCodeInService(Settings.DataArea));
 				
-				Settings.Details = DataExchangeServer.DataSynchronizationRuleDetails(Settings.Correspondent);
+				Settings.Description = DataExchangeServer.DataSynchronizationRuleDetails(Settings.Correspondent);
 				
 			EndIf;
 			

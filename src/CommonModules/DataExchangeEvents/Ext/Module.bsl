@@ -1094,7 +1094,7 @@ Function ChangeRecordAttributeTablesEqual(Table1, Table2, ChangeRecordAttributeT
 	
 	CommonUseClientServer.SupplementTable(Table2, ResultTable);
 	
-	ResultTable.Collapse(ChangeRecordAttributeTableRow.ChangeRecordAttributes, "ChangeRecordAttributeTableIterator");
+	ResultTable.GroupBy(ChangeRecordAttributeTableRow.ChangeRecordAttributes, "ChangeRecordAttributeTableIterator");
 	
 	SameRowCount = ResultTable.FindRows(New Structure ("ChangeRecordAttributeTableIterator", 0)).Count();
 	
@@ -1857,24 +1857,24 @@ Function ChangeRecordRuleStructure(Rule, Columns)
 	
 	For Each Column In Columns Do
 		
-		Key = Column.Name;
-		Value = Rule[Key];
+		_Key = Column.Name;
+		Value = Rule[_Key];
 		
 		If TypeOf(Value) = Type("ValueTable") Then
 			
-			Result.Insert(Key, Value.Copy());
+			Result.Insert(_Key, Value.Copy());
 			
 		ElsIf TypeOf(Value) = Type("ValueTree") Then
 			
-			Result.Insert(Key, Value.Copy());
+			Result.Insert(_Key, Value.Copy());
 			
 		ElsIf TypeOf(Value) = Type("Structure") Then
 			
-			Result.Insert(Key, CopyStructure(Value));
+			Result.Insert(_Key, CopyStructure(Value));
 			
 		Else
 			
-			Result.Insert(Key, Value);
+			Result.Insert(_Key, Value);
 			
 		EndIf;
 		
@@ -2931,23 +2931,23 @@ Procedure SetValueOnNode(ExchangePlanNode, Settings)
 	
 	For Each Item In Settings Do
 		
-		Key = Item.Key;
+		_Key = Item.Key;
 		Value = Item.Value;
 		
-		If ExchangePlanNode.Metadata().Attributes.Find(Key) = Undefined
-			And ExchangePlanNode.Metadata().TabularSections.Find(Key) = Undefined Then
+		If ExchangePlanNode.Metadata().Attributes.Find(_Key) = Undefined
+			And ExchangePlanNode.Metadata().TabularSections.Find(_Key) = Undefined Then
 			Continue;
 		EndIf;
 		
 		If TypeOf(Value) = Type("Array") Then
 			
-			AttributeData = GetReferenceTypeFromFirstExchangePlanTabularSectionAttribute(ExchangePlanName, Key);
+			AttributeData = GetReferenceTypeFromFirstExchangePlanTabularSectionAttribute(ExchangePlanName, _Key);
 			
 			If AttributeData = Undefined Then
 				Continue;
 			EndIf;
 			
-			NodeTable = ExchangePlanNode[Key];
+			NodeTable = ExchangePlanNode[_Key];
 			
 			NodeTable.Clear();
 			
@@ -2967,11 +2967,11 @@ Procedure SetValueOnNode(ExchangePlanNode, Settings)
 			
 		ElsIf TypeOf(Value) = Type("Structure") Then
 			
-			FillExchangePlanNodeTable(ExchangePlanNode, Value, Key);
+			FillExchangePlanNodeTable(ExchangePlanNode, Value, _Key);
 			
 		Else // Primitive types
 			
-			ExchangePlanNode[Key] = Value;
+			ExchangePlanNode[_Key] = Value;
 			
 		EndIf;
 		

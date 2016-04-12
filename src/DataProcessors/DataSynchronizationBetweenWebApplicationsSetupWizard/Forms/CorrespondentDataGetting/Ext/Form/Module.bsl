@@ -239,7 +239,7 @@ Procedure ExecuteGoToEventHandlers(Val IsGoNext)
 	// OnOpen handler
 	If Not IsBlankString(GoToRowCurrent.OnOpenHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, SkipPage, IsGoNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, SkipPage, IsGoNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.OnOpenHandlerName);
 		
 		Cancel = False;
@@ -289,7 +289,7 @@ Procedure ExecuteLongActionHandler()
 	// LongActionProcessing handler
 	If Not IsBlankString(GoToRowCurrent.LongActionHandlerName) Then
 		
-		ProcedureName = "Attachable_[HandleName](Cancel, GoToNext)";
+		ProcedureName = "Attachable_[HandlerName](Cancel, GoToNext)";
 		ProcedureName = StrReplace(ProcedureName, "[HandlerName]", GoToRowCurrent.LongActionHandlerName);
 		
 		Cancel = False;

@@ -13,8 +13,8 @@
 // 
 Procedure GetMessageChannelHandlers(Handlers) Export
 	
-	AddMessageChannelHandler("DataExchange\Application\ExchangeCreation",                 DataExchangeMessagesMessageHandler, Handlers);
-	AddMessageChannelHandler("DataExchange\Application\ExchangeDeletion",                 DataExchangeMessagesMessageHandler, Handlers);
+	AddMessageChannelHandler("DataExchange\Application\ExchangeCreation",  DataExchangeMessagesMessageHandler, Handlers);
+	AddMessageChannelHandler("DataExchange\Application\ExchangeDeletion",  DataExchangeMessagesMessageHandler, Handlers);
 	AddMessageChannelHandler("DataExchange\Application\SetDataAreaPrefix", DataExchangeMessagesMessageHandler, Handlers);
 	
 EndProcedure

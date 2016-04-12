@@ -3,7 +3,7 @@
 	<Title>
 		<v8:item>
 			<v8:lang>en</v8:lang>
-			<v8:content>Importing the address classifier</v8:content>
+			<v8:content>Importing address classifier</v8:content>
 		</v8:item>
 	</Title>
 	<Height>10</Height>
@@ -176,7 +176,7 @@
 								<Button name="Load" id="10">
 									<Type>UsualButton</Type>
 									<DefaultButton>true</DefaultButton>
-									<CommandName>Form.Command.Load</CommandName>
+									<CommandName>Form.Command.Import</CommandName>
 									<ExtendedTooltip name="ImportExtendedTooltip" id="11"/>
 								</Button>
 								<LabelField name="RegionsSelectedForImport" id="51">
@@ -695,20 +695,20 @@ take a long time proportional to the number of selected regions.</v8:content>
 		</Attribute>
 	</Attributes>
 	<Commands>
-		<Command name="Load" id="2">
+		<Command name="Import" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Load</v8:content>
+					<v8:content>Import</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>Load</v8:content>
+					<v8:content>Import</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>Load</Action>
+			<Action>Import</Action>
 		</Command>
 		<Command name="CheckAll" id="3">
 			<Title>

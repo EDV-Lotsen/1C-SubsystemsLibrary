@@ -785,9 +785,9 @@ Procedure AddClientParametersSaaS(Val Parameters) Export
 	Query.Text =
 	"SELECT
 	|	DataAreaPresentation.Value AS Presentation
-	|In
+	|FROM
 	|	Constant.DataAreaPresentation AS DataAreaPresentation
-	|Where
+	|WHERE
 	|	DataAreaPresentation.DataAreaAuxiliaryData = &DataAreaAuxiliaryData";
 	SetPrivilegedMode(True);
 	Query.SetParameter("DataAreaAuxiliaryData", CommonUse.SessionSeparatorValue());
@@ -1371,7 +1371,7 @@ EndProcedure
 //
 Procedure EnablingDataSeparationSafeModeOnCheck()  Export
 	
-	If Not БезопасныйРежим()
+	If Not SafeMode()
 		And CommonUseCached.DataSeparationEnabled()
 		And CommonUseCached.CanUseSeparatedData()
 		And Not  CommonUseCached.SessionWithoutSeparators() Then
@@ -2232,7 +2232,7 @@ Procedure OnAddUpdateHandlers(Handlers) Export
 		
 		Handler = Handlers.Add();
 		Handler.Version = "*";
-		Handler.Procedure = "SaaSOperations.CheckCanUseConfigurationinSaasMode";
+		Handler.Procedure = "SaaSOperations.CheckCanUseConfigurationSaaS";
 		Handler.SharedData = True;
 		Handler.ExecuteInMandatoryGroup = True;
 		Handler.Priority = 99;

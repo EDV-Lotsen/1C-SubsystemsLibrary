@@ -208,7 +208,7 @@ Procedure CheckCanSendReceiveEmail(ResultHandler, Account, PasswordParameter) Ex
 								   |%1'"), ErrorMessage ),,
 						NStr("en = 'Account verification'"));
 	Else
-		DoMessageBox(StringFunctionsClientServer.SubstituteParametersInString(
+		ShowMessageBox(,StringFunctionsClientServer.SubstituteParametersInString(
 						NStr("en = 'Account validation completed. %1'"),
 						AdditionalMessage ),,
 						NStr("en = 'Account verification'"));

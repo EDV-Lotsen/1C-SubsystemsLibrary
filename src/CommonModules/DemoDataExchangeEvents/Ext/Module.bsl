@@ -28,3 +28,21 @@ Procedure DemoExchangeInDIBRecordDeletionBeforeDelete(Source, Cancel) Export
 	DataExchangeEvents.ObjectChangeRecordMechanismBeforeDelete("DemoExchangeInDIB", Source, Cancel);
 	
 EndProcedure
+
+Procedure DemoExchangeWithSLRecordChangeBeforeWrite(Source, Cancel) Export
+	
+	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWrite("DemoExchangeWithSL", Source, Cancel);
+	
+EndProcedure
+
+Procedure DemoExchangeWithSLRecordDocumentChangeBeforeWrite(Source, Cancel, WriteMode, PostingMode) Export
+	
+	DataExchangeEvents.ObjectChangeRecordMechanismBeforeWriteDocument("DemoExchangeWithSL", Source, Cancel, WriteMode, PostingMode);
+	
+EndProcedure
+
+Procedure DemoExchangeWithSLDeletionBeforeDelete(Source, Cancel) Export
+	
+	DataExchangeEvents.ObjectChangeRecordMechanismBeforeDelete("DemoExchangeWithSL", Source, Cancel);
+	
+EndProcedure

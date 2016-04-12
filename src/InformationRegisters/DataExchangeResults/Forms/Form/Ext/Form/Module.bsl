@@ -27,14 +27,14 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If Not VersioningUsed Then
 		
-		Conflicts.QueryText = "";
-		DeclinedByDate.QueryText = "";
+		Conflicts.QueryText = "SELECT 1";
+		DeclinedByDate.QueryText = "SELECT 1";
 		Items.ConflictPage.Visible = False;
 		Items.PageDeclinedByProhibitionDate.Visible = False;
 		
 	ElsIf Not EditProhibitionDatesEnabled Then
 		
-		DeclinedByDate.QueryText = "";
+		DeclinedByDate.QueryText = "SELECT 1";
 		Items.PageDeclinedByProhibitionDate.Visible = False;
 		
 	EndIf;

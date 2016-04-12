@@ -6,7 +6,7 @@ Function AbsoluteDataExchangeDirectory(Val Correspondent) Export
 	
 	QueryText =
 	"SELECT
-	|	DataAreaExchangeTransportSettings.DataExchangeDirectory AS RelativeDataExchangeDirectory,
+	|	DataAreaExchangeTransportSettings.DataExchangeDirectory AS RelativeInformationExchangeDirectory,
 	|	ISNULL(DataAreasExchangeTransportSettings.FILEDataExchangeDirectory, """") AS CommonDataExchangeDirectory
 	|FROM
 	|	InformationRegister.DataAreaExchangeTransportSettings AS DataAreaExchangeTransportSettings
@@ -30,16 +30,16 @@ Function AbsoluteDataExchangeDirectory(Val Correspondent) Export
 	Selection.Next();
 	
 	CommonDataExchangeDirectory = Selection.CommonDataExchangeDirectory;
-	RelativeDataExchangeDirectory = Selection.RelativeDataExchangeDirectory;
+	RelativeInformationExchangeDirectory = Selection.RelativeInformationExchangeDirectory;
 	
 	If IsBlankString(CommonDataExchangeDirectory)
-		Or IsBlankString(RelativeDataExchangeDirectory) Then
+		Or IsBlankString(RelativeInformationExchangeDirectory) Then
 		
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Connection settings for correspondent %1 are not set.'"), String(Correspondent));
 	EndIf;
 	
-	Return CommonUseClientServer.GetFullFileName(CommonDataExchangeDirectory, RelativeDataExchangeDirectory);
+	Return CommonUseClientServer.GetFullFileName(CommonDataExchangeDirectory, RelativeInformationExchangeDirectory);
 EndFunction
 
 Function TransportKind(Val Correspondent) Export
@@ -77,9 +77,9 @@ Function TransportSettings(Val Correspondent) Export
 	|	"""" AS FILEDataExchangeDirectory,
 	|	"""" AS FTPConnectionPath,
 	|	
-	|	DataAreaExchangeTransportSettings.DataExchangeDirectory AS RelativeDataExchangeDirectory,
+	|	DataAreaExchangeTransportSettings.DataExchangeDirectory AS RelativeInformationExchangeDirectory,
 	|	
-	|	DataAreasExchangeTransportSettings.FILEDataExchangeDirectory AS FILECommonDataExchangeDirectory,
+	|	DataAreasExchangeTransportSettings.FILEDataExchangeDirectory AS FILECommonInformationExchangeDirectory,
 	|	DataAreasExchangeTransportSettings.FILECompressOutgoingMessageFile,
 	|	
 	|	DataAreasExchangeTransportSettings.FTPConnectionPath AS FTPCommonDataExchangeDirectory,
@@ -120,12 +120,12 @@ Function TransportSettings(Val Correspondent) Export
 	Result = DataExchangeServer.QueryResultToStructure(QueryResult);
 	
 	Result.FILEDataExchangeDirectory = CommonUseClientServer.GetFullFileName(
-		Result.FILECommonDataExchangeDirectory,
-		Result.RelativeDataExchangeDirectory);
+		Result.FILECommonInformationExchangeDirectory,
+		Result.RelativeInformationExchangeDirectory);
 	
 	Result.FTPConnectionPath = CommonUseClientServer.GetFullFileName(
 		Result.FTPCommonDataExchangeDirectory,
-		Result.RelativeDataExchangeDirectory);
+		Result.RelativeInformationExchangeDirectory);
 	
 	Result.Insert("UseTempDirectoryForSendingAndReceivingMessages", True);
 	

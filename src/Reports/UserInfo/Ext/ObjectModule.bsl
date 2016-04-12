@@ -71,29 +71,29 @@ Function InfobaseUsers(NonExistentInfobaseUserIDs)
 	Data.Indexes.Add("InfobaseUserID");
 	Data.Columns.Add("Mapped", New TypeDescription("Boolean"));
 	
-	InfobaseUsers = InfobaseUsers.GetUsers();
-	InfobaseUsers = New ValueTable;
-	InfobaseUsers.Columns.Add("UUID", New TypeDescription("UUID"));
-	InfobaseUsers.Columns.Add("Name", New TypeDescription("String",,,, New StringQualifiers(100)));
-	InfobaseUsers.Columns.Add("CanLogOnToApplication",     New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("StandardAuthentication",    New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("ShowInList",                New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("CannotChangePassword",      New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("OpenIDAuthentication",      New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("OSAuthentication",          New TypeDescription("Boolean"));
-	InfobaseUsers.Columns.Add("OSUser",                    New TypeDescription("String",,,, New StringQualifiers(1024)));
-	InfobaseUsers.Columns.Add("Language",                  New TypeDescription("String",,,, New StringQualifiers(100)));
-	InfobaseUsers.Columns.Add("RunMode",                   New TypeDescription("String",,,, New StringQualifiers(100)));
+	InfobaseUsersTable = InfobaseUsers.GetUsers();
+	InfobaseUsersTable = New ValueTable;
+	InfobaseUsersTable.Columns.Add("UUID", New TypeDescription("UUID"));
+	InfobaseUsersTable.Columns.Add("Name", New TypeDescription("String",,,, New StringQualifiers(100)));
+	InfobaseUsersTable.Columns.Add("CanLogOnToApplication",     New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("StandardAuthentication",    New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("ShowInList",                New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("CannotChangePassword",      New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("OpenIDAuthentication",      New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("OSAuthentication",          New TypeDescription("Boolean"));
+	InfobaseUsersTable.Columns.Add("OSUser",                    New TypeDescription("String",,,, New StringQualifiers(1024)));
+	InfobaseUsersTable.Columns.Add("Language",                  New TypeDescription("String",,,, New StringQualifiers(100)));
+	InfobaseUsersTable.Columns.Add("RunMode",                   New TypeDescription("String",,,, New StringQualifiers(100)));
 	
 	AllInfobaseUsers = InfobaseUsers.GetUsers();
 	
 	For Each IBUser In AllInfobaseUsers Do
 		InfobaseUserProperties = Users.NewInfobaseUserInfo();
 		Users.ReadInfobaseUser(IBUser.UUID, InfobaseUserProperties);
-		NewRow = InfobaseUsers.Add();
+		NewRow = InfobaseUsersTable.Add();
 		FillPropertyValues(NewRow, InfobaseUserProperties);
 		Language = InfobaseUserProperties.Language;
-		NewRow.Language = ?(ValueIsFilled(Language), Metadata.Languageuages[Language].Synonym, "");
+		NewRow.Language = ?(ValueIsFilled(Language), Metadata.Languages[Language].Synonym, "");
 		NewRow.CanLogOnToApplication = Users.CanLogOnToApplication(InfobaseUserProperties);
 		
 		Row = Data.Find(InfobaseUserProperties.UUID, "InfobaseUserID");
@@ -112,7 +112,7 @@ Function InfobaseUsers(NonExistentInfobaseUserIDs)
 		NonExistentInfobaseUserIDs.Add(Row.InfobaseUserID);
 	EndDo;
 	
-	Return InfobaseUsers;
+	Return InfobaseUsersTable;
 	
 EndFunction
 

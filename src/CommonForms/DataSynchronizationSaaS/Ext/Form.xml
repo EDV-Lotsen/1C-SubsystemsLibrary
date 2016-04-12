@@ -50,17 +50,23 @@
 					</ToolTip>
 					<ExtendedTooltip name="DataGettingWaitExtendedTooltip" id="86"/>
 					<ChildItems>
-						<UsualGroup name="MessageGroup" id="22">
+						<UsualGroup name="MessageGrouping" id="22">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message grouping</v8:content>
+								</v8:item>
+							</Title>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
-									<v8:content>Message group</v8:content>
+									<v8:content>Message grouping</v8:content>
 								</v8:item>
 							</ToolTip>
 							<Group>Horizontal</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="MessageGroupExtendedTooltip" id="87"/>
+							<ExtendedTooltip name="MessageGroupingExtendedTooltip" id="87"/>
 							<ChildItems>
 								<UsualGroup name="PictureGroup" id="23">
 									<Title>
@@ -495,11 +501,11 @@
 													<ContextMenu name="DataSynchronizationSettingsSynchronizationStatusContextMenu" id="83"/>
 													<ExtendedTooltip name="DataSynchronizationSettingsSynchronizationStatusExtendedTooltip" id="130"/>
 												</PictureField>
-												<InputField name="DataSynchronizationSettingsState" id="73">
-													<DataPath>DataSynchronizationSettings.State</DataPath>
+												<InputField name="DataSynchronizationSettingsStatus" id="73">
+													<DataPath>DataSynchronizationSettings.Status</DataPath>
 													<EditMode>EnterOnInput</EditMode>
-													<ContextMenu name="DataSynchronizationSettingsStateContextMenu" id="74"/>
-													<ExtendedTooltip name="DataSynchronizationSettingsStateExtendedTooltip" id="131"/>
+													<ContextMenu name="DataSynchronizationSettingsStatusContextMenu" id="74"/>
+													<ExtendedTooltip name="DataSynchronizationSettingsStatusExtendedTooltip" id="131"/>
 												</InputField>
 											</ChildItems>
 										</ColumnGroup>
@@ -538,7 +544,13 @@
 					</ToolTip>
 					<ExtendedTooltip name="DataGettingErrorExtendedTooltip" id="133"/>
 					<ChildItems>
-						<UsualGroup name="MessageGroup1" id="31">
+						<UsualGroup name="MessageGrouping1" id="31">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message grouping1</v8:content>
+								</v8:item>
+							</Title>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -548,7 +560,7 @@
 							<Group>Horizontal</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="MessageGroup1ExtendedTooltip" id="134"/>
+							<ExtendedTooltip name="MessageGrouping1ExtendedTooltip" id="134"/>
 							<ChildItems>
 								<UsualGroup name="PictureGroup1" id="32">
 									<Title>
@@ -633,7 +645,13 @@
 					</ToolTip>
 					<ExtendedTooltip name="NoApplicationToSynchronizeExtendedTooltip" id="139"/>
 					<ChildItems>
-						<UsualGroup name="MessageGroup2" id="39">
+						<UsualGroup name="MessageGrouping2" id="39">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Message grouping2</v8:content>
+								</v8:item>
+							</Title>
 							<ToolTip>
 								<v8:item>
 									<v8:lang>en</v8:lang>
@@ -643,7 +661,7 @@
 							<Group>Horizontal</Group>
 							<Representation>NormalSeparation</Representation>
 							<ShowTitle>false</ShowTitle>
-							<ExtendedTooltip name="MessageGroup2ExtendedTooltip" id="140"/>
+							<ExtendedTooltip name="MessageGrouping2ExtendedTooltip" id="140"/>
 							<ChildItems>
 								<UsualGroup name="PictureGroup2" id="40">
 									<Title>
@@ -837,11 +855,11 @@
 						<v8:Type>xs:boolean</v8:Type>
 					</Type>
 				</Column>
-				<Column name="State" id="8">
+				<Column name="Status" id="8">
 					<Title>
 						<v8:item>
 							<v8:lang>en</v8:lang>
-							<v8:content>State</v8:content>
+							<v8:content>Status</v8:content>
 						</v8:item>
 					</Title>
 					<Type>
@@ -1134,7 +1152,7 @@
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
-					<v8:content>SetUp...</v8:content>
+					<v8:content>Set up...</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>

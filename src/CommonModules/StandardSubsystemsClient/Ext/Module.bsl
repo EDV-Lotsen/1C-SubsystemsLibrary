@@ -855,7 +855,7 @@ Procedure PasswordForAuthenticationInServiceOnRequest(ContinuationHandler, Owner
 	If CommonUseClient.SubsystemExists("StandardSubsystems.SaaSOperations.UsersSaaS")  Then
 		
 		UsersInternalSaaSOperationsClientModule = CommonUseClient.CommonModule(
-			"UsersInternalSaaSOperationsClient");
+			"UsersInternalSaaSClient");
 		
 		UsersInternalSaaSOperationsClientModule.RequestPasswordForAuthenticationInService(
 			ContinuationHandler, OwnerForm, ServiceUserPassword);

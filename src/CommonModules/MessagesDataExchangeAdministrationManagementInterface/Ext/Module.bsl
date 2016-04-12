@@ -44,7 +44,7 @@ EndProcedure
 // Parameters:
 //  HandlerArray - Array.
 //
-Procedure MessageTransferHandlers(Val HandlerArray) Export
+Procedure MessageTranslationHandlers(Val HandlerArray) Export
 	
 EndProcedure
 

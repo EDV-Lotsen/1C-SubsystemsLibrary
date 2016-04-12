@@ -33,6 +33,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.Weight</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>SessionParameter.UseDataArea</name>
 		<right>
 			<name>Set</name>
@@ -73,6 +80,13 @@
 	</object>
 	<object>
 		<name>InformationRegister.RequireProcessingSuppliedData.StandardAttribute.Period</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.ConfigurationVersionEarlierThen</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -168,6 +182,17 @@
 		<name>InformationRegister.DataExchangeMessages.StandardAttribute.Period</name>
 		<right>
 			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.InformationCenterForumUserName</name>
+		<right>
+			<name>Update</name>
 			<value>false</value>
 		</right>
 		<right>
@@ -457,6 +482,24 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.ToolTip</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ListOfRecordSetsWithRefsToUsers</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ProxyServerSettings</name>
 		<right>
 			<name>Update</name>
@@ -520,6 +563,20 @@
 	</object>
 	<object>
 		<name>InformationRegister.AddressClassifier.Resource.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.ID</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.Dimension.InfobaseUserID</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -708,6 +765,13 @@
 	</object>
 	<object>
 		<name>InformationRegister.AllowedFileSystemDirectories.Dimension.OwnerType</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.Resource.UserName</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1054,6 +1118,124 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.CommonInformationCenterData</name>
+		<right>
+			<name>Insert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Delete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveInsert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarked</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.PredefinedDataName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Predefined</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Ref</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.IsFolder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Owner</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Parent</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.StandardAttribute.Code</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPCompressOutgoingMessageFile</name>
 		<right>
 			<name>Edit</name>
@@ -1148,11 +1330,136 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.Attachments</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.SystemMessages.Attribute.Body</name>
 		<right>
 			<name>View</name>
 			<value>false</value>
 		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms</name>
+		<right>
+			<name>Insert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Delete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveInsert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarked</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.PredefinedDataName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Predefined</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Ref</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.IsFolder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Owner</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Parent</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.StandardAttribute.Code</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -1637,6 +1944,13 @@
 		</right>
 	</object>
 	<object>
+		<name>InformationRegister.SharedUsers.Resource.SequenceNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.AuxiliaryServiceManagerUserPassword</name>
 		<right>
 			<name>Read</name>
@@ -1648,6 +1962,17 @@
 		</right>
 		<right>
 			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.InformationCenterForumPassword</name>
+		<right>
+			<name>Update</name>
 			<value>false</value>
 		</right>
 		<right>
@@ -2286,6 +2611,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.StartDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.DataExchangeRules.Resource.DebugMode</name>
 		<right>
 			<name>View</name>
@@ -2405,6 +2737,13 @@
 	</object>
 	<object>
 		<name>InformationRegister.AllowedFileSystemDirectories.Attribute.Details</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.StartDate</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2566,6 +2905,17 @@
 		</right>
 	</object>
 	<object>
+		<name>Constant.ListOfCommonSeparatedMetadataObjects</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.DataExchangeStates.Resource.StartDate</name>
 		<right>
 			<name>Edit</name>
@@ -2653,6 +3003,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.Address</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.AddressClassifier.Resource.PostalCode</name>
 		<right>
 			<name>Edit</name>
@@ -2668,6 +3025,49 @@
 	</object>
 	<object>
 		<name>InformationRegister.AllowedAddIns.Resource.HashSum</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>TotalsControl</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Active</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.LineNumber</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Recorder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>InformationRegister.SharedUsers.StandardAttribute.Period</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -2989,6 +3389,17 @@
 		</right>
 	</object>
 	<object>
+		<name>Constant.ImportExportFileFunctionCacheData</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ServiceManagerEndpoint</name>
 		<right>
 			<name>Update</name>
@@ -3118,6 +3529,13 @@
 		</right>
 		<right>
 			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.Date</name>
+		<right>
+			<name>Edit</name>
 			<value>false</value>
 		</right>
 	</object>
@@ -3579,6 +3997,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.InformationType</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Constant.ProhibitedFileExtensionList</name>
 		<right>
 			<name>Read</name>
@@ -3605,7 +4030,25 @@
 		</right>
 	</object>
 	<object>
+		<name>Constant.ListOfMetadataObjectsWithPredefinedItems</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.AddressClassifier.Dimension.CityCodeInCode</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.EndDate</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -3630,6 +4073,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.ConfigurationVersionLaterThen</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.AddressClassifier.Dimension.SettlementCodeInCode</name>
 		<right>
 			<name>Edit</name>
@@ -3647,6 +4097,17 @@
 		<name>DataProcessor.PerformanceMonitor.Attribute.Chart</name>
 		<right>
 			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ForumManagementURL</name>
+		<right>
+			<name>Update</name>
 			<value>false</value>
 		</right>
 		<right>
@@ -3833,6 +4294,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.EndDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.AllowedFileSystemDirectories.Resource.DataWritingAllowed</name>
 		<right>
 			<name>Edit</name>
@@ -3910,6 +4378,17 @@
 		<name>InformationRegister.RecipientSubscriptions.Dimension.Recipient</name>
 		<right>
 			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ListOfMetadataObjectsWithValueStorage</name>
+		<right>
+			<name>Update</name>
 			<value>false</value>
 		</right>
 		<right>
@@ -4029,6 +4508,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.FullPathToForms.Attribute.FullPathToForm</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>InformationRegister.ExchangeTransportSettings.Resource.FTPConnectionPassword</name>
 		<right>
 			<name>Edit</name>
@@ -4058,6 +4544,17 @@
 		<name>InformationRegister.DataExchangeRules.Resource.ExportDebugMode</name>
 		<right>
 			<name>View</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ImportExportRefsToSharedDataCheckCacheOnExport</name>
+		<right>
+			<name>Update</name>
 			<value>false</value>
 		</right>
 		<right>
@@ -4426,6 +4923,131 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationCenterInformationType</name>
+		<right>
+			<name>Insert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Delete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveInsert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarked</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.PredefinedDataName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Predefined</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Ref</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.IsFolder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Owner</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Parent</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationCenterInformationType.StandardAttribute.Code</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.UpdateDate</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>Catalog.MetadataObjectIDs.Attribute.FullSynonym</name>
 		<right>
 			<name>Edit</name>
@@ -4434,6 +5056,131 @@
 	</object>
 	<object>
 		<name>InformationRegister.AddressAbbreviations.Dimension.Level</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms</name>
+		<right>
+			<name>Insert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Delete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveInsert</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDelete</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMark</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarked</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeletePredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveSetDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveClearDeletionMarkPredefinedData</name>
+			<value>false</value>
+		</right>
+		<right>
+			<name>InteractiveDeleteMarkedPredefinedData</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.PredefinedDataName</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Predefined</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Ref</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.DeletionMark</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.IsFolder</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Owner</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Parent</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Description</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.FullPathToForms.StandardAttribute.Code</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.ExternalLink</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -4543,6 +5290,24 @@
 	</object>
 	<object>
 		<name>Catalog.DataExchangeScenarios.TabularSection.ExchangeSettings.Attribute.ExchangeTransportKind</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.Criticality</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Constant.ImportExportCommonClassifierCacheData</name>
+		<right>
+			<name>Update</name>
+			<value>false</value>
+		</right>
 		<right>
 			<name>Edit</name>
 			<value>false</value>
@@ -4836,6 +5601,13 @@
 		</right>
 	</object>
 	<object>
+		<name>Catalog.InformationLinksForForms.Attribute.FullPathToForm</name>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
 		<name>DataProcessor.PerformanceMonitor.TabularSection.Performance.Attribute.TargetTime</name>
 		<right>
 			<name>View</name>
@@ -4993,6 +5765,13 @@
 			<name>View</name>
 			<value>false</value>
 		</right>
+		<right>
+			<name>Edit</name>
+			<value>false</value>
+		</right>
+	</object>
+	<object>
+		<name>Catalog.CommonInformationCenterData.Attribute.HTMLText</name>
 		<right>
 			<name>Edit</name>
 			<value>false</value>

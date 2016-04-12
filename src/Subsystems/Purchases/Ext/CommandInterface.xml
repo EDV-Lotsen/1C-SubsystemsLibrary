@@ -67,16 +67,26 @@
 				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
+		<Command name="Report.MutualSettlements.StandardCommand.Open">
+			<Visibility>
+				<xr:Common>true</xr:Common>
+				<xr:Value name="Role.Salesman">false</xr:Value>
+			</Visibility>
+		</Command>
 		<Command name="Report.WarehouseStockBalance.StandardCommand.Open">
 			<Visibility>
 				<xr:Common>true</xr:Common>
 				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
-		<Command name="Report.MutualSettlements.StandardCommand.Open">
+		<Command name="CommonCommand.InstallBarcodeScanner">
 			<Visibility>
-				<xr:Common>true</xr:Common>
-				<xr:Value name="Role.Salesman">false</xr:Value>
+				<xr:Common>false</xr:Common>
+			</Visibility>
+		</Command>
+		<Command name="CommonCommand.SetupBarcodeScanner">
+			<Visibility>
+				<xr:Common>false</xr:Common>
 			</Visibility>
 		</Command>
 	</CommandsVisibility>

@@ -169,7 +169,7 @@ EndFunction
 // Checks whether an infobase user has at least one authentication kind.
 //
 // Parameters:
-//  InfobaseUserDetails - UUID - infobase user UUID.
+//  InfobaseUserDescription - UUID - infobase user UUID.
 //                      - Structure - contains 3 authentication properties:
 //                             * StandardAuthentication - Boolean
 //                             * OSAuthentication       - Boolean
@@ -181,24 +181,24 @@ EndFunction
 // Returns:
 //  Boolean - True if at least one authentication property value is True.
 //
-Function CanLogOnToApplication(InfobaseUserDetails) Export
+Function CanLogOnToApplication(InfobaseUserDescription) Export
 	
 	SetPrivilegedMode(True);
 	
 	UUID = Undefined;
 	
-	If TypeOf(InfobaseUserDetails) = Type("CatalogRef.Users")
-	 Or TypeOf(InfobaseUserDetails) = Type("CatalogRef.ExternalUsers") Then
+	If TypeOf(InfobaseUserDescription) = Type("CatalogRef.Users")
+	 Or TypeOf(InfobaseUserDescription) = Type("CatalogRef.ExternalUsers") Then
 		
 		UUID = CommonUse.ObjectAttributeValue(
-			InfobaseUserDetails, "InfobaseUserID");
+			InfobaseUserDescription, "InfobaseUserID");
 		
-		If TypeOf(InfobaseUserDetails) <> Type("UUID") Then
+		If TypeOf(InfobaseUserDescription) <> Type("UUID") Then
 			Return False;
 		EndIf;
 		
-	ElsIf TypeOf(InfobaseUserDetails) = Type("UUID") Then
-		UUID = InfobaseUserDetails;
+	ElsIf TypeOf(InfobaseUserDescription) = Type("UUID") Then
+		UUID = InfobaseUserDescription;
 	EndIf;
 	
 	If UUID <> Undefined Then
@@ -208,7 +208,7 @@ Function CanLogOnToApplication(InfobaseUserDetails) Export
 			Return False;
 		EndIf;
 	Else
-		IBUser = InfobaseUserDetails;
+		IBUser = InfobaseUserDescription;
 	EndIf;
 	
 	Return IBUser.StandardAuthentication
@@ -568,13 +568,13 @@ Function CreateAdministrator(IBUser = Undefined) Export
 	
 	User.Description = IBUser.FullName;
 	
-	InfobaseUserDetails = New Structure;
-	InfobaseUserDetails.Insert("Action", "Write");
-	InfobaseUserDetails.Insert(
+	InfobaseUserDescription = New Structure;
+	InfobaseUserDescription.Insert("Action", "Write");
+	InfobaseUserDescription.Insert(
 		"UUID", IBUser.UUID);
 	
 	User.AdditionalProperties.Insert(
-		"InfobaseUserDetails", InfobaseUserDetails);
+		"InfobaseUserDescription", InfobaseUserDescription);
 	
 	User.Write();
 	
@@ -975,7 +975,7 @@ EndFunction
 // Parameters:
 //  Target             - Structure, InfobaseUser, FormDataCollection - 
 //                       property subset returned by the 
-//                       InfobaseUserDetails() function.
+//                       InfobaseUserDescription() function.
 // 
 //  Source             - Structure, InfobaseUser, FormDataCollection - same
 //                       as Target, but types are reversed: when the

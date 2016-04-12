@@ -218,13 +218,29 @@ Procedure PutFilesWithoutExtension()
 	StorageAddress   = "";
 	SelectedFileName = "";
 	
-	If Not PutFile(StorageAddress, , SelectedFileName, True, UUID) Then
-		Return;
-	EndIf;
+	//If Not PutFile(StorageAddress, , SelectedFileName, True, UUID) Then
+	//	Return;
+	//EndIf;
+	//
+	//FileName = GetFileName(SelectedFileName);
+	//PutFilesWithoutExtensionAtServer(StorageAddress, FileName);
 	
-	FileName = GetFileName(SelectedFileName);
-	PutFilesWithoutExtensionAtServer(StorageAddress, FileName);
+	NotifyDescription = New NotifyDescription("PutFilesWithoutExtensionCompletion", ThisObject);
 	
+	BeginPutFile(NotifyDescription, StorageAddress, SelectedFileName, True, UUID);
+	
+EndProcedure
+
+&AtClient
+Procedure PutFilesWithoutExtensionCompletion(Result, StorageAddress, SelectedFileName, AdditionalParameters) Export
+
+	If Result Then
+	
+		FileName = GetFileName(SelectedFileName);
+		PutFilesWithoutExtensionAtServer(StorageAddress, FileName);	
+	
+	EndIf;	
+
 EndProcedure
 
 &AtClient

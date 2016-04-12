@@ -27,7 +27,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	Parameters.Property("DataPeriod", DataPeriod);
 	
-	If Parameters.PeriodChoice Then
+	If Parameters.SelectPeriod Then
 		ExportForPeriod = True;
 	Else
 		ExportForPeriod = False;

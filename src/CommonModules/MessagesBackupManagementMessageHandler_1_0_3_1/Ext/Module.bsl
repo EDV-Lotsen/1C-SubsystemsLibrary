@@ -35,8 +35,7 @@ EndFunction
 //  MessageProcessed - Boolean - True if processing is successful. This parameter 
 // value must be set to True if the message is successfully read in this handler.
 //
-Procedure ProcessSaaSMessage(Val Message, Val Sender, MessageProcessed)
-Export
+Procedure ProcessSaaSMessage(Val Message, Val Sender, MessageProcessed) Export
 	
 	MessageProcessed = True;
 	

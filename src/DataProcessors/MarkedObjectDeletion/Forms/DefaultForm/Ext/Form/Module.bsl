@@ -721,7 +721,7 @@ Function FillMarkedForDeletionItemTree()
 		
 	EndDo;
 	
-	For Each NodeType In ValueTree.Strings Do
+	For Each NodeType In ValueTree.Rows Do
 		NodeType.Presentation = NodeType.Presentation + " (" + NodeType.Count + ")";
 	EndDo;
 	
@@ -949,9 +949,9 @@ Procedure BackgroundJobImportResult(Result)
 	EndIf;
 	
 	// Preparing a notification for the dynamic lists
-	StandardSubsystemsClientServer.PrepareDynamicListNotification(ExecutionInBackgroundResult.Deleted, Result);
+	StandardSubsystemsClientServer.PrepareDynamicListNotification(ExecutionInBackgroundResult.DeletedItems, Result);
 	
-	DeletedItemsCount = ExecutionInBackgroundResult.Deleted.Count();
+	DeletedItemsCount = ExecutionInBackgroundResult.DeletedItems.Count();
 	NotDeletedItemsCount = ExecutionInBackgroundResult.NotDeletedItems.Count();
 	
 	NotificationText = Undefined;

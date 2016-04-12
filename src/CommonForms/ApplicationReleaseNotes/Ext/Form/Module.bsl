@@ -115,7 +115,7 @@ EndProcedure
 &AtClient
 Procedure OnOpen(Cancel)
 	If ClientServerInfobase Then
-		AttachIdleHandler(" UpdateDeferredUpdateStatus", 60);
+		AttachIdleHandler("UpdateDeferredUpdateStatus", 60);
 	EndIf;
 EndProcedure
 

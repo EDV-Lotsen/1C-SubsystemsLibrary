@@ -45,9 +45,14 @@ Function AttachBarcodeScanner() Export
 	If BarcodeScannerDriver = Undefined Then
 		
 		// Import external components
-		If Not AttachAddIn(BarcodeComponentTemplateName, BarcodeComponentAddInName) Then
+		Try
+			If Not AttachAddIn(BarcodeComponentTemplateName, BarcodeComponentAddInName) Then
+				Return False;
+			EndIf;		
+		Except
 			Return False;
-		EndIf;
+		EndTry;
+		
 		
 		BarcodeScannerDriver = New(BarcodeComponentAddInObjectName);
 		

@@ -52,7 +52,7 @@ Function ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex, Data
 	
 	ScenarioString = DataExchangeScenario[ScenarioRowIndex];
 	
-	Key = ScenarioString.ExchangePlanName + ScenarioString.InfobaseNodeCode + ScenarioString.ThisNodeCode;
+	_Key = ScenarioString.ExchangePlanName + ScenarioString.InfobaseNodeCode + ScenarioString.ThisNodeCode;
 	
 	Parameters = New Array;
 	Parameters.Add(ScenarioRowIndex);
@@ -61,7 +61,7 @@ Function ExecuteDataExchangeScenarioActionInFirstInfobase(ScenarioRowIndex, Data
 	JobParameters = New Structure;
 	JobParameters.Insert("MethodName", "DataExchangeSaaS.ExecuteDataExchangeScenarioActionInFirstInfobase");
 	JobParameters.Insert("Parameters", Parameters);
-	JobParameters.Insert("Key",        Key);
+	JobParameters.Insert("Key",        _Key);
 	JobParameters.Insert("DataArea",   ScenarioString.FirstInfobaseSeparatorValue);
 	
 	Try
@@ -83,7 +83,7 @@ Function ExecuteDataExchangeScenarioActionInSecondInfobase(ScenarioRowIndex, Dat
 	
 	ScenarioString = DataExchangeScenario[ScenarioRowIndex];
 	
-	Key = ScenarioString.ExchangePlanName + ScenarioString.InfobaseNodeCode + ScenarioString.ThisNodeCode;
+	_Key = ScenarioString.ExchangePlanName + ScenarioString.InfobaseNodeCode + ScenarioString.ThisNodeCode;
 	
 	Parameters = New Array;
 	Parameters.Add(ScenarioRowIndex);
@@ -92,7 +92,7 @@ Function ExecuteDataExchangeScenarioActionInSecondInfobase(ScenarioRowIndex, Dat
 	JobParameters = New Structure;
 	JobParameters.Insert("MethodName", "DataExchangeSaaS.ExecuteDataExchangeScenarioActionInSecondInfobase");
 	JobParameters.Insert("Parameters", Parameters);
-	JobParameters.Insert("Key",        Key);
+	JobParameters.Insert("Key",        _Key);
 	JobParameters.Insert("DataArea",   ScenarioString.SecondInfobaseSeparatorValue);
 	
 	Try
@@ -115,7 +115,7 @@ Function TestConnection(SettingsStructureString, TransportKindString, ErrorMessa
 	
 	// Testing exchange message transport data processor connection
 	DataExchangeServer.TestExchangeMessageTransportDataProcessorConnection(Cancel,
-			ValueFromStringInternal(SettingsStructureString),
+			MessageExchangeInternal.ConvertTransportSettingsStructure(ValueFromStringInternal(SettingsStructureString)),
 			Enums.ExchangeMessageTransportKinds[TransportKindString],
 			ErrorMessage);
 	

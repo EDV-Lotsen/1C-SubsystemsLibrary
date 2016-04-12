@@ -552,7 +552,7 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 				
 				For Each TableRow In FoundRows Do
 					
-					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, MessageObject.Body.Get(), MessageTitle.Sender);
+					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, ConvertMessageBodyStructure(MessageObject.Body.Get()), MessageTitle.Sender);
 					
 					If TransactionActive() Then
 						While TransactionActive() Do
@@ -797,9 +797,9 @@ Procedure UpdateEndpointConnectionSettings(Cancel, Endpoint, SenderConnectionSet
 	
 	Try
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.TestConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.TestConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 	Except
 		Cancel = True;
@@ -904,6 +904,8 @@ Procedure SerializeDataToStream(DataSelection, Stream) Export
 		// {Event handler: OnSendMessage} Beginning
 		Body = Data.Body.Get();
 		
+		Body = MessageExchangeInternal.ConvertInstantMessageData(Body);
+				
 		OnSendMessageSL(Data.Description, Body, Data);
 		
 		OnSendMessage(Data.Description, Body);
@@ -957,6 +959,8 @@ Procedure SerializeDataFromStream(Sender, Stream, ImportedObjects, DataReadParti
 				// {Event handler: OnReceiveMessage} Beginning
 				Body = Data.Body.Get();
 				
+				Body = MessageExchangeInternal.ConvertInstantMessageData(Body);
+	
 				OnReceiveMessageSL(Data.Description, Body, Data);
 				
 				OnReceiveMessage(Data.Description, Body);
@@ -1256,9 +1260,9 @@ Procedure ConnectEndpointAtSender(Cancel,
 	Try
 		
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.TestConnectionAtRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(XDTOSerializer.WriteXDTO(RecipientConnectionSettings), ThisNodeCode());
 		Else
-			WSProxy.TestConnectionAtRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
+			WSProxy.TestConnectionRecipient(ValueToStringInternal(RecipientConnectionSettings), ThisNodeCode());
 		EndIf;
 		
 	Except
@@ -1268,9 +1272,9 @@ Procedure ConnectEndpointAtSender(Cancel,
 	EndTry;
 	
 	If CorrespondentVersion_2_0_1_6 Then
-		EndpointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetInfobaseParameters(RecipientEndpointDescription));
+		EndpointParameters = XDTOSerializer.ReadXDTO(WSProxy.GetIBParameters(RecipientEndpointDescription));
 	Else
-		EndpointParameters = ValueFromStringInternal(WSProxy.GetInfobaseParameters(RecipientEndpointDescription));
+		EndpointParameters = ValueFromStringInternal(WSProxy.GetIBParameters(RecipientEndpointDescription));
 	EndIf;
 	
 	EndpointNode = ExchangePlans.MessageExchange.FindByCode(EndpointParameters.Code);
@@ -1318,9 +1322,9 @@ Procedure ConnectEndpointAtSender(Cancel,
 		
 		// Establishing the endpoint connection on recipient side
 		If CorrespondentVersion_2_0_1_6 Then
-			WSProxy.ConnectEndpoint(ThisPointParameters.Code, ThisPointParameters.Description, XDTOSerializer.WriteXDTO(RecipientConnectionSettings));
+			WSProxy.ConnectEndPoint(ThisPointParameters.Code, ThisPointParameters.Description, XDTOSerializer.WriteXDTO(RecipientConnectionSettings));
 		Else
-			WSProxy.ConnectEndpoint(ThisPointParameters.Code, ThisPointParameters.Description, ValueToStringInternal(RecipientConnectionSettings));
+			WSProxy.ConnectEndPoint(ThisPointParameters.Code, ThisPointParameters.Description, ValueToStringInternal(RecipientConnectionSettings));
 		EndIf;
 		
 		// Setting the scheduled job usage flag
@@ -1418,6 +1422,126 @@ Function ConvertExchangePlanName(ExchangePlanName) Export
 EndFunction
 
 // Internal use only
+Function ConvertBackExchangePlanMessageData(MessageData) Export
+
+	Return StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(   
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(MessageData, 
+		"<Body>", "<ТелоСообщения>"), 
+		"<Sender>", "<Отправитель>"), 
+		"<Recipient>", "<Получатель>"), 
+		"<Locked>", "<Заблокировано>"), 
+		"<ProcessMessageRetryCount>", "<КоличествоПопытокОбработкиСообщения>"), 
+		"<DetailErrorDescription>", "<ПодробноеПредставлениеОшибки>"), 
+		"<IsInstantMessage>", "<ЭтоБыстроеСообщение>"), 
+		"</Body>", "</ТелоСообщения>"), 
+		"</Sender>", "</Отправитель>"), 
+		"</Recipient>", "</Получатель>"), 
+		"</Locked>", "</Заблокировано>"), 
+		"</ProcessMessageRetryCount>", "</КоличествоПопытокОбработкиСообщения>"), 
+		"</DetailErrorDescription>", "</ПодробноеПредставлениеОшибки>"), 
+		"</IsInstantMessage>", "</ЭтоБыстроеСообщение>"), 
+		"<DetailErrorDescription/>", "<ПодробноеПредставлениеОшибки/>"), 
+		"CatalogObject.SystemMessages>", "CatalogObject.СообщенияСистемы>"), 
+		">MessageExchange<", ">ОбменСообщениями<"), 
+		"""CatalogRef.SystemMessages""", """CatalogRef.СообщенияСистемы"""),
+		"DataExchange\ManagementApplication\DataChangeFlag", "ОбменДанными\УправляющееПриложение\ПризнакИзмененияДанных"),
+		"NodeCode", "КодУзла");
+
+EndFunction
+
+// Internal use only
+Function ConvertInstantMessageData(MessageData) Export
+
+	Return StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(   
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(MessageData, 
+		"""ОбластьДанных""", "DataArea"), 
+		"""Префикс""", """Prefix"""), 
+		"""URLСервиса""", """ServiceURL"""), 
+		"""ИмяСлужебногоПользователяСервиса""", """AuxiliaryServiceUserName"""), 
+		"""ПарольСлужебногоПользователяСервиса""", """AuxiliaryServiceUserPassword"""), 
+		"""РежимИспользованияИнформационнойБазы""", """InfobaseUsageMode"""), 
+		"""КопироватьОбластиДанныхИзЭталонной""", """CopyDataAreasFromPrototype"""), 
+		"""НезависимоеИспользованиеДополнительныхОтчетовИОбработокВМоделиСервиса""", """IndependentUseOfAdditionalReportsAndDataProcessorsInSaaSMode"""), 
+		"""ИспользованиеКаталогаДополнительныхОтчетовИОбработокВМоделиСервиса""", """UseAdditionalReportsAndDataProcessorsFolderInSaaSMode"""), 
+		"""РазрешитьВыполнениеДополнительныхОтчетовИОбработокРегламентнымиЗаданиямиВМоделиСервиса""", """AllowUseAdditionalReportsAndDataProcessorsByScheduledJobsInSaaSMode"""), 
+		"""МинимальныйИнтервалРегламентныхЗаданийДополнительныхОтчетовИОбработокВМоделиСервиса""", """MinimumAdditionalReportsAndDataProcessorsScheduledJobIntervalInSaaSMode"""), 
+		"""АдресУправленияКонференцией""", """ForumManagementURL"""), 
+		"""ИмяПользователяКонференцииИнформационногоЦентра""", """InformationCenterForumUserName"""), 
+		"""ПарольПользователяКонференцииИнформационногоЦентра""", """InformationCenterForumPassword"""), 
+		"EnumRef.РежимыИспользованияИнформационнойБазы""", "EnumRef.InfobaseUsageModes"""), 
+		">ru<", ">en<"), 
+		">Рабочий<", ">Production<"), 
+		">Демонстрационный<", ">Demo<"),
+		">НомерИнформационнойБазы<", ">InfobaseNumber<"),
+		">КодУзлаИнформационнойБазы<", ">InfobaseNodeCode<"),
+		">КодЭтогоУзла<",">ThisNodeCode<"),
+		">ВыполняемоеДействие<", ">CurrentAction<"),
+		">ПорядковыйНомерВыполнения<", ">ExecutionOrderNumber<"),
+		">ЗначениеРазделителяПервойИнформационнойБазы<", ">FirstInfobaseSeparatorValue<"),
+		">ЗначениеРазделителяВторойИнформационнойБазы<", ">SecondInfobaseSeparatorValue<"),
+		">ДатаАктуальностиБлокировки<", ">DataLockUpdateDate<"),
+		">Приложение1Код<",">Application1Code<"),
+		">Приложение2Код<", ">Application2Code<"),
+		">ИмяПланаОбмена<", ">ExchangePlanName<"),
+		">Режим<",">Mode<"),
+		">ВыгрузкаДанных<", ">DataExport<"),
+		">ЗагрузкаДанных<", ">DataImport<"),
+		">Ручной<", ">Manual<"),
+		">Автоматический<",">Automatic<");
+
+EndFunction
+
+// Internal use only
 Function ConvertExchangePlanMessageData(MessageData) Export
 
 	Return StrReplace(
@@ -1429,7 +1553,13 @@ Function ConvertExchangePlanMessageData(MessageData) Export
 		StrReplace(
 		StrReplace(
 		StrReplace(
+		StrReplace(
+		StrReplace(
+		StrReplace(
 		MessageData, 
+		"ОбменДанными\ПрикладноеПриложение\УстановитьПрефиксОбластиДанных", "DataExchange\Application\SetDataAreaPrefix"), 
+		"ОбменДанными\ПрикладноеПриложение\УдалениеОбмена", "DataExchange\Application\ExchangeDeletion"), 
+		"ОбменДанными\ПрикладноеПриложение\СозданиеОбмена", "DataExchange\Application\ExchangeCreation"), 
 		"ОбменСообщениями", "MessageExchange"), 
 		"СообщенияСистемы", "SystemMessages"), 
 		"ТелоСообщения", "Body"), 
@@ -1458,3 +1588,154 @@ Function ConvertRecipientConnectionSettings(Val SettingsStructure) Export
 	Return SettingsStructure;
 
 EndFunction
+
+// Internal use only
+Function ConvertTransportSettingsStructure(Val SettingsStructure) Export
+
+	If SettingsStructure.Property("FILEКаталогОбменаИнформацией") Then
+		SettingsStructure.Insert("FILEDataExchangeDirectory", SettingsStructure.FILEКаталогОбменаИнформацией);	
+	EndIf;
+	
+	If SettingsStructure.Property("FTPСоединениеПароль") Then
+		SettingsStructure.Insert("FTPConnectionPassword", SettingsStructure.FTPСоединениеПароль);	
+	EndIf;
+	
+	If SettingsStructure.Property("FTPСоединениеПассивноеСоединение") Then
+		SettingsStructure.Insert("FTPConnectionPassiveConnection", SettingsStructure.FTPСоединениеПассивноеСоединение);	
+	EndIf;
+	
+	If SettingsStructure.Property("FTPСоединениеПользователь") Then
+		SettingsStructure.Insert("FTPConnectionUser", SettingsStructure.FTPСоединениеПользователь);	
+	EndIf;
+	
+	If SettingsStructure.Property("FTPСоединениеПорт") Then
+		SettingsStructure.Insert("FTPConnectionPort", SettingsStructure.FTPСоединениеПорт);	
+	EndIf;
+	
+	If SettingsStructure.Property("FTPСоединениеПуть") Then
+		SettingsStructure.Insert("FTPConnectionPath", SettingsStructure.FTPСоединениеПуть);	
+	EndIf;
+	
+	Return SettingsStructure;
+
+EndFunction // ()
+
+// Internal use only
+Function ConvertSynchronizationSettingsTable(Val SynchronizationSettingsTable) Export
+
+	If SynchronizationSettingsTable.Columns.Find("ПланОбмена") <> Undefined Then
+		SynchronizationSettingsTable.Columns.ПланОбмена.Name = "ExchangePlan";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("ОбластьДанных") <> Undefined Then
+		SynchronizationSettingsTable.Columns.ОбластьДанных.Name = "DataArea";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("НаименованиеПриложения") <> Undefined Then
+		SynchronizationSettingsTable.Columns.НаименованиеПриложения.Name = "ApplicationDescription";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("СинхронизацияНастроена") <> Undefined Then
+		SynchronizationSettingsTable.Columns.СинхронизацияНастроена.Name = "SynchronizationConfigured";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("НастройкаСинхронизацииВМенеджереСервиса") <> Undefined Then
+		SynchronizationSettingsTable.Columns.НастройкаСинхронизацииВМенеджереСервиса.Name = "SynchronizationSetupInServiceManager";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("КонечнаяТочкаКорреспондента") <> Undefined Then
+		SynchronizationSettingsTable.Columns.КонечнаяТочкаКорреспондента.Name = "CorrespondentEndpoint";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("Префикс") <> Undefined Then
+		SynchronizationSettingsTable.Columns.Префикс.Name = "Prefix";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("ПрефиксКорреспондента") <> Undefined Then
+		SynchronizationSettingsTable.Columns.ПрефиксКорреспондента.Name = "CorrespondentPrefix";	
+	EndIf;
+	
+	If SynchronizationSettingsTable.Columns.Find("ВерсияКорреспондента") <> Undefined Then
+		SynchronizationSettingsTable.Columns.ВерсияКорреспондента.Name = "CorrespondentVersion";	
+	EndIf;
+	
+	Return SynchronizationSettingsTable;
+
+EndFunction // ConvertSynchronizationSettingsTable()
+
+// Internal use only
+Function ConvertBackDataExchangeScenarioValueTable(Val DataExchangeScenarioValueTable) Export
+	
+	For Each Column In DataExchangeScenarioValueTable.Columns Do
+		
+		If Column.Name = "InfobaseNumber" Then
+			Column.Name = "НомерИнформационнойБазы";
+		ElsIf Column.Name = "InfobaseNodeCode" Then
+			Column.Name = "КодУзлаИнформационнойБазы";
+		ElsIf Column.Name = "ThisNodeCode" Then
+			Column.Name = "КодЭтогоУзла";
+		ElsIf Column.Name = "CurrentAction" Then
+			Column.Name = "ВыполняемоеДействие";
+		ElsIf Column.Name = "ExecutionOrderNumber" Then
+			Column.Name = "ПорядковыйНомерВыполнения";
+		ElsIf Column.Name = "FirstInfobaseSeparatorValue" Then
+			Column.Name = "ЗначениеРазделителяПервойИнформационнойБазы";
+		ElsIf Column.Name = "SecondInfobaseSeparatorValue" Then
+			Column.Name = "ЗначениеРазделителяВторойИнформационнойБазы";
+		ElsIf Column.Name = "DataLockUpdateDate" Then
+			Column.Name = "ДатаАктуальностиБлокировки";
+		ElsIf Column.Name = "Application1Code" Then
+			Column.Name = "Приложение1Код";
+		ElsIf Column.Name = "Application2Code" Then
+			Column.Name = "Приложение2Код";
+		ElsIf Column.Name = "ExchangePlanName" Then
+			Column.Name = "ИмяПланаОбмена";
+		ElsIf Column.Name = "Mode" Then
+			Column.Name = "Режим";
+		EndIf;
+		
+	EndDo;
+	
+	For Each TableRow In DataExchangeScenarioValueTable Do
+		
+		For Each Column In DataExchangeScenarioValueTable.Columns Do
+			
+			If TableRow[Column.Name] = "DataExport" Then				
+				TableRow[Column.Name] = "ВыгрузкаДанных";
+			ElsIf TableRow[Column.Name] = "DataImport" Then
+				TableRow[Column.Name] = "ЗагрузкаДанных";
+			ElsIf TableRow[Column.Name] = "Manual" Then
+				TableRow[Column.Name] = "Ручной";
+			ElsIf TableRow[Column.Name] = "Automatic" Then
+				TableRow[Column.Name] = "Автоматический";
+			EndIf;
+			
+		EndDo;
+		
+	EndDo;
+	
+	Return DataExchangeScenarioValueTable;	
+
+EndFunction // ConvertBackE()
+
+Function ConvertMessageBodyStructure(Val MessageBodyStructure) Export
+
+	If TypeOf(MessageBodyStructure) = Type("Structure") Then
+		
+		If MessageBodyStructure.Property("ОбластьДанных") Then
+			MessageBodyStructure.Insert("DataArea", MessageBodyStructure.ОбластьДанных);	
+		EndIf;
+		
+		If MessageBodyStructure.Property("Префикс") Then
+			MessageBodyStructure.Insert("Prefix", MessageBodyStructure.Префикс);	
+		EndIf;
+		
+	EndIf;
+	
+	Return MessageBodyStructure;
+
+EndFunction // ConvertMessageBodyStructure()
+
+   
+
+ 

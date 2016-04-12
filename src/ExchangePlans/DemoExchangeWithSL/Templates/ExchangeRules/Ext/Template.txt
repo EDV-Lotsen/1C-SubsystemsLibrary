@@ -1,0 +1,771 @@
+﻿<ExchangeRules>
+	<FormatVersion CompatibilityMode="SL21CompatibilityMode">2.01</FormatVersion>
+	<ID>5c32d65e-bfe9-4433-919e-b5816f9be155 </ID>
+	<Description>DemoExchangeWithSL</Description>
+	<CreationDateTime>2014-05-06T11:12:25</CreationDateTime>
+	<Source PlatformVersion="8.0" ConfigurationVersion="2.2.3.25" ConfigurationSynonym="Subsystems Library 22">SubsystemsLibrary</Source>
+	<Target PlatformVersion="8.0" ConfigurationVersion="2.2.3.25" ConfigurationSynonym="Subsystems Library 22">SubsystemsLibrary</Target>
+	<Parameters/>
+	<DataProcessors/>
+	<ObjectConversionRules>
+		<Group>
+			<Code>Catalogs</Code>
+			<Description>Catalogs</Description>
+			<Order>100</Order>
+			<Rule>
+				<Code>Banks</Code>
+				<Description>Catalog: Banks</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Banks</Source>
+				<Target>CatalogRef.Banks</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>Warehouses</Code>
+				<Description>Catalog: Warehouses</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Warehouses</Source>
+				<Target>CatalogRef.Warehouses</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>3</Code>
+						<Description>DontUse --&gt; DontUse</Description>
+						<Order>250</Order>
+						<Source Name="DontUse" Kind="Attribute" Type="Boolean"/>
+						<Target Name="DontUse" Kind="Attribute" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>Companies</Code>
+				<Description>Catalog: Companies</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Companies</Source>
+				<Target>CatalogRef.Companies</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property Search="true">
+						<Code>3</Code>
+						<Description>Multicurrency --&gt; Multicurrency</Description>
+						<Order>250</Order>
+						<Source Name="Multicurrency" Kind="Attribute" Type="Boolean"/>
+						<Target Name="Multicurrency" Kind="Attribute" Type="Boolean"/>
+					</Property>
+					<Property Search="true">
+						<Code>3</Code>
+						<Description>Prefix --&gt; Prefix</Description>
+						<Order>250</Order>
+						<Source Name="Prefix" Kind="Attribute" Type="String"/>
+						<Target Name="Prefix" Kind="Attribute" Type="String"/>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>Currencies</Code>
+				<Description>Catalog: Currencies</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Currencies</Source>
+				<Target>CatalogRef.Currencies</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>50</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>100</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>150</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>11</Code>
+						<Description>ImportFromInternet --&gt; ImportFromInternet</Description>
+						<Order>200</Order>
+						<Source Name="ImportFromInternet" Kind="Attribute" Type="Boolean"/>
+						<Target Name="ImportFromInternet" Kind="Attribute" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>12</Code>
+						<Description>LongDescription --&gt; LongDescription</Description>
+						<Order>250</Order>
+						<Source Name="LongDescription" Kind="Attribute" Type="String"/>
+						<Target Name="LongDescription" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>13</Code>
+						<Description>Margin --&gt; Margin</Description>
+						<Order>300</Order>
+						<Source Name="Margin" Kind="Attribute" Type="Number"/>
+						<Target Name="Margin" Kind="Attribute" Type="Number"/>
+					</Property>
+					<Property>
+						<Code>14</Code>
+						<Description>MainCurrency --&gt; MainCurrency</Description>
+						<Order>350</Order>
+						<Source Name="MainCurrency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<Target Name="MainCurrency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<ConversionRuleCode>Currencies </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>15</Code>
+						<Description>InWordParametersInHomeLanguage --&gt; InWordParametersInHomeLanguage</Description>
+						<Order>400</Order>
+						<Source Name="InWordParametersInHomeLanguage" Kind="Attribute" Type="String"/>
+						<Target Name="InWordParametersInHomeLanguage" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>16</Code>
+						<Description>RateCalculationFormula --&gt; RateCalculationFormula</Description>
+						<Order>450</Order>
+						<Source Name="RateCalculationFormula" Kind="Attribute" Type="String"/>
+						<Target Name="RateCalculationFormula" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>17</Code>
+						<Description>RateSettingMethod --&gt; RateSettingMethod</Description>
+						<Order>500</Order>
+						<Source Name="RateSettingMethod" Kind="Attribute" Type="EnumRef.CurrencyRateSettingMethods"/>
+						<Target Name="RateSettingMethod" Kind="Attribute" Type="EnumRef.CurrencyRateSettingMethods"/>
+						<ConversionRuleCode>CurrencyRateSettingMethods </ConversionRuleCode>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>PriceKinds</Code>
+				<Description>Catalog: Price kinds</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.PriceKinds</Source>
+				<Target>CatalogRef.PriceKinds</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>Counterparties</Code>
+				<Description>Catalog: Counterparties</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Counterparties</Source>
+				<Target>CatalogRef.Counterparties</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property Search="true" Mandatory="true">
+						<Code>4</Code>
+						<Description>IsFolder --&gt; IsFolder</Description>
+						<Order>300</Order>
+						<Source Name="IsFolder" Kind="Property" Type="Boolean"/>
+						<Target Name="IsFolder" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property Search="true">
+						<Code>3</Code>
+						<Description>Parent --&gt; Parent</Description>
+						<Order>250</Order>
+						<Source Name="Parent" Kind="Property" Type="CatalogRef.Counterparties"/>
+						<Target Name="Parent" Kind="Property" Type="CatalogRef.Counterparties"/>
+						<ConversionRuleCode>Counterparties                                       </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>14</Code>
+						<Description>PriceKind --&gt; PriceKind</Description>
+						<Order>350</Order>
+						<Source Name="PriceKind" Kind="Attribute" Type="CatalogRef.PriceKinds"/>
+						<Target Name="PriceKind" Kind="Attribute" Type="CatalogRef.PriceKinds"/>
+						<ConversionRuleCode>PriceKinds                                           </ConversionRuleCode>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>Products</Code>
+				<Description>Catalog: Products</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>CatalogRef.Products</Source>
+				<Target>CatalogRef.Products</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>8</Code>
+						<Description>Description --&gt; Description</Description>
+						<Order>100</Order>
+						<Source Name="Description" Kind="Property" Type="String"/>
+						<Target Name="Description" Kind="Property" Type="String"/>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Code --&gt; Code</Description>
+						<Order>250</Order>
+						<Source Name="Code" Kind="Property" Type="String"/>
+						<Target Name="Code" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property Search="true" Mandatory="true">
+						<Code>4</Code>
+						<Description>IsFolder --&gt; IsFolder</Description>
+						<Order>300</Order>
+						<Source Name="IsFolder" Kind="Property" Type="Boolean"/>
+						<Target Name="IsFolder" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property Search="true">
+						<Code>3</Code>
+						<Description>Parent --&gt; Parent</Description>
+						<Order>250</Order>
+						<Source Name="Parent" Kind="Property" Type="CatalogRef.Products"/>
+						<Target Name="Parent" Kind="Property" Type="CatalogRef.Products"/>
+						<ConversionRuleCode>Products                                             </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>14</Code>
+						<Description>SKU --&gt; SKU</Description>
+						<Order>350</Order>
+						<Source Name="SKU" Kind="Attribute" Type="String"/>
+						<Target Name="SKU" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>14</Code>
+						<Description>Vendor --&gt; Vendor</Description>
+						<Order>350</Order>
+						<Source Name="Vendor" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<Target Name="Vendor" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<ConversionRuleCode>Counterparties                                       </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>17</Code>
+						<Description>Kind --&gt; Kind</Description>
+						<Order>500</Order>
+						<Source Name="Kind" Kind="Attribute" Type="EnumRef.ProductKinds"/>
+						<Target Name="Kind" Kind="Attribute" Type="EnumRef.ProductKinds"/>
+						<ConversionRuleCode>ProductKinds                                         </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>17</Code>
+						<Description>Barcode --&gt; Barcode</Description>
+						<Order>500</Order>
+						<Source Name="Barcode" Kind="Attribute" Type="String"/>
+						<Target Name="Barcode" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>17</Code>
+						<Description>Details --&gt; Details</Description>
+						<Order>500</Order>
+						<Source Name="Details" Kind="Attribute" Type="String"/>
+						<Target Name="Details" Kind="Attribute" Type="String"/>
+					</Property>
+				</Properties>
+				<Values/>
+			</Rule>
+		</Group>
+		<Group>
+			<Code>Documents</Code>
+			<Description>Documents</Description>
+			<Order>150</Order>
+			<Rule>
+				<Code>ProductReceipt</Code>
+				<Description>Document: Product receipt</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>DocumentRef.ProductReceipt</Source>
+				<Target>DocumentRef.ProductReceipt</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Date --&gt; Date</Description>
+						<Order>50</Order>
+						<Source Name="Date" Kind="Property" Type="Date"/>
+						<Target Name="Date" Kind="Property" Type="Date"/>
+					</Property>
+					<Property Search="true">
+						<Code>9</Code>
+						<Description>Number --&gt; Number</Description>
+						<Order>100</Order>
+						<Source Name="Number" Kind="Property" Type="String"/>
+						<Target Name="Number" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>13</Code>
+						<Description>Posted --&gt; Posted</Description>
+						<Order>500</Order>
+						<Source Name="Posted" Kind="Property" Type="Boolean"/>
+						<Target Name="Posted" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>18</Code>
+						<Description>Vendor --&gt; Vendor</Description>
+						<Order>500</Order>
+						<Source Name="Vendor" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<Target Name="Vendor" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<ConversionRuleCode>Counterparties                                       </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>19</Code>
+						<Description>Warehouse --&gt; Warehouse</Description>
+						<Order>500</Order>
+						<Source Name="Warehouse" Kind="Attribute" Type="CatalogRef.Warehouses"/>
+						<Target Name="Warehouse" Kind="Attribute" Type="CatalogRef.Warehouses"/>
+						<ConversionRuleCode>Warehouses                                           </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>20</Code>
+						<Description>Currency --&gt; Currency</Description>
+						<Order>500</Order>
+						<Source Name="Currency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<Target Name="Currency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<ConversionRuleCode>Currencies                                           </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>21</Code>
+						<Description>Company --&gt; Company</Description>
+						<Order>500</Order>
+						<Source Name="Company" Kind="Attribute" Type="CatalogRef.Companies"/>
+						<Target Name="Company" Kind="Attribute" Type="CatalogRef.Companies"/>
+						<ConversionRuleCode>Companies                                            </ConversionRuleCode>
+					</Property>
+					<Group>
+						<Code>14</Code>
+						<Description>Products --&gt; Products</Description>
+						<Order>650</Order>
+						<Source Name="Products" Kind="TabularSection"/>
+						<Target Name="Products" Kind="TabularSection"/>
+						<Property>
+							<Code>20</Code>
+							<Description>Product --&gt; Product</Description>
+							<Order>300</Order>
+							<Source Name="Product" Kind="Attribute" Type="CatalogRef.Products"/>
+							<Target Name="Product" Kind="Attribute" Type="CatalogRef.Products"/>
+							<ConversionRuleCode>Products                                      </ConversionRuleCode>
+						</Property>
+						<Property>
+							<Code>17</Code>
+							<Description>Price --&gt; Price</Description>
+							<Order>150</Order>
+							<Source Name="Price" Kind="Attribute" Type="Number"/>
+							<Target Name="Price" Kind="Attribute" Type="Number"/>
+						</Property>
+						<Property>
+							<Code>22</Code>
+							<Description>Quantity --&gt; Quantity</Description>
+							<Order>350</Order>
+							<Source Name="Quantity" Kind="Attribute" Type="Number"/>
+							<Target Name="Quantity" Kind="Attribute" Type="Number"/>
+						</Property>
+						<Property>
+							<Code>23</Code>
+							<Description>Amount --&gt; Amount</Description>
+							<Order>350</Order>
+							<Source Name="Amount" Kind="Attribute" Type="Number"/>
+							<Target Name="Amount" Kind="Attribute" Type="Number"/>
+						</Property>
+					</Group>
+				</Properties>
+				<Values/>
+			</Rule>
+			<Rule>
+				<Code>ProductExpense</Code>
+				<Description>Document: Product expense</Description>
+				<Order>50</Order>
+				<SynchronizeByID>true</SynchronizeByID>
+				<Source>DocumentRef.ProductExpense</Source>
+				<Target>DocumentRef.ProductExpense</Target>
+				<Properties>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>Date --&gt; Date</Description>
+						<Order>50</Order>
+						<Source Name="Date" Kind="Property" Type="Date"/>
+						<Target Name="Date" Kind="Property" Type="Date"/>
+					</Property>
+					<Property Search="true">
+						<Code>9</Code>
+						<Description>Number --&gt; Number</Description>
+						<Order>100</Order>
+						<Source Name="Number" Kind="Property" Type="String"/>
+						<Target Name="Number" Kind="Property" Type="String"/>
+					</Property>
+					<Property>
+						<Code>10</Code>
+						<Description>DeletionMark --&gt; DeletionMark</Description>
+						<Order>500</Order>
+						<Source Name="DeletionMark" Kind="Property" Type="Boolean"/>
+						<Target Name="DeletionMark" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>13</Code>
+						<Description>Posted --&gt; Posted</Description>
+						<Order>500</Order>
+						<Source Name="Posted" Kind="Property" Type="Boolean"/>
+						<Target Name="Posted" Kind="Property" Type="Boolean"/>
+					</Property>
+					<Property>
+						<Code>18</Code>
+						<Description>Customer --&gt; Customer</Description>
+						<Order>500</Order>
+						<Source Name="Customer" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<Target Name="Customer" Kind="Attribute" Type="CatalogRef.Counterparties"/>
+						<ConversionRuleCode>Counterparties                                       </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>19</Code>
+						<Description>Warehouse --&gt; Warehouse</Description>
+						<Order>500</Order>
+						<Source Name="Warehouse" Kind="Attribute" Type="CatalogRef.Warehouses"/>
+						<Target Name="Warehouse" Kind="Attribute" Type="CatalogRef.Warehouses"/>
+						<ConversionRuleCode>Warehouses                                           </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>20</Code>
+						<Description>Currency --&gt; Currency</Description>
+						<Order>500</Order>
+						<Source Name="Currency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<Target Name="Currency" Kind="Attribute" Type="CatalogRef.Currencies"/>
+						<ConversionRuleCode>Currencies                                           </ConversionRuleCode>
+					</Property>
+					<Property>
+						<Code>14</Code>
+						<Description>PriceKind --&gt; PriceKind</Description>
+						<Order>350</Order>
+						<Source Name="PriceKind" Kind="Attribute" Type="CatalogRef.PriceKinds"/>
+						<Target Name="PriceKind" Kind="Attribute" Type="CatalogRef.PriceKinds"/>
+						<ConversionRuleCode>PriceKinds                                           </ConversionRuleCode>
+					</Property>
+					<Property Search="true">
+						<Code>2</Code>
+						<Description>ShipmentEvidence --&gt; ShipmentEvidence</Description>
+						<Order>50</Order>
+						<Source Name="ShipmentEvidence" Kind="Attribute" Type="String"/>
+						<Target Name="ShipmentEvidence" Kind="Attribute" Type="String"/>
+					</Property>
+					<Property>
+						<Code>21</Code>
+						<Description>Company --&gt; Company</Description>
+						<Order>500</Order>
+						<Source Name="Company" Kind="Attribute" Type="CatalogRef.Companies"/>
+						<Target Name="Company" Kind="Attribute" Type="CatalogRef.Companies"/>
+						<ConversionRuleCode>Companies                                            </ConversionRuleCode>
+					</Property>
+					<Group>
+						<Code>14</Code>
+						<Description>Products --&gt; Products</Description>
+						<Order>650</Order>
+						<Source Name="Products" Kind="TabularSection"/>
+						<Target Name="Products" Kind="TabularSection"/>
+						<Property>
+							<Code>20</Code>
+							<Description>Product --&gt; Product</Description>
+							<Order>300</Order>
+							<Source Name="Product" Kind="Attribute" Type="CatalogRef.Products"/>
+							<Target Name="Product" Kind="Attribute" Type="CatalogRef.Products"/>
+							<ConversionRuleCode>Products                                      </ConversionRuleCode>
+						</Property>
+						<Property>
+							<Code>17</Code>
+							<Description>Price --&gt; Price</Description>
+							<Order>150</Order>
+							<Source Name="Price" Kind="Attribute" Type="Number"/>
+							<Target Name="Price" Kind="Attribute" Type="Number"/>
+						</Property>
+						<Property>
+							<Code>22</Code>
+							<Description>Quantity --&gt; Quantity</Description>
+							<Order>350</Order>
+							<Source Name="Quantity" Kind="Attribute" Type="Number"/>
+							<Target Name="Quantity" Kind="Attribute" Type="Number"/>
+						</Property>
+						<Property>
+							<Code>23</Code>
+							<Description>Amount --&gt; Amount</Description>
+							<Order>350</Order>
+							<Source Name="Amount" Kind="Attribute" Type="Number"/>
+							<Target Name="Amount" Kind="Attribute" Type="Number"/>
+						</Property>
+					</Group>
+				</Properties>
+				<Values/>
+			</Rule>
+		</Group>
+		<Group>
+			<Code>Enums</Code>
+			<Description>Enums</Description>
+			<Order>400</Order>
+			<Rule>
+				<Code>CurrencyRateSettingMethods</Code>
+				<Description>Enumeration: Currency rate setting methods</Description>
+				<Order>50</Order>
+				<Source>EnumRef.CurrencyRateSettingMethods</Source>
+				<Target>EnumRef.CurrencyRateSettingMethods</Target>
+				<Properties/>
+				<Values>
+					<Value>
+						<Code>1</Code>
+						<Description>ImportFromInternet --&gt; ImportFromInternet</Description>
+						<Order>50</Order>
+						<Source>ImportFromInternet</Source>
+						<Target>ImportFromInternet</Target>
+					</Value>
+					<Value>
+						<Code>2</Code>
+						<Description>ManualInput --&gt; ManualInput</Description>
+						<Order>100</Order>
+						<Source>ManualInput</Source>
+						<Target>ManualInput</Target>
+					</Value>
+					<Value>
+						<Code>3</Code>
+						<Description>AnotherCurrencyMargin --&gt; AnotherCurrencyMargin</Description>
+						<Order>150</Order>
+						<Source>AnotherCurrencyMargin</Source>
+						<Target>AnotherCurrencyMargin</Target>
+					</Value>
+					<Value>
+						<Code>4</Code>
+						<Description>CalculateByFormula --&gt; CalculateByFormula</Description>
+						<Order>200</Order>
+						<Source>CalculateByFormula</Source>
+						<Target>CalculateByFormula</Target>
+					</Value>
+				</Values>
+			</Rule>
+			<Rule>
+				<Code>ProductKinds</Code>
+				<Description>Enumeration: Product kinds</Description>
+				<Order>50</Order>
+				<Source>EnumRef.ProductKinds</Source>
+				<Target>EnumRef.ProductKinds</Target>
+				<Properties/>
+				<Values>
+					<Value>
+						<Code>1</Code>
+						<Description>Product --&gt; Product</Description>
+						<Order>50</Order>
+						<Source>Product</Source>
+						<Target>Product</Target>
+					</Value>
+					<Value>
+						<Code>2</Code>
+						<Description>Service --&gt; Service</Description>
+						<Order>100</Order>
+						<Source>Service</Source>
+						<Target>Service</Target>
+					</Value>
+				</Values>
+			</Rule>
+		</Group>
+	</ObjectConversionRules>
+	<DataExportRules>
+		<Group Disable="false">
+			<Code>Catalogs</Code>
+			<Description>Catalogs</Description>
+			<Order>100</Order>
+			<Rule Disable="false">
+				<Code>Banks</Code>
+				<Description>Banks</Description>
+				<Order>50</Order>
+				<ConversionRuleCode>Banks </ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Banks</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>Warehouses</Code>
+				<Description>Warehouses</Description>
+				<Order>100</Order>
+				<ConversionRuleCode>Warehouses</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Warehouses</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>Companies</Code>
+				<Description>Companies</Description>
+				<Order>150</Order>
+				<ConversionRuleCode>Companies</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Companies</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>Currencies</Code>
+				<Description>Currencies</Description>
+				<Order>200</Order>
+				<ConversionRuleCode>Currencies</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Currencies</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>PriceKinds</Code>
+				<Description>PriceKinds</Description>
+				<Order>250</Order>
+				<ConversionRuleCode>PriceKinds</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.PriceKinds</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>Counterparties</Code>
+				<Description>Counterparties</Description>
+				<Order>250</Order>
+				<ConversionRuleCode>Counterparties</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Counterparties</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>Products</Code>
+				<Description>Products</Description>
+				<Order>250</Order>
+				<ConversionRuleCode>Products</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>CatalogRef.Products</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>ProductReceipt</Code>
+				<Description>Product receipt</Description>
+				<Order>250</Order>
+				<ConversionRuleCode>ProductReceipt</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>DocumentRef.ProductReceipt</SelectionObject>
+			</Rule>
+			<Rule Disable="false">
+				<Code>ProductExpense</Code>
+				<Description>Product expense</Description>
+				<Order>250</Order>
+				<ConversionRuleCode>ProductExpense</ConversionRuleCode>
+				<DataSelectionVariant>StandardSelection</DataSelectionVariant>
+				<SelectionObject>DocumentRef.ProductExpense</SelectionObject>
+			</Rule>
+		</Group>
+	</DataExportRules>
+	<DataClearingRules/>
+	<Algorithms/>
+	<Queries/>
+</ExchangeRules>

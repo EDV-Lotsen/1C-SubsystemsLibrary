@@ -24,7 +24,7 @@ EndFunction
 // Returns the name of the message API.
 Function Interface() Export
 	
-	Return "ExchangeControlAdministration";
+	Return "ExchangeAdministrationControl";
 	
 EndFunction
 

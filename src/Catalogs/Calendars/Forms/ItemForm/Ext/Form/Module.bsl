@@ -574,8 +574,8 @@ Function DaySchedulePresentation(Form, DayNumber)
 		EndIf;
 		IntervalPresentation = IntervalPresentation 
 			+ StringFunctionsClientServer.SubstituteParametersInString("%1-%2, ", 
-				Format(ScheduleString.BeginTime, "DF=HH:mm; DE="), 
-				Format(ScheduleString.EndTime, "DF=HH:mm; DE="));
+				Format(ScheduleString.BeginTime, "DF='h:mm t'; DE="), 
+				Format(ScheduleString.EndTime, "DF='h:mm t'; DE="));
 		If Not ValueIsFilled(ScheduleString.EndTime) Then
 			IntervalInSeconds = EndOfDay(ScheduleString.EndTime) - ScheduleString.BeginTime + 1;
 		Else

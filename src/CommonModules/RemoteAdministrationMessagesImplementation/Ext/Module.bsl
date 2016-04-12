@@ -713,7 +713,7 @@ Function GetLanguageByCode(Val LanguageCode)
 		EndDo;
 		
 		MessagePattern = NStr("en = 'Unsupported language code: %1'");
-		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, Language);
+		MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessagePattern, LanguageCode);
 		Raise(MessageText);
 		
 	Else

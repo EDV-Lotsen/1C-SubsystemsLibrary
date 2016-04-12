@@ -24,7 +24,7 @@ Function DeliverMessages(SenderCode, StreamStorage)
 	// Importing messages to the infobase
 	MessageExchangeInternal.SerializeDataFromStream(
 		From,
-		StreamStorage.Get(),
+		MessageExchangeInternal.ConvertExchangePlanMessageData(StreamStorage.Get()),
 		ImportedMessages,
 		DataReadPartially);
 	
@@ -118,21 +118,11 @@ Function RefreshConnectionSettings(Code, ConnectionSettingsString)
 		RecordStructure.Insert("Node", Endpoint);
 		RecordStructure.Insert("DefaultExchangeMessageTransportKind", Enums.ExchangeMessageTransportKinds.WS);
 		
-		If Not ConnectionSettings.Property("WSURL") Then
-			RecordStructure.Insert("WSURL", ConnectionSettings.WSURLВебСервиса);
-		Else
-			RecordStructure.Insert("WSURL", ConnectionSettings.WSURL);
-		EndIf;
-		If Not ConnectionSettings.Property("WSUserName") Then
-			RecordStructure.Insert("WSUserName", ConnectionSettings.WSИмяПользователя);
-		Else
-			RecordStructure.Insert("WSUserName", ConnectionSettings.WSUserName);
-		EndIf;
-		If Not ConnectionSettings.Property("WSPassword") Then
-			RecordStructure.Insert("WSPassword", ConnectionSettings.WSПароль);
-		Else
-			RecordStructure.Insert("WSPassword", ConnectionSettings.WSPassword);
-		EndIf;
+		ConnectionSettings = MessageExchangeInternal.ConvertRecipientConnectionSettings(ConnectionSettings);
+		RecordStructure.Insert("WSURL", ConnectionSettings.WSURL);
+		RecordStructure.Insert("WSUserName", ConnectionSettings.WSUserName);
+		RecordStructure.Insert("WSPassword", ConnectionSettings.WSPassword);
+
 		RecordStructure.Insert("WSRememberPassword", True);
 		
 		// Adding information register record
@@ -160,16 +150,7 @@ Function TestConnectionAtRecipient(ConnectionSettingsString, SenderCode)
 	
 	ErrorMessageString = "";
 	
-	ConnectionSettingsStructure = ValueFromStringInternal(ConnectionSettingsString);
-	If Not ConnectionSettingsStructure.Property("WSURL") Then
-		ConnectionSettingsStructure.Insert("WSURL", ConnectionSettingsStructure.WSURLВебСервиса);
-	EndIf;
-	If Not ConnectionSettingsStructure.Property("WSUserName") Then
-		ConnectionSettingsStructure.Insert("WSUserName", ConnectionSettingsStructure.WSИмяПользователя);
-	EndIf;
-	If Not ConnectionSettingsStructure.Property("WSPassword") Then
-		ConnectionSettingsStructure.Insert("WSPassword", ConnectionSettingsStructure.WSПароль);
-	EndIf;
+	ConnectionSettingsStructure = MessageExchangeInternal.ConvertRecipientConnectionSettings(ValueFromStringInternal(ConnectionSettingsString));
 	WSProxy = MessageExchangeInternal.GetWSProxy(ConnectionSettingsStructure, ErrorMessageString);
 	
 	If WSProxy = Undefined Then

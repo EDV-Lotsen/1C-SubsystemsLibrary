@@ -52,8 +52,8 @@
 			</field>
 			<dataSource>GeneralDataSource</dataSource>
 			<query>SELECT
-	NULL 						AS RegistrationObject,
-	NULL 						AS RegistrationObjectType,
+	NULL AS RegistrationObject,
+	NULL AS RegistrationObjectType,
 	&amp;RegistrationReasonByRef AS RegistrationReason
 {WHERE
 	(&amp;RegistrationReasonByRef) AS RegistrationReason}</query>
@@ -157,11 +157,11 @@
 				<field>Type</field>
 			</field>
 			<dataSource>GeneralDataSource</dataSource>
-			<query>SELECT 
- NULL AS Type,
- 0 AS TotalCount
-WHERE 
- FALSE </query>
+			<query>SELECT
+	NULL AS Type,
+	0 AS TotalCount
+WHERE
+	FALSE</query>
 		</item>
 	</dataSet>
 	<dataSetLink>
@@ -399,13 +399,6 @@ CASE
  WHEN RegistrationAdditionally&gt;0 THEN RegistrationObject
  ELSE NULL
 END
-)COUNT(DISTINCT 
-CASE
- WHEN Not ObjectCanBeExported THEN NULL
- WHEN RegistrationAutomatically&gt;0 THEN RegistrationObject
- WHEN RegistrationAdditionally&gt;0 THEN RegistrationObject
- ELSE NULL
-END
 )</expression>
 		<group>FullMetadataName</group>
 		<group>Overall</group>
@@ -413,15 +406,6 @@ END
 	<totalField>
 		<dataPath>NotToBeExported</dataPath>
 		<expression>SUM(TotalCount)
--
-COUNT(DISTINCT 
-CASE
- WHEN Not ObjectCanBeExported THEN NULL
- WHEN RegistrationAutomatically&gt;0 THEN RegistrationObject
- WHEN RegistrationAdditionally&gt;0 THEN RegistrationObject
- ELSE NULL
-END
-)SUM(TotalCount)
 -
 COUNT(DISTINCT 
 CASE

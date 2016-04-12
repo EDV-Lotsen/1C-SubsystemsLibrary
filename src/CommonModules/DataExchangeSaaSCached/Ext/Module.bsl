@@ -19,8 +19,8 @@ Function GetExchangeServiceWSProxy() Export
 	SettingsStructure.Insert("WSURL",                  TransportSettings.WSURL);
 	SettingsStructure.Insert("WSUserName",             TransportSettings.WSUserName);
 	SettingsStructure.Insert("WSPassword",             TransportSettings.WSPassword);
-	SettingsStructure.Insert("WSServiceName",          "ManagementApplicationExchange_1_0_6_5");
-	SettingsStructure.Insert("NamespaceWebServiceURL", "http://www.1c.ru/SaaS/1.0/WS/ManagementApplicationExchange_1_0_6_5");
+	SettingsStructure.Insert("WSServiceName",          "ManageApplicationExchange_1_0_6_5");
+	SettingsStructure.Insert("NamespaceWebServiceURL", "http://www.1c.ru/SaaS/1.0/WS/ManageApplicationExchange_1_0_6_5");
 	SettingsStructure.Insert("WSTimeout",              20);
 	
 	Result = DataExchangeServer.GetWSProxyByConnectionParameters(SettingsStructure);

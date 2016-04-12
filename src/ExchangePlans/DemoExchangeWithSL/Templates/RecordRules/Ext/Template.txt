@@ -1,0 +1,134 @@
+﻿<RecordRules>
+	<FormatVersion>2.01</FormatVersion>
+	<ID>a4337ca0-ca8c-11e1-8ef5-20cf30c960b6</ID>
+	<Description>SL: Data exchange with SL without conversion rules)</Description>
+	<CreationDateTime>2012-07-10T16:43:08</CreationDateTime>
+	<ExchangePlan Name="DemoExchangeWithSL">ExchangePlanRef.DemoExchangeWithSL</ExchangePlan>
+	<Configuration PlatformVersion="8.2" ConfigurationVersion="2.2.3.24" ConfigurationSynonym="Subsystems Library 22">SubsystemsLibrary</Configuration>
+	<ExchangePlanContent>
+		<Item>
+			<Type>CatalogRef.Banks</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.Warehouses</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.Companies</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.Currencies</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.PriceKinds</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.Counterparties</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>CatalogRef.Products</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>DocumentRef.ProductReceipt</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+		<Item>
+			<Type>DocumentRef.ProductExpense</Type>
+			<AutoRecord>false</AutoRecord>
+		</Item>
+	</ExchangePlanContent>
+	<ObjectChangeRecordRules>
+		<Group Disable="false">
+			<Code>000000002</Code>
+			<Description>Catalogs</Description>
+			<GroupType>Catalog</GroupType>
+			<Rule Disable="false" Valid="true">
+				<Code>000000001</Code>
+				<Description>Banks</Description>
+				<SettingsObject>CatalogRef.Banks</SettingsObject>
+				<MetadataObjectName>Catalog.Banks</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000007</Code>
+				<Description>Warehouses</Description>
+				<SettingsObject>CatalogRef.Warehouses</SettingsObject>
+				<MetadataObjectName>Catalog.Warehouses</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000002</Code>
+				<Description>Companies</Description>
+				<SettingsObject>CatalogRef.Companies</SettingsObject>
+				<MetadataObjectName>Catalog.Companies</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000005</Code>
+				<Description>Currencies</Description>
+				<SettingsObject>CatalogRef.Currencies</SettingsObject>
+				<MetadataObjectName>Catalog.Currencies</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000006</Code>
+				<Description>Price kinds</Description>
+				<SettingsObject>CatalogRef.PriceKinds</SettingsObject>
+				<MetadataObjectName>Catalog.PriceKinds</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000004</Code>
+				<Description>Counterparties</Description>
+				<SettingsObject>CatalogRef.Counterparties</SettingsObject>
+				<MetadataObjectName>Catalog.Counterparties</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000003</Code>
+				<Description>Products</Description>
+				<SettingsObject>CatalogRef.Products</SettingsObject>
+				<MetadataObjectName>Catalog.Products</MetadataObjectName>
+				<MetadataObjectType>Catalog</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000009</Code>
+				<Description>Product receipt</Description>
+				<SettingsObject>DocumentRef.ProductReceipt</SettingsObject>
+				<MetadataObjectName>Document.ProductReceipt</MetadataObjectName>
+				<MetadataObjectType>Document</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+			<Rule Disable="false" Valid="true">
+				<Code>000000009</Code>
+				<Description>Product expense</Description>
+				<SettingsObject>DocumentRef.ProductExpense</SettingsObject>
+				<MetadataObjectName>Document.ProductExpense</MetadataObjectName>
+				<MetadataObjectType>Document</MetadataObjectType>
+				<FilterByExchangePlanProperties/>
+				<FilterByObjectProperties/>
+			</Rule>
+		</Group>
+	</ObjectChangeRecordRules>
+</RecordRules>

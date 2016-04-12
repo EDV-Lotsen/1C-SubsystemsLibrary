@@ -4961,7 +4961,7 @@ Procedure PrepareRoleTree(Val Collection, Val HideFullAccessRole, Val ShowSelect
 			Else
 				Row.PictureNumber = 6;
 				Row.Check = Row.Rows.FindRows(
-					New Structure("Mark", False)).Count() = 0;
+					New Structure("Check", False)).Count() = 0;
 			EndIf;
 		EndIf;
 		

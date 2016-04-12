@@ -32,7 +32,7 @@ Function SetConnectionLock(Val MessageText = "",
 		
 		DataLock = NewConnectionLockParameters();
 		DataLock.Use = True;
-		DataLock.Beginning = CurrentSessionDate();
+		DataLock.Begin = CurrentSessionDate();
 		DataLock.Message = GenerateLockMessage(MessageText, KeyCode);
 		DataLock.Exclusive = Users.InfobaseUserWithFullAccess(, True);
 		SetDataAreaSessionLock(DataLock);
@@ -105,9 +105,9 @@ Function SessionLockParameters(Val GetSessionCount = False, LockParameters = Und
 	
 	SetPrivilegedMode(True);
 	Return New Structure(
-		"Use,Beginning,End,Message,SessionTerminationTimeout,SessionCount,CurrentSessionDate",
+		"Use,Begin,End,Message,SessionTerminationTimeout,SessionCount,CurrentSessionDate",
 		CurrentMode.Use,
-		CurrentMode.Beginning,
+		CurrentMode.Begin,
 		CurrentMode.End,
 		CurrentMode.Message,
 		15 * 60, // 15 minutes, user session timeout before the infobase lock is set (in seconds)
@@ -165,7 +165,7 @@ EndFunction
 //
 Function NewConnectionLockParameters() Export
 	
-	Return New Structure("End,Beginning,Message,Use,Exclusive",
+	Return New Structure("End,Begin,Message,Use,Exclusive",
 		Date(1,1,1), Date(1,1,1), "", False, False);
 		
 EndFunction
@@ -225,8 +225,8 @@ Procedure SetDataAreaSessionLock(Parameters, Val LocalTime = True, Val DataArea 
 	If Parameters.Use Then
 		DataLock = LockSet.Add();
 		DataLock.DataAreaAuxiliaryData = DataArea;
-		DataLock.LockPeriodStart = ?(LocalTime And ValueIsFilled(SettingsStructure.Beginning),
-			ToUniversalTime(SettingsStructure.Beginning), SettingsStructure.Beginning);
+		DataLock.LockPeriodStart = ?(LocalTime And ValueIsFilled(SettingsStructure.Begin),
+			ToUniversalTime(SettingsStructure.Begin), SettingsStructure.Begin);
 		DataLock.LockPeriodEnd = ?(LocalTime And ValueIsFilled(SettingsStructure.End),
 			ToUniversalTime(SettingsStructure.End), SettingsStructure.End);
 		DataLock.LockMessage = SettingsStructure.Message;
@@ -264,7 +264,7 @@ Function GetDataAreaSessionLock(Val LocalTime = True) Export
 		Return Result;
 	EndIf;
 	DataLock = LockSet[0];
-	Result.Beginning = ?(LocalTime And ValueIsFilled(DataLock.LockPeriodStart),
+	Result.Begin = ?(LocalTime And ValueIsFilled(DataLock.LockPeriodStart),
 		ToLocalTime(DataLock.LockPeriodStart), DataLock.LockPeriodStart);
 	Result.End = ?(LocalTime And ValueIsFilled(DataLock.LockPeriodEnd),
 		ToLocalTime(DataLock.LockPeriodEnd), DataLock.LockPeriodEnd);
@@ -414,10 +414,10 @@ Procedure OnAddStandardSubsystemClientLogicParametersOnStart(Parameters) Export
 	If ValueIsFilled(CurrentMode.End) Then
 		LockPeriod = StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'between %1 and %2'"),
-			CurrentMode.Beginning, CurrentMode.End);
+			CurrentMode.Begin, CurrentMode.End);
 	Else
 		LockPeriod = StringFunctionsClientServer.SubstituteParametersInString(
-			NStr("en = 'from %1'"), CurrentMode.Beginning);
+			NStr("en = 'from %1'"), CurrentMode.Begin);
 	EndIf;
 	If ValueIsFilled(CurrentMode.Message) Then
 		LockReason = NStr("en = 'for the following reason:'") + Chars.LF + CurrentMode.Message;
@@ -519,26 +519,26 @@ Procedure OnFillToDoList(ToDoList) Export
 	CurrentSessionDate = CurrentSessionDate();
 	
 	If LockParameters.Use Then
-		If CurrentSessionDate < LockParameters.Beginning Then
+		If CurrentSessionDate < LockParameters.Begin Then
 			If LockParameters.End <> Date(1, 1, 1) Then
 				Message = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Scheduled between %1 and %2'"),
-					Format(LockParameters.Beginning, "DLF=DT"), Format(LockParameters.End, "DLF=DT"));
+					Format(LockParameters.Begin, "DLF=DT"), Format(LockParameters.End, "DLF=DT"));
 			Else
 				Message = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Scheduled for %1'"),
-					Format(LockParameters.Beginning, "DLF=DT"));
+					Format(LockParameters.Begin, "DLF=DT"));
 			EndIf;
 			Importance = False;
-		ElsIf LockParameters.End <> Date(1, 1, 1) And CurrentSessionDate > LockParameters.End And LockParameters.Beginning <> Date(1, 1, 1) Then
+		ElsIf LockParameters.End <> Date(1, 1, 1) And CurrentSessionDate > LockParameters.End And LockParameters.Begin <> Date(1, 1, 1) Then
 			Importance = False;
 			Message = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'Inactive (expired on %1)'"), 
 				Format(LockParameters.End, "DLF=DT"));
 		Else
 			If LockParameters.End <> Date(1, 1, 1) Then
 				Message = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'between %1 and %2'"),
-					Format(LockParameters.Beginning, "DLF=DT"), Format(LockParameters.End, "DLF=DT"));
+					Format(LockParameters.Begin, "DLF=DT"), Format(LockParameters.End, "DLF=DT"));
 			Else
 				Message = StringFunctionsClientServer.SubstituteParametersInString(NStr("en = 'from %1'"),
-					Format(LockParameters.Beginning, "DLF=DT"));
+					Format(LockParameters.Begin, "DLF=DT"));
 			EndIf;
 			Importance = True;
 		EndIf;
@@ -671,7 +671,7 @@ EndFunction
 //
 Function ConnectionsLockedForDate(CurrentMode, CurrentDate)
 	
-	Return (CurrentMode.Use And CurrentMode.Beginning <= CurrentDate
+	Return (CurrentMode.Use And CurrentMode.Begin <= CurrentDate
 		And (Not ValueIsFilled(CurrentMode.End) Or CurrentDate <= CurrentMode.End));
 		
 EndFunction

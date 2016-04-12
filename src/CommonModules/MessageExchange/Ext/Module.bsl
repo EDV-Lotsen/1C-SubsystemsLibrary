@@ -649,6 +649,11 @@ Procedure DeliverMessagesToRecipient(Endpoint, Val Messages)
 	Stream = "";
 	
 	MessageExchangeInternal.SerializeDataToStream(Messages, Stream);
+	If Endpoint = Constants.ServiceManagerEndpoint.Get() Then
+		Stream = MessageExchangeInternal.ConvertBackExchangePlanMessageData(Stream);
+	Else
+		Stream = MessageExchangeInternal.ConvertExchangePlanMessageData(Stream);
+	EndIf;
 	
 	MessageExchangeCached.WSEndpointProxy(Endpoint, 10).DeliverMessages(MessageExchangeInternal.ThisNodeCode(), New ValueStorage(Stream, New Deflation(9)));
 	

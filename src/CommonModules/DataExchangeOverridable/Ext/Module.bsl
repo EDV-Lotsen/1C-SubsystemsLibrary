@@ -42,6 +42,7 @@ Procedure GetExchangePlans(SubsystemExchangePlans) Export
 	//SubsystemExchangePlans.Add(Metadata.ExchangePlans._DemoDistributedInfobaseExchange);
 	//SubsystemExchangePlans.Add(Metadata.ExchangePlans._DemoDistributedInfobaseExchangeWithExternalFiles);
 	 SubsystemExchangePlans.Add(Metadata.ExchangePlans.DemoExchangeInDIB);
+	 SubsystemExchangePlans.Add(Metadata.ExchangePlans.DemoExchangeWithSL);
 	// _Demo end example
 	
 EndProcedure

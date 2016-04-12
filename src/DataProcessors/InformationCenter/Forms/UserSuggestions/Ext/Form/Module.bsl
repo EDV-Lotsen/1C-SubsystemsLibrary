@@ -178,15 +178,31 @@ Procedure ExecuteActionByVote(CommandName)
 	ShowUserNotification(NStr("en = 'Your vote was taken.'"));
 	
 	FormParameters = New Structure("Login, SuggestionID", Login, SuggestionID);
-	OpenFormModal("DataProcessor.InformationCenter.Form.Comment", FormParameters);
+	CloseNotification = New NotifyDescription("ExecuteActionByVoteCompletion", ThisObject);
+	//OpenFormModal("DataProcessor.InformationCenter.Form.Comment", FormParameters);
+	OpenForm("DataProcessor.InformationCenter.Form.Comment", FormParameters,,,,,CloseNotification);
+	
+	//Moved to the ExecuteActionByVoteCompletion
+	
+	// Generating page items ExecuteActionByVoteCompletion
+	//Result = GeneratePageItems(CurrentGroup, CurrentPage);
+	//If Not Result Then
+		//ShowMessageBox(,NStr("en = 'The user suggestion service is temporarily unavailable.
+			//|Please try again later.'"));
+		//Return;
+	//EndIf;
+	
+EndProcedure
+
+&AtClient
+Procedure ExecuteActionByVoteCompletion(CloseResult, AdditionalParameters) Export
 	
 	// Generating page items
 	Result = GeneratePageItems(CurrentGroup, CurrentPage);
 	If Not Result Then
 		ShowMessageBox(,NStr("en = 'The user suggestion service is temporarily unavailable.
-			|Please try again later.'"));
-		Return;
-	EndIf;
+		|Please try again later.'"));
+	EndIf;	
 	
 EndProcedure
 

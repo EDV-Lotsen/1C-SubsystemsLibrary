@@ -361,7 +361,7 @@ Function LongActionState(Val ActionID,
 			Raise ErrorMessageString;
 		EndIf;
 		
-		Result = WSProxy.GetLongActionState(ActionID, ErrorMessageString);
+		Result = WSProxy.GetContinuousOperationStatus(ActionID, ErrorMessageString);
 		
 	Except
 		Result = "Failed";
@@ -393,7 +393,7 @@ Function LongActionStateForInfobaseNode(Val ActionID,
 			Raise ErrorMessageString;
 		EndIf;
 		
-		Result = WSProxy.GetLongActionState(ActionID, ErrorMessageString);
+		Result = WSProxy.GetContinuousOperationStatus(ActionID, ErrorMessageString);
 		
 	Except
 		Result = "Failed";

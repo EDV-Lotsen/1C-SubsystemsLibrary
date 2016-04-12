@@ -48,7 +48,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAdministrator</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.2.3.24</Version>
+			<Version>2.2.3.25</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.ru/tmplts/</UpdateCatalogAddress>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
@@ -365,7 +365,6 @@
 			<Role>AddEditUsers</Role>
 			<Role>AddEditWorldCountries</Role>
 			<Role>Administration</Role>
-			<Role>Administrator</Role>
 			<Role>AllFunctionsMode</Role>
 			<Role>BasicRights</Role>
 			<Role>CanUseInformationCenter</Role>
@@ -404,6 +403,7 @@
 			<Role>UseEmailAccounts</Role>
 			<Role>ViewApllicationChangeLog</Role>
 			<Role>ViewEventLog</Role>
+			<CommonTemplate>ApplicationReleaseNotes</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriver</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriverNative</CommonTemplate>
 			<CommonTemplate>GettingUpdateHandlerTree</CommonTemplate>
@@ -412,7 +412,6 @@
 			<CommonTemplate>PrintBarcodesAddIn</CommonTemplate>
 			<CommonTemplate>QRCodePrintingComponent</CommonTemplate>
 			<CommonTemplate>TagAndCommonFormMap</CommonTemplate>
-			<CommonTemplate>UpdateDetails</CommonTemplate>
 			<FilterCriterion>CounterpartyDocuments</FilterCriterion>
 			<CommonModule>AdditionalReportsAndDataProcessors</CommonModule>
 			<CommonModule>AdditionalReportsAndDataProcessorsCached</CommonModule>
@@ -471,7 +470,6 @@
 			<CommonModule>ContactInformationManagementClientServer</CommonModule>
 			<CommonModule>ContactInformationXML</CommonModule>
 			<CommonModule>CTLAndSLIntegration</CommonModule>
-			<CommonModule>CTLInfobaseUpdate</CommonModule>
 			<CommonModule>CurrencyRateOperations</CommonModule>
 			<CommonModule>CurrencyRateOperationsClient</CommonModule>
 			<CommonModule>CurrencyRateOperationsClientServer</CommonModule>
@@ -559,6 +557,7 @@
 			<CommonModule>InfobaseUpdate</CommonModule>
 			<CommonModule>InfobaseUpdateClient</CommonModule>
 			<CommonModule>InfobaseUpdateClientOverridable</CommonModule>
+			<CommonModule>InfobaseUpdateCTL</CommonModule>
 			<CommonModule>InfobaseUpdateEvents</CommonModule>
 			<CommonModule>InfobaseUpdateGlobal</CommonModule>
 			<CommonModule>InfobaseUpdateInternal</CommonModule>
@@ -567,6 +566,7 @@
 			<CommonModule>InfobaseUpdateInternalSaaSCTL</CommonModule>
 			<CommonModule>InfobaseUpdateOverridable</CommonModule>
 			<CommonModule>InfobaseUpdateServerCall</CommonModule>
+			<CommonModule>InfobaseUpdateSL</CommonModule>
 			<CommonModule>InformationCenterClient</CommonModule>
 			<CommonModule>InformationCenterInternal</CommonModule>
 			<CommonModule>InformationCenterMessagesImplementation</CommonModule>
@@ -667,7 +667,6 @@
 			<CommonModule>ScheduledJobsInternal</CommonModule>
 			<CommonModule>ScheduledJobsServer</CommonModule>
 			<CommonModule>ServiceMechanisms</CommonModule>
-			<CommonModule>SLInfobaseUpdate</CommonModule>
 			<CommonModule>StandaloneMode</CommonModule>
 			<CommonModule>StandaloneModeInternal</CommonModule>
 			<CommonModule>StandaloneModeInternalClient</CommonModule>
@@ -703,6 +702,7 @@
 			<CommonAttribute>DataAreaAuxiliaryData</CommonAttribute>
 			<CommonAttribute>DataAreaMainData</CommonAttribute>
 			<ExchangePlan>DemoExchangeInDIB</ExchangePlan>
+			<ExchangePlan>DemoExchangeWithSL</ExchangePlan>
 			<ExchangePlan>MessageExchange</ExchangePlan>
 			<ExchangePlan>Mobile</ExchangePlan>
 			<XDTOPackage>AgentScripts</XDTOPackage>
@@ -772,6 +772,9 @@
 			<EventSubscription>DemoExchangeInDIBRecordDeletion</EventSubscription>
 			<EventSubscription>DemoExchangeInDIBRecordDocumentChange</EventSubscription>
 			<EventSubscription>DemoExchangeInDIBRecordRecordSetChanges</EventSubscription>
+			<EventSubscription>DemoExchangeWithSLRecordChange</EventSubscription>
+			<EventSubscription>DemoExchangeWithSLRecordDeletion</EventSubscription>
+			<EventSubscription>DemoExchangeWithSLRecordDocumentChange</EventSubscription>
 			<EventSubscription>DenyPredefinedItemDeletion</EventSubscription>
 			<EventSubscription>DenySelectingPredefinedItemDeletionMark</EventSubscription>
 			<EventSubscription>DisableAutoDataSyncronizationWithWebApplication</EventSubscription>
@@ -877,6 +880,7 @@
 			<CommonCommand>BackUp</CommonCommand>
 			<CommonCommand>ChangeHistory</CommonCommand>
 			<CommonCommand>CreateInitialImageWithFiles</CommonCommand>
+			<CommonCommand>DataSynchronizationMonitorSaaS</CommonCommand>
 			<CommonCommand>DataSynchronizationSaaS</CommonCommand>
 			<CommonCommand>DeleteSynchronizationSettings</CommonCommand>
 			<CommonCommand>ExecuteDataExchange</CommonCommand>
@@ -1206,7 +1210,10 @@
 			<Report>SearchForReferences</Report>
 			<Report>UserInfo</Report>
 			<Report>WarehouseStockBalance</Report>
+			<DataProcessor>_DemoExportToSL212Handlers</DataProcessor>
 			<DataProcessor>_DemoExportToSL21Handlers</DataProcessor>
+			<DataProcessor>_DemoImportFromSL212Handlers</DataProcessor>
+			<DataProcessor>_DemoImportFromSL21Handlers</DataProcessor>
 			<DataProcessor>ActiveUsers</DataProcessor>
 			<DataProcessor>AdministrativeTools</DataProcessor>
 			<DataProcessor>ApplicationBackupSetup</DataProcessor>

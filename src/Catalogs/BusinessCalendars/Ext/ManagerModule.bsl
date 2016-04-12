@@ -222,6 +222,16 @@ Procedure UpdateBusinessCalendars(CalendarTable) Export
 		CatalogObject.Code = TrimAll(Selection.Code);
 		CatalogObject.Description = TrimAll(Selection.Description);
 		CatalogObject.Write();
+		
+		//Filling with default values
+		DataTable = BusinessCalendarFillingByDefaultResult(CatalogObject.Code, Year(CurrentDate()));
+		
+		DataTable.Columns.Add("Year", New TypeDescription("Number"));
+		DataTable.Columns.Add("BusinessCalendarCode", New TypeDescription("String", , New StringQualifiers(2)));
+		DataTable.FillValues(Year(CurrentDate()), "Year");
+		DataTable.FillValues(CatalogObject.Code, "BusinessCalendarCode");
+		
+		UpdateBusinessCalendarsData(DataTable);
 	EndDo;
 	
 EndProcedure
@@ -276,8 +286,8 @@ Procedure UpdateBusinessCalendarsData(DataTable) Export
 	While Selection.Next() Do
 		RecordSet.Clear();
 		FillPropertyValues(RecordSet.Add(), Selection);
-		For Each Key In RegisterKeys Do 
-			RecordSet.Filter[Key].Set(Selection[Key]);
+		For Each _Key In RegisterKeys Do 
+			RecordSet.Filter[_Key].Set(Selection[_Key]);
 		EndDo;
 		RecordSet.Write(True);
 	EndDo;
@@ -764,7 +774,7 @@ Function BusinessCalendarPrintForm(PrintedFormPreparationParameters) Export
 	MonthColumn.Parameters.WorkTime24 = WorkTime24Year;
 	MonthColumn.Parameters.MonthName     = StringFunctionsClientServer.SubstituteParametersInString(
 		NStr("en = 'year %1'"), Format(YearNumber, "NG="));
-	SpreadsheetDocument.Output(MonthColumn);
+	SpreadsheetDocument.Put(MonthColumn);
 	
 	MonthColumn = Template.GetArea("MonthColumnAverage");
 	MonthColumn.Parameters.WorkTime40 = Format(WorkTime40Year / 12, "NFD=2; NG=0");

@@ -2251,7 +2251,7 @@ Function GetExchangeMessageToTempDirectoryFromCorrespondentInfobaseOverWebServic
 	
 	Try
 		
-		Proxy.ExecuteDataExport(
+		Proxy.UploadData(
 			ExchangePlanName,
 			CurrentExchangePlanNodeCode,
 			FileID,
@@ -2913,7 +2913,7 @@ Procedure ExecuteExchangeOverWebServiceActionForInfobaseNode(Cancel,
 				
 				Try
 					
-					Proxy.ExecuteDataExport(ExchangeSettingsStructure.ExchangePlanName,
+					Proxy.UploadData(ExchangeSettingsStructure.ExchangePlanName,
 									ExchangeSettingsStructure.CurrentExchangePlanNodeCode,
 									FileID,
 									LongAction,
@@ -2987,7 +2987,7 @@ Procedure ExecuteExchangeOverWebServiceActionForInfobaseNode(Cancel,
 			ExchangeMessageStorage = Undefined;
 			
 			Try
-				Proxy.ExecuteExport(ExchangeSettingsStructure.ExchangePlanName, ExchangeSettingsStructure.CurrentExchangePlanNodeCode, ExchangeMessageStorage);
+				Proxy.Upload(ExchangeSettingsStructure.ExchangePlanName, ExchangeSettingsStructure.CurrentExchangePlanNodeCode, ExchangeMessageStorage);
 				
 				ReadMessageWithNodeChanges(ExchangeSettingsStructure,, ExchangeMessageStorage.Get());
 				
@@ -3035,7 +3035,7 @@ Procedure ExecuteExchangeOverWebServiceActionForInfobaseNode(Cancel,
 					Except
 					EndTry;
 					
-					Proxy.ExecuteDataImport(ExchangeSettingsStructure.ExchangePlanName,
+					Proxy.DownloadData(ExchangeSettingsStructure.ExchangePlanName,
 									ExchangeSettingsStructure.CurrentExchangePlanNodeCode,
 									FileIDString,
 									LongAction,
@@ -3945,7 +3945,7 @@ Procedure ExecuteStandardNodeChangeImport(
 		Return;
 	EndTry;
 	
-	If MessageReader.From <> InfobaseNode Then // The message is not intended for this node
+	If MessageReader.Sender <> InfobaseNode Then // The message is not intended for this node
 		
 		ExchangeExecutionResult = Enums.ExchangeExecutionResults.Error;
 		
@@ -3956,16 +3956,16 @@ Procedure ExecuteStandardNodeChangeImport(
 		Return;
 	EndIf;
 	
-	BackupCopyParameters = BackupCopyParameters(MessageReader.From, MessageReader.ReceivedNo);
+	BackupCopyParameters = BackupCopyParameters(MessageReader.Sender, MessageReader.ReceivedNo);
 	
 	DeleteChangeRecords = Not BackupCopyParameters.BackupRestored;
 	
 	If DeleteChangeRecords Then
 		
 		// Deleting change records for the message sender node
-		ExchangePlans.DeleteChangeRecords(MessageReader.From, MessageReader.ReceivedNo);
+		ExchangePlans.DeleteChangeRecords(MessageReader.Sender, MessageReader.ReceivedNo);
 		
-		InformationRegisters.CommonInfobaseNodeSettings.ClearInitialDataExportFlag(MessageReader.From, MessageReader.ReceivedNo);
+		InformationRegisters.CommonInfobaseNodeSettings.ClearInitialDataExportFlag(MessageReader.Sender, MessageReader.ReceivedNo);
 		
 	EndIf;
 	
@@ -3999,7 +3999,7 @@ Procedure ExecuteStandardNodeChangeImport(
 			ItemReceive = DataItemReceive.Auto;
 			SendBack = False;
 			
-			StandardSubsystemsServer.OnReceiveDataFromMaster(Data, ItemReceive, SendBack, MessageReader.From);
+			StandardSubsystemsServer.OnReceiveDataFromMaster(Data, ItemReceive, SendBack, MessageReader.Sender);
 			
 			If ItemReceive = DataItemReceive.Ignore Then
 				Continue;
@@ -6901,10 +6901,10 @@ Function CorrespondentNodeCommonData(Val ExchangePlanName, Val ConnectionParamet
 		If ConnectionParameters.CorrespondentVersion_2_1_1_7
 			Or ConnectionParameters.CorrespondentVersion_2_0_1_6 Then
 			
-			Return XDTOSerializer.ReadXDTO(WSProxy.GetCommonNodeData(ExchangePlanName));
+			Return XDTOSerializer.ReadXDTO(WSProxy.GetCommonNodsData(ExchangePlanName));
 		Else
 			
-			Return ValueFromStringInternal(WSProxy.GetCommonNodeData(ExchangePlanName));
+			Return ValueFromStringInternal(WSProxy.GetCommonNodsData(ExchangePlanName));
 		EndIf;
 		
 	ElsIf ConnectionParameters.JoinType = "TempStorage" Then
@@ -7785,11 +7785,11 @@ EndFunction
 // 
 Procedure DeleteInsignificantCharactersAtConnectionSettings(Settings)
 	
-	For Each Settings In Settings Do
+	For Each SettingsItem In Settings Do
 		
-		If TypeOf(Settings.Value) = Type("String") Then
+		If TypeOf(SettingsItem.Value) = Type("String") Then
 			
-			Settings.Insert(Settings.Key, TrimAll(Settings.Value));
+			Settings.Insert(SettingsItem.Key, TrimAll(SettingsItem.Value));
 			
 		EndIf;
 		
@@ -8459,7 +8459,7 @@ Function LongActionStateForInfobaseNode(Val InfobaseNode,
 		Raise ErrorMessageString;
 	EndIf;
 	
-	Return WSProxy.GetLongActionState(ActionID, ErrorMessageString);
+	Return WSProxy.GetContinuousOperationStatus(ActionID, ErrorMessageString);
 EndFunction
 
 // For internal use.
@@ -8534,9 +8534,9 @@ EndFunction
 // 
 Function FirstErrorBriefPresentation(ErrorInfo)
 	
-	If ErrorInfo.Reason <> Undefined Then
+	If ErrorInfo.Cause <> Undefined Then
 		
-		Return FirstErrorBriefPresentation(ErrorInfo.Reason);
+		Return FirstErrorBriefPresentation(ErrorInfo.Cause);
 		
 	EndIf;
 	
@@ -11437,7 +11437,7 @@ Function InteractiveExportModification(Val InfobaseNode, Val FromStorageAddress,
 	Result.Insert("ExportVariant", 0);
 	
 	Result.Insert("AllDocumentsFilterPeriod", New StandardPeriod);
-	Result.AllDocumentsFilterPeriod.Option = StandardPeriodVariant.LastMonth;
+	Result.AllDocumentsFilterPeriod.Variant = StandardPeriodVariant.LastMonth;
 	
 	AdditionDataProcessor = DataProcessors.InteractiveExportModification.Create();
 	AdditionDataProcessor.InfobaseNode  = InfobaseNode;

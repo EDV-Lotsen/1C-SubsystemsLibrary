@@ -20,7 +20,7 @@ EndProcedure
 Procedure OK(Command)
 	
 	ServiceUserPassword = Password;
-	Close();
+	Close(ServiceUserPassword);
 	
 EndProcedure
 

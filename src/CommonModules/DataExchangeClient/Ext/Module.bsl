@@ -709,7 +709,7 @@ EndProcedure
 //
 Procedure SelectAndSendFileToServer(CompletionNotification, Val DialogParameters = Undefined, Val FormID = Undefined) Export
 	
-	Result  = New Structure("Name, Location, ErrorDetails");
+	Result  = New Structure("Name, Location, ErrorDescription");
 	
 	Notification = New NotifyDescription("SelectAndSendFilesToServerCompletion", ThisObject, New Structure);
 	Notification.AdditionalParameters.Insert("CompletionNotification", CompletionNotification);

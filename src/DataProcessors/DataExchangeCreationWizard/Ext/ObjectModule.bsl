@@ -118,7 +118,7 @@ Procedure SetUpNewDataExchangeOverWebServiceInTwoBases(Cancel,
 			
 			Serializer = New XDTOSerializer(WSProxy.XDTOFactory);
 			
-			WSProxy.CreateDataExchange(ExchangePlanName, 
+			WSProxy.CreateExchange(ExchangePlanName, 
 							WizardParameterStringXML, 
 							Serializer.WriteXDTO(EscapeEnumerations(NodeFilterStructure.CorrespondentInfobaseNodeFilterSetup)),
 							Serializer.WriteXDTO(EscapeEnumerations(NodeDefaultValues)));
@@ -127,14 +127,14 @@ Procedure SetUpNewDataExchangeOverWebServiceInTwoBases(Cancel,
 			
 			Serializer = New XDTOSerializer(WSProxy.XDTOFactory);
 			
-			WSProxy.CreateDataExchange(ExchangePlanName,
+			WSProxy.CreateExchange(ExchangePlanName,
 							WizardParameterStringXML,
 							Serializer.WriteXDTO(NodeFilterStructure.CorrespondentInfobaseNodeFilterSetup),
 							Serializer.WriteXDTO(NodeDefaultValues));
 			
 		Else
 			
-			WSProxy.CreateDataExchange(ExchangePlanName,
+			WSProxy.CreateExchange(ExchangePlanName,
 							WizardParameterStringXML,
 							ValueToStringInternal(NodeFilterStructure.CorrespondentInfobaseNodeFilterSetup),
 							ValueToStringInternal(NodeDefaultValues));
@@ -166,7 +166,7 @@ Procedure SetUpNewDataExchangeOverWebServiceInTwoBases(Cancel,
 	EndTry;
 	
 	// Registering changes in the second infobase
-	WSProxy.RecordCatalogChangesOnly(
+	WSProxy.RegisterOnlyCatalogData(
 			ExchangePlanName,
 			DataExchangeCached.GetThisNodeCodeForExchangePlan(ExchangePlanName),
 			LongAction,
@@ -337,13 +337,13 @@ Procedure UpdateDataExchangeSettings(Cancel,
 			
 			Serializer = New XDTOSerializer(WSProxy.XDTOFactory);
 			
-			WSProxy.UpdateDataExchangeSettings(
+			WSProxy.UpdateExchange(
 								ExchangePlanName,
 								DataExchangeCached.GetThisNodeCodeForExchangePlan(ExchangePlanName),
 								Serializer.WriteXDTO(EscapeEnumerations(CorrespondentInfobaseNodeDefaultValues)));
 		Else
 			
-			WSProxy.UpdateDataExchangeSettings(
+			WSProxy.UpdateExchange(
 								ExchangePlanName,
 								DataExchangeCached.GetThisNodeCodeForExchangePlan(ExchangePlanName),
 								ValueToStringInternal(CorrespondentInfobaseNodeDefaultValues));
@@ -374,7 +374,7 @@ Procedure UpdateDataExchangeSettings(Cancel,
 	EndTry;
 	
 	// Registering changes in the second infobase
-	WSProxy.RecordAllChangesExceptCatalogs(
+	WSProxy.RegisterAllDataExceptCatalogs(
 			ExchangePlanName,
 			DataExchangeCached.GetThisNodeCodeForExchangePlan(ExchangePlanName),
 			LongAction,
