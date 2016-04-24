@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>Copy</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<ChildItems>
+			<Button name="FormEnableEditing" id="9">
+				<Type>CommandBarButton</Type>
+				<OnlyInAllActions>false</OnlyInAllActions>
+				<CommandName>Form.Command.EnableEditing</CommandName>
+				<ExtendedTooltip name="FormEnableEditingExtendedTooltip" id="10"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+	</Events>
+	<ChildItems>
+		<InputField name="AccessGroup" id="1">
+			<DataPath>Write.AccessGroup</DataPath>
+			<ContextMenu name="AccessGroupContextMenu" id="2"/>
+			<ExtendedTooltip name="AccessGroupExtendedTooltip" id="11"/>
+		</InputField>
+		<InputField name="AccessValueType" id="21">
+			<DataPath>Write.AccessValueType</DataPath>
+			<ContextMenu name="AccessValueTypeContextMenu" id="22"/>
+			<ExtendedTooltip name="AccessValueTypeExtendedTooltip" id="23"/>
+		</InputField>
+		<CheckBoxField name="AllAllowed" id="15">
+			<DataPath>Write.AllAllowed</DataPath>
+			<TitleLocation>Right</TitleLocation>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="AllAllowedContextMenu" id="16"/>
+			<ExtendedTooltip name="AllAllowedExtendedTooltip" id="17"/>
+		</CheckBoxField>
+		<CheckBoxField name="NoSettings" id="18">
+			<DataPath>Write.NoSettings</DataPath>
+			<TitleLocation>Right</TitleLocation>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="NoSettingsContextMenu" id="19"/>
+			<ExtendedTooltip name="NoSettingsExtendedTooltip" id="20"/>
+		</CheckBoxField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Write" id="1">
+			<Type>
+				<v8:Type>cfg:InformationRegisterRecordManager.DefaultAccessGroupValues</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="EnableEditing" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Enable editing</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Enable editing for troubleshooting purposes (requires in-depth understanding of this functionality)</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>EnableEditing</Action>
+		</Command>
+	</Commands>
+</Form>

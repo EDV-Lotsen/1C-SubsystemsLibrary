@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18283"></meta></head><body>
+<p>This list is used to display the latest information on association between users, performer <a href="Catalog.PerformerRoles/Help">roles</a>, and <a href="ChartOfCharacteristicTypes.TaskAddressingObjects/Help">addressing objects</a>. This information is used by the business process logic to assign <a href="Task.PerformerTask/Help">tasks</a> to specific users.</p>
+<p>Role addressing list examples:</p>
+<p></p>
+<table cellpadding="8" width="100%" border="0"><tbody><tr><td><strong>Performer role</strong> </td>
+<td><strong>User</strong> </td>
+<td><strong>Explanation</strong></td></tr><tr><td>Room supervisor</td>
+<td>S. Smith</td>
+<td>Tasks assigned to the Room supervisor role will be added to Smith's personal task list.</td></tr><tr><td>Room supervisor</td>
+<td>J. Johnson</td>
+<td>Tasks assigned to the Room supervisor role will be added to Johnson's personal task list.</td></tr><tr><td>Manager</td>
+<td>R. Roberts</td>
+<td>Tasks assigned to the manager will be added to Roberts' personal task list.</td></tr></tbody></table><p></p>
+<p>However, in certain cases association between role and users is not precise and performers cannot be determined. In these cases, you need to explicitly specify the primary and additional addressing objects. Example:</p>
+<p></p>
+<table cellpadding="8" width="100%" border="0"><tbody><tr><td><strong>Performer role</strong> </td>
+<td><strong>Main addressing object<br>(type, value)</strong> </td>
+<td><strong>Additional addressing object<br>(type, value)</strong> </td>
+<td><strong>User</strong> </td>
+<td><strong>Explanation</strong></td></tr><tr><td>Department manager</td>
+<td>Department,<br>Accounting department</td>
+<td>-</td>
+<td>J. Johnson</td>
+<td>Tasks assigned to the Department manager role for Accounting department will be added to Johnson's personal task list.</td></tr><tr><td>Project manager</td>
+<td>Project,<br>Accounting system implementation project</td>
+<td>Department,<br>Accounting department</td>
+<td>S. Smith</td>
+<td>Tasks assigned to the Project manager role for Accounting system implementation project will be added to Smith's personal task list.</td></tr><tr><td>CEO</td>
+<td>-</td>
+<td>-</td>
+<td>R. Roberts</td>
+<td>Tasks assigned to the CEO role will be added to Roberts' personal task list.</td></tr></tbody></table><p></p>
+<p>See also:</p>
+<ul><li><a href="Catalog.PerformerRoles/Help">Performer roles</a></li></ul></body></html>

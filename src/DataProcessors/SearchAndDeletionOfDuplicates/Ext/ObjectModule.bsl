@@ -259,19 +259,19 @@ Function DuplicateGroups(Val SearchParameters, Val SampleObject = Undefined) Exp
 	
 	CommonQueryPart = "
 		|SELECT 
-		|	" + ?(IsBlankString(EqualityCompareFields), "", EqualityCompareFields + "," ) + "" + ?(IsBlankString(LikeCompareFields),   "", LikeCompareFields   + "," ) + "" + ?(IsBlankString(AdditionalAliases), "", AdditionalAliases + "," ) + "Ref";
+		|	" + ?(IsBlankString(EqualityCompareFields), "", EqualityCompareFields + "," ) + " " + ?(IsBlankString(LikeCompareFields),   "", LikeCompareFields   + "," ) + " " + ?(IsBlankString(AdditionalAliases), "", AdditionalAliases + "," ) + "Ref";
 	If Not IdentityFieldStructure.Property("Code") And Not SimilarityFieldStructure.Property("Code") Then
 		CommonQueryPart = CommonQueryPart + "," + ?(HasCode, "Code", "UNDEFINED") + " AS Code";
 	EndIf;
 	If Not IdentityFieldStructure.Property("Description") And Not SimilarityFieldStructure.Property("Description") Then
 		CommonQueryPart = CommonQueryPart + "," + ?(HasDescription, "Description", "UNDEFINED") + " AS Description";
 	EndIf;
-	CommonQueryPart = CommonQueryPart + "FROM" + SearchParameters.AreaToSearchForDuplicates + "";
+	CommonQueryPart = CommonQueryPart + " FROM " + SearchParameters.AreaToSearchForDuplicates + " ";
 	
 	// Main query. Searching for duplicate candidates for each item.
 	If SampleObject = Undefined Then
 		
-		Query = New Query(CommonQueryPart + "" + ?(IsBlankString(Filter.Text), "", "WHERE" + Filter.Text) + "ORDER BY
+		Query = New Query(CommonQueryPart + " " + ?(IsBlankString(Filter.Text), " ", " WHERE " + Filter.Text) + " ORDER BY
 		|	 Ref");
 	Else
 		

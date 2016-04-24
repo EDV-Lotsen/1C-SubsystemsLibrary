@@ -332,7 +332,7 @@ Procedure ShowNotDeletedItemLinksAtClient()
 	If TreeRow = Undefined Or TreeRow.PictureNumber < 1 Then
 		// Selected nothing or a group
 		Items.ResultDisplayingOptionPages.CurrentPage = Items.SelectNotDeletedItemsObjectPage;
-		Items.ResultDisplayingOptionPagesHeader.CurrentPage = Items.SelectNotDeletedItemsObjectHeaderPage;
+		Items.ResultDisplayingOptionPagesHeader.CurrentPage = Items.SelectNotDeletedObjectPageHeader;
 		ErrorText = NStr("en = 'Select an object to see why it cannot be deleted.'");
 		Return;
 	EndIf;
@@ -366,7 +366,7 @@ Procedure ShowNotDeletedItemLinksAtClient()
 		Items.ResultDisplayingOptionPages.CurrentPage = Items.ReasonsForNotDeletionPage;
 		Items.ResultDisplayingOptionPagesHeader.CurrentPage = Items.ReasonsForNotDeletionPageHeader;
 		
-		Template = NStr("en = '%1 is used at (%2):'");
+		Template = NStr("en = '%1 is used in (%2):'");
 		ShortObjectPresentation = TreeRow.Presentation;
 		If StrLen(ShortObjectPresentation) > 50 Then
 			ShortObjectPresentation = TrimR(Left(ShortObjectPresentation, 50)) + "...";
@@ -1099,7 +1099,7 @@ Procedure FillRemainingObjectCollection(ExecutionInBackgroundResult)
 		EndIf;
 	EndDo;
 	
-	For Each NotDeletedItemGroup In NotDeletedItemsTree.Strings Do
+	For Each NotDeletedItemGroup In NotDeletedItemsTree.Rows Do
 		NotDeletedItemGroup.Presentation = NotDeletedItemGroup.Presentation + " (" + Format(NotDeletedItemGroup.ReferenceCount, "NZ=0;NG=") + ")";
 	EndDo;
 	

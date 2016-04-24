@@ -92,7 +92,7 @@ Function GenerateAmountInWords(AmountAsNumber, Currency, DisplayAmountWithoutCen
 	Amount = ?(AmountAsNumber < 0, -AmountAsNumber, AmountAsNumber);
 	ObjectParameters = CommonUse.ObjectAttributeValues(Currency, "InWordParametersInHomeLanguage");
 	
-	Result = NumberInWords(Amount, "L=en_EN;DE=False", ObjectParameters.InWordParametersInHomeLanguage);
+	Result = NumberInWords(Amount, " L=en_EN;FS=False", ObjectParameters.InWordParametersInHomeLanguage);
 	
 	If DisplayAmountWithoutCents And Int(Amount) = Amount Then
 		Result = Left(Result, Find(Result, "0") - 1);

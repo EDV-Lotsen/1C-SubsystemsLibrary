@@ -274,7 +274,7 @@ Procedure ExportRecordSetSubordinatedToRecorder(Val MetadataObject, Container, R
 	Query = New Query;
 	Query.Text =
 	"SELECT DISTINCT
-	|	_XMLExport_Table." + RecorderFieldName + " AS Recorder FROM
+	|	_XMLData_Table." + RecorderFieldName + " AS Recorder FROM
 	|" + TableName + " AS _XMLData_Table";
 	
 	Result = Query.Execute();
@@ -288,7 +288,7 @@ Procedure ExportRecordSetSubordinatedToRecorder(Val MetadataObject, Container, R
 	While Selection.Next() Do
 		
 		RecordSet = ObjectManager.CreateRecordSet();
-		RecordSet.Filter[RecorderFieldName].Connect(Selection.Recorder);
+		RecordSet.Filter[RecorderFieldName].Set(Selection.Recorder);
 		
 		RecordSet.Read();
 		
@@ -388,7 +388,7 @@ Function GetFactoryWithTypes(Val Types)
 	
 	Request = Schema.DOMDocument.CreateXPathExpression(XPathText,
 		DOMNamespaceResolver);
-	Result = Request.Eval(Schema.DOMDocument);
+	Result = Request.Evaluate(Schema.DOMDocument);
 
 	While True Do
 		

@@ -164,20 +164,34 @@ Procedure OnAuthorizeNewInfobaseUser(Val CurrentInfobaseUser, StandardProcessing
 		// The user is shared, an item in the current area must be created.
 		BeginTransaction();
 		Try
-			UserObject = Catalogs.Users.CreateItem();
-			UserObject.Description = InternalUserFullName(
-				CurrentInfobaseUser.UUID);
+			//UserObject = Catalogs.Users.CreateItem();
+			//UserObject.Description = InternalUserFullName(
+			//	CurrentInfobaseUser.UUID);
+			//
+			//InfobaseUserDescription = New Structure;
+			//InfobaseUserDescription.Insert("Action", "Write");
+			//InfobaseUserDescription.Insert(
+			//	"UUID", CurrentInfobaseUser.UUID);
+			//
+			//UserObject.AdditionalProperties.Insert(
+			//	"InfobaseUserDescription", InfobaseUserDescription);
+			//
+			//UserObject.Internal = True;
+			//
+			//UserObject.Write();
 			
-			InfobaseUserDescription = New Structure;
-			InfobaseUserDescription.Insert("Action", "Write");
-			InfobaseUserDescription.Insert(
-				"UUID", CurrentInfobaseUser.UUID);
-			
-			UserObject.AdditionalProperties.Insert(
-				"InfobaseUserDescription", InfobaseUserDescription);
-			
-			UserObject.Internal = True;
-			UserObject.Write();
+			If Not UsersInternal.UserByIDExists(CurrentInfobaseUser.UUID) Тогда
+				
+				UserObject = Catalogs.Users.CreateItem();
+				UserObject.Description = InternalUserFullName(CurrentInfobaseUser.UUID);
+				UserObject.Internal = True;
+				UserObject.Write();
+				
+				UserObject.InfobaseUserID = CurrentInfobaseUser.UUID;
+				UserObject.DataExchange.Load = True;
+				UserObject.Write();
+				
+			EndIf;
 		
 			CommitTransaction();
 		Except
@@ -359,7 +373,7 @@ Procedure BeforeDataExport(Container) Export
 	DataExportImportInternal.WriteObjectToFile(UnspecifiedUserID, FileName);
 	
 	Container.AdditionalProperties.Insert("RegistersContainingRefsToUnspecifiedUsers", New Map());
-	Container.AdditionalProperties.Insert("ListOfRegistersContainingRefsToUsers", ListOfRecordSetsWithRefsToUsers());
+	Container.AdditionalProperties.Insert("ListOfRegistersContainingRefsToUsers", RecordSetsWithRefsToUsersList());
 	
 EndProcedure
 
@@ -542,7 +556,7 @@ Procedure OnRegisterDataImportHandlers(HandlerTable) Export
 	NewHandler.BeforeMapRefs = True;
 	NewHandler.BeforeImportObject = True;
 	
-	RegisterList = ListOfRecordSetsWithRefsToUsers();
+	RegisterList = RecordSetsWithRefsToUsersList();
 	For Each ListItem In RegisterList Do
 		
 		NewHandler = HandlerTable.Add();
@@ -598,7 +612,7 @@ EndProcedure
 //
 Procedure BeforeDataImport(Container) Export
 	
-	Container.AdditionalProperties.Insert("ListOfRegistersContainingRefsToUsers", ListOfRecordSetsWithRefsToUsers());
+	Container.AdditionalProperties.Insert("ListOfRegistersContainingRefsToUsers", RecordSetsWithRefsToUsersList());
 	Container.AdditionalProperties.Insert("RegistersContainingRefsToUnspecifiedUsers", New Map());
 	
 	Container.AdditionalProperties.Insert(
@@ -760,7 +774,7 @@ Procedure RegisterUpdateHandlers(Val Handlers) Export
 	
 EndProcedure
 
-// Configuration update handler. Fills the ListOfRecordSetsWithRefsToUsers constant, the 
+// Configuration update handler. Fills the RecordSetsWithRefsToUsersList constant, the 
 // ValueTable that contains the register details with references to teh Users catalog in dimensions.
 //
 Procedure FillRecordSetListWithRefsToUsers() Export
@@ -778,7 +792,7 @@ Procedure FillRecordSetListWithRefsToUsers() Export
 		AddToMetadataList(MetadataDescription, Sequence, "Sequences");
 	EndDo;
 	
-	Constants.ListOfRecordSetsWithRefsToUsers.Set(New ValueStorage(MetadataDescription));
+	Constants.RecordSetsWithRefsToUsersList.Set(New ValueStorage(MetadataDescription));
 	
 EndProcedure
 
@@ -1073,10 +1087,10 @@ EndFunction
 
 //Reads details on registers from constants and generates a map for ListOfRegistersWithRefsToUsers
 //
-Function ListOfRecordSetsWithRefsToUsers()
+Function RecordSetsWithRefsToUsersList()
 	
 	SetPrivilegedMode(True);
-	MetadataDescription = Constants.ListOfRecordSetsWithRefsToUsers.Get().Get();
+	MetadataDescription = Constants.RecordSetsWithRefsToUsersList.Get().Get();
 	
 	MetadataList = New Map;
 	For Each Row In MetadataDescription Do
@@ -1124,5 +1138,3 @@ Procedure AddToMetadataList(Val MetadataList, Val ObjectMetadata, Val Collection
 	EndIf;
 	
 EndProcedure
-
-

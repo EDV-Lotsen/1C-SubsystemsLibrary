@@ -32,7 +32,7 @@ Procedure ExportUserPlatformSettings(Container)
 	ExportUserSettings(Container, "CommonSettingsStorage");
 	ExportUserSettings(Container, "SystemSettingsStorage", False);
 	ExportUserSettings(Container, "ReportsUserSettingsStorage");
-	ExportUserSettings(Container, "ReportVariantsStorage");
+	ExportUserSettings(Container, "ReportsVariantsStorage");
 	ExportUserSettings(Container, "FormDataSettingsStorage");
 	
 	If CTLAndSLIntegration.IsPlatform83WithoutCompatibilityMode() Then

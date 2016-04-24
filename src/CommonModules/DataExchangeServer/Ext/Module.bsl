@@ -11085,6 +11085,13 @@ EndFunction
 //
 Function RefExportAllowed(ExchangeNode, Ref, AdditionalProperties = Undefined) Export
 	
+	//@debug
+	//must be deleted
+	If Ref = NULL Then
+		Return False;
+	EndIf;
+	//@debug
+	
 	If Ref.IsEmpty() Then
 		Return False;
 	EndIf;

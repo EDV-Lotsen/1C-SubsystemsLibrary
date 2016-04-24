@@ -370,7 +370,7 @@ EndProcedure
 Function ReadCacheOfObjectsWithPredefinedItems()
 	
 	SetPrivilegedMode(True);
-	Return Constants.ListOfMetadataObjectsWithPredefinedItems.Get().Get();
+	Return Constants.MetadataObjectsWithPredefinedItemsList.Get().Get();
 	
 EndFunction
 
@@ -398,7 +398,7 @@ Procedure RegisterUpdateHandlers(Handlers) Export
 	
 EndProcedure
 
-// Fills the ListOfMetadataObjectsWithPredefinedItems constant.
+// Fills the MetadataObjectsWithPredefinedItemsList constant.
 //
 Procedure FillCacheOfObjectsWithPredefinedItems() Export
 	
@@ -433,6 +433,6 @@ Procedure FillCacheOfObjectsWithPredefinedItems() Export
 	EndDo;
 	
 	SetPrivilegedMode(True);
-	Constants.ListOfMetadataObjectsWithPredefinedItems.Set(New ValueStorage(Cache));
+	Constants.MetadataObjectsWithPredefinedItemsList.Set(New ValueStorage(Cache));
 	
 EndProcedure

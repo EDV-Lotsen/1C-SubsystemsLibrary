@@ -220,7 +220,7 @@ Procedure RegisterCOMConnector(Val RestartSession = True) Export
 	
 #If Not WebClient Then
 	
-	CommandText = "regsvr32.exe /n /i:user /s comcntr.dlll";
+	CommandText = "regsvr32.exe /n /i:user /s comcntr.dll";
 	
 	ReturnCode = Undefined;
 	RunApp(CommandText, BinDir(), True, ReturnCode);

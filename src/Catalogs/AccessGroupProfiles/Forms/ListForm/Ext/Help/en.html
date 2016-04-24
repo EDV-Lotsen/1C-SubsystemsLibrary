@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18283"></meta></head><body>
+<p>This form is used for <a href="Catalog.AccessGroups/Help">access group</a> profile management. </p>
+<p>To facilitate management of multiple <a href="Catalog.AccessGroups.Form.ListForm/Help">access group</a> profiles with similar purpose and avoid confusion, you can consolidate similar access group profiles into <a href="Catalog.AccessGroupProfiles.Form.FolderForm/Help">folders</a>.</p>
+<p>To access the list, execute the <strong>Access group profiles</strong> command in the <strong>Administration - User and rights settings</strong> section. </p>
+<p>All <a href="Catalog.AccessGroupProfiles/Help">access group profiles</a> are broken down into two categories: </p>
+<ul><li>Primary profiles define a set of access rights sufficient to perform specific activities in the application. 
+</li><li>Additional profiles are used to grant users additional rights not covered by the primary profiles.</li></ul><p>When a primary profile (<strong>Accountant, Warehouse manager</strong>, etc) does not provide sufficient rights they should be complemented with an additional profile (<strong>Counterparty communication, Unposted document printing</strong>, etc). </p>
+<h3>Recommendations on creating primary access group profiles</h3>
+<p>A primary profile should include a set of roles that grants all access rights required by users during their routine duties and operations, but does not provide them with excessive or unadvisable access to the application data or functionality. Moreover, a primary profile should include additional roles not directly related to the user duties but yet necessary to perform these duties. For example, the following roles must be included in the profile intended for document entry operators, besides the primary role allowing to create and edit these documents:</p>
+<ul><li>a role allowing logon via thin client, thick client, or web client; 
+</li><li>predefined role <strong>Basic rights; </strong>
+</li><li>roles allowing to view catalogs containing items selectable in the document fields; 
+</li><li>roles allowing to view document processing reports, etc.</li></ul><p>For example, the <strong>Auditor</strong> profile should include the <strong>Read individuals</strong> primary role to allow viewing personal data on individuals, and a set of additional roles to support basic work functionality (such as <strong>Basic rights</strong>, <strong>Start thin client</strong>, etc).</p>
+<h3>Creating access group profiles</h3>
+<ul><li>Click <strong>Create</strong> and fill in the required <a href="Catalog.AccessGroupProfiles.Form.ItemForm/Help">fields</a>.</li></ul><h3>Creating access group profile folders</h3>
+<ul><li>Click <img src="StdPicture.CreateFolder"></img>and fill in the required <a href="Catalog.AccessGroupProfiles.Form.FolderForm/Help">fields</a>.</li></ul><h3>See also:</h3>
+<ul><li><a href="v8help://frame/form_common">Working with forms.</a></li></ul></body></html>

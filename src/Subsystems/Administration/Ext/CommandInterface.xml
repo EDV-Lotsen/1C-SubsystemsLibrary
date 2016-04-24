@@ -248,21 +248,6 @@
 				<xr:Value name="Role.Salesman">false</xr:Value>
 			</Visibility>
 		</Command>
-		<Command name="DataProcessor.MarkedObjectDeletion.StandardCommand.Open">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="DataProcessor.SalesAggregatesManagement.StandardCommand.Open">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
-		<Command name="DataProcessor.DataExchangeExecution.StandardCommand.Open">
-			<Visibility>
-				<xr:Common>false</xr:Common>
-			</Visibility>
-		</Command>
 	</CommandsVisibility>
 	<CommandsPlacement>
 		<Command name="Catalog.BusinessCalendars.StandardCommand.OpenList">
@@ -610,6 +595,9 @@
 		<Command name="CommonForm.ConstantsForm.StandardCommand.Open">
 			<CommandGroup>ActionsPanelTools</CommandGroup>
 		</Command>
+		<Command name="CommonForm.LogOnToDataArea.StandardCommand.Open">
+			<CommandGroup>ActionsPanelTools</CommandGroup>
+		</Command>
 		<Command name="DataProcessor.ActiveUsers.StandardCommand.Open">
 			<CommandGroup>ActionsPanelTools</CommandGroup>
 		</Command>
@@ -668,6 +656,12 @@
 			<CommandGroup>ActionsPanelTools</CommandGroup>
 		</Command>
 		<Command name="DataProcessor.DataImportFromFile.StandardCommand.Open">
+			<CommandGroup>ActionsPanelTools</CommandGroup>
+		</Command>
+		<Command name="CommonCommand.ExportDataForMigrationToService">
+			<CommandGroup>ActionsPanelTools</CommandGroup>
+		</Command>
+		<Command name="CommonCommand.ExportDataIntoLocalVersion">
 			<CommandGroup>ActionsPanelTools</CommandGroup>
 		</Command>
 	</CommandsOrder>

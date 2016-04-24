@@ -262,7 +262,7 @@ Procedure GenerateListOfMetadataObjectsWithValueStorage() Export
 	ListStorage = New ValueStorage(MetadataList);
 	
 	SetPrivilegedMode(True);
-	Constants.ListOfMetadataObjectsWithValueStorage.Set(ListStorage);
+	Constants.MetadataObjectsWithValueStorageList.Set(ListStorage);
 	SetPrivilegedMode(False);
 	
 EndProcedure
@@ -556,7 +556,8 @@ Procedure ImportValueStorage(Container, ValueStorage, Artifact)
 		FileName = Container.GetFullFileName(Artifact.Data.RelativeFilePath);
 		Value = New BinaryData(FileName);
 	ElsIf Artifact.Data.Type() = ValueToSerializeType() Then
-		If TypeOf(Value) = Type("XDTODataObject") Then
+		//If TypeOf(Value) = Type("XDTODataObject") Then
+		If TypeOf(Artifact.Data.Data) = Type("XDTODataObject") Then
 			Value = XDTOSerializer.ReadXDTO(Artifact.Data.Data);
 		Else
 			Value = Artifact.Data.Data;
@@ -645,7 +646,7 @@ Function CurrentObjectMetadata(Container, Val ObjectMetadata)
 	
 EndFunction
 
-// Returns a deserialized value of the ListOfMetadataObjectsWithValueStorage constant.
+// Returns a deserialized value of the MetadataObjectsWithValueStorageList constant.
 //
 // Returns:
 //  Map - Key: Metadata object, Value - Structure. For constants, the structure is
@@ -655,7 +656,7 @@ EndFunction
 Function ListOfMetadataWithValueStorage()
 	
 	SetPrivilegedMode(True);
-	MetadataList = Constants.ListOfMetadataObjectsWithValueStorage.Get().Get();
+	MetadataList = Constants.MetadataObjectsWithValueStorageList.Get().Get();
 	SetPrivilegedMode(False);
 	
 	If TypeOf(MetadataList) <> Type("Map") Then 

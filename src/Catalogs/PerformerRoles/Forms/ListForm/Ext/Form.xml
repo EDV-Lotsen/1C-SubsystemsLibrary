@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="30">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<VerticalStretch>false</VerticalStretch>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="31"/>
+		</UsualGroup>
+		<CommandBar name="CommandBar" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Command bar</v8:content>
+				</v8:item>
+			</ToolTip>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="CommandBarExtendedTooltip" id="33"/>
+		</CommandBar>
+		<Table name="List" id="1">
+			<Representation>List</Representation>
+			<CommandBarLocation>None</CommandBarLocation>
+			<SkipOnInput>false</SkipOnInput>
+			<DefaultItem>true</DefaultItem>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>true</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3"/>
+			<ExtendedTooltip name="ListExtendedTooltip" id="18"/>
+			<SearchStringAddition name="ListSearchString" id="34">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="35"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="36"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="37">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="38"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="39"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="40">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="41"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="42"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<ColumnGroup name="IsMain" id="17">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>IsMain</v8:content>
+						</v8:item>
+					</Title>
+					<ExtendedTooltip name="MainExtendedTooltip" id="19"/>
+					<ChildItems>
+						<ColumnGroup name="Group" id="16">
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Group</v8:content>
+								</v8:item>
+							</Title>
+							<Group>Horizontal</Group>
+							<ExtendedTooltip name="GroupExtendedTooltip" id="20"/>
+							<ChildItems>
+								<LabelField name="Description" id="4">
+									<DataPath>List.Description</DataPath>
+									<DefaultItem>true</DefaultItem>
+									<ContextMenu name="DescriptionContextMenu" id="5"/>
+									<ExtendedTooltip name="DescriptionExtendedTooltip" id="21"/>
+								</LabelField>
+								<LabelField name="ShortPresentation" id="14">
+									<DataPath>List.ShortPresentation</DataPath>
+									<ContextMenu name="ShortPresentationContextMenu" id="15"/>
+									<ExtendedTooltip name="ShortPresentationExtendedTooltip" id="22"/>
+								</LabelField>
+								<LabelField name="Code" id="6">
+									<DataPath>List.Code</DataPath>
+									<ContextMenu name="CodeContextMenu" id="7"/>
+									<ExtendedTooltip name="CodeExtendedTooltip" id="23"/>
+								</LabelField>
+								<CheckBoxField name="ExternalRole" id="10">
+									<DataPath>List.ExternalRole</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>External</v8:content>
+										</v8:item>
+									</Title>
+									<TitleLocation>None</TitleLocation>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>External role with performers defined in another infobase</v8:content>
+										</v8:item>
+									</ToolTip>
+									<HeaderPicture>
+										<xr:Ref>StdPicture.ExchangePlan</xr:Ref>
+										<xr:LoadTransparent>true</xr:LoadTransparent>
+									</HeaderPicture>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="ExternalRoleContextMenu" id="11"/>
+									<ExtendedTooltip name="ExternalRoleExtendedTooltip" id="24"/>
+								</CheckBoxField>
+								<CheckBoxField name="UsedWithoutAddressingObjects" id="12">
+									<DataPath>List.UsedWithoutAddressingObjects</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<Title>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>No objects</v8:content>
+										</v8:item>
+									</Title>
+									<ToolTip>
+										<v8:item>
+											<v8:lang>en</v8:lang>
+											<v8:content>Used with addressing objects</v8:content>
+										</v8:item>
+									</ToolTip>
+									<CheckBoxType>Auto</CheckBoxType>
+									<ContextMenu name="UsedWithoutAddressingObjectsContextMenu" id="13"/>
+									<ExtendedTooltip name="UsedWithoutAddressingObjectsExtendedTooltip" id="25"/>
+								</CheckBoxField>
+								<LabelField name="Ref" id="27">
+									<DataPath>List.Ref</DataPath>
+									<UserVisible>
+										<xr:Common>false</xr:Common>
+									</UserVisible>
+									<ContextMenu name="RefContextMenu" id="28"/>
+									<ExtendedTooltip name="RefExtendedTooltip" id="29"/>
+								</LabelField>
+							</ChildItems>
+						</ColumnGroup>
+						<LabelField name="Comment" id="8">
+							<DataPath>List.Comment</DataPath>
+							<UserVisible>
+								<xr:Common>false</xr:Common>
+							</UserVisible>
+							<AutoCellHeight>true</AutoCellHeight>
+							<ShowInHeader>false</ShowInHeader>
+							<Height>1</Height>
+							<ContextMenu name="CommentContextMenu" id="9"/>
+							<ExtendedTooltip name="CommentExtendedTooltip" id="26"/>
+						</LabelField>
+					</ChildItems>
+				</ColumnGroup>
+			</ChildItems>
+		</Table>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.Ref</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>true</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<QueryText>SELECT
+	PerformerRoleCatalog.Ref,
+	PerformerRoleCatalog.DeletionMark,
+	PerformerRoleCatalog.Predefined,
+	PerformerRoleCatalog.Code,
+	PerformerRoleCatalog.Description,
+ 
+PerformerRoleCatalog.UsedWithoutAddressingObjects,
+ 
+PerformerRoleCatalog.UsedByAddressingObjects,
+ 
+PerformerRoleCatalog.MainAddressingObjectTypes,
+	PerformerRoleCatalog.AdditionalAddressingObjectTypes,
+	PerformerRoleCatalog.Comment,
+	CASE
+		WHEN PerformerRoleCatalog.UsedByAddressingObjects
+			THEN TRUE
+		WHEN PerformerRoleCatalog.Ref IN
+				(SELECT TOP 1
+					InformationRegister.TaskPerformers.PerformerRole.Ref
+				FROM
+					InformationRegister.TaskPerformers
+				WHERE
+					InformationRegister.TaskPerformers.PerformerRole = PerformerRoleCatalog.Ref)
+			THEN TRUE
+		ELSE FALSE
+	END AS HasPerformers,
+	PerformerRoleCatalog.ExternalRole,
+	PerformerRoleCatalog.ShortPresentation
+FROM
+	Catalog.PerformerRoles AS PerformerRoleCatalog</QueryText>
+				<MainTable>Catalog.PerformerRoles</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:item>
+							<dcsset:selection/>
+							<dcsset:filter>
+								<dcsset:item xsi:type="dcsset:FilterItemGroup">
+									<dcsset:groupType>AndGroup</dcsset:groupType>
+									<dcsset:item xsi:type="dcsset:FilterItemComparison">
+										<dcsset:left xsi:type="dcscor:Field">HasPerformers</dcsset:left>
+										<dcsset:comparisonType>Equal</dcsset:comparisonType>
+										<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+									</dcsset:item>
+									<dcsset:item xsi:type="dcsset:FilterItemComparison">
+										<dcsset:left xsi:type="dcscor:Field">ExternalRole</dcsset:left>
+										<dcsset:comparisonType>Equal</dcsset:comparisonType>
+										<dcsset:right xsi:type="xs:boolean">false</dcsset:right>
+									</dcsset:item>
+								</dcsset:item>
+							</dcsset:filter>
+							<dcsset:appearance>
+								<dcscor:item xsi:type="dcsset:SettingsParameterValue">
+									<dcscor:parameter>TextColor</dcscor:parameter>
+									<dcscor:value xsi:type="v8ui:Color">style:RoleWithoutPerformers</dcscor:value>
+								</dcscor:item>
+							</dcsset:appearance>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+	</Attributes>
+</Form>

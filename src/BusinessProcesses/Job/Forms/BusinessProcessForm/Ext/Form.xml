@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<CommandBarLocation>Top</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<CommandSet>
+		<ExcludedCommand>Activate</ExcludedCommand>
+	</CommandSet>
+	<AutoCommandBar name="FormCommandBar" id="-1">
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="FormStartAndClose" id="131">
+				<Type>CommandBarButton</Type>
+				<DefaultButton>true</DefaultButton>
+				<CommandName>Form.StandardCommand.StartAndClose</CommandName>
+				<ExtendedTooltip name="FormStartAndCloseExtendedTooltip" id="132"/>
+			</Button>
+			<Button name="FormWriteAndClose" id="141">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.WriteAndClose</CommandName>
+				<ExtendedTooltip name="FormWriteAndCloseExtendedTooltip" id="142"/>
+			</Button>
+			<Button name="FormWrite" id="135">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Write</CommandName>
+				<ExtendedTooltip name="FormWriteExtendedTooltip" id="136"/>
+			</Button>
+			<Button name="StartForm" id="137">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Start</CommandName>
+				<ExtendedTooltip name="FormStartExtendedTooltip" id="138"/>
+			</Button>
+			<Button name="FormStop" id="101">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.Stop</CommandName>
+				<ExtendedTooltip name="FormStopExtendedTooltip" id="105"/>
+			</Button>
+			<Button name="FormContinue" id="102">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.Continue</CommandName>
+				<ExtendedTooltip name="FormContinueExtendedTooltip" id="106"/>
+			</Button>
+			<ButtonGroup name="GlobalCommands" id="143">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Global commands</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Global commands</v8:content>
+					</v8:item>
+				</ToolTip>
+				<CommandSource>FormCommandPanelGlobalCommands</CommandSource>
+				<ExtendedTooltip name="GlobalCommandsExtendedTooltip" id="144"/>
+			</ButtonGroup>
+			<ButtonGroup name="StandardCommands" id="133">
+				<Title>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Standard commands</v8:content>
+					</v8:item>
+				</Title>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>en</v8:lang>
+						<v8:content>Standard commands</v8:content>
+					</v8:item>
+				</ToolTip>
+				<CommandSource>Form</CommandSource>
+				<ExtendedTooltip name="StandardCommandsExtendedTooltip" id="134"/>
+			</ButtonGroup>
+			<Button name="FormHelp" id="139">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.StandardCommand.Help</CommandName>
+				<ExtendedTooltip name="FormHelpExtendedTooltip" id="140"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="AfterWrite">AfterWrite</Event>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnReadAtServer">OnReadAtServer</Event>
+		<Event name="OnOpen">OnOpen</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="OnWriteAtServer">OnWriteAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="StateGroup" id="92">
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="StateGroupExtendedTooltip" id="107"/>
+			<ChildItems>
+				<PictureDecoration name="IconDecoration" id="93">
+					<Width>2</Width>
+					<Height>1</Height>
+					<SkipOnInput>false</SkipOnInput>
+					<Picture>
+						<xr:Ref>CommonPicture.Information</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</Picture>
+					<ContextMenu name="IconDecorationContextMenu" id="94"/>
+					<ExtendedTooltip name="IconDecorationExtendedTooltip" id="108"/>
+				</PictureDecoration>
+				<LabelDecoration name="TextDecoration" id="95">
+					<HorizontalStretch>true</HorizontalStretch>
+					<VerticalStretch>false</VerticalStretch>
+					<SkipOnInput>false</SkipOnInput>
+					<Title formatted="false">
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Job completed</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="TextDecorationContextMenu" id="96"/>
+					<ExtendedTooltip name="TextDecorationExtendedTooltip" id="109"/>
+				</LabelDecoration>
+			</ChildItems>
+		</UsualGroup>
+		<LabelField name="MainTask" id="99">
+			<DataPath>MainTaskString</DataPath>
+			<Hiperlink>true</Hiperlink>
+			<ContextMenu name="MainTaskContextMenu" id="100"/>
+			<ExtendedTooltip name="MainTaskExtendedTooltip" id="110"/>
+			<Events>
+				<Event name="Click">MainTaskClick</Event>
+			</Events>
+		</LabelField>
+		<UsualGroup name="DueDateImportanceGroup" id="27">
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="DueDateImportanceGroupExtendedTooltip" id="111"/>
+			<ChildItems>
+				<InputField name="JobTitle" id="19">
+					<DataPath>Object.Description</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Width>20</Width>
+					<Wrap>false</Wrap>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="JobTitleContextMenu" id="20"/>
+					<ExtendedTooltip name="JobTitleExtendedTooltip" id="112"/>
+				</InputField>
+				<InputField name="Importance" id="57">
+					<DataPath>Object.Importance</DataPath>
+					<Width>8</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Wrap>false</Wrap>
+					<ContextMenu name="ImportanceContextMenu" id="58"/>
+					<ExtendedTooltip name="ImportanceExtendedTooltip" id="113"/>
+				</InputField>
+				<InputField name="Number" id="103">
+					<DataPath>Object.Number</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ContextMenu name="NumberContextMenu" id="104"/>
+					<ExtendedTooltip name="NumberExtendedTooltip" id="114"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="CompletionGroup" id="67">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Completion</v8:content>
+				</v8:item>
+			</Title>
+			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="CompletionGroupExtendedTooltip" id="115"/>
+			<ChildItems>
+				<InputField name="Performer" id="69">
+					<DataPath>Object.Performer</DataPath>
+					<Width>35</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Wrap>false</Wrap>
+					<OpenButton>false</OpenButton>
+					<ContextMenu name="PerformerContextMenu" id="70"/>
+					<ExtendedTooltip name="PerformerExtendedTooltip" id="116"/>
+					<Events>
+						<Event name="OnChange">PerformerOnChange</Event>
+						<Event name="AutoComplete">PerformerAutoComplete</Event>
+						<Event name="StartChoice">PerformerStartChoice</Event>
+						<Event name="TextEditEnd">PerformerTextEditEnd</Event>
+						<Event name="ChoiceProcessing">PerformerChoiceProcessing</Event>
+					</Events>
+				</InputField>
+				<InputField name="DueDate" id="21">
+					<DataPath>Object.DueDate</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Due date</v8:content>
+						</v8:item>
+					</Title>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Width>10</Width>
+					<Wrap>false</Wrap>
+					<EditFormat>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>DLF=D</v8:content>
+						</v8:item>
+					</EditFormat>
+					<ContextMenu name="DueDateContextMenu" id="22"/>
+					<ExtendedTooltip name="DueDateExtendedTooltip" id="117"/>
+					<Events>
+						<Event name="OnChange">DueDateOnChange</Event>
+					</Events>
+				</InputField>
+				<InputField name="DueDateTime" id="88">
+					<DataPath>Object.DueDate</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Due date</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>None</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Due date (time)</v8:content>
+						</v8:item>
+					</ToolTip>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Width>8</Width>
+					<Wrap>false</Wrap>
+					<ChoiceButton>false</ChoiceButton>
+					<EditFormat>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>DLF=T</v8:content>
+						</v8:item>
+					</EditFormat>
+					<ContextMenu name="DueDateTimeContextMenu" id="89"/>
+					<ExtendedTooltip name="DueDateTimeExtendedTooltip" id="118"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ContentGroup" id="75">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Content</v8:content>
+				</v8:item>
+			</Title>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ContentGroupExtendedTooltip" id="119"/>
+			<ChildItems>
+				<LabelField name="Subject" id="86">
+					<DataPath>SubjectString</DataPath>
+					<ContextMenu name="SubjectContextMenu" id="87"/>
+					<ExtendedTooltip name="SubjectExtendedTooltip" id="120"/>
+					<Events>
+						<Event name="Click">SubjectClick</Event>
+					</Events>
+				</LabelField>
+				<InputField name="Content" id="17">
+					<DataPath>Object.Content</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Content</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>None</TitleLocation>
+					<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+					<Height>5</Height>
+					<BorderColor>style:BorderColor</BorderColor>
+					<ContextMenu name="ContentContextMenu" id="18"/>
+					<ExtendedTooltip name="ContentExtendedTooltip" id="121"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="CheckingGroup" id="56">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Checking</v8:content>
+				</v8:item>
+			</Title>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>NormalSeparation</Representation>
+			<ExtendedTooltip name="CheckingGroupExtendedTooltip" id="122"/>
+			<ChildItems>
+				<CheckBoxField name="OnValidation" id="54">
+					<DataPath>Object.OnValidation</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Check execution:</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="OnValidationContextMenu" id="55"/>
+					<ExtendedTooltip name="OnValidationExtendedTooltip" id="123"/>
+					<Events>
+						<Event name="OnChange">OnValidationOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<UsualGroup name="SupervisorGroup" id="28">
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="SupervisorGroupExtendedTooltip" id="124"/>
+					<ChildItems>
+						<InputField name="Supervisor" id="14">
+							<DataPath>Object.Supervisor</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Width>34</Width>
+							<HorizontalStretch>false</HorizontalStretch>
+							<Wrap>false</Wrap>
+							<OpenButton>false</OpenButton>
+							<AutoMarkIncomplete>false</AutoMarkIncomplete>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="SupervisorContextMenu" id="15"/>
+							<ExtendedTooltip name="SupervisorExtendedTooltip" id="125"/>
+							<Events>
+								<Event name="OnChange">SupervisorOnChange</Event>
+								<Event name="AutoComplete">SupervisorAutoComplete</Event>
+								<Event name="StartChoice">SupervisorChoiceStart</Event>
+								<Event name="TextEditEnd">SupervisorTextEditEnd</Event>
+								<Event name="ChoiceProcessing">SupervisorChoiceProcessing</Event>
+							</Events>
+						</InputField>
+						<InputField name="VerificationDueDate" id="23">
+							<DataPath>Object.VerificationDueDate</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Due date</v8:content>
+								</v8:item>
+							</Title>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Verification due date</v8:content>
+								</v8:item>
+							</ToolTip>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Width>10</Width>
+							<Wrap>false</Wrap>
+							<EditFormat>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>DLF=D</v8:content>
+								</v8:item>
+							</EditFormat>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="VerificationDueDateContextMenu" id="24"/>
+							<ExtendedTooltip name="VerificationDueDateExtendedTooltip" id="126"/>
+							<Events>
+								<Event name="OnChange">DueDateVerificationOnChange</Event>
+							</Events>
+						</InputField>
+						<InputField name="DueDateVerificationTime" id="90">
+							<DataPath>Object.VerificationDueDate</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Due date</v8:content>
+								</v8:item>
+							</Title>
+							<TitleLocation>None</TitleLocation>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Verification due date (time)</v8:content>
+								</v8:item>
+							</ToolTip>
+							<FooterHorizontalAlign>Left</FooterHorizontalAlign>
+							<Width>8</Width>
+							<Wrap>false</Wrap>
+							<ChoiceButton>false</ChoiceButton>
+							<EditFormat>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>DLF=T</v8:content>
+								</v8:item>
+							</EditFormat>
+							<BorderColor>style:BorderColor</BorderColor>
+							<ContextMenu name="DueDateVerificationTimeContextMenu" id="91"/>
+							<ExtendedTooltip name="DueDateVerificationTimeExtendedTooltip" id="127"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="CommonDataGroup" id="81">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Author</v8:content>
+				</v8:item>
+			</Title>
+			<TitleFont ref="sys:DefaultGUIFont" bold="true" italic="false" underline="false" strikeout="false" kind="WindowsFont"/>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Common data group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<HorizontalStretch>true</HorizontalStretch>
+			<Group>Horizontal</Group>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="CommonDataGroupExtendedTooltip" id="128"/>
+			<ChildItems>
+				<InputField name="Author" id="79">
+					<DataPath>Object.Author</DataPath>
+					<Width>35</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<Wrap>false</Wrap>
+					<OpenButton>false</OpenButton>
+					<ContextMenu name="AuthorContextMenu" id="80"/>
+					<ExtendedTooltip name="AuthorExtendedTooltip" id="129"/>
+				</InputField>
+				<InputField name="Date" id="97">
+					<DataPath>Object.Date</DataPath>
+					<ReadOnly>true</ReadOnly>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Started</v8:content>
+						</v8:item>
+					</Title>
+					<ContextMenu name="DateContextMenu" id="98"/>
+					<ExtendedTooltip name="DateExtendedTooltip" id="130"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:BusinessProcessObject.Job</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+		<Attribute name="InitialStartFlag" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Initial start flag</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="SubjectString" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Subject</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="MainTaskString" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Main task</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="UseExternalTasksAndBusinessProcesses" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Use external tasks and business processes</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Stop" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Stop</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Stop</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>Stop</Action>
+		</Command>
+		<Command name="Continue" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Continue</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Continue</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>ContinueBusinessProcess</Action>
+		</Command>
+		<Command name="WriteAndClose" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and close</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Save and close</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>WriteAndClose</Action>
+		</Command>
+	</Commands>
+</Form>

@@ -2,7 +2,7 @@
 // This module contains procedures and functions for aggregates operations, used
 // by scheduled jobs
 
-// Scheduled job UpdateSalesAggregates.
+// UpdateSalesAggregates scheduled job.
 // Parameters: 
 //  No
 Procedure UpdateSalesAggregates() Export
@@ -12,7 +12,7 @@ Procedure UpdateSalesAggregates() Export
 	EndIf
 EndProcedure
 
-// Routine job RebuildingSalesAggregates.
+// RebuildingSalesAggregates scheduled job.
 // Parameters: 
 //  No
 Procedure RebuildingSalesAggregates() Export

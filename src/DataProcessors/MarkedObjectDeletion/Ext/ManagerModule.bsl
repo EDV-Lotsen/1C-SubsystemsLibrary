@@ -64,7 +64,7 @@ Procedure DeleteMarkedObjects(ExecutionParameters)
 	InitializeParameters(ExecutionParameters);
 	
 	PreventDeletion = New ValueTable;
-	PreventDeletion.Columns.Add("ItemBeingDeletedReference");
+	PreventDeletion.Columns.Add("ItemBeingDeletedRef");
 	PreventDeletion.Columns.Add("ItemBeingDeletedType", New TypeDescription("Type"));
 	PreventDeletion.Columns.Add("FoundItemReference");
 	PreventDeletion.Columns.Add("FoundType", New TypeDescription("Type"));
@@ -151,12 +151,12 @@ Function DeleteReference(ExecutionParameters, Ref)
 	EndIf;
 	
 	If TypeOf(Result.PreventDeletion) = Type("ValueTable") Then
-		Result.PreventDeletion.Columns[0].Name = "ItemBeingDeletedReference";
+		Result.PreventDeletion.Columns[0].Name = "ItemBeingDeletedRef";
 		Result.PreventDeletion.Columns[1].Name = "FoundItemReference";
 		Result.PreventDeletion.Columns[2].Name = "FoundMetadata";
 		For Each FoundItemReference In Result.NestedAndSubordinateObjects Do
 			TableRow = Result.PreventDeletion.Add();
-			TableRow.ItemBeingDeletedReference = Ref;
+			TableRow.ItemBeingDeletedRef = Ref;
 			TableRow.FoundItemReference        = FoundItemReference;
 		EndDo;
 	EndIf;
@@ -202,7 +202,7 @@ Procedure FindNestedAndSubordinateObjects(ExecutionParameters, Ref, Information,
 	
 	If Information.Hierarchical Then
 		Query = New Query(Information.QueryTextByHierarchy);
-		Query.SetParameter("ItemBeingDeletedReference", Ref);
+		Query.SetParameter("ItemBeingDeletedRef", Ref);
 		NestedObjects = Query.Execute().Unload();
 		For Each TableRow In NestedObjects Do
 			Result.NestedAndSubordinateObjects.Add(TableRow.Ref);
@@ -212,7 +212,7 @@ Procedure FindNestedAndSubordinateObjects(ExecutionParameters, Ref, Information,
 	
 	If Information.HasSubordinate Then
 		Query = New Query(Information.QueryTextBySubordinated);
-		Query.SetParameter("ItemBeingDeletedReference", Ref);
+		Query.SetParameter("ItemBeingDeletedRef", Ref);
 		SubordinateObjects = Query.Execute().Unload();
 		For Each TableRow In SubordinateObjects Do
 			Result.NestedAndSubordinateObjects.Add(TableRow.Ref);
@@ -276,9 +276,9 @@ Procedure DeleteRemainingObjectsInSingleTransaction(ExecutionParameters)
 	//      is not marked for deletion.
 	For Each TableRow In ExecutionParameters.PreventDeletion Do
 		If ExecutionParameters.NotDeletedItems.Find(TableRow.FoundItemReference) = Undefined
-			And ObjectsCannotDelete.Find(TableRow.ItemBeingDeletedReference) = Undefined Then
-			ObjectsCannotDelete.Add(TableRow.ItemBeingDeletedReference);
-			Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("FoundItemReference", TableRow.ItemBeingDeletedReference));
+			And ObjectsCannotDelete.Find(TableRow.ItemBeingDeletedRef) = Undefined Then
+			ObjectsCannotDelete.Add(TableRow.ItemBeingDeletedRef);
+			Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("FoundItemReference", TableRow.ItemBeingDeletedRef));
 			NestedIrresolvableLinks.Add(Found);
 		EndIf;
 	EndDo;
@@ -290,9 +290,9 @@ Procedure DeleteRemainingObjectsInSingleTransaction(ExecutionParameters)
 		Found = NestedIrresolvableLinks[Index];
 		Index = Index + 1;
 		For Each TableRow In Found Do
-			If ObjectsCannotDelete.Find(TableRow.ItemBeingDeletedReference) = Undefined Then
-				ObjectsCannotDelete.Add(TableRow.ItemBeingDeletedReference);
-				Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("FoundItemReference", TableRow.ItemBeingDeletedReference));
+			If ObjectsCannotDelete.Find(TableRow.ItemBeingDeletedRef) = Undefined Then
+				ObjectsCannotDelete.Add(TableRow.ItemBeingDeletedRef);
+				Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("FoundItemReference", TableRow.ItemBeingDeletedRef));
 				NestedIrresolvableLinks.Add(Found);
 			EndIf;
 		EndDo;
@@ -378,7 +378,7 @@ Procedure DeleteRemainingObjectsInSingleTransaction(ExecutionParameters)
 			EndIf;
 			
 			// Clearing details on links "from" the deleted objects
-			Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("ItemBeingDeletedReference", Ref));
+			Found = ExecutionParameters.PreventDeletion.FindRows(New Structure("ItemBeingDeletedRef", Ref));
 			For Each TableRow In Found Do
 				ExecutionParameters.PreventDeletion.Delete(TableRow);
 			EndDo;
@@ -404,18 +404,18 @@ Procedure RecordDeletionResult(ExecutionParameters, Ref, Result, CollectionName)
 		ObsoleteReasons = ExecutionParameters.PreventDeletion.FindRows(New Structure("FoundItemReference", Ref));
 		For Each Reason In ObsoleteReasons Do
 			// Deleting the reasons that prevent deletion of the other object
-			ItemBeingDeletedReference = Reason.ItemBeingDeletedReference;
+			ItemBeingDeletedRef = Reason.ItemBeingDeletedRef;
 			ExecutionParameters.PreventDeletion.Delete(Reason);
 			// Searching other reasons that prevent deletion of the other object
-			If ExecutionParameters.PreventDeletion.Find(ItemBeingDeletedReference, "ItemBeingDeletedReference") = Undefined Then
+			If ExecutionParameters.PreventDeletion.Find(ItemBeingDeletedRef, "ItemBeingDeletedRef") = Undefined Then
 				// All reasons that prevent deletion of the other object are eliminated.
 				// Recording the other object for redeletion.
-				ExecutionParameters.ToRedelete.Add(ItemBeingDeletedReference);
+				ExecutionParameters.ToRedelete.Add(ItemBeingDeletedRef);
 				If CollectionName = "ToRedelete" And ExecutionParameters.Interactive Then
 					ExecutionParameters.Total = ExecutionParameters.Total + 1;
 				EndIf;
 				// Clearing records of the other object from the NotDeletedItems collection
-				Index = ExecutionParameters.NotDeletedItems.Find(ItemBeingDeletedReference);
+				Index = ExecutionParameters.NotDeletedItems.Find(ItemBeingDeletedRef);
 				If Index <> Undefined Then
 					ExecutionParameters.NotDeletedItems.Delete(Index);
 				EndIf;
@@ -428,8 +428,8 @@ Procedure RecordDeletionResult(ExecutionParameters, Ref, Result, CollectionName)
 		
 		If TypeOf(Result.ErrorInfo) = Type("ErrorInfo") Then // Error text
 			Reason = ExecutionParameters.PreventDeletion.Add();
-			Reason.ItemBeingDeletedReference = Ref;
-			Reason.ItemBeingDeletedType      = TypeOf(Reason.ItemBeingDeletedReference);
+			Reason.ItemBeingDeletedRef = Ref;
+			Reason.ItemBeingDeletedType      = TypeOf(Reason.ItemBeingDeletedRef);
 			Reason.FoundItemReference        = BriefErrorDescription(Result.ErrorInfo);
 			Reason.FoundType                 = Type("String");
 			
@@ -439,7 +439,7 @@ Procedure RecordDeletionResult(ExecutionParameters, Ref, Result, CollectionName)
 				// Recording the reason that prevented deletion
 				Reason = ExecutionParameters.PreventDeletion.Add();
 				FillPropertyValues(Reason, TableRow);
-				Reason.ItemBeingDeletedType = TypeOf(Reason.ItemBeingDeletedReference);
+				Reason.ItemBeingDeletedType = TypeOf(Reason.ItemBeingDeletedRef);
 				Reason.FoundType            = TypeOf(Reason.FoundItemReference);
 				
 				If TableRow.FoundItemReference = Undefined Then
@@ -459,7 +459,7 @@ Procedure RecordDeletionResult(ExecutionParameters, Ref, Result, CollectionName)
 				FoundItemInformation = GenerateTypeInfo(ExecutionParameters, Reason.FoundType);
 				
 				// Filling subordinate fields
-				If FoundItemInformation.Reference Then
+				If FoundItemInformation.Ref Then
 					Reason.FoundDeletionMark = Reason.FoundItemReference.DeletionMark;
 				Else
 					Reason.FoundDeletionMark = False;
@@ -659,7 +659,7 @@ Function GenerateTypeInfo(ExecutionParameters, Type) Export
 		Information.Hierarchical = False;
 	EndIf;
 	If Information.Hierarchical Then
-		QueryPattern = "SELECT Ref FROM &FullName WHERE Parent = &ItemBeingDeletedReference";
+		QueryPattern = "SELECT Ref FROM &FullName WHERE Parent = &ItemBeingDeletedRef";
 		Information.QueryTextByHierarchy = StrReplace(QueryPattern, "&FullName", Information.FullName);
 	EndIf;
 	
@@ -671,7 +671,7 @@ Function GenerateTypeInfo(ExecutionParameters, Type) Export
 		Or Information.Kind = "CHARTOFACCOUNTS"
 		Or Information.Kind = "CHARTOFCALCULATIONTYPES" Then
 		
-		QueryPattern = "SELECT Ref FROM Catalog.&Name WHERE Owner = &ItemBeingDeletedReference";
+		QueryPattern = "SELECT Ref FROM Catalog.&Name WHERE Owner = &ItemBeingDeletedRef";
 		QueryText = "";
 		
 		For Each Catalog In Metadata.Catalogs Do

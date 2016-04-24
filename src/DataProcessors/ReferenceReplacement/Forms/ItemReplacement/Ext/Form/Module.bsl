@@ -586,7 +586,7 @@ Procedure InitReferencesToReplace(Val RefArray)
 	EndIf;
 	
 	If HasFolders Then
-		AdditionalFields = AdditionalFields + ", IsFolder As IsFolder";
+		AdditionalFields = AdditionalFields + ", IsFolder AS IsFolder";
 	Else
 		AdditionalFields = AdditionalFields + ", FALSE AS IsFolder";
 	EndIf;
@@ -602,6 +602,8 @@ Procedure InitReferencesToReplace(Val RefArray)
 		|	MIN(Owner)            AS CommonOwner,	
 		|	MAX(IsFolder)         AS HasFolders,
 		|	COUNT(Ref)            AS ReferenceCount
+		|FROM
+		|	ReferencesToReplace
 		|");
 	Query.SetParameter("ReferenceSet", RefArray);
 	

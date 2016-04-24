@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<WindowOpeningMode>LockOwnerWindow</WindowOpeningMode>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<UseForFoldersAndItems>Items</UseForFoldersAndItems>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="ChoiceProcessing">ChoiceProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="FillCheckProcessingAtServer">FillCheckProcessingAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="HeaderGroup" id="24">
+			<Group>Horizontal</Group>
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="HeaderGroupExtendedTooltip" id="39"/>
+			<ChildItems>
+				<UsualGroup name="DescriptionAndAbbreviation" id="35">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description and abbreviation</v8:content>
+						</v8:item>
+					</Title>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="DescriptionAndAbbreviationExtendedTooltip" id="40"/>
+					<ChildItems>
+						<InputField name="Description" id="3">
+							<DataPath>Object.Description</DataPath>
+							<Wrap>false</Wrap>
+							<ContextMenu name="DescriptionContextMenu" id="4"/>
+							<ExtendedTooltip name="DescriptionExtendedTooltip" id="41"/>
+						</InputField>
+						<InputField name="ShortPresentation" id="33">
+							<DataPath>Object.ShortPresentation</DataPath>
+							<ContextMenu name="ShortPresentationContextMenu" id="34"/>
+							<ExtendedTooltip name="ShortPresentationExtendedTooltip" id="42"/>
+						</InputField>
+					</ChildItems>
+				</UsualGroup>
+				<InputField name="Code" id="1">
+					<DataPath>Object.Code</DataPath>
+					<Width>8</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="CodeContextMenu" id="2"/>
+					<ExtendedTooltip name="CodeExtendedTooltip" id="43"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ExternalRoleGroup" id="32">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>External role group</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>External role group</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Group>Horizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ExternalRoleGroupExtendedTooltip" id="44"/>
+			<ChildItems>
+				<CheckBoxField name="ExternalRole" id="28">
+					<DataPath>Object.ExternalRole</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>External role with performers defined in another infobase</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Right</TitleLocation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ExternalRoleContextMenu" id="29"/>
+					<ExtendedTooltip name="ExternalRoleExtendedTooltip" id="45"/>
+					<Events>
+						<Event name="OnChange">ExternalRoleOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<InputField name="ExchangeNode" id="30">
+					<DataPath>Object.ExchangeNode</DataPath>
+					<Enabled>false</Enabled>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Role performers are defined in the infobase</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>None</TitleLocation>
+					<ContextMenu name="ExchangeNodeContextMenu" id="31"/>
+					<ExtendedTooltip name="ExchangeNodeExtendedTooltip" id="46"/>
+					<Events>
+						<Event name="StartChoice">ExchangeNodeStartChoice</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="AddressingGroup" id="23">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Addressing tasks to performers</v8:content>
+				</v8:item>
+			</Title>
+			<Representation>NormalSeparation</Representation>
+			<ExtendedTooltip name="AddressingGroupExtendedTooltip" id="47"/>
+			<ChildItems>
+				<CheckBoxField name="UsedWithoutOtherAddressingDimensionsContext" id="5">
+					<DataPath>Object.UsedWithoutAddressingObjects</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>A role can be assigned without specifying addressing objects</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Right</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>A role can be assigned to performers without specifying other addressing objects (main or additional).</v8:content>
+						</v8:item>
+					</ToolTip>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="UsedWithoutOtherAddressingDimensionsContextMenu" id="6"/>
+					<ExtendedTooltip name="UsedWithoutOtherAddressingDimensionsExtendedTooltip" id="48"/>
+				</CheckBoxField>
+				<CheckBoxField name="UsedInOtherAddressingDimensionsContext" id="7">
+					<DataPath>Object.UsedByAddressingObjects</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>The role which is assigned to the performers must be specified</v8:content>
+						</v8:item>
+					</Title>
+					<TitleLocation>Right</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>A role can be assigned to performers together with certain addressing objects.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<ToolTipRepresentation>Button</ToolTipRepresentation>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="UsedInOtherAddressingDimensionsContextMenu" id="8"/>
+					<ExtendedTooltip name="UsedInOtherAddressingDimensionsExtendedTooltip" id="50">
+						<Title formatted="false">
+							<v8:item>
+								<v8:lang>en</v8:lang>
+								<v8:content>In some cases, the performer role is not enough to define the exact task-performer circle.
+For this purpose you can specify main and additional addressing objects.</v8:content>
+							</v8:item>
+						</Title>
+					</ExtendedTooltip>
+					<Events>
+						<Event name="OnChange">UsedInOtherAddressingDimensionsContextOnChange</Event>
+					</Events>
+				</CheckBoxField>
+				<UsualGroup name="AddressingGroupAdvanced" id="38">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Addressing tasks to performers (additional)</v8:content>
+						</v8:item>
+					</Title>
+					<Group>Horizontal</Group>
+					<Representation>None</Representation>
+					<ShowTitle>false</ShowTitle>
+					<ExtendedTooltip name="AddressingGroupAdvancedExtendedTooltip" id="49"/>
+					<ChildItems>
+						<LabelDecoration name="Explanation" id="36">
+							<TextColor>style:InformationText</TextColor>
+							<ContextMenu name="ExplanationContextMenu" id="37"/>
+							<ExtendedTooltip name="ExplanationExtendedTooltip" id="54"/>
+						</LabelDecoration>
+						<UsualGroup name="AddressingObjectTypesGroup" id="22">
+							<Representation>None</Representation>
+							<ShowTitle>false</ShowTitle>
+							<ExtendedTooltip name="AddressingObjectTypesGroupExtendedTooltip" id="51"/>
+							<ChildItems>
+								<InputField name="MainAddressingObjectTypes" id="18">
+									<DataPath>Object.MainAddressingObjectTypes</DataPath>
+									<Wrap>false</Wrap>
+									<OpenButton>false</OpenButton>
+									<ContextMenu name="MainAddressingObjectTypesContextMenu" id="19"/>
+									<ExtendedTooltip name="MainAddressingObjectTypesExtendedTooltip" id="52"/>
+								</InputField>
+								<InputField name="AdditionalAddressingObjectTypes" id="20">
+									<DataPath>Object.AdditionalAddressingObjectTypes</DataPath>
+									<Wrap>false</Wrap>
+									<OpenButton>false</OpenButton>
+									<ContextMenu name="AdditionalAddressingObjectTypesContextMenu" id="21"/>
+									<ExtendedTooltip name="AdditionalAddressingObjectTypesExtendedTooltip" id="53"/>
+								</InputField>
+							</ChildItems>
+						</UsualGroup>
+					</ChildItems>
+				</UsualGroup>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="CommentGroup" id="27">
+			<Representation>NormalSeparation</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="CommentGroupExtendedTooltip" id="55"/>
+			<ChildItems>
+				<InputField name="Comment" id="25">
+					<DataPath>Object.Comment</DataPath>
+					<TitleLocation>Left</TitleLocation>
+					<Height>2</Height>
+					<ChoiceButton>true</ChoiceButton>
+					<ContextMenu name="CommentContextMenu" id="26"/>
+					<ExtendedTooltip name="CommentExtendedTooltip" id="56"/>
+					<Events>
+						<Event name="StartChoice">CommentStartChoice</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Object" id="1">
+			<Type>
+				<v8:Type>cfg:CatalogObject.PerformerRoles</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+</Form>

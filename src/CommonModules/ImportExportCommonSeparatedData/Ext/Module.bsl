@@ -5,9 +5,9 @@
 //
 Procedure OnFillTypesThatRequireRefAnnotationOnImport(Types) Export
 	
-	ListOfCommonSeparatedMetadataObjects = ReadCommonSeparatedObjectCache();
+	CommonSeparatedMetadataObjectsList = ReadCommonSeparatedObjectCache();
 	
-	For Each KeyAndValue In ListOfCommonSeparatedMetadataObjects Do
+	For Each KeyAndValue In CommonSeparatedMetadataObjectsList Do
 		
 		For Each TypeName In KeyAndValue.Value.Objects Do
 			
@@ -93,9 +93,9 @@ EndProcedure
 //
 Procedure OnRegisterDataExportHandlers(HandlerTable) Export
 	
-	ListOfCommonSeparatedMetadataObjects = ReadCommonSeparatedObjectCache();
+	CommonSeparatedMetadataObjectsList = ReadCommonSeparatedObjectCache();
 	
-	For Each KeyAndValue In ListOfCommonSeparatedMetadataObjects Do
+	For Each KeyAndValue In CommonSeparatedMetadataObjectsList Do
 		
 		For Each MetadataObjectName In KeyAndValue.Value.Objects Do
 			
@@ -112,11 +112,11 @@ EndProcedure
 
 Procedure BeforeExportObject(Container, Serializer, Object, Artifacts, Cancel) Export
 	
-	ListOfCommonSeparatedMetadataObjects = ReadCommonSeparatedObjectCache();
+	CommonSeparatedMetadataObjectsList = ReadCommonSeparatedObjectCache();
 	
 	ObjectFoundInCache = False;
 	
-	For Each KeyAndValue In ListOfCommonSeparatedMetadataObjects Do
+	For Each KeyAndValue In CommonSeparatedMetadataObjectsList Do
 		For Each MetadataObjectName In KeyAndValue.Value.Objects Do
 			If MetadataObjectName = Object.Metadata().FullName() Then
 				ObjectFoundInCache = True;
@@ -248,9 +248,9 @@ EndProcedure
 //
 Procedure OnRegisterDataImportHandlers(HandlerTable) Export
 	
-	ListOfCommonSeparatedMetadataObjects = ReadCommonSeparatedObjectCache();
+	CommonSeparatedMetadataObjectsList = ReadCommonSeparatedObjectCache();
 	
-	For Each KeyAndValue In ListOfCommonSeparatedMetadataObjects Do
+	For Each KeyAndValue In CommonSeparatedMetadataObjectsList Do
 		
 		For Each MetadataObjectName In KeyAndValue.Value.Constants Do
 			
@@ -285,12 +285,12 @@ EndProcedure
 
 Procedure BeforeImportObject(Container, Object, Artifacts, Cancel) Export
 	
-	ListOfCommonSeparatedMetadataObjects = ReadCommonSeparatedObjectCache();
+	CommonSeparatedMetadataObjectsList = ReadCommonSeparatedObjectCache();
 	
 	ObjectFoundInCache = False;
 	Separator = "";
 	
-	For Each KeyAndValue In ListOfCommonSeparatedMetadataObjects Do
+	For Each KeyAndValue In CommonSeparatedMetadataObjectsList Do
 		
 		For Each MetadataObjectName In KeyAndValue.Value.Constants Do
 			If MetadataObjectName = Object.Metadata().FullName() Then
@@ -349,7 +349,7 @@ EndProcedure
 Function ReadCommonSeparatedObjectCache()
 	
 	SetPrivilegedMode(True);
-	Return Constants.ListOfCommonSeparatedMetadataObjects.Get().Get();
+	Return Constants.CommonSeparatedMetadataObjectsList.Get().Get();
 	
 EndFunction
 
@@ -405,7 +405,7 @@ Procedure FillCommonSeparatedObjectCache() Export
 	EndDo;
 	
 	SetPrivilegedMode(True);
-	Constants.ListOfCommonSeparatedMetadataObjects.Set(New ValueStorage(Cache));
+	Constants.CommonSeparatedMetadataObjectsList.Set(New ValueStorage(Cache));
 	
 EndProcedure
 

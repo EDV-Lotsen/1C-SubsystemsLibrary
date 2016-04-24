@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.3">
+	<Title>
+		<v8:item>
+			<v8:lang>en</v8:lang>
+			<v8:content>Business-process tasks</v8:content>
+		</v8:item>
+	</Title>
+	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
+	<AutoTitle>false</AutoTitle>
+	<CommandBarLocation>None</CommandBarLocation>
+	<VerticalScroll>useIfNecessary</VerticalScroll>
+	<AutoCommandBar name="FormCommandBar" id="-1"/>
+	<Events>
+		<Event name="NotificationProcessing">NotificationProcessing</Event>
+		<Event name="OnCreateAtServer">OnCreateAtServer</Event>
+		<Event name="BeforeLoadDataFromSettingsAtServer">OnLoadDataFromSettingsAtServer</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="UserSettingsGroup" id="85">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>User settings group</v8:content>
+				</v8:item>
+			</Title>
+			<VerticalStretch>false</VerticalStretch>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="UserSettingsGroupExtendedTooltip" id="86"/>
+		</UsualGroup>
+		<CommandBar name="ListCommandBar" id="52">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>List command bar</v8:content>
+				</v8:item>
+			</Title>
+			<CommandSource>Form</CommandSource>
+			<ExtendedTooltip name="ListCommandBarExtendedTooltip" id="56"/>
+		</CommandBar>
+		<Table name="List" id="1">
+			<Representation>List</Representation>
+			<SkipOnInput>false</SkipOnInput>
+			<DefaultItem>true</DefaultItem>
+			<ChangeRowSet>false</ChangeRowSet>
+			<ChangeRowOrder>false</ChangeRowOrder>
+			<UseAlternationRowColor>true</UseAlternationRowColor>
+			<EnableStartDrag>true</EnableStartDrag>
+			<DataPath>List</DataPath>
+			<RowPictureDataPath>List.DefaultPicture</RowPictureDataPath>
+			<CommandSet>
+				<ExcludedCommand>Refresh</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<AutoRefresh>false</AutoRefresh>
+			<AutoRefreshPeriod>60</AutoRefreshPeriod>
+			<Period>
+				<v8:variant xsi:type="v8:StandardPeriodVariant">Custom</v8:variant>
+				<v8:startDate>0001-01-01T00:00:00</v8:startDate>
+				<v8:endDate>0001-01-01T00:00:00</v8:endDate>
+			</Period>
+			<ChoiceFoldersAndItems>Items</ChoiceFoldersAndItems>
+			<RestoreCurrentRow>false</RestoreCurrentRow>
+			<TopLevelParent xsi:nil="true"/>
+			<ShowRoot>false</ShowRoot>
+			<AllowRootChoice>false</AllowRootChoice>
+			<UpdateOnDataChange>Auto</UpdateOnDataChange>
+			<UserSettingsGroup>UserSettingsGroup</UserSettingsGroup>
+			<ContextMenu name="ListContextMenu" id="2"/>
+			<AutoCommandBar name="ListCommandBar" id="3">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="ListExtendedTooltip" id="58"/>
+			<SearchStringAddition name="ListSearchString" id="87">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchStringContextMenu" id="88"/>
+				<ExtendedTooltip name="ListSearchStringExtendedTooltip" id="89"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="ListViewStatus" id="90">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="ListViewStatusContextMenu" id="91"/>
+				<ExtendedTooltip name="ListViewStatusExtendedTooltip" id="92"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="ListSearchControl" id="93">
+				<AdditionSource>
+					<Item>List</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="ListSearchControlContextMenu" id="94"/>
+				<ExtendedTooltip name="ListSearchControlExtendedTooltip" id="95"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="Description" id="6">
+					<DataPath>List.Description</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DescriptionContextMenu" id="7"/>
+					<ExtendedTooltip name="DescriptionExtendedTooltip" id="60"/>
+				</InputField>
+				<InputField name="Number" id="4">
+					<DataPath>List.Number</DataPath>
+					<DefaultItem>true</DefaultItem>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Number</v8:content>
+						</v8:item>
+					</Title>
+					<Wrap>false</Wrap>
+					<ContextMenu name="NumberContextMenu" id="5"/>
+					<ExtendedTooltip name="NumberExtendedTooltip" id="59"/>
+				</InputField>
+				<InputField name="Date" id="8">
+					<DataPath>List.Date</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Recorded</v8:content>
+						</v8:item>
+					</Title>
+					<Width>10</Width>
+					<Wrap>false</Wrap>
+					<ContextMenu name="DateContextMenu" id="9"/>
+					<ExtendedTooltip name="DateExtendedTooltip" id="61"/>
+				</InputField>
+				<InputField name="Performer" id="18">
+					<DataPath>List.Performer</DataPath>
+					<Wrap>false</Wrap>
+					<ContextMenu name="PerformerContextMenu" id="19"/>
+					<ExtendedTooltip name="PerformerExtendedTooltip" id="62"/>
+				</InputField>
+				<LabelField name="Subject" id="23">
+					<DataPath>List.Subject</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="SubjectContextMenu" id="24"/>
+					<ExtendedTooltip name="SubjectExtendedTooltip" id="63"/>
+				</LabelField>
+				<LabelField name="Ref" id="82">
+					<DataPath>List.Ref</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<ContextMenu name="RefContextMenu" id="83"/>
+					<ExtendedTooltip name="RefExtendedTooltip" id="84"/>
+				</LabelField>
+			</ChildItems>
+		</Table>
+		<Table name="TaskTree" id="25">
+			<Representation>Tree</Representation>
+			<ReadOnly>true</ReadOnly>
+			<AutoInsertNewRow>true</AutoInsertNewRow>
+			<InitialTreeView>ExpandTopLevel</InitialTreeView>
+			<EnableStartDrag>true</EnableStartDrag>
+			<EnableDrag>true</EnableDrag>
+			<DataPath>TaskTree</DataPath>
+			<CommandSet>
+				<ExcludedCommand>HierarchicalList</ExcludedCommand>
+				<ExcludedCommand>Tree</ExcludedCommand>
+				<ExcludedCommand>Copy</ExcludedCommand>
+				<ExcludedCommand>List</ExcludedCommand>
+				<ExcludedCommand>SortListAsc</ExcludedCommand>
+				<ExcludedCommand>MoveUp</ExcludedCommand>
+				<ExcludedCommand>SortListDesc</ExcludedCommand>
+				<ExcludedCommand>Delete</ExcludedCommand>
+				<ExcludedCommand>EndEdit</ExcludedCommand>
+				<ExcludedCommand>Add</ExcludedCommand>
+				<ExcludedCommand>MoveDown</ExcludedCommand>
+			</CommandSet>
+			<SearchStringLocation>None</SearchStringLocation>
+			<ViewStatusLocation>None</ViewStatusLocation>
+			<SearchControlLocation>None</SearchControlLocation>
+			<ContextMenu name="TaskTreeContextMenu" id="26">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="TaskTreeContextMenuChange" id="35">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Change</CommandName>
+						<ExtendedTooltip name="TaskTreeContextMenuChangeExtendedTooltip" id="64"/>
+					</Button>
+					<Button name="TaskTreeContextMenuRefresh" id="39">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Refresh</CommandName>
+						<ExtendedTooltip name="TaskTreeContextMenuRefreshExtendedTooltip" id="65"/>
+					</Button>
+					<Button name="TaskTreeContextMenuCopyToClipboard" id="36">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.TaskTree.StandardCommand.CopyToClipboard</CommandName>
+						<ExtendedTooltip name="TaskTreeContextMenuCopyToClipboardExtendedTooltip" id="66"/>
+					</Button>
+					<Button name="TaskTreeContextMenuOutputList" id="37">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.TaskTree.StandardCommand.OutputList</CommandName>
+						<ExtendedTooltip name="TaskTreeContextMenuOutputListExtendedTooltip" id="67"/>
+					</Button>
+				</ChildItems>
+			</ContextMenu>
+			<AutoCommandBar name="TaskTreeCommandBar" id="27">
+				<Autofill>false</Autofill>
+				<ChildItems>
+					<Button name="TaskTreeChange" id="34">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Command.Change</CommandName>
+						<ExtendedTooltip name="TaskTreeChangeExtendedTooltip" id="68"/>
+					</Button>
+					<Button name="TaskTreeRefresh" id="38">
+						<Type>CommandBarButton</Type>
+						<OnlyInAllActions>false</OnlyInAllActions>
+						<CommandName>Form.Command.Refresh</CommandName>
+						<ExtendedTooltip name="TaskTreeRefreshExtendedTooltip" id="69"/>
+					</Button>
+					<Button name="Help" id="53">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.StandardCommand.Help</CommandName>
+						<ExtendedTooltip name="HelpExtendedTooltip" id="70"/>
+					</Button>
+					<Button name="TaskTreeOutputList" id="54">
+						<Type>CommandBarButton</Type>
+						<CommandName>Form.Item.TaskTree.StandardCommand.OutputList</CommandName>
+						<ExtendedTooltip name="TaskTreeOutputListExtendedTooltip" id="71"/>
+					</Button>
+				</ChildItems>
+			</AutoCommandBar>
+			<ExtendedTooltip name="TaskTreeExtendedTooltip" id="72"/>
+			<SearchStringAddition name="TaskTreeSearchString" id="96">
+				<AdditionSource>
+					<Item>TaskTree</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="TaskTreeSearchStringContextMenu" id="97"/>
+				<ExtendedTooltip name="TaskTreeSearchStringExtendedTooltip" id="98"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="TaskTreeViewStatus" id="99">
+				<AdditionSource>
+					<Item>TaskTree</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="TaskTreeViewStatusContextMenu" id="100"/>
+				<ExtendedTooltip name="TaskTreeViewStatusExtendedTooltip" id="101"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="TaskTreeSearchControl" id="102">
+				<AdditionSource>
+					<Item>TaskTree</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="TaskTreeSearchControlContextMenu" id="103"/>
+				<ExtendedTooltip name="TaskTreeSearchControlExtendedTooltip" id="104"/>
+			</SearchControlAddition>
+			<Events>
+				<Event name="Selection">TaskTreeChoice</Event>
+			</Events>
+			<ChildItems>
+				<PictureField name="TaskTreeImportance" id="40">
+					<DataPath>TaskTree.Importance</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Importance</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<HeaderPicture>
+						<xr:Ref>CommonPicture.ExclamationMarkGray</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</HeaderPicture>
+					<Width>2</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ValuesPicture>
+						<xr:Ref>CommonPicture.ImportanceVariantCollection</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</ValuesPicture>
+					<ContextMenu name="TaskTreeImportanceContextMenu" id="41"/>
+					<ExtendedTooltip name="TaskTreeImportanceExtendedTooltip" id="73"/>
+				</PictureField>
+				<CheckBoxField name="Executed" id="49">
+					<DataPath>TaskTree.Executed</DataPath>
+					<UserVisible>
+						<xr:Common>false</xr:Common>
+					</UserVisible>
+					<TitleLocation>None</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Completed</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<HeaderPicture>
+						<xr:Ref>StdPicture.ExecuteTask</xr:Ref>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</HeaderPicture>
+					<CheckBoxType>Auto</CheckBoxType>
+					<ContextMenu name="ExecutedContextMenu" id="50"/>
+					<ExtendedTooltip name="ExecutedExtendedTooltip" id="74"/>
+				</CheckBoxField>
+				<PictureField name="TaskTreeStopped" id="42">
+					<DataPath>TaskTree.Stopped</DataPath>
+					<TitleLocation>None</TitleLocation>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Stopped</v8:content>
+						</v8:item>
+					</ToolTip>
+					<EditMode>EnterOnInput</EditMode>
+					<HeaderPicture>
+						<xr:Ref>CommonPicture.StopSignBW</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</HeaderPicture>
+					<Width>2</Width>
+					<HorizontalStretch>false</HorizontalStretch>
+					<ValuesPicture>
+						<xr:Ref>CommonPicture.StopSign</xr:Ref>
+						<xr:LoadTransparent>false</xr:LoadTransparent>
+					</ValuesPicture>
+					<ContextMenu name="TaskTreeStoppedContextMenu" id="43"/>
+					<ExtendedTooltip name="TaskTreeStoppedExtendedTooltip" id="75"/>
+				</PictureField>
+				<ColumnGroup name="TypeAndDescription" id="46">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Type and description</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Type and description</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Group>InCell</Group>
+					<ExtendedTooltip name="TypeAndDescriptionExtendedTooltip" id="76"/>
+					<ChildItems>
+						<PictureField name="TaskTreeType" id="44">
+							<DataPath>TaskTree.Type</DataPath>
+							<TitleLocation>None</TitleLocation>
+							<EditMode>EnterOnInput</EditMode>
+							<ShowInHeader>false</ShowInHeader>
+							<ValuesPicture>
+								<xr:Ref>CommonPicture.TaskAndBusinessProcessCollection</xr:Ref>
+								<xr:LoadTransparent>false</xr:LoadTransparent>
+							</ValuesPicture>
+							<ContextMenu name="TaskTreeTypeContextMenu" id="45"/>
+							<ExtendedTooltip name="TaskTreeTypeExtendedTooltip" id="77"/>
+						</PictureField>
+						<InputField name="TaskTreeDescription" id="30">
+							<DataPath>TaskTree.Description</DataPath>
+							<ToolTip>
+								<v8:item>
+									<v8:lang>en</v8:lang>
+									<v8:content>Description of a task or business process</v8:content>
+								</v8:item>
+							</ToolTip>
+							<EditMode>EnterOnInput</EditMode>
+							<Width>40</Width>
+							<ContextMenu name="TaskTreeDescriptionContextMenu" id="31"/>
+							<ExtendedTooltip name="TaskTreeDescriptionExtendedTooltip" id="78"/>
+						</InputField>
+					</ChildItems>
+				</ColumnGroup>
+				<InputField name="TaskTreePerformer" id="32">
+					<DataPath>TaskTree.Performer</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<Width>1</Width>
+					<ContextMenu name="TaskTreePerformerContextMenu" id="33"/>
+					<ExtendedTooltip name="TaskTreePerformerExtendedTooltip" id="79"/>
+				</InputField>
+				<InputField name="DueDate" id="47">
+					<DataPath>TaskTree.DueDate</DataPath>
+					<EditMode>EnterOnInput</EditMode>
+					<Width>8</Width>
+					<ContextMenu name="DueDateContextMenu" id="48"/>
+					<ExtendedTooltip name="DueDateExtendedTooltip" id="80"/>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<CheckBoxField name="ShowExecuted" id="21">
+			<DataPath>ShowExecuted</DataPath>
+			<TitleLocation>Right</TitleLocation>
+			<CheckBoxType>Auto</CheckBoxType>
+			<ContextMenu name="ShowExecutedContextMenu" id="22"/>
+			<ExtendedTooltip name="ShowExecutedExtendedTooltip" id="81"/>
+			<Events>
+				<Event name="OnChange">ShowExecutedOnChange</Event>
+			</Events>
+		</CheckBoxField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="List" id="1">
+			<Type>
+				<v8:Type>cfg:DynamicList</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<UseAlways>
+				<Field>List.Ref</Field>
+				<Field>List.BusinessProcess</Field>
+			</UseAlways>
+			<Settings xsi:type="DynamicList">
+				<ManualQuery>false</ManualQuery>
+				<DynamicDataRead>true</DynamicDataRead>
+				<MainTable>Task.PerformerTask</MainTable>
+				<ListSettings>
+					<dcsset:filter>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>dfcece9d-5077-440b-b6b3-45a5cb4538eb</dcsset:userSettingID>
+					</dcsset:filter>
+					<dcsset:order>
+						<dcsset:item xsi:type="dcsset:OrderItemField">
+							<dcsset:field>Number</dcsset:field>
+							<dcsset:orderType>Asc</dcsset:orderType>
+						</dcsset:item>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>88619765-ccb3-46c6-ac52-38e9c992ebd4</dcsset:userSettingID>
+					</dcsset:order>
+					<dcsset:conditionalAppearance>
+						<dcsset:viewMode>Normal</dcsset:viewMode>
+						<dcsset:userSettingID>b75fecce-942b-4aed-abc9-e6a02e460fb3</dcsset:userSettingID>
+					</dcsset:conditionalAppearance>
+					<dcsset:itemsViewMode>Normal</dcsset:itemsViewMode>
+					<dcsset:itemsUserSettingID>911b6018-f537-43e8-a417-da56b22f9aec</dcsset:itemsUserSettingID>
+				</ListSettings>
+			</Settings>
+		</Attribute>
+		<Attribute name="ShowExecuted" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Show executed</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+			<Save>
+				<Field>ShowExecuted</Field>
+			</Save>
+		</Attribute>
+		<Attribute name="TaskTree" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Task tree</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTree</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Ref" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Ref</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:TaskRef.PerformerTask</v8:Type>
+						<v8:TypeSet>cfg:BusinessProcessRef</v8:TypeSet>
+					</Type>
+				</Column>
+				<Column name="Description" id="2">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Description</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Performer" id="3">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Performer</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>cfg:CatalogRef.PerformerRoles</v8:Type>
+						<v8:Type>cfg:CatalogRef.Users</v8:Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Importance" id="4">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Importance</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Stopped" id="5">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Stopped</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Type" id="6">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Type</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="DueDate" id="7">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Due date</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:dateTime</v8:Type>
+						<v8:DateQualifiers>
+							<v8:DateFractions>DateTime</v8:DateFractions>
+						</v8:DateQualifiers>
+					</Type>
+				</Column>
+				<Column name="Executed" id="8">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Executed</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+				<Column name="Overdue" id="9">
+					<Title>
+						<v8:item>
+							<v8:lang>en</v8:lang>
+							<v8:content>Overdue</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="Change" id="1">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Change task</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Picture>
+				<xr:Ref>StdPicture.Change</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Change</Action>
+			<Representation>TextPicture</Representation>
+		</Command>
+		<Command name="Refresh" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>en</v8:lang>
+					<v8:content>Refresh the task list</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Shortcut>F5</Shortcut>
+			<Picture>
+				<xr:Ref>StdPicture.Refresh</xr:Ref>
+				<xr:LoadTransparent>true</xr:LoadTransparent>
+			</Picture>
+			<Action>Refresh</Action>
+		</Command>
+	</Commands>
+	<Parameters>
+		<Parameter name="SelectValue">
+			<Type>
+				<v8:TypeSet>cfg:AnyRef</v8:TypeSet>
+			</Type>
+			<KeyParameter>true</KeyParameter>
+		</Parameter>
+	</Parameters>
+</Form>

@@ -2710,11 +2710,11 @@ Procedure OutputUpdateDetails(Val VersionNumber, UpdateDetailsDocument, UpdateDe
 		Return;
 	EndIf;
 	
-	UpdateDetailsDocument.Output(UpdateDetailsTemplate.GetArea("Header" + Number));
+	UpdateDetailsDocument.Put(UpdateDetailsTemplate.GetArea("Header" + Number));
 	UpdateDetailsDocument.StartRowGroup("Version" + Number);
-	UpdateDetailsDocument.Output(UpdateDetailsTemplate.GetArea("Version" + Number));
+	UpdateDetailsDocument.Put(UpdateDetailsTemplate.GetArea("Version" + Number));
 	UpdateDetailsDocument.EndRowGroup();
-	UpdateDetailsDocument.Output(UpdateDetailsTemplate.GetArea("Indent"));
+	UpdateDetailsDocument.Put(UpdateDetailsTemplate.GetArea("Indent"));
 	
 EndProcedure
 

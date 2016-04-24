@@ -190,7 +190,7 @@ Function IsFilledDataArea(Val DataArea)
 	If Result.IsEmpty() Then
 		Return False;
 	Else
-		Selection = Result.StartChoosing();
+		Selection = Result.Select();
 		Selection.Next();
 		Return Selection.Status = Enums.DataAreaStatuses.Used
 	EndIf;

@@ -212,11 +212,12 @@ Function GenerateValueTree(MetadataNameList = Undefined) Export
 	CompositionData = InitializeComposer(MetadataNameList);
 	
 	TemplateComposer = New DataCompositionTemplateComposer;
-	Template = TemplateComposer.Execute(CompositionData.CompositionSchema, CompositionData.SettingsComposer.GetSettings(), , , Type("DataCompositionValueCollectionTemplateGenerator"));
+	Template = TemplateComposer.Execute(CompositionData.CompositionSchema, CompositionData.SettingsComposer.GetSettings(), , , Type("DataCompositionValueCollectionTemplateGenerator"));	
 	Processor = New DataCompositionProcessor;
 	Processor.Initialize(Template, New Structure(
 		"MetadataTableNodeContent", CompositionData.MetadataTableNodeContent
 	),,True);
+	
 	Output = New DataCompositionResultValueCollectionOutputProcessor;
 	Output.SetObject(New ValueTree);
 	ResultTree = Output.Output(Processor);

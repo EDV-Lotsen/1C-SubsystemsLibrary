@@ -3629,6 +3629,10 @@ Procedure DataAreaOnChange() Export
 	
 	ClearAllSessionParametersExceptSeparators();
 	
+	If CommonUseCached.CanUseSeparatedData() Then
+		UsersInternal.AuthenticateCurrentUser();
+	EndIf;
+	
 EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////

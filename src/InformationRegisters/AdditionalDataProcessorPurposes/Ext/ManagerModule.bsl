@@ -168,7 +168,8 @@ Function NewRegisterDataUpdateQuery(MetadataObjectReferences)
 	If MetadataObjectReferences = Undefined Then
 		QueryText = StrReplace(
 			QueryText,
-			"AdditionalReportsAndDataProcessorsPurpose.TargetObject IN(&MetadataObjectReferences) AND ",
+			"AdditionalReportsAndDataProcessorsPurpose.TargetObject IN(&MetadataObjectReferences)
+ 			| AND ",
 			"");
 	Else
 		Query.SetParameter("MetadataObjectReferences", MetadataObjectReferences);

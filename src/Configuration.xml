@@ -48,7 +48,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAdministrator</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.2.3.25</Version>
+			<Version>2.2.4.1</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.ru/tmplts/</UpdateCatalogAddress>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
@@ -139,7 +139,7 @@
 			<DataLockControlMode>Managed</DataLockControlMode>
 			<ObjectAutonumerationMode>NotAutoFree</ObjectAutonumerationMode>
 			<ModalityUseMode>UseWithWarnings</ModalityUseMode>
-			<SynchronousPlatformExtensionAndAddInCallUseMode>DontUse</SynchronousPlatformExtensionAndAddInCallUseMode>
+			<SynchronousPlatformExtensionAndAddInCallUseMode>Use</SynchronousPlatformExtensionAndAddInCallUseMode>
 			<InterfaceCompatibilityMode>Taxi</InterfaceCompatibilityMode>
 			<CompatibilityMode>Version8_3_7</CompatibilityMode>
 			<DefaultConstantsForm/>
@@ -185,6 +185,12 @@
 			<StyleItem>SuccessResultColor</StyleItem>
 			<StyleItem>UnacceptedVersion</StyleItem>
 			<StyleItem>UsualTextColor</StyleItem>
+			<StyleItem>FinishedTask</StyleItem>
+			<StyleItem>CompletedBusinessProcess</StyleItem>
+			<StyleItem>ProhibitedAccessRight</StyleItem>
+			<StyleItem>NotStartedBusinessProcess</StyleItem>
+			<StyleItem>RoleWithoutPerformers</StyleItem>
+			<StyleItem>NotAcceptedForExecutionTasks</StyleItem>
 			<CommonPicture>ActiveUserTypeCollection</CommonPicture>
 			<CommonPicture>AdditionalData</CommonPicture>
 			<CommonPicture>AdditionalDataAndAttributes</CommonPicture>
@@ -344,6 +350,10 @@
 			<CommonPicture>VersionHistory</CommonPicture>
 			<CommonPicture>Warning</CommonPicture>
 			<CommonPicture>Warning32</CommonPicture>
+			<CommonPicture>StopSign</CommonPicture>
+			<CommonPicture>StopSignBW</CommonPicture>
+			<CommonPicture>TaskAndBusinessProcessCollection</CommonPicture>
+			<CommonPicture>RemoveInteractionReviewedAttribute</CommonPicture>
 			<SessionParameter>AuthorizedUser</SessionParameter>
 			<SessionParameter>ClientParametersOnServer</SessionParameter>
 			<SessionParameter>CurrentExternalUser</SessionParameter>
@@ -358,6 +368,14 @@
 			<SessionParameter>SelectiveObjectChangeRecordRules</SessionParameter>
 			<SessionParameter>UseDataArea</SessionParameter>
 			<SessionParameter>VersionDifferenceErrorOnGetData</SessionParameter>
+			<SessionParameter>AccessKindsWithoutGroupsForAccessValues</SessionParameter>
+			<SessionParameter>AccessKindsWithSingleGroupForAccessValue</SessionParameter>
+			<SessionParameter>DisabledAccessKinds</SessionParameter>
+			<SessionParameter>AllAccessKindsExceptSpecial</SessionParameter>
+			<SessionParameter>IDsOfTablesWithSpecificRightSettings</SessionParameter>
+			<SessionParameter>TablesWithIndividualRightSettings</SessionParameter>
+			<SessionParameter>RightsSettingsOwnerTypes</SessionParameter>
+			<SessionParameter>AccessValueTypesWithGroups</SessionParameter>
 			<Role>AddEditAdditionalReportsAndDataProcessors</Role>
 			<Role>AddEditBasicRegulatoryData</Role>
 			<Role>AddEditCommonRegulatoryData</Role>
@@ -403,6 +421,12 @@
 			<Role>UseEmailAccounts</Role>
 			<Role>ViewApllicationChangeLog</Role>
 			<Role>ViewEventLog</Role>
+			<Role>AddEditJobs</Role>
+			<Role>AddEditPerformerRoles</Role>
+			<Role>EditCompleteTask</Role>
+			<Role>EditAccessGroupMembers</Role>
+			<Role>ReadJobs</Role>
+			<Role>ReadTasks</Role>
 			<CommonTemplate>ApplicationReleaseNotes</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriver</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriverNative</CommonTemplate>
@@ -413,6 +437,14 @@
 			<CommonTemplate>QRCodePrintingComponent</CommonTemplate>
 			<CommonTemplate>TagAndCommonFormMap</CommonTemplate>
 			<FilterCriterion>CounterpartyDocuments</FilterCriterion>
+			<CommonModule>AccessManagement</CommonModule>
+			<CommonModule>AccessManagementInternal</CommonModule>
+			<CommonModule>AccessManagementInternalCached</CommonModule>
+			<CommonModule>AccessManagementInternalClient</CommonModule>
+			<CommonModule>AccessManagementInternalClientServer</CommonModule>
+			<CommonModule>AccessManagementInternalSaaS</CommonModule>
+			<CommonModule>AccessManagementInternalServerCall</CommonModule>
+			<CommonModule>AccessManagementOverridable</CommonModule>
 			<CommonModule>AdditionalReportsAndDataProcessors</CommonModule>
 			<CommonModule>AdditionalReportsAndDataProcessorsCached</CommonModule>
 			<CommonModule>AdditionalReportsAndDataProcessorsClient</CommonModule>
@@ -440,6 +472,13 @@
 			<CommonModule>AttachedFilesInternalClient</CommonModule>
 			<CommonModule>AttachedFilesInternalServerCall</CommonModule>
 			<CommonModule>AttachedFilesOverridable</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksClient</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksClientOverridable</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksClientServer</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksEvents</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksOverridable</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksServer</CommonModule>
+			<CommonModule>BusinessProcessesAndTasksServerCall</CommonModule>
 			<CommonModule>CalendarSchedules</CommonModule>
 			<CommonModule>CalendarSchedulesInternalSaaS</CommonModule>
 			<CommonModule>CalendarSchedulesOverridable</CommonModule>
@@ -803,6 +842,14 @@
 			<EventSubscription>UpdateExternalUserPresentation</EventSubscription>
 			<EventSubscription>WriteDocumentVersion</EventSubscription>
 			<EventSubscription>WriteVersionOnDataExchange</EventSubscription>
+			<EventSubscription>WriteToBusinessProcessList</EventSubscription>
+			<EventSubscription>WriteDependentAccessValueSets</EventSubscription>
+			<EventSubscription>WriteAccessValueSets</EventSubscription>
+			<EventSubscription>UpdateAccessValueGroups</EventSubscription>
+			<EventSubscription>UpdateBusinessProcessState</EventSubscription>
+			<EventSubscription>GetBusinessProcessPresentationFields</EventSubscription>
+			<EventSubscription>GetBusinessProcessPresentation</EventSubscription>
+			<EventSubscription>SetTaskDeletionMarks</EventSubscription>
 			<ScheduledJob>ClearingObsoleteObjectVersions</ScheduledJob>
 			<ScheduledJob>CurrencyRateImport</ScheduledJob>
 			<ScheduledJob>DataAreaMaintenance</ScheduledJob>
@@ -822,6 +869,9 @@
 			<ScheduledJob>TextExtraction</ScheduledJob>
 			<ScheduledJob>TextExtractionPlanningSaaS</ScheduledJob>
 			<ScheduledJob>UpdateSalesAggregates</ScheduledJob>
+			<ScheduledJob>DataFillingForAccessRestrictions</ScheduledJob>
+			<ScheduledJob>TaskMonitoring</ScheduledJob>
+			<ScheduledJob>NewPerformerTaskNotifications</ScheduledJob>
 			<SettingsStorage>ReportVariants</SettingsStorage>
 			<FunctionalOption>AccountingByWarehouses</FunctionalOption>
 			<FunctionalOption>BackupSupported</FunctionalOption>
@@ -866,11 +916,19 @@
 			<FunctionalOption>UseSeveralCompaniesDemo</FunctionalOption>
 			<FunctionalOption>UseSingleObjectVersioning</FunctionalOption>
 			<FunctionalOption>UseUserGroups</FunctionalOption>
+			<FunctionalOption>ChangeJobsBackdated</FunctionalOption>
+			<FunctionalOption>UseBusinessProcessesAndTasks</FunctionalOption>
+			<FunctionalOption>UseDateAndTimeInTaskDeadlines</FunctionalOption>
+			<FunctionalOption>UseTaskStartDate</FunctionalOption>
+			<FunctionalOption>UseSubordinateBusinessProcesses</FunctionalOption>
+			<FunctionalOption>UseRecordLevelSecurity</FunctionalOption>
 			<FunctionalOptionsParameter>AdditionalReportsAndDataProcessorsFormType</FunctionalOptionsParameter>
 			<FunctionalOptionsParameter>AdditionalReportsAndDataProcessorsTargetObject</FunctionalOptionsParameter>
 			<FunctionalOptionsParameter>Company</FunctionalOptionsParameter>
 			<FunctionalOptionsParameter>VersionizedObjectType</FunctionalOptionsParameter>
 			<DefinedType>SafeMode</DefinedType>
+			<DefinedType>RightsSettingsOwner</DefinedType>
+			<DefinedType>AccessValue</DefinedType>
 			<CommonCommand>AdditionalDataCommandBar</CommonCommand>
 			<CommonCommand>AdditionalDataNavigationPanel</CommonCommand>
 			<CommonCommand>AdditionalDataProcessorsAdministration</CommonCommand>
@@ -917,6 +975,12 @@
 			<CommonCommand>StandaloneModeSaaS</CommonCommand>
 			<CommonCommand>SystemEmailAccountSetup</CommonCommand>
 			<CommonCommand>UserInfo</CommonCommand>
+			<CommonCommand>TasksByBusinessProcess</CommonCommand>
+			<CommonCommand>TasksBySubject</CommonCommand>
+			<CommonCommand>BusinessProcessFlowchart</CommonCommand>
+			<CommonCommand>SetRights</CommonCommand>
+			<CommonCommand>AccessRights</CommonCommand>
+			<CommonCommand>RolesAndTaskPerformers</CommonCommand>
 			<CommandGroup>DataExchangeExecution</CommandGroup>
 			<CommandGroup>DataExchangeParameters</CommandGroup>
 			<CommandGroup>Information</CommandGroup>
@@ -976,10 +1040,10 @@
 			<Constant>LastClientSessionStartDate</Constant>
 			<Constant>LastPerformanceMeasurementExportDateUTC</Constant>
 			<Constant>LastStandaloneWorkstationPrefix</Constant>
-			<Constant>ListOfCommonSeparatedMetadataObjects</Constant>
-			<Constant>ListOfMetadataObjectsWithPredefinedItems</Constant>
-			<Constant>ListOfMetadataObjectsWithValueStorage</Constant>
-			<Constant>ListOfRecordSetsWithRefsToUsers</Constant>
+			<Constant>CommonSeparatedMetadataObjectsList</Constant>
+			<Constant>MetadataObjectsWithPredefinedItemsList</Constant>
+			<Constant>MetadataObjectsWithValueStorageList</Constant>
+			<Constant>RecordSetsWithRefsToUsersList</Constant>
 			<Constant>LoadDataExchangeMessage</Constant>
 			<Constant>LockMessageOnConfigurationUpdate</Constant>
 			<Constant>MasterNode</Constant>
@@ -1043,6 +1107,14 @@
 			<Constant>UseSeveralCompanies</Constant>
 			<Constant>UseUserGroups</Constant>
 			<Constant>WriteInfobaseUpdateDetailsToEventLog</Constant>
+			<Constant>NewTasksNotificationDate</Constant>
+			<Constant>ChangeJobsBackdated</Constant>
+			<Constant>UseBusinessProcessesAndTasks</Constant>
+			<Constant>UseDateAndTimeInTaskDeadlines</Constant>
+			<Constant>UseTaskStartDate</Constant>
+			<Constant>UseSubordinateBusinessProcesses</Constant>
+			<Constant>UseRecordLevelSecurity</Constant>
+			<Constant>AccessRestrictionParameters</Constant>
 			<CommonForm>AccountPasswordConfirmation</CommonForm>
 			<CommonForm>AdditionalDataEditing</CommonForm>
 			<CommonForm>AdditionalDetails</CommonForm>
@@ -1100,6 +1172,11 @@
 			<CommonForm>StandaloneModeSaaS</CommonForm>
 			<CommonForm>StandaloneWorkstationDisconnection</CommonForm>
 			<CommonForm>UserGroups</CommonForm>
+			<CommonForm>SelectBusinessProcessPerformer</CommonForm>
+			<CommonForm>SelectPerformerRole</CommonForm>
+			<CommonForm>ObjectRightsSettings</CommonForm>
+			<CommonForm>AccessRights</CommonForm>
+			<CommonForm>AccessRightsSimplified</CommonForm>
 			<Catalog>AdditionalDataAndAttributeSets</Catalog>
 			<Catalog>AdditionalReportsAndDataProcessors</Catalog>
 			<Catalog>Banks</Catalog>
@@ -1152,6 +1229,10 @@
 			<Catalog>Users</Catalog>
 			<Catalog>Warehouses</Catalog>
 			<Catalog>WorldCountries</Catalog>
+			<Catalog>AccessGroups</Catalog>
+			<Catalog>TaskPerformerGroups</Catalog>
+			<Catalog>AccessGroupProfiles</Catalog>
+			<Catalog>PerformerRoles</Catalog>
 			<Document>MoneyExpense</Document>
 			<Document>MoneyReceipt</Document>
 			<Document>ProductAccountingOperation</Document>
@@ -1202,6 +1283,9 @@
 			<Enum>UserTypes</Enum>
 			<Enum>VersionLifetimes</Enum>
 			<Enum>WorkScheduleFillingMethods</Enum>
+			<Enum>TaskImportanceVariants</Enum>
+			<Enum>AdditionalAccessValues</Enum>
+			<Enum>BusinessProcessStates</Enum>
 			<Report>ExternalResourcesInUse</Report>
 			<Report>MoneyExpenseDocuments</Report>
 			<Report>MutualSettlements</Report>
@@ -1210,6 +1294,13 @@
 			<Report>SearchForReferences</Report>
 			<Report>UserInfo</Report>
 			<Report>WarehouseStockBalance</Report>
+			<Report>BusinessProcesses</Report>
+			<Report>UnassignedTasks</Report>
+			<Report>Jobs</Report>
+			<Report>Tasks</Report>
+			<Report>ExpiringTasksOnDate</Report>
+			<Report>AccessRights</Report>
+			<Report>OverdueTasks</Report>
 			<DataProcessor>_DemoExportToSL212Handlers</DataProcessor>
 			<DataProcessor>_DemoExportToSL21Handlers</DataProcessor>
 			<DataProcessor>_DemoImportFromSL212Handlers</DataProcessor>
@@ -1218,7 +1309,7 @@
 			<DataProcessor>AdministrativeTools</DataProcessor>
 			<DataProcessor>ApplicationBackupSetup</DataProcessor>
 			<DataProcessor>ApplicationLock</DataProcessor>
-			<DataProcessor>AppUserSettings</DataProcessor>
+			<DataProcessor>ApplicationUserSettings</DataProcessor>
 			<DataProcessor>AutomaticTextExtraction</DataProcessor>
 			<DataProcessor>AutomaticTextExtractionForAllDataAreas</DataProcessor>
 			<DataProcessor>ContactInformationInput</DataProcessor>
@@ -1239,7 +1330,6 @@
 			<DataProcessor>FormSettingsManagement</DataProcessor>
 			<DataProcessor>FullTextSearchInData</DataProcessor>
 			<DataProcessor>FullTextSearchManagement</DataProcessor>
-			<DataProcessor>Guide</DataProcessor>
 			<DataProcessor>ImportExportContainerManagerData</DataProcessor>
 			<DataProcessor>InfobaseObjectConversion</DataProcessor>
 			<DataProcessor>InfobaseObjectMapping</DataProcessor>
@@ -1261,6 +1351,7 @@
 			<DataProcessor>StandaloneWorkstationGenerationWizard</DataProcessor>
 			<DataProcessor>UniversalDataExchangeXML</DataProcessor>
 			<DataProcessor>UserSettings</DataProcessor>
+			<DataProcessor>BusinessProcessFlowchart</DataProcessor>
 			<InformationRegister>AdditionalData</InformationRegister>
 			<InformationRegister>AdditionalDataProcessorPurposes</InformationRegister>
 			<InformationRegister>AddressAbbreviations</InformationRegister>
@@ -1320,11 +1411,25 @@
 			<InformationRegister>UserGroupContent</InformationRegister>
 			<InformationRegister>UserPrintTemplates</InformationRegister>
 			<InformationRegister>ViewedInformationCenterData</InformationRegister>
+			<InformationRegister>AccessValueGroups</InformationRegister>
+			<InformationRegister>BusinessProcessData</InformationRegister>
+			<InformationRegister>AccessRightDependencies</InformationRegister>
+			<InformationRegister>AccessGroupValues</InformationRegister>
+			<InformationRegister>DefaultAccessGroupValues</InformationRegister>
+			<InformationRegister>TaskPerformers</InformationRegister>
+			<InformationRegister>AccessValueSets</InformationRegister>
+			<InformationRegister>ObjectRightsSettingsInheritance</InformationRegister>
+			<InformationRegister>ObjectRightsSettings</InformationRegister>
+			<InformationRegister>RoleRights</InformationRegister>
+			<InformationRegister>AccessGroupTables</InformationRegister>
 			<AccumulationRegister>Inventory</AccumulationRegister>
 			<AccumulationRegister>MutualSettlements</AccumulationRegister>
 			<AccumulationRegister>Sales</AccumulationRegister>
 			<ChartOfCharacteristicTypes>AdditionalDataAndAttributes</ChartOfCharacteristicTypes>
 			<ChartOfCharacteristicTypes>CharacteristicTypes</ChartOfCharacteristicTypes>
+			<ChartOfCharacteristicTypes>TaskAddressingObjects</ChartOfCharacteristicTypes>
+			<BusinessProcess>Job</BusinessProcess>
+			<Task>PerformerTask</Task>
 		</ChildObjects>
 	</Configuration>
 </MetaDataObject>

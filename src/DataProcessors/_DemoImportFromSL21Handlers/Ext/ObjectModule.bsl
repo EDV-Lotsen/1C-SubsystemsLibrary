@@ -27,13 +27,13 @@ Var NodeForExchange;
 Var CommonProceduresFunctions;
 
 ////////////////////////////////////////////////////////////////////////////////
-// CONVERSION
-// HANDLERS (GLOBAL) Procedure logic can be modified in this section.
+// CONVERSION HANDLERS (GLOBAL)
+// Procedure logic can be modified in this section.
 
 Procedure Conversion_AfterReceiveExchangeNodeDetails(ExchangeNodeDataImport) Export
 
 	Parameters.Insert("DefaultValues");
-	Parameters.DefaultValues = CommonUse.GetAttributeValues(ExchangeNodeDataImport, "DefaultVATRate");
+	Parameters.DefaultValues = CommonUse.ObjectAttributeValues(ExchangeNodeDataImport, "DefaultVATRate");
 
 EndProcedure
 

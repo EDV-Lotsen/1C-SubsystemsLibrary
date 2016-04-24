@@ -218,7 +218,7 @@ Procedure FilterSettingsVariantSelectionEnd(Val SelectedItem, Val AdditionalPara
 		
 	ElsIf SettingsItemPresentation=1 Then
 		// Form that displays all settings
-		OpenForm(BaseFormName + "Form.SettingsContentEdit",
+		OpenForm(BaseFormName + "Form.EditSettingsContent",
 			New Structure("CloseOnChoice, ChoiceAction, Object, CurrentSettingsItemPresentation", 
 				True, 3, 
 				Object, CurrentSettingsItemPresentation

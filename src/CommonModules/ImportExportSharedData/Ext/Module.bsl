@@ -397,14 +397,14 @@ Procedure CheckNaturalKeyDuplicates(Val MetadataObject, Val NaturalKeyFields)
 	
 	QueryText =
 	"SELECT
-	|	_Table_Catalog_First.Ref AS ItemReference
+	|	_Catalog_Table_First.Ref AS ItemReference
 	|FROM
 	|	" + TableName + " AS
-	|	_Catalog_Table_First LEFT JOIN " + TableName + " AS _Table_Catalog_Second
+	|	_Catalog_Table_First LEFT JOIN " + TableName + " AS _Catalog_Table_Second
 	|	%1
 	|
 	|GROUP BY
-	|	_Table_Catalog_First.Ref
+	|	_Catalog_Table_First.Ref
 	|HAVING
 	|	COUNT(*) > 1";
 	

@@ -29,7 +29,7 @@
 Procedure OnAddSubsystem(Details) Export
 	
 	Details.Name    = "StandardSubsystems";
-	Details.Version = Metadata.Version;
+	Details.Version = "2.2.4.1";
 	
 EndProcedure
 

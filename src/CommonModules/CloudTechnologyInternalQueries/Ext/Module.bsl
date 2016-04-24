@@ -42,7 +42,15 @@ Function GetDataPortionFromIndependentRecordSet(Val ObjectMetadata, Val Filter,
 			Query.SetParameter(FilterParameter.Key, FilterParameter.Value);
 		EndDo;
 		
+		Query.Text = StrReplace(Query.Text, " Right,", " _Right,");
+		
 		PortionFragment = Query.Execute().Unload();
+		
+		For Each TableColumn In PortionFragment.Columns Do
+			If TableColumn.Name = "_Right" Then
+				TableColumn.Name = "Right";
+			EndIf;
+		EndDo;
 		
 		FragmentSize = PortionFragment.Count();
 		

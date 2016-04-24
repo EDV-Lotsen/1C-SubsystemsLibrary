@@ -66,24 +66,23 @@ EndProcedure
 &AtClient 
 Procedure SaveExportFile()
 	
+	BeginAttachingFileSystemExtension(New NotifyDescription("SaveExportFileCompletion", ThisObject));
+	
+EndProcedure
+
+&AtClient
+Procedure SaveExportFileCompletion(Connected, AdditionalParameters) Export
+
 	FileName = "data_dump.zip";
 	
-	If AttachFileSystemExtension() Then
+	If Connected Then
 		
-		FilesToBeObtained = New Array;
-		
-		ChoiceDialog = New FileDialog(FileDialogMode.Save);
+		ChoiceDialog = New FileDialog(FileDialogMode.Open);
 		ChoiceDialog.Filter = "ZIP archive(*.zip)|*.zip";
-		ChoiceDialog.Extension = "zip";
+		ChoiceDialog.DefaultExt = "zip";
 		ChoiceDialog.FullFileName = FileName;
 		
-		If ChoiceDialog.Choose() Then
-			FileDetails = New TransferableFileDescription(ChoiceDialog.FullFileName, StorageAddress);
-			FilesToBeObtained.Add(FileDetails);
-			
-			GetFiles(FilesToBeObtained, , , False);
-			
-		EndIf;
+		ChoiceDialog.Show(New NotifyDescription("ExportFileSelectionCompletion", ThisObject));
 		
 	Else
 		
@@ -91,8 +90,31 @@ Procedure SaveExportFile()
 		
 	EndIf;
 	
-	Close();
+	Close();	
+
+EndProcedure
+
+&AtClient
+Procedure ExportFileSelectionCompletion(SelectedFiles, AdditionalParameters) Export
 	
+	If SelectedFiles.Count() = 0 Then
+		Return;
+	EndIf;
+	
+	FilesToBeObtained = New Array;
+	
+	FileDetails = New TransferableFileDescription(SelectedFiles[0], StorageAddress);
+	FilesToBeObtained.Add(FileDetails);
+	
+	BeginGettingFiles(New NotifyDescription("GetFilesCompletion", ThisObject), FilesToBeObtained,,False);	
+	
+EndProcedure
+
+&AtClient
+Procedure GetFilesCompletion(ReceivedFiles, AdditionalParameters) Export
+
+	//stub	
+
 EndProcedure
 
 &AtClient

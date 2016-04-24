@@ -11,12 +11,12 @@
 			</Synonym>
 			<Comment/>
 			<Source>
-				<v8:Type>cfg:ConstantValueManager.ListOfMetadataObjectsWithValueStorage</v8:Type>
-				<v8:Type>cfg:ConstantValueManager.ListOfMetadataObjectsWithPredefinedItems</v8:Type>
+				<v8:Type>cfg:ConstantValueManager.MetadataObjectsWithValueStorageList</v8:Type>
+				<v8:Type>cfg:ConstantValueManager.MetadataObjectsWithPredefinedItemsList</v8:Type>
 				<v8:Type>cfg:CatalogObject.CommonInformationCenterData</v8:Type>
 				<v8:Type>cfg:CatalogObject.InformationCenterInformationType</v8:Type>
 				<v8:Type>cfg:ConstantValueManager.InformationCenterForumUserName</v8:Type>
-				<v8:Type>cfg:ConstantValueManager.ListOfCommonSeparatedMetadataObjects</v8:Type>
+				<v8:Type>cfg:ConstantValueManager.CommonSeparatedMetadataObjectsList</v8:Type>
 				<v8:Type>cfg:ConstantValueManager.InformationCenterForumPassword</v8:Type>
 				<v8:Type>cfg:ConstantValueManager.ImportExportCommonClassifierCacheData</v8:Type>
 				<v8:Type>cfg:ConstantValueManager.ImportExportFileFunctionCacheData</v8:Type>
@@ -24,7 +24,7 @@
 				<v8:Type>cfg:ConstantValueManager.ImportExportRefsToSharedDataCheckCacheOnExport</v8:Type>
 				<v8:Type>cfg:CatalogObject.FullPathToForms</v8:Type>
 				<v8:Type>cfg:CatalogObject.InformationLinksForForms</v8:Type>
-				<v8:Type>cfg:ConstantValueManager.ListOfRecordSetsWithRefsToUsers</v8:Type>
+				<v8:Type>cfg:ConstantValueManager.RecordSetsWithRefsToUsersList</v8:Type>
 			</Source>
 			<Event>OnWrite</Event>
 			<Handler>CommonModule.SaaSOperations.CheckSharedObjectOnWrite</Handler>

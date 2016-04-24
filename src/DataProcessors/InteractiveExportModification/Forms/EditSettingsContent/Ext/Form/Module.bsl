@@ -10,12 +10,12 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Return;
 	EndIf;
 	
-	FillPropertyValues(Object, Parameters.Object , , "AllDocumentsFilterComposer, AdditionalRegistration, ScriptNodeAdditionalRegistration");
+	FillPropertyValues(Object, Parameters.Object , , "AllDocumentsFilterComposer, AdditionalRegistration, AdditionalNodeScenarioRegistration");
 	For Each Row In Parameters.Object.AdditionalRegistration Do
 		FillPropertyValues(Object.AdditionalRegistration.Add(), Row);
 	EndDo;
-	For Each Row In Parameters.Object.ScriptNodeAdditionalRegistration Do
-		FillPropertyValues(Object.ScriptNodeAdditionalRegistration.Add(), Row);
+	For Each Row In Parameters.Object.AdditionalNodeScenarioRegistration Do
+		FillPropertyValues(Object.AdditionalNodeScenarioRegistration.Add(), Row);
 	EndDo;
 	
 	// Initializing settings composer

@@ -255,7 +255,7 @@ EndProcedure
 Function StyleColorOrAuto(Val Name, Val R = Undefined, G = Undefined, B = Undefined)
 
 	StyleItem = Metadata.StyleItems.Find(Name);
-	If StyleItem <> Undefined And StyleItem.Kind = Metadata.ObjectProperties.StyleElementType.Color Then
+	If StyleItem <> Undefined And StyleItem.Type = Metadata.ObjectProperties.StyleElementType.Color Then
 		Return StyleColors[Name];
 	EndIf;
 	

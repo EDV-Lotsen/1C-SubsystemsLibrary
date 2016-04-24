@@ -408,7 +408,7 @@ Procedure PerformSharedDataUpdate(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And RoleRights Then
 			
 			HasChanges = False;
-			InformationRegisters["RoleRights"].UpdateAuxiliaryRegisterData(HasChanges);
+			InformationRegisters["RoleRights"].UpdateRegisterData(HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -421,7 +421,7 @@ Procedure PerformSharedDataUpdate(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And RightDependencies Then
 			
 			HasChanges = False;
-			InformationRegisters["AccessRightDependencies"].UpdateAuxiliaryRegisterData(HasChanges);
+			InformationRegisters["AccessRightDependencies"].UpdateRegisterData(HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -556,7 +556,7 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And AccessGroupTables Then
 			
 			HasChanges = False;
-			InformationRegisters["AccessGroupTables"].UpdateAuxiliaryRegisterData( , , HasChanges);
+			InformationRegisters["AccessGroupTables"].UpdateRegisterData( , , HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -569,7 +569,7 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And AccessGroupValues Then
 			
 			HasChanges = False;
-			InformationRegisters["AccessGroupValues"].UpdateAuxiliaryRegisterData( , HasChanges);
+			InformationRegisters["AccessGroupValues"].UpdateRegisterData( , HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -582,7 +582,7 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And ObjectRightsSettingsInheritance Then
 			
 			HasChanges = False;
-			InformationRegisters["ObjectRightsSettingsInheritance"].UpdateAuxiliaryRegisterData(, HasChanges);
+			InformationRegisters["ObjectRightsSettingsInheritance"].UpdateRegisterData(, HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -608,7 +608,7 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And AccessValueGroups Then
 			
 			HasChanges = False;
-			InformationRegisters["AccessValueGroups"].UpdateAuxiliaryRegisterData(HasChanges);
+			InformationRegisters["AccessValueGroups"].UpdateRegisterData(HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;
@@ -621,7 +621,7 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 		 Or SetupMode = "ComplexSetup" And AccessValueSets Then
 			
 			HasChanges = False;
-			InformationRegisters["AccessValueSets"].UpdateAuxiliaryRegisterData(HasChanges);
+			InformationRegisters["AccessValueSets"].UpdateRegisterData(HasChanges);
 			
 			If HasChanges Then
 				HasOverallChanges = True;

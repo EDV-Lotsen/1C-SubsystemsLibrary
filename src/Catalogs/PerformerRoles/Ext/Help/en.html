@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><link rel="stylesheet" type="text/css" href="v8help://service_book/service_style"></link><meta name="GENERATOR" content="MSHTML 11.00.9600.18283"></meta></head><body>
+<p>Performer roles can be used in business processes for role-based task routing purposes. In this case, tasks are initially assigned to roles (example: Room <strong>supervisor</strong>) rather than to specific users. Associations between users and roles are defined in the <a href="InformationRegister.TaskPerformers/Help">Roles and performers</a> list, on which basis the tasks are automatically reassigned to specific users. However, in certain cases association between role and users is not precise and performers cannot be determined. In these cases, you need to explicitly specify the primary and additional <a href="ChartOfCharacteristicTypes.TaskAddressingObjects/Help">addressing objects</a>. </p>
+<p>Roles with no performers assigned are color-coded in red. </p>
+<p>The <strong>External role</strong> attribute indicates that list of performers for this role is maintained in another infobase. Roles with the <strong>External role</strong> attribute set are used for infobase integration purposes.</p>
+<p>The <strong>Task control manager</strong> predefined role can be used to exchange overdue or unassigned task notifications, for all or selected <a href="ChartOfCharacteristicTypes.TaskAddressingObjects/Help">addressing objects</a>. By default, users with the <strong>Task control manager</strong> predefined role receive notifications on tasks assigned to any performers. If you need to track overdue or unassigned tasks for specific <a href="ChartOfCharacteristicTypes.TaskAddressingObjects/Help">addressing objects</a> only, you need to have the <strong>Task control manager</strong> role assigned to you for these addressing objects. Example:</p>
+<p></p>
+<table cellpadding="8" width="100%" border="0"><tbody><tr><td><strong>Performer role</strong> </td>
+<td><strong>Main addressing object<br>(type, value)</strong> </td>
+<td><strong>Additional addressing object<br>(type, value)</strong> </td>
+<td><strong>User </strong></td>
+<td><strong>Explanation</strong></td></tr><tr><td>Task control manager</td>
+<td>-</td>
+<td>-</td>
+<td>J. Johnson</td>
+<td>J. Johnson receives notifications for all overdue and unassigned tasks, with the exception of notifications received by S. Smith and R. Roberts.</td></tr><tr><td>Task control manager</td>
+<td>Department,<br>Accounting department</td>
+<td>-</td>
+<td>S. Smith</td>
+<td>J. Johnson receives notifications for all overdue and unassigned tasks related to Accounting department, with the exception of notifications received by R. Roberts. *</td></tr><tr><td>Task control manager</td>
+<td>Department,<br>Accounting department</td>
+<td>Project,<br>Accounting system implementation project</td>
+<td>R. Roberts</td>
+<td>R. Roberts receives notifications for all overdue and unassigned tasks related to Accounting department and Accounting system implementation project. *</td></tr></tbody></table><p></p>
+<p>* If you revoke the <strong>Task control manager</strong> role from S. Smith and R. Roberts, J. Johnson will start receiving notifications on their addressing objects as well.</p>
+<p>Notifications to users with the <strong>Task control manager</strong> role are sent to the email addresses specified in contact information provided by these<a href="Catalog.Users.Form.ItemForm/Help"> users</a>. </p>
+<p>See also: </p>
+<ul><li><a href="Task.PerformerTask/Help">Tasks </a>
+</li><li><a href="Report.UnassignedTasks/Help">Unassigned tasks report</a></li></ul></body></html>

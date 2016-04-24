@@ -1730,6 +1730,14 @@ Function ConvertMessageBodyStructure(Val MessageBodyStructure) Export
 			MessageBodyStructure.Insert("Prefix", MessageBodyStructure.Префикс);	
 		EndIf;
 		
+		If MessageBodyStructure.Property("ИмяПланаОбмена") Then
+			MessageBodyStructure.Insert("ExchangePlanName", MessageBodyStructure.ИмяПланаОбмена);
+		EndIf;
+		
+		If MessageBodyStructure.Property("КодУзла") Then
+			MessageBodyStructure.Insert("NodeCode", MessageBodyStructure.КодУзла);
+		EndIf;
+		
 	EndIf;
 	
 	Return MessageBodyStructure;

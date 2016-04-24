@@ -457,10 +457,10 @@ EndProcedure
 // 
 Procedure OnAddUpdateHandlers(Handlers) Export
 	
-	Handler = Handlers.Add();
-	Handler.Version = "2.1.3.9";
-	Handler.Procedure = "InfobaseConnections.MoveDataAreasSessionLocksToAuxiliaryData";
-	Handler.SharedData = True;
+	//Handler = Handlers.Add();
+	//Handler.Version = "2.1.3.9";
+	//Handler.Procedure = "InfobaseConnections.MoveDataAreasSessionLocksToAuxiliaryData";
+	//Handler.SharedData = True;
 	
 EndProcedure
  
@@ -474,6 +474,7 @@ Procedure StandardSubsystemClientLogicParametersOnAdd(Parameters) Export
 	AddClientParameters(Parameters);
 	
 EndProcedure
+
 // Fills the array of types excluded from data import and export.
 //
 // Parameters:

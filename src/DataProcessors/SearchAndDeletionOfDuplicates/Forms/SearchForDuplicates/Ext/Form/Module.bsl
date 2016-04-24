@@ -661,7 +661,7 @@ EndProcedure
 Function StyleColorOrAuto(Val Name,  Val R = Undefined, G = Undefined, B = Undefined)
 
 	StyleItem = Metadata.StyleItems.Find(Name);
-	If StyleItem <> Undefined And StyleItem.Kind = Metadata.ObjectProperties.StyleElementType.Color Then
+	If StyleItem <> Undefined And StyleItem.Type = Metadata.ObjectProperties.StyleElementType.Color Then
 		Return StyleColors[Name];
 	EndIf;
 	
@@ -1177,7 +1177,7 @@ Procedure InitFilterComposerAndRules()
 	DataSource.DataSourceType = "Local";
 	
 	DataSet = CompositionSchema.DataSets.Add(Type("DataCompositionSchemaDataSetQuery"));
-	DataSet.Query =  "SELECT " + Mid(AvailableFilterAttributes, 2) + " FROM" +  AreaToSearchForDuplicates;
+	DataSet.Query =  "SELECT " + Mid(AvailableFilterAttributes, 2) + " FROM " +  AreaToSearchForDuplicates;
 	DataSet.AutoFillAvailableFields = True;
 	
 	// Saving schema according to the default form to keep composer data current

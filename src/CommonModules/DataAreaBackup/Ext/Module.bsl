@@ -134,11 +134,10 @@ EndProcedure
 //
 Procedure OnAddUpdateHandlers(Handlers) Export
 	
-	Handler = Handlers.Add();
-	Handler.Version = "2.1.3.9";
-	Handler.Procedure = 
-"DataAreaBackup.CopyBackupPlanningStateToAuxiliaryData";
-	Handler.SharedData = True;
+	//Handler = Handlers.Add();
+	//Handler.Version = "2.1.3.9";
+	//Handler.Procedure = "DataAreaBackup.CopyBackupPlanningStateToAuxiliaryData";
+	//Handler.SharedData = True;
 	
 EndProcedure
 

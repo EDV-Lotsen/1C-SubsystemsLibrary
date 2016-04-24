@@ -3,8 +3,8 @@
 
 Procedure ExportInfobaseUsers(Container) Export
 	
-	InfobaseUsers = InfobaseUsers.GetUsers();
-	InfobaseUsers = SortInfobaseUserArrayBeforeExport(InfobaseUsers);
+	IBUsers = InfobaseUsers.GetUsers();
+	IBUsers = SortInfobaseUserArrayBeforeExport(IBUsers);
 	
 	FileName = Container.CreateFile(DataExportImportInternal.Users());
 	
@@ -13,7 +13,7 @@ Procedure ExportInfobaseUsers(Container) Export
 	RecordStream.WriteXMLDeclaration();
 	RecordStream.WriteStartElement("Data");
 	
-	For Each IBUser In InfobaseUsers Do
+	For Each IBUser In IBUsers Do
 		
 		XDTOFactory.WriteXML(RecordStream, SerializeInfobaseUser(IBUser));
 		
