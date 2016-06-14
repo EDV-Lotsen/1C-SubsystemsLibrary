@@ -49,7 +49,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	If Not Parameters.ChoiceMode Then
 		SetFilter();
 	Else
-		Items.ShowProfiles.Visibility = False;
+		Items.ShowProfiles.Visible = False;
 	EndIf;
 	
 	CommonUseClientServer.MoveFiltersToDynamicList(ThisObject);

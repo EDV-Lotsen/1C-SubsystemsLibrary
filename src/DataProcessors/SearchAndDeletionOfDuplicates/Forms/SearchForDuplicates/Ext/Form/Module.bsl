@@ -228,7 +228,7 @@ Procedure UpdateCandidateUsageInstances(Val DataRow)
 		
 		OriginalDescription = Undefined;
 		For Each Candidate In RowData.GetItems() Do
-			If Candidate.Default  Then
+			If Candidate.Main  Then
 				OriginalDescription = Candidate.Description;
 				Break;
 			EndIf;
@@ -319,7 +319,7 @@ Procedure UpdateUnprocessedItemUsageInstancesDuplicates(Val DataRow)
 		
 		OriginalDescription = Undefined;
 		For Each Candidate In RowData.GetItems() Do
-			If Candidate.Default Then
+			If Candidate.Main Then
 				OriginalDescription = Candidate.Description;
 				Break;
 			EndIf;
@@ -421,7 +421,7 @@ Procedure SelectMainItem(Command)
 	
 	RowData = Items.FoundDuplicates.CurrentData;
 	If RowData = Undefined	// No data
-		Or RowData.Default	 	// Current item is a main one already
+		Or RowData.Main	 	// Current item is a main one already
 	Then
 		Return;
 	EndIf;
@@ -673,7 +673,7 @@ Function DuplicateReplacementCouples()
 	ReplacementCouples = New  Map;
 	
 	DuplicateTree = FormAttributeToValue("FoundDuplicates");
-	SearchFilter = New Structure("Default", True);
+	SearchFilter = New Structure("Main", True);
 	
 	For Each Parent  In DuplicateTree.Rows Do
 		MainInGroup = Parent.Rows.FindRows(SearchFilter)[0].Ref;
@@ -778,9 +778,9 @@ EndProcedure
 &AtClient
 Procedure ChangeMainItemHierarchically(Val RowData, Val Parent)
 	For Each Child In Parent.GetItems() Do
-		Child.Default = False;
+		Child.Main = False;
 	EndDo;
-	RowData.Default = True;
+	RowData.Main = True;
 	
 	// Selected item is used always
 	RowData.Check = 1;
@@ -828,8 +828,8 @@ Function FillDuplicateSearchResults(Val Data)
 	FoundDuplicatesTotal = 0;
 	
 	AllGroups = DuplicateTable.FindRows(RowFilter);
-	For Each Group In AllGroups Do
-		RowFilter.Parent = Group.Ref;
+	For Each CurGroup In AllGroups Do
+		RowFilter.Parent = CurGroup.Ref;
 		GroupItems = DuplicateTable.FindRows(RowFilter);
 		
 		TreeGroup = TreeItems.Add();
@@ -848,11 +848,11 @@ Function FillDuplicateSearchResults(Val Data)
 			
 			If MaxInstances < TreeRow.Count Then
 				If MaxRow <> Undefined Then
-					MaxRow.Default = False;
+					MaxRow.Main = False;
 				EndIf;
 				MaxRow = TreeRow;
 				MaxInstances = TreeRow.Count;
-				MaxRow.Default = True;
+				MaxRow.Main = True;
 			EndIf;
 			
 			FoundDuplicatesTotal = FoundDuplicatesTotal + 1;
@@ -937,7 +937,7 @@ Function FillDuplicateDeletionResults(Val ErrorTable)
 		For Each DuplicateGroup  In FoundDuplicates.GetItems() Do
 			If DuplicateGroup.Check Then
 				For Each Candidate  In DuplicateGroup.GetItems() Do
-					If Candidate.Default Then
+					If Candidate.Main Then
 						LastCandidate = Candidate.Ref;
 						ProcessedItemsTotal = ProcessedItemsTotal + 1;
 						MainItemsTotal = MainItemsTotal + 1;
@@ -1001,7 +1001,7 @@ Function FillDuplicateDeletionResults(Val ErrorTable)
 		While ChildPosition >= 0 Do
 			Child = Children[ChildPosition];
 			
-			If Child.Default  Then
+			If Child.Main  Then
 				MainChild = Child;
 				Filter.Ref =  Child.Ref;
 				Child.Count =  ErrorTable.FindRows(Filter).Count();
@@ -1020,7 +1020,7 @@ Function FillDuplicateDeletionResults(Val ErrorTable)
 		EndDo;
 		
 		ChildrenCount = Children.Count();
-		If ChildrenCount = 1 And  Children[0].Default Then
+		If ChildrenCount = 1 And  Children[0].Main Then
 			Parents.Delete(Parent);
 		Else
 			Parent.Count =  ChildrenCount - 1;

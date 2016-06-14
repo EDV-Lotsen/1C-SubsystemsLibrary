@@ -40,7 +40,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Parameters.ObjectRef.Metadata().Hierarchical
 		And ValueIsFilled(CommonUse.ObjectAttributeValue(Parameters.ObjectRef, "Parent"));
 	
-	Items.InheritParentRights.Visibility = ParentFilled;
+	Items.InheritParentRights.Visible = ParentFilled;
 	
 	RightsSettings = InformationRegisters.ObjectRightsSettings.Read(Parameters.ObjectRef);
 	
@@ -77,8 +77,8 @@ Procedure InheritParentRightsOnChangeAtServer()
 		// Clearing settings inherited from the hierarchical parents
 		Index = RightsGroups.Count()-1;
 		While Index >= 0 Do
-			If RightsGroups.Get(PostalCode).ParentSettings Then
-				RightsGroups.Delete(PostalCode);
+			If RightsGroups.Get(Index).ParentSettings Then
+				RightsGroups.Delete(Index);
 			EndIf;
 			Index = Index - 1;
 		EndDo;
@@ -590,7 +590,7 @@ Procedure AddAttributesOrFormItems(NewAttributes = Undefined)
 		Item.DataPath   = "RightsGroups.OwnerSettings";
 		Item.Title   = NStr("en = 'Is inherited from'");
 		Item.Tooltip = NStr("en = 'Folder from which the rights setting are inherited'");
-		Item.Visibility = ParentFilled;
+		Item.Visible = ParentFilled;
 		
 		ConditionalAppearanceItem     = ConditionalAppearance.Items.Add();
 		ConditionalAppearanceItem.Use = True;
@@ -665,7 +665,7 @@ Procedure AddInheritedRights()
 	Index = 0;
 	For Each Settings In RightsSettings.Settings Do
 		If Settings.ParentSettings Then
-			FillPropertyValues(RightsGroups.Insert(PostalCode), Settings);
+			FillPropertyValues(RightsGroups.Insert(Index), Settings);
 			Index = Index + 1;
 		EndIf;
 	EndDo;

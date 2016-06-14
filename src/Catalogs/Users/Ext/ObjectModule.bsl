@@ -92,7 +92,7 @@ Procedure OnWrite(Cancel)
 	ItemsToChange    = New Map;
 	ModifiedGroups   = New Map;
 	
-	UsersInternal.UpdateUserGroupContent(
+	UsersInternal.UpdateUserGroupContents(
 		Catalogs.UserGroups.AllUsers, Ref, ItemsToChange, ModifiedGroups);
 	
 	UsersInternal.RefreshContentUsingOfUserGroups(

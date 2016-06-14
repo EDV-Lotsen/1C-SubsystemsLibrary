@@ -49,8 +49,7 @@ EndProcedure
 
 #EndRegion
 
-#Region 
-ListFormTableItemEventHandlers
+#Region ListFormTableItemEventHandlers
 
 &AtClient
 Procedure ListChoice(Item, SelectedRow, Field, StandardProcessing)

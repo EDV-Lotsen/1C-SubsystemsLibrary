@@ -245,7 +245,7 @@ Function DisplayParsedObjectAttributes(ReportTS, ObjectVersion)
 		Section.Area("R1C2:R1C3").BottomBorder = New Line(SpreadsheetDocumentCellLineType.Solid, 1, 0);
 		Section.Area("R1C2:R1C3").BorderColor = ColorLightGray;
 		
-		ReportTS.Output(Section);
+		ReportTS.Put(Section);
 		
 		NumberOfRowsToOutput = NumberOfRowsToOutput + 1;
 	EndDo;
@@ -344,7 +344,7 @@ Function DisplayParsedObjectTabularSections(ReportTS, ObjectVersion, OutputRowNu
 					ColumnNumber = ColumnNumber + 1;
 				EndDo; // For Each TabularSectionColumn From TabularSection.Columns Do
 				
-				OutputArea = ReportTS.Output(TSToAdd);
+				OutputArea = ReportTS.Put(TSToAdd);
 				ReportTS.Area("R"+OutputArea.Top+"C1:R"+OutputArea.Bottom+"C"+ColumnNumber).CreateFormatOfRows();
 				ReportTS.Area("R"+OutputArea.Top+"C2").ColumnWidth = 7;
 				For CurrentColumnNumber = 3 To ColumnNumber-1 Do
@@ -369,7 +369,7 @@ Procedure OutputHeaderForVersion(ReportTS, Val Text, Val LineNumber, Val ColumnN
 		
 		State = "R" + String(LineNumber) + "C"+String(ColumnNumber);
 		ReportTS.Area(State).Text = Text;
-		ReportTS.Area(State).BgColor = ColorLightGray;
+		ReportTS.Area(State).BackColor = ColorLightGray;
 		ReportTS.Area(State).Font = New Font(, 8, True, , , );
 		ReportTS.Area(State).TopBorder = New Line(SpreadsheetDocumentCellLineType.Solid);
 		ReportTS.Area(State).BottomBorder  = New Line(SpreadsheetDocumentCellLineType.Solid);
@@ -469,8 +469,8 @@ Procedure GenerateReportOnChanges(ReportTS, Val VersionArray)
 			TableVersionRef = TabularSectionChangeTable[TableName][CurrentVersionColumnName];
 			TableVersionRef.Columns.Add("Versioning_RowID");
 			TableVersionRef.FillValues(Undefined, "Versioning_RowID");
-			TableVersionRef.Columns.Add("Versioning_RowID");
-			TableVersionRef.FillValues(Undefined, "Versioning_RowID");
+			TableVersionRef.Columns.Add("Versioning_Modification");
+			TableVersionRef.FillValues(Undefined, "Versioning_Modification");
 			TableWithChanges = ModTS.Get(TableName);
 			If TableWithChanges <> Undefined Then
 				ModTS_MRows = TableWithChanges["M"];
@@ -547,7 +547,7 @@ Procedure GenerateReportOnChanges(ReportTS, Val VersionArray)
 									  ReportTS);
 	
 	TemplateLegend = CommonTemplate.GetArea("Legend");
-	ReportTS.Output(TemplateLegend);
+	ReportTS.Put(TemplateLegend);
 	
 EndProcedure
 
@@ -556,7 +556,7 @@ Procedure DisplayAttributeChanges(ReportTS,
                                   VersionNumberArray)
 	
 	AttributeHeaderArea = CommonTemplate.GetArea("AttributeHeader");
-	ReportTS.Output(AttributeHeaderArea);
+	ReportTS.Put(AttributeHeaderArea);
 	ReportTS.StartRowGroup("AttributeGroup");
 	
 	For Each ModAttributeItem In AttributeChangeTable Do
@@ -578,7 +578,7 @@ Procedure DisplayAttributeChanges(ReportTS,
 			EndIf;
 			
 			EmptyCell = CommonTemplate.GetArea("EmptyCell");
-			ReportTS.Output(EmptyCell);;
+			ReportTS.Put(EmptyCell);;
 			
 			AttributeDescription = CommonTemplate.GetArea("FieldAttributeDescription");
 			AttributeDescription.Parameters.FieldAttributeDescription = DisplayedDescription;
@@ -617,10 +617,10 @@ Procedure DisplayAttributeChanges(ReportTS,
 				EndIf;
 				
 				If      Update = Undefined Then
-					AttributeValueRegion = CommonTemplate.GetArea("AttributeSourceValue");
+					AttributeValueRegion = CommonTemplate.GetArea("InitialAttributeValue");
 					AttributeValueRegion.Parameters.AttributeValue = AttributeValuePresentation;
 				ElsIf Update = "M" Then
-					AttributeValueRegion = CommonTemplate.GetArea("AttributeChangedValue");
+					AttributeValueRegion = CommonTemplate.GetArea("ModifiedAttributeValue");
 					AttributeValueRegion.Parameters.AttributeValue = AttributeValuePresentation;
 				ElsIf Update = "D" Then
 					AttributeValueRegion = CommonTemplate.GetArea("DeletedAttribute");
@@ -651,7 +651,7 @@ Procedure DisplayTabularSectionChanges(ReportTS,
 	EmptyRowTemplate = CommonTemplate.GetArea("EmptyRow");
 	NextTSRowTemplate = CommonTemplate.GetArea("TabularSectionRowHeader");
 	
-	ReportTS.Output(EmptyRowTemplate);
+	ReportTS.Put(EmptyRowTemplate);
 	
 	// Repeating for each changed item
 	For Each ChangedTSItem In TabularSectionChangeTable Do
@@ -723,19 +723,19 @@ Procedure DisplayTabularSectionChanges(ReportTS,
 					If Not TabularSectionAreaHeaderDisplayed Then
 						TabularSectionAreaHeaderDisplayed = True;
 						CommonTSSectionHeaderTemplate = CommonTemplate.GetArea("TabularSectionsHeader");
-						ReportTS.Output(CommonTSSectionHeaderTemplate);
+						ReportTS.Put(CommonTSSectionHeaderTemplate);
 						ReportTS.StartRowGroup("TabularSectionGroup");
-						ReportTS.Output(EmptyRowTemplate);
+						ReportTS.Put(EmptyRowTemplate);
 					EndIf;
 					
 					// This section displays header for the current tabular section
 					If Not CurrentTabularSectionChanged Then
-						CurrentTabularSectionChanged = True;
+						CurrentTabularSectionChanged = True;             
 						CurrentTSHeaderTemplate = CommonTemplate.GetArea("TabularSectionHeader");
 						CurrentTSHeaderTemplate.Parameters.TabularSectionDescription = TabularSectionName;
-						ReportTS.Output(CurrentTSHeaderTemplate);
+						ReportTS.Put(CurrentTSHeaderTemplate);
 						ReportTS.StartRowGroup("TabularSection"+TabularSectionName);
-						ReportTS.Output(EmptyRowTemplate);
+						ReportTS.Put(EmptyRowTemplate);
 					EndIf;
 					
 					Modification = FoundRow.Versioning_Modification;
@@ -745,7 +745,7 @@ Procedure DisplayTabularSectionChanges(ReportTS,
 						
 						TSRowHeaderTemplate = CommonTemplate.GetArea("TabularSectionRowHeader");
 						TSRowHeaderTemplate.Parameters.TabularSectionRowNumber = CurrCounterUUID;
-						ReportTS.Output(TSRowHeaderTemplate);
+						ReportTS.Put(TSRowHeaderTemplate);
 						ReportTS.StartRowGroup("RowGroup"+TabularSectionName+CurrCounterUUID);
 						
 						OutputType = "";
@@ -805,21 +805,21 @@ Procedure DisplayTabularSectionChanges(ReportTS,
 			
 			If UUIDStringChanged Then
 				ReportTS.EndRowGroup();
-				ReportTS.Output(EmptyRowTemplate);
+				ReportTS.Put(EmptyRowTemplate);
 			EndIf;
 			
 		EndDo;
 		
 		If CurrentTabularSectionChanged Then
 			ReportTS.EndRowGroup();
-			ReportTS.Output(EmptyRowTemplate);
+			ReportTS.Put(EmptyRowTemplate);
 		EndIf;
 		
 	EndDo;
 	
 	If TabularSectionAreaHeaderDisplayed Then
 		ReportTS.EndRowGroup();
-		ReportTS.Output(EmptyRowTemplate);
+		ReportTS.Put(EmptyRowTemplate);
 	EndIf;
 	
 EndProcedure
@@ -843,10 +843,10 @@ Function DisplayCompositionResultsInReportLayout(AttributeChangeTable,
 	
 	If ChangedAttributeCount = 0 Then
 		AttributeHeaderArea = CommonTemplate.GetArea("AttributeHeader");
-		ReportTS.Output(AttributeHeaderArea);
+		ReportTS.Put(AttributeHeaderArea);
 		ReportTS.StartRowGroup("AttributeGroup");
-		AttributesUnchangedSection = CommonTemplate.GetArea("AttributesUnchanged");
-		ReportTS.Output(AttributesUnchangedSection);
+		AttributesUnchangedSection = CommonTemplate.GetArea("AttributesAreNotChanged");
+		ReportTS.Put(AttributesUnchangedSection);
 		ReportTS.EndRowGroup();
 	Else
 		DisplayAttributeChanges(ReportTS,
@@ -873,7 +873,7 @@ Function OutputHeader(ReportTS, VersionNumberArray, NumberOfVersions)
 	SectionHeader.Parameters.ReportDescription = NStr("en = 'Object version change report'");
 	SectionHeader.Parameters.ObjectDescription = String(ObjectRef);
 	
-	ReportTS.Output(SectionHeader);
+	ReportTS.Put(SectionHeader);
 	
 	EmptyCell = CommonTemplate.GetArea("EmptyCell");
 	VersionArea = CommonTemplate.GetArea("VersionTitle");
@@ -904,7 +904,7 @@ Function OutputHeader(ReportTS, VersionNumberArray, NumberOfVersions)
 	If HasComments Then
 		
 		CommentArea = CommonTemplate.GetArea("TitleComment");
-		ReportTS.Output(EmptyCell);
+		ReportTS.Put(EmptyCell);
 		ReportTS.Join(CommentArea);
 		CommentArea = CommonTemplate.GetArea("Comment");
 		
@@ -920,7 +920,7 @@ Function OutputHeader(ReportTS, VersionNumberArray, NumberOfVersions)
 	EndIf;
 	
 	EmptyRowArea = CommonTemplate.GetArea("EmptyRow");
-	ReportTS.Output(EmptyRowArea);
+	ReportTS.Put(EmptyRowArea);
 	
 EndFunction
 
@@ -1058,7 +1058,7 @@ Procedure PrepareAttributeChangeTableColumns(ValueTable,
 	ValueTable = New ValueTable;
 	
 	ValueTable.Columns.Add("Description");
-	ValueTable.Columns.Add("Versioning_RowID");
+	ValueTable.Columns.Add("Versioning_Modification");
 	ValueTable.Columns.Add("Versioning_ValueType"); // Expected value type
 	
 	For Index = 1 To VersionNumberArray.Count() Do
@@ -1278,7 +1278,7 @@ Function CountInitialAttributeAndTabularSectionValues(AttributeTable,
 		// This ID is unique within a value table.
 		
 		CurrentVT.Columns.Add("Versioning_RowID");
-		CurrentVT.Columns.Add("Versioning_RowID");
+		CurrentVT.Columns.Add("Versioning_Modification");
 		
 		For Index = 1 To CurrentVT.Count() Do
 			CurrentVT[Index-1].Versioning_RowID = Index;
@@ -1346,7 +1346,7 @@ EndFunction
 //
 Procedure SetTextProperties(SectionArea, Text,
                                    Val TextColor = Undefined,
-                                   Val BgColor = Undefined,
+                                   Val BackColor = Undefined,
                                    Val Size = 9,
                                    Val Bold = False,
                                    Val ShowBorders = False)
@@ -1357,8 +1357,8 @@ Procedure SetTextProperties(SectionArea, Text,
 		SectionArea.TextColor = TextColor;
 	EndIf;
 	
-	If BgColor <> Undefined Then
-		SectionArea.BgColor = BgColor;
+	If BackColor <> Undefined Then
+		SectionArea.BackColor = BackColor;
 	EndIf;
 	
 	SectionArea.Font = New Font(, Size, Bold, , , );
@@ -1470,7 +1470,7 @@ Function PutTextToReport(ReportTS,
                            Val State,
                            Val Text,
                            Val TextColor = Undefined,
-                           Val BgColor   = Undefined,
+                           Val BackColor = Undefined,
                            Val Size      = 9,
                            Val Bold      = False)
 	
@@ -1480,8 +1480,8 @@ Function PutTextToReport(ReportTS,
 		SectionArea.TextColor = TextColor;
 	EndIf;
 	
-	If BgColor <> Undefined Then
-		SectionArea.BgColor = BgColor;
+	If BackColor <> Undefined Then
+		SectionArea.BackColor = BackColor;
 	EndIf;
 	
 	SectionArea.Text      = Text;
@@ -1493,7 +1493,7 @@ Function PutTextToReport(ReportTS,
 	SectionArea.LeftBorder   = New Line(SpreadsheetDocumentCellLineType.None);
 	SectionArea.RightBorder  = New Line(SpreadsheetDocumentCellLineType.None);
 	
-	Return ReportTS.Output(Section);
+	Return ReportTS.Put(Section);
 	
 EndFunction
 
@@ -1535,9 +1535,9 @@ Function GenerateTSRowSector(Val FillingValue,Val OutputType = "")
 	SpreadsheetDocument = New SpreadsheetDocument;
 	
 	If    OutputType = ""  Then
-		Template = CommonTemplate.GetArea("AttributeSourceValue");
+		Template = CommonTemplate.GetArea("InitialAttributeValue");
 	ElsIf OutputType = "M" Then
-		Template = CommonTemplate.GetArea("AttributeChangedValue");
+		Template = CommonTemplate.GetArea("ModifiedAttributeValue");
 	ElsIf OutputType = "A" Then
 		Template = CommonTemplate.GetArea("AddedAttribute");
 	ElsIf OutputType = "D" Then

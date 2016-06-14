@@ -53,10 +53,10 @@ Function RoleExists(Val Role, Val ObjectRef = Undefined, Val User = Undefined) E
 		|	TRUE AS TrueValue
 		|FROM
 		|	Catalog.AccessGroups.Users AS AccessGroupsUsers
-		|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-		|		ON (UserGroupContent.User = &AuthorizedUser)
-		|			AND (UserGroupContent.UserGroup = AccessGroupsUsers.User)
-		|			AND (UserGroupContent.Used)
+		|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+		|		ON (UserGroupContents.User = &AuthorizedUser)
+		|			AND (UserGroupContents.UserGroup = AccessGroupsUsers.User)
+		|			AND (UserGroupContents.Used)
 		|			AND (Not AccessGroupsUsers.Ref.DeletionMark)
 		|		INNER JOIN Catalog.AccessGroupProfiles.Roles AS AccessGroupProfilesRoles
 		|		ON AccessGroupsUsers.Ref.Profile = AccessGroupProfilesRoles.Ref
@@ -169,10 +169,10 @@ Function RoleExists(Val Role, Val ObjectRef = Undefined, Val User = Undefined) E
 	|INTO AccessGroups
 	|FROM
 	|	Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.User = &AuthorizedUser)
-	|			AND (UserGroupContent.UserGroup = AccessGroupsUsers.User)
-	|			AND (UserGroupContent.Used)
+	|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.User = &AuthorizedUser)
+	|			AND (UserGroupContents.UserGroup = AccessGroupsUsers.User)
+	|			AND (UserGroupContents.Used)
 	|			AND (Not AccessGroupsUsers.Ref.DeletionMark)
 	|		INNER JOIN Catalog.AccessGroupProfiles.Roles AS AccessGroupProfilesRoles
 	|		ON AccessGroupsUsers.Ref.Profile = AccessGroupProfilesRoles.Ref
@@ -314,10 +314,10 @@ Function RoleExists(Val Role, Val ObjectRef = Undefined, Val User = Undefined) E
 	|																		SettingsInheritance.Object = ValueSets.AccessValue
 	|																			AND RightsSettings.Object = SettingsInheritance.Parent
 	|																			AND SettingsInheritance.UsageLevel < RightsSettings.ReadingPermissionLevel
-	|																	INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+	|																	INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 	|																	ON
-	|																		UserGroupContent.User = &AuthorizedUser
-	|																			AND UserGroupContent.UserGroup = RightsSettings.User)
+	|																		UserGroupContents.User = &AuthorizedUser
+	|																			AND UserGroupContents.UserGroup = RightsSettings.User)
 	|														AND Not FALSE IN
 	|																(SELECT TOP 1
 	|																	FALSE
@@ -328,10 +328,10 @@ Function RoleExists(Val Role, Val ObjectRef = Undefined, Val User = Undefined) E
 	|																			SettingsInheritance.Object = ValueSets.AccessValue
 	|																				AND RightsSettings.Object = SettingsInheritance.Parent
 	|																				AND SettingsInheritance.UsageLevel < RightsSettings.ReadingProhibitionLevel
-	|																		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+	|																		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 	|																		ON
-	|																			UserGroupContent.User = &AuthorizedUser
-	|																				AND UserGroupContent.UserGroup = RightsSettings.User)
+	|																			UserGroupContents.User = &AuthorizedUser
+	|																				AND UserGroupContents.UserGroup = RightsSettings.User)
 	|											END)))";
 	
 	Return Not Query.Execute().IsEmpty();
@@ -415,10 +415,10 @@ Function HasRight(Right, ObjectRef, User = Undefined) Export
 	|							AND RightsSettings.Right = &Right
 	|							AND SettingsInheritance.UsageLevel < RightsSettings.RightPermissionLevel
 	|							AND RightsSettings.Object = SettingsInheritance.Parent
-	|					INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+	|					INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 	|					ON
-	|						UserGroupContent.User = &User
-	|							AND UserGroupContent.UserGroup = RightsSettings.User)
+	|						UserGroupContents.User = &User
+	|							AND UserGroupContents.UserGroup = RightsSettings.User)
 	|	AND Not FALSE IN
 	|				(SELECT TOP 1
 	|					FALSE
@@ -430,10 +430,10 @@ Function HasRight(Right, ObjectRef, User = Undefined) Export
 	|								AND RightsSettings.Right = &Right
 	|								AND SettingsInheritance.UsageLevel < RightsSettings.RightProhibitionLevel
 	|								AND RightsSettings.Object = SettingsInheritance.Parent
-	|						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+	|						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 	|						ON
-	|							UserGroupContent.User = &User
-	|								AND UserGroupContent.UserGroup = RightsSettings.User)";
+	|							UserGroupContents.User = &User
+	|								AND UserGroupContents.UserGroup = RightsSettings.User)";
 	
 	Return Not Query.Execute().IsEmpty();
 	
@@ -551,7 +551,7 @@ Procedure AccessValueFormOnCreate(Form,
 	 Or Not AccessManagementInternal.AccessKindUsed(GroupsProperties.AccessKind) Then
 		
 		For Each Item In FormItems Do
-			Form.Items[Item].Visibility = False;
+			Form.Items[Item].Visible = False;
 		EndDo;
 		Return;
 	EndIf;
@@ -671,12 +671,12 @@ Function AccessValuesGroupsAllowingAccessValuesChange(AccessValueType, ReturnAll
 	|			(SELECT TOP 1
 	|				TRUE
 	|			FROM
-	|				InformationRegister.UserGroupContent AS UserGroupContent
+	|				InformationRegister.UserGroupContents AS UserGroupContents
 	|					INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
 	|					ON
-	|						UserGroupContent.Used
-	|							AND UserGroupContent.User = &CurrentUser
-	|							AND AccessGroupsUsers.User = UserGroupContent.UserGroup
+	|						UserGroupContents.Used
+	|							AND UserGroupContents.User = &CurrentUser
+	|							AND AccessGroupsUsers.User = UserGroupContents.UserGroup
 	|							AND AccessGroupsUsers.Ref = AccessGroups.Ref)
 	|;
 	|

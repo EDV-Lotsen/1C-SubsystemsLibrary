@@ -11,7 +11,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	ForumURL = Catalogs.InformationLinksForForms.Forum.Address;
 	
-	Items.FooterGroup.Visibility = Not IsBlankString(ForumURL);
+	Items.FooterGroup.Visible = Not IsBlankString(ForumURL);
 	
 	SetPrivilegedMode(True);
 	UserID = Users.CurrentUser().ServiceUserID;

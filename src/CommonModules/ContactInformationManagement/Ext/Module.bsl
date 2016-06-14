@@ -1806,7 +1806,7 @@ Function TextBox(Form, EditInDialogOnly, Type, AttributeName, ToolTip, IsNewCIKi
 		
 		If EditInDialogOnly Then
 			Item.TextEdit = False;
-			Item.BgColor = StyleColors.ContactInformationEditedInDialogColor;
+			Item.BackColor = StyleColors.ContactInformationEditedInDialogColor;
 		EndIf;
 		Item.SetAction("StartChoice", "Attachable_ContactInformationStartChoice");
 		

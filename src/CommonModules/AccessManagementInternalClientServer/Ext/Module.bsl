@@ -139,12 +139,12 @@ Procedure OnChangeCurrentAccessKind(Form) Export
 		If CurrentData.AccessKind <> Undefined
 		   And Not CurrentData.Used Then
 			
-			If Not Items.AccessKindNotUsedText.Visibility Then
-				Items.AccessKindNotUsedText.Visibility = True;
+			If Not Items.AccessKindNotUsedText.Visible Then
+				Items.AccessKindNotUsedText.Visible = True;
 			EndIf;
 		Else
-			If Items.AccessKindNotUsedText.Visibility Then
-				Items.AccessKindNotUsedText.Visibility = False;
+			If Items.AccessKindNotUsedText.Visible Then
+				Items.AccessKindNotUsedText.Visible = False;
 			EndIf;
 		EndIf;
 		
@@ -209,8 +209,8 @@ Procedure OnChangeCurrentAccessKind(Form) Export
 		
 		FillAllAllowedPresentation(Form, CurrentData);
 	Else
-		If Items.AccessKindNotUsedText.Visibility Then
-			Items.AccessKindNotUsedText.Visibility = False;
+		If Items.AccessKindNotUsedText.Visible Then
+			Items.AccessKindNotUsedText.Visible = False;
 		EndIf;
 		
 		Form.CurrentAccessKind = Undefined;

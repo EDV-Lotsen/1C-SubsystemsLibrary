@@ -23,7 +23,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	// StandardSubsystems Users
 	UserSessionParameters = True;
-	UserGroupContent = True;
+	UserGroupContents = True;
 	
 	// StandardSubsystems AccessManagement
 	RoleRights = True;
@@ -174,7 +174,7 @@ Procedure Update(Command)
 	If SetupMode = "SimpleSetup" And UsersSubsystemData
 	 Or SetupMode = "ComplexSetup"
 	     And (    UserSessionParameters And Items.UserSessionParameters.Enabled
-	        Or UserGroupContent    And Items.UserGroupContent.Enabled) Then
+	        Or UserGroupContents    And Items.UserGroupContents.Enabled) Then
 		
 		DataMarked = True;
 	EndIf;
@@ -227,7 +227,7 @@ Procedure Update(Command)
 		| 
 		|UsersSubsystemData,
 		|UserSessionParameters,
-		|UserGroupContent,
+		|UserGroupContents,
 		| 
 		|ReportOptionsSubsystemData,
 		|ReportOptionParameters,
@@ -509,14 +509,14 @@ Procedure UpdateSeparatedData(HasOverallChanges)
 	// StandardSubsystems Users
 	If SetupMode = ""
 	 Or SetupMode = "SimpleSetup" And UsersSubsystemData
-	 Or SetupMode = "ComplexSetup" And UserGroupContent Then
+	 Or SetupMode = "ComplexSetup" And UserGroupContents Then
 		
 		HasChanges = False;
-		InformationRegisters["UserGroupContent"].UpdateRegisterData(HasChanges);
+		InformationRegisters["UserGroupContents"].UpdateRegisterData(HasChanges);
 		
 		If HasChanges Then
 			HasOverallChanges = True;
-			HighlightChanges("UsersSubsystemData, UserGroupContent");
+			HighlightChanges("UsersSubsystemData, UserGroupContents");
 		EndIf;
 	EndIf;
 	
@@ -666,12 +666,12 @@ Procedure UpdateItemsEnabled(Form)
 	
 	// StandardSubsystems Users
 	Items.UserSessionParameters.Enabled                         = Form.UpdateSharedData;
-	Items.UserGroupContent.Enabled                              = Form.UpdateSeparatedData;
+	Items.UserGroupContents.Enabled                             = Form.UpdateSeparatedData;
 	
 	// StandardSubsystems AccessManagement
 	Items.RoleRights.Enabled                                    = Form.UpdateSharedData;
 	Items.RightDependencies.Enabled                             = Form.UpdateSharedData;
-	Items.AccessKindsProperties.Enabled                          = Form.UpdateSharedData;
+	Items.AccessKindsProperties.Enabled                         = Form.UpdateSharedData;
 	Items.SuppliedAccessGroupProfilesDescription.Enabled        = Form.UpdateSharedData;
 	Items.AvailableRightsForObjectRightSetupDescription.Enabled = Form.UpdateSharedData;
 	Items.SuppliedAccessGroupProfiles.Enabled                   = Form.UpdateSeparatedData;

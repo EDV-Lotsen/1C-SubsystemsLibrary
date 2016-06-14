@@ -256,7 +256,7 @@ Procedure RefreshContentRepresentation(ID)
 	
 	CurrentMessageContent.SetHTML(TableRow.HTMLText, TableRow.HTMLAttachments.Get(0).Value);
 	
-	Items.InteractionTableAttachments.Visibility = ?(TableRow.Attachments.Count() = 0, False, True);
+	Items.InteractionTableAttachments.Visible = ?(TableRow.Attachments.Count() = 0, False, True);
 	
 EndProcedure
 

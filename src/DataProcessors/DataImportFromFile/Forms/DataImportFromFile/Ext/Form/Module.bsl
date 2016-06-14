@@ -1828,7 +1828,7 @@ Procedure CreateMappingTableByColumnInfoAuto(MappingObjectTypeDescription)
 		EndIf;
 		If Column.Name = "MappingObject" Then
 			NewItem.FixingInTable = FixingInTable.Left;
-			NewItem.BgColor = StyleColors.MasterFieldBackground;
+			NewItem.BackColor = StyleColors.MasterFieldBackground;
 			NewItem.HeaderPicture = PictureLib.Change;
 			NewItem.ReadOnly = False;
 			

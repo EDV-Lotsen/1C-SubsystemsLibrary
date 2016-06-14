@@ -30,7 +30,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	EndIf;
 	
 	If Parameters.Property("ShowTopic") Then 
-		Items.Subject.Visibility = Parameters.ShowTopic;
+		Items.Subject.Visible = Parameters.ShowTopic;
 	EndIf;
 	
 	TechParameterFileName = InformationCenterServer.GetTechParameterFileNameForMessagesToSupport();

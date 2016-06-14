@@ -114,18 +114,18 @@ Procedure OnWrite(Cancel)
 			Content.Unload(),
 			OldContentUserGroups);
 		
-		UsersInternal.UpdateUserGroupContent(
+		UsersInternal.UpdateUserGroupContents(
 			Ref, UpdateContent, ItemsToChange, ModifiedGroups);
 		
 		If OldParent <> Parent Then
 			
 			If ValueIsFilled(Parent) Then
-				UsersInternal.UpdateUserGroupContent(
+				UsersInternal.UpdateUserGroupContents(
 					Parent, , ItemsToChange, ModifiedGroups);
 			EndIf;
 			
 			If ValueIsFilled(OldParent) Then
-				UsersInternal.UpdateUserGroupContent(
+				UsersInternal.UpdateUserGroupContents(
 					OldParent, , ItemsToChange, ModifiedGroups);
 			EndIf;
 		EndIf;

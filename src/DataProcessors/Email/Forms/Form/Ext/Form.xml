@@ -502,7 +502,7 @@
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>SELECT
 	CatalogIncomingEmails.Ref,
 	CatalogIncomingEmails.DeletionMark,
@@ -514,12 +514,11 @@
 	CatalogIncomingEmails.ContentKind,
 	CatalogIncomingEmails.ID,
 	CatalogIncomingEmails.Mailbox,
-	ISNULL(IncomingEmailsState.Read, FALSE) AS Read
+	ISNULL(IncomingEmailStates.Read, FALSE) AS Read
 FROM
 	Catalog.IncomingEmails AS CatalogIncomingEmails
-		LEFT JOIN InformationRegister.IncomingEmailsState AS IncomingEmailsState
-			ON IncomingEmailsState.Email = CatalogIncomingEmails.Ref</QueryText>
-				<MainTable>Catalog.IncomingEmails</MainTable>
+		LEFT JOIN InformationRegister.IncomingEmailStates AS IncomingEmailStates
+			ON IncomingEmailStates.Email = CatalogIncomingEmails.Ref</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:viewMode>Normal</dcsset:viewMode>
@@ -560,11 +559,11 @@ FROM
 	CatalogOutgoingEmails.Recipient,
 	CatalogOutgoingEmails.Content,
 	CatalogOutgoingEmails.Text,
-	ISNULL(OutgoingEmailsState.Sent, FALSE) AS Sent
+	ISNULL(OutgoingEmailStates.Sent, FALSE) AS Sent
 FROM
 	Catalog.OutgoingEmails AS CatalogOutgoingEmails
-		LEFT JOIN InformationRegister.OutgoingEmailsState AS OutgoingEmailsState
-			ON CatalogOutgoingEmails.Ref = OutgoingEmailsState.Email</QueryText>
+		LEFT JOIN InformationRegister.OutgoingEmailStates AS OutgoingEmailStates
+			ON CatalogOutgoingEmails.Ref = OutgoingEmailStates.Email</QueryText>
 				<MainTable>Catalog.OutgoingEmails</MainTable>
 				<ListSettings>
 					<dcsset:filter>

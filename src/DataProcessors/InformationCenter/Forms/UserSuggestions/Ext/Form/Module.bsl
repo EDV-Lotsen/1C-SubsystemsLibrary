@@ -504,11 +504,11 @@ EndProcedure
 Procedure CreateFooterItems(LinkNameArray)
 	
 	If LinkNameArray.Count() = 0 Then 
-		Items.Footer.Visibility = False;
+		Items.Footer.Visible = False;
 		Return;
 	EndIf;
 	
-	Items.Footer.Visibility = True;
+	Items.Footer.Visible = True;
 	
 	Items.CommonFooter.Representation = CTLAndSLIntegration.UsualGroupRepresentationLine();
 	

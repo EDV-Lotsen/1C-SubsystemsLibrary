@@ -26,7 +26,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Raise NStr("en = 'Insufficient rights to view a report.'");
 	EndIf;
 	
-	Items.AccessRightsDetails.Visibility =
+	Items.AccessRightsDetails.Visible =
 		Not AccessManagementInternal.SimplifiedAccessRightSetupInterface();
 	
 	OutputReport(Parameters.User);
@@ -105,7 +105,7 @@ Procedure OutputReport(Ref)
 	// Displaying title
 	Region = Template.GetArea("Title");
 	Region.Parameters.Fill(Properties);
-	Document.Put(Area);
+	Document.Put(Region);
 	
 	// Displaying the infobase user properties for user and external user
 	If Not OutputGroupRights Then
@@ -128,7 +128,7 @@ Procedure OutputReport(Ref)
 			Region.Parameters.CanLogOnToApplication = Users.CanLogOnToApplication(
 				InfobaseUserProperties);
 			
-			Document.Put(Area, 2);
+			Document.Put(Region, 2);
 			
 			Region = Template.GetArea("InfobaseUserPropertiesDetails2");
 			Region.Parameters.Fill(InfobaseUserProperties);
@@ -142,10 +142,10 @@ Procedure OutputReport(Ref)
 			If Not ValueIsFilled(InfobaseUserProperties.OSUser) Then
 				Region.Parameters.OSUser = NStr("en = 'Not specified'");
 			EndIf;
-			Document.Put(Area, 2);
+			Document.Put(Region, 2);
 		Else
 			Region.Parameters.CanLogOnToApplication = False;
-			Document.Put(Area, 2);
+			Document.Put(Region, 2);
 		EndIf;
 		Document.EndRowAutoGrouping();
 	EndIf;
@@ -161,7 +161,7 @@ Procedure OutputReport(Ref)
 		If Users.InfobaseUserWithFullAccess(IBUser, True) Then
 			
 			Region = Template.GetArea("FullUser");
-			Document.Put(Area, 1);
+			Document.Put(Region, 1);
 			Return;
 		EndIf;
 	EndIf;
@@ -169,15 +169,15 @@ Procedure OutputReport(Ref)
 	// Displaying access groups
 	SetPrivilegedMode(True);
 	
-	Request = New Request;
-	Request.SetParameter("User",                   Ref);
-	Request.SetParameter("OutputGroupRights",      OutputGroupRights);
-	Request.SetParameter("AccessRestrictionKinds", RightRestrictionKindsOfMetadataObjects());
+	Query = New Query;
+	Query.SetParameter("User",                   Ref);
+	Query.SetParameter("OutputGroupRights",      OutputGroupRights);
+	Query.SetParameter("AccessRestrictionKinds", RightRestrictionKindsOfMetadataObjects());
 	
-	Request.SetParameter("RightsSettingsOwnerTypes", AccessManagementInternalCached.Parameters(
+	Query.SetParameter("RightsSettingsOwnerTypes", AccessManagementInternalCached.Parameters(
 		).AvailableRightsForObjectRightsSettings.OwnerTypes);
 	
-	Request.Text =
+	Query.Text =
 	"SELECT DISTINCT
 	|	AccessGroups.Ref AS AccessGroup,
 	|	AccessGroups.Profile,
@@ -193,8 +193,8 @@ Procedure OutputReport(Ref)
 	|	Catalog.AccessGroups AS AccessGroups
 	|		INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
 	|		ON AccessGroups.Ref = AccessGroupsUsers.Ref
-	|			AND (Not AccessGroups.DeletionMark)
-	|			AND (Not AccessGroups.Profile.DeletionMark)
+	|			AND (NOT AccessGroups.DeletionMark)
+	|			AND (NOT AccessGroups.Profile.DeletionMark)
 	|			AND (CASE
 	|				WHEN &OutputGroupRights
 	|					THEN AccessGroupsUsers.User = &User
@@ -202,10 +202,10 @@ Procedure OutputReport(Ref)
 	|						(SELECT TOP 1
 	|							TRUE
 	|						FROM
-	|							InformationRegister.UserGroupContent AS UserGroupContent
+	|							InformationRegister.UserGroupContents AS UserGroupContents
 	|						WHERE
-	|							UserGroupContent.UserGroup = AccessGroupsUsers.User
-	|							AND UserGroupContent.User = &User)
+	|							UserGroupContents.UserGroup = AccessGroupsUsers.User
+	|							AND UserGroupContents.User = &User)
 	|			END)
 	|;
 	|
@@ -225,7 +225,7 @@ Procedure OutputReport(Ref)
 	|	UserAccessGroups AS UserAccessGroups
 	|TOTALS
 	|	MAX(Party)
-	|ON
+	|BY
 	|	AccessGroup
 	|;
 	|
@@ -252,7 +252,7 @@ Procedure OutputReport(Ref)
 	|	MAX(ProfilePresentation),
 	|	MAX(Role),
 	|	MAX(PresentationRoles)
-	|ON
+	|BY
 	|	Profile,
 	|	Role
 	|;
@@ -286,10 +286,10 @@ Procedure OutputReport(Ref)
 	|					(SELECT TOP 1
 	|						TRUE
 	|					FROM
-	|						InformationRegister.UserGroupContent AS UserGroupContent
+	|						InformationRegister.UserGroupContents AS UserGroupContents
 	|					WHERE
-	|						UserGroupContent.UserGroup = ObjectRightsSettings.User
-	|						AND UserGroupContent.User = &User)
+	|						UserGroupContents.UserGroup = ObjectRightsSettings.User
+	|						AND UserGroupContents.User = &User)
 	|		END
 	|
 	|UNION ALL
@@ -309,7 +309,8 @@ Procedure OutputReport(Ref)
 	|		LEFT JOIN InformationRegister.ObjectRightsSettings AS ObjectRightsSettings
 	|		ON (ObjectRightsSettings.Object = SettingsInheritance.Object)
 	|			AND (ObjectRightsSettings.Object = SettingsInheritance.Parent)
-	|WHERE SettingsInheritance.Object = SettingsInheritance.Parent
+	|WHERE
+	|	SettingsInheritance.Object = SettingsInheritance.Parent
 	|	AND SettingsInheritance.Inherit = FALSE
 	|	AND ObjectRightsSettings.Object IS NULL 
 	|TOTALS
@@ -318,7 +319,7 @@ Procedure OutputReport(Ref)
 	|	MAX(User),
 	|	MAX(UserDescription),
 	|	MAX(InheritanceIsAllowed)
-	|ON
+	|BY
 	|	ObjectsType,
 	|	Object,
 	|	User
@@ -413,11 +414,11 @@ Procedure OutputReport(Ref)
 	|			WHEN RoleRights.View
 	|					AND RoleRights.ReadWithoutRestriction
 	|				THEN 0
-	|			WHEN Not RoleRights.View
+	|			WHEN NOT RoleRights.View
 	|					AND RoleRights.ReadWithoutRestriction
 	|				THEN 1
 	|			WHEN RoleRights.View
-	|					AND Not RoleRights.ReadWithoutRestriction
+	|					AND NOT RoleRights.ReadWithoutRestriction
 	|				THEN 2
 	|			ELSE 3
 	|		END AS RoleKind,
@@ -474,7 +475,7 @@ Procedure OutputReport(Ref)
 	|	MAX(PresentationAccessGroups),
 	|	MAX(AccessKindPresentation),
 	|	MAX(AllAllowed)
-	|ON
+	|BY
 	|	ObjectKind,
 	|	Object,
 	|	Profile,
@@ -498,7 +499,7 @@ Procedure OutputReport(Ref)
 	|	ProfileRolesRights.Role.Synonym AS PresentationRoles,
 	|	ProfileRolesRights.RoleKind AS RoleKind,
 	|	ProfileRolesRights.Insert AS Insert,
-	|	ProfileRolesRights.Update AS Update,
+	|	ProfileRolesRights.UpdateRight AS UpdateRight,
 	|	ProfileRolesRights.InsertWithoutRestriction AS InsertWithoutRestriction,
 	|	ProfileRolesRights.UpdateWithoutRestriction AS UpdateWithoutRestriction,
 	|	ProfileRolesRights.InteractiveInsert AS InteractiveInsert,
@@ -518,39 +519,39 @@ Procedure OutputReport(Ref)
 	|			WHEN RoleRights.InsertWithoutRestriction
 	|					AND RoleRights.UpdateWithoutRestriction
 	|				THEN 0
-	|			WHEN Not RoleRights.InsertWithoutRestriction
+	|			WHEN NOT RoleRights.InsertWithoutRestriction
 	|					AND RoleRights.UpdateWithoutRestriction
 	|				THEN 100
 	|			WHEN RoleRights.InsertWithoutRestriction
-	|					AND Not RoleRights.UpdateWithoutRestriction
+	|					AND NOT RoleRights.UpdateWithoutRestriction
 	|				THEN 200
 	|			ELSE 300
 	|		END + CASE
 	|			WHEN RoleRights.Insert
 	|					AND RoleRights.Update
 	|				THEN 0
-	|			WHEN Not RoleRights.Insert
+	|			WHEN NOT RoleRights.Insert
 	|					AND RoleRights.Update
 	|				THEN 10
 	|			WHEN RoleRights.Insert
-	|					AND Not RoleRights.Update
+	|					AND NOT RoleRights.Update
 	|				THEN 20
 	|			ELSE 30
 	|		END + CASE
 	|			WHEN RoleRights.InteractiveInsert
 	|					AND RoleRights.Edit
 	|				THEN 0
-	|			WHEN Not RoleRights.InteractiveInsert
+	|			WHEN NOT RoleRights.InteractiveInsert
 	|					AND RoleRights.Edit
 	|				THEN 1
 	|			WHEN RoleRights.InteractiveInsert
-	|					AND Not RoleRights.Edit
+	|					AND NOT RoleRights.Edit
 	|				THEN 2
 	|			ELSE 3
 	|		END AS RoleKind,
 	|		RoleRights.Role AS Role,
 	|		RoleRights.Insert AS Insert,
-	|		RoleRights.Update AS Update,
+	|		RoleRights.Update AS UpdateRight,
 	|		RoleRights.InsertWithoutRestriction AS InsertWithoutRestriction,
 	|		RoleRights.UpdateWithoutRestriction AS UpdateWithoutRestriction,
 	|		RoleRights.InteractiveInsert AS InteractiveInsert,
@@ -640,7 +641,6 @@ Procedure OutputReport(Ref)
 	|	MAX(ProfilePresentation),
 	|	MAX(PresentationRoles),
 	|	MAX(Insert),
-	|	MAX(Update),
 	|	MAX(InsertWithoutRestriction),
 	|	MAX(UpdateWithoutRestriction),
 	|	MAX(InteractiveInsert),
@@ -648,14 +648,15 @@ Procedure OutputReport(Ref)
 	|	MAX(PresentationAccessGroups),
 	|	MAX(AccessKindPresentation),
 	|	MAX(AllAllowed)
-	|ON
+	|BY
 	|	ObjectKind,
 	|	Object,
 	|	Profile,
 	|	RoleKind,
 	|	Role,
 	|	AccessGroup,
-	|	AccessKind
+	|	AccessKind,
+	|	UpdateRight
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -667,7 +668,7 @@ Procedure OutputReport(Ref)
 	|	AccessKindsAndValues.AccessValue
 	|FROM
 	|	AccessKindsAndValues AS AccessKindsAndValues";
-	QueryResults = Request.ExecuteBatch();
+	QueryResults = Query.ExecuteBatch();
 	
 	Document.StartRowAutoGrouping();
 	
@@ -711,14 +712,14 @@ Procedure OutputReport(Ref)
 		
 		Region.Parameters.AccessPresentation = AccessPresentation;
 		
-		Document.Put(Area, 1);
+		Document.Put(Region, 1);
 		Document.Put(IndentArea, 2);
 		
 		For Each AccessGroupDescription In AccessGroupsDescriptions Do
 			If Not OnePersonalGroup Then
 				Region = Template.GetArea("AccessGroupGrouping");
 				Region.Parameters.Fill(AccessGroupDescription);
-				Document.Put(Area, 2);
+				Document.Put(Region, 2);
 			EndIf;
 			// Displaying group memberships
 			If AccessGroupDescription.Rows.Count() = 1
@@ -727,10 +728,10 @@ Procedure OutputReport(Ref)
 				// nothing to display
 			Else
 				Region = Template.GetArea("AccessGroupDetailsUserIsInGroup");
-				Document.Put(Area, 3);
+				Document.Put(Region, 3);
 				If AccessGroupDescription.Rows.Find(Ref, "Party") <> Undefined Then
 					Region = Template.GetArea("AccessGroupDetailsUserIsInGroupClearly");
-					Document.Put(Area, 3);
+					Document.Put(Region, 3);
 				EndIf;
 				Filter = New Structure("GroupParticipation", True);
 				UserGroupsDescriptions = AccessGroupDescription.Rows.FindRows(Filter);
@@ -739,14 +740,14 @@ Procedure OutputReport(Ref)
 					Region = Template.GetArea(
 						"AccessGroupDetailsUserIsInGroupAsUserGroupParty");
 					
-					Document.Put(Area, 3);
+					Document.Put(Region, 3);
 					For Each UserGroupDescription In UserGroupsDescriptions Do
 						
 						Region = Template.GetArea(
 							"AccessGroupDetailsUserIsInGroupAsPartyPresentation");
 						
 						Region.Parameters.Fill(UserGroupDescription);
-						Document.Put(Area, 3);
+						Document.Put(Region, 3);
 					EndDo;
 				EndIf;
 			EndIf;
@@ -755,21 +756,21 @@ Procedure OutputReport(Ref)
 				// Displaying profiles
 				Region = Template.GetArea("AccessGroupDetailsProfile");
 				Region.Parameters.Fill(AccessGroupDescription);
-				Document.Put(Area, 3);
+				Document.Put(Region, 3);
 			EndIf;
 			
 			// Displaying the user responsible for the group participant content
 			If Not OnePersonalGroup And ValueIsFilled(AccessGroupDescription.Responsible) Then
 				Region = Template.GetArea("AccessGroupDetailsResponsible");
 				Region.Parameters.Fill(AccessGroupDescription);
-				Document.Put(Area, 3);
+				Document.Put(Region, 3);
 			EndIf;
 			
 			// Displaying description
 			If Not OnePersonalGroup And ValueIsFilled(AccessGroupDescription.Description) Then
 				Region = Template.GetArea("AccessGroupDetailsDescription");
 				Region.Parameters.Fill(AccessGroupDescription);
-				Document.Put(Area, 3);
+				Document.Put(Region, 3);
 			EndIf;
 			
 			Document.Put(IndentArea, 3);
@@ -783,17 +784,17 @@ Procedure OutputReport(Ref)
 		If RolesByProfiles.Rows.Count() > 0 Then
 			Region = Template.GetArea("RolesByProfilesGrouping");
 			Region.Parameters.Fill(Properties);
-			Document.Put(Area, 1);
+			Document.Put(Region, 1);
 			Document.Put(IndentArea, 2);
 			
 			For Each ProfileDescription In RolesByProfiles.Rows Do
 				Region = Template.GetArea("RolesByProfilesProfilePresentation");
 				Region.Parameters.Fill(ProfileDescription);
-				Document.Put(Area, 2);
+				Document.Put(Region, 2);
 				For Each RoleDetails In ProfileDescription.Rows Do
 					Region = Template.GetArea("RolesByProfilesRolePresentation");
 					Region.Parameters.Fill(RoleDetails);
-					Document.Put(Area, 3);
+					Document.Put(Region, 3);
 				EndDo;
 			EndDo;
 		EndIf;
@@ -817,9 +818,9 @@ Procedure OutputReport(Ref)
 	
 	Region = Template.GetArea("ObjectRightsGrouping");
 	Region.Parameters.ObjectRightGroupingPresentation = NStr("en = 'View objects'");
-	Document.Put(Area, 1);
+	Document.Put(Region, 1);
 	Region = Template.GetArea("ObjectViewLegend");
-	Document.Put(Area, 2);
+	Document.Put(Region, 2);
 	
 	RightsSettingsOwners = AccessManagementInternalCached.Parameters(
 		).AvailableRightsForObjectRightsSettings.ByRefTypes;
@@ -832,7 +833,7 @@ Procedure OutputReport(Ref)
 			Region.Parameters.PresentationProfilesORAccessGroups = NStr("en = 'Access groups'");
 		EndIf;
 		Region.Parameters.Fill(ObjectKindDescription);
-		Document.Put(Area, 2);
+		Document.Put(Region, 2);
 		
 		Region = Template.GetArea("ObjectRightsTableTitleAdditional");
 		If AccessRightsDetails Then
@@ -841,7 +842,7 @@ Procedure OutputReport(Ref)
 			Region.Parameters.PresentationProfilesORAccessGroups = "";
 		EndIf;
 		Region.Parameters.Fill(ObjectKindDescription);
-		Document.Put(Area, 3);
+		Document.Put(Region, 3);
 		
 		For Each ObjectDescription In ObjectKindDescription.Rows Do
 			ObjectAreaInitialString = Undefined;
@@ -912,10 +913,10 @@ Procedure OutputReport(Ref)
 						For Each AccessGroupDescription In RoleKindDescription.Rows[0].Rows Do
 							Index = AccessGroupDescription.Rows.Count()-1;
 							While Index >= 0 Do
-								If AccessGroupDescription.Rows[PostalCode].AccessKind = Undefined Then
-									AccessGroupDescription.Rows.Delete(PostalCode);
+								If AccessGroupDescription.Rows[Index].AccessKind = Undefined Then
+									AccessGroupDescription.Rows.Delete(Index);
 								EndIf;
-								Index = PostalCode-1;
+								Index = Index - 1;
 							EndDo;
 							InitialAreaStringAccessGroups = Undefined;
 							If Region = Undefined Then
@@ -966,10 +967,10 @@ Procedure OutputReport(Ref)
 									For Each AccessKindDescription In AccessGroupDescription.Rows Do
 										Index = AccessKindDescription.Rows.Count()-1;
 										While Index >= 0 Do
-											If Not ValueIsFilled(AccessKindDescription.Rows[PostalCode].AccessValue) Then
-												AccessKindDescription.Rows.Delete(PostalCode);
+											If Not ValueIsFilled(AccessKindDescription.Rows[Index].AccessValue) Then
+												AccessKindDescription.Rows.Delete(Index);
 											EndIf;
-											Index = PostalCode-1;
+											Index = Index - 1;
 										EndDo;
 										// Getting a new area if the access kind is not the first one
 										If Region = Undefined Then
@@ -1066,9 +1067,9 @@ Procedure OutputReport(Ref)
 	
 	Region = Template.GetArea("ObjectRightsGrouping");
 	Region.Parameters.ObjectRightGroupingPresentation = NStr("en = 'Object editing'");
-	Document.Put(Area, 1);
+	Document.Put(Region, 1);
 	Region = Template.GetArea("ObjectsEditLegend");
-	Document.Put(Area, 2);
+	Document.Put(Region, 2);
 	
 	For Each ObjectKindDescription In RightsObjects.Rows Do
 		Region = Template.GetArea("ObjectRightsTableTitle");
@@ -1078,7 +1079,7 @@ Procedure OutputReport(Ref)
 			Region.Parameters.PresentationProfilesORAccessGroups = NStr("en = 'Access groups'");
 		EndIf;
 		Region.Parameters.Fill(ObjectKindDescription);
-		Document.Put(Area, 2);
+		Document.Put(Region, 2);
 		
 		Region = Template.GetArea("ObjectRightsTableTitleAdditional");
 		If AccessRightsDetails Then
@@ -1087,7 +1088,7 @@ Procedure OutputReport(Ref)
 			Region.Parameters.PresentationProfilesORAccessGroups = "";
 		EndIf;
 		Region.Parameters.Fill(ObjectKindDescription);
-		Document.Put(Area, 3);
+		Document.Put(Region, 3);
 
 		InsertIsUsed =
 			Upper(Left(ObjectKindDescription.ObjectKind, StrLen("Register"))) <> Upper("Register");
@@ -1249,10 +1250,10 @@ Procedure OutputReport(Ref)
 						For Each AccessGroupDescription In RoleKindDescription.Rows[0].Rows Do
 							Index = AccessGroupDescription.Rows.Count()-1;
 							While Index >= 0 Do
-								If AccessGroupDescription.Rows[PostalCode].AccessKind = Undefined Then
-									AccessGroupDescription.Rows.Delete(PostalCode);
+								If AccessGroupDescription.Rows[Index].AccessKind = Undefined Then
+									AccessGroupDescription.Rows.Delete(Index);
 								EndIf;
-								Index = PostalCode-1;
+								Index = Index - 1;
 							EndDo;
 							InitialAreaStringAccessGroups = Undefined;
 							If Region = Undefined Then
@@ -1300,17 +1301,17 @@ Procedure OutputReport(Ref)
 									For Each AccessKindDescription In AccessGroupDescription.Rows Do
 										Index = AccessKindDescription.Rows.Count()-1;
 										While Index >= 0 Do
-											If Not ValueIsFilled(AccessKindDescription.Rows[PostalCode].AccessValue) Then
-												AccessKindDescription.Rows.Delete(PostalCode);
+											If Not ValueIsFilled(AccessKindDescription.Rows[Index].AccessValue) Then
+												AccessKindDescription.Rows.Delete(Index);
 											EndIf;
-											Index = PostalCode-1;
+											Index = Index - 1;
 										EndDo;
 										Index = AccessKindDescription.Rows.Count()-1;
 										While Index >= 0 Do
-											If Not ValueIsFilled(AccessKindDescription.Rows[PostalCode].AccessValue) Then
-												AccessKindDescription.Rows.Delete(PostalCode);
+											If Not ValueIsFilled(AccessKindDescription.Rows[Index].AccessValue) Then
+												AccessKindDescription.Rows.Delete(Index);
 											EndIf;
-											Index = PostalCode-1;
+											Index = Index - 1;
 										EndDo;
 										// Getting a new area if the access kind is not the first one
 										If Region = Undefined Then
@@ -1425,16 +1426,16 @@ Procedure OutputReport(Ref)
 		
 		Region = Template.GetArea("RightSettingsGrouping");
 		Region.Parameters.Fill(ObjectTypeDescription);
-		Document.Put(Area, 1);
+		Document.Put(Region, 1);
 		
 		// Legend output
 		Region = Template.GetArea("RightSettingsLegendHeader");
-		Document.Put(Area, 2);
+		Document.Put(Region, 2);
 		For Each RightDetails In RightDescription Do
 			Region = Template.GetArea("RightSettingsLegendString");
 			Region.Parameters.Title = StrReplace(RightDetails.Title, Chars.LF, " ");
 			Region.Parameters.Tooltip = StrReplace(RightDetails.Tooltip, Chars.LF, " ");
-			Document.Put(Area, 2);
+			Document.Put(Region, 2);
 		EndDo;
 		
 		TitleForSubfolders =
@@ -1444,13 +1445,13 @@ Procedure OutputReport(Ref)
 		Region = Template.GetArea("RightSettingsLegendString");
 		Region.Parameters.Title = StrReplace(TitleForSubfolders, Chars.LF, " ");
 		Region.Parameters.Tooltip = StrReplace(TooltipForSubfolders, Chars.LF, " ");
-		Document.Put(Area, 2);
+		Document.Put(Region, 2);
 		
 		TitleSettingsReceivedFromGroup = NStr("en = 'Rights setting is received from a group'");
 		
 		Region = Template.GetArea("RightSettingsLegendStringInheritance");
 		Region.Parameters.Tooltip = NStr("en = 'Right inheritance from parent folders'");
-		Document.Put(Area, 2);
+		Document.Put(Region, 2);
 		
 		Document.Put(IndentArea, 2);
 		
@@ -1463,15 +1464,15 @@ Procedure OutputReport(Ref)
 		For ColumnNumber = 1 To ColumnsNumber Do
 			NewHeaderCell  = Template.GetArea("RightSettingsDetailsCellHeader");
 			HeaderCell = HeaderTemplate.Join(NewHeaderCell);
-			HeaderCell.HorizontalLocation = HorizontalLocation.Center;
+			HeaderCell.HorizontalAlign = HorizontalAlign.Center;
 			NewRowCell = Template.GetArea("RightSettingsDetailsCellRows");
 			RowCell = TemplateRows.Join(NewRowCell);
-			RowCell.HorizontalLocation = HorizontalLocation.Center;
+			RowCell.HorizontalAlign = HorizontalAlign.Center;
 		EndDo;
 		
 		If OutputUserGroups Then
-			HeaderCell.HorizontalLocation  = HorizontalLocation.Left;
-			RowCell.HorizontalLocation = HorizontalLocation.Left;
+			HeaderCell.HorizontalAlign  = HorizontalAlign.Left;
+			RowCell.HorizontalAlign = HorizontalAlign.Left;
 		EndIf;
 		
 		// Header table output
@@ -1517,7 +1518,7 @@ Procedure OutputReport(Ref)
 			EndIf;
 			
 			Region.Parameters.Fill(ObjectDescription);
-			Document.Put(Area, 2);
+			Document.Put(Region, 2);
 			For Each UserDetails In ObjectDescription.Rows Do
 				
 				For RightAreaNumber = 1 To ColumnsNumber Do
@@ -1626,10 +1627,10 @@ Procedure PutArea(Val Document,
                          InitialAreaStringAccessGroups)
 	
 	If ObjectAreaInitialString = Undefined Then
-		ObjectAreaInitialString = Document.Output(Area, Level);
+		ObjectAreaInitialString = Document.Put(Region, Level);
 		EndObjectAreaRow        = ObjectAreaInitialString;
 	Else
-		EndObjectAreaRow = Document.Output(Area);
+		EndObjectAreaRow = Document.Put(Region);
 	EndIf;
 	
 	If InitialAreaStringAccessGroups = Undefined Then
@@ -1744,22 +1745,22 @@ Function RightRestrictionKindsOfMetadataObjects()
 		Return Cache.Table;
 	EndIf;
 	
-	Request = New Request;
-	Request.SetParameter("PermanentRestrictionKinds",
+	Query = New Query;
+	Query.SetParameter("PermanentRestrictionKinds",
 		AccessManagementInternalCached.PermanentRightRestrictionKindsOfMetadataObjects());
 	
-	Request.SetParameter("AccessKindValueTypes",
+	Query.SetParameter("AccessKindValueTypes",
 		AccessManagementInternalCached.ValueTypesOfAccessKindsAndRightsSettingsOwners());
 	
 	AccessKindsToUse = AccessManagementInternalCached.ValueTypesOfAccessKindsAndRightsSettingsOwners(
 		).Copy(, "AccessKind");
 	
-	AccessKindsToUse.Collapse("AccessKind");
+	AccessKindsToUse.GroupBy("AccessKind");
 	AccessKindsToUse.Columns.Add("Presentation", New TypeDescription("String", ,,, New StringQualifiers(150)));
 	
 	Index = AccessKindsToUse.Count()-1;
 	While Index >= 0 Do
-		String = AccessKindsToUse[PostalCode];
+		Row = AccessKindsToUse[Index];
 		AccessKindProperties = AccessManagementInternal.AccessKindProperties(Row.AccessKind);
 		
 		If AccessKindProperties = Undefined Then
@@ -1773,14 +1774,14 @@ Function RightRestrictionKindsOfMetadataObjects()
 		ElsIf AccessManagementInternal.AccessKindUsed(Row.AccessKind) Then
 			Row.Presentation = AccessKindProperties.Presentation;
 		Else
-			AccessKindsToUse.Delete(String);
+			AccessKindsToUse.Delete(Row);
 		EndIf;
 		Index = Index - 1;
 	EndDo;
 	
-	Request.SetParameter("AccessKindsToUse", AccessKindsToUse);
+	Query.SetParameter("AccessKindsToUse", AccessKindsToUse);
 	
-	Request.Text =
+	Query.Text =
 	"SELECT
 	|	PermanentRestrictionKinds.Table,
 	|	PermanentRestrictionKinds.Right,
@@ -1879,7 +1880,7 @@ Function RightRestrictionKindsOfMetadataObjects()
 	|		INNER JOIN AccessKindsToUse AS AccessKindsToUse
 	|		ON AllRightRestrictionsKinds.AccessKind = AccessKindsToUse.AccessKind";
 	
-	Data = Request.Execute().Unload();
+	Data = Query.Execute().Unload();
 	
 	Cache.Table = Data;
 	Cache.UpdateDate = CurrentSessionDate();
@@ -1907,11 +1908,11 @@ Function ObjectTypeRootItems(ObjectsType)
 	
 	TableName = Metadata.FindByType(ObjectsType).FullName();
 	
-	Request = New Request;
-	Request.SetParameter("EmptyRef",
+	Query = New Query;
+	Query.SetParameter("EmptyRef",
 		CommonUse.ObjectManagerByFullName(TableName).EmptyRef());
 	
-	Request.Text =
+	Query.Text =
 	"SELECT
 	|	CurrentTable.Ref AS Ref
 	|FROM
@@ -1919,8 +1920,8 @@ Function ObjectTypeRootItems(ObjectsType)
 	|WHERE
 	|	CurrentTable.Parent = &EmptyRef";
 	
-	Request.Text = StrReplace(Request.Text, "&CurrentTable", TableName);
-	Selection = Request.Execute().Select();
+	Query.Text = StrReplace(Query.Text, "&CurrentTable", TableName);
+	Selection = Query.Execute().Select();
 	
 	RootItems = New Map;
 	While Selection.Next() Do

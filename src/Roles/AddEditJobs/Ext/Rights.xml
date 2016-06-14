@@ -175,7 +175,7 @@
 	<restrictionTemplate>
 		<name>ByValues</name>
 		<condition>// ByValues(Table, -, Modifier, V1,P1, V2,P2, ..., IN(n), P(n)).
-// # parameter: 1, 2, 3, 4, 5, 6, 7, ..., 2+n*2,3+n*2.
+// Parameter number: 1, 2, 3, 4, 5, 6, 7, ..., 2+n*2,3+n*2.
 // Read so: "access restriction by values".
 // Parameters:
 // Table - The current table name, for example, Document.ProductAndServiceReceipt.
@@ -325,10 +325,10 @@ TRUE IN
 					AccessGroupsUsers.Ref AS AccessGroup
 				FROM
 					Catalog.AccessGroups.Users AS AccessGroupsUsers
-					INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+					INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 					ON
-						 UserGroupContent.User = &amp;AuthorizedUser
-						AND UserGroupContent.UserGroup = AccessGroupsUsers.User
+						 UserGroupContents.User = &amp;AuthorizedUser
+						AND UserGroupContents.UserGroup = AccessGroupsUsers.User
 			 )
 	WHERE
  ( // Search for values of the specified fields in allowed groups access values (users).
@@ -371,10 +371,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -394,10 +394,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(4),") #Then
@@ -530,10 +530,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -553,10 +553,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(6),") #Then
@@ -687,10 +687,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -710,10 +710,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(8),") #Then
@@ -844,10 +844,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -867,10 +867,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(10),") #Then
@@ -1001,10 +1001,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1024,10 +1024,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(12),") #Then
@@ -1158,10 +1158,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1181,10 +1181,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(14),") #Then
@@ -1315,10 +1315,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1338,10 +1338,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(16),") #Then
@@ -1472,10 +1472,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1495,10 +1495,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(18),") #Then
@@ -1629,10 +1629,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1652,10 +1652,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(20),") #Then
@@ -1786,10 +1786,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1809,10 +1809,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(22),") #Then
@@ -1943,10 +1943,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -1966,10 +1966,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(24),") #Then
@@ -2100,10 +2100,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -2123,10 +2123,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(26),") #Then
@@ -2257,10 +2257,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -2280,10 +2280,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(28),") #Then
@@ -2414,10 +2414,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -2437,10 +2437,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(30),") #Then
@@ -2571,10 +2571,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -2594,10 +2594,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(32),") #Then
@@ -2728,10 +2728,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -2751,10 +2751,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(34),") #Then
@@ -2854,7 +2854,7 @@ TRUE IN
 	<restrictionTemplate>
 		<name>ByValuesAndSetsAdvanced</name>
 		<condition>// ByValuesAndSetsAdvanced(Table, -, Modifier, JoinedTables, B, A1,F1,B1, A2,F2,B2,..., A(n), F(n), B(n)).
-// Parameter #: 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,...,3+n*3,4+n*3,5+n*3.
+// Parameter number: 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,...,3+n*3,4+n*3,5+n*3.
 // Read as: "access restriction by values and sets advanced".
 // Parameters:
 // Table - The current table name, for example, Document.ProductAndServiceReceipt.
@@ -3045,10 +3045,10 @@ TRUE IN
 					AccessGroupsUsers.Ref AS AccessGroup
 				FROM
 					Catalog.AccessGroups.Users AS AccessGroupsUsers
-					INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+					INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 					ON
-						 UserGroupContent.User = &amp;AuthorizedUser
-						AND UserGroupContent.UserGroup = AccessGroupsUsers.User
+						 UserGroupContents.User = &amp;AuthorizedUser
+						AND UserGroupContents.UserGroup = AccessGroupsUsers.User
 			 )
 	WHERE
  ( // Searching for values of the specified fields in the values of access groups (users)
@@ -3134,10 +3134,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -3157,10 +3157,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -3421,10 +3421,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -3443,10 +3443,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -3483,10 +3483,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -3506,10 +3506,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(6),") #Then
@@ -3686,10 +3686,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -3709,10 +3709,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -3973,10 +3973,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -3995,10 +3995,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -4035,10 +4035,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -4058,10 +4058,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(9),") #Then
@@ -4238,10 +4238,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -4261,10 +4261,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -4525,10 +4525,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -4547,10 +4547,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -4587,10 +4587,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -4610,10 +4610,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(12),") #Then
@@ -4790,10 +4790,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -4813,10 +4813,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -5077,10 +5077,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -5099,10 +5099,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -5139,10 +5139,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -5162,10 +5162,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(15),") #Then
@@ -5342,10 +5342,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -5365,10 +5365,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -5629,10 +5629,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -5651,10 +5651,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -5691,10 +5691,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -5714,10 +5714,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(18),") #Then
@@ -5894,10 +5894,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 					(
@@ -5917,10 +5917,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -6181,10 +6181,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 						(
@@ -6203,10 +6203,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -6243,10 +6243,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or to any group that includes the user
 			(
@@ -6266,10 +6266,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(21),") #Then
@@ -6446,10 +6446,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -6469,10 +6469,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -6733,10 +6733,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -6755,10 +6755,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -6795,10 +6795,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -6818,10 +6818,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(24),") #Then
@@ -6998,10 +6998,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -7021,10 +7021,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -7285,10 +7285,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -7307,10 +7307,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -7347,10 +7347,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -7370,10 +7370,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(27),") #Then
@@ -7550,10 +7550,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -7573,10 +7573,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -7837,10 +7837,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -7859,10 +7859,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -7899,10 +7899,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -7922,10 +7922,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(30),") #Then
@@ -8102,10 +8102,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -8125,10 +8125,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -8389,10 +8389,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -8411,10 +8411,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -8451,10 +8451,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -8474,10 +8474,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(33),") #Then
@@ -8654,10 +8654,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -8677,10 +8677,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -8941,10 +8941,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -8963,10 +8963,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -9003,10 +9003,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -9026,10 +9026,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(36),") #Then
@@ -9206,10 +9206,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -9229,10 +9229,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -9493,10 +9493,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -9515,10 +9515,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -9555,10 +9555,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -9578,10 +9578,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(39),") #Then
@@ -9758,10 +9758,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -9781,10 +9781,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -10045,10 +10045,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -10067,10 +10067,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -10107,10 +10107,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -10130,10 +10130,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(42),") #Then
@@ -10310,10 +10310,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -10333,10 +10333,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -10597,10 +10597,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -10619,10 +10619,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -10659,10 +10659,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -10682,10 +10682,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(45),") #Then
@@ -10862,10 +10862,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -10885,10 +10885,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -11149,10 +11149,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -11171,10 +11171,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -11211,10 +11211,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -11234,10 +11234,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(48),") #Then
@@ -11414,10 +11414,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 				AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 					(
@@ -11437,10 +11437,10 @@ TRUE IN
 						 #EndIf
 							AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 						#EndIf
-						INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+						INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 						ON
-							 UserGroupContent.User = &amp;AuthorizedUser
-							AND UserGroupContent.UserGroup = RightsSettings.User
+							 UserGroupContents.User = &amp;AuthorizedUser
+							AND UserGroupContents.UserGroup = RightsSettings.User
 					)
 			)
 		ELSE
@@ -11701,10 +11701,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					AND Not FALSE IN // Checking whether the right is denied to the user or any group where it belongs
 						(
@@ -11723,10 +11723,10 @@ TRUE IN
 									THEN ValueSets.Adjustment
 									ELSE VALUE(Catalog.MetadataObjectIDs.EmptyRef) END
 							#EndIf
-							INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+							INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 							ON
-								 UserGroupContent.User = &amp;AuthorizedUser
-								AND UserGroupContent.UserGroup = RightsSettings.User
+								 UserGroupContents.User = &amp;AuthorizedUser
+								AND UserGroupContents.UserGroup = RightsSettings.User
 						)
 					)
 			#Else
@@ -11763,10 +11763,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingPermissionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 		 AND Not FALSE IN // Checking whether the right is denied to the user or any group that includes the user
 			(
@@ -11786,10 +11786,10 @@ TRUE IN
 				 #EndIf
 					AND SettingsInheritance.UsageLevel &lt; RightsSettings.ChangingProhibitionLevel
 				#EndIf
-				INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+				INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 				ON
-					 UserGroupContent.User = &amp;AuthorizedUser
-					AND UserGroupContent.UserGroup = RightsSettings.User
+					 UserGroupContents.User = &amp;AuthorizedUser
+					AND UserGroupContents.UserGroup = RightsSettings.User
 			)
 	 )
 #ElsIf Not StrContains(&amp;AllAccessKindsExceptSpecial, ",#Parameter(51),") #Then

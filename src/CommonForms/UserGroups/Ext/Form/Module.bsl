@@ -230,11 +230,11 @@ Procedure FillGroupTree(UncheckAllOnly = False)
 	While Subgroups.Count() > 0 Do
 		ParentArray.Clear();
 		
-		For Each Group In Subgroups Do
+		For Each CurGroup In Subgroups Do
 			
-			If Group.Parent = EmptyGroup Then
+			If CurGroup.Parent = EmptyGroup Then
 				NewGroupRow = GroupTreeTarget.Rows.Add();
-				NewGroupRow.Group = Group.Ref;
+				NewGroupRow.Group = CurGroup.Ref;
 				NewGroupRow.Picture = ?(UserType = "User", 3, 9);
 				
 				If UserList.UserCount = 1 Then
@@ -242,12 +242,12 @@ Procedure FillGroupTree(UncheckAllOnly = False)
 					UserRef = UserList.UserArray[0];
 					
 					If UserType = "ExternalUser" Then
-						UserIndirectlyIncludedInGroup = (Group.AllAuthorizationObjects And 
-							(TypeOf(UserRef.AuthorizationObject) = TypeOf(Group.AuthorizationObjectType)));
+						UserIndirectlyIncludedInGroup = (CurGroup.AllAuthorizationObjects And 
+							(TypeOf(UserRef.AuthorizationObject) = TypeOf(CurGroup.AuthorizationObjectType)));
 						NewGroupRow.ReadOnlyGroup = UserIndirectlyIncludedInGroup;
 					EndIf;
 					
-					FoundUser = Group.Ref.Content.Find(UserRef, UserType);
+					FoundUser = CurGroup.Ref.Content.Find(UserRef, UserType);
 					NewGroupRow.Check = ?(FoundUser <> Undefined OR UserIndirectlyIncludedInGroup, 1, 0);
 				Else
 					NewGroupRow.Check = 2;
@@ -255,13 +255,13 @@ Procedure FillGroupTree(UncheckAllOnly = False)
 				
 			Else
 				GroupParent = 
-					GroupTreeTarget.Rows.FindRows(New Structure("Group", Group.Parent), True);
+					GroupTreeTarget.Rows.FindRows(New Structure("Group", CurGroup.Parent), True);
 				NewSubgroupRow = GroupParent[0].Rows.Add();
-				NewSubgroupRow.Group = Group.Ref;
+				NewSubgroupRow.Group = CurGroup.Ref;
 				NewSubgroupRow.Picture = ?(UserType = "User", 3, 9);
 				
 				If UserList.UserCount = 1 Then
-					NewSubgroupRow.Check = ?(Group.Ref.Content.Find(
+					NewSubgroupRow.Check = ?(CurGroup.Ref.Content.Find(
 						UserList.UserArray[0], UserType) = Undefined, 0, 1);
 				Else
 					NewSubgroupRow.Check = 2;
@@ -269,7 +269,7 @@ Procedure FillGroupTree(UncheckAllOnly = False)
 				
 			EndIf;
 			
-			ParentArray.Add(Group.Ref);
+			ParentArray.Add(CurGroup.Ref);
 		EndDo;
 		Subgroups.Clear();
 		

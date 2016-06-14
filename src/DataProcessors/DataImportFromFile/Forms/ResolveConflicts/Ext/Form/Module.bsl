@@ -23,11 +23,11 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		EndIf;
 		
 		ObjectManager.FillInAmbiguityList(AmbiguityList, Parameters.Name, Parameters.ValuesOfColumnsToImport, Parameters.TabularSectionFullName);
-		Items.ConflictResolvingOption.Visibility = False;
+		Items.ConflictResolvingOption.Visible = False;
 		Items.DecorationTitle.Title = StringFunctionsClientServer.SubstituteParametersInString(Items.DecorationTitle.Title, Parameters.Name);
 		Items.DecorationTitle.Visible = True;
 		Items.ImportFromFileDecoration.Visible = False;
-		Items.CatalogItems.CommandBar.ChildItems.CatalogItemsNewItem.Visibility = False;
+		Items.CatalogItems.CommandBar.ChildItems.CatalogItemsNewItem.Visible = False;
 		For Each Column In Parameters.ValuesOfColumnsToImport Do 
 			MappingColumns.Add(Column.Key);
 		EndDo;

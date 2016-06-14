@@ -105,7 +105,7 @@ Procedure SetConditionalAppearance()
 	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
 	ItemFilter.RightValue = True;
 
-	Item.Appearance.SetParameterValue("BgColor", StyleColors.InaccessibleDataColor);
+	Item.Appearance.SetParameterValue("BackColor", StyleColors.InaccessibleDataColor);
 
 EndProcedure
 

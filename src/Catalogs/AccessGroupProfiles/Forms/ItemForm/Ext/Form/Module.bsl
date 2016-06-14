@@ -19,7 +19,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	// Determining if the access restrictions must be set up
 	If Not AccessManagement.UseRecordLevelSecurity() Then
-		Items.AccessKindsAndValues.Visibility = False;
+		Items.AccessKindsAndValues.Visible = False;
 	EndIf;
 	
 	// Determining if the form item editing (writing the form) is possible
@@ -171,7 +171,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 					NStr("en = 'The %1 role is not found in the metadata.'"),
 					Row.Synonym),
 				"Roles",
-				TreeItems.IndexOf(String),
+				TreeItems.IndexOf(Row),
 				StringFunctionsClientServer.SubstituteParametersInString(
 					NStr("en = 'The %2 role in the row %1 is not found in the metadata.'"),
 					"%1", Row.Synonym));
@@ -504,9 +504,9 @@ Procedure RestoreByInitialFillingCompletion(Answer, NotDefined) Export
 	UsersInternalClient.ExpandRoleSubsystems(ThisObject);
 	
 	If UpdateAccessGroups Then
-		Text = NStr("en = 'Profile "%1" is restored based on initial filling values, the profile access groups are updated.'");
+		Text = NStr("en = 'Profile ""%1"" is restored based on initial filling values, the profile access groups are updated.'");
 	Else
-		Text = NStr("en = 'Profile "%1" is restored based on initial filling values, the profile access groups are not updated.'");
+		Text = NStr("en = 'Profile ""%1"" is restored based on initial filling values, the profile access groups are not updated.'");
 	EndIf;
 	
 	ShowUserNotification(StringFunctionsClientServer.SubstituteParametersInString(
@@ -532,17 +532,17 @@ Procedure SetAvailabilityToDescribeAndRestoreSuppliedProfile(CurrentObject = Und
 		
 		If Catalogs.AccessGroupProfiles.SuppliedProfileChanged(CurrentObject) Then
 			// Defining the rights to restore based on the initial filling values
-			Items.RestoreByInitialFilling.Visibility =
+			Items.RestoreByInitialFilling.Visible =
 				Users.InfobaseUserWithFullAccess(,, False);
 			
 			Items.SuppliedProfileDescription.Enabled = False;
 		Else
-			Items.RestoreByInitialFilling.Visibility = False;
+			Items.RestoreByInitialFilling.Visible = False;
 			Items.SuppliedProfileDescription.Enabled = True;
 		EndIf;
 	Else
-		Items.RestoreByInitialFilling.Visibility = False;
-		Items.SuppliedProfileDescription.Visibility = False;
+		Items.RestoreByInitialFilling.Visible = False;
+		Items.SuppliedProfileDescription.Visible = False;
 	EndIf;
 	
 EndProcedure

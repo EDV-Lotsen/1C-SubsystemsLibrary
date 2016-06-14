@@ -564,19 +564,16 @@ Function FindPerformersByRoles(Val Task, Val BaseQueryText)
 	
 	If RetrievedPerformerData.Count() = 0 And ValueIsFilled(AAO) Then
 		QueryText = BaseQueryText + " And TaskPerformers.MainAddressingObject = &MAO 
-			|And (TaskPerformers.AdditionalAddressingObject
-= VALUE (ChartOfCharacteristicTypes.TaskAddressingObjects.EmptyRef)
+			|And (TaskPerformers.AdditionalAddressingObject = VALUE (ChartOfCharacteristicTypes.TaskAddressingObjects.EmptyRef)
 			|   OR TaskPerformers.AdditionalAddressingObject = Undefined)";
 		RetrievedPerformerData = UnloadPerformers(QueryText, MAO, Undefined);
 	EndIf;
 	
 	If RetrievedPerformerData.Count() = 0 Then
-		QueryText = BaseQueryText + " AND (TaskPerformers.MainAddressingObject = VALUE
-(ChartOfCharacteristicTypes.TaskAddressingObjects.EmptyRef)
+		QueryText = BaseQueryText + " AND (TaskPerformers.MainAddressingObject = VALUE(ChartOfCharacteristicTypes.TaskAddressingObjects.EmptyRef)
 			|   OR TaskPerformers.MainAddressingObject = Undefined) 
      |AND (TaskPerformers.AdditionalAddressingObject = VALUE(ChartOfCharacteristicTypes.TaskAddressingObjects.EmptyRef)  
-			|   OR
-TaskPerformers.AdditionalAddressingObject = Undefined)";
+			|   OR TaskPerformers.AdditionalAddressingObject = Undefined)";
 		RetrievedPerformerData = UnloadPerformers(QueryText, Undefined, Undefined);
 	EndIf;
 	

@@ -369,7 +369,7 @@ Procedure FillUserPictureNumbers(Val Table,
 			RowArray = Table.GetItems();
 		EndIf;
 		UserTable = New ValueTable;
-		UserTable.Columns.Add(UserFieldName, Metadata.InformationRegisters.UserGroupContent.Dimensions.UserGroup.Type);
+		UserTable.Columns.Add(UserFieldName, Metadata.InformationRegisters.UserGroupContents.Dimensions.UserGroup.Type);
 		For Each Row In RowArray Do
 			UserTable.Add()[UserFieldName] = Row[UserFieldName];
 			If ProcessSecondAndThirdLevelHierarchy Then
@@ -386,7 +386,7 @@ Procedure FillUserPictureNumbers(Val Table,
 			RowArray = Table;
 		EndIf;
 		UserTable = New ValueTable;
-		UserTable.Columns.Add(UserFieldName, Metadata.InformationRegisters.UserGroupContent.Dimensions.UserGroup.Type);
+		UserTable.Columns.Add(UserFieldName, Metadata.InformationRegisters.UserGroupContents.Dimensions.UserGroup.Type);
 		For Each Row In RowArray Do
 			UserTable.Add()[UserFieldName] = Row[UserFieldName];
 		EndDo;
@@ -493,8 +493,8 @@ Function CreateAdministrator(IBUser = Undefined) Export
 		// If a user with administrative rights exists, there is no need to create another administrator.
 		IBUser = Undefined;
 	
-		InfobaseUsers = InfobaseUsers.GetUsers();
-		For Each CurrentInfobaseUser In InfobaseUsers Do
+		CurInfobaseUsers = InfobaseUsers.GetUsers();
+		For Each CurrentInfobaseUser In CurInfobaseUsers Do
 			If InfobaseUserWithFullAccess(CurrentInfobaseUser,, False) Then
 				Return Undefined;
 			EndIf;

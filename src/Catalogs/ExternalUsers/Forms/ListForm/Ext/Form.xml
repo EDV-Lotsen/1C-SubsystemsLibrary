@@ -4,9 +4,7 @@
 	<Height>16</Height>
 	<AutoSaveDataInSettings>Use</AutoSaveDataInSettings>
 	<VerticalScroll>useIfNecessary</VerticalScroll>
-	<CommandSet>
-		<ExcludedCommand>Create</ExcludedCommand>
-	</CommandSet>
+	<CommandSet/>
 	<AutoCommandBar name="FormCommandBar" id="-1">
 		<Autofill>false</Autofill>
 	</AutoCommandBar>
@@ -59,7 +57,7 @@
 				<Button name="CreateExternalUser" id="54">
 					<Type>CommandBarButton</Type>
 					<SkipOnInput>false</SkipOnInput>
-					<CommandName>Form.Item.ExternalUsersList.StandardCommand.Create</CommandName>
+					<CommandName>48:0f8d6d98-2f8b-405a-b8b3-0538e9d95da5</CommandName>
 					<ExtendedTooltip name="CreateExternalUserExtendedTooltip" id="102"/>
 				</Button>
 				<Button name="CreateExternalUserGroup" id="55">
@@ -332,8 +330,6 @@
 									</RowsPicture>
 									<CommandSet>
 										<ExcludedCommand>OutputList</ExcludedCommand>
-										<ExcludedCommand>CopyToClipboard</ExcludedCommand>
-										<ExcludedCommand>Delete</ExcludedCommand>
 									</CommandSet>
 									<SearchStringLocation>None</SearchStringLocation>
 									<ViewStatusLocation>None</ViewStatusLocation>
@@ -684,7 +680,7 @@
 			</UseAlways>
 			<Settings xsi:type="DynamicList">
 				<ManualQuery>true</ManualQuery>
-				<DynamicDataRead>true</DynamicDataRead>
+				<DynamicDataRead>false</DynamicDataRead>
 				<QueryText>SELECT
 	ExternalUsers.Ref,
 	ExternalUsers.Prepared,
@@ -698,9 +694,9 @@
 			THEN 6
 		ELSE 7
 	END AS PictureNumber
-	FROM
+FROM
 	Catalog.ExternalUsers AS ExternalUsers
-	WHERE
+WHERE
 	(&amp;AnyAuthorizationObjectType
 			OR &amp;AuthorizationObjectType = VALUETYPE(ExternalUsers.AuthorizationObject))
 	AND (&amp;SelectHierarchy
@@ -708,10 +704,10 @@
 					(SELECT
 						TRUE
 					FROM
-						InformationRegister.UserGroupContent AS UserGroupContent
+						InformationRegister.UserGroupContents AS UserGroupContents
 					WHERE
-						UserGroupContent.User = ExternalUsers.Ref
-						AND UserGroupContent.UserGroup = &amp;ExternalUserGroup)
+						UserGroupContents.User = ExternalUsers.Ref
+						AND UserGroupContents.UserGroup = &amp;ExternalUserGroup)
 			OR NOT &amp;SelectHierarchy
 				AND TRUE IN
 					(SELECT
@@ -720,8 +716,7 @@
 						Catalog.ExternalUserGroups.Content AS ExternalUserGroupContent
 					WHERE
 						ExternalUserGroupContent.ExternalUser = ExternalUsers.Ref
-								AND ExternalUserGroupContent.Ref = &amp;ExternalUserGroup))</QueryText>
-				<MainTable>Catalog.ExternalUsers</MainTable>
+						AND ExternalUserGroupContent.Ref = &amp;ExternalUserGroup))</QueryText>
 				<ListSettings>
 					<dcsset:filter>
 						<dcsset:item xsi:type="dcsset:FilterItemComparison">

@@ -279,7 +279,7 @@ EndProcedure
 //  Container     - DataProcessorObject.ImportExportContainerManagerData - container
 //                  manager used for data import. For more
 //                  information, see the comment to ImportExportContainerManagerData interface.
-//  Serialization - XDTODataObject {http://www.1c.en/1cFresh/Data/Dump/1.0.2.1}InfoBaseUser - 
+//  Serialization - XDTODataObject {http://www.1c.ru/1cFresh/Data/Dump/1.0.2.1}InfoBaseUser - 
 //                  infobase user serialization.
 //  IBUser        - InfabaseUser deserialized from the export data.
 //  Cancel        - Boolean - when the values is swiched inside
@@ -307,7 +307,7 @@ EndProcedure
 //  Container     - DataProcessorObject.ImportExportContainerManagerData - container
 //                  manager used for data import. For more
 //                  information, see the comment to ImportExportContainerManagerData interface.
-//  Serialization - XDTODataObject {http://www.1c.en/1cFresh/Data/Dump/1.0.2.1}InfoBaseUser - 
+//  Serialization - XDTODataObject {http://www.1c.ru/1cFresh/Data/Dump/1.0.2.1}InfoBaseUser - 
 //                  infobase user serialization.
 //  IBUser        - InfabaseUser deserialized from the export data.
 //

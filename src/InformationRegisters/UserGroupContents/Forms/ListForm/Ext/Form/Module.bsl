@@ -47,7 +47,7 @@ EndProcedure
 &AtServer
 Procedure UpdateRegisterDataAtServer(HasChanges)
 	
-	InformationRegisters.UserGroupContent.UpdateRegisterData(HasChanges);
+	InformationRegisters.UserGroupContents.UpdateRegisterData(HasChanges);
 	
 	Items.List.Refresh();
 	

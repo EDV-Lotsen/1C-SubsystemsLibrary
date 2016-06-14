@@ -531,7 +531,7 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 				Raise;
 			EndTry;
 		
-			MessageTitle = New Structure("MessageChannel, Sender", MessageObject.Description, MessageObject.Sender);
+			MessageTitle = New Structure("MessageChannel, Sender", ConvertMessageChannel(MessageObject.Description), MessageObject.Sender);
 			
 			FoundRows = MessageHandlers.FindRows(New Structure("Channel", MessageTitle.MessageChannel));
 			
@@ -552,7 +552,7 @@ Procedure ProcessSystemMessageQueue(Filter = Undefined) Export
 				
 				For Each TableRow In FoundRows Do
 					
-					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, ConvertMessageBodyStructure(MessageObject.Body.Get()), MessageTitle.Sender);
+					TableRow.Handler.ProcessMessage(MessageTitle.MessageChannel, ConvertMessageBodyString(ConvertMessageBodyStructure(MessageObject.Body.Get())), MessageTitle.Sender);
 					
 					If TransactionActive() Then
 						While TransactionActive() Do
@@ -1556,6 +1556,7 @@ Function ConvertExchangePlanMessageData(MessageData) Export
 		StrReplace(
 		StrReplace(
 		StrReplace(
+		StrReplace(
 		MessageData, 
 		"ОбменДанными\ПрикладноеПриложение\УстановитьПрефиксОбластиДанных", "DataExchange\Application\SetDataAreaPrefix"), 
 		"ОбменДанными\ПрикладноеПриложение\УдалениеОбмена", "DataExchange\Application\ExchangeDeletion"), 
@@ -1568,7 +1569,8 @@ Function ConvertExchangePlanMessageData(MessageData) Export
 		"Заблокировано", "Locked"), 
 		"КоличествоПопытокОбработкиСообщения", "ProcessMessageRetryCount"), 
 		"ПодробноеПредставлениеОшибки", "DetailErrorDescription"), 
-		"ЭтоБыстроеСообщение", "IsInstantMessage");
+		"ЭтоБыстроеСообщение", "IsInstantMessage"),
+		"ПоставляемыеДанные\Обновление", "SuppliedData\Update");
 
 EndFunction
 	
@@ -1718,6 +1720,7 @@ Function ConvertBackDataExchangeScenarioValueTable(Val DataExchangeScenarioValue
 
 EndFunction // ConvertBackE()
 
+// Internal use only
 Function ConvertMessageBodyStructure(Val MessageBodyStructure) Export
 
 	If TypeOf(MessageBodyStructure) = Type("Structure") Then
@@ -1744,6 +1747,43 @@ Function ConvertMessageBodyStructure(Val MessageBodyStructure) Export
 
 EndFunction // ConvertMessageBodyStructure()
 
-   
+// Internal use only
+Function ConvertMessageChannel(Val MessageChannel) Export
+
+	Return StrReplace(MessageChannel, "ПоставляемыеДанные\Обновление", "SuppliedData\Update");	
+
+EndFunction // ConvertMessageSender()
+
+Function ConvertMessageBodyString(Val MessageBodyString) Export
+	
+	If TypeOf(MessageBodyString) = Type("String") Then
+		Return StrReplace(
+			StrReplace(
+			StrReplace( 
+			StrReplace( 
+			StrReplace(
+			StrReplace(
+			StrReplace(
+			StrReplace(
+			StrReplace(
+			StrReplace(MessageBodyString, "ЭталонОбластиДанных", "DataAreaPrototype"), 
+			"ИмяКонфигурации", "ConfigurationName"),
+			"ВерсияКонфигурации", "ConfigurationVersion"),
+			"Режим", "Mode"),
+			"Демонстрационный", "Demo"),
+			"Состояние", "State"),
+			"Отсутствует", "Missing"),
+			"Вариант", "Option"),
+			"Стандарт", "Standard"),
+			"Готов", "Done");
+	Else
+		Return MessageBodyString;
+	EndIf;
+	
+EndFunction
+
+
+
+  
 
  

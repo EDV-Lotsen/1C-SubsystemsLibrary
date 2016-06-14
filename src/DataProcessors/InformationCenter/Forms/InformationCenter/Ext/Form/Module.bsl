@@ -21,7 +21,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		MainPage                  = Catalogs.InformationLinksForForms.Homepage;
 		Homepage                  = New Structure("Name, Address", MainPage.Description, MainPage.Address);
 		Items.Homepage.Title       = Homepage.Name;
-		Items.Homepage.Visibility = ?(IsBlankString(Homepage.Address), False, True);
+		Items.Homepage.Visible = ?(IsBlankString(Homepage.Address), False, True);
 		
 		InformationCenterServerOverridable.GetInformationSearchLink(InformationSearchLink);
 		
@@ -29,8 +29,8 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 	Else // for local mode
 		
-		Items.StartPageGroup.Visibility   = False;
-		Items.InteractionGroup.Visibility = False;
+		Items.StartPageGroup.Visible   = False;
+		Items.InteractionGroup.Visible = False;
 		
 	EndIf;
 	

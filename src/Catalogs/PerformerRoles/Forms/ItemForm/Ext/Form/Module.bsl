@@ -123,9 +123,9 @@ Procedure RefreshEnabled()
 		Items.UsedInOtherAddressingDimensionsContext.Enabled = True;
 		Items.MainAddressingObjectTypes.Enabled = True;
 		Items.AdditionalAddressingObjectTypes.Enabled = True;
-		Items.ExchangeNode.Visibility = False;
+		Items.ExchangeNode.Visible = False;
 		Items.ExchangeNode.AutoMarkIncomplete = False;
-		Items.ExternalRole.Visibility = False;
+		Items.ExternalRole.Visible = False;
 		
 	EndIf;
 		

@@ -557,7 +557,7 @@ Procedure StreetAutoComplete(Item, Text, ChoiceData, Waiting, StandardProcessing
 		Return;
 	EndIf;
 	
-	Items.Street.BgColor = AutoColor;
+	Items.Street.BackColor = AutoColor;
 	If StrLen(Text) < 3 Or SettlementClassifierCode <= 0 Then 
 		// No options, the list is empty, no changes to the standard processing procedure
 		VisualizeChoiceValidity();

@@ -699,18 +699,18 @@
 			THEN 0
 		ELSE 1
 	END AS PictureNumber
-	FROM
+FROM
 	Catalog.Users AS Users
-	WHERE
+WHERE
 	(&amp;SelectHierarchy
 				AND TRUE IN
 					(SELECT
 						TRUE
 					FROM
-						InformationRegister.UserGroupContent AS UserGroupContent
+						InformationRegister.UserGroupContents AS UserGroupContents
 					WHERE
-						UserGroupContent.User = Users.Ref
-						AND UserGroupContent.UserGroup = &amp;UserGroup)
+						UserGroupContents.User = Users.Ref
+						AND UserGroupContents.UserGroup = &amp;UserGroup)
 			OR NOT &amp;SelectHierarchy
 				AND TRUE IN
 					(SELECT
@@ -719,7 +719,7 @@
 						Catalog.UserGroups.Content AS UserGroupContent
 					WHERE
 						UserGroupContent.User = Users.Ref
-								AND UserGroupContent.Ref = &amp;UserGroup))</QueryText>
+						AND UserGroupContent.Ref = &amp;UserGroup))</QueryText>
 				<MainTable>Catalog.Users</MainTable>
 				<ListSettings>
 					<dcsset:filter>

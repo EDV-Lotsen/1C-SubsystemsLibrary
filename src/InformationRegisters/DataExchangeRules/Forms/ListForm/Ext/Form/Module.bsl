@@ -5,7 +5,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	If Parameters.Property("ExchangePlansWithRulesFromFile") Then
 		
-		Items.RuleSource.Visibility = False;
+		Items.RuleSource.Visible = False;
 		CommonUseClientServer.SetDynamicListFilterItem(
 			List,
 			"RuleSource",

@@ -28,7 +28,7 @@ AccessManagementInternal.OnCreateAtServerAllowedValueEditingForm(ThisObject);
 	
 	// Determining if the access restrictions must be set up
 	If Not AccessManagement.UseRecordLevelSecurity() Then
-		Items.Access.Visibility = False;
+		Items.Access.Visible = False;
 	EndIf;
 	
 	// Setting availability for viewing the form in read only mode
@@ -58,13 +58,13 @@ EndProcedure
 &AtClient
 Procedure OnOpen(Cancel)
 	
-	If AnswerQuestionsOnFormOpen = "SetViewOnly" Then
-		AnswerQuestionsOnFormOpen = "";
+	If AnswerToQuestionOnOpenForm = "SetViewOnly" Then
+		AnswerToQuestionOnOpenForm = "";
 		ReadOnly = True;
 	EndIf;
 	
-	If AnswerQuestionsOnFormOpen = "SetAdministratorProfile" Then
-		AnswerQuestionsOnFormOpen = Undefined;
+	If AnswerToQuestionOnOpenForm = "SetAdministratorProfile" Then
+		AnswerToQuestionOnOpenForm = Undefined;
 		Object.Profile = PredefinedValue("Catalog.AccessGroupProfiles.Administrator");
 		Modified = True;
 		
@@ -81,8 +81,8 @@ Procedure OnOpen(Cancel)
 			,
 			DialogReturnCode.No);
 	Else
-		If AnswerQuestionsOnFormOpen = "RefreshAccessKindContent" Then
-			AnswerQuestionsOnFormOpen = "";
+		If AnswerToQuestionOnOpenForm = "RefreshAccessKindContent" Then
+			AnswerToQuestionOnOpenForm = "";
 			RefreshAccessKindContent();
 			AccessKindContentOnReadIsChanged = False;
 			
@@ -229,10 +229,10 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 	
 	// Preparing data to check compliance for authorization object types
 	If Object.UserType <> Undefined Then
-		Request = New Request;
-		Request.SetParameter(
+		Query = New Query;
+		Query.SetParameter(
 			"Users", UserTreeRows.UnloadColumn("User"));
-		Request.Text =
+		Query.Text =
 		"SELECT
 		|	ExternalUsers.Ref AS User,
 		|	ExternalUsers.AuthorizationObject AS AuthorizationObjectType
@@ -251,7 +251,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 		|WHERE
 		|	ExternalUserGroups.Ref IN(&Users)";
 		SetPrivilegedMode(True);
-		UserAuthorizationObjectTypes = Request.Execute().Unload();
+		UserAuthorizationObjectTypes = Query.Execute().Unload();
 		SetPrivilegedMode(False);
 		UserAuthorizationObjectTypes.Indexes.Add("User");
 	EndIf;
@@ -306,7 +306,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 		   And TypeOf(CurrentRow.User) <> Type("CatalogRef.Users") Then
 			
 			If TypeOf(CurrentRow.User) = Type("CatalogRef.ExternalUsers") Then
-				SingleErrorText  = NStr("en = 'External user "%2" cannot be a member of the predefined Administrators access group.'");
+				SingleErrorText  = NStr("en = 'External user ""%2:"" cannot be a member of the predefined Administrators access group.'");
 				SeveralErrorText = NStr("en = 'External user ""%2"" on line %1 cannot be a member of the predifined Administrators access group.'");
 				
 			ElsIf TypeOf(CurrentRow.User) = Type("CatalogRef.UserGroups") Then
@@ -935,13 +935,13 @@ Procedure InitialSettingsOnReadAndCreate(CurrentObject)
 		
 		UserIsFull = ValueIsFilled(CurrentObject.User);
 		
-		Items.Description.ReadOnly                   = UserIsFull;
-		Items.Parent.ReadOnly                        = UserIsFull;
-		Items.Profile.ReadOnly                       = UserIsFull;
-		Items.PersonalGroupsProperties.Visibility    = UserIsFull;
-		Items.TypePresentationUsers.Visibility       = Not UserIsFull;
-		Items.GroupUsers.Visibility                  = Not UserIsFull;
-		Items.ResponsibleForPersonalGroup.Visibility = UserIsFull;
+		Items.Description.ReadOnly                = UserIsFull;
+		Items.Parent.ReadOnly                     = UserIsFull;
+		Items.Profile.ReadOnly                    = UserIsFull;
+		Items.PersonalGroupProperties.Visible     = UserIsFull;
+		Items.UserTypePresentation.Visible        = Not UserIsFull;
+		Items.GroupUsers.Visible                  = Not UserIsFull;
+		Items.ResponsibleForPersonalGroup.Visible = UserIsFull;
 		
 		Items.UsersAndAccess.PagesRepresentation =
 			?(UserIsFull,
@@ -953,7 +953,7 @@ Procedure InitialSettingsOnReadAndCreate(CurrentObject)
 			  FormItemTitleLocation.Top,
 			  FormItemTitleLocation.None);
 		
-		Items.TypePresentationUsers.Visibility
+		Items.UserTypePresentation.Visible
 			= Not UserIsFull
 			And (    ExternalUsers.UseExternalUsers()
 			   Or   Object.UserType <> Undefined
@@ -974,13 +974,13 @@ Procedure InitialSettingsOnReadAndCreate(CurrentObject)
 			Items.Description.ReadOnly = True;
 		EndIf;
 	Else
-		Items.Description.ReadOnly                     = True;
-		Items.Profile.ReadOnly                         = True;
-		Items.PersonalGroupsProperties.Visibility      = False;
-		Items.TypePresentationUsers.ReadOnly           = True;
-		Items.Responsible.ReadOnly                     = True;
-		Items.ResponsibleForPersonalGroup.Visibility   = False;
-		Items.Description.ReadOnly                     = True;
+		Items.Description.ReadOnly                = True;
+		Items.Profile.ReadOnly                    = True;
+		Items.PersonalGroupsProperties.Visible    = False;
+		Items.TypePresentationUsers.ReadOnly      = True;
+		Items.Responsible.ReadOnly                = True;
+		Items.ResponsibleForPersonalGroup.Visible = False;
+		Items.Description.ReadOnly                = True;
 		
 		If Not AccessManagement.RoleExists("FullAccess") Then
 			ReadOnly = True;
@@ -1023,7 +1023,7 @@ Procedure FillUserTypeList()
 		AuthorizationObjectRefTypes =
 			Metadata.Catalogs.ExternalUsers.Attributes.AuthorizationObject.Type.Types();
 		
-		For Each AuthorizationObjectRefType If CurrentAccessValueStringOnError <> Undefined Then AuthorizationObjectRefTypes Do
+		For Each AuthorizationObjectRefType In AuthorizationObjectRefTypes Do
 			
 			TypeMetadata = Metadata.FindByType(AuthorizationObjectRefType);
 			
@@ -1062,12 +1062,12 @@ Procedure DeleteNotTypicalUsers()
 		Index = Object.Users.Count()-1;
 		While Index >= 0 Do
 			
-			If TypeOf(Object.Users[PostalCode].User)
+			If TypeOf(Object.Users[Index].User)
 			     <> Type("CatalogRef.Users")
-			   And TypeOf(Object.Users[PostalCode].User)
+			   And TypeOf(Object.Users[Index].User)
 			     <> Type("CatalogRef.UserGroups") Then
 				
-				Object.Users.Delete(PostalCode);
+				Object.Users.Delete(Index);
 			EndIf;
 			
 			Index = Index - 1;
@@ -1076,17 +1076,17 @@ Procedure DeleteNotTypicalUsers()
 		Index = Object.Users.Count()-1;
 		While Index >= 0 Do
 			
-			If TypeOf(Object.Users[PostalCode].User)
+			If TypeOf(Object.Users[Index].User)
 			     <> Type("CatalogRef.ExternalUsers")
-			   And TypeOf(Object.Users[PostalCode].User)
+			   And TypeOf(Object.Users[Index].User)
 			     <> Type("CatalogRef.ExternalUserGroups") Then
 				
-				Object.Users.Delete(PostalCode);
+				Object.Users.Delete(Index);
 			EndIf;
 			Index = Index - 1;
 		EndDo;
 		
-		Request = New Request(
+		Query = New Query(
 		"SELECT
 		|	ExternalUsers.Ref
 		|FROM
@@ -1106,13 +1106,13 @@ Procedure DeleteNotTypicalUsers()
 		|	AND VALUETYPE(ExternalUserGroups.AuthorizationObjectType) <> &ExternalUserType
 		|	AND ExternalUserGroups.Ref IN(&SelectedExternalUsersAndGroups)");
 		
-		Request.SetParameter(
+		Query.SetParameter(
 			"SelectedExternalUsersAndGroups",
 			Object.Users.Unload().UnloadColumn("User"));
 		
-		Request.SetParameter("ExternalUserType", TypeOf(Object.UserType));
+		Query.SetParameter("ExternalUserType", TypeOf(Object.UserType));
 		
-		Selection = Request.Execute().Select();
+		Selection = Query.Execute().Select();
 		
 		While Selection.Next() Do
 			Filter = New Structure("User", Selection.Ref);
@@ -1128,8 +1128,8 @@ EndProcedure
 &AtServer
 Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 	
-	Request = New Request;
-	Request.Text =
+	Query = New Query;
+	Query.Text =
 	"SELECT
 	|	ProfileAccessKinds.AccessKind,
 	|	ProfileAccessKinds.Preset,
@@ -1140,10 +1140,10 @@ Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 	|	ProfileAccessKinds.Ref = &Ref
 	|	AND Not ProfileAccessKinds.Preset";
 	
-	Request.SetParameter("Ref", Object.Profile);
+	Query.SetParameter("Ref", Object.Profile);
 	
 	SetPrivilegedMode(True);
-	ProfileAccessKinds = Request.Execute().Unload();
+	ProfileAccessKinds = Query.Execute().Unload();
 	SetPrivilegedMode(False);
 	
 	AccessKindContentChanged = False;
@@ -1151,13 +1151,13 @@ Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 	// Adding missing access types
 	Index = ProfileAccessKinds.Count() - 1;
 	While Index >= 0 Do
-		String = ProfileAccessKinds[PostalCode];
+		Row = ProfileAccessKinds[Index];
 		
 		Filter = New Structure("AccessKind", Row.AccessKind);
 		AccessKindProperties = AccessManagementInternal.AccessKindProperties(Row.AccessKind);
 		
 		If AccessKindProperties = Undefined Then
-			ProfileAccessKinds.Delete(String);
+			ProfileAccessKinds.Delete(Row);
 		
 		ElsIf Object.AccessKinds.FindRows(Filter).Count() = 0 Then
 			AccessKindContentChanged = True;
@@ -1177,7 +1177,7 @@ Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 	Index = Object.AccessKinds.Count() - 1;
 	While Index >= 0 Do
 		
-		AccessKind = Object.AccessKinds[PostalCode].AccessKind;
+		AccessKind = Object.AccessKinds[Index].AccessKind;
 		Filter = New Structure("AccessKind", AccessKind);
 		
 		AccessKindPropertiesInProfile = ProfileAccessKinds.FindRows(Filter);
@@ -1190,7 +1190,7 @@ Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 			If OnReadAtServer Then
 				Break;
 			Else
-				Object.AccessKinds.Delete(PostalCode);
+				Object.AccessKinds.Delete(Index);
 				For Each CollectionItem In Object.AccessValues.FindRows(Filter) Do
 					Object.AccessValues.Delete(CollectionItem);
 				EndDo;
@@ -1219,7 +1219,7 @@ Procedure RefreshAccessKindContent(Val OnReadAtServer = False)
 		For Each TSRow In ProfileAccessKinds Do
 			Filter = New Structure("AccessKind", TSRow.AccessKind);
 			Index = Object.AccessKinds.IndexOf(Object.AccessKinds.FindRows(Filter)[0]);
-			Object.AccessKinds.Move(PostalCode, ProfileAccessKinds.IndexOf(TSRow) - PostalCode);
+			Object.AccessKinds.Move(Index, ProfileAccessKinds.IndexOf(TSRow) - Index);
 		EndDo;
 	EndIf;
 	
@@ -1415,19 +1415,19 @@ Procedure RefreshGroupUsers(RowID = Undefined,
 		EndIf;
 	EndDo;
 	
-	Request = New Request;
-	Request.SetParameter("UserGroupMembers", UserGroupMembers);
-	Request.Text =
+	Query = New Query;
+	Query.SetParameter("UserGroupMembers", UserGroupMembers);
+	Query.Text =
 	"SELECT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.User
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.User
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	UserGroupContent.UserGroup IN(&UserGroupMembers)";
+	|	UserGroupContents.UserGroup IN(&UserGroupMembers)";
 	
-	GroupUsers = Request.Execute().Unload();
-	GroupUsers.Indexes.Add("UserGroup");
+	GroupsUsers = Query.Execute().Unload();
+	GroupsUsers.Indexes.Add("UserGroup");
 	
 	For Each Item In CollectionItems Do
 		Item.Ref = Item.User;
@@ -1438,7 +1438,7 @@ Procedure RefreshGroupUsers(RowID = Undefined,
 			// Filling group users
 			OldUsers = Item.GetItems();
 			Filter = New Structure("UserGroup", Item.User);
-			NewUsers = GroupUsers.FindRows(Filter);
+			NewUsers = GroupsUsers.FindRows(Filter);
 			
 			HasChanges = False;
 			
@@ -1454,11 +1454,11 @@ Procedure RefreshGroupUsers(RowID = Undefined,
 				Index = 0;
 				For Each Row In OldUsers Do
 					
-					If Row.Ref       <> NewUsers[PostalCode].User
-					 Or Row.User <> NewUsers[PostalCode].User Then
+					If Row.Ref       <> NewUsers[Index].User
+					 Or Row.User <> NewUsers[Index].User Then
 						
-						Row.Ref       = NewUsers[PostalCode].User;
-						Row.User = NewUsers[PostalCode].User;
+						Row.Ref       = NewUsers[Index].User;
+						Row.User = NewUsers[Index].User;
 						HasChanges = True;
 					EndIf;
 					Index = Index + 1;
@@ -1491,7 +1491,7 @@ Procedure RestoreObjectWithoutGroupMembers(CurrentObject)
 	
 	SetPrivilegedMode(True);
 	
-	Request = New Request(
+	Query = New Query(
 	"SELECT
 	|	AccessGroups.DeletionMark,
 	|	AccessGroups.Predefined,
@@ -1528,8 +1528,8 @@ Procedure RestoreObjectWithoutGroupMembers(CurrentObject)
 	|WHERE
 	|	AccessGroupsAccessValues.Ref = &Ref");
 	
-	Request.SetParameter("Ref", CurrentObject.Ref);
-	QueryResults = Request.ExecuteBatch();
+	Query.SetParameter("Ref", CurrentObject.Ref);
+	QueryResults = Query.ExecuteBatch();
 	
 	// Restoring attributes
 	FillPropertyValues(CurrentObject, QueryResults[0].Unload()[0]);

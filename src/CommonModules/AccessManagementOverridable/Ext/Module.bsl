@@ -159,11 +159,7 @@ EndProcedure
 //
  
 Procedure OnFillMetadataObjectAccessRestrictionKinds(Description) Export
-	
-	// _Demo begin example
-	//_DemoStandardSubsystems.OnFillMetadataObjectAccessRestrictionKinds(Description);
-	// _Demo end example
-	
+		
 EndProcedure
 
 // Allows to overwrite the dependent access value sets of other objects.

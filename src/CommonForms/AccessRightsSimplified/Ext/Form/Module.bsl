@@ -24,14 +24,14 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		FilterProfilesOnlyForCurrentUser = True;
 		// Hiding extra information
 		Items.Profiles.ReadOnly = True;
-		Items.ProfilesCheck.Visibility = False;
-		Items.Access.Visibility = False;
-		Items.FormWrite.Visibility = False;
+		Items.ProfilesCheck.Visible = False;
+		Items.Access.Visible = False;
+		Items.FormWrite.Visible = False;
 	Else
-		Items.FormWrite.Visibility = False;
-		Items.FormAccessRightsReport.Visibility = False;
-		Items.RightsAndRestrictions.Visibility = False;
-		Items.InsufficientViewRight.Visibility = True;
+		Items.FormWrite.Visible = False;
+		Items.FormAccessRightsReport.Visible = False;
+		Items.RightsAndRestrictions.Visible = False;
+		Items.InsufficientViewRight.Visible = True;
 		Return;
 	EndIf;
 	
@@ -56,7 +56,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	// Determining if the access restrictions must be set up
 	If Not AccessManagement.UseRecordLevelSecurity() Then
-		Items.Access.Visibility = False;
+		Items.Access.Visible = False;
 	EndIf;
 	
 	If CommonUseCached.DataSeparationEnabled() Then
@@ -116,9 +116,9 @@ EndProcedure
 &AtClient
 Procedure SetCurrentAccessValueRowOnError()
 	
-	If CurrentAccessValueStringOnError <> Undefined Then
-		Items.AccessValues.CurrentRow = CurrentAccessValueStringOnError;
-		CurrentAccessValueStringOnError = Undefined;
+	If CurrentAccessValueRowOnError <> Undefined Then
+		Items.AccessValues.CurrentRow = CurrentAccessValueRowOnError;
+		CurrentAccessValueRowOnError = Undefined;
 	EndIf;
 	
 EndProcedure
@@ -381,7 +381,7 @@ Procedure SetConditionalAppearance()
 	ItemFilter.ComparisonType = DataCompositionComparisonType.Equal;
 	ItemFilter.RightValue = Catalogs.AccessGroupProfiles.Administrator;
 
-	Item.Appearance.SetParameterValue("BgColor", StyleColors.InaccessibleDataColor);
+	Item.Appearance.SetParameterValue("BackColor", StyleColors.InaccessibleDataColor);
 
 EndProcedure
 
@@ -460,11 +460,11 @@ EndProcedure
 &AtServer
 Procedure ImportData(FilterProfilesOnlyForCurrentUser)
 	
-	Request = New Request;
-	Request.SetParameter("User", Parameters.User);
-	Request.SetParameter("FilterProfilesOnlyForCurrentUser",
+	Query = New Query;
+	Query.SetParameter("User", Parameters.User);
+	Query.SetParameter("FilterProfilesOnlyForCurrentUser",
 	                           FilterProfilesOnlyForCurrentUser);
-	Request.Text =
+	Query.Text =
 	"SELECT DISTINCT
 	|	Profiles.Ref,
 	|	ISNULL(AccessGroups.Ref, UNDEFINED) AS PersonalAccessGroup,
@@ -537,7 +537,7 @@ Procedure ImportData(FilterProfilesOnlyForCurrentUser)
 	|	Not ProfilesAccessKinds.Preset";
 	
 	SetPrivilegedMode(True);
-	QueryResults = Request.ExecuteBatch();
+	QueryResults = Query.ExecuteBatch();
 	SetPrivilegedMode(False);
 	
 	ValueToFormAttribute(QueryResults[1].Unload(), "Profiles");
@@ -557,20 +557,20 @@ Procedure WriteChangesAtServer(Cancel)
 	Users.FindAmbiguousInfobaseUsers();
 	
 	// Getting change list
-	Request = New Request;
+	Query = New Query;
 	
-	Request.SetParameter("User", Parameters.User);
+	Query.SetParameter("User", Parameters.User);
 	
-	Request.SetParameter(
+	Query.SetParameter(
 		"Profiles", Profiles.Unload(, "Profile, Mark"));
 	
-	Request.SetParameter(
+	Query.SetParameter(
 		"AccessKinds", AccessKinds.Unload(, "AccessGroup, AccessKind, AllAllowed"));
 	
-	Request.SetParameter(
+	Query.SetParameter(
 		"AccessValues", AccessValues.Unload(, "AccessGroup, AccessKind, AccessValue"));
 	
-	Request.Text =
+	Query.Text =
 	"SELECT
 	|	Profiles.Profile AS Ref,
 	|	Profiles.Check
@@ -730,7 +730,7 @@ Procedure WriteChangesAtServer(Cancel)
 	
 	BeginTransaction();
 	Try
-		Selection = Request.Execute().Select();
+		Selection = Query.Execute().Select();
 		While Selection.Next() Do
 			
 			If ValueIsFilled(Selection.PersonalAccessGroup) Then

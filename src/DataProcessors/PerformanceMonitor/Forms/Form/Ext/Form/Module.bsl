@@ -662,7 +662,7 @@ Procedure SetTSConditionalAppearance(FilterFields, AppearanceFields, Conditional
 			AppearanceItem = ConditionalAppearance.Items.Add();
 			
 			// Appearance type
-			AppearanceItem.Appearance.SetParameterValue("BgColor", KeyValue.Value.Color);
+			AppearanceItem.Appearance.SetParameterValue("BackColor", KeyValue.Value.Color);
 			// Appearance condition
 			FilterItem = AppearanceItem.Filter.Items.Add(Type("DataCompositionFilterItem"));
 			FilterItem.ComparisonType = DataCompositionComparisonType.GreaterOrEqual;
@@ -1307,31 +1307,31 @@ Function ApdexLevelAndColorMatch()
 	
 	Values = New Structure("From, To, Color");
 	Values.From = 0.001; // 0 means that the operation is not performed at all
-	Values.Before = 0.5;
+	Values.To = 0.5;
 	Values.Color = ColorUnacceptable();
 	Map.Insert("Unacceptable", Values);
 	
 	Values = New Structure("From, To, Color");
 	Values.From = 0.5;
-	Values.Before = 0.7;
+	Values.To = 0.7;
 	Values.Color = ColorPoor();
 	Map.Insert("Poor", Values);
 	
 	Values = New Structure("From, To, Color");
 	Values.From = 0.7;
-	Values.Before = 0.85;
+	Values.To = 0.85;
 	Values.Color = ColorFair();
 	Map.Insert("Fair", Values);
 	
 	Values = New Structure("From, To, Color");
 	Values.From = 0.85;
-	Values.Before = 0.94;
+	Values.To = 0.94;
 	Values.Color = ColorGood();
 	Map.Insert("Good", Values);
 	
 	Values = New Structure("From, To, Color");
 	Values.From = 0.94;
-	Values.Before = 1.002; // in conditional appearance the "Before" value is used as "Less" but not as "LessOrEqual"
+	Values.To = 1.002; // in conditional appearance the "To" value is used as "Less" but not as "LessOrEqual"
 	Values.Color = ColorExcellent();
 	Map.Insert("Excellent", Values);
 	

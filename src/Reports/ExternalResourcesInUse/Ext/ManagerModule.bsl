@@ -116,7 +116,7 @@ Procedure FillExternalResourceRequestResultPresentation(SpreadsheetDocument, Val
 		
 		If ItemsToAddCount > 0 Then
 			
-			SpreadsheetDocument.Output(OffsetArea);
+			SpreadsheetDocument.Put(OffsetArea);
 			
 			If AsRequired Then
 				HeaderArea = Template.GetArea("RequiredPermissionsHeader");
@@ -127,13 +127,13 @@ Procedure FillExternalResourceRequestResultPresentation(SpreadsheetDocument, Val
 			If Module <> Catalogs.MetadataObjectIDs.EmptyRef() Then
 				HeaderArea.Parameters.Module = Module;
 			EndIf;
-			SpreadsheetDocument.Output(HeaderArea);
+			SpreadsheetDocument.Put(HeaderArea);
 			
 			If OutputGroups Then
 				SpreadsheetDocument.StartRowGroup();
 			EndIf;
 			
-			SpreadsheetDocument.Output(OffsetArea);
+			SpreadsheetDocument.Put(OffsetArea);
 			
 			GeneratePermissionPresentation(SpreadsheetDocument, Difference.ToAdd, Template, AsRequired);
 			
@@ -152,7 +152,7 @@ Procedure FillExternalResourceRequestResultPresentation(SpreadsheetDocument, Val
 			
 			HeaderArea = Template.GetArea("PermissionsToDeleteHeader");
 			HeaderArea.Parameters.Description = ModuleDescription;
-			SpreadsheetDocument.Output(HeaderArea);
+			SpreadsheetDocument.Put(HeaderArea);
 			GeneratePermissionPresentation(SpreadsheetDocument, Difference.ToDelete, Template, AsRequired);
 			
 			If OutputGroups Then
@@ -196,7 +196,7 @@ Procedure GenerateOperationPresentation(SpreadsheetDocument, Val Template, Val A
 			Region = Template.GetArea("SecurityProfileDeletionHeader");
 			Region.Parameters["Description"] = ModuleDescription;
 			
-			SpreadsheetDocument.Output(Region);
+			SpreadsheetDocument.Put(Region);
 			
 		EndIf;
 		
@@ -232,13 +232,13 @@ Procedure GeneratePermissionPresentation(SpreadsheetDocument, Val PermissionSets
 			GroupAreaName = TemplateAreas.Find(PermissionType, "PermissionType").Group;
 			GroupArea = Template.GetArea(GroupAreaName);
 			FillPropertyValues(GroupArea.Parameters, New Structure("Count", Permissions.Count()));
-			SpreadsheetDocument.Output(GroupArea);
+			SpreadsheetDocument.Put(GroupArea);
 			
 			SpreadsheetDocument.StartRowGroup(PermissionType, True);
 			
 			HeaderNameArea = TemplateAreas.Find(PermissionType, "PermissionType").TableHeader;
 			HeaderArea = Template.GetArea(HeaderNameArea);
-			SpreadsheetDocument.Output(HeaderArea);
+			SpreadsheetDocument.Put(HeaderArea);
 			
 			RowAreaName = TemplateAreas.Find(PermissionType, "PermissionType").TableRow;
 			RowArea = Template.GetArea(RowAreaName);
@@ -258,13 +258,13 @@ Procedure GeneratePermissionPresentation(SpreadsheetDocument, Val PermissionSets
 				EndIf;
 				
 				FillPropertyValues(RowArea.Parameters, Permission);
-				SpreadsheetDocument.Output(RowArea);
+				SpreadsheetDocument.Put(RowArea);
 				
 			EndDo;
 			
 			SpreadsheetDocument.EndRowGroup();
 			
-			SpreadsheetDocument.Output(OffsetArea);
+			SpreadsheetDocument.Put(OffsetArea);
 			
 		EndIf;
 		

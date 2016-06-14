@@ -22,7 +22,7 @@ FormTitleText) And
 	If Parameters.Property("BusinessProcess") Then
 		BusinessProcessString = Parameters.BusinessProcess;
 		TaskString = Parameters.Task;
-		Items.TitleGroup.Visibility = True;
+		Items.TitleGroup.Visible = True;
 	EndIf;
 	
 	If Parameters.Property("ShowTasks") Then
@@ -32,7 +32,7 @@ FormTitleText) And
 	EndIf;
 	
 	If Parameters.Property("FilterVisibility") Then
-		Items.FilterGroup.Visibility = Parameters.FilterVisibility;
+		Items.FilterGroup.Visible = Parameters.FilterVisibility;
 	Else	
 		ByAuthor = Users.CurrentUser();
 	EndIf;
@@ -86,7 +86,7 @@ EndProcedure
 
 &AtServer
 Procedure OnSaveDataInSettingsAtServer(Settings)
-	SettingsName = ?(Items.TitleGroup.Visibility, "BPListForm", "ListForm");
+	SettingsName = ?(Items.TitleGroup.Visible, "BPListForm", "ListForm");
 	CommonUse.SystemSettingsStorageSave("Tasks.PerformerTask.Forms.ListForm", SettingsName, Settings);
 EndProcedure
 

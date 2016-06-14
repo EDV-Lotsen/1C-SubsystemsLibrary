@@ -14,15 +14,15 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	UseSubordinateBusinessProcesses = GetFunctionalOption("UseSubordinateBusinessProcesses");	
 	
 	If UseSubordinateBusinessProcesses Then
-		Items.List.Visibility = False;
-		Items.ListCommandBar.Visibility = False;
-		Items.ShowExecuted.Visibility = False;
-		Items.TaskTree.Visibility = True;
+		Items.List.Visible = False;
+		Items.ListCommandBar.Visible = False;
+		Items.ShowExecuted.Visible = False;
+		Items.TaskTree.Visible = True;
 	Else	
-		Items.List.Visibility = True;
-		Items.ListCommandBar.Visibility = True;
-		Items.ShowExecuted.Visibility = True;
-		Items.TaskTree.Visibility = False;
+		Items.List.Visible = True;
+		Items.ListCommandBar.Visible = True;
+		Items.ShowExecuted.Visible = True;
+		Items.TaskTree.Visible = False;
 	EndIf;	
 	
 	List.Parameters.Items[0].Value = Parameters.SelectValue;
@@ -72,8 +72,7 @@ EndProcedure
 
 #EndRegion
 
-#Region
-TaskTreeFormTableItemEventHandlers
+#Region TaskTreeFormTableItemEventHandlers
 
 &AtClient
 Procedure TaskTreeChoice(Item, 
@@ -92,11 +91,8 @@ EndProcedure
 Procedure Refresh(Command)
 	
 	RefreshTaskList();
-	For each String 
-FROM TaskTree.GetItems()
-Do
-		Items.TaskTree.Expand
-(Row.GetID(), True);
+	For each Row In TaskTree.GetItems() Do
+		Items.TaskTree.Expand(Row.GetID(), True);
 	EndDo;
 	
 EndProcedure
@@ -225,7 +221,7 @@ Procedure AddTasksBySubject(Tree, Subject)
 		
 		Branch = Tree.Rows.Find(DetailedRecordSelection.Ref, "Ref", True);
 		If Branch = Undefined Then
-			String = Tree.Rows.Add();
+			Row = Tree.Rows.Add();
 			
 			Row.Description = DetailedRecordSelection.Description;
 			Row.Importance = DetailedRecordSelection.Importance;
@@ -285,8 +281,7 @@ Procedure AddSubordinateBusinessProcesses(Tree, TaskRef)
 			|FROM
 			|	%BusinessProcess% AS BusinessProcesses
 			|WHERE
-			|   BusinessProcesses.MainTask = 
-&MainTask
+			|   BusinessProcesses.MainTask = &MainTask
 			|   AND BusinessProcesses.DeletionMark = False";
 			
 		Query.Text = StrReplace(Query.Text, "%BusinessProcess%", BusinessProcessMetadata.FullName());
@@ -351,18 +346,17 @@ Procedure AddSubordinateBusinessProcessTasks(Tree, BusinessProcessRef, TaskRef)
 			Tree.Rows.Delete(FoundBranch);
 		EndIf;	
 			
-		String = Undefined;
+		Row = Undefined;
 		If Branch = Undefined Then
-			String = Tree.Rows.Add();
+			Row = Tree.Rows.Add();
 		Else	
-			String = Branch.Rows.Add();
+			Row = Branch.Rows.Add();
 		EndIf;
 		
 		Row.Description = DetailedRecordSelection.Description;
 		Row.Importance = DetailedRecordSelection.Importance;
 		Row.Type = 1;
-		Row.Stopped = 
-DetailedRecordSelection.Stopped;
+		Row.Stopped = DetailedRecordSelection.Stopped;
 		Row.Ref = DetailedRecordSelection.Ref;
 		Row.DueDate = DetailedRecordSelection.DueDate;
 		Row.Executed = DetailedRecordSelection.Executed;
@@ -385,13 +379,11 @@ EndProcedure
 &AtClient
 Procedure OpenTaskTreeCurrentRow()
 	
-	If Items.TaskTree.CurrentData = 
-Undefined Then
+	If Items.TaskTree.CurrentData = Undefined Then
 		Return;
 	EndIf;
 	
-	ShowValue
-(,Items.TaskTree.CurrentData.Ref);
+	ShowValue(,Items.TaskTree.CurrentData.Ref);
 	
 EndProcedure
 

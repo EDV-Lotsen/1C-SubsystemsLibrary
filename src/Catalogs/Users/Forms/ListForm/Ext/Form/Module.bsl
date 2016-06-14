@@ -628,22 +628,22 @@ Procedure ChangeExtendedPickFormParameters()
 	// Setting visibility for the list of selected users.
 	Items.SelectedUsersAndGroups.Visible       = True;
 	If GetFunctionalOption("UseUserGroups") Then
-		Items.GroupsAndUsers.Grouping                = ChildFormItemsGroup.Vertical;
-		Items.GroupsAndUsers.SlaveItemsWidth  = ChildFormItemsWidth.Equal;
-		Items.UsersList.Height                    = 5;
-		Items.UserGroups.Height                   = 3;
-		ThisObject.Height                         = 17;
-		Items.ChooseGroupGroup.Visible            = True;
+		Items.GroupsAndUsers.Group	 			= ChildFormItemsGroup.Vertical;
+		Items.GroupsAndUsers.ChildItemsWidth	= ChildFormItemsWidth.Equal;
+		Items.UsersList.Height					= 5;
+		Items.UserGroups.Height					= 3;
+		ThisObject.Height						= 17;
+		Items.ChooseGroupGroup.Visible			= True;
 		// Enabling visibility for UsersList and UserGroups list titles.
 		Items.UserGroups.TitleLocation          = FormItemTitleLocation.Top;
 		Items.UsersList.TitleLocation           = FormItemTitleLocation.Top;
 		Items.UsersList.Title                   = NStr("en = 'Users in the group'");
 		If ExtendedPickFormParameters.Property("ImpossibleToPickGroup") Then
-			Items.ChooseGroup.Visible                     = False;
+			Items.ChooseGroup.Visible			= False;
 		EndIf;
 	Else
-		Items.CancelUserSelection.Visible             = True;
-		Items.ClearSelectedItemsList.Visible          = True;
+		Items.CancelUserSelection.Visible		= True;
+		Items.ClearSelectedItemsList.Visible	= True;
 	EndIf;
 	
 	// Adding the number of selected users to UsersList and UserGroups list titles.

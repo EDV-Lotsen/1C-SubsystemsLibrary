@@ -153,11 +153,11 @@ Function EvaluateApdex(EvaluationParameters) Export
 	|						ELSE 0
 	|					END
 	|			ELSE 0
-	|		END) AS TempBetweenT4T%Number%";
+	|		END) AS TimeBetweenT4T%Number%";
 	
 	Total = 
 	"
-	|	MAX(TempTotal%Number%)";
+	|	MAX(TimeTotal%Number%)";
 	
 	ByOverall = 
 	"
@@ -210,7 +210,7 @@ Function EvaluateApdex(EvaluationParameters) Export
 		
 		a = 0;
 		ArrayIndex = 0;
-		While a <= KeyOperationTable.Columns.Count() - 1 Do
+		 While a < KeyOperationTable.Columns.Count() And ArrayIndex < ColumnHeaders.Count() Do
 			
 			KeyOperationTableColumn = KeyOperationTable.Columns[a];
 			If Left(KeyOperationTableColumn.Name, 4) = "Time" Then

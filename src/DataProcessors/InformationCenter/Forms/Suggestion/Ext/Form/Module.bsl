@@ -104,8 +104,8 @@ Procedure Vote(Command)
 		Return;
 	EndIf;
 	
-	Items.Vote.Visibility     = False;
-	Items.WithYour.Visibility = True;
+	Items.Vote.Visible     = False;
+	Items.WithYour.Visible = True;
 	Items.Rating.Title        = Number(Items.Rating.Title) + 1;
 	
 	Notify("SuggestionChange");
@@ -373,20 +373,20 @@ Procedure GenerateSuggestionItems(SuggestionObjects)
 	
 	DeveloperComment = SuggestionStructure.Settings.DeveloperComment;
 	If IsBlankString(DeveloperComment) Then
-		Items.SupportTeamResponseGroup.Visibility = False;
+		Items.SupportTeamResponseGroup.Visible = False;
 	EndIf;
 	
 	If SuggestionStructure.Settings.EndDate <> '00010101' Then
-		Items.Done.Visibility = True;
+		Items.Done.Visible = True;
 		Items.Done.Title = "made
 		                    |" + String(Format(SuggestionStructure.Settings.EndDate, "DLF=D"));
 		Return;
 	EndIf;
 	
 	If SuggestionStructure.Settings.UserVote = 0 Then 
-		Items.Vote.Visibility = True;
+		Items.Vote.Visible = True;
 	Else
-		Items.WithYour.Visibility = True;
+		Items.WithYour.Visible = True;
 	EndIf;
 	
 EndProcedure

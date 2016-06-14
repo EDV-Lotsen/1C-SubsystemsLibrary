@@ -295,11 +295,11 @@ Procedure UpdateSuppliedProfiles(HasChanges = Undefined) Export
 	Query = New Query;
 	Query.Text =
 	"SELECT DISTINCT
-	|	UserGroupContent.User
+	|	UserGroupContents.User
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|		INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|		ON UserGroupContent.UserGroup = AccessGroupsUsers.User
+	|		ON UserGroupContents.UserGroup = AccessGroupsUsers.User
 	|			AND (AccessGroupsUsers.Ref.Profile IN (&Profiles))";
 	Query.SetParameter("Profiles", UpdatedProfiles);
 	UsersForUpdate = Query.Execute().Unload().UnloadColumn("User");

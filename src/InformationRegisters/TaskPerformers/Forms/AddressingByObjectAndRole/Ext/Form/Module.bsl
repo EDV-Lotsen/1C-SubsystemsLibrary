@@ -12,13 +12,13 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	Role = Parameters.Role;
 	MainAddressingObject = Parameters.MainAddressingObject;
 	If MainAddressingObject = Undefined Or MainAddressingObject = "" Then
-		Items.AdditionalAddressingObject.Visibility = False;
+		Items.AdditionalAddressingObject.Visible = False;
 		Items.List.Header = False;
-		Items.MainAddressingObject.Visibility = False;
+		Items.MainAddressingObject.Visible = False;
 	Else	                                
 		Items.MainAddressingObject.Title = MainAddressingObject.Metadata().ObjectPresentation;
 		AdditionalAddressingObject = Parameters.Role.AdditionalAddressingObjectTypes;
-		Items.AdditionalAddressingObject.Visibility = Not AdditionalAddressingObject.IsEmpty();
+		Items.AdditionalAddressingObject.Visible = Not AdditionalAddressingObject.IsEmpty();
 		Items.AdditionalAddressingObject.Title = AdditionalAddressingObject.Description;
 		AdditionalAddressingObjectTypes = AdditionalAddressingObject.ValueType;
 	EndIf;
@@ -42,8 +42,7 @@ EndProcedure
 
 #EndRegion
 
-#Region 
-ListFormTableItemEventHandlers
+#Region ListFormTableItemEventHandlers
 
 &AtClient
 Procedure ListBeforeEditEnd(Item, NewRow, CancelEdit, Cancel)
@@ -59,7 +58,7 @@ EndProcedure
 &AtClient
 Procedure ListOnStartEdit(Item, NewRow, Copying)
 	
-	If Items.AdditionalAddressingObject.Visibility Then
+	If Items.AdditionalAddressingObject.Visible Then
  		Items.AdditionalAddressingObject.TypeRestriction = AdditionalAddressingObjectTypes;
 	EndIf;
 	

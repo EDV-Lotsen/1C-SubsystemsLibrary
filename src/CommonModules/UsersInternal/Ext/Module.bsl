@@ -775,7 +775,7 @@ EndProcedure
 //
 Procedure OnAddReferenceSearchException(Array) Export
 	
-	Array.Add(Metadata.InformationRegisters.UserGroupContent.FullName());
+	Array.Add(Metadata.InformationRegisters.UserGroupContents.FullName());
 	
 EndProcedure
 
@@ -946,14 +946,14 @@ Procedure OnFillMetadataObjectAccessRestrictionKinds(Details) Export
 	
 	Details = Details + 
 	"
-  |Catalog.ExternalUsers.Read.ExternalUsers
-  |Catalog.ExternalUsers.Update.ExternalUsers
-  |Catalog.ExternalUserGroups.Read.ExternalUsers 
-  |Catalog.UserGroups.Read.Users 
-  |Catalog.Users.Read.Users 
-  |Catalog.Users.Update.Users 
-  |InformationRegister.UserGroupContent.Read.ExternalUsers 
-  |InformationRegister.UserGroupContent.Read.Users
+	|Catalog.ExternalUsers.Read.ExternalUsers
+	|Catalog.ExternalUsers.Update.ExternalUsers
+	|Catalog.ExternalUserGroups.Read.ExternalUsers
+	|Catalog.UserGroups.Read.Users
+	|Catalog.Users.Read.Users
+	|Catalog.Users.Update.Users
+	|InformationRegister.UserGroupContents.Read.ExternalUsers
+	|InformationRegister.UserGroupContents.Read.Users
 	|";
 	
 EndProcedure
@@ -2022,7 +2022,7 @@ EndFunction
 //                 - Array (return value) - array of user groups that have changes.
 //                      
 //
-Procedure UpdateUserGroupContent(Val UserGroup,
+Procedure UpdateUserGroupContents(Val UserGroup,
                                  Val User       = Undefined,
                                  Val ItemsToChange = Undefined,
                                  Val ModifiedGroups   = Undefined) Export
@@ -2097,42 +2097,42 @@ Procedure RefreshContentUsingOfUserGroups(Val UserOrGroup,
 	Query.SetParameter("UserOrGroup", UserOrGroup);
 	Query.Text =
 	"SELECT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.User,
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.User,
 	|	CASE
-	|		WHEN UserGroupContent.UserGroup.DeletionMark
+	|		WHEN UserGroupContents.UserGroup.DeletionMark
 	|			THEN FALSE
-	|		WHEN UserGroupContent.User.DeletionMark
+	|		WHEN UserGroupContents.User.DeletionMark
 	|			THEN FALSE
-	|		WHEN UserGroupContent.User.NotValid
+	|		WHEN UserGroupContents.User.NotValid
 	|			THEN FALSE
 	|		ELSE TRUE
 	|	END AS Used
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
 	|	&Filter
 	|	AND CASE
-	|			WHEN UserGroupContent.UserGroup.DeletionMark
+	|			WHEN UserGroupContents.UserGroup.DeletionMark
 	|				THEN FALSE
-	|			WHEN UserGroupContent.User.DeletionMark
+	|			WHEN UserGroupContents.User.DeletionMark
 	|				THEN FALSE
-	|			WHEN UserGroupContent.User.NotValid
+	|			WHEN UserGroupContents.User.NotValid
 	|				THEN FALSE
 	|			ELSE TRUE
-	|		END <> UserGroupContent.Used";
+	|		END <> UserGroupContents.Used";
 	
 	If TypeOf(UserOrGroup) = Type("CatalogRef.Users")
 	 Or TypeOf(UserOrGroup) = Type("CatalogRef.ExternalUsers") Then
 		
 		Query.Text = StrReplace(Query.Text, "&Filter",
-			"UserGroupContent.User = &UserOrGroup");
+			"UserGroupContents.User = &UserOrGroup");
 	Else
 		Query.Text = StrReplace(Query.Text, "&Filter",
-			"UserGroupContent.UserGroup = &UserOrGroup");
+			"UserGroupContents.UserGroup = &UserOrGroup");
 	EndIf;
 	
-	RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+	RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 	Write = RecordSet.Add();
 	
 	BeginTransaction();
@@ -2340,11 +2340,11 @@ Procedure UpdateExternalUserRoles(Val ExternalUserArray = Undefined) Export
 			Query.SetParameter("ExternalUserGroup", ExternalUserGroup);
 			Query.Text =
 			"SELECT
-			|	UserGroupContent.User
+			|	UserGroupContents.User
 			|FROM
-			|	InformationRegister.UserGroupContent AS UserGroupContent
+			|	InformationRegister.UserGroupContents AS UserGroupContents
 			|WHERE
-			|	UserGroupContent.UserGroup = &ExternalUserGroup";
+			|	UserGroupContents.UserGroup = &ExternalUserGroup";
 			
 			ExternalUserArray = Query.Execute().Unload().UnloadColumn("User");
 		EndIf;
@@ -2433,15 +2433,15 @@ Procedure UpdateExternalUserRoles(Val ExternalUserArray = Undefined) Export
 		|
 		|////////////////////////////////////////////////////////////////////////////////
 		|SELECT DISTINCT
-		|	UserGroupContent.UserGroup AS ExternalUserGroup,
-		|	UserGroupContent.User AS ExternalUser,
+		|	UserGroupContents.UserGroup AS ExternalUserGroup,
+		|	UserGroupContents.User AS ExternalUser,
 		|	Roles.Role.Name AS Role
 		|INTO AllNewExternalUserRoles
 		|FROM
 		|	Catalog.ExternalUserGroups.Roles AS Roles
-		|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-		|		ON (UserGroupContent.User IN (&ExternalUsers))
-		|			AND (UserGroupContent.UserGroup = Roles.Ref)
+		|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+		|		ON (UserGroupContents.User IN (&ExternalUsers))
+		|			AND (UserGroupContents.UserGroup = Roles.Ref)
 		|			AND (&UseExternalUsers = TRUE)
 		|;
 		|
@@ -3018,10 +3018,10 @@ Function ColumnValueDifferences(ColumnName, Table1, Table2) Export
 	EndIf;
 	
 	Table11 = Table1.Copy(, ColumnName);
-	Table11.Collapse(ColumnName);
+	Table11.GroupBy(ColumnName);
 	
 	Table22 = Table2.Copy(, ColumnName);
-	Table22.Collapse(ColumnName);
+	Table22.GroupBy(ColumnName);
 	
 	For Each Row In Table22 Do
 		NewRow = Table11.Add();
@@ -3031,7 +3031,7 @@ Function ColumnValueDifferences(ColumnName, Table1, Table2) Export
 	Table11.Columns.Add("Flag");
 	Table11.FillValues(1, "Flag");
 	
-	Table11.Collapse(ColumnName, "Flag");
+	Table11.GroupBy(ColumnName, "Flag");
 	
 	Filter = New Structure("Flag", 1);
 	Table = Table11.Copy(Table11.FindRows(Filter));
@@ -3176,7 +3176,7 @@ EndProcedure
 // Handlers of writing users and user groups.
 
 // Redefines the actions that are required after completing the update of 
-// relations in UserGroupContent register.
+// relations in UserGroupContents register.
 //
 // Parameters:
 //  ItemsToChange  - Array of values of the following types:
@@ -3477,7 +3477,7 @@ Function UserRefByFullDescription(FullName)
 EndFunction
  
 
-// The function is used in the following procedures: UpdateUserGroupContent and 
+// The function is used in the following procedures: UpdateUserGroupContents and 
 // UpdateExternalUserGroupContent.
 //
 // Parameters:
@@ -3527,7 +3527,7 @@ Procedure FillReferenceInParentHierarchy(Val Parent, Val CurrentParent, Val Pare
 EndProcedure
  
 
-// The function is used in the following procedures: UpdateUserGroupContent and
+// The function is used in the following procedures: UpdateUserGroupContents and
 // UpdateExternalUserGroupContent.
 //
 Procedure UpdateAllUsersGroupContent(User,
@@ -3571,12 +3571,12 @@ Procedure UpdateAllUsersGroupContent(User,
 	|	Users.Used
 	|FROM
 	|	Users AS Users
-	|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.UserGroup = &AllUsersGroup)
-	|			AND (UserGroupContent.User = Users.Ref)
-	|			AND (UserGroupContent.Used = Users.Used)
+	|		LEFT JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.UserGroup = &AllUsersGroup)
+	|			AND (UserGroupContents.User = Users.Ref)
+	|			AND (UserGroupContents.Used = Users.Used)
 	|WHERE
-	|	UserGroupContent.User IS NULL 
+	|	UserGroupContents.User IS NULL 
 	|
 	|UNION ALL
 	|
@@ -3586,12 +3586,12 @@ Procedure UpdateAllUsersGroupContent(User,
 	|	Users.Used
 	|FROM
 	|	Users AS Users
-	|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.UserGroup = Users.Ref)
-	|			AND (UserGroupContent.User = Users.Ref)
-	|			AND (UserGroupContent.Used = Users.Used)
+	|		LEFT JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.UserGroup = Users.Ref)
+	|			AND (UserGroupContents.User = Users.Ref)
+	|			AND (UserGroupContents.Used = Users.Used)
 	|WHERE
-	|	UserGroupContent.User IS NULL ";
+	|	UserGroupContents.User IS NULL ";
 	
 	If UpdateExternalUserGroup Then
 		Query.Text = StrReplace(Query.Text, "Catalog.Users", "Catalog.ExternalUsers");
@@ -3608,7 +3608,7 @@ Procedure UpdateAllUsersGroupContent(User,
 	QueryResult = Query.Execute();
 	
 	If Not QueryResult.IsEmpty() Then
-		RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+		RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 		Write = RecordSet.Add();
 		Selection = QueryResult.Select();
 		
@@ -3663,16 +3663,16 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.User
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.User
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|		LEFT JOIN NewContent AS NewContent
-	|		ON UserGroupContent.UserGroup = NewContent.UserGroup
-	|			AND UserGroupContent.User = NewContent.User
+	|		ON UserGroupContents.UserGroup = NewContent.UserGroup
+	|			AND UserGroupContents.User = NewContent.User
 	|WHERE
-	|	VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.ExternalUserGroups)
-	|	AND CAST(UserGroupContent.UserGroup AS Catalog.ExternalUserGroups).AllAuthorizationObjects = TRUE
+	|	VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.ExternalUserGroups)
+	|	AND CAST(UserGroupContents.UserGroup AS Catalog.ExternalUserGroups).AllAuthorizationObjects = TRUE
 	|	AND &FilterExternalUserGroups2
 	|	AND &ExternalUserFilter2
 	|	AND NewContent.User IS NULL 
@@ -3685,12 +3685,12 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 	|	NewContent.Used
 	|FROM
 	|	NewContent AS NewContent
-	|		LEFT JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.UserGroup = NewContent.UserGroup)
-	|			AND (UserGroupContent.User = NewContent.User)
-	|			AND (UserGroupContent.Used = NewContent.Used)
+	|		LEFT JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.UserGroup = NewContent.UserGroup)
+	|			AND (UserGroupContents.User = NewContent.User)
+	|			AND (UserGroupContents.Used = NewContent.Used)
 	|WHERE
-	|	UserGroupContent.User IS NULL ";
+	|	UserGroupContents.User IS NULL ";
 	
 	If ExternalUserGroup = Undefined Then
 		Query.Text = StrReplace(Query.Text, "&FilterExternalUserGroups1", "TRUE");
@@ -3704,7 +3704,7 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 		Query.Text = StrReplace(
 			Query.Text,
 			"&FilterExternalUserGroups2",
-			"UserGroupContent.UserGroup IN (&ExternalUserGroup)");
+			"UserGroupContents.UserGroup IN (&ExternalUserGroup)");
 	EndIf;
 	
 	If ExternalUser = Undefined Then
@@ -3719,13 +3719,13 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 		Query.Text = StrReplace(
 			Query.Text,
 			"&ExternalUserFilter2",
-			"UserGroupContent.User IN (&ExternalUser)");
+			"UserGroupContents.User IN (&ExternalUser)");
 	EndIf;
 	
 	QueryResults = Query.ExecuteBatch();
 	
 	If Not QueryResults[1].IsEmpty() Then
-		RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+		RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 		Selection = QueryResults[1].Select();
 		
 		While Selection.Next() Do
@@ -3747,7 +3747,7 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 	EndIf;
 	
 	If Not QueryResults[2].IsEmpty() Then
-		RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+		RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 		Write = RecordSet.Add();
 		Selection = QueryResults[2].Select();
 		
@@ -3772,7 +3772,7 @@ Procedure UpdateGroupContentByAuthorizationObjectType(ExternalUserGroup = Undefi
 	
 EndProcedure
 
-// The procedure is used in the following procedures: UpdateUserGroupContent and
+// The procedure is used in the following procedures: UpdateUserGroupContents and
 // UpdateExternalUserGroupContent.
 //
 Procedure UpdateHierarchicalUserGroupContents(UserGroup,
@@ -3804,18 +3804,18 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 	// Preparing a query for the loop
 	Query.Text =
 	"SELECT
-	|	UserGroupContent.User,
-	|	UserGroupContent.Used
-	|INTO UserGroupContent
+	|	UserGroupContents.User,
+	|	UserGroupContents.Used
+	|INTO UserGroupContents
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
 	|	&UserFilterInRegister
-	|	AND UserGroupContent.UserGroup = &UserGroup
+	|	AND UserGroupContents.UserGroup = &UserGroup
 	|
 	|INDEX BY
-	|	UserGroupContent.User,
-	|	UserGroupContent.Used
+	|	UserGroupContents.User,
+	|	UserGroupContents.Used
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -3830,7 +3830,7 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 	|			THEN FALSE
 	|		ELSE TRUE
 	|	END AS Used
-	|INTO UserGroupNewContent
+	|INTO UserGroupNewContents
 	|FROM
 	|	Catalog.UserGroups.Content AS UserGroupContent
 	|		INNER JOIN ReferencesInParentHierarchy AS ReferencesInParentHierarchy
@@ -3845,27 +3845,27 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
-	|	UserGroupContent.User
+	|	UserGroupContents.User
 	|FROM
-	|	UserGroupContent AS UserGroupContent
-	|		LEFT JOIN UserGroupNewContent AS UserGroupNewContent
-	|		ON UserGroupContent.User = UserGroupNewContent.User
+	|	UserGroupContents AS UserGroupContents
+	|		LEFT JOIN UserGroupNewContents AS UserGroupNewContents
+	|		ON UserGroupContents.User = UserGroupNewContents.User
 	|WHERE
-	|	UserGroupNewContent.User IS NULL 
+	|	UserGroupNewContents.User IS NULL 
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
 	|SELECT DISTINCT
 	|	&UserGroup AS UserGroup,
-	|	UserGroupNewContent.User,
-	|	UserGroupNewContent.Used
+	|	UserGroupNewContents.User,
+	|	UserGroupNewContents.Used
 	|FROM
-	|	UserGroupNewContent AS UserGroupNewContent
-	|		LEFT JOIN UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.User = UserGroupNewContent.User)
-	|			AND (UserGroupContent.Used = UserGroupNewContent.Used)
+	|	UserGroupNewContents AS UserGroupNewContents
+	|		LEFT JOIN UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.User = UserGroupNewContents.User)
+	|			AND (UserGroupContents.Used = UserGroupNewContents.Used)
 	|WHERE
-	|	UserGroupContent.User IS NULL 
+	|	UserGroupContents.User IS NULL 
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -3878,18 +3878,18 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
-	|DROP UserGroupContent
+	|DROP UserGroupContents
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
-	|DROP UserGroupNewContent";
+	|DROP UserGroupNewContents";
 	
 	If User = Undefined Then
 		UserFilterInRegister = "TRUE";
 		FilterUserInCatalog  = "TRUE";
 	Else
 		Query.SetParameter("User", User);
-		UserFilterInRegister = "UserGroupContent.User (&User)";
+		UserFilterInRegister = "UserGroupContents.User (&User)";
 		FilterUserInCatalog  = "UserGroupContent.User IN (&User)";
 	EndIf;
 	
@@ -3917,7 +3917,7 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 		QueryResults = Query.ExecuteBatch();
 		
 		If Not QueryResults[2].IsEmpty() Then
-			RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+			RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 			Selection = QueryResults[2].Select();
 			
 			While Selection.Next() Do
@@ -3936,7 +3936,7 @@ Procedure UpdateHierarchicalUserGroupContents(UserGroup,
 		EndIf;
 		
 		If Not QueryResults[3].IsEmpty() Then
-			RecordSet = InformationRegisters.UserGroupContent.CreateRecordSet();
+			RecordSet = InformationRegisters.UserGroupContents.CreateRecordSet();
 			Write = RecordSet.Add();
 			Selection = QueryResults[3].Select();
 			
@@ -4296,7 +4296,6 @@ Procedure OnSendData(DataItem, ItemSend, Subordinate)
 	
 EndProcedure
  
-
 // Redefines standard behavior during data import.
 // InfobaseUserID attribute is not moved because it always belongs 
 // to a user of the current infobase or is not filled.
@@ -4313,7 +4312,7 @@ Procedure OnDataGet(DataItem, ItemReceive, SendBack, FromSubordinate)
 	      Or TypeOf(DataItem) = Type("CatalogObject.UserGroups")
 	      Or TypeOf(DataItem) = Type("CatalogObject.ExternalUsers")
 	      Or TypeOf(DataItem) = Type("CatalogObject.ExternalUserGroups")
-	      Or TypeOf(DataItem) = Type("InformationRegisterRecordSet.UserGroupContent") Then
+	      Or TypeOf(DataItem) = Type("InformationRegisterRecordSet.UserGroupContents") Then
 		
 		If FromSubordinate And CommonUseCached.DataSeparationEnabled() Then
 			

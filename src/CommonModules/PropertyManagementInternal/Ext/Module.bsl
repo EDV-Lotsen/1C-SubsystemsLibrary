@@ -170,7 +170,7 @@ Function GetObjectPropertySets(Val PropertyOwner, PurposeUseKey = Undefined) Exp
 	PropertySets.Columns.Add("TitleFont");
 	PropertySets.Columns.Add("Grouping");
 	PropertySets.Columns.Add("Representation");
-	PropertySets.Columns.Add("SlaveItemsWidth");
+	PropertySets.Columns.Add("ChildItemsWidth");
 	PropertySets.Columns.Add("Picture");
 	PropertySets.Columns.Add("ShowTitle");
 	
@@ -785,11 +785,11 @@ Procedure OnFillMetadataObjectAccessRestrictionKinds(Details) Export
 		
 		Details = Details + 
 		"
-		|Catalog.ObjectPropertyValues.Reader.AdditionalData
-		|Catalog.ObjectPropertyValueHierarchy.Reader.AdditionalData
-		|ChartOfCharacteristicTypes.AdditionalAttributesAndData.Reader.AdditionalData
+		|Catalog.ObjectPropertyValues.Read.AdditionalData
+		|Catalog.ObjectPropertyValueHierarchy.Read.AdditionalData
+		|ChartOfCharacteristicTypes.AdditionalDataAndAttributes.Read.AdditionalData
 		|InformationRegister.AdditionalData.Read.AdditionalData
-		|InformationRegister.AdditionalData.Update.AdditionaData
+		|InformationRegister.AdditionalData.Update.AdditionalData
 		|";
 	EndIf;
 	

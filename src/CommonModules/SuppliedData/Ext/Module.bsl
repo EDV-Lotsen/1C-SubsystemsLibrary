@@ -674,14 +674,14 @@ Function QueryByCharacteristicNames(Val DataKind, Val Characteristics)
 		
 		Query.Text = Query.Text + "( 
    | CAST(DataCharacteristicsSuppliedData.Value AS String(150)) = &Value" + Counter + "
-		| And SuppliedDataDataCharacteristics.Characteristic = &Code" + Counter + ")";
+		| And DataCharacteristicsSuppliedData.Characteristic = &Code" + Counter + ")";
 		Query.SetParameter("Value" + Counter, Characteristic.Value);
 		Query.SetParameter("Code" + Counter, Characteristic.Code);
 		Counter = Counter + 1;
 	EndDo;
 	Query.Text = Query.Text + ")
 	|Group By
-	|  SuppliedDataDataCharacteristics.Ref
+	|  DataCharacteristicsSuppliedData.Ref
 	|HAVING
 	|Count(*) = &Quantity";
 	Query.SetParameter("Quantity", Counter);

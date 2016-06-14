@@ -48,7 +48,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAdministrator</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.2.4.1</Version>
+			<Version>2.2.4.4</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.ru/tmplts/</UpdateCatalogAddress>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
@@ -380,6 +380,8 @@
 			<Role>AddEditBasicRegulatoryData</Role>
 			<Role>AddEditCommonRegulatoryData</Role>
 			<Role>AddEditExternalUsers</Role>
+			<Role>AddEditJobs</Role>
+			<Role>AddEditPerformerRoles</Role>
 			<Role>AddEditUsers</Role>
 			<Role>AddEditWorldCountries</Role>
 			<Role>Administration</Role>
@@ -388,7 +390,9 @@
 			<Role>CanUseInformationCenter</Role>
 			<Role>DataBaseConfigurationUpdate</Role>
 			<Role>DataSynchronizationSetup</Role>
+			<Role>EditAccessGroupMembers</Role>
 			<Role>EditAdditionalData</Role>
+			<Role>EditCompleteTask</Role>
 			<Role>EditCurrentExternalUser</Role>
 			<Role>EditCurrentUser</Role>
 			<Role>EditObjectAttributes</Role>
@@ -403,8 +407,10 @@
 			<Role>ReadBasicRegulatoryData</Role>
 			<Role>ReadCommonBasicRegulatoryData</Role>
 			<Role>ReadExternalUsers</Role>
+			<Role>ReadJobs</Role>
 			<Role>ReadObjectVersionInfo</Role>
 			<Role>ReadObjectVersions</Role>
+			<Role>ReadTasks</Role>
 			<Role>RemoteAccessBaseFunctionality</Role>
 			<Role>RemoteAccessDataExchangeSaaS</Role>
 			<Role>RemoteAccessMessageExchange</Role>
@@ -421,12 +427,6 @@
 			<Role>UseEmailAccounts</Role>
 			<Role>ViewApllicationChangeLog</Role>
 			<Role>ViewEventLog</Role>
-			<Role>AddEditJobs</Role>
-			<Role>AddEditPerformerRoles</Role>
-			<Role>EditCompleteTask</Role>
-			<Role>EditAccessGroupMembers</Role>
-			<Role>ReadJobs</Role>
-			<Role>ReadTasks</Role>
 			<CommonTemplate>ApplicationReleaseNotes</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriver</CommonTemplate>
 			<CommonTemplate>BarcodeScannerDriverNative</CommonTemplate>
@@ -1115,6 +1115,8 @@
 			<Constant>UseSubordinateBusinessProcesses</Constant>
 			<Constant>UseRecordLevelSecurity</Constant>
 			<Constant>AccessRestrictionParameters</Constant>
+			<CommonForm>AccessRights</CommonForm>
+			<CommonForm>AccessRightsSimplified</CommonForm>
 			<CommonForm>AccountPasswordConfirmation</CommonForm>
 			<CommonForm>AdditionalDataEditing</CommonForm>
 			<CommonForm>AdditionalDetails</CommonForm>
@@ -1151,6 +1153,7 @@
 			<CommonForm>MessageExchangeSetup</CommonForm>
 			<CommonForm>MetadataObjectSelection</CommonForm>
 			<CommonForm>MyReportsAndDataProcessorsSetup</CommonForm>
+			<CommonForm>ObjectRightsSettings</CommonForm>
 			<CommonForm>PrintDocuments</CommonForm>
 			<CommonForm>ProxyServerParameters</CommonForm>
 			<CommonForm>Question</CommonForm>
@@ -1159,9 +1162,11 @@
 			<CommonForm>SavePrintForm</CommonForm>
 			<CommonForm>SelectActionIfDifferenceInFilesFound</CommonForm>
 			<CommonForm>SelectAttachmentFormat</CommonForm>
+			<CommonForm>SelectBusinessProcessPerformer</CommonForm>
 			<CommonForm>SelectCorrespondentInfobaseItems</CommonForm>
 			<CommonForm>SelectDate</CommonForm>
 			<CommonForm>SelectEncryptionCertificate</CommonForm>
+			<CommonForm>SelectPerformerRole</CommonForm>
 			<CommonForm>SelectSignatures</CommonForm>
 			<CommonForm>SelectVolumeFileArchivePath</CommonForm>
 			<CommonForm>SendMessage</CommonForm>
@@ -1172,11 +1177,8 @@
 			<CommonForm>StandaloneModeSaaS</CommonForm>
 			<CommonForm>StandaloneWorkstationDisconnection</CommonForm>
 			<CommonForm>UserGroups</CommonForm>
-			<CommonForm>SelectBusinessProcessPerformer</CommonForm>
-			<CommonForm>SelectPerformerRole</CommonForm>
-			<CommonForm>ObjectRightsSettings</CommonForm>
-			<CommonForm>AccessRights</CommonForm>
-			<CommonForm>AccessRightsSimplified</CommonForm>
+			<Catalog>AccessGroupProfiles</Catalog>
+			<Catalog>AccessGroups</Catalog>
 			<Catalog>AdditionalDataAndAttributeSets</Catalog>
 			<Catalog>AdditionalReportsAndDataProcessors</Catalog>
 			<Catalog>Banks</Catalog>
@@ -1210,6 +1212,7 @@
 			<Catalog>ObjectPropertyValueHierarchy</Catalog>
 			<Catalog>ObjectPropertyValues</Catalog>
 			<Catalog>OutgoingEmails</Catalog>
+			<Catalog>PerformerRoles</Catalog>
 			<Catalog>PriceKinds</Catalog>
 			<Catalog>ProductAccountingOperationAttachedFiles</Catalog>
 			<Catalog>ProductExpenseAttachedFiles</Catalog>
@@ -1225,14 +1228,11 @@
 			<Catalog>StoredFiles</Catalog>
 			<Catalog>SuppliedData</Catalog>
 			<Catalog>SystemMessages</Catalog>
+			<Catalog>TaskPerformerGroups</Catalog>
 			<Catalog>UserGroups</Catalog>
 			<Catalog>Users</Catalog>
 			<Catalog>Warehouses</Catalog>
 			<Catalog>WorldCountries</Catalog>
-			<Catalog>AccessGroups</Catalog>
-			<Catalog>TaskPerformerGroups</Catalog>
-			<Catalog>AccessGroupProfiles</Catalog>
-			<Catalog>PerformerRoles</Catalog>
 			<Document>MoneyExpense</Document>
 			<Document>MoneyReceipt</Document>
 			<Document>ProductAccountingOperation</Document>
@@ -1286,21 +1286,21 @@
 			<Enum>TaskImportanceVariants</Enum>
 			<Enum>AdditionalAccessValues</Enum>
 			<Enum>BusinessProcessStates</Enum>
+			<Report>AccessRights</Report>
+			<Report>BusinessProcesses</Report>
+			<Report>ExpiringTasksOnDate</Report>
 			<Report>ExternalResourcesInUse</Report>
+			<Report>Jobs</Report>
 			<Report>MoneyExpenseDocuments</Report>
 			<Report>MutualSettlements</Report>
 			<Report>ObjectVersionAnalysis</Report>
+			<Report>OverdueTasks</Report>
 			<Report>SalesDynamics</Report>
 			<Report>SearchForReferences</Report>
+			<Report>Tasks</Report>
+			<Report>UnassignedTasks</Report>
 			<Report>UserInfo</Report>
 			<Report>WarehouseStockBalance</Report>
-			<Report>BusinessProcesses</Report>
-			<Report>UnassignedTasks</Report>
-			<Report>Jobs</Report>
-			<Report>Tasks</Report>
-			<Report>ExpiringTasksOnDate</Report>
-			<Report>AccessRights</Report>
-			<Report>OverdueTasks</Report>
 			<DataProcessor>_DemoExportToSL212Handlers</DataProcessor>
 			<DataProcessor>_DemoExportToSL21Handlers</DataProcessor>
 			<DataProcessor>_DemoImportFromSL212Handlers</DataProcessor>
@@ -1352,6 +1352,11 @@
 			<DataProcessor>UniversalDataExchangeXML</DataProcessor>
 			<DataProcessor>UserSettings</DataProcessor>
 			<DataProcessor>BusinessProcessFlowchart</DataProcessor>
+			<InformationRegister>AccessGroupTables</InformationRegister>
+			<InformationRegister>AccessGroupValues</InformationRegister>
+			<InformationRegister>AccessRightDependencies</InformationRegister>
+			<InformationRegister>AccessValueGroups</InformationRegister>
+			<InformationRegister>AccessValueSets</InformationRegister>
 			<InformationRegister>AdditionalData</InformationRegister>
 			<InformationRegister>AdditionalDataProcessorPurposes</InformationRegister>
 			<InformationRegister>AddressAbbreviations</InformationRegister>
@@ -1366,6 +1371,7 @@
 			<InformationRegister>AttachedFiles</InformationRegister>
 			<InformationRegister>AttachmentExistence</InformationRegister>
 			<InformationRegister>BusinessCalendarData</InformationRegister>
+			<InformationRegister>BusinessProcessData</InformationRegister>
 			<InformationRegister>CalendarSchedules</InformationRegister>
 			<InformationRegister>Characteristics</InformationRegister>
 			<InformationRegister>CommonInfobaseNodeSettings</InformationRegister>
@@ -1385,43 +1391,37 @@
 			<InformationRegister>DataExchangeRules</InformationRegister>
 			<InformationRegister>DataExchangeStates</InformationRegister>
 			<InformationRegister>DataProcessorAccessUserSettings</InformationRegister>
+			<InformationRegister>DefaultAccessGroupValues</InformationRegister>
 			<InformationRegister>ExchangeTransportSettings</InformationRegister>
 			<InformationRegister>ExternalModuleAddingModes</InformationRegister>
 			<InformationRegister>ExternalResourcePermissionAdministrationRequests</InformationRegister>
-			<InformationRegister>IncomingEmailsState</InformationRegister>
+			<InformationRegister>IncomingEmailStates</InformationRegister>
 			<InformationRegister>InfobaseObjectMappings</InformationRegister>
 			<InformationRegister>ManualWorkScheduleChanges</InformationRegister>
 			<InformationRegister>MobileReports</InformationRegister>
+			<InformationRegister>ObjectRightsSettings</InformationRegister>
+			<InformationRegister>ObjectRightsSettingsInheritance</InformationRegister>
 			<InformationRegister>ObjectVersioningSettings</InformationRegister>
 			<InformationRegister>ObjectVersions</InformationRegister>
-			<InformationRegister>OutgoingEmailsState</InformationRegister>
+			<InformationRegister>OutgoingEmailStates</InformationRegister>
 			<InformationRegister>PermissionsForSwichingToPrivilegedMode</InformationRegister>
 			<InformationRegister>ProductPrices</InformationRegister>
 			<InformationRegister>ProgramInterfaceCache</InformationRegister>
 			<InformationRegister>RecipientSubscriptions</InformationRegister>
 			<InformationRegister>RequestsForPermissionsToUseExternalResources</InformationRegister>
 			<InformationRegister>RequireProcessingSuppliedData</InformationRegister>
+			<InformationRegister>RoleRights</InformationRegister>
 			<InformationRegister>SenderSettings</InformationRegister>
 			<InformationRegister>SharedUsers</InformationRegister>
 			<InformationRegister>SubsystemVersions</InformationRegister>
 			<InformationRegister>SuccessfulDataExchangeStates</InformationRegister>
 			<InformationRegister>SystemMessageExchangeSessions</InformationRegister>
+			<InformationRegister>TaskPerformers</InformationRegister>
 			<InformationRegister>TextExtractionQueue</InformationRegister>
 			<InformationRegister>TimeMeasurements</InformationRegister>
-			<InformationRegister>UserGroupContent</InformationRegister>
+			<InformationRegister>UserGroupContents</InformationRegister>
 			<InformationRegister>UserPrintTemplates</InformationRegister>
 			<InformationRegister>ViewedInformationCenterData</InformationRegister>
-			<InformationRegister>AccessValueGroups</InformationRegister>
-			<InformationRegister>BusinessProcessData</InformationRegister>
-			<InformationRegister>AccessRightDependencies</InformationRegister>
-			<InformationRegister>AccessGroupValues</InformationRegister>
-			<InformationRegister>DefaultAccessGroupValues</InformationRegister>
-			<InformationRegister>TaskPerformers</InformationRegister>
-			<InformationRegister>AccessValueSets</InformationRegister>
-			<InformationRegister>ObjectRightsSettingsInheritance</InformationRegister>
-			<InformationRegister>ObjectRightsSettings</InformationRegister>
-			<InformationRegister>RoleRights</InformationRegister>
-			<InformationRegister>AccessGroupTables</InformationRegister>
 			<AccumulationRegister>Inventory</AccumulationRegister>
 			<AccumulationRegister>MutualSettlements</AccumulationRegister>
 			<AccumulationRegister>Sales</AccumulationRegister>

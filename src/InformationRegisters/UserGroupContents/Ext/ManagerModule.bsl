@@ -20,7 +20,7 @@ Procedure UpdateRegisterData(HasChanges = Undefined) Export
 	LockItem.Mode = DataLockMode.Shared;
 	LockItem = DataLock.Add("Catalog.ExternalUserGroups");
 	LockItem.Mode = DataLockMode.Shared;
-	LockItem = DataLock.Add("InformationRegister.UserGroupContent");
+	LockItem = DataLock.Add("InformationRegister.UserGroupContents");
 	LockItem.Mode = DataLockMode.Exclusive;
 	
 	BeginTransaction();
@@ -28,12 +28,12 @@ Procedure UpdateRegisterData(HasChanges = Undefined) Export
 		DataLock.Lock();
 		
 		// Updating user mapping
-		ItemsToChange = New Map;
-		ModifiedGroups   = New Map;
+		ItemsToChange  = New Map;
+		ModifiedGroups = New Map;
 		
 		Selection = Catalogs.UserGroups.Select();
 		While Selection.Next() Do
-			UsersInternal.UpdateUserGroupContent(
+			UsersInternal.UpdateUserGroupContents(
 				Selection.Ref, , ItemsToChange, ModifiedGroups);
 		EndDo;
 		

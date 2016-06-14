@@ -97,11 +97,11 @@ Then
 		FormParameters = BusinessProcessesAndTasksServerCall.TaskExecutionForm(Object.Ref);
 		HasTaskForm = FormParameters.Property
 ("FormName");
-		Items.ExecutionFormGroup.Visibility = HasTaskForm;
+		Items.ExecutionFormGroup.Visible = HasTaskForm;
 		Items.Executed.Enabled = Not 
 HasTaskForm;
 	Else
-		Items.ExecutionFormGroup.Visibility = False;
+		Items.ExecutionFormGroup.Visible = False;
 	EndIf;
 	InitialExecutionFlag = Object.Executed;
 	If Object.Ref.IsEmpty() Then
@@ -113,8 +113,8 @@ HasTaskForm;
 	SubjectString = CommonUse.SubjectString(Object.Subject);	
 	
 	UseDateAndTimeInTaskDeadlines = GetFunctionalOption("UseDateAndTimeInTaskDeadlines");
-	Items.CompletionStartDeadlineTime.Visibility = UseDateAndTimeInTaskDeadlines;
-	Items.CompletionDateTime.Visibility = UseDateAndTimeInTaskDeadlines;
+	Items.CompletionStartDeadlineTime.Visible = UseDateAndTimeInTaskDeadlines;
+	Items.CompletionDateTime.Visible = UseDateAndTimeInTaskDeadlines;
 	BusinessProcessesAndTasksServer.SetDateFormat(Items.DueDate);
 	BusinessProcessesAndTasksServer.SetDateFormat(Items.Date);
 	

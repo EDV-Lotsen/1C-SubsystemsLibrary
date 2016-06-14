@@ -865,7 +865,7 @@ Procedure InitializeImportToTabularSection(TabularSectionFullName, DataStructure
 			EndIf;
 		EndDo;	
 		
-		TemplateWithData.Output(TableTitle);
+		TemplateWithData.Put(TableTitle);
 	EndIf; 
 	
 EndProcedure
@@ -1028,7 +1028,7 @@ Procedure FillTableByImportedDataFromFile(DataFromFile, TemplateWithData, Column
 				Cell.CurrentArea.Text = "";
 			EndIf;
 			If ColumnNumber=1 Then
-				TemplateWithData.Output(Cell);
+				TemplateWithData.Put(Cell);
 			else
 				TemplateWithData.Join(Cell);
 			EndIf;
@@ -1261,6 +1261,7 @@ Function GetDataTree(File)
 	
 	Return DataTree;
 EndFunction
+
 Function ReadFormatList(FormatFile)
 	
 	Xml = New XMLReader;

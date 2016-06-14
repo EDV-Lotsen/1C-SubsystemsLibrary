@@ -262,7 +262,7 @@ Procedure Strikeout(Command)
 EndProcedure
 
 &AtClient
-Procedure BgColor(Command)
+Procedure BackColor(Command)
 	ColorChooseDialog = New ColorChooseDialog;
 	#If Not WebClient Then
 	ColorChooseDialog.Color = Items.SpreadsheetDocument.CurrentArea.BackColor;
@@ -832,7 +832,7 @@ EndProcedure
 &AtClient
 Procedure BackgroundColorSelectionOnComplete(SelectedColor, AdditionalParameters) Export
 	If SelectedColor <> Undefined Then
-		Items.SpreadsheetDocument.CurrentArea.BgColor = SelectedColor;
+		Items.SpreadsheetDocument.CurrentArea.BackColor = SelectedColor;
 	EndIf;
 EndProcedure
 

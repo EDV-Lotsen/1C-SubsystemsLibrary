@@ -569,27 +569,27 @@ Procedure UpdateUsers(Users1 = Undefined,
 	
 	QueryText =
 	"SELECT
-	|	UserGroupContent.User AS AccessValue,
-	|	UserGroupContent.UserGroup AS AccessValueGroup,
+	|	UserGroupContents.User AS AccessValue,
+	|	UserGroupContents.UserGroup AS AccessValueGroup,
 	|	1 AS DataGroup,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.User) = TYPE(Catalog.Users)
+	|	VALUETYPE(UserGroupContents.User) = TYPE(Catalog.Users)
 	|	AND &UserFilterCondition1
 	|
 	|UNION ALL
 	|
 	|SELECT
-	|	UserGroupContent.User,
-	|	UserGroupContent.UserGroup,
+	|	UserGroupContents.User,
+	|	UserGroupContents.UserGroup,
 	|	1,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.User) = TYPE(Catalog.ExternalUsers)
+	|	VALUETYPE(UserGroupContents.User) = TYPE(Catalog.ExternalUsers)
 	|	AND &UserFilterCondition1";
 	
 	// Preparing selected fields with optional filtering
@@ -603,7 +603,7 @@ Procedure UpdateUsers(Users1 = Undefined,
 		QueryText, Fields, "InformationRegister.AccessValueGroups");
 	
 	AccessManagementInternal.SetFilterCriterionInQuery(Query, Users1, "Users",
-		"&UserFilterCondition1:UserGroupContent.User
+		"&UserFilterCondition1:UserGroupContents.User
 		|&UserFilterCondition2:OldData.AccessValue");
 	
 	AccessManagementInternal.SetFilterCriterionInQuery(Query, 1, "DataGroup",
@@ -652,55 +652,55 @@ Procedure UpdateUserGroups(UserGroups = Undefined,
 	
 	QueryText =
 	"SELECT DISTINCT
-	|	UserGroupContent.UserGroup AS AccessValue,
-	|	UserGroupContent.UserGroup AS AccessValueGroup,
+	|	UserGroupContents.UserGroup AS AccessValue,
+	|	UserGroupContents.UserGroup AS AccessValueGroup,
 	|	2 AS DataGroup,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.UserGroups)
+	|	VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.UserGroups)
 	|	AND &FilterConditionOfUserGroups1
 	|
 	|UNION ALL
 	|
 	|SELECT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.User,
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.User,
 	|	2,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.UserGroups)
-	|	AND VALUETYPE(UserGroupContent.User) = TYPE(Catalog.Users)
+	|	VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.UserGroups)
+	|	AND VALUETYPE(UserGroupContents.User) = TYPE(Catalog.Users)
 	|	AND &FilterConditionOfUserGroups1
 	|
 	|UNION ALL
 	|
 	|SELECT DISTINCT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.UserGroup,
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.UserGroup,
 	|	2,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.ExternalUserGroups)
+	|	VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.ExternalUserGroups)
 	|	AND &FilterConditionOfUserGroups1
 	|
 	|UNION ALL
 	|
 	|SELECT
-	|	UserGroupContent.UserGroup,
-	|	UserGroupContent.User,
+	|	UserGroupContents.UserGroup,
+	|	UserGroupContents.User,
 	|	2,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|WHERE
-	|	VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.ExternalUserGroups)
-	|	AND VALUETYPE(UserGroupContent.User) = TYPE(Catalog.ExternalUsers)
+	|	VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.ExternalUserGroups)
+	|	AND VALUETYPE(UserGroupContents.User) = TYPE(Catalog.ExternalUsers)
 	|	AND &FilterConditionOfUserGroups1";
 	
 	// Preparing selected fields with optional filtering
@@ -714,7 +714,7 @@ Procedure UpdateUserGroups(UserGroups = Undefined,
 		QueryText, Fields, "InformationRegister.AccessValueGroups");
 	
 	AccessManagementInternal.SetFilterCriterionInQuery(Query, UserGroups, "UserGroups",
-		"&FilterConditionOfUserGroups1:UserGroupContent.UserGroup
+		"&FilterConditionOfUserGroups1:UserGroupContents.UserGroup
 		|&FilterConditionOfUserGroups2:OldData.AccessValue");
 	
 	AccessManagementInternal.SetFilterCriterionInQuery(Query, 2, "DataGroup",
@@ -907,14 +907,14 @@ Procedure UpdatePerformerGroups(PerformerGroups = Undefined,
 	|
 	|SELECT DISTINCT
 	|	PerformerGroupsUsers.PerformerGroup,
-	|	UserGroupContent.UserGroup,
+	|	UserGroupContents.UserGroup,
 	|	3,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
 	|	PerformerGroupsUsers AS PerformerGroupsUsers
-	|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON PerformerGroupsUsers.User = UserGroupContent.User
-	|			AND (VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.UserGroups))
+	|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON PerformerGroupsUsers.User = UserGroupContents.User
+	|			AND (VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.UserGroups))
 	|
 	|UNION ALL
 	|
@@ -930,14 +930,14 @@ Procedure UpdatePerformerGroups(PerformerGroups = Undefined,
 	|
 	|SELECT DISTINCT
 	|	ExternalPerformerGroupUsers.PerformerGroup,
-	|	UserGroupContent.UserGroup,
+	|	UserGroupContents.UserGroup,
 	|	3,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
 	|	ExternalPerformerGroupUsers AS ExternalPerformerGroupUsers
-	|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON ExternalPerformerGroupUsers.ExternalUser = UserGroupContent.User
-	|			AND (VALUETYPE(UserGroupContent.UserGroup) = TYPE(Catalog.ExternalUserGroups))";
+	|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON ExternalPerformerGroupUsers.ExternalUser = UserGroupContents.User
+	|			AND (VALUETYPE(UserGroupContents.UserGroup) = TYPE(Catalog.ExternalUserGroups))";
 	
 	// Preparing selected fields with optional filtering
 	Fields = New Array; 
@@ -1003,15 +1003,15 @@ Procedure UpdateAuthorizationObjects(AuthorizationObjects = Undefined, HasChange
 	
 	QueryText =
 	"SELECT
-	|	CAST(UserGroupContent.User AS Catalog.ExternalUsers).AuthorizationObject AS AccessValue,
-	|	UserGroupContent.UserGroup AS AccessValueGroup,
+	|	CAST(UserGroupContents.User AS Catalog.ExternalUsers).AuthorizationObject AS AccessValue,
+	|	UserGroupContents.UserGroup AS AccessValueGroup,
 	|	4 AS DataGroup,
 	|	&RowChangeKindFieldSubstitution
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|		INNER JOIN Catalog.ExternalUsers AS ExternalUsers
-	|		ON (VALUETYPE(UserGroupContent.User) = TYPE(Catalog.ExternalUsers))
-	|			AND UserGroupContent.User = ExternalUsers.Ref
+	|		ON (VALUETYPE(UserGroupContents.User) = TYPE(Catalog.ExternalUsers))
+	|			AND UserGroupContents.User = ExternalUsers.Ref
 	|		INNER JOIN EmptyValueReferences AS EmptyValueReferences
 	|		ON (VALUETYPE(ExternalUsers.AuthorizationObject) = VALUETYPE(EmptyValueReferences.EmptyRef))
 	|			AND (ExternalUsers.AuthorizationObject <> EmptyValueReferences.EmptyRef)

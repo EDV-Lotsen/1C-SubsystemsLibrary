@@ -12,9 +12,9 @@ EndProcedure
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	If Not Parameters.Key.IsEmpty() Then
 		Filter = New Structure("Email", Parameters.Key);
-		WasRead = InformationRegisters.IncomingEmailsState.Get(Filter).Read;
+		WasRead = InformationRegisters.IncomingEmailStates.Get(Filter).Read;
 		If Not WasRead Then
-			RS = InformationRegisters.IncomingEmailsState.CreateRecordSet();
+			RS = InformationRegisters.IncomingEmailStates.CreateRecordSet();
 			RS.Filter.Email.Set(Parameters.Key);
 			Write = RS.Add();
 			Write.Email = Parameters.Key;

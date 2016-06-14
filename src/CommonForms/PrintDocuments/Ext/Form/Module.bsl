@@ -568,7 +568,7 @@ EndProcedure
 &AtClient
 Procedure SetCopyCountSettingsVisibility(Val Visibility = Undefined)
 	If Visibility = Undefined Then
-		Visibility = Not Items.PrintFormSettings.Visibility;
+		Visibility = Not Items.PrintFormSettings.Visible;
 	EndIf;
 	
 	Items.PrintFormSettings.Visible = Visibility;

@@ -19,26 +19,26 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	SimplifiedAccessRightSetupInterface = AccessManagementInternal.SimplifiedAccessRightSetupInterface();
 	
 	If SimplifiedAccessRightSetupInterface Then
-		Items.FormCreate.Visibility = False;
-		Items.FormCopy.Visibility = False;
-		Items.ListContextMenuCreate.Visibility = False;
-		Items.ListContextMenuCopy.Visibility = False;
+		Items.FormCreate.Visible = False;
+		Items.FormCopy.Visible = False;
+		Items.ListContextMenuCreate.Visible = False;
+		Items.ListContextMenuCopy.Visible = False;
 	EndIf;
 	
 	List.Parameters.SetParameterValue("Profile", Parameters.Profile);
 	If ValueIsFilled(Parameters.Profile) Then
-		Items.Profile.Visibility = False;
+		Items.Profile.Visible = False;
 		Items.List.Representation = TableRepresentation.List;
 		AutoTitle = False;
 		
 		Title = NStr("en = 'Access groups'");
 		
-		Items.FormCreateFolder.Visibility = False;
-		Items.ListContextMenuCreateGroup.Visibility = False;
+		Items.FormCreateFolder.Visible = False;
+		Items.ListContextMenuCreateGroup.Visible = False;
 	EndIf;
 	
 	If Not AccessRight("Read", Metadata.Catalogs.AccessGroupProfiles) Then
-		Items.Profile.Visibility = False;
+		Items.Profile.Visible = False;
 	EndIf;
 	
 	If AccessRight("View", Metadata.Catalogs.ExternalUsers) Then

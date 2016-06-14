@@ -408,11 +408,11 @@ Procedure SessionParametersSetting(ParameterName, SpecifiedParameters) Export
 	|				TRUE
 	|			FROM
 	|				Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|					INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
+	|					INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
 	|					ON
 	|						AccessGroupsUsers.Ref = DefaultValues.AccessGroup
-	|							AND AccessGroupsUsers.User = UserGroupContent.UserGroup
-	|							AND UserGroupContent.User = &CurrentUser)
+	|							AND AccessGroupsUsers.User = UserGroupContents.UserGroup
+	|							AND UserGroupContents.User = &CurrentUser)
 	|;
 	|
 	|////////////////////////////////////////////////////////////////////////////////
@@ -697,7 +697,7 @@ Procedure UpdateUserRoles(Val Users1 = Undefined,
 			Continue;
 		EndIf;
 		
-		// Searching for an infobase user<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
+		// Searching for an infobase user
 		If TypeOf(InfobaseUserID) = Type("UUID") Then
 			IBUser = InfobaseUsers.FindByUUID(
 				InfobaseUserID);
@@ -1276,9 +1276,9 @@ EndProcedure
 // 
 Procedure OnDefineQuestionTextBeforeWriteFirstAdministrator(QuestionText) Export
 	
-	QuestionText = NStr("en = 'The first user to be added to the application user list<o:p></o:p>
-		|will automatically be added to the Administrators access group. 
-		|Do you want to continue?'")
+	QuestionText = NStr("en = 'The first user to be added to the application user list
+	|will automatically be added to the Administrators access group. 
+	|Do you want to continue?'")
 	
 EndProcedure
 
@@ -1912,9 +1912,9 @@ EndFunction
 //  The procedure is called from the AccessManagementInternal.WriteAccessValueSets()
 // but it can be called from anywhere,
 // for example, when you enable access restrictions at record level.
-// applied developer procedure<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
+// applied developer procedure
 // Calls the AccessManagementOverridable.OnChangeAccessValueSets(),
-// applied developer procedure<o:p></o:p>
+// applied developer procedure
 // that is used to overwrite the dependent access value sets.
 //
 // Parameters:
@@ -2062,7 +2062,7 @@ Procedure WriteDependentAccessValueSets(Val Object) Export
 	If Not ThisLeadingObject Then
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Invalid options.
-			           |Object type ""%1"" <?xml:namespace prefix = o ns = ""urn:schemas-microsoft-com:office:office"" /><o:p></o:p>
+			           |Object type ""%1""
 			           |is not found in subscription to
 			           |""Write dependent sets of access values"" event.'"),
 			ValueTypeObject);
@@ -2188,8 +2188,7 @@ EndProcedure
 
 ////////////////////////////////////////////////////////////////////////////////
 // Procedures and functions for actions performed on changing subsystem settings
-
-// Enables access restriction data filling and updates<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
+// Enables access restriction data filling and updates
 // some data immediately (if necessary).
 
 //
@@ -2320,7 +2319,7 @@ EndFunction
 //  Form      - ManagedForm that
 //               must be set to edit allowed values.
 //
-//  ThisProfile - Boolean - it specifies that access kinds an be set up<o:p></o:p>
+//  ThisProfile - Boolean - it specifies that access kinds an be set up
 //                and that settings presentation contains 4 values instead of 2.
 //  TableStorageAttributeName - A row containing, for example,
 //               the Object row that contains the AccessKinds and AccessValues tables (see below).
@@ -2378,8 +2377,8 @@ Procedure OnCreateAtServerAllowedValueEditingForm(Form, ThisProfile = False, Tab
 	
 EndProcedure
 
-// When rereading data, fills or updates auxiliary data that is<o:p></o:p>
-// required for form functioning and depends on the content of the object.<o:p></o:p>
+// When rereading data, fills or updates auxiliary data that is
+// required for form functioning and depends on the content of the object.
 
 Procedure OnRereadAtServerAllowedValueEditingForm(Form, CurrentObject) Export
 	
@@ -2393,8 +2392,8 @@ Procedure OnRereadAtServerAllowedValueEditingForm(Form, CurrentObject) Export
 EndProcedure
 
 // Deletes irrelevant access values before write.
-// Irrelevant access values are sometimes created when you replace or delete<o:p></o:p>
-// an access kind with filled access values.<o:p></o:p>
+// Irrelevant access values are sometimes created when you replace or delete
+// an access kind with filled access values.
 
 //
 Procedure BeforeWriteAtServerAllowedValueEditingForm(Form, CurrentObject) Export
@@ -3154,8 +3153,8 @@ EndFunction
 ////////////////////////////////////////////////////////////////////////////////
 // Other procedures and functions
 
-// Creates a query to find differences between the register rows<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
-// in the specified data area (based on filters in the FieldsAndFilter parameter).<o:p></o:p>
+// Creates a query to find differences between the register rows
+// in the specified data area (based on filters in the FieldsAndFilter parameter).
 
 //
 // Parameters:
@@ -3195,7 +3194,7 @@ Function ChangeSelectionQueryText(NewChoiceQueryText,
 	SelectedFields = "";
 	FilterConditions = "True";
 	For Each FieldDetails In FieldsAndFilter Do
-		// Aggregating the selected fields<o:p></o:p>
+		// Aggregating the selected fields
 		SelectedFields = SelectedFields + StrReplace(
 			"
 			|	OldData.Field,",
@@ -3719,7 +3718,7 @@ Procedure OnChangeAccessValueSets(Val ObjectRef)
 				BriefErrorDescription = BriefErrorDescription(ErrorInfo());
 				Raise StringFunctionsClientServer.SubstituteParametersInString(
 					NStr("en = 'When updating the dependent set of access values for object
-					           |""%1"", an error has occurred: <?xml:namespace prefix = o ns = ""urn:schemas-microsoft-com:office:office"" /><o:p></o:p>
+					           |""%1"", an error has occurred:
 					           |
 					           |%2'"),
 					String(DependentObjectRef),
@@ -3902,7 +3901,6 @@ Function ProcessUserLinkWithAccessGroup(User, SuppliedProfile, PrivilegedModeOn 
 EndFunction
 
 // For the UpdateUserRoles procedure
-
 Function CurrentUserProperties(UserArray)
 	
 	Query = New Query;
@@ -4027,12 +4025,12 @@ Function CurrentUserProperties(UserArray)
 	|INTO UsersProfiles
 	|FROM
 	|	UsersToCheck AS UsersToCheck
-	|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON UsersToCheck.User = UserGroupContent.User
-	|			AND (UserGroupContent.Used)
+	|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON UsersToCheck.User = UserGroupContents.User
+	|			AND (UserGroupContents.Used)
 	|			AND (&ExcludeExternalUsers)
 	|		INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|		ON (UserGroupContent.UserGroup = AccessGroupsUsers.User)
+	|		ON (UserGroupContents.UserGroup = AccessGroupsUsers.User)
 	|			AND (Not AccessGroupsUsers.Ref.DeletionMark)
 	|;
 	|
@@ -4086,11 +4084,11 @@ Function UserWithRoleProfiles(CurrentUser, Role)
 	"SELECT DISTINCT
 	|	Roles.Ref AS Profile
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|		INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
-	|		ON (UserGroupContent.User = &CurrentUser)
-	|			AND UserGroupContent.UserGroup = AccessGroupsUsers.User
-	|			AND (UserGroupContent.Used)
+	|		ON (UserGroupContents.User = &CurrentUser)
+	|			AND UserGroupContents.UserGroup = AccessGroupsUsers.User
+	|			AND (UserGroupContents.Used)
 	|			AND (Not AccessGroupsUsers.Ref.DeletionMark)
 	|		INNER JOIN Catalog.AccessGroupProfiles.Roles AS Roles
 	|		ON (Roles.Ref = AccessGroupsUsers.Ref.Profile)
@@ -4150,8 +4148,8 @@ Procedure WriteUserOnRolesUpdate(UserRef, IBUser, WereFullRights, ServiceUserPas
 			EndIf;
 			
 			Raise
-				NStr("en = 'To modify the administrative access,<o:p></o:p>
-				           |service user password is required.<o:p></o:p>
+				NStr("en = 'To modify the administrative access,
+				           |service user password is required.
 				           |
 				           |The operation can only be executed in interactive mode.'");
 		EndIf;
@@ -4925,7 +4923,7 @@ Function AllAccessKindCombinations(UnorderedNameArray) Export
 					Total = Total + "," + NameArray[NamePositionsInCombination[Index]-1];
 				EndDo;
 				Total = Total + "," + LastName + "," + Chars.LF;
-				// Increasing position in combination<o:p></o:p>
+				// Increasing position in combination
 				Index = CombinationLength-1;
 				While Index >= 0 Do
 					If NamePositionsInCombination[Index] < CountOfNamesInCombination - (CombinationLength - (Index+1)) Then

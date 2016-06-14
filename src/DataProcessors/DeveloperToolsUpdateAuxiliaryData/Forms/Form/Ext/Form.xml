@@ -390,7 +390,7 @@ used during start or in other subsystems.</v8:content>
 									<ExtendedTooltip name="UserSessionParametersExtendedTooltip" id="174"/>
 								</CheckBoxField>
 								<CheckBoxField name="UserGroupContent" id="73">
-									<DataPath>UserGroupContent</DataPath>
+									<DataPath>UserGroupContents</DataPath>
 									<TitleLocation>Right</TitleLocation>
 									<ToolTip>
 										<v8:item>
@@ -786,7 +786,7 @@ Depend on configuration, access values, and access value groups.</v8:content>
 				<Field>UserSessionParameters</Field>
 			</Save>
 		</Attribute>
-		<Attribute name="UserGroupContent" id="8">
+		<Attribute name="UserGroupContents" id="8">
 			<Title>
 				<v8:item>
 					<v8:lang>en</v8:lang>
@@ -797,7 +797,7 @@ Depend on configuration, access values, and access value groups.</v8:content>
 				<v8:Type>xs:boolean</v8:Type>
 			</Type>
 			<Save>
-				<Field>UserGroupContent</Field>
+				<Field>UserGroupContents</Field>
 			</Save>
 		</Attribute>
 		<Attribute name="AccessRestrictionParameters" id="9">

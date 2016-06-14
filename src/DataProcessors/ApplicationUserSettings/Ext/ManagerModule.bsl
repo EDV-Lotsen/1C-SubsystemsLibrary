@@ -1003,10 +1003,10 @@ Function UserGroups(ExternalUser)
 	Query = New Query;
 	Query.Text =
 	"SELECT
-	|	UserGroupContent.UserGroup AS UserGroup,
-	|	UserGroupContent.User AS User
+	|	UserGroupContents.UserGroup AS UserGroup,
+	|	UserGroupContents.User AS User
 	|FROM
-	|	InformationRegister.UserGroupContent AS UserGroupContent
+	|	InformationRegister.UserGroupContents AS UserGroupContents
 	|
 	|ORDER BY
 	|	UserGroup";

@@ -156,7 +156,7 @@ Procedure UpdateUserRolesOnChangeAccessGroup(ServiceUserPassword)
 	
 	// Updating roles for added, remaining and deleted users
 	Query = New Query;
-	Query.SetParameter("AccessGroup",   Ref);
+	Query.SetParameter("AccessGroup",     Ref);
 	Query.SetParameter("OldParticipants", OldParticipants);
 	
 	If Profile       <> OldProfile
@@ -168,20 +168,20 @@ Procedure UpdateUserRolesOnChangeAccessGroup(ServiceUserPassword)
 		|	Data.User
 		|FROM
 		|	(SELECT DISTINCT
-		|		UserGroupContent.User AS User
+		|		UserGroupContents.User AS User
 		|	FROM
-		|		InformationRegister.UserGroupContent AS UserGroupContent
+		|		InformationRegister.UserGroupContents AS UserGroupContents
 		|	WHERE
-		|		UserGroupContent.UserGroup IN(&OldParticipants)
+		|		UserGroupContents.UserGroup IN(&OldParticipants)
 		|	
 		|	UNION ALL
 		|	
 		|	SELECT
-		|		UserGroupContent.User
+		|		UserGroupContents.User
 		|	FROM
 		|		Catalog.AccessGroups.Users AS AccessGroupsUsers
-		|			INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-		|			ON AccessGroupsUsers.User = UserGroupContent.UserGroup
+		|			INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+		|			ON AccessGroupsUsers.User = UserGroupContents.UserGroup
 		|				AND (AccessGroupsUsers.Ref = &AccessGroup)) AS Data";
 	Else
 		// Selecting only the access group participants that were modified
@@ -190,22 +190,22 @@ Procedure UpdateUserRolesOnChangeAccessGroup(ServiceUserPassword)
 		|	Data.User
 		|FROM
 		|	(SELECT DISTINCT
-		|		UserGroupContent.User AS User,
+		|		UserGroupContents.User AS User,
 		|		-1 AS RowChangeKind
 		|	FROM
-		|		InformationRegister.UserGroupContent AS UserGroupContent
+		|		InformationRegister.UserGroupContents AS UserGroupContents
 		|	WHERE
-		|		UserGroupContent.UserGroup IN(&OldParticipants)
+		|		UserGroupContents.UserGroup IN(&OldParticipants)
 		|	
 		|	UNION ALL
 		|	
 		|	SELECT DISTINCT
-		|		UserGroupContent.User,
+		|		UserGroupContents.User,
 		|		1
 		|	FROM
 		|		Catalog.AccessGroups.Users AS AccessGroupsUsers
-		|			INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-		|			ON AccessGroupsUsers.User = UserGroupContent.UserGroup
+		|			INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+		|			ON AccessGroupsUsers.User = UserGroupContents.UserGroup
 		|				AND (AccessGroupsUsers.Ref = &AccessGroup)) AS Data
 		|
 		|GROUP BY

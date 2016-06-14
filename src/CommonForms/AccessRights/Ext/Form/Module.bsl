@@ -15,23 +15,23 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		Not InfobaseUserFull
 		And AccessRight("Edit", Metadata.Catalogs.AccessGroups);
 	
-	Items.AccessGroupsContextMenuChangeGroup.Visibility =
+	Items.AccessGroupsContextMenuChangeGroup.Visible =
 		InfobaseUserFull
 		Or InfobaseUserResponsible;
 	
-	Items.FormAccessRightsReport.Visibility =
+	Items.FormAccessRightsReport.Visible =
 		InfobaseUserFull
 		Or Parameters.User = Users.AuthorizedUser();
 	
 	// Setting commands for a regular user
-	Items.FormAddToGroup.Visibility   = InfobaseUserResponsible;
-	Items.FormRemoveFromGroup.Visibility = InfobaseUserResponsible;
-	Items.FormChangeGroup.Visibility    = InfobaseUserResponsible;
+	Items.FormAddToGroup.Visible   = InfobaseUserResponsible;
+	Items.FormRemoveFromGroup.Visible = InfobaseUserResponsible;
+	Items.FormChangeGroup.Visible    = InfobaseUserResponsible;
 	
 	// Setting commands for a full user
-	Items.AccessGroupsIncludeInGroup.Visibility   = InfobaseUserFull;
-	Items.AccessGroupsExcludedFromGroup.Visibility = InfobaseUserFull;
-	Items.AccessGroupsChangeGroup.Visibility    = InfobaseUserFull;
+	Items.AccessGroupsIncludeInGroup.Visible   = InfobaseUserFull;
+	Items.AccessGroupsExcludedFromGroup.Visible = InfobaseUserFull;
+	Items.AccessGroupsChangeGroup.Visible    = InfobaseUserFull;
 	
 	// Setting the page tab view
 	Items.AccessGroupsAndRoles.PagesRepresentation =
@@ -46,7 +46,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		  FormItemCommandBarLabelLocation.None);
 	
 	// Setting the role view for a full user
-	Items.RoleRepresentation.Visibility = InfobaseUserFull;
+	Items.RoleRepresentation.Visible = InfobaseUserFull;
 	
 	If InfobaseUserFull
 	 Or InfobaseUserResponsible
@@ -55,11 +55,11 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		OutputAccessGroups();
 	Else
 		// Regular users cannot view other users' access settings
-		Items.AccessGroupsIncludeInGroup.Visibility   = False;
-		Items.AccessGroupsExcludedFromGroup.Visibility = False;
+		Items.AccessGroupsIncludeInGroup.Visible   = False;
+		Items.AccessGroupsExcludedFromGroup.Visible = False;
 		
-		Items.AccessGroupsAndRoles.Visibility         = False;
-		Items.InsufficientViewRight.Visibility = True;
+		Items.AccessGroupsAndRoles.Visible         = False;
+		Items.InsufficientViewRight.Visible = True;
 	EndIf;
 	
 	ProcessRolesInterface("SetUpRoleInterfaceOnFormCreate");
@@ -117,8 +117,8 @@ Procedure AccessGroupsChoice(Item, SelectedRow, Field, StandardProcessing)
 	
 	If AccessGroups.FindByID(SelectedRow) <> Undefined Then
 		
-		If Items.FormChangeGroup.Visibility
-		 Or Items.AccessGroupsChangeGroup.Visibility Then
+		If Items.FormChangeGroup.Visible
+		 Or Items.AccessGroupsChangeGroup.Visible Then
 			
 			ChangeGroup(Items.FormChangeGroup);
 		EndIf;
@@ -273,24 +273,24 @@ EndProcedure
 &AtServer
 Procedure OutputAccessGroups()
 	
-	Request = New Request;
-	Request.TempTablesManager = New TempTablesManager;
+	Query = New Query;
+	Query.TempTablesManager = New TempTablesManager;
 	
 	If InfobaseUserFull Or AccessFlag Then
 		SetPrivilegedMode(True);
 	EndIf;
 	
-	Request.Text =
+	Query.Text =
 	"SELECT ALLOWED
 	|	AccessGroups.Ref
 	|INTO AllowedAccessGroups
 	|FROM
 	|	Catalog.AccessGroups AS AccessGroups";
-	Request.Execute();
+	Query.Execute();
 	
 	SetPrivilegedMode(True);
 	
-	Request.Text =
+	Query.Text =
 	"SELECT
 	|	AllowedAccessGroups.Ref
 	|FROM
@@ -298,16 +298,16 @@ Procedure OutputAccessGroups()
 	|WHERE
 	|	(Not AllowedAccessGroups.Ref.DeletionMark)
 	|	AND (Not AllowedAccessGroups.Ref.Profile.DeletionMark)";
-	AllowedAccessGroups = Request.Execute().Unload();
+	AllowedAccessGroups = Query.Execute().Unload();
 	AllowedAccessGroups.Indexes.Add("Ref");
 	
-	Request.SetParameter("User", Parameters.User);
-	Request.Text =
+	Query.SetParameter("User", Parameters.User);
+	Query.Text =
 	"SELECT
 	|	AccessGroups.Ref AS AccessGroup,
 	|	AccessGroups.Ref.Description AS Description,
 	|	AccessGroups.Ref.Profile.Description AS ProfileDescription,
-	|	AccessGroups.Ref.Description AS Description,
+	|	AccessGroups.Ref.Details AS Details,
 	|	AccessGroups.Ref.Responsible AS Responsible
 	|FROM
 	|	(SELECT DISTINCT
@@ -322,11 +322,11 @@ Procedure OutputAccessGroups()
 	|					UNION ALL
 	|				
 	|					SELECT
-	|						UserGroupContent.UserGroup
+	|						UserGroupContents.UserGroup
 	|					FROM
-	|						InformationRegister.UserGroupContent AS UserGroupContent
+	|						InformationRegister.UserGroupContents AS UserGroupContents
 	|					WHERE
-	|						UserGroupContent.User = &User))
+	|						UserGroupContents.User = &User))
 	|				AND AccessGroups.Ref = AccessGroupUsers.Ref
 	|				AND (Not AccessGroups.DeletionMark)
 	|				AND (Not AccessGroups.Profile.DeletionMark)) AS AccessGroups
@@ -334,7 +334,7 @@ Procedure OutputAccessGroups()
 	|ORDER BY
 	|	AccessGroups.Ref.Description";
 	
-	AllAccessGroups = Request.Execute().Unload();
+	AllAccessGroups = Query.Execute().Unload();
 	
 	// Setting the access group presentation
 	// Removing the current user from the access group if they have direct membership only
@@ -342,17 +342,17 @@ Procedure OutputAccessGroups()
 	Index = AllAccessGroups.Count()-1;
 	
 	While Index >= 0 Do
-		String = AllAccessGroups[PostalCode];
+		Row = AllAccessGroups[Index];
 		
 		If AllowedAccessGroups.Find(Row.AccessGroup, "Ref") = Undefined Then
-			AllAccessGroups.Delete(PostalCode);
+			AllAccessGroups.Delete(Index);
 			HasProhibitedGroups = True;
 		EndIf;
 		Index = Index - 1;
 	EndDo;
 	
 	ValueToFormAttribute(AllAccessGroups, "AccessGroups");
-	Items.WarningHasHiddenAccessGroups.Visibility = HasProhibitedGroups;
+	Items.WarningHasHiddenAccessGroups.Visible = HasProhibitedGroups;
 	
 	If Not ValueIsFilled(CurrentAccessGroup) Then
 		
@@ -463,20 +463,20 @@ Function GroupUserContentChangeIsAllowed(AccessGroup)
 	
 	SetPrivilegedMode(True);
 	
-	Request = New Request;
-	Request.SetParameter("AccessGroup", AccessGroup);
-	Request.SetParameter("AuthorizedUser", Users.AuthorizedUser());
-	Request.Text =
+	Query = New Query;
+	Query.SetParameter("AccessGroup", AccessGroup);
+	Query.SetParameter("AuthorizedUser", Users.AuthorizedUser());
+	Query.Text =
 	"SELECT TOP 1
 	|	TRUE AS TrueValue
 	|FROM
 	|	Catalog.AccessGroups AS AccessGroups
-	|		INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-	|		ON (UserGroupContent.User = &AuthorizedUser)
-	|			AND (UserGroupContent.UserGroup = AccessGroups.Responsible)
+	|		INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+	|		ON (UserGroupContents.User = &AuthorizedUser)
+	|			AND (UserGroupContents.UserGroup = AccessGroups.Responsible)
 	|			AND (AccessGroups.Ref = &AccessGroup)";
 	
-	Return Not Request.Execute().IsEmpty();
+	Return Not Query.Execute().IsEmpty();
 	
 EndFunction
 
@@ -485,10 +485,10 @@ Function UserIsIncludedInAccessGroup(AccessGroup)
 	
 	SetPrivilegedMode(True);
 	
-	Request = New Request;
-	Request.SetParameter("AccessGroup", AccessGroup);
-	Request.SetParameter("User", Parameters.User);
-	Request.Text =
+	Query = New Query;
+	Query.SetParameter("AccessGroup", AccessGroup);
+	Query.SetParameter("User", Parameters.User);
+	Query.Text =
 	"SELECT
 	|	TRUE AS TrueValue
 	|FROM
@@ -497,34 +497,34 @@ Function UserIsIncludedInAccessGroup(AccessGroup)
 	|	AccessGroupsUsers.Ref = &AccessGroup
 	|	AND AccessGroupsUsers.User = &User";
 	
-	Return Not Request.Execute().IsEmpty();
+	Return Not Query.Execute().IsEmpty();
 	
 EndFunction
 
 &AtServer
 Procedure FillRoles()
 	
-	Request = New Request;
-	Request.SetParameter("User", Parameters.User);
+	Query = New Query;
+	Query.SetParameter("User", Parameters.User);
 	
 	If TypeOf(Parameters.User) = Type("CatalogRef.Users")
 	 Or TypeOf(Parameters.User) = Type("CatalogRef.ExternalUsers") Then
 		
-		Request.Text =
+		Query.Text =
 		"SELECT DISTINCT 
 		|	Roles.Role.Name AS Role
 		|FROM
 		|	Catalog.AccessGroupProfiles.Roles AS Roles
 		|		INNER JOIN Catalog.AccessGroups.Users AS AccessGroupsUsers
-		|			INNER JOIN InformationRegister.UserGroupContent AS UserGroupContent
-		|			ON (UserGroupContent.User = &User)
-		|				AND (UserGroupContent.UserGroup = AccessGroupsUsers.User)
+		|			INNER JOIN InformationRegister.UserGroupContents AS UserGroupContents
+		|			ON (UserGroupContents.User = &User)
+		|				AND (UserGroupContents.UserGroup = AccessGroupsUsers.User)
 		|				AND (Not AccessGroupsUsers.Ref.DeletionMark)
 		|		ON Roles.Ref = AccessGroupsUsers.Ref.Profile
 		|			AND (Not Roles.Ref.DeletionMark)";
 	Else
 		// User group or External user group.
-		Request.Text =
+		Query.Text =
 		"SELECT DISTINCT
 		|	Roles.Role.Name AS Role
 		|FROM
@@ -535,7 +535,7 @@ Procedure FillRoles()
 		|			AND Roles.Ref = AccessGroupsUsers.Ref.Profile
 		|			AND (Not Roles.Ref.DeletionMark)";
 	EndIf;
-	ValueToFormAttribute(Request.Execute().Unload(), "ReadRoles");
+	ValueToFormAttribute(Query.Execute().Unload(), "ReadRoles");
 	
 	Filter = New Structure("Role", "FullAccess");
 	If ReadRoles.FindRows(Filter).Count() > 0 Then

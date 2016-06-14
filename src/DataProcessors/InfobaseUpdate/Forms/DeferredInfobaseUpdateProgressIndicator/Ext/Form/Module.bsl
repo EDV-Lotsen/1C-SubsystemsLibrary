@@ -334,8 +334,8 @@ EndProcedure
 Function UpdateResultMessage(UpdateDetails)
 	
 	HandlerList = UpdateDetails.HandlerTree;
-	HandlersSuccessfullyCompleted = 0;
-	TotalHandlers                 = 0;
+	HandlersSuccessfullyExecuted = 0;
+	TotalHandlers                = 0;
 	For Each TreeRowLibrary In UpdateDetails.HandlerTree.Rows Do
 		For Each TreeRowVersion In TreeRowLibrary.Rows Do
 			TotalHandlers = TotalHandlers + TreeRowVersion.Rows.Count();

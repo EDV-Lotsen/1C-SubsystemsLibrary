@@ -184,10 +184,10 @@ Procedure AfterDataImportFromOtherMode() Export
 EndProcedure
 
 // Called when processing the 
-// http://www.1c.en/SaaS/RemoteAdministration/App/a.b.c.d}SetFullControl message.
+// http://www.1c.ru/SaaS/RemoteAdministration/App/a.b.c.d}SetFullControl message.
 //
 // Parameters:
-//  DataAreaUser  - CatalogRef.Users - the user to be added to or removed from<?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p>
+//  DataAreaUser  - CatalogRef.Users - the user to be added to or removed from
 //                  the Administrators group. 
 //  AccessAllowed - Boolean - if True, the user is added to the group, if False, 
 //                  the user is removed from the group.

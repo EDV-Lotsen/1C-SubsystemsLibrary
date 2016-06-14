@@ -108,7 +108,7 @@ Procedure FillCheckProcessing(Form, Cancel, AttributesToCheck) Export
 	
 	For Each Row In Form.Properties_AdditionalAttributeDetails Do
 		If Row.RequiredToFill And Not Row.Deleted Then
-			If Not ValueIsFilled(Form[Row.AttributeNameValue]) Then
+			If Not ValueIsFilled(Form[Row.ValueAttributeName]) Then
 				
 				CommonUseClientServer.AddUserError(Errors,
 					Row.ValueAttributeName,

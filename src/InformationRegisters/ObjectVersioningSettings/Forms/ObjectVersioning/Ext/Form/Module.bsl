@@ -15,9 +15,9 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	ChoiceListFull.Add(Enums.ObjectVersioningModes.VersionizeOnPost);
 	ChoiceListFull.Add(Enums.ObjectVersioningModes.DontVersionize);
 	
-	ListOfChoiceWithoutPosting = New ValueList;
-	ListOfChoiceWithoutPosting.Add(Enums.ObjectVersioningModes.VersionizeOnWrite);
-	ListOfChoiceWithoutPosting.Add(Enums.ObjectVersioningModes.DontVersionize);
+	ChoiceListWithoutPosting = New ValueList;
+	ChoiceListWithoutPosting.Add(Enums.ObjectVersioningModes.VersionizeOnWrite);
+	ChoiceListWithoutPosting.Add(Enums.ObjectVersioningModes.DontVersionize);
 	
 	Items.Schedule.Title = CurrentSchedule();
 	AutomaticallyDeleteObsoleteVersions = ScheduledJobs.FindPredefined(Metadata.ScheduledJobs.ClearingObsoleteObjectVersions).Use;

@@ -19,7 +19,7 @@ Procedure TaskFormOnCreateAtServer(BusinessProcessTaskForm, TaskObject,
 	
 	BusinessProcessTaskForm.ReadOnly = TaskObject.Executed;
 
-	ConditionGroupItem.Visibility = TaskObject.Executed;
+	ConditionGroupItem.Visible = TaskObject.Executed;
 	If TaskObject.Executed Then
 		Parent = ?(ConditionGroupItem <> Undefined, ConditionGroupItem, BusinessProcessTaskForm);
 		Item = BusinessProcessTaskForm.Items.Find("__TaskStatePicture");
@@ -654,8 +654,7 @@ EndProcedure
 //                               performer groups that include the specified performers.
 //
 //  ParameterValue             - Undefined when ParameterContent = Undefined.
-//                             - for example,
-CatalogRef.TaskPerformerGroups,
+//                             - for example, CatalogRef.TaskPerformerGroups,
 //                              when ParameterContent = "PerformerGroups"
 //                             - CatalogRef.Users,
 //                            CatalogRef.ExternalUsers,
@@ -814,7 +813,7 @@ Procedure OnFillAccessRightDependencies(RightDependencies) Export
 	// but you need a "softer" check condition: check the right to read the object
   // and the restrictions that apply to the object reading.
 	
-	String = RightDependencies.Add();
+	Row = RightDependencies.Add();
 	Row.SubordinateTable = "Task.PerformerTask";
 	Row.LeadingTable     = "BusinessProcess.Job";
 	
@@ -836,16 +835,13 @@ EndProcedure
 //                <Table>.<Right>.<AccessKind>[.Object table] 
 //                 For example,  Document.GoodsReceipt.Read.Counterparties
 //                 Document.GoodsReceipt.Update.Companies
-//
-Document.GoodsReceipt.Update.Counterparties
+//				   Document.GoodsReceipt.Update.Counterparties
 //                 Document.EmailMessages.Read.Object.Document.EmailMessages
 //                 Document.EmailMessages.Update.Object.Document.EmailMessages
 //                 Document.Files.Read.Object.Catalog.FileFolders 
-//
-Document.Files.Read.Object.Document.EmailMessage
+//                 Document.Files.Read.Object.Document.EmailMessage
 //                 Document.Files.Update.Object.Catalog.FileFolders
-//
-Document.Files.Update.Object.Document.EmailMessage
+//                 Document.Files.Update.Object.Document.EmailMessage
 //                 The Object access kind is predefined as a literal.
 //                 It is not included in predefined items of ChartsOfCharacteristicTypes.AccessKinds. 
 //                 This access kind is used in access restriction templates
@@ -867,8 +863,7 @@ Procedure OnFillMetadataObjectAccessRestrictionKinds(Description) Export
 	"
 	|BusinessProcess.Job.Read.Users
 	|BusinessProcess.Job.Update.Users
-	|
-Task.PerformerTask.Read.Object.BusinessProcess.Job 
+	|Task.PerformerTask.Read.Object.BusinessProcess.Job 
 	|Task.PerformerTask.Read.Users
 	|Task.PerformerTask.Update.Users
 	|";
@@ -1462,7 +1457,7 @@ Procedure OnMarkTaskForDeletion(TaskRef, DeletionMarkNewValue) Export
 	Try
 		// Marking nested business processes
 		SetPrivilegedMode(True);
-		NestedBusinessProcesses = LeadingTaskBusinessProcesses(TaskRef, True);
+		NestedBusinessProcesses = HeadTaskBusinessProcesses(TaskRef, True);
 		For Each SubBusinessProcess In NestedBusinessProcesses Do
 			BusinessProcessObject = SubBusinessProcess.GetObject();
 			BusinessProcessObject.SetDeletionMark(DeletionMarkNewValue);

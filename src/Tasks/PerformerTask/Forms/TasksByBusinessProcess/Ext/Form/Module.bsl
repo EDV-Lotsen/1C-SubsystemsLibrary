@@ -15,13 +15,13 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	UseDateAndTimeInTaskDeadlines = GetFunctionalOption("UseDateAndTimeInTaskDeadlines");
 	
 	If UseSubordinateBusinessProcesses Then
-		Items.List.Visibility = False;
-		Items.ListCommandBar.Visibility = False;
-		Items.TaskTree.Visibility = True;
+		Items.List.Visible = False;
+		Items.ListCommandBar.Visible = False;
+		Items.TaskTree.Visible = True;
 	Else	
-		Items.List.Visibility = True;
-		Items.ListCommandBar.Visibility = True;
-		Items.TaskTree.Visibility = False;
+		Items.List.Visible = True;
+		Items.ListCommandBar.Visible = True;
+		Items.TaskTree.Visible = False;
 	EndIf;	
 		
 	Title = StringFunctionsClientServer.SubstituteParametersInString(
@@ -85,8 +85,7 @@ EndProcedure
 
 #EndRegion
 
-#Region 
-TaskTreeFormTableItemEventHandlers 
+#Region TaskTreeFormTableItemEventHandlers 
 
 &AtClient
 Procedure TaskTreeChoice(Item, SelectedRow, Field, StandardProcessing)
@@ -104,7 +103,7 @@ EndProcedure
 Procedure Refresh(Command)
 	
 	FillTaskTree();
-	For Each String In TaskTree.GetItems() Do
+	For Each Row In TaskTree.GetItems() Do
 		Items.TaskTree.Expand(Row.GetID(), True);
 	EndDo;
 	
@@ -245,7 +244,7 @@ Procedure AddSubordinateBusinessProcesses(Tree, TaskRef)
 
 		While DetailedRecordSelection.Next() Do
 			
-			String = Branch.Rows.Add();
+			Row = Branch.Rows.Add();
 			
 			Row.Description = DetailedRecordSelection.Description;
 			Row.Importance = DetailedRecordSelection.Importance;
@@ -306,11 +305,11 @@ Procedure AddSubordinateBusinessProcessTasks(Tree, BusinessProcessRef)
 
 	While DetailedRecordSelection.Next() Do
 		
-		String = Undefined;
+		Row = Undefined;
 		If Branch = Undefined Then
-			String = Tree.Rows.Add();
+			Row = Tree.Rows.Add();
 		Else	
-			String = Branch.Rows.Add();
+			Row = Branch.Rows.Add();
 		EndIf;
 		
 		Row.Description = DetailedRecordSelection.Description;

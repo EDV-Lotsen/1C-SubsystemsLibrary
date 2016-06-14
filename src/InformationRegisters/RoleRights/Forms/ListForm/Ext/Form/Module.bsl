@@ -15,7 +15,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	List.Parameters.SetParameterValue("MetadataObject", Parameters.MetadataObject);
 	
 	If ValueIsFilled(Parameters.MetadataObject) Then
-		Items.MetadataObject.Visibility = False;
+		Items.MetadataObject.Visible = False;
 	EndIf;
 	
 EndProcedure

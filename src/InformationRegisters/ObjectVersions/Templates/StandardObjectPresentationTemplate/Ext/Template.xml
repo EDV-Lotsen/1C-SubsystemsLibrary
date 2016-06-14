@@ -8,6 +8,11 @@
 			<code>English</code>
 			<description>English</description>
 		</languageInfo>
+		<languageInfo>
+			<id>ru</id>
+			<code>Russian</code>
+			<description>Russian</description>
+		</languageInfo>
 	</languageSettings>
 	<columns>
 		<size>3</size>
@@ -300,7 +305,7 @@
 			<c>
 				<c>
 					<f>18</f>
-					<parameter>AttributeFieldDescription</parameter>
+					<parameter>FieldAttributeDescription</parameter>
 				</c>
 			</c>
 			<c>
@@ -397,12 +402,7 @@
 				<i>1</i>
 				<c>
 					<f>24</f>
-					<tl>
-						<v8:item>
-							<v8:lang/>
-							<v8:content>TabularSectionDescription</v8:content>
-						</v8:item>
-					</tl>
+					<parameter>TabularSectionDescription</parameter>
 				</c>
 			</c>
 		</row>
@@ -555,16 +555,6 @@
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
-		<name>AttributeFieldDescription</name>
-		<area>
-			<type>Rectangle</type>
-			<beginRow>13</beginRow>
-			<endRow>13</endRow>
-			<beginColumn>1</beginColumn>
-			<endColumn>1</endColumn>
-		</area>
-	</namedItem>
-	<namedItem xsi:type="NamedItemCells">
 		<name>AttributeHeader</name>
 		<area>
 			<type>Rows</type>
@@ -575,16 +565,6 @@
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
-		<name>AttributeModifiedValue</name>
-		<area>
-			<type>Rectangle</type>
-			<beginRow>14</beginRow>
-			<endRow>14</endRow>
-			<beginColumn>2</beginColumn>
-			<endColumn>2</endColumn>
-		</area>
-	</namedItem>
-	<namedItem xsi:type="NamedItemCells">
 		<name>AttributesAreNotChanged</name>
 		<area>
 			<type>Rows</type>
@@ -592,16 +572,6 @@
 			<endRow>11</endRow>
 			<beginColumn>-1</beginColumn>
 			<endColumn>-1</endColumn>
-		</area>
-	</namedItem>
-	<namedItem xsi:type="NamedItemCells">
-		<name>AttributeSourceValue</name>
-		<area>
-			<type>Rectangle</type>
-			<beginRow>13</beginRow>
-			<endRow>13</endRow>
-			<beginColumn>2</beginColumn>
-			<endColumn>2</endColumn>
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
@@ -645,6 +615,16 @@
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
+		<name>FieldAttributeDescription</name>
+		<area>
+			<type>Rectangle</type>
+			<beginRow>13</beginRow>
+			<endRow>13</endRow>
+			<beginColumn>1</beginColumn>
+			<endColumn>1</endColumn>
+		</area>
+	</namedItem>
+	<namedItem xsi:type="NamedItemCells">
 		<name>Header</name>
 		<area>
 			<type>Rows</type>
@@ -655,6 +635,16 @@
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
+		<name>InitialAttributeValue</name>
+		<area>
+			<type>Rectangle</type>
+			<beginRow>13</beginRow>
+			<endRow>13</endRow>
+			<beginColumn>2</beginColumn>
+			<endColumn>2</endColumn>
+		</area>
+	</namedItem>
+	<namedItem xsi:type="NamedItemCells">
 		<name>Legend</name>
 		<area>
 			<type>Rows</type>
@@ -662,6 +652,16 @@
 			<endRow>27</endRow>
 			<beginColumn>-1</beginColumn>
 			<endColumn>-1</endColumn>
+		</area>
+	</namedItem>
+	<namedItem xsi:type="NamedItemCells">
+		<name>ModifiedAttributeValue</name>
+		<area>
+			<type>Rectangle</type>
+			<beginRow>14</beginRow>
+			<endRow>14</endRow>
+			<beginColumn>2</beginColumn>
+			<endColumn>2</endColumn>
 		</area>
 	</namedItem>
 	<namedItem xsi:type="NamedItemCells">
@@ -856,19 +856,20 @@
 	</format>
 	<format>
 		<width>322</width>
-		<backColor>style:AddedAttributeBackground</backColor>
+		<textColor>style:ModifiedAttributeValueColor</textColor>
+		<backColor>style:ModifiedAttributeValueBackground</backColor>
 		<fillType>Parameter</fillType>
 	</format>
 	<format>
 		<width>322</width>
-		<backColor>style:DeletedAttributeBackground</backColor>
+		<backColor>style:AddedAttributeBackground</backColor>
 		<fillType>Parameter</fillType>
 		<markNegatives>false</markNegatives>
 	</format>
 	<format>
-		<font>1</font>
 		<width>249</width>
 		<horizontalAlignment>Left</horizontalAlignment>
+		<backColor>style:DeletedAttributeBackground</backColor>
 		<fillType>Parameter</fillType>
 		<textOrientation>0</textOrientation>
 		<bySelectedColumns>false</bySelectedColumns>
@@ -877,13 +878,19 @@
 	<format>
 		<font>4</font>
 		<horizontalAlignment>Left</horizontalAlignment>
-		<fillType>Template</fillType>
+		<fillType>Parameter</fillType>
 		<textOrientation>0</textOrientation>
 		<bySelectedColumns>false</bySelectedColumns>
 		<columnSizeChange>QuickChange</columnSizeChange>
 	</format>
 	<format>
 		<font>6</font>
+		<fillType>Template</fillType>
+	</format>
+	<format/>
+	<format>
+		<textColor>style:ModifiedAttributeValueColor</textColor>
+		<backColor>style:ModifiedAttributeValueBackground</backColor>
 	</format>
 	<format>
 		<backColor>style:AddedAttributeBackground</backColor>
@@ -891,6 +898,4 @@
 	<format>
 		<backColor>style:DeletedAttributeBackground</backColor>
 	</format>
-	<format/>
-	<format/>
 </document>

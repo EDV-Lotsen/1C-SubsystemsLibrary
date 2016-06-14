@@ -144,7 +144,7 @@ Function DisableDataSynchronizationMessage(Val PackageUsed = Undefined) Export
 	
 EndFunction
 
-// Returns {http://www.1c.en/SaaS/ExchangeAdministration/Manage/a.b.c.d}PushSync 
+// Returns {http://www.1c.ru/SaaS/ExchangeAdministration/Manage/a.b.c.d}PushSync 
 // messages type.
 //
 // Parameters:

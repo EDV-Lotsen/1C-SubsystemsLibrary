@@ -28,7 +28,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 			?(DefaultTitle, NStr("en = 'Selected task'"), FormTitleText),
 			String(Parameters.Task));
 	Else
-		Items.DecorationTitle.Visibility = False;
+		Items.DecorationTitle.Visible = False;
 	EndIf;
 	Items.DecorationTitle.Title = TitleText;
 	
@@ -87,7 +87,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 			NStr("en = 'No performer is appointed for the specified role. (To ignore this warning, select the check box.)'"),,,
 			"Role",
 			Cancel);
-		Items.IgnoreWarnings.Visibility = True;
+		Items.IgnoreWarnings.Visible = True;
 	EndIf;	
 	
 EndProcedure
@@ -173,14 +173,14 @@ Procedure SetItemStates()
 	Items.OneMainAddressingObject.Title = Role.MainAddressingObjectTypes.Description;
 	
 	If MainAddressingObjectTypesSet And AditionalAddressingObjectTypesSet Then
-		Items.OneAddressingObjectGroup.Visibility = False;
-		Items.TwoAddressingObjectsGroup.Visibility = True;
+		Items.OneAddressingObjectGroup.Visible = False;
+		Items.TwoAddressingObjectsGroup.Visible = True;
 	ElsIf MainAddressingObjectTypesSet Then
-		Items.OneAddressingObjectGroup.Visibility = True;
-		Items.TwoAddressingObjectsGroup.Visibility = False;
+		Items.OneAddressingObjectGroup.Visible = True;
+		Items.TwoAddressingObjectsGroup.Visible = False;
 	Else	
-		Items.OneAddressingObjectGroup.Visibility = False;
-		Items.TwoAddressingObjectsGroup.Visibility = False;
+		Items.OneAddressingObjectGroup.Visible = False;
+		Items.TwoAddressingObjectsGroup.Visible = False;
 	EndIf;
 		
 	Items.AdditionalAddressingObject.Title = Role.AdditionalAddressingObjectTypes.Description;

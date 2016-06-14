@@ -1335,23 +1335,23 @@ Function XMLObjectPresentationParsing(BinaryData, Ref) Export
 				
 				If Not ValueIsFilled(NewAV.Type) Then
 					
-					AttributeDescription = ObjectMetadata.Attributes.Find(NewAV.AttributeDescription);
+					AttributeDetails = ObjectMetadata.Attributes.Find(NewAV.AttributeDescription);
 					
-					If AttributeDescription = Undefined Then
+					If AttributeDetails = Undefined Then
 						
 						AttributeDescription = GetAttributePresentationInLanguage(NewAV.AttributeDescription);
 						
 						If CommonUse.IsStandardAttribute(ObjectMetadata.StandardAttributes, AttributeDescription) Then
 							
-							AttributeDescription = ObjectMetadata.StandardAttributes[AttributeDescription];
+							AttributeDetails = ObjectMetadata.StandardAttributes[AttributeDescription];
 							
 						EndIf;
 						
 					EndIf;
 					
-					If AttributeDescription <> Undefined
-						And AttributeDescription.Type.Types().Count() = 1 Then
-						NewAV.Type = AttributeDescription.Type.Types()[0];
+					If AttributeDetails <> Undefined
+						And AttributeDetails.Type.Types().Count() = 1 Then
+						NewAV.Type = AttributeDetails.Type.Types()[0];
 					EndIf;
 					
 				EndIf;
@@ -1609,7 +1609,7 @@ Function DisplayParsedObjectAttributes(ReportTS, ObjectVersion, ObjectRef)
 		Section.Area("R1C2:R1C3").BottomBorder = New Line(SpreadsheetDocumentCellLineType.Solid, 1, 0);
 		Section.Area("R1C2:R1C3").BorderColor = StyleColors.InaccessibleDataColor;
 		
-		ReportTS.Output(Section);
+		ReportTS.Put(Section);
 		
 		OutputRowNumber = OutputRowNumber + 1;
 	EndDo;
@@ -1709,7 +1709,7 @@ Function DisplayParsedObjectTabularSections(ReportTS, ObjectVersion, OutputLineN
 					ColumnNumber = ColumnNumber + 1;
 				EndDo; // For Each TabularSectionColumn From TabularSection.Columns Do
 				
-				OutputArea = ReportTS.Output(AddedTS);
+				OutputArea = ReportTS.Put(AddedTS);
 				ReportTS.Area("R"+OutputArea.Top+"C1:R"+OutputArea.Bottom+"C"+ColumnNumber).CreateFormatOfRows();
 				ReportTS.Area("R"+OutputArea.Top+"C2").ColumnWidth = 7;
 				For CurrentColumnNumber = 3 To ColumnNumber-1 Do
@@ -1731,7 +1731,7 @@ Function PutTextToReport(ReportTS,
                              Val State,
                              Val Text,
                              Val TextColor = Undefined,
-                             Val BgColor   = Undefined,
+                             Val BackColor   = Undefined,
                              Val Size     = 9,
                              Val Bold     = False)
 	
@@ -1741,8 +1741,8 @@ Function PutTextToReport(ReportTS,
 		SectionArea.TextColor = TextColor;
 	EndIf;
 	
-	If BgColor <> Undefined Then
-		SectionArea.BgColor = BgColor;
+	If BackColor <> Undefined Then
+		SectionArea.BackColor = BackColor;
 	EndIf;
 	
 	SectionArea.Text      = Text;
@@ -1754,7 +1754,7 @@ Function PutTextToReport(ReportTS,
 	SectionArea.LeftBorder   = New Line(SpreadsheetDocumentCellLineType.None);
 	SectionArea.RightBorder  = New Line(SpreadsheetDocumentCellLineType.None);
 	
-	Return ReportTS.Output(Section);
+	Return ReportTS.Put(Section);
 	
 EndFunction
 
@@ -1762,7 +1762,7 @@ EndFunction
 //
 Procedure SetTextProperties(SectionArea, Text,
                                    Val TextColor = Undefined,
-                                   Val BgColor = Undefined,
+                                   Val BackColor = Undefined,
                                    Val Size = 9,
                                    Val Bold = False,
                                    Val ShowBorders = False)
@@ -1773,8 +1773,8 @@ Procedure SetTextProperties(SectionArea, Text,
 		SectionArea.TextColor = TextColor;
 	EndIf;
 	
-	If BgColor <> Undefined Then
-		SectionArea.BgColor = BgColor;
+	If BackColor <> Undefined Then
+		SectionArea.BackColor = BackColor;
 	EndIf;
 	
 	SectionArea.Font = New Font(, Size, Bold, , , );
