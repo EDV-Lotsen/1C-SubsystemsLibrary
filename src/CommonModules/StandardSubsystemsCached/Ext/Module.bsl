@@ -36,7 +36,7 @@ Function ProgramEventParameters() Export
 		
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Cannot update the infobase.
-			           |The following internal event parameter is not filled:
+			           |The following internal event parameter required:
 			           |%1.'")
 			+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 			ParameterPresentation);

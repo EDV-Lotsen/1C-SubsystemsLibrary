@@ -207,7 +207,7 @@ Function FillingErrorText(FieldKind = "Field", MessageKind = "FillType",
 
 	If Upper(FieldKind) = "FIELD" Then
 		If Upper(MessageKind) = "FILLTYPE" Then
-			Template = NStr("en = 'The %1 field is not filled.'");
+			Template = NStr("en = 'The %1 field is required.'");
 		ElsIf Upper(MessageKind) = "CORRECTNESS" Then
 			Template = NStr("en = 'The %1 field is  filled incorrectly.
 								|
@@ -215,7 +215,7 @@ Function FillingErrorText(FieldKind = "Field", MessageKind = "FillType",
 		EndIf;
 	ElsIf Upper(FieldKind) = "COLUMN" Then
 		If Upper(MessageKind) = "FILLTYPE" Then
-			Template = NStr("en = 'The %1 column in the row %2 of the %3 list is not filled.'");
+			Template = NStr("en = 'The %1 column in the row %2 of the %3 list is required.'");
 		ElsIf Upper(MessageKind) = "CORRECTNESS" Then
 			Template = NStr("en = 'The %1 column in the row %2 of the %3 list is filled incorrectly.
 								|

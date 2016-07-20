@@ -1183,15 +1183,15 @@ Function DescriptionAlreadyUsed(Val Title, Val CurrentPropery, Val PropertySet, 
 	
 	If ValueIsFilled(Selection.PropertySet) Then
 		If Selection.IsAdditionalData Then
-			QuestionText = NStr("en = 'There is an additional data with %1 description.'");
+			QuestionText = NStr("en = 'There is a custom data with %1 description.'");
 		Else
-			QuestionText = NStr("en = 'There is an additional attribute with %1 description.'");
+			QuestionText = NStr("en = 'There is a custom field with %1 description.'");
 		EndIf;
 	Else
 		If Selection.IsAdditionalData Then
-			QuestionText = NStr("en = 'There is a common additional data with %1 description.'");
+			QuestionText = NStr("en = 'There is a common custom data with %1 description.'");
 		Else
-			QuestionText = NStr("en = 'There is a common additional attribute with %1 description.'");
+			QuestionText = NStr("en = 'There is a common custom field with %1 description.'");
 		EndIf;
 	EndIf;
 	
@@ -1213,29 +1213,29 @@ Function GetTitle(Object)
 		
 		If ValueIsFilled(Object.PropertySet) Then
 			If Object.IsAdditionalData Then
-				Title = String(Object.Title) + " " + NStr("en = '(Additional data)'");
+				Title = String(Object.Title) + " " + NStr("en = '(Custom data)'");
 			Else
-				Title = String(Object.Title) + " " + NStr("en = '(Additional attribute)'");
+				Title = String(Object.Title) + " " + NStr("en = '(Custom field)'");
 			EndIf;
 		Else
 			If Object.IsAdditionalData Then
-				Title = String(Object.Title) + " " + NStr("en = '(Common additional data)'");
+				Title = String(Object.Title) + " " + NStr("en = '(Common custom data)'");
 			Else
-				Title = String(Object.Title) + " " + NStr("en = '(Common additional attribute)'");
+				Title = String(Object.Title) + " " + NStr("en = '(Common custom field)'");
 			EndIf;
 		EndIf;
 	Else
 		If ValueIsFilled(Object.PropertySet) Then
 			If Object.IsAdditionalData Then
-				Title = NStr("en = 'Additional data (creating)'");
+				Title = NStr("en = 'Custom data (creating)'");
 			Else
-				Title = NStr("en = 'additional attribute (creating)'");
+				Title = NStr("en = 'Custom field (creating)'");
 			EndIf;
 		Else
 			If Object.IsAdditionalData Then
-				Title = NStr("en = 'Common additional data (creating)'");
+				Title = NStr("en = 'Common custom data (creating)'");
 			Else
-				Title = NStr("en = 'Common additional attribute (creating)'");
+				Title = NStr("en = 'Common custom attribute (creating)'");
 			EndIf;
 		EndIf;
 	EndIf;

@@ -90,7 +90,7 @@ Function GetDateArrayByCalendar(Val WorkSchedule, Val DateFrom, Val DayArray, Va
 	
 	While Selection.Next() Do
 		If Selection.DateByCalendar = Undefined Then
-			ErrorMessage = NStr("en = 'Business calendar ""%1"" is not filled for the period beginning from %2 and lasting the specified number of days.'");
+			ErrorMessage = NStr("en = 'Business calendar ""%1"" is required for the period beginning from %2 and lasting the specified number of days.'");
 			If RaiseException Then
 				Raise StringFunctionsClientServer.SubstituteParametersInString(
 					ErrorMessage,
@@ -272,7 +272,7 @@ Function GetDateDiffByCalendar(Val WorkSchedule, Val StartDate, Val EndDate, Rai
 	
 	If Result.IsEmpty() Then
 		If RaiseException Then
-			ErrorMessage = NStr("en = 'Work schedule %1 is not filled for the following period: %2.'");
+			ErrorMessage = NStr("en = 'Work schedule %1 is required for the following period: %2.'");
 			Raise StringFunctionsClientServer.SubstituteParametersInString(
 				ErrorMessage,
 				WorkSchedule, PeriodPresentation(StartDate, EndOfDay(EndDate)));

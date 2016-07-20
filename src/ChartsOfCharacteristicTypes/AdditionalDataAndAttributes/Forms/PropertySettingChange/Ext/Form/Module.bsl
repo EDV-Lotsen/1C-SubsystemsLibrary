@@ -217,7 +217,7 @@ Function WriteAtServer()
 		Return GetFromTempStorage(StorageAddress);
 	EndIf;
 	
-	JobDescription = NStr("en = 'Changing additional property setting.'");
+	JobDescription = NStr("en = 'Changing custom property setting.'");
 	
 	Result = LongActions.ExecuteInBackground(
 		UUID,

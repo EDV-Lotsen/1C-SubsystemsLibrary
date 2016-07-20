@@ -2970,7 +2970,7 @@ Procedure BeforeApplicationStart()
 	
 	// Checking whether the configuration version is filled.
 	If IsBlankString(Metadata.Version) Then
-		Raise NStr("en = 'The Version configuration property is not filled.'");
+		Raise NStr("en = 'The Version configuration property is required.'");
 	Else
 		Try
 			ZeroVersion = CommonUseClientServer.CompareVersions(Metadata.Version, "0.0.0.0") = 0;

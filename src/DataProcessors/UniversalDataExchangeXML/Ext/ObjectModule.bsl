@@ -5390,7 +5390,7 @@ EndFunction
 // Retrieves the object conversion rule (OCR) by the target object type.
 // 
 // Parameters:
-//  RefTypeString - String - object type string, for example, "CatalogRef.ProductsAndServices".ProductsAndServices".
+//  RefTypeString - String - object type string, for example, "CatalogRef.ProductsAndServices.ProductsAndServices".
 // 
 // Returns:
 //  MapValue - object conversion rule.

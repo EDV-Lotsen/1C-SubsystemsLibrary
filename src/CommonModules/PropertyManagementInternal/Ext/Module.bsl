@@ -815,7 +815,7 @@ Procedure OnFillAccessKinds(AccessKinds) Export
 	
 	AccessKind = AccessKinds.Add();
 	AccessKind.Name = "AdditionalData";
-	AccessKind.Presentation = NStr("en = 'Additional data'");
+	AccessKind.Presentation = NStr("en = 'Custom data'");
 	AccessKind.ValueType   = Type("ChartOfCharacteristicTypesRef.AdditionalDataAndAttributes");
 	
 EndProcedure

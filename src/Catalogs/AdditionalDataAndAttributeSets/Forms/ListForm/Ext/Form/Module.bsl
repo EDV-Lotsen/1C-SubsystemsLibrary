@@ -402,7 +402,7 @@ Procedure UpdateSetAppearance()
 	MoveDownCommand = Commands.Find("MoveDown");
 	
 	If IsAdditionalDataSets Then
-		Title = NStr("en = 'Additional data'");
+		Title = NStr("en = 'Custom data'");
 		
 		CreateCommand.ToolTip = NStr("en = 'Create a unique data'");
 		CreateCommand.Title = NStr("en = 'New'");
@@ -433,21 +433,21 @@ Procedure UpdateSetAppearance()
 			NStr("en = 'The data uses the data-sample value list.'");
 		
 		Items.PropertiesCommon.Title = NStr("en = 'Common'");
-		Items.PropertiesCommon.ToolTip = NStr("en = 'Common additional data used in several additional data sets.'");
+		Items.PropertiesCommon.ToolTip = NStr("en = 'Common custom data used in several additional data sets.'");
 	Else
-		Title = NStr("en = 'Additional attributes'");
+		Title = NStr("en = 'Custom fields'");
 		CreateCommand.Title = NStr("en = 'New'");
-		CreateCommand.ToolTip = NStr("en = 'Create a unique attribute'");
+		CreateCommand.ToolTip = NStr("en = 'Create a unique field'");
 		CreateBySampleCommand.Title = NStr("en = 'By sample'");
-		CreateBySampleCommand.ToolTip = NStr("en = 'Create an attribute by sample (common list of values)'");
+		CreateBySampleCommand.ToolTip = NStr("en = 'Create a field by sample (common list of values)'");
 		CreateCommonCommand.Title = NStr("en = 'Common...'");
-		CreateCommonCommand.ToolTip = NStr("en = 'Select a common attribute from the existing ones'");
+		CreateCommonCommand.ToolTip = NStr("en = 'Select a common field from the existing ones'");
 		
-		CopyCommand.ToolTip = NStr("en = 'Create a new attribute by copying the current one'");
-		ChangeCommand.ToolTip = NStr("en = 'Edit (or open) the current attribute'");
-		MarkToDeleteCommand.ToolTip = NStr("en = 'Mark the current attribute for deletion (Del)'");
-		MoveUpCommand.ToolTip = NStr("en = 'Move the current attribute up'");
-		MoveDownCommand.ToolTip = NStr("en = 'Move the current attribute down'");
+		CopyCommand.ToolTip = NStr("en = 'Create a new field by copying the current one'");
+		ChangeCommand.ToolTip = NStr("en = 'Edit (or open) the current field'");
+		MarkToDeleteCommand.ToolTip = NStr("en = 'Mark the current field for deletion (Del)'");
+		MoveUpCommand.ToolTip = NStr("en = 'Move the current field up'");
+		MoveDownCommand.ToolTip = NStr("en = 'Move the current field down'");
 		
 		MetadataTabularSection =
 			Metadata.Catalogs.AdditionalDataAndAttributeSets.TabularSections.AdditionalAttributes;
@@ -466,7 +466,7 @@ Procedure UpdateSetAppearance()
 			NStr("en = 'The attribute uses the attribute-sample value list.'");
 		
 		Items.PropertiesCommon.Title = NStr("en = 'Common'");
-		Items.PropertiesCommon.ToolTip = NStr("en = 'The common additional attribute used in several additional attribute sets.'");
+		Items.PropertiesCommon.ToolTip = NStr("en = 'A common custom field used in several custom field sets.'");
 	EndIf;
 	
 	Query = New Query;
@@ -536,7 +536,7 @@ Procedure ChangeDeletionMark()
 		
 		If IsAdditionalDataSets Then
 			If Items.Properties.CurrentData.Common Then
-				QuestionText = NStr("en ='Do you want to delete the current common additional data from the set?'");
+				QuestionText = NStr("en ='Do you want to delete the current common custom data from the set?'");
 				
 			ElsIf Items.Properties.CurrentData.DeletionMark Then
 				QuestionText = NStr("en ='Do you want to remove the deletion mark from the current data?'");
@@ -851,14 +851,14 @@ Procedure ExecuteCommandAtServer(Command, Parameter = Undefined)
 				OnCurrentSetChangeAtServer();
 				If IsAdditionalDataSets Then
 					Raise
-						NStr("en = 'The action is not executed as the additional data set has been changed by another user.
-						           |The new list of additional data is read.
+						NStr("en = 'The action is not executed as the custom data set has been changed by another user.
+						           |The new list of custom data is read.
 						           |
 						           |Repeat the action if required.'");
 				Else
 					Raise
-						NStr("en = 'The action is not executed as the additional attribute set has been changed by another user.
-						           |The new list of additional attributes is read.
+						NStr("en = 'The action is not executed as the custom field set has been changed by another user.
+						           |The new list of custom fields is read.
 						           |
 						           |Repeat the action if required.'");
 				EndIf;

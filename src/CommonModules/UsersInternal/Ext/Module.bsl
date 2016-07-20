@@ -1780,7 +1780,7 @@ Function CheckInfobaseUserDescription(Val InfobaseUserDescription, Cancel) Expor
 		If IsBlankString(Name) Then
  
 			CommonUseClientServer.MessageToUser(
-				NStr("en = 'Name (the logon name) is not filled.'"),
+				NStr("en = 'Name (the logon name) is required.'"),
 				,
 				"Name",
 				,

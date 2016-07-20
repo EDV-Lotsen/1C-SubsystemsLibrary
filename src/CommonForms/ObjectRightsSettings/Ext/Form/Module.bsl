@@ -712,7 +712,7 @@ Procedure FillCheckProcessing(Cancel)
 		// Checking whether the values are filled
 		If Not ValueIsFilled(CurrentRow["User"]) Then
 			CommonUseClientServer.MessageToUser(
-				NStr("en = 'User or group is not filled.'"),
+				NStr("en = 'User or group is required.'"),
 				,
 				"RightsGroups[" + Format(LineNumber, "NG=0") + "].User",
 				,

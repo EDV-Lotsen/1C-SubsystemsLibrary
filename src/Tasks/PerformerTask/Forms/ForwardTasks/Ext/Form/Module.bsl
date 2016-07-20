@@ -66,7 +66,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 	If MainAddressingObjectTypesSet And MainAddressingObject = Undefined Then
 		CommonUseClientServer.MessageToUser(
 			StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'The %1 field is not filled.'"),
+				NStr("en = 'The %1 field is required.'"),
 				Role.MainAddressingObjectTypes.Description),,,
 			"MainAddressingObject",
 			Cancel);
@@ -74,7 +74,7 @@ Procedure FillCheckProcessingAtServer(Cancel, AttributesToCheck)
 	ElsIf AditionalAddressingObjectTypesSet And AdditionalAddressingObject = Undefined Then
 		CommonUseClientServer.MessageToUser(
 			StringFunctionsClientServer.SubstituteParametersInString(
-				NStr("en = 'The %1 field is not filled.'"),
+				NStr("en = 'The %1 field is required.'"),
 				Role.AdditionalAddressingObjectTypes.Description),,,
 			"AdditionalAddressingObject",
 			Cancel);

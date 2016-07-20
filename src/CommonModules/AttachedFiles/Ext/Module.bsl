@@ -273,7 +273,7 @@ Function AppendFile(Val FilesOwner,
 			
 			Raise StringFunctionsClientServer.SubstituteParametersInString(
 				NStr("en = 'Error when adding attached file.
-				           |Reference to the new file is not filled.'"));
+				           |Reference to the new file is required.'"));
 		EndIf;
 		
 		CatalogName = AttachedFilesInternal.FileStoringCatalogName(
@@ -822,7 +822,7 @@ Procedure ExecuteActionsBeforeWriteAttachedFile(Source, Cancel) Export
 		
 		ErrorDescription = StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Owner of the file
-			           |""%1"" is not filled.'"),
+			           |""%1"" is required.'"),
 			Source.Description);
 		
 		If InfobaseUpdate.ExecutingInfobaseUpdate() Then

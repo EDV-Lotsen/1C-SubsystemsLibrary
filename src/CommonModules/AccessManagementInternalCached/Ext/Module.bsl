@@ -40,7 +40,7 @@ Function Parameters() Export
 		Raise StringFunctionsClientServer.SubstituteParametersInString(
 			NStr("en = 'Infobase update error.
 			           |""%1"" 
-                |access restriction parameter is not filled.'")
+                |access restriction parameter is required.'")
 			+ StandardSubsystemsServer.ApplicationRunParameterErrorClarificationForDeveloper(),
 			ParameterPresentation);
 	EndIf;

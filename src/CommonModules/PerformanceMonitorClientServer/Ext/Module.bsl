@@ -17,10 +17,10 @@
 //  depending on the platform version.
 Function BeginTimeMeasurement(KeyOperation = Undefined) Export
 	
-	StartTime = 0;
+	BeginTime = 0;
 	If PerformanceMonitorServerCallCached.EnablePerformanceMeasurements() Then
 		StartDate = TimerValue(False);
-		StartTime = TimerValue();
+		BeginTime = TimerValue();
 		#If Client Then
 			If Not ValueIsFilled(KeyOperation) Then
 				Raise NStr("en = 'The key operation is not specified.'");
@@ -53,7 +53,7 @@ Function BeginTimeMeasurement(KeyOperation = Undefined) Export
 			StartedMeasurement = KeyOperationBuffer.Get(StartDate);
 			If StartedMeasurement = Undefined Then
 				MeasurementBuffer = New Map;
-				MeasurementBuffer.Insert("StartTime", StartTime);
+				MeasurementBuffer.Insert("BeginTime", BeginTime);
 				KeyOperationBuffer.Insert(StartDate, MeasurementBuffer);
 			EndIf;
 			
@@ -61,7 +61,7 @@ Function BeginTimeMeasurement(KeyOperation = Undefined) Export
 		#EndIf
 	EndIf;
 
-	Return StartTime;
+	Return BeginTime;
 	
 EndFunction
 
@@ -69,18 +69,18 @@ EndFunction
 // and writes the result on the server.
 //  Parameters:
 //   KeyOperation - CatalogRef.KeyOperations - key operation 
-// 					         or String - key operation name.
-//   StartTime    - Number or Date.
-Procedure EndTimeMeasurement(KeyOperation, StartTime) Export
+// 					or String - key operation name.
+//   BeginTime    - Number or Date.
+Procedure EndTimeMeasurement(KeyOperation, BeginTime) Export
 	
 	EndDate = TimerValue(False);
 	EndTime = TimerValue();
-	If TypeOf(StartTime) = Type("Number") Then
-		Duration = (EndTime - StartTime);
+	If TypeOf(BeginTime) = Type("Number") Then
+		Duration = (EndTime - BeginTime);
 		StartDate = EndDate - Duration;
 	Else
-		Duration = (EndDate - StartTime);
-		StartDate = StartTime;
+		Duration = (EndDate - BeginTime);
+		StartDate = BeginTime;
 	EndIf;
 	PerformanceMonitorServerCallFullAccess.CommitKeyOperationsDuration(
 		KeyOperation,

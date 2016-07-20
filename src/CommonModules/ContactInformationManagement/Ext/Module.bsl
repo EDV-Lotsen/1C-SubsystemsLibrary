@@ -497,7 +497,7 @@ Procedure FillCheckProcessingAtServer(Form, Object, Cancel) Export
 				
 				If Mandatory And IsBlankString(Presentation) Then
 					
-					MessageText = NStr("en = 'The %1 field is not filled.'");
+					MessageText = NStr("en = 'The %1 field is required.'");
 					MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, InformationKind.Description);
 					CommonUseClientServer.MessageToUser(MessageText,,Field);
 					CurrentErrorLevel = 2;
@@ -529,7 +529,7 @@ Procedure FillCheckProcessingAtServer(Form, Object, Cancel) Export
 				)
 			Then
 				
-				MessageText = NStr("en = 'The %1 field is not filled.'");
+				MessageText = NStr("en = 'The %1 field is required.'");
 				MessageText = StringFunctionsClientServer.SubstituteParametersInString(MessageText, InformationKind.Description);
 				CommonUseClientServer.MessageToUser(MessageText,,,AttributeName);
 				CurrentErrorLevel = 2;

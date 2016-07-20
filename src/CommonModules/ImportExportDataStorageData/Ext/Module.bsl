@@ -660,7 +660,7 @@ Function ListOfMetadataWithValueStorage()
 	SetPrivilegedMode(False);
 	
 	If TypeOf(MetadataList) <> Type("Map") Then 
-		Raise NStr("en = 'The list of metadata with value storage is not filled.'");
+		Raise NStr("en = 'The list of metadata with value storage is required.'");
 	EndIf;
 	
 	Return MetadataList;

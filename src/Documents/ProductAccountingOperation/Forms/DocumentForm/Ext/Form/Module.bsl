@@ -60,7 +60,7 @@ Procedure FillCheckProcessingAtServer(Cancel, CheckedAttributes)
 	If Inventory.Count() = 0 Then
 		
 		Message = New UserMessage;
-		Message.Text = NStr("en = 'The RegisterRecords data is not filled!'");
+		Message.Text = NStr("en = 'The RegisterRecords data is required!'");
 		Message.Message();
 		Cancel = True;
 		

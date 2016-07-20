@@ -112,9 +112,9 @@ Procedure ChangeAdditionalDataContent(Command)
 	 Or Not ValueIsFilled(AvailablePropertySets[0].Value) Then
 		
 		ShowMessageBox(,
-			NStr("en = 'Failed to get object additional data sets.
+			NStr("en = 'Failed to get object custom data sets.
 			           |
-			           |Perhaps the necessary object attributes are not filled.'"));
+			           |Perhaps the necessary object fields are not filled.'"));
 	Else
 		FormParameters = New Structure;
 		FormParameters.Insert("PurposeUseKey", "AdditionalDataSets");

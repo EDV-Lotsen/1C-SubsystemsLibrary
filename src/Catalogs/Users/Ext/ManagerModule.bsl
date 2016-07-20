@@ -45,4 +45,39 @@ Procedure ChoiceDataGetProcessing(ChoiceData, Parameters, StandardProcessing)
 	
 EndProcedure
 
+Procedure FormGetProcessing(FormType, Parameters, SelectedForm, AdditionalInfo, StandardProcessing)
+	
+	If FormType = "ObjectForm" And Parameters.Property("AuthorizationObject") Then
+		
+		StandardProcessing = False;
+		SelectedForm = "ItemForm";
+		
+		FoundUser = Undefined;
+		CanAddUser = False;
+		
+		AuthorizationObjectUsed = UsersInternalServerCall.AuthorizationObjectUsed(
+			Parameters.AuthorizationObject,
+			,
+			FoundUser,
+			CanAddUser);
+		
+		If AuthorizationObjectUsed Then
+			Parameters.Insert("Key", FoundUser);
+			
+		ElsIf CanAddUser Then
+			
+			Parameters.Insert(
+				"NewUserAuthorizationObject", Parameters.AuthorizationObject);
+		Else
+			ErrorAsWarningDescription =
+				NStr("en='No rights to log on to the application.';ru='Разрешение на вход в программу не предоставлялось.'");
+				
+			Raise ErrorAsWarningDescription;
+		EndIf;
+		
+		Parameters.Delete("AuthorizationObject");
+	EndIf;
+	
+EndProcedure
+
 #EndRegion

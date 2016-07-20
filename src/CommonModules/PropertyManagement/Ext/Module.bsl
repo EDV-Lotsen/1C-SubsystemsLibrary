@@ -113,7 +113,7 @@ Procedure FillCheckProcessing(Form, Cancel, AttributesToCheck) Export
 				CommonUseClientServer.AddUserError(Errors,
 					Row.ValueAttributeName,
 					StringFunctionsClientServer.SubstituteParametersInString(
-						NStr("en = 'The %1 field is not filled.'"), Row.Description));
+						NStr("en = 'The %1 field is required.'"), Row.Description));
 			EndIf;
 		EndIf;
 	EndDo;
@@ -1009,9 +1009,9 @@ Procedure CreateBasicFormObjects(Form, ItemForPlacementName,
 			If Users.RolesAvailable("AddEditBasicRegulatoryData") Then
 				// Add a command.
 				Command = Form.Commands.Add("EditAdditionalAttributeContent");
-				Command.Title = NStr("en = 'Change content of additional attributes'");
+				Command.Title = NStr("en = 'Change content of custom fields'");
 				Command.Action = "Attachable_EditPropertyContent";
-				Command.ToolTip = NStr("en = 'Change content of additional attributes'");
+				Command.ToolTip = NStr("en = 'Change content of custom fields'");
 				Command.Picture = PictureLib.ListSettings;
 				
 				Button = Form.Items.Add(

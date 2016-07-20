@@ -100,7 +100,7 @@ Procedure PerformanceSelection(Item, SelectedRow, Field, StandardProcessing)
 	
 	TSRow = Object.Performance.FindByID(SelectedRow);
 	
-	If Left(Field.Name, 18) <> "Performance"
+	If Left(Field.Name, 11) <> "Performance"
 		Or TSRow.KeyOperation = Object.OverallSystemPerformance
 		Then
 			Return;
@@ -199,7 +199,7 @@ Procedure SpecifyApdex(Command)
 	TSRow = Object.Performance.FindByID(Items.Performance.CurrentRow);
 	Item = Items.Performance.CurrentItem;
 	
-	If Left(Item.Name, 18) <> "Performance"
+	If Left(Item.Name, 11) <> "Performance"
 		Or TSRow.KeyOperation = Object.OverallSystemPerformance
 		Then
 			Return;
@@ -482,7 +482,7 @@ Procedure ChangeObjectAttributeContent(KeyOperationTableColumns, AttributesToBeD
 		
 		// Names of attributes to be deleted in Object.Performance.PerformanceN format, 
 		// where N is a number. This expression gets a string in PerformanceN format.
-		Item = Items.Find(Mid(AttributesToBeDeleted[a], 27));
+		Item = Items.Find(Mid(AttributesToBeDeleted[a], 20));
 		If Item <> Undefined Then
 			Items.Delete(Item);
 		EndIf;
@@ -497,7 +497,7 @@ Procedure ChangeObjectAttributeContent(KeyOperationTableColumns, AttributesToBeD
 	For Each ObjectAttribute In ObjectAttributes Do
 		
 		AttributeName = ObjectAttribute.Name;
-		If Left(AttributeName, 18) = "Performance" Then
+		If Left(AttributeName, 11) = "Performance" Then
 			Item = Items.Add(AttributeName, Type("FormField"), Items.Performance);
 			Item.Type = FormFieldType.InputField;
 			Item.DataPath = "Object.Performance." + AttributeName;
@@ -672,7 +672,7 @@ Procedure SetTSConditionalAppearance(FilterFields, AppearanceFields, Conditional
 			FilterItem = AppearanceItem.Filter.Items.Add(Type("DataCompositionFilterItem"));
 			FilterItem.ComparisonType = DataCompositionComparisonType.Less;
 			FilterItem.LeftValue = New DataCompositionField(FilterFields[a]);
-			FilterItem.RightValue = KeyValue.Value.Before;
+			FilterItem.RightValue = KeyValue.Value.To;
 			// Appearance field
 			AppearanceField = AppearanceItem.Fields.Items.Add();
 			AppearanceField.Field = New DataCompositionField(AppearanceFields[a]);
@@ -887,7 +887,7 @@ Function TimeMeasurementRecordSet(Start, End, KeyOperationArray)
 	
 	QueryText = QueryText + "
 		|FROM
-		|	" + RegisterMetadata.FullName() + " KeyOperationArray";
+		|	" + RegisterMetadata.FullName() + " Measurements";
 	
 	Query = New Query;
 	Query.SetParameter("StartDate", Start);
@@ -1457,7 +1457,7 @@ Procedure SetFilterKeyOperationTable(KeyOperationTable, FilterValues)
 	While Cnt < KeyOperationTable.Count() Do
 		
 		For Each KeyOperationTableColumn In KeyOperationTable.Columns Do
-			If (Left(KeyOperationTableColumn.Name, 18) <> "Performance") Or (KeyOperationTable[Cnt][KeyOperationTableColumn.Name] = 0) Then
+			If (Left(KeyOperationTableColumn.Name, 11) <> "Performance") Or (KeyOperationTable[Cnt][KeyOperationTableColumn.Name] = 0) Then
 				Continue;
 			EndIf;
 			

@@ -654,7 +654,7 @@ Procedure AdjustScheduleFilled(Form)
 	EndIf;
 	
 	If Not ValueIsFilled(Form.FillDate) Then
-		Form.IsFilledInformationText = NStr("en = 'The work schedule is not filled in'");
+		Form.IsFilledInformationText = NStr("en = 'The work schedule is required'");
 		Form.RequiresFilling = True;
 	Else	
 		If Not ValueIsFilled(Form.Object.PlanningHorizon) Then

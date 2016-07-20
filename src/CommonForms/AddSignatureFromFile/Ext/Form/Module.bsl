@@ -54,7 +54,7 @@ Procedure OK(Command)
 	For Each Row In Signatures Do
 		
 		If IsBlankString(Row.PathToFile) Then
-			ErrorText = NStr("en = 'Path to signature file is not filled'");
+			ErrorText = NStr("en = 'Path to signature file is required'");
 			CommonUseClientServer.MessageToUser(ErrorText, , "Signatures");
 			HasFillingErrors = True;
 		EndIf;

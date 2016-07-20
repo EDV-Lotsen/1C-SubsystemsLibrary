@@ -16,13 +16,13 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	UseAdditionalData  = SetPropertyTypes.AdditionalData;
 	
 	If UseAdditionalAttributes And UseAdditionalData Then
-		Title = Object.Description + " " + NStr("en = '(Additional attribute and data set)'")
+		Title = Object.Description + " " + NStr("en = '(Custom field and data set)'")
 		
 	ElsIf UseAdditionalAttributes Then
-		Title = Object.Description + " " + NStr("en = '(Additional attribute set)'")
+		Title = Object.Description + " " + NStr("en = '(Custom field set)'")
 		
 	ElsIf UseAdditionalData Then
-		Title = Object.Description + " " + NStr("en = '(Additional data set)'")
+		Title = Object.Description + " " + NStr("en = '(Custom data set)'")
 	EndIf;
 	
 	If Not UseAdditionalAttributes And Object.AdditionalAttributes.Count() = 0 Then

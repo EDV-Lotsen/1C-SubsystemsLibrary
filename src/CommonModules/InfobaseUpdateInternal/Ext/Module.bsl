@@ -2559,7 +2559,7 @@ Procedure ValidateHandlerProperties(UpdateIteration)
 		If IsBlankString(Handler.Version) Then
 			
 			If Handler.InitialFilling <> True Then
-				ErrorDescription = NStr("en = 'Version or InitialFilling property of the handler is not filled.'");
+				ErrorDescription = NStr("en = 'Version or InitialFilling property of the handler is required.'");
 			EndIf;
 			
 		ElsIf Handler.Version <> "*" Then

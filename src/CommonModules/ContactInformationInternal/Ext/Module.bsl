@@ -1285,7 +1285,7 @@ Function AddressFillErrors(Val XDTOAddress, Val InformationKind, Val ResultByGro
 		// The address is empty
 		If CheckFlags.Mandatory Then
 			// But it is mandatory to fill
-			ErrorText = NStr("en = 'The address is not filled.'");
+			ErrorText = NStr("en = 'The address is required.'");
 			
 			If ResultByGroups Then
 				Result = New Array;

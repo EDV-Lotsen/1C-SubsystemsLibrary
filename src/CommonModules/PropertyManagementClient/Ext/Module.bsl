@@ -20,9 +20,9 @@ Procedure EditPropertyContent(Form, Ref = Undefined) Export
 	 Or Not ValueIsFilled(Sets[0].Value) Then
 		
 		ShowMessageBox(,
-			NStr("en = 'Failure to get additional attribute sets of the object.
+			NStr("en = 'Failure to get custom field sets of the object.
 			           |
-			           |Perhaps the necessary object attributes are not filled.'"));
+			           |Perhaps the necessary object fields are not filled.'"));
 	
 	Else
 		FormParameters = New Structure;

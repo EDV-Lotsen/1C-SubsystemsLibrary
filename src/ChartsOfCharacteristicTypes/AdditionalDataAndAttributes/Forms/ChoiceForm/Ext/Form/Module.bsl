@@ -30,10 +30,10 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 		
 		If IsAdditionalData = True Then
 			AutoTitle = False;
-			Title = NStr("en = 'Common additional data selection'");
+			Title = NStr("en = 'Common custom data selection'");
 		ElsIf IsAdditionalData = False Then
 			AutoTitle = False;
-			Title = NStr("en = 'Common additional attribute selection'");
+			Title = NStr("en = 'Common custom field selection'");
 		EndIf;
 		
 	ElsIf Parameters.AdditionalValueOwnerSelection Then

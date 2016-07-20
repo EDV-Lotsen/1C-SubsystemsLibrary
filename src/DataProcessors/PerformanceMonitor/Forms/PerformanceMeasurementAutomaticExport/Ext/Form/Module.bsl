@@ -58,7 +58,7 @@ Function FillCheckProcessingAtServer()
 		ExecuteFlag = ThisObject[PathFlag.Key.DataPath];
 		PathItem = PathFlag.Value;
 		If ExecuteFlag And IsBlankString(TrimAll(ThisObject[PathItem.DataPath])) Then
-			MessageText = NStr("en = '""%1"" field is not filled'");
+			MessageText = NStr("en = '""%1"" field is required'");
 			MessageText = StrReplace(MessageText, "%1", PathItem.Title);
 			CommonUseClientServer.MessageToUser(
 				MessageText,

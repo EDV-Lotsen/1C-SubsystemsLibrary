@@ -233,7 +233,7 @@ Procedure FillCheckProcessing(Cancel, CheckedAttributes)
 	// Checking if the "Customer" field is filled
 	If Customer.IsEmpty() Then
 
-		// If the customer field is not filled, informing a user about that
+		// If the customer field is required, informing a user about that
 		Message = New UserMessage();
 		Message.Text = NStr("en = 'The customer, bill of lading issue to, is not specified.'");
 		Message.Field = NStr("en =  'Customer'");

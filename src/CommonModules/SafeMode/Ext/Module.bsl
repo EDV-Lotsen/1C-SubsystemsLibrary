@@ -154,7 +154,7 @@ EndFunction
 //
 // Parameters:
 // CommandLinePattern - String - command line pattern to start the application. See details in
-//                      the 1C:Enterprice platform documentation.
+//                      the 1C:Enterprise platform documentation.
 // Details            - String - details on the reasons to grant the permission.
 //
 // Returns:

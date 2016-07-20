@@ -27,7 +27,7 @@ Procedure FillCheckProcessing(Cancel, AttributesToCheck)
 		EndIf;
 		
 		If IsBlankString(WindowsFullPath) And IsBlankString(LinuxFullPath) Then
-			ErrorText = NStr("en = 'Full path is not filled'");
+			ErrorText = NStr("en = 'Full path is required'");
 			CommonUseClientServer.MessageToUser(ErrorText, , "WindowsFullPath", "Object", Cancel);
 			CommonUseClientServer.MessageToUser(ErrorText, , "LinuxFullPath",   "Object", Cancel);
 			Return;

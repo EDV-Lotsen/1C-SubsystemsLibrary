@@ -16,13 +16,13 @@ Procedure OnCreateAtServer(Cancel, StandardDataProcessor)
 	UseAdditionalData  = SetPropertyTypes.AdditionalData;
 	
 	If UseAdditionalAttributes AND UseAdditionalData Then
-		Title = Object.Description + " " + NStr("en = '(The group of additional attribute and data sets)'")
+		Title = Object.Description + " " + NStr("en = '(Group of custom field and data sets)'")
 		
 	ElsIf UseAdditionalAttributes Then
-		Title = Object.Description + " " + NStr("en = '(The group od additional attribute sets)'")
+		Title = Object.Description + " " + NStr("en = '(Group of custom field sets)'")
 		
 	ElsIf UseAdditionalData Then
-		Title = Object.Description + " " + NStr("en = '(The group of additional data sets)'")
+		Title = Object.Description + " " + NStr("en = '(Group of custom data sets)'")
 	EndIf;
 	
 EndProcedure

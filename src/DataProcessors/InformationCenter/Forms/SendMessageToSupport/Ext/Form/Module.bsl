@@ -144,7 +144,7 @@ Function CheckAttributeFilling()
 	
 	If Not ValueIsFilled(FromWhom) Then 
 		ClearMessages();
-		ShowUserMessage(NStr("en = 'The reply address is not filled.'"));
+		ShowUserMessage(NStr("en = 'The reply address is required.'"));
 		Return False;
 	EndIf;
 	

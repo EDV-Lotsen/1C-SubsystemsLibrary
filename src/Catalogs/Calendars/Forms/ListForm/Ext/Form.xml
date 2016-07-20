@@ -188,15 +188,15 @@
 					WHEN CatalogWorkSchedules.BusinessCalendar &lt;&gt; VALUE(Catalog.BusinessCalendars.EmptyRef)
 						THEN CASE
 								WHEN BusinessCalendarsData.FillDate = DATETIME(1, 1, 1)
-									THEN "The business calendar is not filled"
+									THEN "The business calendar is required"
 								ELSE CASE
 										WHEN BusinessCalendarsData.FillDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
-											THEN "The business calendar for the next calendar year is not filled"
+											THEN "The business calendar for the next calendar year is required"
 									END
 							END
 					ELSE CASE
 							WHEN CatalogWorkSchedules.EndDate = DATETIME(1, 1, 1)
-								THEN "The schedule for the next calendar year is not filled"
+								THEN "The schedule for the next calendar year is required"
 							ELSE CASE
 									WHEN CatalogWorkSchedules.EndDate &lt; DATEADD(&amp;CurrentDate, MONTH, CatalogWorkSchedules.PlanningHorizon)
 										THEN "Schedule fill period is limited (see End date field)"

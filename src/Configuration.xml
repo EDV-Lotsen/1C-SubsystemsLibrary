@@ -48,7 +48,7 @@
 				<xr:Item xsi:type="xr:MDObjectRef">Role.FullAdministrator</xr:Item>
 			</DefaultRoles>
 			<Vendor>1C Company</Vendor>
-			<Version>2.2.4.4</Version>
+			<Version>2.2.4.8</Version>
 			<UpdateCatalogAddress>http://downloads.v8.1c.ru/tmplts/</UpdateCatalogAddress>
 			<IncludeHelpInContents>true</IncludeHelpInContents>
 			<UseManagedFormInOrdinaryApplication>true</UseManagedFormInOrdinaryApplication>
@@ -929,6 +929,7 @@
 			<DefinedType>SafeMode</DefinedType>
 			<DefinedType>RightsSettingsOwner</DefinedType>
 			<DefinedType>AccessValue</DefinedType>
+			<CommonCommand>AccessRights</CommonCommand>
 			<CommonCommand>AdditionalDataCommandBar</CommonCommand>
 			<CommonCommand>AdditionalDataNavigationPanel</CommonCommand>
 			<CommonCommand>AdditionalDataProcessorsAdministration</CommonCommand>
@@ -936,6 +937,7 @@
 			<CommonCommand>AdditionalReportsAdministration</CommonCommand>
 			<CommonCommand>AddServiceUsers</CommonCommand>
 			<CommonCommand>BackUp</CommonCommand>
+			<CommonCommand>BusinessProcessFlowchart</CommonCommand>
 			<CommonCommand>ChangeHistory</CommonCommand>
 			<CommonCommand>CreateInitialImageWithFiles</CommonCommand>
 			<CommonCommand>DataSynchronizationMonitorSaaS</CommonCommand>
@@ -967,20 +969,18 @@
 			<CommonCommand>OpenObjectConversionRules</CommonCommand>
 			<CommonCommand>ProxyServerCustomParameters</CommonCommand>
 			<CommonCommand>RelatedObjectCreation</CommonCommand>
+			<CommonCommand>RolesAndTaskPerformers</CommonCommand>
 			<CommonCommand>SentDataContent</CommonCommand>
 			<CommonCommand>SetObjectVisibilitiesUsingODataAPI</CommonCommand>
-			<CommonCommand>SetupBarcodeScanner</CommonCommand>
+			<CommonCommand>SetRights</CommonCommand>
+			<CommonCommand>SetUpBarcodeScanner</CommonCommand>
 			<CommonCommand>SetUpExchangeMessageTransportParameters</CommonCommand>
 			<CommonCommand>StandaloneMode</CommonCommand>
 			<CommonCommand>StandaloneModeSaaS</CommonCommand>
 			<CommonCommand>SystemEmailAccountSetup</CommonCommand>
-			<CommonCommand>UserInfo</CommonCommand>
 			<CommonCommand>TasksByBusinessProcess</CommonCommand>
 			<CommonCommand>TasksBySubject</CommonCommand>
-			<CommonCommand>BusinessProcessFlowchart</CommonCommand>
-			<CommonCommand>SetRights</CommonCommand>
-			<CommonCommand>AccessRights</CommonCommand>
-			<CommonCommand>RolesAndTaskPerformers</CommonCommand>
+			<CommonCommand>UserInfo</CommonCommand>
 			<CommandGroup>DataExchangeExecution</CommandGroup>
 			<CommandGroup>DataExchangeParameters</CommandGroup>
 			<CommandGroup>Information</CommandGroup>

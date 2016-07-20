@@ -847,7 +847,7 @@ Function SelectNewTasksByPerformers(Val DateTimeFrom, Val DateTimeTo)
 		|	PerformerTask.Description AS Description,
 		|	PerformerTask.DueDate AS DueDate,
 		|	PerformerTask.Author AS Author,
-		|	SUBSTRING(PerformerTask.Description, 1, 250) AS Description,
+		|	SUBSTRING(PerformerTask.Description, 1, 250) AS Details,
 		|	CASE
 		|		WHEN PerformerTask.Performer IS Not NULL 
 		|				AND PerformerTask.Performer <> VALUE(Catalog.Users.EmptyRef)
