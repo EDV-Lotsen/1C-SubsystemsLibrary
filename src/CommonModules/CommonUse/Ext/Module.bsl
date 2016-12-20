@@ -156,7 +156,7 @@ Function ObjectsAttributeValues(RefArray, AttributeNames) Export
 	Query = New Query;
 	Query.Text =
 		"SELECT
-		|	Ref AS Ref, " + AttributeNames + "FROM" + RefArray[0].Metadata().FullName() + " AS Table
+		|	Ref AS Ref, " + AttributeNames + " FROM " + RefArray[0].Metadata().FullName() + " AS Table
 		| WHERE Table.Ref IN (&RefArray)";
 	Query.SetParameter("RefArray", RefArray);
 	
@@ -5841,8 +5841,8 @@ Procedure ReplaceInObject(Results, Val UsageInstance, Val WriteParameters, Val I
 	Filter = New Structure("Data, ReplacementKey", Data, "Object");
 	RowsToProcess = UsageInstance.Owner().FindRows(Filter);
 	
-	SequenceDescription       = SequenceDescription(Meta);
-	RegisterRecordDescription = RegisterRecordDescription(Meta);
+	SequencesDescription       = SequencesDescription(Meta);
+	RegisterRecordsDescription = RegisterRecordsDescription(Meta);
 
 	ActionState = "";
 	
@@ -5856,7 +5856,7 @@ Procedure ReplaceInObject(Results, Val UsageInstance, Val WriteParameters, Val I
 		DataLock.Add(Meta.FullName()).SetValue("Ref", Data);
 		
 		// RegisterRecords 
-		For Each Item In RegisterRecordDescription Do
+		For Each Item In RegisterRecordsDescription Do
 			// Everything by the recorder
 			DataLock.Add(Item.LockSpace + ".RecordSet").SetValue("Recorder", Data);
 			
@@ -5873,7 +5873,7 @@ Procedure ReplaceInObject(Results, Val UsageInstance, Val WriteParameters, Val I
 		EndDo;
 		
 		// Sequences
-		For Each Item In SequenceDescription Do
+		For Each Item In SequencesDescription Do
 			DataLock.Add(Item.LockSpace).SetValue("Recorder", Data);
 			
 			For Each KeyValue In Item.MeasurementList Do
@@ -5905,7 +5905,7 @@ Procedure ReplaceInObject(Results, Val UsageInstance, Val WriteParameters, Val I
 	EndIf;	// Need of locking
 	
 	If ActionState = "" Then
-		WritingObjects = ModifiedObjectsOnReplaceInObject(Data, RowsToProcess, RegisterRecordDescription, SequenceDescription);
+		WritingObjects = ModifiedObjectsOnReplaceInObject(Data, RowsToProcess, RegisterRecordsDescription, SequencesDescription);
 		
 		// Attempting to save, the object goes last
 		If Not WriteParameters.WriteInPrivilegedMode Then
@@ -6093,7 +6093,7 @@ Procedure ReplaceInSet(Results, Val UsageInstance, Val WriteParameters, Val Inne
 	
 EndProcedure
 
-Function ModifiedObjectsOnReplaceInObject(Val Data, Val RowsToProcess, Val RegisterRecordDescription, Val SequenceDescription)
+Function ModifiedObjectsOnReplaceInObject(Val Data, Val RowsToProcess, Val RegisterRecordsDescription, Val SequencesDescription)
 	SetPrivilegedMode(True);
 	
 	// Returning modified processed objects
@@ -6112,12 +6112,12 @@ Function ModifiedObjectsOnReplaceInObject(Val Data, Val RowsToProcess, Val Regis
 		Return Modified;
 	EndIf;
 	
-	For Each RegisterRecordDescription In RegisterRecordDescription Do
+	For Each RegisterRecordDescription In RegisterRecordsDescription Do
 		RegisterRecordDescription.RecordSet.Filter.Recorder.Set(Data);
 		RegisterRecordDescription.RecordSet.Read();
 	EndDo;
 	
-	For Each SequenceDescription In SequenceDescription Do
+	For Each SequenceDescription In SequencesDescription Do
 		SequenceDescription.RecordSet.Filter.Recorder.Set(Data);
 		SequenceDescription.RecordSet.Read();
 	EndDo;
@@ -6157,22 +6157,22 @@ Function ModifiedObjectsOnReplaceInObject(Val Data, Val RowsToProcess, Val Regis
 	EndDo;
 		
 	// RegisterRecords
-	For Each RegisterRecordDescription In RegisterRecordDescription Do
+	For Each RegisterRecordDescription In RegisterRecordsDescription Do
 		ReplaceInRowCollection(RegisterRecordDescription.RecordSet, RegisterRecordDescription.FieldList, ReplacementCouples);
 	EndDo;
 	
 	// Sequences
-	For Each SequenceDescription In SequenceDescription Do
+	For Each SequenceDescription In SequencesDescription Do
 		ReplaceInRowCollection(SequenceDescription.RecordSet, SequenceDescription.FieldList, ReplacementCouples);
 	EndDo;
 	
-	For Each RegisterRecordDescription In RegisterRecordDescription Do
+	For Each RegisterRecordDescription In RegisterRecordsDescription Do
 		If RegisterRecordDescription.RecordSet.Modified() Then
 			Modified.Insert(RegisterRecordDescription.RecordSet, False);
 		EndIf;
 	EndDo;
 	
-	For Each SequenceDescription In SequenceDescription Do
+	For Each SequenceDescription In SequencesDescription Do
 		If SequenceDescription.RecordSet.Modified() Then
 			Modified.Insert(SequenceDescription.RecordSet, False);
 		EndIf;
@@ -6386,12 +6386,12 @@ Function SetDimensionDescription(Val Meta, Cache)
 	Return DimensionDescription;
 EndFunction
 
-Function RegisterRecordDescription(Val Meta)
+Function RegisterRecordsDescription(Val Meta)
 	// can be cached by Meta
 	
-	RegisterRecordDescription = New Array;
+	RegisterRecordsDescription = New Array;
 	If Not Metadata.Documents.Contains(Meta) Then
-		Return RegisterRecordDescription;
+		Return RegisterRecordsDescription;
 	EndIf;
 	
 	For Each RegisterRecord In Meta.RegisterRecords Do
@@ -6426,17 +6426,17 @@ Function RegisterRecordDescription(Val Meta)
 		Details.Insert("RecordSet", RecordSet);
 		Details.Insert("LockSpace", RegisterRecord.FullName() );
 		
-		RegisterRecordDescription.Add(Details);
+		RegisterRecordsDescription.Add(Details);
 	EndDo; // Register record metadata
 	
-	Return RegisterRecordDescription;
+	Return RegisterRecordsDescription;
 EndFunction
 
-Function SequenceDescription(Val Meta)
+Function SequencesDescription(Val Meta)
 	
-	SequenceDescription = New Array;
+	SequencesDescription = New Array;
 	If NOT Metadata.Documents.Contains(Meta) Then
-		Return SequenceDescription;
+		Return SequencesDescription;
 	EndIf;
 	
 	For Each Sequence In Metadata.Sequences Do
@@ -6454,12 +6454,12 @@ Function SequenceDescription(Val Meta)
 			Details.Insert("LockSpace",  TableName + ".Records");
 			Details.Insert("Dimensions", New Structure);
 			
-			SequenceDescription.Add(Details);
+			SequencesDescription.Add(Details);
 		EndIf;
 		
 	EndDo;
 	
-	Return SequenceDescription;
+	Return SequencesDescription;
 EndFunction
 
 Function ObjectDescription(Val Meta)
@@ -6958,8 +6958,8 @@ Procedure AddLockObjectsObjects(DataLock, Val UsageRows)
 		DataLock.Add(Meta.FullName()).SetValue("Ref", Data);
 		
 		// RegisterRecords 
-		RegisterRecordDescription = RegisterRecordDescription(Meta);
-		For Each Item In RegisterRecordDescription Do
+		RegisterRecordsDescription = RegisterRecordsDescription(Meta);
+		For Each Item In RegisterRecordsDescription Do
 			// Everything by the recorder
 			DataLock.Add(Item.LockSpace + ".RecordSet").SetValue("Recorder", Data);
 			
@@ -6976,8 +6976,8 @@ Procedure AddLockObjectsObjects(DataLock, Val UsageRows)
 		EndDo;
 		
 		// Sequences
-		SequenceDescription = SequenceDescription(Meta);
-		For Each Item In SequenceDescription Do
+		SequencesDescription = SequencesDescription(Meta);
+		For Each Item In SequencesDescription Do
 			DataLock.Add(Item.LockSpace).SetValue("Recorder", Data);
 			
 			For Each KeyValue In Item.MeasurementList Do

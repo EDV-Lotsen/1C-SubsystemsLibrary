@@ -139,24 +139,24 @@ Procedure WriteFavoritesURLs(Container)
 	ReaderStream.OpenFile(FileName);
 	ReaderStream.MoveToContent();
 	
-	While ReaderStream.NodeType <> XMLNodeType.StartElement Do
+	While ReaderStream.NodeType = XMLNodeType.StartElement Do
 		
 		SettingsTable = DataExportImportInternal.ReadObjectFromStream(ReaderStream).Table;
 		
-		For Each Settings In SettingsTable Do 
+		For Each Setting In SettingsTable Do 
 			
-			If TypeOf(Settings.Settings) = Type("ValueStorage") Then 
-				Settings = Settings.Settings.Get();
+			If TypeOf(Setting.Settings) = Type("ValueStorage") Then 
+				Settings = Setting.Settings.Get();
 			Else
-				Settings = Settings.Settings;
+				Settings = Setting.Settings;
 			EndIf;
 			
 			SettingsDescription = New SettingsDescription;
-			SettingsDescription.Presentation = Settings.Presentation;
+			SettingsDescription.Presentation = Setting.Presentation;
 			
 			If TypeOf(Settings) = Type("UserWorkFavorites") Then 
 				
-				WriteFavoritesURLsToMap(URLMap, Settings, Settings.User);
+				WriteFavoritesURLsToMap(URLMap, Settings, Setting.User);
 				
 			EndIf;
 			
@@ -358,7 +358,7 @@ Procedure ImportUserSettings(Val Context, Val PathToFile, Val URLMap)
 	ReaderStream.OpenFile(PathToFile);
 	ReaderStream.MoveToContent();
 	
-	While ReaderStream.NodeType <> XMLNodeType.StartElement Do
+	While ReaderStream.NodeType = XMLNodeType.StartElement Do
 		
 		SavedSettings = DataExportImportInternal.ReadObjectFromStream(ReaderStream);
 		StorageManager = Eval(SavedSettings.Storage);
@@ -372,24 +372,24 @@ EndProcedure
 
 Procedure ImportSettingsFromTable(Val StorageManager, Val SettingsTable, Val URLMap)
 	
-	For Each Settings In SettingsTable Do 
+	For Each Setting In SettingsTable Do 
 		
-		If TypeOf(Settings.Settings) = Type("ValueStorage") Then 
-			Settings = Settings.Settings.Get();
+		If TypeOf(Setting.Settings) = Type("ValueStorage") Then 
+			Settings = Setting.Settings.Get();
 		Else
-			Settings = Settings.Settings;
+			Settings = Setting.Settings;
 		EndIf;
 		
 		SettingsDescription = New SettingsDescription;
-		SettingsDescription.Presentation = Settings.Presentation;
+		SettingsDescription.Presentation = Setting.Presentation;
 		
 		If TypeOf(Settings) = Type("UserWorkFavorites") Then 
 			
-			SubstituteURLs(Settings.User, Settings, URLMap);
+			SubstituteURLs(Setting.User, Settings, URLMap);
 			
 		EndIf;
 		
-		StorageManager.Save(Settings.ObjectKey, Settings.SettingsKey, Settings, SettingsDescription, Settings.User);
+		StorageManager.Save(Setting.ObjectKey, Setting.SettingsKey, Settings, SettingsDescription, Setting.User);
 		
 	EndDo;
 	
@@ -409,10 +409,3 @@ Procedure SubstituteURLs(Val User, Val Settings, Val URLMap)
 	EndDo;
 	
 EndProcedure
-
-
-
-
-
-
-
