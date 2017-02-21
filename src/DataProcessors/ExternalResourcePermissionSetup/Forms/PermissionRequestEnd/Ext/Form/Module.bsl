@@ -10,8 +10,8 @@ Var CommitCompleted;
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
  
-	// Skipping the initialization to guarantee that the form will be received if the SelfTest parameter is passed.
-	If Parameters.Property("SelfTest") Then 
+	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
+	If Parameters.Property("Autotest") Then 
 		Return;
 	EndIf;
 	

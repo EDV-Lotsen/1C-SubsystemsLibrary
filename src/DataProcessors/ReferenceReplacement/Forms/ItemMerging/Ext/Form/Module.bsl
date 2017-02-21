@@ -14,7 +14,7 @@ Var FormClosingConfirmation;
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 
 	SetConditionalAppearance();
-	If Parameters.Property("SelfTest") Then
+	If Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
 	

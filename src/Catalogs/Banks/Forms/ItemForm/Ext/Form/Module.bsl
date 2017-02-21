@@ -5,7 +5,7 @@
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	// Skipping the initialization to guarantee that the form will be received if the Autotest parameter is passed.
-	Если Parameters.Property("SelfTest") Then
+	Если Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
  

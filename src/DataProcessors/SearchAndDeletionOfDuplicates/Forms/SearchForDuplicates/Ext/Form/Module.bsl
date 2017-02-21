@@ -13,7 +13,7 @@ Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
 	SetColorsAndConditionalAppearance();
 		
-	If Parameters.Property("SelfTest") Then
+	If Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
 	

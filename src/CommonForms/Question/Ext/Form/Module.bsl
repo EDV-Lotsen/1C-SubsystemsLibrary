@@ -4,7 +4,7 @@
 &AtServer
 Procedure OnCreateAtServer(Cancel, StandardProcessing)
 	
-	If Parameters.Property("SelfTest") Then
+	If Parameters.Property("Autotest") Then
 		Return;
 	EndIf;
 	

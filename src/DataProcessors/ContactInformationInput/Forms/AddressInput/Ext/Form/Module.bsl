@@ -1191,6 +1191,11 @@ Function ContactInformationByAttributeValues(Context)
 	Address.Country = String(Context.Country);
 	Result.Presentation = ContactInformationInternal.AddressPresentation(Address, Context.ContactInformationKind);
 	
+	If Upper(Context.Country)=Upper(Context.HomeCountry.Description) Then
+		Address.Content = XDTOFactory.Create( XDTOFactory.Type(Namespace, "AddressUS") );
+		AddressUS = Address.Content;
+	EndIf;
+	
 	Return Result;
 	
 	//////////////////////
